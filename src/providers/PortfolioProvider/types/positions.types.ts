@@ -27,13 +27,9 @@ export interface PositionGroup {
 /**
  * Summary data for a position group (e.g., grouped by protocol).
  */
-export interface PortfolioPositionSummary extends Omit<
+export interface PortfolioPositionSummary extends Pick<
   DefiPosition,
-  | 'supplyTokens'
-  | 'borrowTokens'
-  | 'assetTokens'
-  | 'collateralTokens'
-  | 'rewardTokens'
+  'name' | 'address' | 'chain' | 'protocol'
 > {
   totalValueUSD: number;
   formattedTotalValueUSD: string;

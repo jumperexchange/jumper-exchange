@@ -1,6 +1,6 @@
 import type { PortfolioToken } from '@/types/tokens';
 import type { AugmentedPosition } from './positions.augment';
-import { sumBy } from 'lodash';
+import { map, orderBy, sumBy } from 'lodash';
 import type { PortfolioTokenSummary } from '../types/tokens.types';
 import type { PortfolioPositionSummary } from '../types/positions.types';
 
@@ -43,7 +43,10 @@ export const toPositionSummary = (
     totalPositionsValueUSD,
   );
   return {
-    ...positions[0],
+    protocol: positions[0]?.protocol,
+    chain: positions[0]?.chain,
+    name: positions[0]?.name,
+    address: positions[0]?.address,
     totalValueUSD,
     formattedTotalValueUSD: formatTotalValue(totalValueUSD),
     percentageOfTotalValueUSD,
@@ -58,6 +61,19 @@ export const processSummary = (
   const tokensValueUSD = sumBy(tokens, 'totalPriceUSD');
   const positionsValueUSD = sumBy(positionsByProtocolValues.flat(), 'netUsd');
   const totalValueUSD = tokensValueUSD + positionsValueUSD;
+  const tokensBySymbolSummary = orderBy(
+    map(tokens, (token) => toTokenSummary(token, tokensValueUSD)),
+    'totalValueUSD',
+    'desc',
+  );
+  const positionsByProtocolSummary = orderBy(
+    map(positionsByProtocolValues, (positions) =>
+      toPositionSummary(positions, positionsValueUSD),
+    ),
+    'totalValueUSD',
+    'desc',
+  );
+
   return {
     totalValueUSD,
     formattedTotalValueUSD: formatTotalValue(totalValueUSD),
@@ -65,11 +81,7 @@ export const processSummary = (
     formattedPositionsValueUSD: formatTotalValue(positionsValueUSD),
     tokensValueUSD,
     formattedTokensValueUSD: formatTotalValue(tokensValueUSD),
-    tokensBySymbol: tokens.map((token) =>
-      toTokenSummary(token, tokensValueUSD),
-    ),
-    positionsByProtocol: positionsByProtocolValues.map((position) =>
-      toPositionSummary(position, positionsValueUSD),
-    ),
+    tokensBySymbol: tokensBySymbolSummary,
+    positionsByProtocol: positionsByProtocolSummary,
   };
 };

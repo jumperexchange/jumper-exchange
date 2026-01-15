@@ -42,7 +42,9 @@ exports[`AssetProgress snapshot > Protocol variant > protocol progress at 100% m
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="Morpho"
           class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <img
             alt="Morpho"
@@ -109,7 +111,9 @@ exports[`AssetProgress snapshot > Protocol variant > protocol progress matches s
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="Morpho"
           class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <img
             alt="Morpho"
@@ -492,7 +496,9 @@ exports[`AssetProgress snapshot > Token variant > token progress matches snapsho
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="ETH"
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -562,7 +568,9 @@ exports[`AssetProgress snapshot > Token variant > token progress with USDC match
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="USD Coin"
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
@@ -627,7 +635,9 @@ exports[`AssetProgress snapshot > Token variant > token progress with large amou
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="ETH"
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -697,7 +707,9 @@ exports[`AssetProgress snapshot > Token variant > token progress with small amou
         class="MuiBox-root css-iwsnym"
       >
         <div
+          aria-label="ETH"
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+          data-mui-internal-clone-element="true"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"

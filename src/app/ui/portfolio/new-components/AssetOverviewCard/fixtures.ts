@@ -106,23 +106,8 @@ export const tokensTotalValueUSD = tokens.reduce(
 export const positions: PortfolioPositionSummary[] = [
   {
     name: 'Aave V3',
-    assetUsd: 1.0017831783178317,
-    debtUsd: 0,
-    netUsd: 1.0017831783178317,
     address: '0x794a61358d6845594f94dc1db02a252b5b4814ad',
     chain: arbitrumChain,
-    type: 'Lending',
-    openedAt: '2024-10-15T12:30:00.000Z',
-    latest: {
-      date: '2025-11-27T00:00:00.000Z',
-      tvlUsd: '850000000',
-      tvlNative: '850000000',
-      apy: {
-        base: 2.8,
-        reward: 0.5,
-        total: 3.3,
-      },
-    },
     protocol: {
       name: 'Aave V3',
       logo: 'https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png',
@@ -134,24 +119,8 @@ export const positions: PortfolioPositionSummary[] = [
   },
   {
     name: 'Morpho',
-    assetUsd: 136.62,
-    debtUsd: 0,
-    netUsd: 136.62,
     address: '0xc5e7ab07030305fc925175b25b93b285d40dcdff',
     chain: katanaChain,
-    type: 'Yield',
-    openedAt: '2024-11-05T14:20:00.000Z',
-    unlockAt: '2025-05-05T14:20:00.000Z',
-    latest: {
-      date: '2025-11-27T00:00:00.000Z',
-      tvlUsd: '125000000',
-      tvlNative: '125000000',
-      apy: {
-        base: 8.5,
-        reward: 0,
-        total: 8.5,
-      },
-    },
     protocol: {
       name: 'Morpho',
       logo: 'https://static.debank.com/image/project/logo_url/morphoblue/cfe5f811a4fb96355e0fb367b5201f87.png',
@@ -163,12 +132,8 @@ export const positions: PortfolioPositionSummary[] = [
   },
   {
     name: 'Hyperwave',
-    assetUsd: 17.148273267639563,
-    debtUsd: 0,
-    netUsd: 17.148273267639563,
     address: '0x4de03ca1f02591b717495cfa19913ad56a2f5858',
     chain: hyperChain,
-    type: 'Yield',
     protocol: {
       name: 'Hyperwave',
       logo: 'https://static.debank.com/image/project/logo_url/hyper_hyperwavefi/13f0393f633a2a1fe6e709bd9c37d514.png',
@@ -180,23 +145,8 @@ export const positions: PortfolioPositionSummary[] = [
   },
   {
     name: 'Merkl',
-    assetUsd: 0.03301631879858625,
-    debtUsd: 0,
-    netUsd: 0.03301631879858625,
     address: '0x3ef3d8ba38ebe18db133cec108f4d14ce00dd9ae',
     chain: baseChain,
-    type: 'Rewards',
-    openedAt: '2024-10-15T12:30:00.000Z',
-    latest: {
-      date: '2025-11-27T00:00:00.000Z',
-      tvlUsd: '850000000',
-      tvlNative: '850000000',
-      apy: {
-        base: 2.8,
-        reward: 0.5,
-        total: 3.3,
-      },
-    },
     protocol: {
       name: 'Merkl',
       logo: 'https://static.debank.com/image/project/logo_url/merkl/7c4a97689b3310cc3436bc6e1a215476.png',
@@ -208,12 +158,8 @@ export const positions: PortfolioPositionSummary[] = [
   },
   {
     name: 'Euler',
-    assetUsd: 12.020139013901389,
-    debtUsd: 0,
-    netUsd: 12.020139013901389,
     address: '0x3b4802fdb0e5d74aa37d58fd77d63e93d4f9a4af',
     chain: ethereumChain,
-    type: 'Yield',
     protocol: {
       name: 'Euler',
       logo: 'https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png',
@@ -225,12 +171,8 @@ export const positions: PortfolioPositionSummary[] = [
   },
   {
     name: 'Compound',
-    assetUsd: 15.5,
-    debtUsd: 0,
-    netUsd: 15.5,
     address: '0x1234567890abcdef1234567890abcdef12345678',
     chain: ethereumChain,
-    type: 'Lending',
     protocol: {
       name: 'Compound',
       logo: 'https://static.debank.com/image/project/logo_url/compound/4711e1d7ef26f69eed04c3e2deaae100.png',

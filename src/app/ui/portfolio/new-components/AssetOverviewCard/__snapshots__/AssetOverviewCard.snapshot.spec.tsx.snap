@@ -49,7 +49,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="89"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -74,7 +74,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 14.478px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -82,7 +82,77 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -101,7 +171,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              88.83%
+              74.93%
             </p>
           </div>
         </div>
@@ -115,7 +185,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="11"
+                aria-valuenow="9"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -140,7 +210,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 115.142px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 117.396px;"
                   />
                 </svg>
               </span>
@@ -148,7 +218,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Hyperwave"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Hyperwave"
@@ -167,7 +239,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              11.15%
+              9.41%
             </p>
           </div>
         </div>
@@ -206,7 +278,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.563px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.565px;"
                   />
                 </svg>
               </span>
@@ -214,7 +286,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Merkl"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Merkl"
@@ -234,73 +308,6 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
               0.02%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="0"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Aave V3"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              aria-label="$0.0018"
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              &lt;$0.01
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              0%
             </p>
           </div>
         </div>
@@ -422,7 +429,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="43"
+                aria-valuenow="40"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -447,7 +454,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 73.966px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -455,7 +462,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -477,7 +486,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              42.92%
+              40.12%
             </p>
           </div>
         </div>
@@ -491,7 +500,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="23"
+                aria-valuenow="19"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -516,7 +525,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 100.081px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.422px;"
                   />
                 </svg>
               </span>
@@ -524,76 +533,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <p
-                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
-                  >
-                    W
-                  </p>
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $9.85K
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              22.77%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="20"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 103.744px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -615,7 +557,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              19.94%
+              18.65%
             </p>
           </div>
         </div>
@@ -629,7 +571,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="14"
+                aria-valuenow="13"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -654,7 +596,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 110.981px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.200px;"
                   />
                 </svg>
               </span>
@@ -662,7 +604,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Tether USD"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -684,7 +628,78 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              14.36%
+              13.42%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="21"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 102.014px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Wrapped Bitcoin"
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $9.85K
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              21.28%
             </p>
           </div>
         </div>
@@ -834,15 +849,6 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
                 <p
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
-                  W
-                </p>
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
-              >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
-                >
                   U
                 </p>
               </div>
@@ -853,6 +859,15 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
                   T
+                </p>
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
                 </p>
               </div>
             </div>
@@ -867,7 +882,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $153.81
+              $154.8
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -881,6 +896,16 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -909,16 +934,6 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
                   src="https://static.debank.com/image/project/logo_url/merkl/7c4a97689b3310cc3436bc6e1a215476.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
-                  alt="Aave V3"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
                 />
               </div>
             </div>
@@ -1178,15 +1193,6 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 <p
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
-                  W
-                </p>
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
-              >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
-                >
                   U
                 </p>
               </div>
@@ -1197,6 +1203,15 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
                   T
+                </p>
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
                 </p>
               </div>
             </div>
@@ -1314,7 +1329,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.811px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -1322,7 +1337,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -1344,76 +1361,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              39.96%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="21"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 102.122px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <p
-                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
-                  >
-                    W
-                  </p>
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $9.85K
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              21.2%
+              40.12%
             </p>
           </div>
         </div>
@@ -1452,7 +1400,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.531px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.422px;"
                   />
                 </svg>
               </span>
@@ -1460,7 +1408,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -1482,7 +1432,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              18.57%
+              18.65%
             </p>
           </div>
         </div>
@@ -1521,7 +1471,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.268px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.200px;"
                   />
                 </svg>
               </span>
@@ -1529,7 +1479,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Tether USD"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -1551,7 +1503,78 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              13.37%
+              13.42%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="21"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 102.014px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Wrapped Bitcoin"
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $9.85K
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              21.28%
             </p>
           </div>
         </div>
@@ -1590,7 +1613,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 120.631px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 121.128px;"
                   />
                 </svg>
               </span>
@@ -1598,7 +1621,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Dai Stablecoin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -1620,7 +1645,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              6.91%
+              6.53%
             </p>
           </div>
         </div>
@@ -1771,15 +1796,6 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
                 <p
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
-                  W
-                </p>
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
-              >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
-                >
                   U
                 </p>
               </div>
@@ -1790,6 +1806,15 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
                   T
+                </p>
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
                 </p>
               </div>
             </div>
@@ -1882,7 +1907,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="82"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -1907,7 +1932,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 22.822px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -1915,7 +1940,77 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -1934,7 +2029,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              82.39%
+              74.93%
             </p>
           </div>
         </div>
@@ -1948,7 +2043,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="10"
+                aria-valuenow="9"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -1973,7 +2068,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 116.190px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 117.396px;"
                   />
                 </svg>
               </span>
@@ -1981,7 +2076,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Hyperwave"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Hyperwave"
@@ -2000,73 +2097,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              10.34%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="7"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 120.197px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Euler"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $12.02
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              7.25%
+              9.41%
             </p>
           </div>
         </div>
@@ -2113,7 +2144,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Merkl"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Merkl"
@@ -2146,7 +2179,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="0"
+                aria-valuenow="7"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -2171,7 +2204,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 121.051px;"
                   />
                 </svg>
               </span>
@@ -2179,27 +2212,96 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Euler"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
-                    alt="Aave V3"
+                    alt="Euler"
                     class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
                   />
                 </div>
               </div>
             </div>
             <p
-              aria-label="$0.0018"
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
               data-mui-internal-clone-element="true"
             >
-              &lt;$0.01
+              $12.02
             </p>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              0%
+              6.59%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="9"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 118.575px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Compound"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Compound"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/compound/4711e1d7ef26f69eed04c3e2deaae100.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $15.5
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              8.5%
             </p>
           </div>
         </div>
@@ -2346,7 +2448,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $165.83
+              $182.32
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2360,6 +2462,16 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -2384,16 +2496,6 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Euler"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
                   alt="Merkl"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
@@ -2405,7 +2507,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
               class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
             >
               +
-              1
+              2
             </p>
           </div>
         </div>
@@ -2489,7 +2591,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $165.83
+              $182.32
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2503,6 +2605,16 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -2527,16 +2639,6 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Euler"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
                   alt="Merkl"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
@@ -2548,7 +2650,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
               class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
             >
               +
-              1
+              2
             </p>
           </div>
         </div>
@@ -2607,7 +2709,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="100"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -2632,7 +2734,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -2640,7 +2742,9 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Aave V3"
@@ -2651,16 +2755,15 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
               </div>
             </div>
             <p
-              aria-label="$0.0018"
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
               data-mui-internal-clone-element="true"
             >
-              &lt;$0.01
+              $1
             </p>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              100%
+              0.55%
             </p>
           </div>
         </div>
@@ -2782,7 +2885,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="100"
+                aria-valuenow="40"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -2807,7 +2910,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 0.000px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -2815,7 +2918,9 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -2837,7 +2942,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              100%
+              40.12%
             </p>
           </div>
         </div>
@@ -2993,13 +3098,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              <span
-                aria-label="$0"
-                class=""
-                data-mui-internal-clone-element="true"
-              >
-                &lt;$0.01
-              </span>
+              $1
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -3081,7 +3180,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="82"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -3106,7 +3205,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 22.822px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -3114,7 +3213,77 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -3133,7 +3302,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              82.39%
+              74.93%
             </p>
           </div>
         </div>
@@ -3147,7 +3316,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="10"
+                aria-valuenow="9"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -3172,7 +3341,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 116.190px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 117.396px;"
                   />
                 </svg>
               </span>
@@ -3180,7 +3349,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Hyperwave"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Hyperwave"
@@ -3199,73 +3370,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              10.34%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="7"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 120.197px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Euler"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $12.02
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              7.25%
+              9.41%
             </p>
           </div>
         </div>
@@ -3312,7 +3417,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Merkl"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Merkl"
@@ -3345,7 +3452,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="0"
+                aria-valuenow="7"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -3370,7 +3477,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 121.051px;"
                   />
                 </svg>
               </span>
@@ -3378,27 +3485,96 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Euler"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
-                    alt="Aave V3"
+                    alt="Euler"
                     class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
                   />
                 </div>
               </div>
             </div>
             <p
-              aria-label="$0.0018"
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
               data-mui-internal-clone-element="true"
             >
-              &lt;$0.01
+              $12.02
             </p>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              0%
+              6.59%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="9"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 118.575px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Compound"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Compound"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/compound/4711e1d7ef26f69eed04c3e2deaae100.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $15.5
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              8.5%
             </p>
           </div>
         </div>
@@ -3545,7 +3721,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.811px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -3553,7 +3729,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -3575,76 +3753,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              39.96%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="21"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 102.122px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <p
-                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
-                  >
-                    W
-                  </p>
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $9.85K
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              21.2%
+              40.12%
             </p>
           </div>
         </div>
@@ -3683,7 +3792,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.531px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.422px;"
                   />
                 </svg>
               </span>
@@ -3691,7 +3800,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -3713,7 +3824,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              18.57%
+              18.65%
             </p>
           </div>
         </div>
@@ -3752,7 +3863,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.268px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.200px;"
                   />
                 </svg>
               </span>
@@ -3760,7 +3871,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Tether USD"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -3782,7 +3895,78 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              13.37%
+              13.42%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="21"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 102.014px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Wrapped Bitcoin"
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $9.85K
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              21.28%
             </p>
           </div>
         </div>
@@ -3821,7 +4005,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 120.631px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 121.128px;"
                   />
                 </svg>
               </span>
@@ -3829,7 +4013,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Dai Stablecoin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -3851,7 +4037,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              6.91%
+              6.53%
             </p>
           </div>
         </div>
@@ -4001,15 +4187,6 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
                 <p
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
-                  W
-                </p>
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
-              >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
-                >
                   U
                 </p>
               </div>
@@ -4020,6 +4197,15 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
                   T
+                </p>
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
                 </p>
               </div>
             </div>
@@ -4040,7 +4226,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $165.83
+              $182.32
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4054,6 +4240,16 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -4078,16 +4274,6 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Euler"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
                   alt="Merkl"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
@@ -4099,7 +4285,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
               class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
             >
               +
-              1
+              2
             </p>
           </div>
         </div>
@@ -4158,7 +4344,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="89"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -4183,7 +4369,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 14.453px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -4191,7 +4377,77 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -4210,7 +4466,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              88.85%
+              74.93%
             </p>
           </div>
         </div>
@@ -4224,7 +4480,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="11"
+                aria-valuenow="9"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -4249,7 +4505,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 115.139px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 117.396px;"
                   />
                 </svg>
               </span>
@@ -4257,7 +4513,9 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Hyperwave"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Hyperwave"
@@ -4276,74 +4534,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              11.15%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="0"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Aave V3"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              aria-label="$0.0018"
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              &lt;$0.01
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              0%
+              9.41%
             </p>
           </div>
         </div>
@@ -4465,7 +4656,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="56"
+                aria-valuenow="40"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -4490,7 +4681,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 57.565px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -4498,7 +4689,9 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -4520,76 +4713,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              55.58%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="26"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 96.123px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <p
-                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
-                  >
-                    U
-                  </p>
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $8.63K
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              25.83%
+              40.12%
             </p>
           </div>
         </div>
@@ -4628,7 +4752,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.494px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.422px;"
                   />
                 </svg>
               </span>
@@ -4636,7 +4760,80 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    U
+                  </p>
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $8.63K
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              18.65%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="13"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 112.200px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Tether USD"
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -4658,7 +4855,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              18.59%
+              13.42%
             </p>
           </div>
         </div>
@@ -4832,7 +5029,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $153.77
+              $154.77
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -4846,6 +5043,16 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -4864,16 +5071,6 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
                   src="https://static.debank.com/image/project/logo_url/hyper_hyperwavefi/13f0393f633a2a1fe6e709bd9c37d514.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
-                  alt="Aave V3"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
                 />
               </div>
             </div>
@@ -4934,7 +5131,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="82"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -4959,7 +5156,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 22.822px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -4967,7 +5164,77 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -4986,7 +5253,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              82.39%
+              74.93%
             </p>
           </div>
         </div>
@@ -5000,7 +5267,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="10"
+                aria-valuenow="9"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -5025,7 +5292,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 116.190px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 117.396px;"
                   />
                 </svg>
               </span>
@@ -5033,7 +5300,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Hyperwave"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Hyperwave"
@@ -5052,73 +5321,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              10.34%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="7"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 120.197px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Euler"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              $12.02
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              7.25%
+              9.41%
             </p>
           </div>
         </div>
@@ -5165,7 +5368,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Merkl"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Merkl"
@@ -5198,7 +5403,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="0"
+                aria-valuenow="7"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -5223,7 +5428,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 121.051px;"
                   />
                 </svg>
               </span>
@@ -5231,27 +5436,96 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Euler"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
-                    alt="Aave V3"
+                    alt="Euler"
                     class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                    src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
                   />
                 </div>
               </div>
             </div>
             <p
-              aria-label="$0.0018"
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
               data-mui-internal-clone-element="true"
             >
-              &lt;$0.01
+              $12.02
             </p>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              0%
+              6.59%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="9"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 118.575px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Compound"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Compound"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/compound/4711e1d7ef26f69eed04c3e2deaae100.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $15.5
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              8.5%
             </p>
           </div>
         </div>
@@ -5406,7 +5680,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -5430,76 +5706,6 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
               50%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="30"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 90.713px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
-                >
-                  <p
-                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
-                  >
-                    W
-                  </p>
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              aria-label="$0.0003"
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              &lt;$0.01
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              30%
             </p>
           </div>
         </div>
@@ -5546,7 +5752,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -5616,7 +5824,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Tether USD"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -5640,6 +5850,78 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
               10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="30"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 90.713px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Wrapped Bitcoin"
+                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
+                  >
+                    W
+                  </p>
+                  <span
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              aria-label="$0.0003"
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              &lt;$0.01
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              30%
             </p>
           </div>
         </div>
@@ -5795,15 +6077,6 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 <p
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
-                  W
-                </p>
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
-              >
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
-                >
                   U
                 </p>
               </div>
@@ -5814,6 +6087,15 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                   class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
                 >
                   T
+                </p>
+              </div>
+              <div
+                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1idlgmg-MuiAvatar-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 css-1juryfu-MuiTypography-root"
+                >
+                  W
                 </p>
               </div>
             </div>
@@ -5828,7 +6110,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $165.83
+              $182.32
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -5842,6 +6124,16 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
             <div
               class="MuiStack-root css-k0vgmj-MuiStack-root"
             >
+              <div
+                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
+              >
+                <img
+                  alt="Aave V3"
+                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                  loading="lazy"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                />
+              </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
@@ -5866,16 +6158,6 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Euler"
-                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                  loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/euler2/672f19349da6dd7cdf30621720681753.png"
-                />
-              </div>
-              <div
-                class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
-              >
-                <img
                   alt="Merkl"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
@@ -5887,7 +6169,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
               class="MuiTypography-root MuiTypography-body1 css-750ejj-MuiTypography-root"
             >
               +
-              1
+              2
             </p>
           </div>
         </div>
@@ -5946,7 +6228,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="100"
+                aria-valuenow="1"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -5971,7 +6253,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 0.002px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 128.878px;"
                   />
                 </svg>
               </span>
@@ -5979,7 +6261,77 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Aave V3"
                   class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
+                >
+                  <img
+                    alt="Aave V3"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  />
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
+              data-mui-internal-clone-element="true"
+            >
+              $1
+            </p>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
+            >
+              0.55%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-km4fib"
+        >
+          <div
+            class="MuiBox-root css-11swifz"
+          >
+            <div
+              class="MuiBox-root css-dj6tjg"
+            >
+              <span
+                aria-valuenow="75"
+                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+                role="progressbar"
+                style="width: 64px; height: 64px; transform: rotate(-90deg);"
+              >
+                <svg
+                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+                  viewBox="22 22 44 44"
+                >
+                  <circle
+                    aria-hidden="true"
+                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                  />
+                  <circle
+                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+                    cx="44"
+                    cy="44"
+                    fill="none"
+                    r="20.625"
+                    stroke-width="2.75"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 32.488px;"
+                  />
+                </svg>
+              </span>
+              <div
+                class="MuiBox-root css-iwsnym"
+              >
+                <div
+                  aria-label="Morpho"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <img
                     alt="Morpho"
@@ -5998,74 +6350,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              100%
-            </p>
-          </div>
-        </div>
-        <div
-          class="MuiBox-root css-km4fib"
-        >
-          <div
-            class="MuiBox-root css-11swifz"
-          >
-            <div
-              class="MuiBox-root css-dj6tjg"
-            >
-              <span
-                aria-valuenow="0"
-                class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
-                role="progressbar"
-                style="width: 64px; height: 64px; transform: rotate(-90deg);"
-              >
-                <svg
-                  class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
-                  viewBox="22 22 44 44"
-                >
-                  <circle
-                    aria-hidden="true"
-                    class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                  />
-                  <circle
-                    class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
-                    cx="44"
-                    cy="44"
-                    fill="none"
-                    r="20.625"
-                    stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 129.589px;"
-                  />
-                </svg>
-              </span>
-              <div
-                class="MuiBox-root css-iwsnym"
-              >
-                <div
-                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
-                >
-                  <img
-                    alt="Aave V3"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
-                    src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
-                  />
-                </div>
-              </div>
-            </div>
-            <p
-              aria-label="$0.0018"
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1ht0zh3-MuiTypography-root"
-              data-mui-internal-clone-element="true"
-            >
-              &lt;$0.01
-            </p>
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
-            >
-              0%
+              74.93%
             </p>
           </div>
         </div>
@@ -6187,7 +6472,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="68"
+                aria-valuenow="40"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -6212,7 +6497,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 41.113px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 77.599px;"
                   />
                 </svg>
               </span>
@@ -6220,7 +6505,9 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="Ethereum"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -6242,7 +6529,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              68.28%
+              40.12%
             </p>
           </div>
         </div>
@@ -6256,7 +6543,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
               class="MuiBox-root css-dj6tjg"
             >
               <span
-                aria-valuenow="32"
+                aria-valuenow="19"
                 class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
                 role="progressbar"
                 style="width: 64px; height: 64px; transform: rotate(-90deg);"
@@ -6281,7 +6568,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                     fill="none"
                     r="20.625"
                     stroke-width="2.75"
-                    style="stroke-dasharray: 129.591; stroke-dashoffset: 88.478px;"
+                    style="stroke-dasharray: 129.591; stroke-dashoffset: 105.422px;"
                   />
                 </svg>
               </span>
@@ -6289,7 +6576,9 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                 class="MuiBox-root css-iwsnym"
               >
                 <div
+                  aria-label="USD Coin"
                   class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  data-mui-internal-clone-element="true"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-1eqipzu-MuiTypography-root"
@@ -6311,7 +6600,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1g370rc-MuiTypography-root"
             >
-              31.72%
+              18.65%
             </p>
           </div>
         </div>
@@ -6476,7 +6765,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              $136.63
+              $137.62
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -6494,20 +6783,20 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Morpho"
+                  alt="Aave V3"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/morphoblue/cfe5f811a4fb96355e0fb367b5201f87.png"
+                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
                 />
               </div>
               <div
                 class="MuiAvatar-root MuiAvatar-circular css-1d07xyu-MuiAvatar-root"
               >
                 <img
-                  alt="Aave V3"
+                  alt="Morpho"
                   class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
                   loading="lazy"
-                  src="https://static.debank.com/image/project/logo_url/aave3/54df7839ab09493ba7540ab832590255.png"
+                  src="https://static.debank.com/image/project/logo_url/morphoblue/cfe5f811a4fb96355e0fb367b5201f87.png"
                 />
               </div>
             </div>

@@ -9,6 +9,7 @@ import { OverviewCardColumn } from '../components/OverviewCardColumn';
 import { MAX_DISPLAY_ASSETS_COUNT } from '../constants';
 import { useTranslation } from 'react-i18next';
 import { toTokenStackTokens } from '@/components/composite/TokenStack/utils';
+import { map } from 'lodash';
 
 export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
   tokens,
@@ -17,7 +18,6 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
   positionsTotalValueUSD,
 }) => {
   const { t } = useTranslation();
-
   return (
     <AssetOverviewCardOverviewContainer>
       <OverviewCardColumn
@@ -35,7 +35,7 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
         totalPrice={positionsTotalValueUSD}
       >
         <ProtocolStack
-          protocols={positions}
+          protocols={map(positions, 'protocol')}
           size={AvatarSize.LG}
           limit={MAX_DISPLAY_ASSETS_COUNT}
         />
