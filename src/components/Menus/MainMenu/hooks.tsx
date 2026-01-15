@@ -353,8 +353,8 @@ export const useFooterLinks = () => {
   const footerLinks = useMemo(() => {
     const _footerLinks: FooterLink[] = [
       {
-        label: t('navbar.navbarMenu.termsConditions'),
-        link: { url: TERMS_CONDITIONS_URL },
+        label: t('navbar.navbarMenu.termsOfBusiness'),
+        link: { url: AppPaths.TermsOfBusiness },
         onClick: handleTermsConditionsClick,
         external: true,
       },

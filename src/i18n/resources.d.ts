@@ -396,7 +396,7 @@ interface Resources {
         resources: 'Resources';
         scan: 'Scan';
         support: 'Support';
-        termsConditions: 'Terms & Conditions';
+        termsOfBusiness: 'Terms Of Business';
         theme: 'Theme';
       };
       pass: 'Pass';
