@@ -2,6 +2,7 @@ import { usePortfolioTokensFiltering } from 'src/app/ui/portfolio/PortfolioToken
 import { usePortfolioDeFiPositionsFiltering } from 'src/app/ui/portfolio/PortfolioDeFiPositionsFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
+import { toTokenStackTokens } from '../composite/TokenStack/utils';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon } from '@lifi/wallet-management';
 import type { SortByEnum } from 'src/app/ui/portfolio/types';
@@ -73,7 +74,7 @@ export const usePortfolioTokensFilterBar = () => {
         allAssets.map((asset) => ({
           value: asset.address,
           label: asset.name,
-          icon: <TokenStack tokens={[asset]} />,
+          icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
         })),
       ),
     [allAssets],
@@ -235,7 +236,7 @@ export const usePortfolioDeFiFilterBar = () => {
         allAssets.map((asset) => ({
           value: asset.name,
           label: asset.name,
-          icon: <TokenStack tokens={[asset]} />,
+          icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
         })),
       ),
     [allAssets],

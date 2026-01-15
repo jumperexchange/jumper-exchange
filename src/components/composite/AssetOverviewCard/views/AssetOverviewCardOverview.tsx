@@ -9,6 +9,7 @@ import { calculateTotalPrice } from '../utils';
 import { OverviewCardColumn } from '../components/OverviewCardColumn';
 import { MAX_DISPLAY_ASSETS_COUNT } from '../constants';
 import { useTranslation } from 'react-i18next';
+import { toTokenStackTokens } from '../../TokenStack/utils';
 
 export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
   tokens,
@@ -36,7 +37,7 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
         totalPrice={tokensOverallPriceInUSD}
       >
         <TokenStack
-          tokens={tokens}
+          tokens={toTokenStackTokens(tokens)}
           size={AvatarSize.LG}
           limit={MAX_DISPLAY_ASSETS_COUNT}
         />

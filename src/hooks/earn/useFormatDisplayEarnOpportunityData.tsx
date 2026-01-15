@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatLockupDuration } from 'src/utils/earn/utils';
 import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
+import { toTokenStackTokens } from 'src/components/composite/TokenStack/utils';
 import type {
   Chain,
   EarnOpportunityWithLatestAnalytics,
@@ -153,7 +154,7 @@ const buildAssetsItem = (
       isContentVisible={false}
     />
   ) : (
-    <TokenStack tokens={assets} />
+    <TokenStack tokens={toTokenStackTokens(assets)} />
   );
 
   const assetValue = assetsCount === 1 ? assets[0].symbol : '';
