@@ -75,8 +75,8 @@ export const PortfolioFilterBarTokensTablet: FC = () => {
         values.tokensWallets.length > 0 ||
         values.tokensChains.length > 0 ||
         values.tokensAssets.length > 0 ||
-        values.tokensValue[0] !== valueRangeMin ||
-        values.tokensValue[1] !== valueRangeMax
+        values.tokensValue[0] !== valueMin ||
+        values.tokensValue[1] !== valueMax
       );
     },
   });

@@ -79,8 +79,8 @@ export const PortfolioFilterBarDeFiTablet: FC = () => {
         values.defiProtocols.length > 0 ||
         values.defiTypes.length > 0 ||
         values.defiAssets.length > 0 ||
-        values.defiValue[0] !== valueRangeMin ||
-        values.defiValue[1] !== valueRangeMax
+        values.defiValue[0] !== valueMin ||
+        values.defiValue[1] !== valueMax
       );
     },
   });
