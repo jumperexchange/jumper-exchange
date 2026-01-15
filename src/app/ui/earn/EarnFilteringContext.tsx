@@ -116,13 +116,18 @@ export const EarnFilteringProvider = ({
     },
   });
 
-  const all = useEarnFilterOpportunities({
-    filter: {
-      ...filter,
-      ...(showYourPositions ? { hasPositions: true, address } : {}),
-      sortBy: sortBy,
+  const all = useEarnFilterOpportunities(
+    {
+      filter: {
+        ...filter,
+        ...(showYourPositions ? { hasPositions: true, address } : {}),
+        sortBy: sortBy,
+      },
     },
-  });
+    {
+      enabled: showYourPositions ? !!address : true,
+    },
+  );
 
   const allNoFilter = useEarnFilterOpportunities({
     filter: {},
