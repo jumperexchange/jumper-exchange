@@ -126,23 +126,23 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
-  if (showZapPlaceholderWidget || !isEvmWallet) {
-    return (
-      <ZapPlaceholderWidget
-        titleKey={
-          !isEvmWallet
-            ? 'widget.zap.placeholder.non-evm.title'
-            : 'widget.zap.placeholder.embedded-multisig.title'
-        }
-        descriptionKey={
-          !isEvmWallet
-            ? 'widget.zap.placeholder.non-evm.description'
-            : 'widget.zap.placeholder.embedded-multisig.description'
-        }
-        style={widgetConfig.theme?.container}
-      />
-    );
-  }
+  // if (showZapPlaceholderWidget || !isEvmWallet) {
+  //   return (
+  //     <ZapPlaceholderWidget
+  //       titleKey={
+  //         !isEvmWallet
+  //           ? 'widget.zap.placeholder.non-evm.title'
+  //           : 'widget.zap.placeholder.embedded-multisig.title'
+  //       }
+  //       descriptionKey={
+  //         !isEvmWallet
+  //           ? 'widget.zap.placeholder.non-evm.description'
+  //           : 'widget.zap.placeholder.embedded-multisig.description'
+  //       }
+  //       style={widgetConfig.theme?.container}
+  //     />
+  //   );
+  // }
 
   return fromChain && fromToken ? (
     <LiFiWidget
