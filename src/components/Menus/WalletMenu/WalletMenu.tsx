@@ -67,7 +67,7 @@ export const WalletMenu = () => {
       onClose={() => {
         setWalletMenuState(false);
       }}
-      // slotProps={{ backdrop: { invisible: true } }}
+      slotProps={{ backdrop: { sx: { backdropFilter: 'blur(8px)' } } }}
     >
       <Stack direction="row" justifyContent="space-between">
         <IconButton

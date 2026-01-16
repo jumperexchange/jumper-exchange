@@ -17,6 +17,9 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const StyledAccordionSummary = styled(AccordionSummary)({
+  '& .MuiAccordionSummary-content': {
+    width: '100%',
+  },
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,
@@ -40,6 +43,7 @@ export const StyledContent = styled(Stack, {
   shouldForwardProp: (prop) => prop !== 'hideCursor',
 })<StyledContentProps>(({ theme, hideCursor }) => ({
   width: '100%',
+  overflow: 'hidden',
   cursor: hideCursor ? 'default' : 'pointer',
   borderRadius: theme.shape.borderRadius,
   transition: 'background-color 300ms ease-in-out',

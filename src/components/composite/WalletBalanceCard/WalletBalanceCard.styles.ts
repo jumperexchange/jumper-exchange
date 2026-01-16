@@ -97,6 +97,9 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  '& .MuiAccordionSummary-content': {
+    width: '100%',
+  },
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,

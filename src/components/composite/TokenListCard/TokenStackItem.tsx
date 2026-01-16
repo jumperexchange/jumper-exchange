@@ -42,7 +42,7 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
       useFlexGap
       justifyContent="space-between"
       onClick={onClick}
-      sx={{ padding: config.padding }}
+      sx={config.itemSx}
     >
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}
@@ -69,7 +69,11 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
         titleVariant={config.titleVariant}
         hintVariant={config.descriptionVariant}
         hint={`${t(`format.${isMobile ? 'decimalCompact' : 'decimal'}`, { value: token.balance })} ${token.symbol}`}
-        sx={{ textAlign: 'right', alignSelf: 'center' }}
+        sx={{
+          textAlign: 'right',
+          marginLeft: 'auto',
+          minWidth: 0,
+        }}
         gap={config.infoContainerGap}
       />
     </StyledContent>

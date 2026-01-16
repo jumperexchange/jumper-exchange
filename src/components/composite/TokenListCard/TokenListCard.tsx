@@ -17,6 +17,7 @@ export const TokenListCard: FC<TokenListCardProps> = ({
   token: portfolioToken,
   size = TokenListCardTokenSize.SM,
   onSelect,
+  shouldShowExpandedEndDivider = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -41,7 +42,9 @@ export const TokenListCard: FC<TokenListCardProps> = ({
       expanded={isExpanded}
       disableGutters
       sx={{
-        ':not(:last-child)': { paddingBottom: config.paddingBottom },
+        ':not(:last-child)': {
+          paddingBottom: config.paddingBottom,
+        },
       }}
     >
       <StyledAccordionSummary>
@@ -73,6 +76,14 @@ export const TokenListCard: FC<TokenListCardProps> = ({
               onClick={() => handleExpandedTokenClick(token)}
             />
           ))}
+          {isExpanded && shouldShowExpandedEndDivider && (
+            <Divider
+              sx={(theme) => ({
+                borderColor: (theme.vars || theme).palette.alpha100.main,
+                marginY: config.dividerSpacing,
+              })}
+            />
+          )}
         </Stack>
       </StyledAccordionDetails>
     </StyledAccordion>
