@@ -67,10 +67,7 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
     openInNewTab(url);
   };
 
-  const handleInfoClick = (earn?: string) => {
-    if (!earn) {
-      return;
-    }
+  const handleInfoClick = (earn: string) => {
     router.push(`${AppPaths.Earn}/${earn}`);
   };
 
@@ -168,78 +165,79 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
 
       <StyledAccordionDetails>
         <StyledDetailsContainer>
-          {positionGroups.map((positionGroup, index) => (
-            <Fragment key={positionGroup.position.address}>
-              <StyledSectionDivider sx={{ marginTop: index === 0 ? 1.5 : 0 }} />
-              <StyledSectionContent>
-                <StyledOverviewColumn>
-                  {!!positionGroup.position.openedAt && (
-                    <DeFiPositionOverview
-                      icon={<CalendarMonthRoundedIcon sx={ICON_STYLES} />}
-                      header={t('portfolio.defiPositionCard.overview.opened')}
-                      description={formatTimeDifference(
-                        positionGroup.position.openedAt,
-                        t,
+          {positionGroups.map((positionGroup, index) => {
+            const earn = positionGroup.position.earn;
+            const openedAt = positionGroup.position.openedAt;
+            const unlockAt = positionGroup.position.unlockAt;
+            return (
+              <Fragment key={positionGroup.position.address}>
+                <StyledSectionDivider
+                  sx={{ marginTop: index === 0 ? 1.5 : 0 }}
+                />
+                <StyledSectionContent>
+                  <StyledOverviewColumn>
+                    {!!openedAt && (
+                      <DeFiPositionOverview
+                        icon={<CalendarMonthRoundedIcon sx={ICON_STYLES} />}
+                        header={t('portfolio.defiPositionCard.overview.opened')}
+                        description={formatTimeDifference(openedAt, t)}
+                      />
+                    )}
+                    {!!unlockAt && (
+                      <DeFiPositionOverview
+                        icon={<LockOutlineRoundedIcon sx={ICON_STYLES} />}
+                        header={t('portfolio.defiPositionCard.overview.lockup')}
+                        description={formatTimeDifference(unlockAt, t)}
+                      />
+                    )}
+                    <StyledOverviewActions>
+                      <DeFiPositionOverviewButton
+                        tooltip={t(
+                          'portfolio.defiPositionCard.overview.tooltip.address',
+                        )}
+                        onClick={() =>
+                          handleAddressExplorerClick(
+                            positionGroup.position.chain.chainId,
+                            positionGroup.position.address,
+                          )
+                        }
+                        slots={{
+                          icon: CodeRoundedIcon,
+                        }}
+                      />
+                      {!!earn && (
+                        <DeFiPositionOverviewButton
+                          tooltip={t(
+                            'portfolio.defiPositionCard.overview.tooltip.info',
+                          )}
+                          onClick={() => handleInfoClick(earn)}
+                          slots={{
+                            icon: InfoOutlineRoundedIcon,
+                          }}
+                        />
                       )}
-                    />
-                  )}
-                  {!!positionGroup.position.unlockAt && (
-                    <DeFiPositionOverview
-                      icon={<LockOutlineRoundedIcon sx={ICON_STYLES} />}
-                      header={t('portfolio.defiPositionCard.overview.lockup')}
-                      description={formatTimeDifference(
-                        positionGroup.position.unlockAt,
-                        t,
-                      )}
-                    />
-                  )}
-                  <StyledOverviewActions>
-                    <DeFiPositionOverviewButton
-                      tooltip={t(
-                        'portfolio.defiPositionCard.overview.tooltip.address',
-                      )}
-                      onClick={() =>
-                        handleAddressExplorerClick(
-                          positionGroup.position.chain.chainId,
-                          positionGroup.position.address,
-                        )
-                      }
-                      slots={{
-                        icon: CodeRoundedIcon,
-                      }}
-                    />
-                    <DeFiPositionOverviewButton
-                      tooltip={t(
-                        'portfolio.defiPositionCard.overview.tooltip.info',
-                      )}
-                      onClick={() =>
-                        handleInfoClick(positionGroup.position.earn)
-                      }
-                      slots={{
-                        icon: InfoOutlineRoundedIcon,
-                      }}
-                    />
-                  </StyledOverviewActions>
-                </StyledOverviewColumn>
+                    </StyledOverviewActions>
+                  </StyledOverviewColumn>
 
-                <StyledTablesColumn>
-                  {positionGroup.sections.map((section) => (
-                    <ColumnTable
-                      key={section.id}
-                      columns={section.columns}
-                      data={section.data}
-                      spacing={3}
-                      headerGap={1.25}
-                      dataRowGap={2}
-                      onRowClick={() =>
-                        handleExpandedPositionClick(positionGroup)
-                      }
-                    />
-                  ))}
-                </StyledTablesColumn>
-              </StyledSectionContent>
-            </Fragment>
-          ))}
+                  <StyledTablesColumn>
+                    {positionGroup.sections.map((section) => (
+                      <ColumnTable
+                        key={section.id}
+                        columns={section.columns}
+                        data={section.data}
+                        spacing={3}
+                        headerGap={1.25}
+                        dataRowGap={2}
+                        onRowClick={() =>
+                          handleExpandedPositionClick(positionGroup)
+                        }
+                      />
+                    ))}
+                  </StyledTablesColumn>
+                </StyledSectionContent>
+              </Fragment>
+            );
+          })}
         </StyledDetailsContainer>
       </StyledAccordionDetails>
     </StyledAccordion>
