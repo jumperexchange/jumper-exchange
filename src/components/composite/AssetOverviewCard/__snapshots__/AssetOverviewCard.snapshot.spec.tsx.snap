@@ -1217,7 +1217,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              0
+              $0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -1810,7 +1810,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              0
+              $0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2321,7 +2321,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              0
+              $0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
@@ -2464,7 +2464,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
             <span
               class="MuiTypography-root MuiTypography-titleMedium css-7anzin-MuiTypography-root"
             >
-              0
+              $0
             </span>
             <p
               class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
