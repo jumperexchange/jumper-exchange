@@ -52,21 +52,7 @@ const DefaultRenderer = <
 
   return (
     <Box sx={{ height: 400 }}>
-      <LineChart
-        {...args}
-        theme={{ ...theme, ...args.theme }}
-        // theme={{
-        //   areaTopColor: isLightTheme
-        //     ? `#F2D9F6`
-        //     : (theme.vars || theme).palette.accent2Alt,
-        //   areaBottomColor: isLightTheme
-        //     ? (theme.vars || theme).palette.white.main
-        //     : (theme.vars || theme).palette.bg.main,
-        //   pointColor: (theme.vars || theme).palette.accent1.main,
-        //   lineColor: (theme.vars || theme).palette.accent2.main,
-        //   ...args.theme,
-        // }}
-      />
+      <LineChart {...args} theme={{ ...theme, ...args.theme }} />
     </Box>
   );
 };
