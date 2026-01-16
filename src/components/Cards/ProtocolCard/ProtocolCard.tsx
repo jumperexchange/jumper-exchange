@@ -17,7 +17,6 @@ import { PROTOCOL_CARD_SIZES } from './constants';
 import Typography from '@mui/material/Typography';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from 'src/utils/capitalizeString';
@@ -141,7 +140,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
                 color: protocolImageContrastColor,
               }}
             >
-              {protocol?.name}
+              {protocol?.name ? capitalizeString(protocol.name) : ''}
             </ProtocolCardProtocolTitle>
           </ProtocolCardHeaderContentContainer>
         </ProtocolCardHeaderContainer>
