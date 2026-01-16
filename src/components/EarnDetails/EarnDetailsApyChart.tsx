@@ -1,7 +1,7 @@
 'use client';
 
 import { useEarnApyAnalytics } from 'src/hooks/earn/useEarnApyAnalytics';
-import { StackedAreaChart } from '../core/charts/StackedAreaChart';
+import { StackedAreaChart } from '../core/charts/StackedAreaChart/StackedAreaChart';
 import { useApyAnalyticsChartConfig } from './hooks';
 import type { AnalyticsRangeFieldEnum } from './types';
 
