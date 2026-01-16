@@ -4,6 +4,7 @@ import { ChartDataPoint, LineChart, LineChartProps } from './LineChart';
 import { LineChartSkeleton } from './LineChartSkeleton';
 import Box from '@mui/material/Box';
 import { useColorScheme, useTheme } from '@mui/material/styles';
+import { useBaseChartTheme } from '@/components/EarnDetails/hooks';
 
 const data = [
   { date: '2023-01-01', value: 97.92 },
@@ -47,24 +48,24 @@ const DefaultRenderer = <
 >(
   args: LineChartProps<V, T>,
 ) => {
-  const theme = useTheme();
-  const { mode } = useColorScheme();
-  const isLightTheme = mode === 'light';
+  const theme = useBaseChartTheme();
+
   return (
     <Box sx={{ height: 400 }}>
       <LineChart
         {...args}
-        theme={{
-          areaTopColor: isLightTheme
-            ? `#F2D9F6`
-            : (theme.vars || theme).palette.accent2Alt,
-          areaBottomColor: isLightTheme
-            ? (theme.vars || theme).palette.white.main
-            : (theme.vars || theme).palette.bg.main,
-          pointColor: (theme.vars || theme).palette.accent1.main,
-          lineColor: (theme.vars || theme).palette.accent2.main,
-          ...args.theme,
-        }}
+        theme={{ ...theme, ...args.theme }}
+        // theme={{
+        //   areaTopColor: isLightTheme
+        //     ? `#F2D9F6`
+        //     : (theme.vars || theme).palette.accent2Alt,
+        //   areaBottomColor: isLightTheme
+        //     ? (theme.vars || theme).palette.white.main
+        //     : (theme.vars || theme).palette.bg.main,
+        //   pointColor: (theme.vars || theme).palette.accent1.main,
+        //   lineColor: (theme.vars || theme).palette.accent2.main,
+        //   ...args.theme,
+        // }}
       />
     </Box>
   );
