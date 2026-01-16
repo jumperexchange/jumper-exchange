@@ -3,7 +3,6 @@
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInView } from 'motion/react';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
 import {
   EarnFilteringProvider,
@@ -19,6 +18,7 @@ import { EarnFilterTab } from '../types';
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -31,7 +31,10 @@ const EarnOpportunitiesAllInner = () => {
     showYourPositions,
   } = useEarnFiltering();
 
-  const [variant, setVariant] = useState<EarnCardVariant>('compact');
+  const [variant, setVariant] = useSettingsStore((state) => [
+    state.earnCardVariant,
+    state.setEarnCardVariant,
+  ]);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { amount: 0, initial: true });
