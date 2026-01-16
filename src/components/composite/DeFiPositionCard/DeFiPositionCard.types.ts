@@ -26,7 +26,7 @@ export interface TableSection<T> {
 }
 
 export type EnhancedDefiTokenWithPositionData = DefiToken &
-  Pick<DefiPosition, 'latest' | 'earn'>;
+  Pick<DefiPosition, 'latest' | 'earn' | 'protocol'>;
 
 export type SupplySection = TableSection<EnhancedDefiTokenWithPositionData>;
 export type BorrowSection = TableSection<EnhancedDefiTokenWithPositionData>;

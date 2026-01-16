@@ -78,6 +78,7 @@ export const createEnhancedToken = (
   ...token,
   latest: position.latest,
   earn: position.earn,
+  protocol: position.protocol,
 });
 
 export const renderEntityCell = ({
@@ -152,6 +153,8 @@ export const renderPositionActions = ({
         label={t('portfolio.defiPositionCard.actions.withdraw')}
         fullWidth={isMobile}
         earnOpportunitySlug={item.earn || ''}
+        protocolUrl={item.protocol.url}
+        protocolName={item.protocol.name}
         disabled={!item.earn}
       />
       <DepositFlowOnDemandButton
@@ -159,6 +162,8 @@ export const renderPositionActions = ({
         label={t('portfolio.defiPositionCard.actions.deposit')}
         fullWidth={isMobile}
         earnOpportunitySlug={item.earn || ''}
+        protocolUrl={item.protocol.url}
+        protocolName={item.protocol.name}
         disabled={!item.earn}
       />
     </StyledPositionActions>

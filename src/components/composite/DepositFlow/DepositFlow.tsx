@@ -11,6 +11,12 @@ import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug'
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
+import {
+  useDisabledEarnUIFeatures,
+  useIsEarnUIFeatureDisabled,
+} from '@/hooks/earn/useDisabledEarnUIFeatures';
+import { FeaturesAccessControlFeature } from '@/types/featuresAccessControl';
+import { DisabledEarnFeatureTooltip } from '@/components/EarnDetails/DisabledEarnFeatureTooltip';
 
 export const DepositFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -64,15 +70,32 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
   const { trackEarnDepositClickEvent } = useEarnTracking();
   const openModal = useDepositFlowStore((state) => state.openModal);
 
+  const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
+    useIsEarnUIFeatureDisabled(
+      FeaturesAccessControlFeature.Deposit,
+      earnOpportunity.slug,
+    );
+  const effectiveIsDisabled =
+    props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
+  const effectiveProps = { ...props, disabled: effectiveIsDisabled };
   const handleClick = () => {
     trackEarnDepositClickEvent(earnOpportunity.slug);
     openModal(earnOpportunity, refetchCallback);
   };
+  const tooltipContent = isFeatureDisabled ? (
+    <DisabledEarnFeatureTooltip
+      i18nKey="tooltips.depositDisabled"
+      protocolName={earnOpportunity.protocol.name}
+      protocolUrl={earnOpportunity.protocol.url}
+    />
+  ) : undefined;
+
   return (
     <DepositButton
       onClick={handleClick}
       label={t('buttons.depositButtonLabel')}
-      {...props}
+      tooltip={tooltipContent}
+      {...effectiveProps}
     />
   );
 };
@@ -80,8 +103,24 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
 export const DepositFlowOnDemandButton: FC<
   Omit<DepositFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
+    protocolUrl?: string;
+    protocolName?: string;
   }
-> = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
+> = ({
+  earnOpportunitySlug,
+  refetchCallback,
+  protocolUrl,
+  protocolName,
+  ...props
+}) => {
+  const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
+    useIsEarnUIFeatureDisabled(
+      FeaturesAccessControlFeature.Deposit,
+      earnOpportunitySlug,
+    );
+  const effectiveIsDisabled =
+    props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
+  const effectiveProps = { ...props, disabled: effectiveIsDisabled };
   const { t } = useTranslation();
   const { trackEarnDepositClickEvent } = useEarnTracking();
   const openModal = useDepositFlowStore((state) => state.openModal);
@@ -102,11 +141,19 @@ export const DepositFlowOnDemandButton: FC<
       refetchCallback,
     );
   };
+  const tooltipContent = isFeatureDisabled ? (
+    <DisabledEarnFeatureTooltip
+      i18nKey="tooltips.depositDisabled"
+      protocolUrl={protocolUrl}
+      protocolName={protocolName}
+    />
+  ) : undefined;
   return (
     <DepositButton
       onClick={handleClick}
       label={t('buttons.depositButtonLabel')}
-      {...props}
+      tooltip={tooltipContent}
+      {...effectiveProps}
     />
   );
 };

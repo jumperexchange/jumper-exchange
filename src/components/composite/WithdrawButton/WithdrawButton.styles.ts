@@ -54,6 +54,8 @@ export const WithdrawButtonPrimary = styled(ButtonTransparent)(({ theme }) => ({
     '&:disabled': {
       color: (theme.vars || theme).palette.buttonDisabledAction,
       backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+      pointerEvents: 'auto',
+      cursor: 'not-allowed',
     },
     color: (theme.vars || theme).palette.buttonAlphaDarkAction,
     backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,

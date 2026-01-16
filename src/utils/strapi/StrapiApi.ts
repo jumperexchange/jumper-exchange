@@ -15,7 +15,8 @@ interface GetStrapiBaseUrlProps {
     | 'perks'
     | 'merkl-rewards'
     | 'announcements'
-    | 'wallet-access-controls';
+    | 'wallet-access-controls'
+    | 'features-access-control';
 }
 
 type SortOrder = 'asc' | 'desc';
@@ -802,6 +803,20 @@ class WalletAccessControlStrapiApi extends StrapiApi {
   }
 }
 
+class FeaturesAccessControlStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'features-access-control' });
+  }
+
+  getAll(): this {
+    this.apiUrl.searchParams.set(
+      'populate[disabledEarnOpportunities][fields][0]',
+      'Slug',
+    );
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
@@ -815,4 +830,5 @@ export {
   MerklRewardsStrapiApi,
   AnnouncementStrapiApi,
   WalletAccessControlStrapiApi,
+  FeaturesAccessControlStrapiApi,
 };

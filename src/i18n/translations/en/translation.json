@@ -319,7 +319,9 @@
     "chains_other": "The chains you will earn from",
     "protocol": "The protocol you will earn from",
     "noPositionsToManage": "You do not have any positions to manage",
-    "capInDollar": "Available liquidity capacity of the market"
+    "capInDollar": "Available liquidity capacity of the market",
+    "depositDisabled": "Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
+    "withdrawDisabled": "Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
   },
   "labels": {
     "apy": "APY",
@@ -407,7 +409,8 @@
       "goToPortfolio": "Go to Portfolio"
     },
     "position": {
-      "label": "Your position"
+      "label": "Your position",
+      "disabled": "Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
     },
     "missingPosition": {
       "title": "Missing a position?",

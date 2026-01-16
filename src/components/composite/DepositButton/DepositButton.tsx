@@ -28,6 +28,7 @@ export const DepositButton: FC<DepositButtonProps> = ({
   displayMode = DepositButtonDisplayMode.IconAndLabel,
   size = 'medium',
   label,
+  tooltip,
   onClick,
   ...props
 }) => {
@@ -50,7 +51,7 @@ export const DepositButton: FC<DepositButtonProps> = ({
 
   return (
     <Tooltip
-      title={!showLabel ? label : undefined}
+      title={tooltip || (!showLabel ? label : undefined)}
       placement="top"
       enterTouchDelay={0}
       arrow

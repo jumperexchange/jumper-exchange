@@ -1,6 +1,7 @@
-import Box, { BoxProps } from '@mui/material/Box';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { ButtonProps } from 'src/components/Button';
+import type { ButtonProps } from 'src/components/Button';
 import { ButtonPrimary } from 'src/components/Button';
 
 interface DepositButtonIconWrapperProps extends BoxProps {
@@ -90,6 +91,8 @@ export const DepositButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
   '&:disabled': {
     backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
     color: (theme.vars || theme).palette.buttonDisabledAction,
+    pointerEvents: 'auto',
+    cursor: 'not-allowed',
   },
   variants: [
     {

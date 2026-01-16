@@ -129,6 +129,7 @@ interface Resources {
         updated: 'Updated {{time}} ago';
       };
       position: {
+        disabled: 'Actions are currently disabled for this opportunity. <link>Go to {{protocolName}}</link>';
         label: 'Your position';
       };
       relatedMarkets: {
@@ -628,6 +629,7 @@ interface Resources {
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       deposit: 'The token on which the market is defined and yield accrues on.';
+      depositDisabled: 'Deposit currently disabled for this opportunity';
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
@@ -635,6 +637,7 @@ interface Resources {
       protocol: 'The protocol you will earn from';
       rewardsApy: 'Expected yearly return rate of the rewards tokens invested.';
       tvl: 'Total value of crypto assets deposited in this market.';
+      withdrawDisabled: 'Withdraw currently disabled for this opportunity';
     };
     widget: {
       depositCard: {
