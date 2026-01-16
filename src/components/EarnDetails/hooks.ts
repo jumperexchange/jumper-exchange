@@ -71,8 +71,7 @@ export const useApyAnalyticsChartConfig = (
 
 export const useBaseChartTheme = (): LineChartProps['theme'] => {
   const theme = useTheme();
-  const { mode } = useColorScheme();
-  const isLightTheme = mode === 'light';
+  const isLightTheme = useIsLightTheme();
 
   return {
     areaTopColor: isLightTheme
@@ -88,8 +87,7 @@ export const useBaseChartTheme = (): LineChartProps['theme'] => {
 
 export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {
   const theme = useTheme();
-  const { mode } = useColorScheme();
-  const isLightTheme = mode === 'light';
+  const isLightTheme = useIsLightTheme();
 
   return {
     baseLineColor: (theme.vars || theme).palette.accent2.main,
@@ -106,4 +104,23 @@ export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {
       : (theme.vars || theme).palette.bg.main,
     pointColor: (theme.vars || theme).palette.accent1.main,
   };
+};
+
+/**
+ * Resolve the color scheme the app should used, base on active theme, system mode, etc.
+ * @returns 'light' | 'dark'
+ */
+const useResolvedColorScheme = (): 'light' | 'dark' => {
+  const { mode, systemMode } = useColorScheme();
+
+  if (mode === 'system') {
+    return systemMode ?? 'light';
+  }
+
+  return mode ?? 'light';
+};
+
+const useIsLightTheme = (): boolean => {
+  const resolvedColorScheme = useResolvedColorScheme();
+  return resolvedColorScheme === 'light';
 };

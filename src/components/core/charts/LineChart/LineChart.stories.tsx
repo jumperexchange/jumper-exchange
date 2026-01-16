@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
+import { useBaseChartTheme } from '@/components/EarnDetails/hooks';
+import Box from '@mui/material/Box';
 import { ChartDataPoint, LineChart, LineChartProps } from './LineChart';
 import { LineChartSkeleton } from './LineChartSkeleton';
-import Box from '@mui/material/Box';
-import { useColorScheme, useTheme } from '@mui/material/styles';
-import { useBaseChartTheme } from '@/components/EarnDetails/hooks';
 
 const data = [
   { date: '2023-01-01', value: 97.92 },
