@@ -129,7 +129,7 @@ export const StackedAreaChart = ({
 
   const valueFormatter = useCallback(
     (value: number) => {
-      if (!value || isNaN(value) || value === 0) {
+      if (isNaN(value)) {
         return '0';
       }
 
