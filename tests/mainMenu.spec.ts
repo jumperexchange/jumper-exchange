@@ -245,9 +245,9 @@ test.describe('Main Menu flows', () => {
 
   test(
     qase(54, 'Should be able to navigate to the Terms Of Business page'),
-    async ({ page, context }) => {
+    async ({ page }) => {
       await itemInNavigation(page, 'Terms Of Business');
-      await openNewTabAndVerifyUrl(context, values.termsOfBusinessURL);
+      await expect(page).toHaveURL(values.termsOfBusinessURL);
     },
   );
 
