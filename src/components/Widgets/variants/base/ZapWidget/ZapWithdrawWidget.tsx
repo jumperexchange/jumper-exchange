@@ -71,6 +71,16 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [projectData?.chainId, projectData?.chain]);
 
+  const toChain = useMemo(() => {
+    if (!projectData?.chainId) {
+      return undefined;
+    }
+    return {
+      chainId: projectData?.chainId,
+      chainKey: projectData?.chain ?? '',
+    };
+  }, [projectData?.chainId, projectData?.chain]);
+
   const enhancedCtx = useMemo(() => {
     return {
       ...ctx,
@@ -83,9 +93,10 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       formData: {
         sourceToken: fromToken,
         sourceChain: fromChain,
+        destinationChain: toChain,
       },
     };
-  }, [ctx, fromToken, fromChain]);
+  }, [ctx, fromToken, fromChain, toChain]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
