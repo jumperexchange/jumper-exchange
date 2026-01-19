@@ -4,7 +4,7 @@ export const siteName = 'Jumper.Exchange';
 
 export const pageMetadataFields = {
   default: {
-    title: 'Jumper Exchange | Smart App for the Universal Market',
+    title: 'Jumper Exchange | Your Smart Money App',
     description:
       'Move, deploy and manage your capital with Jumper. Fast swaps, capital deployment, and portfolio management in one smart app.',
   },
