@@ -3,14 +3,17 @@
 import Stack from '@mui/system/Stack';
 import { useInView } from 'motion/react';
 import type { FC } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
-import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
+import { useCallback, useEffect, useRef } from 'react';
+
+import { SectionCardContainer } from '@/components/Cards/SectionCard/SectionCard.style';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import Pagination from '@/components/core/Pagination/Pagination';
+import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
+
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import {
   EarnFilteringProvider,
@@ -22,8 +25,17 @@ import { EarnFilterTab } from '../types';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
-  const { data, isLoading, isAllDataLoading, isConnected, tab, changeTab } =
-    useEarnFiltering();
+  const {
+    data,
+    isLoading,
+    isAllDataLoading,
+    tab,
+    changeTab,
+    isConnected,
+    pagination,
+    page,
+    setPage,
+  } = useEarnFiltering();
 
   const [variant, setVariant] = useSettingsStore((state) => [
     state.earnCardVariant,
@@ -91,6 +103,9 @@ const EarnOpportunitiesAllInner = () => {
           )}
         </Stack>
       </SectionCardContainer>
+      {pagination.pageCount > 1 && (
+        <Pagination page={page} setPage={setPage} pagination={pagination} />
+      )}
       <DepositFlowModal />
       <WithdrawFlowModal />
     </>

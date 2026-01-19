@@ -12,6 +12,7 @@ import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { NullableFields } from 'src/types/internal';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { StrapiMetaPagination } from 'src/types/strapi';
 import type { Hex } from 'viem';
 import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
 import { EMPTY_FILTERING_PARAMS } from './constants';
@@ -28,6 +29,8 @@ import {
   sanitizeFilter,
   searchParamsParsers,
 } from './utils';
+
+const PAGE_SIZE = 18;
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -47,6 +50,9 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   isAllDataLoading: boolean;
   isConnected: boolean;
   tab: EarnFilterTab;
+  page: number;
+  setPage: (page: number) => void;
+  pagination: StrapiMetaPagination;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -72,6 +78,14 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   isAllDataLoading: false,
   isConnected: true,
   tab: EarnFilterTab.FOR_YOU,
+  page: 0,
+  setPage: () => {},
+  pagination: {
+    page: 0,
+    pageSize: PAGE_SIZE,
+    pageCount: 0,
+    total: 0,
+  },
 });
 
 export const EarnFilteringProvider = ({
@@ -128,6 +142,7 @@ export const EarnFilteringProvider = ({
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
+  const [page, setPage] = useState(0);
 
   const forYou = useEarnFilterOpportunities(
     {
@@ -141,7 +156,7 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  // FIXME: Can we pre-fetch all this data?
+  // TODO: Can we pre-fetch all this data?
   const all = useEarnFilterOpportunities(
     {
       filter: {
@@ -161,7 +176,7 @@ export const EarnFilteringProvider = ({
     filter: {},
   });
 
-  const { data, error, updatedAt } = useMemo(() => {
+  const { data, pagination, error, updatedAt } = useMemo(() => {
     const sourceData =
       tab === EarnFilterTab.FOR_YOU ? forYou.data?.data : all.data?.data;
     const forYouSlugsSet = new Set(
@@ -169,6 +184,19 @@ export const EarnFilteringProvider = ({
     );
 
     const data = enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
+
+    const total = data.length;
+    const pageCount = Math.ceil(total / PAGE_SIZE);
+    const pagination: StrapiMetaPagination = {
+      page,
+      pageSize: PAGE_SIZE,
+      pageCount,
+      total,
+    };
+
+    const startIndex = page * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    const paginatedData = data.slice(startIndex, endIndex);
 
     let updatedAt: Date | undefined;
     let error: unknown | undefined;
@@ -185,8 +213,8 @@ export const EarnFilteringProvider = ({
       }
     }
 
-    return { data, error, updatedAt };
-  }, [tab, forYou, all]);
+    return { data: paginatedData, pagination, error, updatedAt };
+  }, [tab, forYou, all, page]);
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -213,6 +241,7 @@ export const EarnFilteringProvider = ({
 
   const changeTab = useCallback(
     (tab: EarnFilterTab) => {
+      setPage(0);
       setSearchParamsState({ tab });
     },
     [setSearchParamsState],
@@ -220,6 +249,7 @@ export const EarnFilteringProvider = ({
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>) => {
+      setPage(0);
       const newFilterValue = { ...filter, ...newFilter };
       setFilter(removeNullValuesFromFilter(newFilterValue));
       setSearchParamsState(newFilterValue);
@@ -229,6 +259,7 @@ export const EarnFilteringProvider = ({
 
   const updateSortBy = useCallback(
     (newSortBy: SortByEnum) => {
+      setPage(0);
       setSortBy(newSortBy);
       setSearchParamsState({ sortBy: newSortBy });
     },
@@ -272,6 +303,9 @@ export const EarnFilteringProvider = ({
       error,
       isAllDataLoading: allNoFilter.isLoading,
       isConnected: !!address,
+      page,
+      setPage,
+      pagination,
       ...stats,
     };
   }, [
@@ -283,7 +317,8 @@ export const EarnFilteringProvider = ({
     tab,
     usedYourAddress,
     totalMarkets,
-    data,
+    pagination,
+    page,
     updatedAt,
     address,
     all.isLoading,
