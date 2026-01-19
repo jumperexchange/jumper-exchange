@@ -2,12 +2,12 @@
 import { ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
 import { createTheme } from '@lifi/widget';
-import { useThemeStore } from '@/stores/theme';
+import { useGetPartnerWidgetTheme } from '@/hooks/theme/useGetPartnerWidgetTheme';
 
 export const WalletManagementThemeProvider: React.FC<
   React.PropsWithChildren
 > = ({ children }) => {
-  const widgetTheme = useThemeStore((state) => state.widgetTheme);
+  const widgetTheme = useGetPartnerWidgetTheme();
 
   const theme = useMemo(
     () => createTheme(widgetTheme.config.theme),
