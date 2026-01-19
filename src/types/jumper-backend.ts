@@ -878,6 +878,16 @@ export interface EarnOpportunityWithLatestAnalytics {
   rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
+  interactionFlags: EarnInteractionFlags;
+}
+
+export interface EarnInteractionFlags {
+  canBorrow: boolean;
+  canDeposit: boolean;
+  canRepay: boolean;
+  canRewardClaim: boolean;
+  canRewardCompound: boolean;
+  canWithdraw: boolean;
 }
 
 export interface EarnOpportunityHistoryPoint {
@@ -938,6 +948,7 @@ export interface DefiPosition {
   address: string;
   chain: Chain;
   earn?: string;
+  earnInteractionFlags?: EarnInteractionFlags;
   latest?: EarnOpportunityHistoryItem;
   /** @format date-time */
   unlockAt?: string;
@@ -1004,6 +1015,7 @@ export interface EarnOpportunityWithScore {
   rewardsApy?: number;
   forYou: boolean;
   latest: EarnOpportunityHistoryItem;
+  interactionFlags: EarnInteractionFlags;
 }
 
 export interface EarnOpportunities {

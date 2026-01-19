@@ -1,49 +1,16 @@
-import { getFeaturesAccessControl } from '@/app/lib/getFeaturesAccessControl';
-import { FIVE_MINUTES_MS, THIRTY_MINUTES_MS } from '@/const/time';
-import type { FeaturesAccessControlFeature } from '@/types/featuresAccessControl';
-import { FeaturesAccessControlGranularity } from '@/types/featuresAccessControl';
-import { useQuery } from '@tanstack/react-query';
-
-export type DisabledEarnUIFeatures = Record<
-  FeaturesAccessControlFeature,
-  {
-    isGlobal: boolean;
-    disabledEarnOpportunities: string[];
-  }
->;
-
-export const useDisabledEarnUIFeatures = () => {
-  return useQuery({
-    queryKey: ['disabled-earn-features'],
-    queryFn: () => getFeaturesAccessControl(),
-    select: (data) => {
-      return data.data.reduce((acc, item) => {
-        acc[item.Feature] = {
-          isGlobal:
-            item.Granularity === FeaturesAccessControlGranularity.Global,
-          disabledEarnOpportunities: item.disabledEarnOpportunities.map(
-            (opportunity) => opportunity.Slug,
-          ),
-        };
-        return acc;
-      }, {} as DisabledEarnUIFeatures);
-    },
-    staleTime: FIVE_MINUTES_MS,
-    gcTime: THIRTY_MINUTES_MS,
-  });
-};
+import type { EarnInteractionFeature } from '@/types/earn';
+import type { EarnInteractionFlags } from '@/types/jumper-backend';
+import { EARN_INTERACTION_KEY_MAP } from '@/types/earn';
 
 export const useIsEarnUIFeatureDisabled = (
-  feature: FeaturesAccessControlFeature,
-  slug: string,
+  feature: EarnInteractionFeature,
+  interactionFlags?: EarnInteractionFlags,
 ) => {
-  const { data: disabledEarnFeatures, isLoading } = useDisabledEarnUIFeatures();
+  const settingKey = EARN_INTERACTION_KEY_MAP[feature];
+  const isDisabled = interactionFlags?.[settingKey] === false;
+
   return {
-    isLoading,
-    isDisabled:
-      !!disabledEarnFeatures?.[feature]?.isGlobal ||
-      !!disabledEarnFeatures?.[feature]?.disabledEarnOpportunities.includes(
-        slug,
-      ),
+    isLoading: false,
+    isDisabled,
   };
 };

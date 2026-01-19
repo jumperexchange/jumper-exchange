@@ -17,7 +17,7 @@ import type { Hex } from 'viem';
 import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import Typography from '@mui/material/Typography';
 import { ExternalLink } from '../Link/ExternalLink';
-import { FeaturesAccessControlFeature } from '@/types/featuresAccessControl';
+import { EarnInteractionFeature } from '@/types/earn';
 import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
 import { ConnectButton } from '../ConnectButton';
 import { EmptyComponent } from '../core/EmptyComponent/EmptyComponent';
@@ -38,15 +38,15 @@ export const EarnDetailsActions = ({
     isDisabled: isDepositFeatureDisabled,
     isLoading: isLoadingDepositFeatureDisabled,
   } = useIsEarnUIFeatureDisabled(
-    FeaturesAccessControlFeature.Deposit,
-    earnOpportunity.slug,
+    EarnInteractionFeature.Deposit,
+    earnOpportunity.interactionFlags,
   );
   const {
     isDisabled: isWithdrawFeatureDisabled,
     isLoading: isLoadingWithdrawFeatureDisabled,
   } = useIsEarnUIFeatureDisabled(
-    FeaturesAccessControlFeature.Withdraw,
-    earnOpportunity.slug,
+    EarnInteractionFeature.Withdraw,
+    earnOpportunity.interactionFlags,
   );
 
   const {

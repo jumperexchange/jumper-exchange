@@ -12,7 +12,8 @@ import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
-import { FeaturesAccessControlFeature } from '@/types/featuresAccessControl';
+import type { EarnInteractionFlags } from '@/types/jumper-backend';
+import { EarnInteractionFeature } from '@/types/earn';
 import { DisabledEarnFeatureTooltip } from '@/components/EarnDetails/DisabledEarnFeatureTooltip';
 
 export const WithdrawFlowModal = () => {
@@ -65,8 +66,8 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
 }) => {
   const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
     useIsEarnUIFeatureDisabled(
-      FeaturesAccessControlFeature.Withdraw,
-      earnOpportunity.slug,
+      EarnInteractionFeature.Withdraw,
+      earnOpportunity.interactionFlags,
     );
   const effectiveIsDisabled =
     props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
@@ -98,11 +99,13 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
 export const WithdrawFlowOnDemandButton: FC<
   Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
+    earnOpportunityInteractionFlags?: EarnInteractionFlags;
     protocolUrl?: string;
     protocolName?: string;
   }
 > = ({
   earnOpportunitySlug,
+  earnOpportunityInteractionFlags,
   refetchCallback,
   protocolUrl,
   protocolName,
@@ -110,8 +113,8 @@ export const WithdrawFlowOnDemandButton: FC<
 }) => {
   const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
     useIsEarnUIFeatureDisabled(
-      FeaturesAccessControlFeature.Withdraw,
-      earnOpportunitySlug,
+      EarnInteractionFeature.Withdraw,
+      earnOpportunityInteractionFlags,
     );
   const effectiveIsDisabled =
     props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
