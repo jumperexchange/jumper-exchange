@@ -67,6 +67,7 @@ const mockContextValue = () => {
     isLoading: false,
     error: null,
     isAllDataLoading: false,
+    isNotConnected: false,
     totalMarkets: 150,
     allChains: [
       { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },

@@ -3,6 +3,7 @@ import { useEarnFiltering } from '../EarnFilteringContext';
 import { EarnEmptyListYourPositions } from './EarnEmptyListYourPositions';
 import { EarnEmptyListAllMarkets } from './EarnEmptyListAllMarkets';
 import { AnimatePresence, motion } from 'motion/react';
+import { EarnEmptyListForYou } from './EarnEmptyListForYou';
 
 export const EarnEmptyList = () => {
   const { data, isLoading, showForYou, showYourPositions } = useEarnFiltering();
@@ -10,6 +11,7 @@ export const EarnEmptyList = () => {
   const isEmptyList = useMemo(() => {
     return !isLoading && (!data || data.length === 0);
   }, [isLoading, data]);
+
   return (
     <AnimatePresence mode="popLayout">
       {isEmptyList && showYourPositions && (
@@ -35,6 +37,18 @@ export const EarnEmptyList = () => {
           key="earn-empty-list-all-markets"
         >
           <EarnEmptyListAllMarkets />
+        </motion.div>
+      )}
+      {isEmptyList && showForYou && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          key="earn-empty-list-for-you"
+        >
+          <EarnEmptyListForYou />
         </motion.div>
       )}
     </AnimatePresence>

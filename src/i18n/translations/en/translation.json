@@ -417,6 +417,11 @@
       "description": "Check your portfolio tokens before contacting support."
     },
     "emptyList": {
+      "forYouNotConnected": {
+        "title": "No wallet connected",
+        "description": "Connect your wallet to view markets for you.",
+        "connectWallet": "Connect wallet"
+      },
       "yourPositions": {
         "title": "No positions",
         "description": "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.",
@@ -425,7 +430,7 @@
       "yourPositionsNotConnected": {
         "title": "No wallet connected",
         "description": "Connect your wallet to view your positions.",
-        "viewAllMarkets": "Connect wallet"
+        "connectWallet": "Connect wallet"
       },
       "noResults": {
         "title": "No results",
