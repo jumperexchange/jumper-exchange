@@ -25,7 +25,11 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   const [opportunity, relatedMarkets] = await Promise.all([
     getOpportunityBySlug(slug),
     getOpportunityRelatedMarket(slug),
-  ]);
+  ]).catch((error) => {
+    console.log('---error', error);
+    console.error(error);
+    return [{ error: true, data: null }];
+  });
 
   console.log('28. EarnPage opportunity', opportunity);
 
@@ -39,7 +43,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   }
 
   const relatedMarketsData =
-    relatedMarkets.data.filter(Boolean).slice(0, 3) ?? [];
+    relatedMarkets.data?.filter(Boolean).slice(0, 3) ?? [];
 
   console.log('29. EarnPage relatedMarkets', relatedMarketsData);
 
