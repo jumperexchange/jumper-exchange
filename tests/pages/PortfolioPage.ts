@@ -14,6 +14,7 @@ export class PortfolioPage {
   private readonly assetSelectFilter: Locator;
   private readonly valueSelectFilter: Locator;
   private readonly sortSelectFilter: Locator;
+  private readonly clearFiltersButton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
 
@@ -38,13 +39,16 @@ export class PortfolioPage {
     this.sortSelectFilter = this.page.getByTestId(
       'portfolio-filter-sort-select',
     );
-
+    this.clearFiltersButton = this.page.getByTestId(
+      'portfolio-filter-clear-filters-button',
+    );
     this.tokensFilterLocators = [
       this.walletSelectFilter,
       this.chainSelectFilter,
       this.assetSelectFilter,
       this.valueSelectFilter,
       this.sortSelectFilter,
+      this.clearFiltersButton,
     ];
 
     this.defiProtocolsFilterLocators = [
@@ -52,6 +56,7 @@ export class PortfolioPage {
       this.chainSelectFilter,
       this.assetSelectFilter,
       this.valueSelectFilter,
+      this.clearFiltersButton,
     ];
   }
   async clickGetStartedButton(): Promise<void> {
@@ -113,5 +118,34 @@ export class PortfolioPage {
 
   async verifyAllFiltersAreVisible(): Promise<void> {
     await this.verifyFiltersVisible(this.tokensFilterLocators);
+  }
+
+  async getValueSelectFilterText(): Promise<string | null> {
+    const paragraphs = this.valueSelectFilter.locator('p');
+    const count = await paragraphs.count();
+    for (let i = 0; i < count; i++) {
+      const text = await paragraphs.nth(i).textContent();
+      if (text && /\d+\s*-\s*\d+/.test(text.trim())) {
+        return text.trim();
+      }
+    }
+    return null;
+  }
+
+  async clickClearFiltersButton(): Promise<void> {
+    await this.clearFiltersButton.click();
+  }
+
+  async verifyValueSelectFilterIsVisible(): Promise<void> {
+    await expect(this.valueSelectFilter).toBeVisible();
+  }
+
+  async verifyValueSelectFilterIsCleared(): Promise<void> {
+    const valueText = await this.getValueSelectFilterText();
+    if (valueText !== null) {
+      throw new Error(
+        `Value filter still contains value range after clearing: ${valueText}`,
+      );
+    }
   }
 }
