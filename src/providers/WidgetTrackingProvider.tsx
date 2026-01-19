@@ -439,6 +439,10 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       if (!trackingActionKeys.formFieldChanged || !data) {
         return;
       }
+      // Currently we only track the toAddress field
+      if (data.fieldName !== 'toAddress') {
+        return;
+      }
       trackEvent({
         category: TrackingCategory.WidgetEvent,
         action: trackingActionKeys.formFieldChanged,
