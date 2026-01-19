@@ -98,6 +98,11 @@ interface Resources {
           title: 'No positions';
           viewAllMarkets: 'View all markets';
         };
+        yourPositionsNotConnected: {
+          description: 'Connect your wallet to view your positions.';
+          title: 'No wallet connected';
+          viewAllMarkets: 'Connect wallet';
+        };
       };
       filter: {
         apy: 'APY';

@@ -5,6 +5,7 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { defaultSettings } from '@/config/config';
 import type { SettingsProps, SettingsState } from '@/types/settings';
+import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
 
 export const createSettingsStore = (props: Partial<SettingsProps>) =>
   createWithEqualityFn(
@@ -59,6 +60,13 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
         setDefaultSettings: () => {
           set({
             disabledFeatureCards: defaultSettings.disabledFeatureCards || [],
+          });
+        },
+
+        // Earn Card Variant
+        setEarnCardVariant: (variant: EarnCardVariant) => {
+          set({
+            earnCardVariant: variant,
           });
         },
       }),

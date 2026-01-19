@@ -419,6 +419,11 @@
         "description": "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.",
         "viewAllMarkets": "View all markets"
       },
+      "yourPositionsNotConnected": {
+        "title": "No wallet connected",
+        "description": "Connect your wallet to view your positions.",
+        "viewAllMarkets": "Connect wallet"
+      },
       "noResults": {
         "title": "No results",
         "description": "Unfortunately there are no results for your search, try clearing your filters.",
