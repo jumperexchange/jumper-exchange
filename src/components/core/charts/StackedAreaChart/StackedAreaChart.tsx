@@ -18,6 +18,7 @@ import {
   calculateTooltipPosition,
   calculateEvenXAxisTicks,
   calculateEvenYAxisTicks,
+  calculateVisibleYRange,
 } from '../LineChart/utils';
 import { useCallback, useId, useMemo, useRef, useState } from 'react';
 import type { HTMLAttributes } from 'react';
@@ -71,27 +72,12 @@ export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const calculateStackedVisibleYRange = (data: StackedChartDataPoint[]) => {
-  if (data.length === 0) {
-    return {
-      minValue: 0,
-      maxValue: 1,
-      minValueWithOffset: 0,
-      maxValueWithOffset: 1,
-    };
-  }
+  const points = data.map((d) => ({
+    date: d.date,
+    value: d.base + d.reward,
+  }));
 
-  const totals = data.map((d) => d.base + d.reward);
-  const dataMaxValue = Math.max(...totals);
-
-  const minValue = 0;
-  const maxValue = dataMaxValue > 0 ? dataMaxValue * 1.2 : 1;
-
-  return {
-    minValue,
-    maxValue,
-    minValueWithOffset: minValue,
-    maxValueWithOffset: maxValue,
-  };
+  return calculateVisibleYRange(points);
 };
 
 export const StackedAreaChart = ({
