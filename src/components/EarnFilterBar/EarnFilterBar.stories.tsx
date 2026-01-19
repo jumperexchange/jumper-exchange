@@ -54,6 +54,14 @@ const mockContextValue = () => {
     isAllDataLoading: false,
     isConnected: true,
     totalMarkets: 150,
+    page: 0,
+    setPage: () => {},
+    pagination: {
+      page: 0,
+      pageSize: 18,
+      pageCount: 9,
+      total: 150,
+    },
     allChains: [
       { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
       { chainId: 137, chainKey: 'polygon', name: 'Polygon' },
