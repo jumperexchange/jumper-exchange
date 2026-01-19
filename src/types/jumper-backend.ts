@@ -845,6 +845,15 @@ export interface Protocol {
   url?: string;
 }
 
+export interface EarnInteractionFlags {
+  canBorrow: boolean;
+  canDeposit: boolean;
+  canRepay: boolean;
+  canRewardClaim: boolean;
+  canRewardCompound: boolean;
+  canWithdraw: boolean;
+}
+
 export interface APYItem {
   base: number;
   reward: number;
@@ -877,17 +886,24 @@ export interface EarnOpportunityWithLatestAnalytics {
   capInDollar?: string;
   rewardsApy?: number;
   forYou: boolean;
-  latest: EarnOpportunityHistoryItem;
   interactionFlags: EarnInteractionFlags;
+  latest: EarnOpportunityHistoryItem;
 }
 
-export interface EarnInteractionFlags {
-  canBorrow: boolean;
-  canDeposit: boolean;
-  canRepay: boolean;
-  canRewardClaim: boolean;
-  canRewardCompound: boolean;
-  canWithdraw: boolean;
+export interface ApyHistoryPoint {
+  /** The timestamp of the data point */
+  t: number;
+  /** The base APY */
+  base: number;
+  /** The reward APY */
+  reward: number;
+  /** The total APY (base + reward) */
+  total: number;
+}
+
+export interface ApyAnalyticsHistory {
+  /** The APY data points with base, reward, and total */
+  points: ApyHistoryPoint[];
 }
 
 export interface EarnOpportunityHistoryPoint {
@@ -1014,8 +1030,8 @@ export interface EarnOpportunityWithScore {
   capInDollar?: string;
   rewardsApy?: number;
   forYou: boolean;
-  latest: EarnOpportunityHistoryItem;
   interactionFlags: EarnInteractionFlags;
+  latest: EarnOpportunityHistoryItem;
 }
 
 export interface EarnOpportunities {
@@ -1719,6 +1735,33 @@ export class JumperBackend<
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/items/${slug}/related`,
         method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetApyAnalyticsV1
+     * @summary Get APY analytics breakdown for an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/analytics/apy
+     */
+    earnControllerGetApyAnalyticsV1: (
+      slug: string,
+      query: {
+        /**
+         * The range field to filter for
+         * @example "day"
+         */
+        range: 'day' | 'week' | 'month' | 'year';
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ApyAnalyticsHistory, any>({
+        path: `/v1/earn/items/${slug}/analytics/apy`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
