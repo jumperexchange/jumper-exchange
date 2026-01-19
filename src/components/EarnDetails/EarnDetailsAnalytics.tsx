@@ -13,6 +13,16 @@ import { EarnDetailsTvlChart } from './EarnDetailsTvlChart';
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 
+const INSTANT_APY_ALLOWED_RANGES: AnalyticsRangeFieldEnum[] = [
+  AnalyticsRangeFieldEnum.WEEK,
+];
+
+const VALUE_LABELS: Record<AnalyticsValueFieldEnum, string> = {
+  [AnalyticsValueFieldEnum.APY]: 'APY',
+  [AnalyticsValueFieldEnum.INSTANT_APY]: 'Instant APY',
+  [AnalyticsValueFieldEnum.TVL]: 'TVL',
+};
+
 interface EarnDetailsAnalyticsProps {
   slug: string;
 }
@@ -27,7 +37,20 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
     AnalyticsRangeFieldEnum.WEEK,
   );
 
-  const isApy = value === AnalyticsValueFieldEnum.APY;
+  const isInstantApy = value === AnalyticsValueFieldEnum.INSTANT_APY;
+  const isApy = value === AnalyticsValueFieldEnum.APY || isInstantApy;
+
+  const handleValueChange = (newValue: AnalyticsValueFieldEnum) => {
+    setValue(newValue);
+    if (newValue === AnalyticsValueFieldEnum.INSTANT_APY) {
+      if (!INSTANT_APY_ALLOWED_RANGES.includes(range)) {
+        setRange(AnalyticsRangeFieldEnum.WEEK);
+      }
+    }
+  };
+
+  const isRangeDisabled = (rangeItem: AnalyticsRangeFieldEnum) =>
+    isInstantApy && !INSTANT_APY_ALLOWED_RANGES.includes(rangeItem);
 
   return (
     <EarnDetailsAnalyticsContainer>
@@ -37,6 +60,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
             <EarnDetailsAnalyticsButton
               key={rangeItem}
               isActive={rangeItem === range}
+              isDisabled={isRangeDisabled(rangeItem)}
               onClick={() => setRange(rangeItem as AnalyticsRangeFieldEnum)}
               size="small"
               data-testid={`analytics-range-${rangeItem}`}
@@ -50,18 +74,22 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
             <EarnDetailsAnalyticsButton
               key={valueItem}
               isActive={valueItem === value}
-              onClick={() => setValue(valueItem as AnalyticsValueFieldEnum)}
+              onClick={() => handleValueChange(valueItem)}
               size="small"
               data-testid={`analytics-value-${valueItem}`}
             >
-              {valueItem.toUpperCase()}
+              {VALUE_LABELS[valueItem]}
             </EarnDetailsAnalyticsButton>
           ))}
         </EarnDetailsAnalyticsButtonsContainer>
       </EarnDetailsAnalyticsHeaderContainer>
       <EarnDetailsAnalyticsLineChartContainer>
         {isApy ? (
-          <EarnDetailsApyChart slug={slug} range={range} />
+          <EarnDetailsApyChart
+            slug={slug}
+            range={range}
+            instant={isInstantApy}
+          />
         ) : (
           <EarnDetailsTvlChart slug={slug} range={range} />
         )}

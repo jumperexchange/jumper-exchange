@@ -8,13 +8,19 @@ import type { AnalyticsRangeFieldEnum } from './types';
 interface EarnDetailsApyChartProps {
   slug: string;
   range: AnalyticsRangeFieldEnum;
+  instant?: boolean;
 }
 
 export const EarnDetailsApyChart: React.FC<EarnDetailsApyChartProps> = ({
   slug,
   range,
+  instant,
 }) => {
-  const { isLoading, data: rawData } = useEarnApyAnalytics({ slug, range });
+  const { isLoading, data: rawData } = useEarnApyAnalytics({
+    slug,
+    range,
+    instant,
+  });
   const config = useApyAnalyticsChartConfig(rawData, range);
 
   return (

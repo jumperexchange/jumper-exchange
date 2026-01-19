@@ -8,6 +8,7 @@ import { FIVE_MINUTES_MS } from 'src/const/time';
 export interface UseEarnApyAnalyticsProps {
   slug: string;
   range: ApyAnalyticsRangeField;
+  instant?: boolean;
 }
 
 export type UseEarnApyAnalyticsResult = UseQueryResult<
@@ -18,11 +19,12 @@ export type UseEarnApyAnalyticsResult = UseQueryResult<
 export const useEarnApyAnalytics = ({
   slug,
   range,
+  instant,
 }: UseEarnApyAnalyticsProps): UseEarnApyAnalyticsResult => {
   return useQuery({
-    queryKey: ['earn-apy-analytics', slug, range],
+    queryKey: ['earn-apy-analytics', slug, range, instant],
     queryFn: async () => {
-      const result = await getOpportunityApyAnalytics(slug, { range });
+      const result = await getOpportunityApyAnalytics(slug, { range, instant });
       if (!result.ok) {
         throw result.error;
       }
