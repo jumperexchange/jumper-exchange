@@ -193,17 +193,26 @@ export const createThemeStore = (props: ThemeProps) =>
         merge: (persistedState, currentState) => {
           const persisted = (persistedState || {}) as PersistedThemeState;
 
-          const mergedConfigThemeStates = {
-            ...(persisted.configThemeStates ?? {}),
-            ...currentState.configThemeStates,
-          };
+          const currentPartnerName = currentState.configTheme?.partnerName;
+          const persistedPartnerName = persisted.configTheme?.partnerName;
+          const partnerChanged =
+            !!currentPartnerName &&
+            !!persistedPartnerName &&
+            currentPartnerName !== persistedPartnerName;
+
+          const baseConfigThemeStates = partnerChanged
+            ? {}
+            : {
+                ...(persisted.configThemeStates ?? {}),
+                ...currentState.configThemeStates,
+              };
 
           return {
             ...persisted,
             ...currentState,
             configThemeStates: initializeConfigThemeStates(
               currentState.configTheme,
-              mergedConfigThemeStates,
+              baseConfigThemeStates,
             ),
           };
         },
