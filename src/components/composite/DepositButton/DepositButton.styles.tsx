@@ -91,8 +91,6 @@ export const DepositButtonPrimary = styled(ButtonPrimary)(({ theme }) => ({
   '&:disabled': {
     backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
     color: (theme.vars || theme).palette.buttonDisabledAction,
-    pointerEvents: 'auto',
-    cursor: 'not-allowed',
   },
   variants: [
     {
