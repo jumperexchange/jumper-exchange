@@ -1,14 +1,16 @@
-import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
+import { useWalletMenu } from '@lifi/wallet-management';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+
+import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
+import { AppPaths } from '@/const/urls';
+
 import { useEarnFiltering } from '../EarnFilteringContext';
 import { EarnFilterTab } from '../types';
-import { AppPaths } from '@/const/urls';
-import { useRouter } from 'next/navigation';
-import { useWalletMenu } from '@lifi/wallet-management';
 
 export const EarnEmptyListYourPositions = () => {
   const { t } = useTranslation();
-  const { changeTab, isNotConnected } = useEarnFiltering();
+  const { changeTab, isConnected } = useEarnFiltering();
   const router = useRouter();
   const { openWalletMenu } = useWalletMenu();
 
@@ -22,7 +24,7 @@ export const EarnEmptyListYourPositions = () => {
     router.push(AppPaths.Portfolio);
   };
 
-  if (isNotConnected) {
+  if (!isConnected) {
     return (
       <PortfolioEmptyList
         title={t('earn.emptyList.yourPositionsNotConnected.title')}

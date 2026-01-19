@@ -1,18 +1,20 @@
-import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
-import { useTranslation } from 'react-i18next';
-import { useEarnFiltering } from '../EarnFilteringContext';
 import { useWalletMenu } from '@lifi/wallet-management';
+import { useTranslation } from 'react-i18next';
+
+import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
+
+import { useEarnFiltering } from '../EarnFilteringContext';
 
 export const EarnEmptyListForYou = () => {
   const { t } = useTranslation();
-  const { isNotConnected } = useEarnFiltering();
+  const { isConnected } = useEarnFiltering();
   const { openWalletMenu } = useWalletMenu();
 
   const handleConnectWallet = () => {
     openWalletMenu();
   };
 
-  if (isNotConnected) {
+  if (!isConnected) {
     return (
       <PortfolioEmptyList
         title={t('earn.emptyList.forYouNotConnected.title')}

@@ -10,15 +10,10 @@ import {
 } from 'react';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import type { NullableFields } from 'src/types/internal';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type { Hex } from 'viem';
-import {
-  enrichDataWithFlag,
-  extractFilteringParams,
-  removeNullValuesFromFilter,
-  sanitizeFilter,
-  searchParamsParsers,
-} from './utils';
+import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
 import { EMPTY_FILTERING_PARAMS } from './constants';
 import type {
   EarnFilteringParams,
@@ -26,8 +21,13 @@ import type {
   SortByEnum,
 } from './types';
 import { EarnFilterTab, SortByOptions } from './types';
-import type { NullableFields } from 'src/types/internal';
-import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
+import {
+  enrichDataWithFlag,
+  extractFilteringParams,
+  removeNullValuesFromFilter,
+  sanitizeFilter,
+  searchParamsParsers,
+} from './utils';
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -37,17 +37,16 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
     filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
   ) => void;
   clearFilters: () => void;
-  showForYou: boolean;
-  showYourPositions: boolean;
   usedYourAddress: boolean;
   changeTab: (tab: EarnFilterTab) => void;
   totalMarkets: number;
   data: EarnOpportunityWithLatestAnalytics[];
   updatedAt: Date | undefined;
   isLoading: boolean;
-  error: unknown | null;
+  error: unknown | undefined;
   isAllDataLoading: boolean;
-  isNotConnected: boolean;
+  isConnected: boolean;
+  tab: EarnFilterTab;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -56,8 +55,6 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   filter: {},
   updateFilter: () => {},
   clearFilters: () => {},
-  showForYou: false,
-  showYourPositions: false,
   usedYourAddress: false,
   changeTab: () => {},
   totalMarkets: 0,
@@ -71,9 +68,10 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   data: [],
   updatedAt: undefined,
   isLoading: false,
-  error: null,
+  error: undefined,
   isAllDataLoading: false,
-  isNotConnected: false,
+  isConnected: true,
+  tab: EarnFilterTab.FOR_YOU,
 });
 
 export const EarnFilteringProvider = ({
@@ -93,9 +91,10 @@ export const EarnFilteringProvider = ({
   const usedYourAddress = address !== undefined;
 
   const {
-    forYou: initialForYou,
+    forYou: forYouParam,
+    withPositions: withPositionsParam,
     sortBy: initialSortBy,
-    withPositions: initialWithPositions,
+    tab,
     ...rest
   } = searchParamsState;
 
@@ -103,13 +102,32 @@ export const EarnFilteringProvider = ({
     return removeNullValuesFromFilter(rest);
   }, [rest]);
 
+  // Backwards compatibility for existing bookmarks
+  const initialTab = useMemo(() => {
+    if (withPositionsParam) {
+      return EarnFilterTab.YOUR_POSITIONS;
+    }
+    if (forYouParam) {
+      return EarnFilterTab.FOR_YOU;
+    } else if (forYouParam === false) {
+      return EarnFilterTab.ALL;
+    }
+    return EarnFilterTab.FOR_YOU;
+  }, [forYouParam, withPositionsParam]);
+
+  // Replace deprecated query params
+  useEffect(() => {
+    setSearchParamsState({
+      forYou: null,
+      withPositions: null,
+      tab: initialTab,
+    });
+  }, [initialTab]);
+
   // TODO: introduce the loading state?
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
-  const [showForYou, setShowForYou] = useState(initialForYou);
-  const [showYourPositions, setShowYourPositions] =
-    useState(initialWithPositions);
 
   const forYou = useEarnFilterOpportunities(
     {
@@ -123,16 +141,19 @@ export const EarnFilteringProvider = ({
     },
   );
 
+  // FIXME: Can we pre-fetch all this data?
   const all = useEarnFilterOpportunities(
     {
       filter: {
         ...filter,
-        ...(showYourPositions ? { hasPositions: true, address } : {}),
+        ...(tab === EarnFilterTab.YOUR_POSITIONS
+          ? { hasPositions: true, address }
+          : {}),
         sortBy: sortBy,
       },
     },
     {
-      enabled: showYourPositions ? !!address : true,
+      enabled: tab === EarnFilterTab.YOUR_POSITIONS ? !!address : true,
     },
   );
 
@@ -140,7 +161,32 @@ export const EarnFilteringProvider = ({
     filter: {},
   });
 
-  const forYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
+  const { data, error, updatedAt } = useMemo(() => {
+    const sourceData =
+      tab === EarnFilterTab.FOR_YOU ? forYou.data?.data : all.data?.data;
+    const forYouSlugsSet = new Set(
+      (forYou.data?.data ?? []).map((item) => item.slug),
+    );
+
+    const data = enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
+
+    let updatedAt: Date | undefined;
+    let error: unknown | undefined;
+
+    switch (tab) {
+      case EarnFilterTab.ALL:
+      case EarnFilterTab.YOUR_POSITIONS: {
+        updatedAt = all.data?.meta?.updatedAt;
+        error = all.error;
+      }
+      case EarnFilterTab.FOR_YOU: {
+        updatedAt = forYou.data?.meta?.updatedAt;
+        error = forYou.error;
+      }
+    }
+
+    return { data, error, updatedAt };
+  }, [tab, forYou, all]);
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -167,37 +213,9 @@ export const EarnFilteringProvider = ({
 
   const changeTab = useCallback(
     (tab: EarnFilterTab) => {
-      let _newShowForYou;
-      let _newShowYourPositions;
-      switch (tab) {
-        case EarnFilterTab.FOR_YOU: {
-          _newShowForYou = true;
-          _newShowYourPositions = false;
-          break;
-        }
-        case EarnFilterTab.YOUR_POSITIONS: {
-          _newShowForYou = false;
-          _newShowYourPositions = true;
-          break;
-        }
-        case EarnFilterTab.ALL: {
-          _newShowForYou = false;
-          _newShowYourPositions = false;
-          break;
-        }
-        default: {
-          throw new Error(`Invalid tab: ${tab}`);
-        }
-      }
-
-      setShowForYou(_newShowForYou);
-      setShowYourPositions(_newShowYourPositions);
-      setSearchParamsState({
-        forYou: _newShowForYou,
-        withPositions: _newShowYourPositions,
-      });
+      setSearchParamsState({ tab });
     },
-    [setShowForYou, setShowYourPositions, setSearchParamsState],
+    [setSearchParamsState],
   );
 
   const updateFilter = useCallback(
@@ -232,36 +250,28 @@ export const EarnFilteringProvider = ({
     });
   }, [updateFilter]);
 
-  const data = useMemo(() => {
-    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
-    const forYouSlugsSet = new Set(
-      (forYou.data?.data ?? []).map((item) => item.slug),
-    );
-
-    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-  }, [showForYou, forYou.data, all.data]);
-
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
     const isLoading =
-      !hasData && (showForYou ? forYou.isLoading : all.isLoading);
+      !hasData &&
+      (tab === EarnFilterTab.FOR_YOU ? forYou.isLoading : all.isLoading);
+
     return {
       sortBy,
       setSortBy: updateSortBy,
       filter,
       updateFilter,
       clearFilters,
-      showForYou,
-      showYourPositions,
+      tab,
       usedYourAddress,
       changeTab,
       totalMarkets,
       data,
-      updatedAt: showForYou ? forYouUpdatedAt : undefined,
+      updatedAt,
       isLoading,
-      error: (showForYou ? forYou.error : all.error) ?? null,
+      error,
       isAllDataLoading: allNoFilter.isLoading,
-      isNotConnected: !address,
+      isConnected: !!address,
       ...stats,
     };
   }, [
@@ -270,12 +280,11 @@ export const EarnFilteringProvider = ({
     updateFilter,
     updateSortBy,
     clearFilters,
-    showForYou,
-    showYourPositions,
+    tab,
     usedYourAddress,
     totalMarkets,
     data,
-    forYouUpdatedAt,
+    updatedAt,
     address,
     all.isLoading,
     all.error,

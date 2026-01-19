@@ -1,26 +1,37 @@
-import { map, uniqBy, uniq, sortBy, fromPairs, some } from 'lodash';
+import { fromPairs, map, some, sortBy, uniq, uniqBy } from 'lodash';
+import type { Nullable } from 'nuqs';
+import {
+  parseAsArrayOf,
+  parseAsBoolean,
+  parseAsFloat,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringEnum,
+} from 'nuqs';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
 } from './types';
-import { OrderOptions, RewardsAPYOptions, SortByOptions } from './types';
-import type { Nullable } from 'nuqs';
 import {
-  parseAsStringEnum,
-  parseAsBoolean,
-  parseAsArrayOf,
-  parseAsInteger,
-  parseAsString,
-  parseAsFloat,
-} from 'nuqs';
+  EarnFilterTab,
+  OrderOptions,
+  RewardsAPYOptions,
+  SortByOptions,
+} from './types';
 
 export const searchParamsParsers = {
   sortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.APY,
   ),
-  forYou: parseAsBoolean.withDefault(true),
-  withPositions: parseAsBoolean.withDefault(false),
+  tab: parseAsStringEnum(Object.values(EarnFilterTab)).withDefault(
+    EarnFilterTab.FOR_YOU,
+  ),
+  // FIXME: Check how to properly depreacate this
+  // @deprecated
+  forYou: parseAsBoolean,
+  // @deprecated
+  withPositions: parseAsBoolean,
   order: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,
   ),

@@ -1,36 +1,29 @@
 'use client';
 
+import Stack from '@mui/system/Stack';
+import { useInView } from 'motion/react';
 import type { FC } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useInView } from 'motion/react';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
 import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
+import { HeaderHeight } from '@/const/headerHeight';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import {
   EarnFilteringProvider,
   useEarnFiltering,
 } from '../EarnFilteringContext';
-import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
-import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
-import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
-import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
-import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
-import { HeaderHeight } from '@/const/headerHeight';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
-  const {
-    data,
-    isLoading,
-    isAllDataLoading,
-    showForYou,
-    changeTab,
-    showYourPositions,
-    isNotConnected,
-  } = useEarnFiltering();
+  const { data, isLoading, isAllDataLoading, isConnected, tab, changeTab } =
+    useEarnFiltering();
 
   const [variant, setVariant] = useSettingsStore((state) => [
     state.earnCardVariant,
@@ -89,11 +82,11 @@ const EarnOpportunitiesAllInner = () => {
           <EarnOpportunitiesCards
             items={data}
             isLoading={isLoading}
-            showPlaceholderCard={showYourPositions}
+            showPlaceholderCard={tab === EarnFilterTab.YOUR_POSITIONS}
             variant={variant}
           />
           <EarnEmptyList />
-          {showForYou && !isNotConnected && !!data.length && (
+          {tab == EarnFilterTab.FOR_YOU && isConnected && !!data.length && (
             <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
           )}
         </Stack>

@@ -1607,11 +1607,11 @@ export class JumperBackend<
      * No description
      *
      * @tags Earn, Public
-     * @name EarnControllerFilterV1
-     * @summary Filter earn opportunities
-     * @request GET:/v1/earn/filter
+     * @name EarnControllerAllV1
+     * @summary Get all earn opportunities
+     * @request GET:/v1/earn/all
      */
-    earnControllerFilterV1: (
+    earnControllerAllV1: (
       query?: {
         /**
          * Sort by field.
@@ -1697,7 +1697,7 @@ export class JumperBackend<
       params: RequestParams = {},
     ) =>
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
-        path: `/v1/earn/filter`,
+        path: `/v1/earn/all`,
         method: 'GET',
         query: query,
         format: 'json',
