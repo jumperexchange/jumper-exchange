@@ -63,6 +63,9 @@ export interface PortfolioStateContextValue {
   isLoading: boolean;
   isLoadingTokens: boolean;
   isLoadingPositions: boolean;
+  isLoadingPrices: boolean;
+  hasFreshPrices: boolean;
+  pricesUpdatedAt: number | null;
   hasError: boolean;
   refetchAll: () => void;
 }
