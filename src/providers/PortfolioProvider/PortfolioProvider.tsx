@@ -34,7 +34,8 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
   const { chains } = useChains();
   const tokensData = useTokensData();
   const positionsData = usePositionsData();
-  const { getTokenPrice } = usePricesData();
+  const pricesData = usePricesData();
+  const { getTokenPrice } = pricesData;
 
   const processPositionsData = useCallback(
     (rawData: ReturnType<typeof usePositionsData>) => {
@@ -179,12 +180,16 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
           processedMainTokens.isLoading || processedMainPositions.isLoading,
         isLoadingTokens: processedMainTokens.isLoading,
         isLoadingPositions: processedMainPositions.isLoading,
+        isLoadingPrices: pricesData.isLoading,
+        hasFreshPrices: pricesData.isSuccess,
+        pricesUpdatedAt: pricesData.updatedAt,
         hasError: Boolean(
           processedMainTokens.error || processedMainPositions.error,
         ),
         refetchAll: () => {
           processedMainTokens.refetch();
           processedMainPositions.refetch();
+          pricesData.refetch();
         },
       },
       processors: {
@@ -196,6 +201,7 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       processedSummary,
       processedMainTokens,
       processedMainPositions,
+      pricesData,
       processPositionsData,
       processTokensData,
     ],
