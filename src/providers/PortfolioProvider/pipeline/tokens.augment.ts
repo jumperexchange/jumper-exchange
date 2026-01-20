@@ -2,7 +2,7 @@ import { find, map } from 'lodash';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import type { ExtendedChain } from '@lifi/sdk';
 import type { LiFiCommonToken } from '../datasources/tokens.datasource';
-import type { AugmentedToken } from '../types/tokens.types';
+import type { EnrichedToken } from '../types/tokens.types';
 
 /**
  * Augment a single token with chain info and computed USD value.
@@ -10,7 +10,7 @@ import type { AugmentedToken } from '../types/tokens.types';
 export const augmentToken = (
   token: LiFiCommonToken,
   chains: ExtendedChain[],
-): AugmentedToken => {
+): EnrichedToken => {
   const chain = find(chains, (c) => c.id === token.chainId);
 
   return {
@@ -32,6 +32,6 @@ export const augmentToken = (
 export const augmentTokens = (
   tokens: LiFiCommonToken[],
   chains: ExtendedChain[],
-): AugmentedToken[] => {
+): EnrichedToken[] => {
   return map(tokens, (token) => augmentToken(token, chains));
 };

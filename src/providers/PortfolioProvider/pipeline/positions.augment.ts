@@ -2,7 +2,7 @@ import { map, sumBy } from 'lodash';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
 import type { GetTokenPrice } from '../datasources/prices.datasource';
-import type { AugmentedPosition } from '../types/positions.types';
+import type { EnrichedPosition } from '../types/positions.types';
 
 /**
  * Augment a DefiToken with fresh price data from the price lookup.
@@ -54,7 +54,7 @@ const augmentDefiTokens = (
 export const augmentPosition = (
   position: DefiPosition,
   getTokenPrice: GetTokenPrice,
-): AugmentedPosition => {
+): EnrichedPosition => {
   const supplyTokens = augmentDefiTokens(position.supplyTokens, getTokenPrice);
   const borrowTokens = augmentDefiTokens(position.borrowTokens, getTokenPrice);
   const assetTokens = augmentDefiTokens(position.assetTokens, getTokenPrice);
@@ -93,6 +93,6 @@ export const augmentPosition = (
 export const augmentPositions = (
   positions: DefiPosition[],
   getTokenPrice: GetTokenPrice,
-): AugmentedPosition[] => {
+): EnrichedPosition[] => {
   return map(positions, (position) => augmentPosition(position, getTokenPrice));
 };

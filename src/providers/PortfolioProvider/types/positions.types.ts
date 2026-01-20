@@ -1,31 +1,34 @@
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import type { Chain, DefiPosition, Protocol } from '@/types/jumper-backend';
 
-/** Position augmented with fresh prices */
-export interface AugmentedPosition extends DefiPosition {
+/**
+ * Position enriched with fresh price calculations.
+ * Used internally during pipeline processing and inside PortfolioPosition groups.
+ */
+export interface EnrichedPosition extends DefiPosition {
   hasFreshPrices: boolean;
 }
 
 /**
- * Portfolio position - the final display type for DeFi positions.
- * Alias for AugmentedPosition since no further transformation is needed.
+ * Positions organized by protocol-chain key.
+ * Key format: "${protocol.name}-${chain.chainKey}"
  */
-export type PortfolioPosition = AugmentedPosition;
+export type PositionsByProtocolChain = Record<string, EnrichedPosition[]>;
 
 /**
- * A group of positions sharing the same protocol and chain.
- * Used for display in the portfolio UI.
+ * Positions organized by protocol name.
  */
-export interface PositionGroup {
-  /** Unique key for the group: "${protocol.name}-${chain.chainKey}" */
+export type PositionsByProtocol = Record<string, EnrichedPosition[]>;
+
+/**
+ * Final display entity: A group of positions for the Portfolio UI.
+ * Groups positions by protocol and chain for display.
+ */
+export interface PortfolioPosition {
   key: string;
-  /** The protocol these positions belong to */
   protocol: Protocol;
-  /** The chain these positions are on */
   chain: Chain;
-  /** Positions within this group */
-  positions: PortfolioPosition[];
-  /** Total net USD value of all positions in the group */
+  positions: EnrichedPosition[];
   totalNetUsd: number;
 }
 

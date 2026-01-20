@@ -1,7 +1,7 @@
 import { uniqBy, uniq, flatMap, min, max, minBy, maxBy } from 'lodash';
 import type { Chain, Protocol, Token } from '@/types/jumper-backend';
-import type { AugmentedPosition } from '../types/positions.types';
-import type { AugmentedToken, PortfolioAccount } from '../types/tokens.types';
+import type { EnrichedPosition } from '../types/positions.types';
+import type { EnrichedToken, PortfolioAccount } from '../types/tokens.types';
 import type { Account } from '@lifi/wallet-management';
 
 export interface TokensMetadata {
@@ -20,7 +20,7 @@ export interface PositionsMetadata {
 }
 
 /** Extract unique chains from tokens */
-export const extractChainsFromTokens = (tokens: AugmentedToken[]): Chain[] => {
+export const extractChainsFromTokens = (tokens: EnrichedToken[]): Chain[] => {
   return uniqBy(
     tokens
       .filter((t) => t.chainId)
@@ -34,7 +34,7 @@ export const extractChainsFromTokens = (tokens: AugmentedToken[]): Chain[] => {
 
 /** Extract metadata from tokens */
 export const extractTokensMetadata = (
-  tokens: AugmentedToken[],
+  tokens: EnrichedToken[],
   accounts: Account[],
 ): TokensMetadata => {
   const wallets = accounts.filter(
@@ -71,7 +71,7 @@ export const extractTokensMetadata = (
 
 /** Extract unique chains from positions */
 export const extractChainsFromPositions = (
-  positions: AugmentedPosition[],
+  positions: EnrichedPosition[],
 ): Chain[] => {
   const positionsWithChain = positions.filter((p) => p.chain);
   return uniqBy(
@@ -82,7 +82,7 @@ export const extractChainsFromPositions = (
 
 /** Extract unique protocols from positions */
 export const extractProtocolsFromPositions = (
-  positions: AugmentedPosition[],
+  positions: EnrichedPosition[],
 ): Protocol[] => {
   const positionsWithProtocol = positions.filter((p) => p.protocol);
   return uniqBy(
@@ -93,7 +93,7 @@ export const extractProtocolsFromPositions = (
 
 /** Extract metadata from positions */
 export const extractPositionsMetadata = (
-  positions: AugmentedPosition[],
+  positions: EnrichedPosition[],
 ): PositionsMetadata => {
   const chains = extractChainsFromPositions(positions);
   const protocols = extractProtocolsFromPositions(positions);

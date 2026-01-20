@@ -33,14 +33,13 @@ import {
 } from '@/app/ui/portfolio/utils';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions } from '../PortfolioContext';
-import type { PositionGroup } from '../types/positions.types';
+import type { PortfolioPosition } from '../types/positions.types';
 import { usePositionsQueryExecutor } from '../hooks/usePositionsQueryExecutor';
-import { toPositionGroups } from '../pipeline/positions.normalize';
 
-const positionGroupSortAccessors: SortAccessors<PositionGroup> = {
-  [SortByOptions.VALUE]: (group) => group.totalNetUsd,
-  [SortByOptions.CHAIN]: (group) => group.chain.chainKey ?? '',
-  [SortByOptions.ASSET]: (group) => group.protocol.name ?? '',
+const portfolioPositionSortAccessors: SortAccessors<PortfolioPosition> = {
+  [SortByOptions.VALUE]: (position) => position.totalNetUsd,
+  [SortByOptions.CHAIN]: (position) => position.chain.chainKey ?? '',
+  [SortByOptions.ASSET]: (position) => position.protocol.name ?? '',
 };
 
 export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
@@ -52,7 +51,7 @@ export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPosition
     filter: NullableFields<PortfolioDeFiPositionsFilterUI>,
   ) => void;
   clearFilters: () => void;
-  data: PositionGroup[];
+  data: PortfolioPosition[];
   allDataUpdatedAt: number | null;
   isLoading: boolean;
   isAllDataEmpty: boolean;
@@ -132,18 +131,16 @@ export const DeFiPositionsFilteringProvider = ({
     };
   }, [positions, metadata]);
 
-  const filteredSortedData = useMemo((): PositionGroup[] => {
-    let groups = toPositionGroups(
-      filteredPositions.positionsByProtocolAndChain,
-    );
+  const filteredSortedData = useMemo((): PortfolioPosition[] => {
+    let result = [...filteredPositions.positions];
 
     if (
       filter.defiMinValue !== undefined ||
       filter.defiMaxValue !== undefined
     ) {
-      groups = groups.filter((group) =>
+      result = result.filter((position) =>
         isWithinValueRange(
-          sanitizeValue(group.totalNetUsd),
+          sanitizeValue(position.totalNetUsd),
           filter.defiMinValue,
           filter.defiMaxValue,
         ),
@@ -151,13 +148,13 @@ export const DeFiPositionsFilteringProvider = ({
     }
 
     return sortPortfolioItems(
-      groups,
+      result,
       sortBy,
       order,
-      positionGroupSortAccessors,
+      portfolioPositionSortAccessors,
     );
   }, [
-    filteredPositions.positionsByProtocolAndChain,
+    filteredPositions.positions,
     filter.defiMinValue,
     filter.defiMaxValue,
     sortBy,

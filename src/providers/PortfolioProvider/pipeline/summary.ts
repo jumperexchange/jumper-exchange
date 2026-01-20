@@ -1,5 +1,5 @@
 import type { PortfolioToken } from '@/types/tokens';
-import type { AugmentedPosition } from '../types/positions.types';
+import type { EnrichedPosition } from '../types/positions.types';
 import { sumBy } from 'lodash';
 import type { PortfolioTokenSummary } from '../types/tokens.types';
 import type { PortfolioPositionSummary } from '../types/positions.types';
@@ -34,7 +34,7 @@ export const toTokenSummary = (
 };
 
 export const toPositionSummary = (
-  positions: AugmentedPosition[],
+  positions: EnrichedPosition[],
   totalPositionsValueUSD: number,
 ): PortfolioPositionSummary => {
   const totalValueUSD = sumBy(positions, 'netUsd');
@@ -52,7 +52,7 @@ export const toPositionSummary = (
 
 export const processSummary = (
   tokens: PortfolioToken[],
-  positionsByProtocol: Record<string, AugmentedPosition[]>,
+  positionsByProtocol: Record<string, EnrichedPosition[]>,
 ) => {
   const positionsByProtocolValues = Object.values(positionsByProtocol);
   const tokensValueUSD = sumBy(tokens, 'totalPriceUSD');

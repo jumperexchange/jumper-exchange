@@ -11,12 +11,13 @@ import { useChains } from '@/hooks/useChains';
 import { augmentTokens } from './pipeline/tokens.augment';
 import { dedupTokensFromLpPositions } from './pipeline/tokens.dedup';
 import { groupTokensBySymbol } from './pipeline/tokens.group';
-import { normalizeGroupedTokens } from './pipeline/tokens.normalize';
+import { toPortfolioTokens } from './pipeline/tokens.normalize';
 import { augmentPositions } from './pipeline/positions.augment';
 import {
   groupPositionsByProtocol,
   groupPositionsByProtocolAndChain,
 } from './pipeline/positions.group';
+import { toPortfolioPositions } from './pipeline/positions.normalize';
 import {
   extractLpTokens,
   type LpTokenIdentifier,
@@ -47,23 +48,25 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       // Step 2: Group by protocol and protocol-chain
       const byProtocol = groupPositionsByProtocol(augmented);
       const byProtocolAndChain = groupPositionsByProtocolAndChain(augmented);
-      const byAddressAndProtocolAndChain = mapValues(
-        augmentedByAddress,
-        (positions) => groupPositionsByProtocolAndChain(positions),
+
+      // Step 3: Normalize to PortfolioPosition[]
+      const normalized = toPortfolioPositions(byProtocolAndChain);
+      const normalizedByAddress = mapValues(augmentedByAddress, (positions) =>
+        toPortfolioPositions(groupPositionsByProtocolAndChain(positions)),
       );
 
-      // Step 3: Extract metadata for filtering UI
+      // Step 4: Extract metadata for filtering UI
       const metadata = extractPositionsMetadata(augmented);
 
       // Return processed data with all transformations applied
       return {
         ...rawData,
-        positions: augmented,
-        positionsByAddress: augmentedByAddress,
+        positions: normalized,
+        positionsByAddress: normalizedByAddress,
         positionsByProtocolAndChain: byProtocolAndChain,
         positionsByProtocol: byProtocol,
         metadata,
-        isEmpty: augmented.length === 0,
+        isEmpty: normalized.length === 0,
       };
     },
     [getTokenPrice],
@@ -97,9 +100,9 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       );
 
       // Step 4: Normalize grouped tokens to PortfolioToken[]
-      const normalized = normalizeGroupedTokens(grouped);
+      const normalized = toPortfolioTokens(grouped);
       const normalizedByAddress = mapValues(groupedByAddress, (tokens) =>
-        normalizeGroupedTokens(tokens),
+        toPortfolioTokens(tokens),
       );
 
       // Step 5: Extract metadata for filtering UI (from deduplicated tokens)

@@ -8,6 +8,8 @@ import type {
 } from './types/tokens.types';
 import type {
   PortfolioPosition,
+  PositionsByProtocol,
+  PositionsByProtocolChain,
   PortfolioPositionSummary,
 } from './types/positions.types';
 
@@ -35,14 +37,14 @@ export interface PortfolioTokensContextValue {
 }
 
 export interface PortfolioPositionsContextValue {
-  /** Portfolio positions sorted by value */
+  /** Display-ready positions (grouped by protocol and chain) */
   positions: PortfolioPosition[];
   /** Positions by wallet address */
   positionsByAddress: Record<string, PortfolioPosition[]>;
-  /** Positions grouped by protocol and chain */
-  positionsByProtocolAndChain: Record<string, PortfolioPosition[]>;
-  /** Positions grouped by protocol */
-  positionsByProtocol: Record<string, PortfolioPosition[]>;
+  /** Positions grouped by protocol and chain (for filtering) */
+  positionsByProtocolAndChain: PositionsByProtocolChain;
+  /** Positions grouped by protocol (for summary) */
+  positionsByProtocol: PositionsByProtocol;
   /** Metadata for filtering */
   metadata: PositionsMetadata;
   /** Last update timestamp */
