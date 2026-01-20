@@ -120,3 +120,11 @@ export const formatValueWithConfig = (
 
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
+
+export const formatUSD = currencyFormatter('en-US', {
+  notation: 'compact',
+  currency: 'USD',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});

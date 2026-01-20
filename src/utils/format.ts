@@ -8,6 +8,7 @@ export const precisionFormatter = new Intl.NumberFormat('en', {
   useGrouping: false,
 });
 
+// TODO: Use the (Simple|Extended)Token formatters for this
 export function formatTokenAmount(amount: bigint = 0n, decimals: number) {
   const formattedAmount = formatUnits(amount, decimals);
   const parsedAmount = parseFloat(formattedAmount);
@@ -17,6 +18,7 @@ export function formatTokenAmount(amount: bigint = 0n, decimals: number) {
   return precisionFormatter.format(parsedAmount);
 }
 
+// TODO: Use the (Simple|Extended)Token formatters for this
 export function formatTokenPrice(amount?: string, price?: string) {
   if (!amount || !price) {
     return 0;

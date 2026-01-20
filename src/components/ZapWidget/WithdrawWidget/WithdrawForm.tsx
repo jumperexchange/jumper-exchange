@@ -1,22 +1,20 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { WithdrawFormContainer } from './WithdrawWidget.style';
-import { AbiParameter, formatUnits, parseUnits } from 'viem';
-import { Button } from 'src/components/Button/Button';
-import { ConnectButton } from 'src/components/ConnectButton';
-import {
-  useSwitchChain,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
-import { useToken } from 'src/hooks/useToken';
-import { WithdrawInput } from './WithdrawInput';
+import type { Theme } from '@mui/material/styles';
+import type { FC } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import type { Address } from 'viem';
+import { formatUnits } from 'viem';
+import { useSwitchChain } from 'wagmi';
+
+import { Button } from '@/components/Button/Button';
+import { ConnectButton } from '@/components/ConnectButton';
+import { useToken } from '@/hooks/useToken';
+
 import BadgeWithChain from '../BadgeWithChain';
-import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
-import { TrackingCategory } from 'src/const/trackingKeys';
+import { WithdrawInput } from './WithdrawInput';
 import WithdrawInputEndAdornment from './WithdrawInputEndAdornment';
-import { WithdrawFormProps } from './WithdrawWidget.types';
-import { Theme } from '@mui/material/styles';
+import { WithdrawFormContainer } from './WithdrawWidget.style';
+import type { WithdrawFormProps } from './WithdrawWidget.types';
 
 const buttonStyles = (theme: Theme) => ({
   marginTop: theme.spacing(2),
@@ -40,9 +38,12 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
 }) => {
   const [value, setValue] = useState<string>('');
   const { account } = useAccount();
-  const { trackEvent } = useUserTracking();
   const { switchChainAsync } = useSwitchChain();
-  const { token: tokenInfo } = useToken(token.chainId, token.address);
+  const { token: tokenInfo } = useToken(
+    token.chainId,
+    token.address as Address,
+    { extended: true },
+  );
 
   const maxFormattedAmount = useMemo(() => {
     return parseFloat(formatUnits(BigInt(balance), lpTokenDecimals));
@@ -51,14 +52,6 @@ export const WithdrawForm: FC<WithdrawFormProps> = ({
   const maxAmount = useMemo(() => {
     return BigInt(balance);
   }, [balance]);
-
-  const helperText = useMemo(
-    () => ({
-      left: 'Available balance',
-      right: balance,
-    }),
-    [balance],
-  );
 
   const hintEndAdornment = useMemo(() => {
     return (
