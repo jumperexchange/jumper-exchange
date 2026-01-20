@@ -1,8 +1,8 @@
-type PositionFilters = Record<string, any>;
+import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
 
 interface QuerySubscription {
   id: string;
-  filters: PositionFilters;
+  filters: PortfolioPositionsQueryWithoutEvm;
   callbacks: Set<(data: any) => void>;
 }
 
@@ -12,7 +12,7 @@ class PositionQueryRegistry {
 
   register(
     id: string,
-    filters: PositionFilters,
+    filters: PortfolioPositionsQueryWithoutEvm,
     callback: (data: any) => void,
   ) {
     if (!this.subscriptions.has(id)) {

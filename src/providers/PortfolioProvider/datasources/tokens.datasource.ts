@@ -27,12 +27,6 @@ export interface FetchTokensParams {
   onComplete?: (tokens: LiFiCommonToken[]) => void;
 }
 
-export interface FetchTokensResult {
-  tokens: LiFiCommonToken[];
-  address: string;
-  intervalId: NodeJS.Timeout | null;
-}
-
 /** Convert TokenAmount to LiFiCommonToken */
 const fromTokenAmount = (token: TokenAmount): LiFiCommonToken => ({
   chainId: token.chainId,
@@ -71,13 +65,13 @@ export const fetchTokensForAddress = async ({
   chainType,
   onProgress,
   onComplete,
-}: FetchTokensParams): Promise<FetchTokensResult> => {
+}: FetchTokensParams) => {
   // EVM: use getWalletBalances (no batching needed)
   if (chainType === ChainType.EVM) {
     const tokens = await fetchTokensForAddressEVM(address);
     onProgress?.(1, tokens);
     onComplete?.(tokens);
-    return { tokens, address, intervalId: null };
+    return { tokens, address, control: null };
   }
 
   // Non-EVM: use batched fetching with getTokenBalances
@@ -85,8 +79,8 @@ export const fetchTokensForAddress = async ({
 
   let finalTokens: LiFiCommonToken[] = [];
 
-  const intervalId = createBatchFetcher<Token, TokenAmount>(
-    tokensResponse.tokens as unknown as Record<string, Token[]>,
+  const batchFetcherControl = createBatchFetcher<Token, TokenAmount>(
+    tokensResponse.tokens,
     async (_chainId, tokenBatch) => {
       const balances = await getTokenBalances(address, tokenBatch);
       return balances.filter((t) => t.amount && t.amount > BigInt(0));
@@ -103,12 +97,10 @@ export const fetchTokensForAddress = async ({
     },
   );
 
-  return { tokens: finalTokens, address, intervalId };
+  return { tokens: finalTokens, address, control: batchFetcherControl };
 };
 
 /** Fetch tokens for multiple addresses */
-export const fetchTokensForAddresses = async (
-  params: FetchTokensParams[],
-): Promise<FetchTokensResult[]> => {
+export const fetchTokensForAddresses = async (params: FetchTokensParams[]) => {
   return Promise.all(params.map(fetchTokensForAddress));
 };

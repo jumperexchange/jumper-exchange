@@ -2,11 +2,7 @@ import { map, sumBy } from 'lodash';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
 import type { GetTokenPrice } from '../datasources/prices.datasource';
-
-/** Position augmented with fresh prices */
-export interface AugmentedPosition extends DefiPosition {
-  hasFreshPrices: boolean;
-}
+import type { AugmentedPosition } from '../types/positions.types';
 
 /**
  * Augment a DefiToken with fresh price data from the price lookup.

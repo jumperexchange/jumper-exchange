@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash';
-import type { AugmentedToken } from './tokens.augment';
+import type { AugmentedToken } from '../types/tokens.types';
 
 /**
  * Group tokens by symbol.

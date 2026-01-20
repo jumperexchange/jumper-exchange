@@ -1,5 +1,5 @@
 import { compact, map } from 'lodash';
-import type { AugmentedPosition } from './positions.augment';
+import type { AugmentedPosition } from '../types/positions.types';
 
 /**
  * Identifier for an LP token extracted from a DeFi position.

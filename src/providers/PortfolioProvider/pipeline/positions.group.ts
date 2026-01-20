@@ -1,5 +1,5 @@
 import { groupBy } from 'lodash';
-import type { AugmentedPosition } from './positions.augment';
+import type { AugmentedPosition } from '../types/positions.types';
 
 /**
  * Group positions by protocol name.

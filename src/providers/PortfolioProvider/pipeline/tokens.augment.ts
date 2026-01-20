@@ -2,13 +2,7 @@ import { find, map } from 'lodash';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import type { ExtendedChain } from '@lifi/sdk';
 import type { LiFiCommonToken } from '../datasources/tokens.datasource';
-
-/** Token augmented with chain info and computed USD value */
-export interface AugmentedToken extends LiFiCommonToken {
-  chainKey: string;
-  chainName: string;
-  amountUSD: number;
-}
+import type { AugmentedToken } from '../types/tokens.types';
 
 /**
  * Augment a single token with chain info and computed USD value.

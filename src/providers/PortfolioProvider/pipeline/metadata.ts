@@ -1,8 +1,7 @@
 import { uniqBy, uniq, flatMap, min, max, minBy, maxBy } from 'lodash';
 import type { Chain, Protocol, Token } from '@/types/jumper-backend';
-import type { AugmentedToken } from './tokens.augment';
-import type { AugmentedPosition } from './positions.augment';
-import type { PortfolioAccount } from '../types/tokens.types';
+import type { AugmentedPosition } from '../types/positions.types';
+import type { AugmentedToken, PortfolioAccount } from '../types/tokens.types';
 import type { Account } from '@lifi/wallet-management';
 
 export interface TokensMetadata {

@@ -1,5 +1,13 @@
 import type { PortfolioToken } from '@/types/tokens';
 import type { Account } from '@lifi/wallet-management';
+import type { LiFiCommonToken } from '../datasources/tokens.datasource';
+
+/** Token augmented with chain info and computed USD value */
+export interface AugmentedToken extends LiFiCommonToken {
+  chainKey: string;
+  chainName: string;
+  amountUSD: number;
+}
 
 /**
  * Connected wallet account for portfolio (address is required).

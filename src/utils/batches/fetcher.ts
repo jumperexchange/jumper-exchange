@@ -16,6 +16,10 @@ export interface BatchFetcherCallbacks<TItem, TResult> {
   onComplete?: (results: TResult[]) => void;
 }
 
+export interface BatchFetcherControl {
+  cancel: () => void;
+}
+
 const DEFAULT_CONFIG: Required<BatchFetcherConfig> = {
   maxPerRound: 10000,
   maxPerBatch: 300,
@@ -25,23 +29,27 @@ const DEFAULT_CONFIG: Required<BatchFetcherConfig> = {
 
 /**
  * Creates a batch fetcher that processes items in rounds with delays.
- * Returns an interval ID that can be used to cancel the process.
+ * Concurrent-safe: tracks in-flight rounds and only fires onComplete when all resolve.
  */
 export const createBatchFetcher = <TItem, TResult>(
   batches: Record<string, TItem[]>,
   fetchBatch: (batchKey: string, items: TItem[]) => Promise<TResult[]>,
   callbacks: BatchFetcherCallbacks<TItem, TResult> = {},
   config: BatchFetcherConfig = {},
-): NodeJS.Timeout => {
+): BatchFetcherControl => {
   const { maxPerRound, maxPerBatch, delayMs, maxFirstRound } = {
     ...DEFAULT_CONFIG,
     ...config,
   };
 
-  let round = 1;
+  let nextRound = 1;
   const allResults: TResult[] = [];
 
-  // Clone batches to avoid mutating input
+  let inFlightRounds = 0;
+  let allBatchesExhausted = false;
+  let isCompleted = false;
+  let isCancelled = false;
+
   const remainingBatches: Record<string, TItem[]> = Object.keys(batches).reduce(
     (acc, key) => {
       acc[key] = [...batches[key]];
@@ -50,7 +58,23 @@ export const createBatchFetcher = <TItem, TResult>(
     {} as Record<string, TItem[]>,
   );
 
+  const tryComplete = () => {
+    if (isCompleted || isCancelled) {
+      return;
+    }
+    if (inFlightRounds === 0 && allBatchesExhausted) {
+      isCompleted = true;
+      clearInterval(intervalId);
+      callbacks.onComplete?.(allResults);
+    }
+  };
+
   const fetchRound = async () => {
+    if (isCompleted || isCancelled || allBatchesExhausted) {
+      return;
+    }
+
+    const thisRound = nextRound++;
     let itemsFetchedThisRound = 0;
     const fetchPromises: Promise<TResult[]>[] = [];
 
@@ -65,8 +89,7 @@ export const createBatchFetcher = <TItem, TResult>(
       }
 
       const maxThisRound =
-        round === 1 ? maxFirstRound : maxPerRound - itemsFetchedThisRound;
-
+        thisRound === 1 ? maxFirstRound : maxPerRound - itemsFetchedThisRound;
       const itemsToFetch = Math.min(maxPerBatch, items.length, maxThisRound);
 
       if (itemsToFetch <= 0) {
@@ -75,37 +98,56 @@ export const createBatchFetcher = <TItem, TResult>(
 
       const batch = items.splice(0, itemsToFetch);
       itemsFetchedThisRound += itemsToFetch;
-
       fetchPromises.push(fetchBatch(batchKey, batch));
     }
 
-    if (fetchPromises.length === 0) {
+    const batchesEmpty = Object.values(remainingBatches).every(
+      (items) => items.length === 0,
+    );
+    if (batchesEmpty) {
+      allBatchesExhausted = true;
       clearInterval(intervalId);
-      callbacks.onComplete?.(allResults);
+    }
+
+    if (fetchPromises.length === 0) {
+      tryComplete();
       return;
     }
 
-    const roundResults = await Promise.all(fetchPromises);
-    allResults.push(...roundResults.flat());
+    inFlightRounds++;
 
-    callbacks.onProgress?.(round, allResults);
+    const settledResults = await Promise.allSettled(fetchPromises);
 
-    round += 1;
+    inFlightRounds--;
 
-    const allDone = Object.values(remainingBatches).every(
-      (items) => items.length === 0,
-    );
-
-    if (allDone) {
-      clearInterval(intervalId);
-      callbacks.onComplete?.(allResults);
+    if (isCancelled) {
+      return;
     }
+
+    const successfulResults = settledResults
+      .filter(
+        (r): r is PromiseFulfilledResult<TResult[]> => r.status === 'fulfilled',
+      )
+      .map((r) => r.value);
+    allResults.push(...successfulResults.flat());
+
+    const failures = settledResults.filter((r) => r.status === 'rejected');
+    if (failures.length > 0) {
+      console.warn('Batch fetch failures:', failures);
+    }
+
+    callbacks.onProgress?.(thisRound, allResults);
+
+    tryComplete();
   };
 
   const intervalId = setInterval(fetchRound, delayMs);
-
-  // First fetch immediately
   fetchRound();
 
-  return intervalId;
+  return {
+    cancel: () => {
+      isCancelled = true;
+      clearInterval(intervalId);
+    },
+  };
 };
