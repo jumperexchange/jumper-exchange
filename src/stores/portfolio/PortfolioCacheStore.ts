@@ -65,12 +65,12 @@ export interface PortfolioCacheActions {
 
 export type PortfolioCacheStore = PortfolioCacheState & PortfolioCacheActions;
 
-const DEFAULT_CACHE_STATE: PortfolioCacheState = {
+const createDefaultCacheState = (): PortfolioCacheState => ({
   tokens: new Map<string, LiFiCommonToken[]>(),
   positions: new Map<string, DefiPosition[]>(),
   forceRefresh: new Map<string, boolean>(),
   positionPatchVersion: 0,
-};
+});
 
 /**
  * Portfolio cache store - handles local persistence of portfolio data
@@ -78,7 +78,7 @@ const DEFAULT_CACHE_STATE: PortfolioCacheState = {
 export const usePortfolioCacheStore = createWithEqualityFn(
   persist<PortfolioCacheStore>(
     (set, get) => ({
-      ...DEFAULT_CACHE_STATE,
+      ...createDefaultCacheState(),
 
       getTokens: (address: string) => {
         return get().tokens.get(address) ?? [];
@@ -168,7 +168,7 @@ export const usePortfolioCacheStore = createWithEqualityFn(
       },
 
       clearAll: () => {
-        set(DEFAULT_CACHE_STATE);
+        set(createDefaultCacheState());
       },
     }),
     {
