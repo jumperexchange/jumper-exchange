@@ -31,7 +31,7 @@ import {
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions } from '../PortfolioContext';
 import type { PortfolioPosition } from '../types/positions.types';
-import { usePositionsQueryExecutor } from '../hooks/usePositionsQueryExecutor';
+import { useFilteredPositionsData } from '../hooks/useFilteredPositionsData';
 
 export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
   sortBy: SortByEnum;
@@ -96,7 +96,7 @@ export const DeFiPositionsFilteringProvider = ({
   const prevStatsRef = useRef<PortfolioDeFiPositionsFilteringParams>(
     EMPTY_DEFI_POSITIONS_FILTERING_PARAMS,
   );
-  const filteredPositions = usePositionsQueryExecutor({
+  const filteredPositions = useFilteredPositionsData({
     chains: filter?.defiChains,
     protocols: filter?.defiProtocols,
     type: filter?.defiTypes,

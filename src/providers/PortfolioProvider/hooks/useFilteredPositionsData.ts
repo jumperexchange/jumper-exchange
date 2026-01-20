@@ -3,7 +3,7 @@ import { usePortfolio } from '../PortfolioContext';
 import type { UsePositionsDataParams } from './usePositionsData';
 import { usePositionsData } from './usePositionsData';
 
-export const usePositionsQueryExecutor = (
+export const useFilteredPositionsData = (
   filters: UsePositionsDataParams['filter'],
 ) => {
   const { processors } = usePortfolio();
