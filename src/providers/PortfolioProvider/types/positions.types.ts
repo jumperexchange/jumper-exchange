@@ -1,5 +1,10 @@
+import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import type { Chain, DefiPosition, Protocol } from '@/types/jumper-backend';
-import type { AugmentedPosition } from '../pipeline/positions.augment';
+
+/** Position augmented with fresh prices */
+export interface AugmentedPosition extends DefiPosition {
+  hasFreshPrices: boolean;
+}
 
 /**
  * Portfolio position - the final display type for DeFi positions.
@@ -39,3 +44,8 @@ export interface PortfolioPositionSummary extends Omit<
   formattedTotalValueUSD: string;
   percentageOfTotalValueUSD: number;
 }
+
+export type PortfolioPositionsQueryWithoutEvm = Omit<
+  PortfolioPositionsQuery,
+  'evm'
+>;

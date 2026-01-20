@@ -9,6 +9,7 @@ import {
   type LiFiCommonToken,
 } from '../datasources/tokens.datasource';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
+import type { BatchFetcherControl } from '@/utils/batches/fetcher';
 
 export interface UseTokensDataResult {
   tokens: LiFiCommonToken[];
@@ -33,9 +34,8 @@ export const useTokensData = (): UseTokensDataResult => {
   const queryClient = useQueryClient();
   const getTokens = usePortfolioCacheStore((s) => s.getTokens);
   const setTokensCache = usePortfolioCacheStore((s) => s.setTokens);
-  const needsRefresh = usePortfolioCacheStore((s) => s.needsRefresh);
   const setNeedsRefresh = usePortfolioCacheStore((s) => s.setNeedsRefresh);
-  const intervalIdsRef = useRef<NodeJS.Timeout[]>([]);
+  const controlsRef = useRef<BatchFetcherControl[]>([]);
 
   const connectedAccounts = useMemo(
     () => accounts.filter((acc) => acc.isConnected && acc.address),
@@ -78,8 +78,8 @@ export const useTokensData = (): UseTokensDataResult => {
           },
         });
 
-        if (result.intervalId) {
-          intervalIdsRef.current.push(result.intervalId);
+        if (result.control) {
+          controlsRef.current.push(result.control);
         }
 
         return {
@@ -95,7 +95,6 @@ export const useTokensData = (): UseTokensDataResult => {
     })),
   });
 
-  // Seed cache from PortfolioCacheStore for connected accounts
   useEffect(() => {
     connectedAccounts.forEach((acc) => {
       const cachedTokens = getTokens(acc.address!);
@@ -112,15 +111,15 @@ export const useTokensData = (): UseTokensDataResult => {
     });
   }, [connectedAccounts, getTokens, queryClient]);
 
-  const refetch = useCallback(async () => {
-    intervalIdsRef.current.forEach((id) => clearInterval(id));
-    intervalIdsRef.current = [];
+  const refetch = useCallback(() => {
+    controlsRef.current.forEach((ctrl) => ctrl.cancel());
+    controlsRef.current = [];
     queries.forEach((q) => q.refetch());
   }, [queries]);
 
   const cancel = useCallback(() => {
-    intervalIdsRef.current.forEach((id) => clearInterval(id));
-    intervalIdsRef.current = [];
+    controlsRef.current.forEach((ctrl) => ctrl.cancel());
+    controlsRef.current = [];
     queryClient.cancelQueries({ queryKey: ['portfolio-tokens'] });
   }, [queryClient]);
 

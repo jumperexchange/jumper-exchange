@@ -9,11 +9,11 @@ import {
   fetchPositionsForAddress,
   type FetchPositionsResult,
 } from '../datasources/positions.datasource';
-import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
+import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
 
 export interface UsePositionsDataParams {
-  filter?: Omit<PortfolioPositionsQuery, 'evm'>;
+  filter?: PortfolioPositionsQueryWithoutEvm;
 }
 
 export interface UsePositionsDataResult {
@@ -26,12 +26,12 @@ export interface UsePositionsDataResult {
 }
 
 const hasFilteringKeys = (
-  filter?: Omit<PortfolioPositionsQuery, 'evm'>,
+  filter?: PortfolioPositionsQueryWithoutEvm,
 ): boolean => {
   if (!filter) {
     return false;
   }
-  const nonFilteringKeys: Array<keyof Omit<PortfolioPositionsQuery, 'evm'>> = [
+  const nonFilteringKeys: Array<keyof PortfolioPositionsQueryWithoutEvm> = [
     'sortBy',
     'order',
   ];

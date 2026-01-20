@@ -1,13 +1,13 @@
 import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
-import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import type {
   DefiPosition,
   MetadataWithUpdatedAt,
 } from '@/types/jumper-backend';
+import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
 
 export interface FetchPositionsParams {
   address: string;
-  filter?: Omit<PortfolioPositionsQuery, 'evm'>;
+  filter?: PortfolioPositionsQueryWithoutEvm;
 }
 
 export interface FetchPositionsResult {

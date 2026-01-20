@@ -10,7 +10,7 @@ import {
   values,
 } from 'lodash';
 import type { PortfolioToken } from '@/types/tokens';
-import type { AugmentedToken } from './tokens.augment';
+import type { AugmentedToken } from '../types/tokens.types';
 
 /**
  * Normalize an AugmentedToken to the app's internal PortfolioToken type.
@@ -57,7 +57,7 @@ const normalizeTokenGroup = (
     ...mainToken,
     totalPriceUSD: cumulatedAmountUSD,
     balance: cumulatedAmount,
-    relatedTokens: isEmpty(rest) ? undefined : map(sorted, normalizeToken),
+    relatedTokens: map(sorted, normalizeToken),
   };
 };
 

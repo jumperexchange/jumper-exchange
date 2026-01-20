@@ -1,5 +1,5 @@
 import { differenceWith, isEmpty } from 'lodash';
-import type { AugmentedToken } from './tokens.augment';
+import type { AugmentedToken } from '../types/tokens.types';
 import type { LpTokenIdentifier } from './positions.lpTokens';
 
 /**

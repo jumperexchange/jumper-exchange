@@ -1,5 +1,5 @@
 import type { PortfolioToken } from '@/types/tokens';
-import type { AugmentedPosition } from './positions.augment';
+import type { AugmentedPosition } from '../types/positions.types';
 import { sumBy } from 'lodash';
 import type { PortfolioTokenSummary } from '../types/tokens.types';
 import type { PortfolioPositionSummary } from '../types/positions.types';
