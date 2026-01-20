@@ -44,7 +44,6 @@ export interface PortfolioPositionSummary extends Omit<
   | 'rewardTokens'
 > {
   amountUSD: number;
-  formattedAmountUSD: string;
   percentageOfTotalAmountUSD: number;
 }
 
