@@ -1,5 +1,5 @@
-import { compact, map } from 'lodash';
-import type { AugmentedPosition } from '../types/positions.types';
+import { compact, flatMap } from 'lodash';
+import type { PortfolioPosition } from '../types/positions.types';
 
 /**
  * Identifier for an LP token extracted from a DeFi position.
@@ -10,17 +10,19 @@ export interface LpTokenIdentifier {
 }
 
 /**
- * Extract LP token identifiers from positions.
+ * Extract LP token identifiers from portfolio positions.
  * These are used to filter out tokens that are already represented in DeFi positions.
  */
 export const extractLpTokens = (
-  positions: AugmentedPosition[],
+  portfolioPositions: PortfolioPosition[],
 ): LpTokenIdentifier[] => {
   return compact(
-    map(positions, (p) =>
-      p.lpToken?.address && p.lpToken?.chain.chainId
-        ? { address: p.lpToken.address, chainId: p.lpToken.chain.chainId }
-        : null,
+    flatMap(portfolioPositions, (group) =>
+      group.positions.map((p) =>
+        p.lpToken?.address && p.lpToken?.chain.chainId
+          ? { address: p.lpToken.address, chainId: p.lpToken.chain.chainId }
+          : null,
+      ),
     ),
   );
 };

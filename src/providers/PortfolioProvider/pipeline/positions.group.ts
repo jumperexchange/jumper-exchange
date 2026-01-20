@@ -1,22 +1,25 @@
 import { groupBy } from 'lodash';
-import type { AugmentedPosition } from '../types/positions.types';
+import type {
+  EnrichedPosition,
+  PositionsByProtocol,
+  PositionsByProtocolChain,
+} from '../types/positions.types';
 
 /**
  * Group positions by protocol name.
- * This is a pure grouping step - no transformation or sorting.
  */
 export const groupPositionsByProtocol = (
-  positions: AugmentedPosition[],
-): Record<string, AugmentedPosition[]> => {
+  positions: EnrichedPosition[],
+): PositionsByProtocol => {
   return groupBy(positions, (p) => p.protocol.name);
 };
 
 /**
  * Group positions by protocol and chain.
- * This is a pure grouping step - no transformation or sorting.
+ * Key format: "${protocol.name}-${chain.chainKey}"
  */
 export const groupPositionsByProtocolAndChain = (
-  positions: AugmentedPosition[],
-): Record<string, AugmentedPosition[]> => {
+  positions: EnrichedPosition[],
+): PositionsByProtocolChain => {
   return groupBy(positions, (p) => `${p.protocol.name}-${p.chain.chainKey}`);
 };

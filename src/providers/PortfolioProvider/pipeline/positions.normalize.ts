@@ -1,38 +1,46 @@
 import { compact, map, orderBy, sumBy } from 'lodash';
 import type {
+  EnrichedPosition,
   PortfolioPosition,
-  PositionGroup,
+  PositionsByProtocolChain,
 } from '../types/positions.types';
 
 /**
- * Convert a Record of positions grouped by protocol-chain key to an array of PositionGroups.
- * Groups are sorted by totalNetUsd descending.
+ * Convert a group of positions into a single PortfolioPosition.
  */
-export const toPositionGroups = (
-  positionsByProtocolAndChain: Record<string, PortfolioPosition[]>,
-): PositionGroup[] => {
-  const groups = compact(
-    map(
-      Object.entries(positionsByProtocolAndChain),
-      ([key, positions]): PositionGroup | null => {
-        if (positions.length === 0) {
-          return null;
-        }
+const toPortfolioPosition = (
+  key: string,
+  positions: EnrichedPosition[],
+): PortfolioPosition | null => {
+  if (positions.length === 0) {
+    return null;
+  }
 
-        const firstPosition = positions[0];
-        const totalNetUsd = sumBy(positions, (p) => p.netUsd ?? 0);
+  const sortedPositions = orderBy(positions, (p) => p.netUsd ?? 0, 'desc');
 
-        return {
-          key,
-          protocol: firstPosition.protocol,
-          chain: firstPosition.chain,
-          positions,
-          totalNetUsd,
-        };
-      },
-    ),
+  const firstPosition = positions[0];
+  const totalNetUsd = sumBy(positions, (p) => p.netUsd ?? 0);
+
+  return {
+    key,
+    protocol: firstPosition.protocol,
+    chain: firstPosition.chain,
+    positions: sortedPositions,
+    totalNetUsd,
+  };
+};
+
+/**
+ * Convert grouped positions to PortfolioPosition[].
+ * Each group becomes a single PortfolioPosition.
+ * Results are sorted by totalNetUsd descending.
+ */
+export const toPortfolioPositions = (
+  groupedPositions: PositionsByProtocolChain,
+): PortfolioPosition[] => {
+  const portfolioPositions = map(
+    Object.entries(groupedPositions),
+    ([key, positions]) => toPortfolioPosition(key, positions),
   );
-
-  // Sort groups by total value descending
-  return orderBy(groups, 'totalNetUsd', 'desc');
+  return orderBy(compact(portfolioPositions), 'totalNetUsd', 'desc');
 };

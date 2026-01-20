@@ -1,12 +1,13 @@
 import { groupBy } from 'lodash';
-import type { AugmentedToken } from '../types/tokens.types';
+import type { EnrichedToken, TokensBySymbol } from '../types/tokens.types';
 
 /**
  * Group tokens by symbol.
- * This is a pure grouping step - no transformation or sorting.
+ * Multiple tokens with the same symbol (e.g., USDC on different chains)
+ * are grouped together for aggregation.
  */
 export const groupTokensBySymbol = (
-  tokens: AugmentedToken[],
-): Record<string, AugmentedToken[]> => {
+  tokens: EnrichedToken[],
+): TokensBySymbol => {
   return groupBy(tokens, (t) => t.symbol || 'Unknown');
 };

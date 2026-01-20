@@ -5,18 +5,16 @@ import {
   map,
   orderBy,
   sumBy,
-  tail,
   toNumber,
   values,
 } from 'lodash';
 import type { PortfolioToken } from '@/types/tokens';
-import type { AugmentedToken } from '../types/tokens.types';
+import type { EnrichedToken, TokensBySymbol } from '../types/tokens.types';
 
 /**
- * Normalize an AugmentedToken to the app's internal PortfolioToken type.
- * This converts external SDK types to the app's consistent internal schema.
+ * Convert an EnrichedToken to the app's internal PortfolioToken type.
  */
-export const normalizeToken = (token: AugmentedToken): PortfolioToken => {
+export const toPortfolioToken = (token: EnrichedToken): PortfolioToken => {
   return {
     name: token.name,
     symbol: token.symbol,
@@ -33,42 +31,40 @@ export const normalizeToken = (token: AugmentedToken): PortfolioToken => {
 };
 
 /**
- * Normalize a group of tokens with the same symbol into a single PortfolioToken
+ * Convert a group of tokens with the same symbol into a single PortfolioToken
  * with relatedTokens for cross-chain holdings.
  */
-const normalizeTokenGroup = (
-  group: AugmentedToken[],
+const toPortfolioTokenFromGroup = (
+  group: EnrichedToken[],
 ): PortfolioToken | null => {
   if (isEmpty(group)) {
     return null;
   }
 
-  // Sort by amountUSD descending (highest value first)
   const sorted = orderBy(group, (t) => t.amountUSD ?? 0, 'desc');
 
   const cumulatedAmountUSD = sumBy(sorted, (t) => t.amountUSD ?? 0);
   const cumulatedAmount = sumBy(sorted, (t) => toNumber(t.amount) ?? 0);
 
   const main = head(sorted)!;
-  const rest = tail(sorted);
-  const mainToken = normalizeToken(main);
+  const mainToken = toPortfolioToken(main);
 
   return {
     ...mainToken,
     totalPriceUSD: cumulatedAmountUSD,
     balance: cumulatedAmount,
-    relatedTokens: map(sorted, normalizeToken),
+    relatedTokens: map(sorted, toPortfolioToken),
   };
 };
 
 /**
- * Convert grouped tokens (Record<symbol, AugmentedToken[]>) to PortfolioToken[].
+ * Convert grouped tokens to PortfolioToken[].
  * Each group becomes a single PortfolioToken with relatedTokens.
  * Results are sorted by totalPriceUSD descending.
  */
-export const normalizeGroupedTokens = (
-  groupedTokens: Record<string, AugmentedToken[]>,
+export const toPortfolioTokens = (
+  groupedTokens: TokensBySymbol,
 ): PortfolioToken[] => {
-  const normalized = map(values(groupedTokens), normalizeTokenGroup);
-  return orderBy(compact(normalized), 'totalPriceUSD', 'desc');
+  const portfolioTokens = map(values(groupedTokens), toPortfolioTokenFromGroup);
+  return orderBy(compact(portfolioTokens), 'totalPriceUSD', 'desc');
 };
