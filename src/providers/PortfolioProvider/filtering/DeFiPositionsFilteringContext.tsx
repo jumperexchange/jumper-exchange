@@ -114,8 +114,18 @@ export const DeFiPositionsFilteringProvider = ({
     order: order,
   });
 
-  const { positions, metadata, isLoading, isEmpty, error, updatedAt } =
-    usePortfolioPositions();
+  const {
+    positions,
+    metadata,
+    isLoading: positionsLoading,
+    isEmpty,
+    error,
+    updatedAt,
+  } = usePortfolioPositions();
+
+  const isLoading = useMemo(() => {
+    return filteredPositions.isLoading || positionsLoading;
+  }, [filteredPositions.isLoading, positionsLoading]);
 
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
     if (positions.length === 0) {
