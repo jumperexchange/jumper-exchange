@@ -1,7 +1,7 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { PortfolioContext } from './PortfolioContext';
 import type { PortfolioContextValue } from './PortfolioContext.types';
 import { useTokensData } from './hooks/useTokensData';
@@ -27,7 +27,6 @@ import {
 } from './pipeline/metadata';
 import mapValues from 'lodash/mapValues';
 import type { PortfolioAccount } from './types/tokens.types';
-import { positionQueryRegistry } from './registry/PositionQueryRegistry';
 import { processSummary } from './pipeline/summary';
 
 export const PortfolioProvider = ({ children }: PropsWithChildren) => {
@@ -35,19 +34,6 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
   const tokensData = useTokensData();
   const positionsData = usePositionsData();
   const { getTokenPrice } = usePricesData();
-
-  const [activeQueries, setActiveQueries] = useState(() =>
-    positionQueryRegistry.getActiveQueries(),
-  );
-
-  useEffect(() => {
-    const unsubscribe = positionQueryRegistry.onQueriesChange(() => {
-      setActiveQueries(positionQueryRegistry.getActiveQueries());
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const processPositionsData = useCallback(
     (rawData: ReturnType<typeof usePositionsData>) => {

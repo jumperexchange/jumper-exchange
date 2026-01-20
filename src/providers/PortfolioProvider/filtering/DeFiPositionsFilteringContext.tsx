@@ -106,7 +106,7 @@ export const DeFiPositionsFilteringProvider = ({
   const prevStatsRef = useRef<PortfolioDeFiPositionsFilteringParams>(
     EMPTY_DEFI_POSITIONS_FILTERING_PARAMS,
   );
-  const filteredPositions = usePositionsQueryExecutor('defi-positions', {
+  const filteredPositions = usePositionsQueryExecutor({
     chains: filter?.defiChains,
     protocols: filter?.defiProtocols,
     type: filter?.defiTypes,
