@@ -158,7 +158,7 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  // Fetch positions data when address is available
+  // Fetch positions data when address is available (with filters applied)
   const yourPositions = useEarnFilterOpportunities(
     {
       filter: {
@@ -166,6 +166,19 @@ export const EarnFilteringProvider = ({
         hasPositions: true,
         address,
         sortBy: sortBy,
+      },
+    },
+    {
+      enabled: !!address,
+    },
+  );
+
+  // Fetch ALL positions without filters (for filter options on YOUR_POSITIONS tab)
+  const yourPositionsNoFilter = useEarnFilterOpportunities(
+    {
+      filter: {
+        hasPositions: true,
+        address,
       },
     },
     {
@@ -201,39 +214,38 @@ export const EarnFilteringProvider = ({
     filter: {},
   });
 
-  const { data, pagination, error, updatedAt } = useMemo(() => {
-    let sourceData: EarnOpportunityWithLatestAnalytics[] | undefined;
-    let updatedAt: Date | undefined;
-    let error: unknown | undefined;
-
+  const { sourceData, error, updatedAt } = useMemo(() => {
     switch (tab) {
-      case EarnFilterTab.FOR_YOU: {
-        sourceData = forYou.data?.data;
-        updatedAt = forYou.data?.meta?.updatedAt;
-        error = forYou.error;
-        break;
-      }
-      case EarnFilterTab.YOUR_POSITIONS: {
-        sourceData = yourPositions.data?.data;
-        updatedAt = yourPositions.data?.meta?.updatedAt;
-        error = yourPositions.error;
-        break;
-      }
-      case EarnFilterTab.ALL: {
-        sourceData = all.data?.data;
-        updatedAt = all.data?.meta?.updatedAt;
-        error = all.error;
-        break;
-      }
+      case EarnFilterTab.FOR_YOU:
+        return {
+          sourceData: forYou.data?.data,
+          updatedAt: forYou.data?.meta?.updatedAt,
+          error: forYou.error,
+        };
+      case EarnFilterTab.YOUR_POSITIONS:
+        return {
+          sourceData: yourPositions.data?.data,
+          updatedAt: yourPositions.data?.meta?.updatedAt,
+          error: yourPositions.error,
+        };
+      case EarnFilterTab.ALL:
+        return {
+          sourceData: all.data?.data,
+          updatedAt: all.data?.meta?.updatedAt,
+          error: all.error,
+        };
     }
+  }, [tab, forYou, all, yourPositions]);
 
+  const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
       (forYou.data?.data ?? []).map((item) => item.slug),
     );
+    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
+  }, [sourceData, forYou.data?.data]);
 
-    const data = enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-
-    const total = data.length;
+  const { data, pagination } = useMemo(() => {
+    const total = enrichedData.length;
     const pageCount = Math.ceil(total / PAGE_SIZE);
     const pagination = {
       page,
@@ -244,10 +256,10 @@ export const EarnFilteringProvider = ({
 
     const startIndex = page * PAGE_SIZE;
     const endIndex = startIndex + PAGE_SIZE;
-    const paginatedData = data.slice(startIndex, endIndex);
+    const paginatedData = enrichedData.slice(startIndex, endIndex);
 
-    return { data: paginatedData, pagination, error, updatedAt };
-  }, [tab, forYou, all, yourPositions, page]);
+    return { data: paginatedData, pagination };
+  }, [enrichedData, page]);
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -256,13 +268,31 @@ export const EarnFilteringProvider = ({
 
   const totalMarkets = allNoFilterData.length;
 
+  // Get unfiltered data for the current tab (for filter options)
+  const unfilteredTabData = useMemo(() => {
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        return forYou.data?.data ?? [];
+      case EarnFilterTab.YOUR_POSITIONS:
+        return yourPositionsNoFilter.data?.data ?? [];
+      case EarnFilterTab.ALL:
+        return allNoFilterData;
+    }
+  }, [
+    tab,
+    forYou.data?.data,
+    yourPositionsNoFilter.data?.data,
+    allNoFilterData,
+  ]);
+
+  // Extract filter options from unfiltered data for the current tab
   const stats = useMemo((): EarnFilteringParams => {
-    if (allNoFilterData.length === 0) {
+    if (unfilteredTabData.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(allNoFilterData);
-  }, [allNoFilterData]);
+    return extractFilteringParams(unfilteredTabData);
+  }, [unfilteredTabData]);
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
