@@ -121,22 +121,25 @@ export const EarnFilteringProvider = ({
     if (withPositionsParam) {
       return EarnFilterTab.YOUR_POSITIONS;
     }
-    if (forYouParam) {
+    if (forYouParam === true) {
       return EarnFilterTab.FOR_YOU;
-    } else if (forYouParam === false) {
+    }
+    if (forYouParam === false) {
       return EarnFilterTab.ALL;
     }
-    return EarnFilterTab.FOR_YOU;
-  }, [forYouParam, withPositionsParam]);
+    return tab ?? EarnFilterTab.FOR_YOU;
+  }, [forYouParam, withPositionsParam, tab]);
 
   // Replace deprecated query params
   useEffect(() => {
-    setSearchParamsState({
-      forYou: null,
-      withPositions: null,
-      tab: initialTab,
-    });
-  }, [initialTab, setSearchParamsState]);
+    if (forYouParam != null || withPositionsParam != null) {
+      setSearchParamsState({
+        forYou: null,
+        withPositions: null,
+        tab: initialTab,
+      });
+    }
+  }, [forYouParam, initialTab, setSearchParamsState, withPositionsParam]);
 
   // TODO: introduce the loading state?
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
