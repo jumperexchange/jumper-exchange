@@ -43,9 +43,9 @@ export interface PortfolioPositionSummary extends Omit<
   | 'collateralTokens'
   | 'rewardTokens'
 > {
-  totalValueUSD: number;
-  formattedTotalValueUSD: string;
-  percentageOfTotalValueUSD: number;
+  amountUSD: number;
+  formattedAmountUSD: string;
+  percentageOfTotalAmountUSD: number;
 }
 
 export type PortfolioPositionsQueryWithoutEvm = Omit<

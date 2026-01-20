@@ -1,7 +1,7 @@
 import { map, sumBy } from 'lodash';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
-import type { GetTokenPrice } from '../datasources/prices.datasource';
+import type { GetTokenPrice } from '../utils/tokenPrices';
 import type { EnrichedPosition } from '../types/positions.types';
 
 /**

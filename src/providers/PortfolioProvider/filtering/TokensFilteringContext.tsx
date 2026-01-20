@@ -12,11 +12,9 @@ import {
 } from 'react';
 import { useQueryStates } from 'nuqs';
 import { isEqual } from 'lodash';
-import type { PortfolioToken } from '@/types/tokens';
 import type {
   OrderEnum,
   PortfolioTokensFilter,
-  PortfolioTokensFilteringParams,
   PortfolioTokensFilterUI,
   SortByEnum,
 } from '@/app/ui/portfolio/types';
@@ -28,12 +26,15 @@ import {
   removeNullValuesFromFilter,
   sanitizeTokensFilter,
   sortPortfolioItems,
-  tokenSortAccessors,
   isWithinValueRange,
   sanitizeValue,
-} from '@/app/ui/portfolio/utils';
+  tokenSortAccessors,
+  filterSortPortfolioTokensData,
+} from './utils';
+import type { PortfolioTokensFilteringParams } from './types';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioTokens } from '../PortfolioContext';
+import type { PortfolioToken } from '../types/tokens.types';
 
 export interface TokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
@@ -92,67 +93,34 @@ export const TokensFilteringProvider = ({ children }: PropsWithChildren) => {
     EMPTY_TOKENS_FILTERING_PARAMS,
   );
 
-  const { tokens, metadata, accounts, isLoading, isEmpty, error } =
+  const { tokensByAddress, metadata, accounts, isLoading, isEmpty, error } =
     usePortfolioTokens();
 
   const stats = useMemo((): PortfolioTokensFilteringParams => {
-    if (tokens.length === 0) {
+    if (isEmpty) {
       return EMPTY_TOKENS_FILTERING_PARAMS;
     }
 
     return {
       allWallets: metadata.wallets,
       allChains: metadata.chains,
-      allAssets: tokens,
+      allAssets: metadata.assets,
       allValueRange: metadata.valueRange,
     };
-  }, [tokens, metadata]);
+  }, [isEmpty, metadata]);
 
   const filteredSortedData = useMemo(() => {
-    if (tokens.length === 0) {
+    if (isEmpty) {
       return [];
     }
 
-    let result = [...tokens];
-
-    if (filter.tokensWallets?.length) {
-      // TODO: Wallet filtering would need tokensByAddress
-    }
-
-    if (filter.tokensChains?.length) {
-      result = result.filter(
-        (token) =>
-          filter.tokensChains!.includes(token.chain.chainId) ||
-          token.relatedTokens?.some((rt) =>
-            filter.tokensChains!.includes(rt.chain.chainId),
-          ),
-      );
-    }
-
-    if (filter.tokensAssets?.length) {
-      result = result.filter((token) =>
-        filter.tokensAssets!.includes(token.address),
-      );
-    }
-
-    if (
-      filter.tokensMinValue !== undefined ||
-      filter.tokensMaxValue !== undefined
-    ) {
-      result = result.filter((token) => {
-        const value = token.totalPriceUSD ?? 0;
-        return isWithinValueRange(
-          sanitizeValue(value),
-          filter.tokensMinValue,
-          filter.tokensMaxValue,
-        );
-      });
-    }
-
-    result = sortPortfolioItems(result, sortBy, order, tokenSortAccessors);
-
-    return result;
-  }, [tokens, filter, sortBy, order]);
+    return filterSortPortfolioTokensData(
+      tokensByAddress,
+      filter,
+      sortBy,
+      order,
+    );
+  }, [tokensByAddress, isEmpty, filter, sortBy, order]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {

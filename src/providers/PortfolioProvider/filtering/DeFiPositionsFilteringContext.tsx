@@ -23,24 +23,15 @@ import { OrderOptions, SortByOptions } from '@/app/ui/portfolio/types';
 import { EMPTY_DEFI_POSITIONS_FILTERING_PARAMS } from '@/app/ui/portfolio/constants';
 import {
   deFiPositionsSearchParamsParsers,
+  filterSortDeFiPositionsData,
   getEffectiveValueRange,
-  isWithinValueRange,
   removeNullValuesFromFilter,
   sanitizeDeFiPositionsFilter,
-  sanitizeValue,
-  sortPortfolioItems,
-  type SortAccessors,
-} from '@/app/ui/portfolio/utils';
+} from './utils';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions } from '../PortfolioContext';
 import type { PortfolioPosition } from '../types/positions.types';
 import { usePositionsQueryExecutor } from '../hooks/usePositionsQueryExecutor';
-
-const portfolioPositionSortAccessors: SortAccessors<PortfolioPosition> = {
-  [SortByOptions.VALUE]: (position) => position.totalNetUsd,
-  [SortByOptions.CHAIN]: (position) => position.chain.chainKey ?? '',
-  [SortByOptions.ASSET]: (position) => position.protocol.name ?? '',
-};
 
 export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
   sortBy: SortByEnum;
@@ -115,7 +106,6 @@ export const DeFiPositionsFilteringProvider = ({
   });
 
   const {
-    positions,
     metadata,
     isLoading: positionsLoading,
     isEmpty,
@@ -128,7 +118,7 @@ export const DeFiPositionsFilteringProvider = ({
   }, [filteredPositions.isLoading, positionsLoading]);
 
   const stats = useMemo((): PortfolioDeFiPositionsFilteringParams => {
-    if (positions.length === 0) {
+    if (isEmpty) {
       return EMPTY_DEFI_POSITIONS_FILTERING_PARAMS;
     }
 
@@ -139,41 +129,16 @@ export const DeFiPositionsFilteringProvider = ({
       allAssets: metadata.assets,
       allValueRange: metadata.valueRange,
     };
-  }, [positions, metadata]);
+  }, [isEmpty, metadata]);
 
   const filteredSortedData = useMemo((): PortfolioPosition[] => {
-    let result = [...filteredPositions.positions];
-
-    if (
-      filter.defiMinValue !== undefined ||
-      filter.defiMaxValue !== undefined
-    ) {
-      result = result.filter((position) =>
-        isWithinValueRange(
-          sanitizeValue(position.totalNetUsd),
-          filter.defiMinValue,
-          filter.defiMaxValue,
-        ),
-      );
-    }
-
-    if (sortBy === SortByOptions.VALUE) {
-      result = sortPortfolioItems(
-        result,
-        sortBy,
-        order,
-        portfolioPositionSortAccessors,
-      );
-    }
-
-    return result;
-  }, [
-    filteredPositions.positions,
-    filter.defiMinValue,
-    filter.defiMaxValue,
-    sortBy,
-    order,
-  ]);
+    return filterSortDeFiPositionsData(
+      filteredPositions.positions,
+      filter,
+      sortBy,
+      order,
+    );
+  }, [filteredPositions.positions, filter, sortBy, order]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {

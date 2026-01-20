@@ -1,6 +1,6 @@
-import type { PortfolioToken } from '@/types/tokens';
 import type { Account } from '@lifi/wallet-management';
 import type { LiFiCommonToken } from '../datasources/tokens.datasource';
+import type { Token } from '@/types/jumper-backend';
 
 /**
  * Token enriched with chain metadata and computed USD value.
@@ -24,16 +24,20 @@ export type TokensBySymbol = Record<string, EnrichedToken[]>;
  */
 export type PortfolioAccount = Omit<Account, 'address'> & { address: string };
 
+export interface PortfolioToken extends Token {
+  amount: number;
+  amountUSD: number;
+  relatedTokens?: Omit<PortfolioToken, 'relatedTokens'>[];
+}
+
 /**
  * Summary data for a token (used in portfolio summary view).
  */
 export interface PortfolioTokenSummary extends Omit<
   PortfolioToken,
-  'relatedTokens' | 'totalPriceUSD' | 'balance'
+  'relatedTokens'
 > {
-  totalValueUSD: number;
-  formattedTotalValueUSD: string;
-  balance: number;
-  formattedBalance: string;
-  percentageOfTotalValueUSD: number;
+  formattedAmountUSD: string;
+  formattedAmount: string;
+  percentageOfTotalAmountUSD: number;
 }

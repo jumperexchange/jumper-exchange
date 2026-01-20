@@ -60,12 +60,12 @@ const SummaryCard = () => {
   const state = usePortfolioState();
 
   const tokensPercentage =
-    summary.totalValueUSD > 0
-      ? (summary.tokensValueUSD / summary.totalValueUSD) * 100
+    summary.totalAmountUSD > 0
+      ? (summary.tokensAmountUSD / summary.totalAmountUSD) * 100
       : 0;
   const positionsPercentage =
-    summary.totalValueUSD > 0
-      ? (summary.positionsValueUSD / summary.totalValueUSD) * 100
+    summary.totalAmountUSD > 0
+      ? (summary.positionsAmountUSD / summary.totalAmountUSD) * 100
       : 0;
 
   if (state.isLoading) {
@@ -94,7 +94,7 @@ const SummaryCard = () => {
               Total Value
             </Typography>
             <Typography variant="h4">
-              {formatUSD(summary.totalValueUSD)}
+              {formatUSD(summary.totalAmountUSD)}
             </Typography>
           </Box>
 
@@ -104,7 +104,7 @@ const SummaryCard = () => {
                 Tokens
               </Typography>
               <Typography variant="h6">
-                {formatUSD(summary.tokensValueUSD)}
+                {formatUSD(summary.tokensAmountUSD)}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {tokensPercentage.toFixed(1)}%
@@ -115,7 +115,7 @@ const SummaryCard = () => {
                 DeFi Positions
               </Typography>
               <Typography variant="h6">
-                {formatUSD(summary.positionsValueUSD)}
+                {formatUSD(summary.positionsAmountUSD)}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {positionsPercentage.toFixed(1)}%
@@ -160,20 +160,20 @@ const SummaryCard = () => {
                       </Stack>
                       <Stack direction="row" spacing={2} alignItems="center">
                         <Typography variant="body2">
-                          {formatUSD(token.totalValueUSD)}
+                          {formatUSD(token.amountUSD)}
                         </Typography>
                         <Typography
                           variant="caption"
                           color="text.secondary"
                           sx={{ minWidth: 45, textAlign: 'right' }}
                         >
-                          {token.percentageOfTotalValueUSD.toFixed(1)}%
+                          {token.percentageOfTotalAmountUSD.toFixed(1)}%
                         </Typography>
                       </Stack>
                     </Stack>
                     <LinearProgress
                       variant="determinate"
-                      value={token.percentageOfTotalValueUSD}
+                      value={token.percentageOfTotalAmountUSD}
                       sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
                     />
                   </Box>
@@ -216,20 +216,20 @@ const SummaryCard = () => {
                         </Stack>
                         <Stack direction="row" spacing={2} alignItems="center">
                           <Typography variant="body2">
-                            {formatUSD(position.totalValueUSD)}
+                            {formatUSD(position.amountUSD)}
                           </Typography>
                           <Typography
                             variant="caption"
                             color="text.secondary"
                             sx={{ minWidth: 45, textAlign: 'right' }}
                           >
-                            {position.percentageOfTotalValueUSD.toFixed(1)}%
+                            {position.percentageOfTotalAmountUSD.toFixed(1)}%
                           </Typography>
                         </Stack>
                       </Stack>
                       <LinearProgress
                         variant="determinate"
-                        value={position.percentageOfTotalValueUSD}
+                        value={position.percentageOfTotalAmountUSD}
                         sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
                       />
                     </Box>
@@ -306,10 +306,10 @@ const TokensList = () => {
           </Stack>
           <Box sx={{ textAlign: 'right' }}>
             <Typography variant="body2">
-              {formatUSD(token.totalPriceUSD ?? 0)}
+              {formatUSD(token.amountUSD ?? 0)}
             </Typography>
             <Typography variant="caption" color="text.secondary">
-              {token.balance?.toFixed(4)} {token.symbol}
+              {token.amount?.toFixed(4)} {token.symbol}
             </Typography>
           </Box>
         </Box>
