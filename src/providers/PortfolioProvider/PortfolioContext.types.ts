@@ -81,11 +81,8 @@ export interface PortfolioProcessors {
 
 export interface PortfolioSummaryContextValue {
   totalAmountUSD: number;
-  formattedTotalAmountUSD: string;
   positionsAmountUSD: number;
-  formattedPositionsAmountUSD: string;
   tokensAmountUSD: number;
-  formattedTokensAmountUSD: string;
   positionsByProtocol: PortfolioPositionSummary[];
   tokensBySymbol: PortfolioTokenSummary[];
 }

@@ -37,7 +37,5 @@ export interface PortfolioTokenSummary extends Omit<
   PortfolioToken,
   'relatedTokens'
 > {
-  formattedAmountUSD: string;
-  formattedAmount: string;
   percentageOfTotalAmountUSD: number;
 }

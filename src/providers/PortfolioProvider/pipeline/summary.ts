@@ -8,10 +8,6 @@ import type {
   PortfolioToken,
 } from '../types/tokens.types';
 
-const formatTotalValue = (value: number): string => {
-  return value.toFixed(2) + ' USD';
-};
-
 const calculatePercentage = (value: number, total: number): number => {
   if (total === 0) {
     return 0;
@@ -29,8 +25,6 @@ export const toTokenSummary = (
   );
   return {
     ...token,
-    formattedAmountUSD: formatTotalValue(token.amountUSD),
-    formattedAmount: formatTotalValue(token.amount),
     percentageOfTotalAmountUSD,
   };
 };
@@ -47,7 +41,6 @@ export const toPositionSummary = (
   return {
     ...positions[0],
     amountUSD,
-    formattedAmountUSD: formatTotalValue(amountUSD),
     percentageOfTotalAmountUSD,
   };
 };
@@ -76,11 +69,8 @@ export const processSummary = (
 
   return {
     totalAmountUSD,
-    formattedTotalAmountUSD: formatTotalValue(totalAmountUSD),
     positionsAmountUSD,
-    formattedPositionsAmountUSD: formatTotalValue(positionsAmountUSD),
     tokensAmountUSD,
-    formattedTokensAmountUSD: formatTotalValue(tokensAmountUSD),
     tokensBySymbol: tokensBySymbolSummary,
     positionsByProtocol: positionsByProtocolSummary,
   };

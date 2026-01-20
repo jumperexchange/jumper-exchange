@@ -4,6 +4,7 @@ import type {
   PortfolioPositionsContextValue,
   PortfolioTokensContextValue,
 } from './PortfolioContext.types';
+import { usePortfolioFormattersInternal } from './utils/formatters';
 
 const noop = () => {};
 
@@ -47,11 +48,8 @@ const defaultTokensContextValue: PortfolioTokensContextValue = {
 const defaultContextValue: PortfolioContextValue = {
   summary: {
     totalAmountUSD: 0,
-    formattedTotalAmountUSD: '0',
     positionsAmountUSD: 0,
-    formattedPositionsAmountUSD: '0',
     tokensAmountUSD: 0,
-    formattedTokensAmountUSD: '0',
     positionsByProtocol: [],
     tokensBySymbol: [],
   },
@@ -100,4 +98,8 @@ export const usePortfolioState = () => {
 
 export const usePortfolioSummary = () => {
   return useContext(PortfolioContext).summary;
+};
+
+export const usePortfolioFormatters = () => {
+  return usePortfolioFormattersInternal();
 };
