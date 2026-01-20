@@ -1,9 +1,9 @@
-import type { PortfolioToken } from '@/types/tokens';
 import type { TokensMetadata, PositionsMetadata } from './pipeline/metadata';
 import type { useTokensData } from './hooks/useTokensData';
 import type { usePositionsData } from './hooks/usePositionsData';
 import type {
   PortfolioAccount,
+  PortfolioToken,
   PortfolioTokenSummary,
 } from './types/tokens.types';
 import type {
@@ -80,12 +80,12 @@ export interface PortfolioProcessors {
 }
 
 export interface PortfolioSummaryContextValue {
-  totalValueUSD: number;
-  formattedTotalValueUSD: string;
-  positionsValueUSD: number;
-  formattedPositionsValueUSD: string;
-  tokensValueUSD: number;
-  formattedTokensValueUSD: string;
+  totalAmountUSD: number;
+  formattedTotalAmountUSD: string;
+  positionsAmountUSD: number;
+  formattedPositionsAmountUSD: string;
+  tokensAmountUSD: number;
+  formattedTokensAmountUSD: string;
   positionsByProtocol: PortfolioPositionSummary[];
   tokensBySymbol: PortfolioTokenSummary[];
 }

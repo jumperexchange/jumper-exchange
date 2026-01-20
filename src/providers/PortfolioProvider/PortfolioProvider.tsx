@@ -6,7 +6,8 @@ import { PortfolioContext } from './PortfolioContext';
 import type { PortfolioContextValue } from './PortfolioContext.types';
 import { useTokensData } from './hooks/useTokensData';
 import { usePositionsData } from './hooks/usePositionsData';
-import { usePricesData } from './hooks/usePricesData';
+import { useTokens } from '@/hooks/useTokens';
+import { createPriceLookup } from './utils/tokenPrices';
 import { useChains } from '@/hooks/useChains';
 import { augmentTokens } from './pipeline/tokens.augment';
 import { dedupTokensFromLpPositions } from './pipeline/tokens.dedup';
@@ -34,8 +35,19 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
   const { chains } = useChains();
   const tokensData = useTokensData();
   const positionsData = usePositionsData();
-  const pricesData = usePricesData();
-  const { getTokenPrice } = pricesData;
+  const {
+    tokens: allTokens,
+    isLoading: isLoadingPrices,
+    isSuccess: hasFreshPrices,
+    updatedAt: pricesUpdatedAt,
+  } = useTokens();
+
+  const getTokenPrice = useMemo(() => {
+    if (!allTokens?.tokens) {
+      return () => undefined;
+    }
+    return createPriceLookup(allTokens.tokens);
+  }, [allTokens?.tokens]);
 
   const processPositionsData = useCallback(
     (rawData: ReturnType<typeof usePositionsData>) => {
@@ -180,16 +192,15 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
           processedMainTokens.isLoading || processedMainPositions.isLoading,
         isLoadingTokens: processedMainTokens.isLoading,
         isLoadingPositions: processedMainPositions.isLoading,
-        isLoadingPrices: pricesData.isLoading,
-        hasFreshPrices: pricesData.isSuccess,
-        pricesUpdatedAt: pricesData.updatedAt,
+        isLoadingPrices,
+        hasFreshPrices,
+        pricesUpdatedAt: pricesUpdatedAt ?? null,
         hasError: Boolean(
           processedMainTokens.error || processedMainPositions.error,
         ),
         refetchAll: () => {
           processedMainTokens.refetch();
           processedMainPositions.refetch();
-          pricesData.refetch();
         },
       },
       processors: {
@@ -201,7 +212,9 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       processedSummary,
       processedMainTokens,
       processedMainPositions,
-      pricesData,
+      isLoadingPrices,
+      hasFreshPrices,
+      pricesUpdatedAt,
       processPositionsData,
       processTokensData,
     ],

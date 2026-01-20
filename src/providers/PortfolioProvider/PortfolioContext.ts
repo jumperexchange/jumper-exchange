@@ -46,12 +46,12 @@ const defaultTokensContextValue: PortfolioTokensContextValue = {
 
 const defaultContextValue: PortfolioContextValue = {
   summary: {
-    totalValueUSD: 0,
-    formattedTotalValueUSD: '0',
-    positionsValueUSD: 0,
-    formattedPositionsValueUSD: '0',
-    tokensValueUSD: 0,
-    formattedTokensValueUSD: '0',
+    totalAmountUSD: 0,
+    formattedTotalAmountUSD: '0',
+    positionsAmountUSD: 0,
+    formattedPositionsAmountUSD: '0',
+    tokensAmountUSD: 0,
+    formattedTokensAmountUSD: '0',
     positionsByProtocol: [],
     tokensBySymbol: [],
   },

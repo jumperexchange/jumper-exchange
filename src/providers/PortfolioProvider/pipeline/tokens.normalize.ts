@@ -8,8 +8,11 @@ import {
   toNumber,
   values,
 } from 'lodash';
-import type { PortfolioToken } from '@/types/tokens';
-import type { EnrichedToken, TokensBySymbol } from '../types/tokens.types';
+import type {
+  EnrichedToken,
+  TokensBySymbol,
+  PortfolioToken,
+} from '../types/tokens.types';
 
 /**
  * Convert an EnrichedToken to the app's internal PortfolioToken type.
@@ -25,8 +28,8 @@ export const toPortfolioToken = (token: EnrichedToken): PortfolioToken => {
       chainId: token.chainId,
       chainKey: token.chainKey ?? token.chainName ?? '',
     },
-    balance: toNumber(token.amount) || 0,
-    totalPriceUSD: token.amountUSD,
+    amount: toNumber(token.amount) || 0,
+    amountUSD: token.amountUSD,
   };
 };
 
@@ -51,8 +54,8 @@ const toPortfolioTokenFromGroup = (
 
   return {
     ...mainToken,
-    totalPriceUSD: cumulatedAmountUSD,
-    balance: cumulatedAmount,
+    amountUSD: cumulatedAmountUSD,
+    amount: cumulatedAmount,
     relatedTokens: map(sorted, toPortfolioToken),
   };
 };

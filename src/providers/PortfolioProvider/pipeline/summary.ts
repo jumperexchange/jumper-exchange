@@ -1,8 +1,12 @@
-import type { PortfolioToken } from '@/types/tokens';
-import type { EnrichedPosition } from '../types/positions.types';
+import type {
+  PortfolioPositionSummary,
+  EnrichedPosition,
+} from '../types/positions.types';
 import { sumBy } from 'lodash';
-import type { PortfolioTokenSummary } from '../types/tokens.types';
-import type { PortfolioPositionSummary } from '../types/positions.types';
+import type {
+  PortfolioTokenSummary,
+  PortfolioToken,
+} from '../types/tokens.types';
 
 const formatTotalValue = (value: number): string => {
   return value.toFixed(2) + ' USD';
@@ -19,17 +23,15 @@ export const toTokenSummary = (
   token: PortfolioToken,
   totalTokensValueUSD: number,
 ): PortfolioTokenSummary => {
-  const percentageOfTotalValueUSD = calculatePercentage(
-    token.totalPriceUSD,
+  const percentageOfTotalAmountUSD = calculatePercentage(
+    token.amountUSD,
     totalTokensValueUSD,
   );
   return {
     ...token,
-    balance: token.balance,
-    totalValueUSD: token.totalPriceUSD,
-    formattedTotalValueUSD: formatTotalValue(token.totalPriceUSD),
-    formattedBalance: formatTotalValue(token.balance),
-    percentageOfTotalValueUSD,
+    formattedAmountUSD: formatTotalValue(token.amountUSD),
+    formattedAmount: formatTotalValue(token.amount),
+    percentageOfTotalAmountUSD,
   };
 };
 
@@ -37,16 +39,16 @@ export const toPositionSummary = (
   positions: EnrichedPosition[],
   totalPositionsValueUSD: number,
 ): PortfolioPositionSummary => {
-  const totalValueUSD = sumBy(positions, 'netUsd');
-  const percentageOfTotalValueUSD = calculatePercentage(
-    totalValueUSD,
+  const amountUSD = sumBy(positions, 'netUsd');
+  const percentageOfTotalAmountUSD = calculatePercentage(
+    amountUSD,
     totalPositionsValueUSD,
   );
   return {
     ...positions[0],
-    totalValueUSD,
-    formattedTotalValueUSD: formatTotalValue(totalValueUSD),
-    percentageOfTotalValueUSD,
+    amountUSD,
+    formattedAmountUSD: formatTotalValue(amountUSD),
+    percentageOfTotalAmountUSD,
   };
 };
 
@@ -55,21 +57,21 @@ export const processSummary = (
   positionsByProtocol: Record<string, EnrichedPosition[]>,
 ) => {
   const positionsByProtocolValues = Object.values(positionsByProtocol);
-  const tokensValueUSD = sumBy(tokens, 'totalPriceUSD');
-  const positionsValueUSD = sumBy(positionsByProtocolValues.flat(), 'netUsd');
-  const totalValueUSD = tokensValueUSD + positionsValueUSD;
+  const tokensAmountUSD = sumBy(tokens, 'amountUSD');
+  const positionsAmountUSD = sumBy(positionsByProtocolValues.flat(), 'netUsd');
+  const totalAmountUSD = tokensAmountUSD + positionsAmountUSD;
   return {
-    totalValueUSD,
-    formattedTotalValueUSD: formatTotalValue(totalValueUSD),
-    positionsValueUSD,
-    formattedPositionsValueUSD: formatTotalValue(positionsValueUSD),
-    tokensValueUSD,
-    formattedTokensValueUSD: formatTotalValue(tokensValueUSD),
+    totalAmountUSD,
+    formattedTotalAmountUSD: formatTotalValue(totalAmountUSD),
+    positionsAmountUSD,
+    formattedPositionsAmountUSD: formatTotalValue(positionsAmountUSD),
+    tokensAmountUSD,
+    formattedTokensAmountUSD: formatTotalValue(tokensAmountUSD),
     tokensBySymbol: tokens.map((token) =>
-      toTokenSummary(token, tokensValueUSD),
+      toTokenSummary(token, tokensAmountUSD),
     ),
     positionsByProtocol: positionsByProtocolValues.map((position) =>
-      toPositionSummary(position, positionsValueUSD),
+      toPositionSummary(position, positionsAmountUSD),
     ),
   };
 };
