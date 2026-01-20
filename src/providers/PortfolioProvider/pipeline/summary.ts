@@ -2,7 +2,7 @@ import type {
   PortfolioPositionSummary,
   EnrichedPosition,
 } from '../types/positions.types';
-import { sumBy } from 'lodash';
+import { map, orderBy, sumBy } from 'lodash';
 import type {
   PortfolioTokenSummary,
   PortfolioToken,
@@ -60,6 +60,20 @@ export const processSummary = (
   const tokensAmountUSD = sumBy(tokens, 'amountUSD');
   const positionsAmountUSD = sumBy(positionsByProtocolValues.flat(), 'netUsd');
   const totalAmountUSD = tokensAmountUSD + positionsAmountUSD;
+
+  const tokensBySymbolSummary = orderBy(
+    map(tokens, (token) => toTokenSummary(token, tokensAmountUSD)),
+    'amountUSD',
+    'desc',
+  );
+  const positionsByProtocolSummary = orderBy(
+    map(positionsByProtocolValues, (positions) =>
+      toPositionSummary(positions, positionsAmountUSD),
+    ),
+    'amountUSD',
+    'desc',
+  );
+
   return {
     totalAmountUSD,
     formattedTotalAmountUSD: formatTotalValue(totalAmountUSD),
@@ -67,11 +81,7 @@ export const processSummary = (
     formattedPositionsAmountUSD: formatTotalValue(positionsAmountUSD),
     tokensAmountUSD,
     formattedTokensAmountUSD: formatTotalValue(tokensAmountUSD),
-    tokensBySymbol: tokens.map((token) =>
-      toTokenSummary(token, tokensAmountUSD),
-    ),
-    positionsByProtocol: positionsByProtocolValues.map((position) =>
-      toPositionSummary(position, positionsAmountUSD),
-    ),
+    tokensBySymbol: tokensBySymbolSummary,
+    positionsByProtocol: positionsByProtocolSummary,
   };
 };
