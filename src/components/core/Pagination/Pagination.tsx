@@ -73,7 +73,6 @@ export const Pagination = ({
         return (
           <SmoothScrollWrapper id={id} key={`pagination-wrapper-${index}`}>
             <PaginationIndexButton
-              key={`pagination-index-button-${index}`}
               onClick={() => handlePage(pageIndex)}
               active={pageIndex === page}
             >

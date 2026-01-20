@@ -27,10 +27,9 @@ export const searchParamsParsers = {
   tab: parseAsStringEnum(Object.values(EarnFilterTab)).withDefault(
     EarnFilterTab.FOR_YOU,
   ),
-  // FIXME: Check how to properly depreacate this
-  // @deprecated
+  /** @deprecated Use `tab` query param instead. Kept for backward compatibility with existing bookmarks. */
   forYou: parseAsBoolean,
-  // @deprecated
+  /** @deprecated Use `tab` query param instead. Kept for backward compatibility with existing bookmarks. */
   withPositions: parseAsBoolean,
   order: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,

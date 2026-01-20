@@ -136,7 +136,7 @@ export const EarnFilteringProvider = ({
       withPositions: null,
       tab: initialTab,
     });
-  }, [initialTab]);
+  }, [initialTab, setSearchParamsState]);
 
   // TODO: introduce the loading state?
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
@@ -187,7 +187,7 @@ export const EarnFilteringProvider = ({
 
     const total = data.length;
     const pageCount = Math.ceil(total / PAGE_SIZE);
-    const pagination: StrapiMetaPagination = {
+    const pagination = {
       page,
       pageSize: PAGE_SIZE,
       pageCount,
@@ -206,6 +206,7 @@ export const EarnFilteringProvider = ({
       case EarnFilterTab.YOUR_POSITIONS: {
         updatedAt = all.data?.meta?.updatedAt;
         error = all.error;
+        break;
       }
       case EarnFilterTab.FOR_YOU: {
         updatedAt = forYou.data?.meta?.updatedAt;

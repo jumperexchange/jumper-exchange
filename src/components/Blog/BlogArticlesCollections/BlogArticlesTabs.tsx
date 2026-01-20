@@ -51,7 +51,7 @@ export function BlogArticlesTabs({
         action: TrackingAction.ClickPagination,
         data: {
           [TrackingEventParameter.Pagination]: page,
-          [TrackingEventParameter.PaginationCat]: index || '',
+          [TrackingEventParameter.PaginationCat]: index ?? '',
         },
       });
     },
@@ -67,11 +67,11 @@ export function BlogArticlesTabs({
   );
 
   const handlePrev = useCallback(() => {
-    trackPagination('click-pagination-prev', pageTab);
+    trackPagination('click-pagination-prev', pageTab - 1);
   }, [trackPagination, pageTab]);
 
   const handleNext = useCallback(() => {
-    trackPagination('click-pagination-next', pageTab);
+    trackPagination('click-pagination-next', pageTab + 1);
   }, [trackPagination, pageTab]);
 
   if (!chunkedPages) {
