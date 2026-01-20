@@ -24,13 +24,6 @@ export async function verifyAnalyticsButtonsAreVisible(page: Page) {
     await expect(page.getByTestId(chartButton)).toBeVisible();
   }
 }
-export async function verifyNoSelectedChainsAreVisible(
-  page: Page,
-  chain1: string,
-  chain2: string,
-) {
-  await verifyNoSelectedItemsAreVisible(page, [chain1, chain2]);
-}
 
 export async function selectOptionFromDropDown(
   page: Page,
