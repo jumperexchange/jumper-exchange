@@ -141,7 +141,6 @@ export const EarnFilteringProvider = ({
     }
   }, [forYouParam, initialTab, setSearchParamsState, withPositionsParam]);
 
-  // TODO: introduce the loading state?
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
@@ -159,19 +158,42 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  // TODO: Can we pre-fetch all this data?
-  const all = useEarnFilterOpportunities(
+  // Fetch positions data when address is available
+  const yourPositions = useEarnFilterOpportunities(
     {
       filter: {
         ...filter,
-        ...(tab === EarnFilterTab.YOUR_POSITIONS
-          ? { hasPositions: true, address }
-          : {}),
+        hasPositions: true,
+        address,
         sortBy: sortBy,
       },
     },
     {
-      enabled: tab === EarnFilterTab.YOUR_POSITIONS ? !!address : true,
+      enabled: !!address,
+    },
+  );
+
+  const primaryQueryDone = useMemo(() => {
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        return !forYou.isLoading;
+      case EarnFilterTab.YOUR_POSITIONS:
+        return !yourPositions.isLoading;
+      case EarnFilterTab.ALL:
+        return true;
+    }
+  }, [tab, forYou.isLoading, yourPositions.isLoading]);
+
+  // Pre-fetch all data in the background after primary query is done
+  const all = useEarnFilterOpportunities(
+    {
+      filter: {
+        ...filter,
+        sortBy: sortBy,
+      },
+    },
+    {
+      enabled: tab === EarnFilterTab.ALL || primaryQueryDone,
     },
   );
 
@@ -180,8 +202,31 @@ export const EarnFilteringProvider = ({
   });
 
   const { data, pagination, error, updatedAt } = useMemo(() => {
-    const sourceData =
-      tab === EarnFilterTab.FOR_YOU ? forYou.data?.data : all.data?.data;
+    let sourceData: EarnOpportunityWithLatestAnalytics[] | undefined;
+    let updatedAt: Date | undefined;
+    let error: unknown | undefined;
+
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU: {
+        sourceData = forYou.data?.data;
+        updatedAt = forYou.data?.meta?.updatedAt;
+        error = forYou.error;
+        break;
+      }
+      case EarnFilterTab.YOUR_POSITIONS: {
+        sourceData = yourPositions.data?.data;
+        updatedAt = yourPositions.data?.meta?.updatedAt;
+        error = yourPositions.error;
+        break;
+      }
+      case EarnFilterTab.ALL: {
+        sourceData = all.data?.data;
+        updatedAt = all.data?.meta?.updatedAt;
+        error = all.error;
+        break;
+      }
+    }
+
     const forYouSlugsSet = new Set(
       (forYou.data?.data ?? []).map((item) => item.slug),
     );
@@ -201,24 +246,8 @@ export const EarnFilteringProvider = ({
     const endIndex = startIndex + PAGE_SIZE;
     const paginatedData = data.slice(startIndex, endIndex);
 
-    let updatedAt: Date | undefined;
-    let error: unknown | undefined;
-
-    switch (tab) {
-      case EarnFilterTab.ALL:
-      case EarnFilterTab.YOUR_POSITIONS: {
-        updatedAt = all.data?.meta?.updatedAt;
-        error = all.error;
-        break;
-      }
-      case EarnFilterTab.FOR_YOU: {
-        updatedAt = forYou.data?.meta?.updatedAt;
-        error = forYou.error;
-      }
-    }
-
     return { data: paginatedData, pagination, error, updatedAt };
-  }, [tab, forYou, all, page]);
+  }, [tab, forYou, all, yourPositions, page]);
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -287,9 +316,18 @@ export const EarnFilteringProvider = ({
 
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
-    const isLoading =
-      !hasData &&
-      (tab === EarnFilterTab.FOR_YOU ? forYou.isLoading : all.isLoading);
+    let isLoading = false;
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        isLoading = !hasData && (forYou.isLoading || !address);
+        break;
+      case EarnFilterTab.YOUR_POSITIONS:
+        isLoading = !hasData && yourPositions.isLoading;
+        break;
+      case EarnFilterTab.ALL:
+        isLoading = !hasData && all.isLoading;
+        break;
+    }
 
     return {
       sortBy,
@@ -326,10 +364,9 @@ export const EarnFilteringProvider = ({
     updatedAt,
     address,
     all.isLoading,
-    all.error,
     allNoFilter.isLoading,
     forYou.isLoading,
-    forYou.error,
+    yourPositions.isLoading,
     stats,
     changeTab,
   ]);
