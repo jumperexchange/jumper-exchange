@@ -42,5 +42,5 @@ export const toPortfolioPositions = (
     Object.entries(groupedPositions),
     ([key, positions]) => toPortfolioPosition(key, positions),
   );
-  return orderBy(compact(portfolioPositions), 'totalNetUsd', 'desc');
+  return compact(portfolioPositions);
 };
