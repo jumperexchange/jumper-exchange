@@ -52,15 +52,12 @@ test.describe('Chains filters on Earn page', () => {
         await verifyFiltersAreVisible(page);
       });
 
-      await test.step('Verify Your Positions tab shows no filters when wallet has no positions', async () => {
+      await test.step('Verify if all filters are visible on Your Positions tab', async () => {
         const yourPositionsTab = page.getByTestId(
           'earn-filter-tab-your-positions',
         );
         await yourPositionsTab.click();
-        // Filters should not be visible when there are no positions
-        await expect(
-          page.getByTestId('earn-filter-chain-select'),
-        ).not.toBeVisible();
+        await verifyFiltersAreVisible(page);
       });
     },
   );
@@ -272,11 +269,8 @@ test.describe('Should be able to navigate to the "Your Positions" tab', () => {
   test(
     qase(56, 'Should be able to navigate to the "Your Positions" tab'),
     async ({ page }) => {
-      await test.step('Navigate to the "Your Positions" tab and verify empty state when no positions', async () => {
-        // Filters should not be visible when there are no positions
-        await expect(
-          page.getByTestId('earn-filter-chain-select'),
-        ).not.toBeVisible();
+      await test.step('Navigate to the "Your Positions" tab and verify filters are visible', async () => {
+        await verifyFiltersAreVisible(page);
       });
     },
   );

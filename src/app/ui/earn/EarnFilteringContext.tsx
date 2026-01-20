@@ -16,17 +16,21 @@ import type { StrapiMetaPagination } from 'src/types/strapi';
 import type { Hex } from 'viem';
 import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
 import { EMPTY_FILTERING_PARAMS } from './constants';
+import {
+  extractFilteringParams,
+  filterOpportunities,
+  sanitizeFilter,
+  sortOpportunities,
+} from './filterOpportunities';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
   SortByEnum,
 } from './types';
-import { EarnFilterTab, SortByOptions } from './types';
+import { EarnFilterTab, OrderOptions, SortByOptions } from './types';
 import {
   enrichDataWithFlag,
-  extractFilteringParams,
   removeNullValuesFromFilter,
-  sanitizeFilter,
   searchParamsParsers,
 } from './utils';
 
@@ -158,22 +162,6 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  // Fetch positions data when address is available (with filters applied)
-  const yourPositions = useEarnFilterOpportunities(
-    {
-      filter: {
-        ...filter,
-        hasPositions: true,
-        address,
-        sortBy: sortBy,
-      },
-    },
-    {
-      enabled: !!address,
-    },
-  );
-
-  // Fetch ALL positions without filters (for filter options on YOUR_POSITIONS tab)
   const yourPositionsNoFilter = useEarnFilterOpportunities(
     {
       filter: {
@@ -186,63 +174,59 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  const primaryQueryDone = useMemo(() => {
-    switch (tab) {
-      case EarnFilterTab.FOR_YOU:
-        return !forYou.isLoading;
-      case EarnFilterTab.YOUR_POSITIONS:
-        return !yourPositions.isLoading;
-      case EarnFilterTab.ALL:
-        return true;
-    }
-  }, [tab, forYou.isLoading, yourPositions.isLoading]);
-
-  // Pre-fetch all data in the background after primary query is done
-  const all = useEarnFilterOpportunities(
-    {
-      filter: {
-        ...filter,
-        sortBy: sortBy,
-      },
-    },
-    {
-      enabled: tab === EarnFilterTab.ALL || primaryQueryDone,
-    },
-  );
-
   const allNoFilter = useEarnFilterOpportunities({
     filter: {},
   });
+
+  const allNoFilterData = useMemo(
+    () => allNoFilter.data?.data ?? [],
+    [allNoFilter.data],
+  );
+
+  const totalMarkets = allNoFilterData.length;
 
   const { sourceData, error, updatedAt } = useMemo(() => {
     switch (tab) {
       case EarnFilterTab.FOR_YOU:
         return {
-          sourceData: forYou.data?.data,
+          sourceData: forYou.data?.data ?? [],
           updatedAt: forYou.data?.meta?.updatedAt,
           error: forYou.error,
         };
       case EarnFilterTab.YOUR_POSITIONS:
         return {
-          sourceData: yourPositions.data?.data,
-          updatedAt: yourPositions.data?.meta?.updatedAt,
-          error: yourPositions.error,
+          sourceData: yourPositionsNoFilter.data?.data ?? [],
+          updatedAt: yourPositionsNoFilter.data?.meta?.updatedAt,
+          error: yourPositionsNoFilter.error,
         };
       case EarnFilterTab.ALL:
         return {
-          sourceData: all.data?.data,
-          updatedAt: all.data?.meta?.updatedAt,
-          error: all.error,
+          sourceData: allNoFilterData,
+          updatedAt: allNoFilter.data?.meta?.updatedAt,
+          error: allNoFilter.error,
         };
     }
-  }, [tab, forYou, all, yourPositions]);
+  }, [tab, forYou, yourPositionsNoFilter, allNoFilterData, allNoFilter]);
+
+  const filteredAndSortedData = useMemo(() => {
+    // FOR_YOU tab is already filtered by backend
+    if (tab === EarnFilterTab.FOR_YOU) {
+      return sourceData;
+    }
+
+    const filtered = filterOpportunities(sourceData, filter);
+
+    const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
+
+    return sorted;
+  }, [sourceData, filter, sortBy, tab]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
       (forYou.data?.data ?? []).map((item) => item.slug),
     );
-    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-  }, [sourceData, forYou.data?.data]);
+    return enrichDataWithFlag(filteredAndSortedData, 'forYou', forYouSlugsSet);
+  }, [filteredAndSortedData, forYou.data?.data]);
 
   const { data, pagination } = useMemo(() => {
     const total = enrichedData.length;
@@ -261,14 +245,6 @@ export const EarnFilteringProvider = ({
     return { data: paginatedData, pagination };
   }, [enrichedData, page]);
 
-  const allNoFilterData = useMemo(
-    () => allNoFilter.data?.data ?? [],
-    [allNoFilter.data],
-  );
-
-  const totalMarkets = allNoFilterData.length;
-
-  // Get unfiltered data for the current tab (for filter options)
   const unfilteredTabData = useMemo(() => {
     switch (tab) {
       case EarnFilterTab.FOR_YOU:
@@ -285,7 +261,6 @@ export const EarnFilteringProvider = ({
     allNoFilterData,
   ]);
 
-  // Extract filter options from unfiltered data for the current tab
   const stats = useMemo((): EarnFilteringParams => {
     if (unfilteredTabData.length === 0) {
       return EMPTY_FILTERING_PARAMS;
@@ -352,10 +327,10 @@ export const EarnFilteringProvider = ({
         isLoading = !hasData && (forYou.isLoading || !address);
         break;
       case EarnFilterTab.YOUR_POSITIONS:
-        isLoading = !hasData && yourPositions.isLoading;
+        isLoading = !hasData && yourPositionsNoFilter.isLoading;
         break;
       case EarnFilterTab.ALL:
-        isLoading = !hasData && all.isLoading;
+        isLoading = !hasData && allNoFilter.isLoading;
         break;
     }
 
@@ -381,6 +356,7 @@ export const EarnFilteringProvider = ({
       ...stats,
     };
   }, [
+    error,
     sortBy,
     filter,
     updateFilter,
@@ -393,12 +369,12 @@ export const EarnFilteringProvider = ({
     page,
     updatedAt,
     address,
-    all.isLoading,
     allNoFilter.isLoading,
     forYou.isLoading,
-    yourPositions.isLoading,
+    yourPositionsNoFilter.isLoading,
     stats,
     changeTab,
+    data,
   ]);
 
   return (
