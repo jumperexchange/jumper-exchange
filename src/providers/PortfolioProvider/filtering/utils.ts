@@ -7,7 +7,7 @@ import {
   parseAsStringEnum,
 } from 'nuqs';
 import { sortBy } from 'lodash';
-import type { PortfolioToken } from '../types/tokens.types';
+import type { PortfolioTokenGroup } from '../types/tokens.types';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
@@ -18,7 +18,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
-import type { PortfolioPosition } from '../types/positions.types';
+import type { PortfolioDeFiPositionsGroup } from '../types/positions.types';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -50,17 +50,18 @@ export const sortPortfolioItems = <T>(
   return sorted;
 };
 
-export const tokenSortAccessors: SortAccessors<PortfolioToken> = {
-  [SortByOptions.VALUE]: (token) => token.amountUSD ?? 0,
-  [SortByOptions.CHAIN]: (token) => token.chain.chainKey ?? '',
-  [SortByOptions.ASSET]: (token) => token.name ?? '',
+export const tokenSortAccessors: SortAccessors<PortfolioTokenGroup> = {
+  [SortByOptions.VALUE]: (group) => group.amountUSD ?? 0,
+  [SortByOptions.CHAIN]: (group) => group.main.chainKey ?? '',
+  [SortByOptions.ASSET]: (group) => group.main.name ?? '',
 };
 
-const portfolioPositionSortAccessors: SortAccessors<PortfolioPosition> = {
-  [SortByOptions.VALUE]: (position) => position.totalNetUsd,
-  [SortByOptions.CHAIN]: (position) => position.chain.chainKey ?? '',
-  [SortByOptions.ASSET]: (position) => position.protocol.name ?? '',
-};
+const portfolioPositionSortAccessors: SortAccessors<PortfolioDeFiPositionsGroup> =
+  {
+    [SortByOptions.VALUE]: (group) => group.amountUSD,
+    [SortByOptions.CHAIN]: (group) => group.main.chain.chainKey ?? '',
+    [SortByOptions.ASSET]: (group) => group.main.protocol.name ?? '',
+  };
 
 export const isWithinValueRange = (
   value: number,
@@ -129,37 +130,33 @@ export const sanitizeTokensFilter = (
 };
 
 export const filterSortPortfolioTokensData = (
-  tokensByAddress: Record<string, PortfolioToken[]>,
+  tokensByAddress: Record<string, PortfolioTokenGroup[]>,
   filter: PortfolioTokensFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
-): PortfolioToken[] => {
-  let allData: PortfolioToken[] = [];
+): PortfolioTokenGroup[] => {
+  let allData: PortfolioTokenGroup[] = [];
 
   const walletsToInclude = filter.tokensWallets?.length
     ? filter.tokensWallets
     : Object.keys(tokensByAddress);
 
   walletsToInclude.forEach((wallet) => {
-    const tokens = tokensByAddress[wallet];
-    if (tokens) {
-      allData = [...allData, ...tokens];
+    const groups = tokensByAddress[wallet];
+    if (groups) {
+      allData = [...allData, ...groups];
     }
   });
 
   if (filter.tokensChains?.length) {
-    allData = allData.filter(
-      (token) =>
-        filter.tokensChains!.includes(token.chain.chainId) ||
-        token.relatedTokens?.some((rt) =>
-          filter.tokensChains!.includes(rt.chain.chainId),
-        ),
+    allData = allData.filter((group) =>
+      filter.tokensChains!.includes(group.main.chainId),
     );
   }
 
   if (filter.tokensAssets?.length) {
-    allData = allData.filter((token) =>
-      filter.tokensAssets!.includes(token.address),
+    allData = allData.filter((group) =>
+      filter.tokensAssets!.includes(group.main.address),
     );
   }
 
@@ -167,8 +164,8 @@ export const filterSortPortfolioTokensData = (
     filter.tokensMinValue !== undefined ||
     filter.tokensMaxValue !== undefined
   ) {
-    allData = allData.filter((token) => {
-      const value = token.amountUSD ?? 0;
+    allData = allData.filter((group) => {
+      const value = group.amountUSD ?? 0;
       return isWithinValueRange(
         sanitizeValue(value),
         filter.tokensMinValue,
@@ -250,16 +247,16 @@ export const getEffectiveValueRange = (
 };
 
 export const filterSortDeFiPositionsData = (
-  positions: PortfolioPosition[],
+  groups: PortfolioDeFiPositionsGroup[],
   filter: PortfolioDeFiPositionsFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
-): PortfolioPosition[] => {
-  let result = [...positions];
+): PortfolioDeFiPositionsGroup[] => {
+  let result = [...groups];
 
   if (filter.defiMinValue !== undefined || filter.defiMaxValue !== undefined) {
-    result = result.filter((position) => {
-      const value = position.totalNetUsd || 0;
+    result = result.filter((group) => {
+      const value = group.amountUSD || 0;
       return isWithinValueRange(
         sanitizeValue(value),
         filter.defiMinValue,

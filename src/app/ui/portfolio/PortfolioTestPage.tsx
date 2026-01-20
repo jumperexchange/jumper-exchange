@@ -33,6 +33,7 @@ import { useTokensFiltering } from '@/providers/PortfolioProvider/filtering/Toke
 import { TokensFilterControls } from '@/providers/PortfolioProvider/filtering/TokensFilterControls';
 import { useDeFiPositionsFiltering } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilteringContext';
 import { DeFiPositionsFilterControls } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilterControls';
+import type { PortfolioExtendedToken } from '@/providers/PortfolioProvider/classes/PortfolioExtendedToken';
 
 const formatTimestamp = (timestamp: number | null) => {
   if (!timestamp) {
@@ -97,7 +98,7 @@ const SummaryCard = () => {
                 Tokens
               </Typography>
               <Typography variant="h6">
-                {amountUSD(summary.tokensAmountUSD)}
+                {amountUSD(summary.tokensAmountUSD, { compact: true })}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {percentage(tokensPercentage)}
@@ -108,7 +109,7 @@ const SummaryCard = () => {
                 DeFi Positions
               </Typography>
               <Typography variant="h6">
-                {amountUSD(summary.positionsAmountUSD)}
+                {amountUSD(summary.positionsAmountUSD, { compact: true })}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {percentage(positionsPercentage)}
@@ -133,40 +134,42 @@ const SummaryCard = () => {
                 Top Tokens by Symbol
               </Typography>
               <Stack spacing={1}>
-                {summary.tokensBySymbol.slice(0, 5).map((token, index) => (
-                  <Box key={`${token.symbol}-${index}`}>
+                {summary.tokensBySymbol.slice(0, 5).map((tokenGroup, index) => (
+                  <Box key={`${tokenGroup.main.symbol}-${index}`}>
                     <Stack
                       direction="row"
                       justifyContent="space-between"
                       alignItems="center"
                     >
                       <Stack direction="row" spacing={1} alignItems="center">
-                        {token.logo && (
+                        {tokenGroup.main.logoURI && (
                           <Box
                             component="img"
-                            src={token.logo}
-                            alt={token.symbol}
+                            src={tokenGroup.main.logoURI}
+                            alt={tokenGroup.main.symbol}
                             sx={{ width: 20, height: 20, borderRadius: '50%' }}
                           />
                         )}
-                        <Typography variant="body2">{token.symbol}</Typography>
+                        <Typography variant="body2">
+                          {tokenGroup.main.symbol}
+                        </Typography>
                       </Stack>
                       <Stack direction="row" spacing={2} alignItems="center">
                         <Typography variant="body2">
-                          {amountUSD(token.amountUSD)}
+                          {tokenGroup.displayAmountUSD()}
                         </Typography>
                         <Typography
                           variant="caption"
                           color="text.secondary"
                           sx={{ minWidth: 45, textAlign: 'right' }}
                         >
-                          {percentage(token.percentageOfTotalAmountUSD)}
+                          {tokenGroup.displayPercentageOfAmountUSD()}
                         </Typography>
                       </Stack>
                     </Stack>
                     <LinearProgress
                       variant="determinate"
-                      value={token.percentageOfTotalAmountUSD}
+                      value={tokenGroup.percentageOfAmountUSD ?? 0}
                       sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
                     />
                   </Box>
@@ -183,19 +186,19 @@ const SummaryCard = () => {
               <Stack spacing={1}>
                 {summary.positionsByProtocol
                   .slice(0, 5)
-                  .map((position, index) => (
-                    <Box key={`${position.protocol?.name}-${index}`}>
+                  .map((positionGroup, index) => (
+                    <Box key={`${positionGroup.main.protocol?.name}-${index}`}>
                       <Stack
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
                       >
                         <Stack direction="row" spacing={1} alignItems="center">
-                          {position.protocol?.logo && (
+                          {positionGroup.main.protocol?.logo && (
                             <Box
                               component="img"
-                              src={position.protocol.logo}
-                              alt={position.protocol.name}
+                              src={positionGroup.main.protocol.logo}
+                              alt={positionGroup.main.protocol.name}
                               sx={{
                                 width: 20,
                                 height: 20,
@@ -204,25 +207,25 @@ const SummaryCard = () => {
                             />
                           )}
                           <Typography variant="body2">
-                            {position.protocol?.name}
+                            {positionGroup.main.protocol?.name}
                           </Typography>
                         </Stack>
                         <Stack direction="row" spacing={2} alignItems="center">
                           <Typography variant="body2">
-                            {amountUSD(position.amountUSD)}
+                            {positionGroup.displayAmountUSD()}
                           </Typography>
                           <Typography
                             variant="caption"
                             color="text.secondary"
                             sx={{ minWidth: 45, textAlign: 'right' }}
                           >
-                            {percentage(position.percentageOfTotalAmountUSD)}
+                            {positionGroup.displayPercentageOfAmountUSD()}
                           </Typography>
                         </Stack>
                       </Stack>
                       <LinearProgress
                         variant="determinate"
-                        value={position.percentageOfTotalAmountUSD}
+                        value={positionGroup.percentageOfAmountUSD ?? 0}
                         sx={{ mt: 0.5, height: 4, borderRadius: 2 }}
                       />
                     </Box>
@@ -267,45 +270,81 @@ const TokensList = () => {
 
   return (
     <Stack spacing={1} sx={{ maxHeight: 400, overflow: 'auto' }}>
-      {tokens.slice(0, 20).map((token, index) => (
+      {tokens.slice(0, 20).map((tokenGroup, index) => (
         <Box
-          key={`${token.chain?.chainId}-${token.address}-${index}`}
+          key={`${tokenGroup.main.chainId}-${tokenGroup.main.address}-${index}`}
           sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
             p: 1,
             borderRadius: 1,
             bgcolor: 'action.hover',
           }}
         >
-          <Stack direction="row" spacing={2} alignItems="center">
-            {token.logo && (
-              <Box
-                component="img"
-                src={token.logo}
-                alt={token.symbol}
-                sx={{ width: 32, height: 32, borderRadius: '50%' }}
-              />
-            )}
-            <Box>
-              <Typography variant="body1">{token.symbol}</Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Stack direction="row" spacing={2} alignItems="center">
+              {tokenGroup.main.logoURI && (
+                <Box
+                  component="img"
+                  src={tokenGroup.main.logoURI}
+                  alt={tokenGroup.main.symbol}
+                  sx={{ width: 32, height: 32, borderRadius: '50%' }}
+                />
+              )}
+              <Box>
+                <Typography variant="body1">
+                  {tokenGroup.main.symbol}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {tokenGroup.all.length} chain
+                  {tokenGroup.all.length !== 1 ? 's' : ''}
+                </Typography>
+              </Box>
+            </Stack>
+            <Box sx={{ textAlign: 'right' }}>
+              <Typography variant="body2">
+                {amountUSD(tokenGroup.amountUSD)}
+              </Typography>
               <Typography variant="caption" color="text.secondary">
-                {token.chain?.chainKey}
-                {token.relatedTokens && token.relatedTokens.length > 0 && (
-                  <> (+{token.relatedTokens.length} chains)</>
-                )}
+                {amount(tokenGroup.amount, tokenGroup.main.symbol)}
               </Typography>
             </Box>
-          </Stack>
-          <Box sx={{ textAlign: 'right' }}>
-            <Typography variant="body2">
-              {amountUSD(token.amountUSD ?? 0)}
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              {amount(token.amount ?? 0, token.symbol)}
-            </Typography>
           </Box>
+
+          {tokenGroup.all.length > 1 && (
+            <Stack spacing={0.5} sx={{ mt: 1, pl: 5 }}>
+              {tokenGroup.all.map((token, tokenIndex) => (
+                <Box
+                  key={`${token.chainId}-${token.address}-${tokenIndex}`}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    py: 0.5,
+                    borderLeft: 2,
+                    borderColor: 'divider',
+                    pl: 1,
+                  }}
+                >
+                  <Typography variant="caption" color="text.secondary">
+                    {token.chainKey}
+                  </Typography>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Typography variant="caption">
+                      {token.displayAmountUSD()}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {token.displayAmount()}
+                    </Typography>
+                  </Stack>
+                </Box>
+              ))}
+            </Stack>
+          )}
         </Box>
       ))}
       {tokens.length > 20 && (
@@ -366,23 +405,23 @@ const PositionsList = () => {
   );
 
   const handleUpdatePosition = async (position: {
-    lpToken?: { address: string; chain?: { chainId: number } };
+    lpToken?: { address: string; chainId: number };
   }) => {
     if (
       !account?.address ||
       !position.lpToken?.address ||
-      !position.lpToken?.chain?.chainId
+      !position.lpToken?.chainId
     ) {
       return;
     }
 
-    const positionKey = `${position.lpToken.chain.chainId}-${position.lpToken.address}`;
+    const positionKey = `${position.lpToken.chainId}-${position.lpToken.address}`;
     setUpdatingPositionKey(positionKey);
 
     try {
       await updatePositionFromContract({
         walletAddress: account.address as Hex,
-        chainId: position.lpToken.chain.chainId,
+        chainId: position.lpToken.chainId,
         lpTokenAddress: position.lpToken.address as Hex,
       });
     } finally {
@@ -413,135 +452,143 @@ const PositionsList = () => {
     );
   }
 
+  const getAllPositions = (group: (typeof groups)[0]) => group.all;
+
   return (
     <Stack spacing={2} sx={{ maxHeight: 500, overflow: 'auto' }}>
-      {groups.map((group) => (
-        <Box
-          key={group.key}
-          sx={{
-            p: 2,
-            borderRadius: 1,
-            bgcolor: 'action.hover',
-          }}
-        >
-          {/* Group Header */}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ mb: 1 }}
+      {groups.map((group, groupIndex) => {
+        const allPositions = getAllPositions(group);
+        return (
+          <Box
+            key={`${group.main.protocol?.name}-${group.main.chain?.chainKey}-${groupIndex}`}
+            sx={{
+              p: 2,
+              borderRadius: 1,
+              bgcolor: 'action.hover',
+            }}
           >
-            <Stack direction="row" spacing={1} alignItems="center">
-              {group.protocol?.logo && (
-                <Box
-                  component="img"
-                  src={group.protocol.logo}
-                  alt={group.protocol.name}
-                  sx={{ width: 28, height: 28, borderRadius: '50%' }}
-                />
-              )}
-              <Box>
-                <Typography variant="body1" fontWeight="medium">
-                  {group.protocol?.name}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {group.chain?.chainKey} · {group.positions.length} position
-                  {group.positions.length !== 1 ? 's' : ''}
-                </Typography>
-              </Box>
+            {/* Group Header */}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ mb: 1 }}
+            >
+              <Stack direction="row" spacing={1} alignItems="center">
+                {group.main.protocol?.logo && (
+                  <Box
+                    component="img"
+                    src={group.main.protocol.logo}
+                    alt={group.main.protocol.name}
+                    sx={{ width: 28, height: 28, borderRadius: '50%' }}
+                  />
+                )}
+                <Box>
+                  <Typography variant="body1" fontWeight="medium">
+                    {group.main.protocol?.name}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {group.main.chain?.chainKey} · {allPositions.length}{' '}
+                    position
+                    {allPositions.length !== 1 ? 's' : ''}
+                  </Typography>
+                </Box>
+              </Stack>
+              <Typography variant="h6">{amountUSD(group.amountUSD)}</Typography>
             </Stack>
-            <Typography variant="h6">{amountUSD(group.totalNetUsd)}</Typography>
-          </Stack>
 
-          <Divider sx={{ my: 1 }} />
+            <Divider sx={{ my: 1 }} />
 
-          {/* Positions within group */}
-          <Stack spacing={1}>
-            {group.positions.map((position, index) => {
-              const positionKey = position.lpToken
-                ? `${position.lpToken.chain?.chainId}-${position.lpToken.address}`
-                : null;
-              const isThisUpdating =
-                positionKey && updatingPositionKey === positionKey;
-              const hasLpToken = Boolean(
-                position.lpToken?.address && position.lpToken?.chain?.chainId,
-              );
+            {/* Positions within group */}
+            <Stack spacing={1}>
+              {allPositions.map((position, index) => {
+                const positionKey = position.lpToken
+                  ? `${position.lpToken.chainId}-${position.lpToken.address}`
+                  : null;
+                const isThisUpdating =
+                  positionKey && updatingPositionKey === positionKey;
+                const hasLpToken = Boolean(
+                  position.lpToken?.address && position.lpToken?.chainId,
+                );
 
-              return (
-                <Box
-                  key={`${position.type}-${index}`}
-                  sx={{
-                    pl: 2,
-                    py: 0.5,
-                    borderLeft: 2,
-                    borderColor: 'divider',
-                  }}
-                >
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
+                return (
+                  <Box
+                    key={`${position.type}-${index}`}
+                    sx={{
+                      pl: 2,
+                      py: 0.5,
+                      borderLeft: 2,
+                      borderColor: 'divider',
+                    }}
                   >
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      <Chip
-                        label={position.type}
-                        size="small"
-                        variant="outlined"
-                      />
-                      <Stack direction="row" spacing={0.5}>
-                        {position.supplyTokens?.slice(0, 3).map((token, i) => (
-                          <Chip
-                            key={`supply-${i}`}
-                            label={token.symbol}
-                            size="small"
-                            sx={{ fontSize: '0.7rem' }}
-                          />
-                        ))}
-                      </Stack>
-                      {position.lpToken && (
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ ml: 1 }}
-                        >
-                          LP: {position.lpToken.symbol}
-                        </Typography>
-                      )}
-                    </Stack>
-                    <Stack direction="row" spacing={1} alignItems="center">
-                      {hasLpToken && account?.address && (
-                        <Button
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <Chip
+                          label={position.type}
                           size="small"
                           variant="outlined"
-                          onClick={() => handleUpdatePosition(position)}
-                          disabled={isUpdating}
-                          sx={{ minWidth: 'auto', px: 1, py: 0.25 }}
-                        >
-                          {isThisUpdating ? (
-                            <CircularProgress size={14} />
-                          ) : (
-                            'Update'
-                          )}
-                        </Button>
-                      )}
-                      <Box sx={{ textAlign: 'right' }}>
-                        <Typography variant="body2">
-                          {amountUSD(position.netUsd ?? 0)}
-                        </Typography>
-                        {position.debtUsd > 0 && (
-                          <Typography variant="caption" color="error.main">
-                            Debt: {amountUSD(position.debtUsd)}
+                        />
+                        <Stack direction="row" spacing={0.5}>
+                          {position.supplyTokens
+                            ?.slice(0, 3)
+                            .map((token: PortfolioExtendedToken, i: number) => (
+                              <Chip
+                                key={`supply-${i}`}
+                                label={token.symbol}
+                                size="small"
+                                sx={{ fontSize: '0.7rem' }}
+                              />
+                            ))}
+                        </Stack>
+                        {position.lpToken && (
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ ml: 1 }}
+                          >
+                            LP: {position.lpToken.symbol}
                           </Typography>
                         )}
-                      </Box>
+                      </Stack>
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        {hasLpToken && account?.address && (
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            onClick={() => handleUpdatePosition(position)}
+                            disabled={isUpdating}
+                            sx={{ minWidth: 'auto', px: 1, py: 0.25 }}
+                          >
+                            {isThisUpdating ? (
+                              <CircularProgress size={14} />
+                            ) : (
+                              'Update'
+                            )}
+                          </Button>
+                        )}
+                        <Box sx={{ textAlign: 'right' }}>
+                          <Typography variant="body2">
+                            {amountUSD(position.netUsd ?? 0)}
+                          </Typography>
+                          {position.debtUsd > 0 && (
+                            <Typography variant="caption" color="error.main">
+                              Debt: {amountUSD(position.debtUsd)}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Stack>
                     </Stack>
-                  </Stack>
-                </Box>
-              );
-            })}
-          </Stack>
-        </Box>
-      ))}
+                  </Box>
+                );
+              })}
+            </Stack>
+          </Box>
+        );
+      })}
     </Stack>
   );
 };

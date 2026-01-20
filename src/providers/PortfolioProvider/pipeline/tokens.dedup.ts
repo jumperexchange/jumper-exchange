@@ -1,6 +1,6 @@
 import { differenceWith, isEmpty } from 'lodash';
-import type { EnrichedToken } from '../types/tokens.types';
 import type { LpTokenIdentifier } from './positions.lpTokens';
+import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
 
 /**
  * Create a unique key for a token based on address and chainId.
@@ -15,9 +15,9 @@ const getTokenKey = (address: string, chainId: number): string =>
  * IMPORTANT: This should run BEFORE aggregation to avoid incorrect groupings.
  */
 export const dedupTokensFromLpPositions = (
-  tokens: EnrichedToken[],
+  tokens: PortfolioExtendedToken[],
   lpTokens: LpTokenIdentifier[],
-): EnrichedToken[] => {
+): PortfolioExtendedToken[] => {
   if (isEmpty(tokens) || isEmpty(lpTokens)) {
     return tokens;
   }

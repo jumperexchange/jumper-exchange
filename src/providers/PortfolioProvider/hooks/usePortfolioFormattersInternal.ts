@@ -43,7 +43,7 @@ export const usePortfolioFormattersInternal = (): PortfolioFormatters => {
 
   const percentage = useCallback(
     (value: number): string => {
-      return t('format.decimal2Digit', { value });
+      return t('format.decimal2Digit', { value }) + '%';
     },
     [t],
   );

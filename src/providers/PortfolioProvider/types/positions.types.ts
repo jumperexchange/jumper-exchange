@@ -1,51 +1,26 @@
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
-import type { Chain, DefiPosition, Protocol } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/types/jumper-backend';
+import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
+import type { PortfolioDeFiPositionsGroup } from '../classes/PortfolioDeFiPositionsGroup';
 
-/**
- * Position enriched with fresh price calculations.
- * Used internally during pipeline processing and inside PortfolioPosition groups.
- */
-export interface EnrichedPosition extends DefiPosition {
-  hasFreshPrices: boolean;
-}
-
-/**
- * Positions organized by protocol-chain key.
- * Key format: "${protocol.name}-${chain.chainKey}"
- */
-export type PositionsByProtocolChain = Record<string, EnrichedPosition[]>;
-
-/**
- * Positions organized by protocol name.
- */
-export type PositionsByProtocol = Record<string, EnrichedPosition[]>;
-
-/**
- * Final display entity: A group of positions for the Portfolio UI.
- * Groups positions by protocol and chain for display.
- */
-export interface PortfolioPosition {
-  key: string;
-  protocol: Protocol;
-  chain: Chain;
-  positions: EnrichedPosition[];
-  totalNetUsd: number;
-}
-
-/**
- * Summary data for a position group (e.g., grouped by protocol).
- */
-export interface PortfolioPositionSummary extends Omit<
+export interface PortfolioDefiPosition extends Omit<
   DefiPosition,
+  | 'lpToken'
   | 'supplyTokens'
   | 'borrowTokens'
   | 'assetTokens'
   | 'collateralTokens'
   | 'rewardTokens'
 > {
-  amountUSD: number;
-  percentageOfTotalAmountUSD: number;
+  lpToken?: PortfolioExtendedToken;
+  supplyTokens: PortfolioExtendedToken[];
+  borrowTokens: PortfolioExtendedToken[];
+  assetTokens: PortfolioExtendedToken[];
+  collateralTokens: PortfolioExtendedToken[];
+  rewardTokens: PortfolioExtendedToken[];
 }
+
+export type { PortfolioDeFiPositionsGroup };
 
 export type PortfolioPositionsQueryWithoutEvm = Omit<
   PortfolioPositionsQuery,

@@ -4,15 +4,14 @@ import type {
   PortfolioPositionsContextValue,
   PortfolioTokensContextValue,
 } from './PortfolioContext.types';
-import { usePortfolioFormattersInternal } from './utils/formatters';
 
 const noop = () => {};
 
 const defaultPositionsContextValue: PortfolioPositionsContextValue = {
   positions: [],
   positionsByAddress: {},
-  positionsByProtocolAndChain: {},
-  positionsByProtocol: {},
+  positionsByProtocolAndChain: [],
+  positionsByProtocol: [],
   metadata: {
     chains: [],
     protocols: [],
@@ -30,6 +29,8 @@ const defaultPositionsContextValue: PortfolioPositionsContextValue = {
 const defaultTokensContextValue: PortfolioTokensContextValue = {
   tokens: [],
   tokensByAddress: {},
+  tokensBySymbol: [],
+  tokensByChain: [],
   accounts: [],
   metadata: {
     wallets: [],
@@ -100,6 +101,4 @@ export const usePortfolioSummary = () => {
   return useContext(PortfolioContext).summary;
 };
 
-export const usePortfolioFormatters = () => {
-  return usePortfolioFormattersInternal();
-};
+export { usePortfolioFormattersInternal as usePortfolioFormatters } from './hooks/usePortfolioFormattersInternal';

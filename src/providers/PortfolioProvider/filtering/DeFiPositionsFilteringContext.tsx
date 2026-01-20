@@ -30,7 +30,7 @@ import {
 } from './utils';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions } from '../PortfolioContext';
-import type { PortfolioPosition } from '../types/positions.types';
+import type { PortfolioDeFiPositionsGroup } from '../types/positions.types';
 import { useFilteredPositionsData } from '../hooks/useFilteredPositionsData';
 
 export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
@@ -42,7 +42,7 @@ export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPosition
     filter: NullableFields<PortfolioDeFiPositionsFilterUI>,
   ) => void;
   clearFilters: () => void;
-  data: PortfolioPosition[];
+  data: PortfolioDeFiPositionsGroup[];
   allDataUpdatedAt: number | null;
   isLoading: boolean;
   isAllDataEmpty: boolean;
@@ -96,6 +96,7 @@ export const DeFiPositionsFilteringProvider = ({
   const prevStatsRef = useRef<PortfolioDeFiPositionsFilteringParams>(
     EMPTY_DEFI_POSITIONS_FILTERING_PARAMS,
   );
+
   const filteredPositions = useFilteredPositionsData({
     chains: filter?.defiChains,
     protocols: filter?.defiProtocols,
@@ -131,14 +132,14 @@ export const DeFiPositionsFilteringProvider = ({
     };
   }, [isEmpty, metadata]);
 
-  const filteredSortedData = useMemo((): PortfolioPosition[] => {
+  const filteredSortedData = useMemo((): PortfolioDeFiPositionsGroup[] => {
     return filterSortDeFiPositionsData(
-      filteredPositions.positions,
+      filteredPositions.positionsByProtocol,
       filter,
       sortBy,
       order,
     );
-  }, [filteredPositions.positions, filter, sortBy, order]);
+  }, [filteredPositions.positionsByProtocol, filter, sortBy, order]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {

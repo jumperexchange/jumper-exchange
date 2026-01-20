@@ -1,46 +1,35 @@
-import { compact, map, orderBy, sumBy } from 'lodash';
-import type {
-  EnrichedPosition,
-  PortfolioPosition,
-  PositionsByProtocolChain,
-} from '../types/positions.types';
+import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
+import type { PortfolioDefiPosition } from '../types/positions.types';
+import {
+  PortfolioExtendedToken,
+  type PriceLookup,
+} from '../classes/PortfolioExtendedToken';
 
-/**
- * Convert a group of positions into a single PortfolioPosition.
- */
-const toPortfolioPosition = (
-  key: string,
-  positions: EnrichedPosition[],
-): PortfolioPosition | null => {
-  if (positions.length === 0) {
-    return null;
-  }
-
-  const sortedPositions = orderBy(positions, (p) => p.netUsd ?? 0, 'desc');
-
-  const firstPosition = positions[0];
-  const totalNetUsd = sumBy(positions, (p) => p.netUsd ?? 0);
-
-  return {
-    key,
-    protocol: firstPosition.protocol,
-    chain: firstPosition.chain,
-    positions: sortedPositions,
-    totalNetUsd,
-  };
+const normalizeDefiTokens = (
+  defiTokens: DefiToken[],
+  getPrice: PriceLookup,
+): PortfolioExtendedToken[] => {
+  return defiTokens.map((token) =>
+    PortfolioExtendedToken.fromDefiToken(token, getPrice),
+  );
 };
 
-/**
- * Convert grouped positions to PortfolioPosition[].
- * Each group becomes a single PortfolioPosition.
- * Results are sorted by totalNetUsd descending.
- */
-export const toPortfolioPositions = (
-  groupedPositions: PositionsByProtocolChain,
-): PortfolioPosition[] => {
-  const portfolioPositions = map(
-    Object.entries(groupedPositions),
-    ([key, positions]) => toPortfolioPosition(key, positions),
-  );
-  return compact(portfolioPositions);
+export const normalizePositions = (
+  positions: DefiPosition[],
+  getPrice: PriceLookup,
+): PortfolioDefiPosition[] => {
+  return positions.map((position) => ({
+    ...position,
+    lpToken: position.lpToken
+      ? PortfolioExtendedToken.fromJumperToken(position.lpToken, getPrice)
+      : undefined,
+    supplyTokens: normalizeDefiTokens(position.supplyTokens ?? [], getPrice),
+    borrowTokens: normalizeDefiTokens(position.borrowTokens ?? [], getPrice),
+    assetTokens: normalizeDefiTokens(position.assetTokens ?? [], getPrice),
+    collateralTokens: normalizeDefiTokens(
+      position.collateralTokens ?? [],
+      getPrice,
+    ),
+    rewardTokens: normalizeDefiTokens(position.rewardTokens ?? [], getPrice),
+  }));
 };

@@ -3,32 +3,32 @@
 import type { PropsWithChildren } from 'react';
 import { useCallback, useMemo } from 'react';
 import { PortfolioContext } from './PortfolioContext';
+import { usePortfolioFormattersInternal } from './hooks/usePortfolioFormattersInternal';
 import type { PortfolioContextValue } from './PortfolioContext.types';
 import { useTokensData } from './hooks/useTokensData';
 import { usePositionsData } from './hooks/usePositionsData';
 import { useTokens } from '@/hooks/useTokens';
-import { createPriceLookup } from './utils/tokenPrices';
 import { useChains } from '@/hooks/useChains';
-import { augmentTokens } from './pipeline/tokens.augment';
-import { dedupTokensFromLpPositions } from './pipeline/tokens.dedup';
-import { groupTokensBySymbol } from './pipeline/tokens.group';
-import { toPortfolioTokens } from './pipeline/tokens.normalize';
-import { augmentPositions } from './pipeline/positions.augment';
 import {
-  groupPositionsByProtocol,
-  groupPositionsByProtocolAndChain,
-} from './pipeline/positions.group';
-import { toPortfolioPositions } from './pipeline/positions.normalize';
+  PortfolioExtendedToken,
+  type PriceLookup,
+} from './classes/PortfolioExtendedToken';
+import { PortfolioTokenGroup } from './classes/PortfolioTokenGroup';
+import { PortfolioDeFiPositionsGroup } from './classes/PortfolioDeFiPositionsGroup';
 import {
   extractLpTokens,
   type LpTokenIdentifier,
 } from './pipeline/positions.lpTokens';
+import { dedupTokensFromLpPositions } from './pipeline/tokens.dedup';
 import {
-  extractTokensMetadata,
   extractPositionsMetadata,
+  extractTokensMetadata,
 } from './pipeline/metadata';
-import mapValues from 'lodash/mapValues';
-import type { PortfolioAccount } from './types/tokens.types';
+import { normalizeTokens } from './pipeline/tokens.normalize';
+import { normalizePositions } from './pipeline/positions.normalize';
+import { mapValues } from 'lodash';
+import { groupPositions } from './pipeline/positions.group';
+import { groupTokens } from './pipeline/tokens.group';
 import { processSummary } from './pipeline/summary';
 
 export const PortfolioProvider = ({ children }: PropsWithChildren) => {
@@ -42,47 +42,48 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
     updatedAt: pricesUpdatedAt,
   } = useTokens();
 
-  const getTokenPrice = useMemo(() => {
+  const formatters = usePortfolioFormattersInternal();
+  PortfolioExtendedToken.setFormatters(formatters);
+  PortfolioTokenGroup.setFormatters(formatters);
+  PortfolioDeFiPositionsGroup.setFormatters(formatters);
+
+  const getPrice: PriceLookup = useMemo(() => {
     if (!allTokens?.tokens) {
       return () => undefined;
     }
-    return createPriceLookup(allTokens.tokens);
+    return (chainId: number, address: string) => {
+      const token = allTokens.tokens[chainId]?.find(
+        (t) => t.address.toLowerCase() === address.toLowerCase(),
+      );
+      return token ? parseFloat(token.priceUSD) : 0;
+    };
   }, [allTokens?.tokens]);
 
   const processPositionsData = useCallback(
     (rawData: ReturnType<typeof usePositionsData>) => {
-      // Step 1: Augment with fresh price calculations
-      const augmented = augmentPositions(rawData.positions, getTokenPrice);
-      const augmentedByAddress = mapValues(
+      const positions = normalizePositions(rawData.positions, getPrice);
+      const positionsByAddress = mapValues(
         rawData.positionsByAddress,
-        (positions) => augmentPositions(positions, getTokenPrice),
+        (positions) => normalizePositions(positions, getPrice),
       );
-
-      // Step 2: Group by protocol and protocol-chain
-      const byProtocol = groupPositionsByProtocol(augmented);
-      const byProtocolAndChain = groupPositionsByProtocolAndChain(augmented);
-
-      // Step 3: Normalize to PortfolioPosition[]
-      const normalized = toPortfolioPositions(byProtocolAndChain);
-      const normalizedByAddress = mapValues(augmentedByAddress, (positions) =>
-        toPortfolioPositions(groupPositionsByProtocolAndChain(positions)),
+      const byProtocolAndChain = groupPositions(
+        positions,
+        'byProtocolAndChain',
       );
+      const byProtocol = groupPositions(positions, 'byProtocol');
+      const metadata = extractPositionsMetadata(positions);
 
-      // Step 4: Extract metadata for filtering UI
-      const metadata = extractPositionsMetadata(augmented);
-
-      // Return processed data with all transformations applied
       return {
         ...rawData,
-        positions: normalized,
-        positionsByAddress: normalizedByAddress,
+        positions,
+        positionsByAddress,
         positionsByProtocolAndChain: byProtocolAndChain,
         positionsByProtocol: byProtocol,
         metadata,
-        isEmpty: normalized.length === 0,
+        isEmpty: positions.length === 0,
       };
     },
-    [getTokenPrice],
+    [getPrice],
   );
 
   const processTokensData = useCallback(
@@ -90,85 +91,83 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       rawData: ReturnType<typeof useTokensData>,
       lpTokens: LpTokenIdentifier[] = [],
     ) => {
-      const accounts = rawData.accounts.filter(
-        (account) => account.address,
-      ) as PortfolioAccount[];
+      const tokens = normalizeTokens({
+        tokens: rawData.tokens,
+        chains,
+        getPrice,
+      });
 
-      // Step 1: Augment with chain info
-      const augmented = augmentTokens(rawData.tokens, chains);
-      const augmentedByAddress = mapValues(rawData.tokensByAddress, (tokens) =>
-        augmentTokens(tokens, chains),
+      const tokensByAddress = mapValues(rawData.tokensByAddress, (tokens) =>
+        normalizeTokens({
+          tokens,
+          chains,
+          getPrice,
+        }),
       );
 
-      // Step 2: Dedup LP tokens BEFORE grouping to ensure correct groupings
-      const deduped = dedupTokensFromLpPositions(augmented, lpTokens);
-      const dedupedByAddress = mapValues(augmentedByAddress, (tokens) =>
+      const dedupedTokens = dedupTokensFromLpPositions(tokens, lpTokens);
+      const dedupedTokensByAddress = mapValues(tokensByAddress, (tokens) =>
         dedupTokensFromLpPositions(tokens, lpTokens),
       );
-
-      // Step 3: Group by symbol
-      const grouped = groupTokensBySymbol(deduped);
-      const groupedByAddress = mapValues(dedupedByAddress, (tokens) =>
-        groupTokensBySymbol(tokens),
+      const bySymbol = groupTokens(dedupedTokens, 'bySymbol');
+      const bySymbolByAddress = mapValues(dedupedTokensByAddress, (tokens) =>
+        groupTokens(tokens, 'bySymbol'),
       );
+      const byChain = groupTokens(dedupedTokens, 'byChain');
+      const metadata = extractTokensMetadata(dedupedTokens, rawData.accounts);
 
-      // Step 4: Normalize grouped tokens to PortfolioToken[]
-      const normalized = toPortfolioTokens(grouped);
-      const normalizedByAddress = mapValues(groupedByAddress, (tokens) =>
-        toPortfolioTokens(tokens),
-      );
-
-      // Step 5: Extract metadata for filtering UI (from deduplicated tokens)
-      const metadata = extractTokensMetadata(deduped, rawData.accounts);
-
-      // Return processed data with all transformations applied
       return {
         ...rawData,
-        tokens: normalized,
-        tokensByAddress: normalizedByAddress,
+        tokens: bySymbol,
+        tokensByAddress: bySymbolByAddress,
+        tokensBySymbol: bySymbol,
+        tokensByChain: byChain,
         metadata,
-        isEmpty: normalized.length === 0,
-        accounts,
+        isEmpty: dedupedTokens.length === 0,
       };
     },
-    [chains],
+    [chains, getPrice],
   );
 
-  // Process positions first to get LP tokens for dedup
   const processedMainPositions = useMemo(
     () => processPositionsData(positionsData),
     [positionsData, processPositionsData],
   );
 
-  // Extract LP tokens from positions for token deduplication
   const lpTokens = useMemo(
     () => extractLpTokens(processedMainPositions.positions),
     [processedMainPositions.positions],
   );
 
-  // Process tokens with LP token deduplication
   const processedMainTokens = useMemo(
     () => processTokensData(tokensData, lpTokens),
     [tokensData, processTokensData, lpTokens],
   );
 
-  const processedSummary = useMemo(() => {
-    return processSummary(
-      processedMainTokens.tokens,
+  const summary = useMemo(
+    () =>
+      processSummary(
+        processedMainTokens.tokensBySymbol,
+        processedMainPositions.positionsByProtocol,
+      ),
+    [
+      processedMainTokens.tokensBySymbol,
       processedMainPositions.positionsByProtocol,
-    );
-  }, [processedMainTokens.tokens, processedMainPositions.positionsByProtocol]);
+    ],
+  );
 
   const contextValue: PortfolioContextValue = useMemo(
     () => ({
-      summary: processedSummary,
+      summary,
       tokens: {
         tokens: processedMainTokens.tokens,
         tokensByAddress: processedMainTokens.tokensByAddress,
+        tokensBySymbol: processedMainTokens.tokensBySymbol,
+        tokensByChain: processedMainTokens.tokensByChain,
         accounts: processedMainTokens.accounts,
         metadata: processedMainTokens.metadata,
         updatedAt: processedMainTokens.updatedAt,
-        isEmpty: processedMainTokens.isEmpty,
+        isEmpty: processedMainTokens.tokens.length === 0,
         isLoading: processedMainTokens.isLoading,
         error: processedMainTokens.error,
         round: processedMainTokens.round,
@@ -181,7 +180,7 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
           processedMainPositions.positionsByProtocolAndChain,
         positionsByProtocol: processedMainPositions.positionsByProtocol,
         metadata: processedMainPositions.metadata,
-        isEmpty: processedMainPositions.isEmpty,
+        isEmpty: processedMainPositions.positions.length === 0,
         isLoading: processedMainPositions.isLoading,
         error: processedMainPositions.error,
         updatedAt: processedMainPositions.updatedAt,
@@ -209,7 +208,7 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       },
     }),
     [
-      processedSummary,
+      summary,
       processedMainTokens,
       processedMainPositions,
       isLoadingPrices,

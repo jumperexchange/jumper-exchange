@@ -1,25 +1,39 @@
-import { groupBy } from 'lodash';
-import type {
-  EnrichedPosition,
-  PositionsByProtocol,
-  PositionsByProtocolChain,
-} from '../types/positions.types';
+import { compact, groupBy as groupByLodash, orderBy, values } from 'lodash';
+import { PortfolioDeFiPositionsGroup } from '../classes/PortfolioDeFiPositionsGroup';
+import type { PortfolioDefiPosition } from '../types/positions.types';
 
-/**
- * Group positions by protocol name.
- */
-export const groupPositionsByProtocol = (
-  positions: EnrichedPosition[],
-): PositionsByProtocol => {
-  return groupBy(positions, (p) => p.protocol.name);
+export type PositionGroupingFn = (position: PortfolioDefiPosition) => string;
+
+export type PositionGroupingKey = 'byProtocol' | 'byProtocolAndChain';
+
+export const groupByProtocol: PositionGroupingFn = (p) => p.protocol.name;
+
+export const groupByProtocolAndChain: PositionGroupingFn = (p) =>
+  `${p.protocol.name}-${p.chain.chainKey}`;
+
+export const positionGroupingFns: Record<
+  PositionGroupingKey,
+  PositionGroupingFn
+> = {
+  byProtocol: groupByProtocol,
+  byProtocolAndChain: groupByProtocolAndChain,
 };
 
-/**
- * Group positions by protocol and chain.
- * Key format: "${protocol.name}-${chain.chainKey}"
- */
-export const groupPositionsByProtocolAndChain = (
-  positions: EnrichedPosition[],
-): PositionsByProtocolChain => {
-  return groupBy(positions, (p) => `${p.protocol.name}-${p.chain.chainKey}`);
+export const toPositionsGroup = (
+  positions: PortfolioDefiPosition[],
+): PortfolioDeFiPositionsGroup | null => {
+  if (positions.length === 0) {
+    return null;
+  }
+  return new PortfolioDeFiPositionsGroup(positions, 0);
+};
+
+export const groupPositions = (
+  positions: PortfolioDefiPosition[],
+  groupBy: PositionGroupingKey,
+): PortfolioDeFiPositionsGroup[] => {
+  const groupingFn = positionGroupingFns[groupBy];
+  const grouped = groupByLodash(positions, groupingFn);
+  const groups = values(grouped).map(toPositionsGroup);
+  return orderBy(compact(groups), (g) => g.amountUSD, 'desc');
 };

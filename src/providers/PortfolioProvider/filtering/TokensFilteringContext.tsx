@@ -25,16 +25,12 @@ import {
   getEffectiveValueRange,
   removeNullValuesFromFilter,
   sanitizeTokensFilter,
-  sortPortfolioItems,
-  isWithinValueRange,
-  sanitizeValue,
-  tokenSortAccessors,
   filterSortPortfolioTokensData,
 } from './utils';
 import type { PortfolioTokensFilteringParams } from './types';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioTokens } from '../PortfolioContext';
-import type { PortfolioToken } from '../types/tokens.types';
+import type { PortfolioTokenGroup } from '../types/tokens.types';
 
 export interface TokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;
@@ -43,7 +39,7 @@ export interface TokensFilteringContextType extends PortfolioTokensFilteringPara
   filter: PortfolioTokensFilterUI;
   updateFilter: (filter: NullableFields<PortfolioTokensFilterUI>) => void;
   clearFilters: () => void;
-  data: PortfolioToken[];
+  data: PortfolioTokenGroup[];
   isLoading: boolean;
   isEmpty: boolean;
   error: Error | null;
@@ -93,7 +89,7 @@ export const TokensFilteringProvider = ({ children }: PropsWithChildren) => {
     EMPTY_TOKENS_FILTERING_PARAMS,
   );
 
-  const { tokensByAddress, metadata, accounts, isLoading, isEmpty, error } =
+  const { tokensByAddress, metadata, isLoading, isEmpty, error } =
     usePortfolioTokens();
 
   const stats = useMemo((): PortfolioTokensFilteringParams => {

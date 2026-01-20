@@ -1,25 +1,24 @@
 import type { TokensMetadata, PositionsMetadata } from './pipeline/metadata';
 import type { useTokensData } from './hooks/useTokensData';
 import type { usePositionsData } from './hooks/usePositionsData';
+import type { Account } from '@lifi/wallet-management';
+import type { PortfolioTokenGroup } from './types/tokens.types';
 import type {
-  PortfolioAccount,
-  PortfolioToken,
-  PortfolioTokenSummary,
-} from './types/tokens.types';
-import type {
-  PortfolioPosition,
-  PositionsByProtocol,
-  PositionsByProtocolChain,
-  PortfolioPositionSummary,
+  PortfolioDefiPosition,
+  PortfolioDeFiPositionsGroup,
 } from './types/positions.types';
 
 export interface PortfolioTokensContextValue {
-  /** Display-ready tokens (grouped by symbol with relatedTokens) */
-  tokens: PortfolioToken[];
-  /** Raw tokens by wallet address */
-  tokensByAddress: Record<string, PortfolioToken[]>;
+  /** Tokens grouped by symbol */
+  tokens: PortfolioTokenGroup[];
+  /** Tokens by wallet address, grouped by symbol */
+  tokensByAddress: Record<string, PortfolioTokenGroup[]>;
+  /** Tokens grouped by symbol (alias for tokens) */
+  tokensBySymbol: PortfolioTokenGroup[];
+  /** Tokens grouped by chain */
+  tokensByChain: PortfolioTokenGroup[];
   /** Connected accounts */
-  accounts: PortfolioAccount[];
+  accounts: Account[];
   /** Metadata for filtering */
   metadata: TokensMetadata;
   /** Last update timestamp */
@@ -37,14 +36,14 @@ export interface PortfolioTokensContextValue {
 }
 
 export interface PortfolioPositionsContextValue {
-  /** Display-ready positions (grouped by protocol and chain) */
-  positions: PortfolioPosition[];
+  /** Normalized positions */
+  positions: PortfolioDefiPosition[];
   /** Positions by wallet address */
-  positionsByAddress: Record<string, PortfolioPosition[]>;
-  /** Positions grouped by protocol and chain (for filtering) */
-  positionsByProtocolAndChain: PositionsByProtocolChain;
-  /** Positions grouped by protocol (for summary) */
-  positionsByProtocol: PositionsByProtocol;
+  positionsByAddress: Record<string, PortfolioDefiPosition[]>;
+  /** Positions grouped by protocol and chain */
+  positionsByProtocolAndChain: PortfolioDeFiPositionsGroup[];
+  /** Positions grouped by protocol */
+  positionsByProtocol: PortfolioDeFiPositionsGroup[];
   /** Metadata for filtering */
   metadata: PositionsMetadata;
   /** Last update timestamp */
@@ -83,8 +82,8 @@ export interface PortfolioSummaryContextValue {
   totalAmountUSD: number;
   positionsAmountUSD: number;
   tokensAmountUSD: number;
-  positionsByProtocol: PortfolioPositionSummary[];
-  tokensBySymbol: PortfolioTokenSummary[];
+  positionsByProtocol: PortfolioDeFiPositionsGroup[];
+  tokensBySymbol: PortfolioTokenGroup[];
 }
 
 export interface PortfolioContextValue {

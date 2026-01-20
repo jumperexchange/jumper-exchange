@@ -1,13 +1,41 @@
-import { groupBy } from 'lodash';
-import type { EnrichedToken, TokensBySymbol } from '../types/tokens.types';
+import {
+  compact,
+  groupBy as groupByLodash,
+  orderBy,
+  sumBy,
+  values,
+} from 'lodash';
+import { PortfolioTokenGroup } from '../classes/PortfolioTokenGroup';
+import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
 
-/**
- * Group tokens by symbol.
- * Multiple tokens with the same symbol (e.g., USDC on different chains)
- * are grouped together for aggregation.
- */
-export const groupTokensBySymbol = (
-  tokens: EnrichedToken[],
-): TokensBySymbol => {
-  return groupBy(tokens, (t) => t.symbol || 'Unknown');
+export type TokenGroupingFn = (token: PortfolioExtendedToken) => string;
+
+export type TokenGroupingKey = 'bySymbol' | 'byChain';
+
+export const groupBySymbol: TokenGroupingFn = (t) => t.symbol || 'Unknown';
+
+export const groupByChain: TokenGroupingFn = (t) => t.chainKey;
+
+export const tokenGroupingFns: Record<TokenGroupingKey, TokenGroupingFn> = {
+  bySymbol: groupBySymbol,
+  byChain: groupByChain,
+};
+
+export const toTokensGroup = (
+  tokens: PortfolioExtendedToken[],
+): PortfolioTokenGroup | null => {
+  if (tokens.length === 0) {
+    return null;
+  }
+  return new PortfolioTokenGroup(tokens, 0);
+};
+
+export const groupTokens = (
+  tokens: PortfolioExtendedToken[],
+  groupBy: TokenGroupingKey,
+): PortfolioTokenGroup[] => {
+  const groupingFn = tokenGroupingFns[groupBy];
+  const grouped = groupByLodash(tokens, groupingFn);
+  const groups = values(grouped).map(toTokensGroup);
+  return orderBy(compact(groups), (g) => g.amountUSD, 'desc');
 };

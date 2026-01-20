@@ -1,5 +1,5 @@
+import type { Chain, Protocol, Token } from '@/types/jumper-backend';
 import type { PortfolioAccount } from '../types/tokens.types';
-import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
 
 export enum PortfolioFilterBarTab {
   TOKENS = 'tokens',

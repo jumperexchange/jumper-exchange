@@ -1,8 +1,9 @@
 import { uniqBy, uniq, flatMap, min, max, minBy, maxBy } from 'lodash';
 import type { Chain, Protocol, Token } from '@/types/jumper-backend';
-import type { EnrichedPosition } from '../types/positions.types';
-import type { EnrichedToken, PortfolioAccount } from '../types/tokens.types';
+import type { PortfolioDefiPosition } from '../types/positions.types';
+import type { PortfolioAccount } from '../types/tokens.types';
 import type { Account } from '@lifi/wallet-management';
+import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
 
 export interface TokensMetadata {
   wallets: PortfolioAccount[];
@@ -19,14 +20,28 @@ export interface PositionsMetadata {
   valueRange: { min: number; max: number };
 }
 
+export const toAssetToken = (token: PortfolioExtendedToken): Token => ({
+  name: token.name,
+  symbol: token.symbol,
+  decimals: token.decimals,
+  logo: token.logoURI,
+  address: token.address,
+  chain: {
+    chainId: token.chainId,
+    chainKey: token.chainKey,
+  },
+});
+
 /** Extract unique chains from tokens */
-export const extractChainsFromTokens = (tokens: EnrichedToken[]): Chain[] => {
+export const extractChainsFromTokens = (
+  tokens: PortfolioExtendedToken[],
+): Chain[] => {
   return uniqBy(
     tokens
       .filter((t) => t.chainId)
       .map((t) => ({
         chainId: t.chainId,
-        chainKey: t.chainKey ?? t.chainName ?? '',
+        chainKey: t.chainKey,
       })),
     'chainId',
   );
@@ -34,7 +49,7 @@ export const extractChainsFromTokens = (tokens: EnrichedToken[]): Chain[] => {
 
 /** Extract metadata from tokens */
 export const extractTokensMetadata = (
-  tokens: EnrichedToken[],
+  tokens: PortfolioExtendedToken[],
   accounts: Account[],
 ): TokensMetadata => {
   const wallets = accounts.filter(
@@ -43,21 +58,11 @@ export const extractTokensMetadata = (
   const chains = extractChainsFromTokens(tokens);
 
   const assets: Token[] = uniqBy(
-    tokens.map((t) => ({
-      name: t.name,
-      symbol: t.symbol,
-      decimals: t.decimals,
-      logo: t.logoURI,
-      address: t.address,
-      chain: {
-        chainId: t.chainId,
-        chainKey: t.chainKey,
-      },
-    })),
+    tokens.map(toAssetToken),
     (t) => `${t.chain?.chainId}-${t.address}`,
   );
 
-  const values = tokens.map((t) => parseFloat(t.priceUSD) || 0);
+  const values = tokens.map((t) => t.amountUSD || 0);
   const minValue = values.length > 0 ? (min(values) ?? 0) : 0;
   const maxValue = values.length > 0 ? (max(values) ?? 0) : 0;
 
@@ -71,7 +76,7 @@ export const extractTokensMetadata = (
 
 /** Extract unique chains from positions */
 export const extractChainsFromPositions = (
-  positions: EnrichedPosition[],
+  positions: PortfolioDefiPosition[],
 ): Chain[] => {
   const positionsWithChain = positions.filter((p) => p.chain);
   return uniqBy(
@@ -82,7 +87,7 @@ export const extractChainsFromPositions = (
 
 /** Extract unique protocols from positions */
 export const extractProtocolsFromPositions = (
-  positions: EnrichedPosition[],
+  positions: PortfolioDefiPosition[],
 ): Protocol[] => {
   const positionsWithProtocol = positions.filter((p) => p.protocol);
   return uniqBy(
@@ -93,7 +98,7 @@ export const extractProtocolsFromPositions = (
 
 /** Extract metadata from positions */
 export const extractPositionsMetadata = (
-  positions: EnrichedPosition[],
+  positions: PortfolioDefiPosition[],
 ): PositionsMetadata => {
   const chains = extractChainsFromPositions(positions);
   const protocols = extractProtocolsFromPositions(positions);
@@ -110,14 +115,7 @@ export const extractPositionsMetadata = (
   ]);
 
   const assets: Token[] = uniqBy(
-    allTokens.map((t) => ({
-      name: t.name,
-      symbol: t.symbol,
-      decimals: t.decimals,
-      logo: t.logo,
-      address: t.address,
-      chain: t.chain,
-    })),
+    allTokens.map(toAssetToken),
     (t) => `${t.chain?.chainId}-${t.address}`,
   );
 

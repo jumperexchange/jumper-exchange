@@ -1,73 +1,28 @@
+import type { ExtendedChain } from '@lifi/sdk';
+import type { LiFiCommonToken } from '../datasources/tokens.datasource';
 import {
-  compact,
-  head,
-  isEmpty,
-  map,
-  orderBy,
-  sumBy,
-  toNumber,
-  values,
-} from 'lodash';
-import type {
-  EnrichedToken,
-  TokensBySymbol,
-  PortfolioToken,
-} from '../types/tokens.types';
+  PortfolioExtendedToken,
+  type PriceLookup,
+} from '../classes/PortfolioExtendedToken';
 
-/**
- * Convert an EnrichedToken to the app's internal PortfolioToken type.
- */
-export const toPortfolioToken = (token: EnrichedToken): PortfolioToken => {
-  return {
-    name: token.name,
-    symbol: token.symbol,
-    decimals: token.decimals,
-    logo: token.logoURI,
-    address: token.address,
-    chain: {
-      chainId: token.chainId,
-      chainKey: token.chainKey ?? token.chainName ?? '',
-    },
-    amount: toNumber(token.amount) || 0,
-    amountUSD: token.amountUSD,
-  };
-};
+export interface NormalizeTokensParams {
+  tokens: LiFiCommonToken[];
+  chains: ExtendedChain[];
+  getPrice: PriceLookup;
+}
 
-/**
- * Convert a group of tokens with the same symbol into a single PortfolioToken
- * with relatedTokens for cross-chain holdings.
- */
-const toPortfolioTokenFromGroup = (
-  group: EnrichedToken[],
-): PortfolioToken | null => {
-  if (isEmpty(group)) {
-    return null;
-  }
-
-  const sorted = orderBy(group, (t) => t.amountUSD ?? 0, 'desc');
-
-  const cumulatedAmountUSD = sumBy(sorted, (t) => t.amountUSD ?? 0);
-  const cumulatedAmount = sumBy(sorted, (t) => toNumber(t.amount) ?? 0);
-
-  const main = head(sorted)!;
-  const mainToken = toPortfolioToken(main);
-
-  return {
-    ...mainToken,
-    amountUSD: cumulatedAmountUSD,
-    amount: cumulatedAmount,
-    relatedTokens: map(sorted, toPortfolioToken),
-  };
-};
-
-/**
- * Convert grouped tokens to PortfolioToken[].
- * Each group becomes a single PortfolioToken with relatedTokens.
- * Results are sorted by totalPriceUSD descending.
- */
-export const toPortfolioTokens = (
-  groupedTokens: TokensBySymbol,
-): PortfolioToken[] => {
-  const portfolioTokens = map(values(groupedTokens), toPortfolioTokenFromGroup);
-  return orderBy(compact(portfolioTokens), 'totalPriceUSD', 'desc');
+export const normalizeTokens = ({
+  tokens,
+  chains,
+  getPrice,
+}: NormalizeTokensParams): PortfolioExtendedToken[] => {
+  return tokens
+    .map((token) => {
+      const chain = chains.find((c) => c.id === token.chainId);
+      if (!chain) {
+        return null;
+      }
+      return PortfolioExtendedToken.fromLiFiToken(token, chain, getPrice);
+    })
+    .filter(Boolean) as PortfolioExtendedToken[];
 };
