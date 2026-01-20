@@ -157,12 +157,16 @@ export const DeFiPositionsFilteringProvider = ({
       );
     }
 
-    return sortPortfolioItems(
-      result,
-      sortBy,
-      order,
-      portfolioPositionSortAccessors,
-    );
+    if (sortBy === SortByOptions.VALUE) {
+      result = sortPortfolioItems(
+        result,
+        sortBy,
+        order,
+        portfolioPositionSortAccessors,
+      );
+    }
+
+    return result;
   }, [
     filteredPositions.positions,
     filter.defiMinValue,
