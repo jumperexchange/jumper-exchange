@@ -3,8 +3,11 @@ import type { TooltipProps } from '@mui/material/Tooltip';
 import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
+
 import { useToken } from '@/hooks/useToken';
 import type { Token } from '@/types/jumper-backend';
+
+import { formatUSD } from '../../utils/formatNumbers';
 import { SimpleToken } from '../../utils/Token';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
@@ -64,7 +67,7 @@ export const EarnDetailsActionsPosition: FC<
         formattedAmountUSD = extendedToken.formatAmountUSD(amount);
       } else if (amountUSD) {
         formattedAmount = extendedToken.formatAmountFromUSD(amountUSD);
-        formattedAmountUSD = extendedToken.formatAmountUSD(amountUSD);
+        formattedAmountUSD = formatUSD(amountUSD);
       } else {
         formattedAmount = extendedToken.formatZeroAmount();
         formattedAmountUSD = extendedToken.formatZeroUSD();

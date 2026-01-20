@@ -13,7 +13,7 @@ import {
 } from '@lifi/widget';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';
-import { currencyFormatter } from '@/utils/formatNumbers';
+import { formatUSD } from './formatNumbers';
 
 const isJumperToken = (
   token: StaticToken | JumperToken,
@@ -26,14 +26,6 @@ const hasMarketData = (
 ): token is TokenExtended => {
   return 'marketCapUSD' in token;
 };
-
-const formatUSD = currencyFormatter('en-US', {
-  notation: 'compact',
-  currency: 'USD',
-  useGrouping: true,
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
 
 // TODO: Think whether it might make more sense to use t('format.decimal', { value: token.balance }), somehow
 export class SimpleToken {
