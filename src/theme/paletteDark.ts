@@ -64,7 +64,7 @@ export const paletteDark = {
   textInfo: baseColors.azure[500],
 
   // Background
-  bg: brandColors.dark.surface3,
+  bg: '#120b1e',
   bgLighter: brandColors.dark.surface4,
   bgDarker: brandColors.dark.surface3,
   bgGlow1: baseColors.rubyLight[400],

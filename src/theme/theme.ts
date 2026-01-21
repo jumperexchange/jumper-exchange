@@ -657,10 +657,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             zIndex: -1,
             overflow: 'hidden',
             pointerEvents: 'none',
-            backgroundColor: (theme.vars || theme).palette.lavenderDark[300],
-            ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.lavenderLight[200],
-            }),
+            backgroundColor: (theme.vars || theme).palette.bg.main,
             // typed-safe access to the `variant` prop
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               backgroundRepeat: 'no-repeat',
@@ -973,7 +970,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           semanticPalette: paletteLight,
           mode: 'light',
           background: {
-            default: paletteLight.lavenderLight[0],
+            default: paletteLight.bg,
           },
           text: {
             primary: paletteLight.textPrimary,
@@ -1073,7 +1070,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bg: themeBase.palette.black.main,
           },
           background: {
-            default: '#120F29', //'#241D52',
+            default: paletteDark.bg, //'#241D52',
             paper: '#24203d', //'#241D52',
           },
           text: {
