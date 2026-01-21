@@ -1,6 +1,7 @@
 import { orderBy, sumBy } from 'lodash';
 import type { PortfolioExtendedToken } from './PortfolioExtendedToken';
-import type { PortfolioFormatters } from '../hooks/usePortfolioFormattersInternal';
+import type { PortfolioFormatters } from '../hooks/usePortfolioFormatters';
+import { computePercentage } from '../utils/computePercentage';
 
 export class PortfolioTokenGroup {
   main: PortfolioExtendedToken;
@@ -25,10 +26,10 @@ export class PortfolioTokenGroup {
     this.all = sorted;
     this.amountUSD = sumBy(sorted, (t) => t.amountUSD);
     this.amount = sumBy(sorted, (t) => t.amount);
-    this.percentageOfAmountUSD =
-      totalTokensValueUSD > 0
-        ? (this.amountUSD / totalTokensValueUSD) * 100
-        : 0;
+    this.percentageOfAmountUSD = computePercentage(
+      this.amountUSD,
+      totalTokensValueUSD,
+    );
   }
 
   displayAmountUSD(): string {

@@ -25,7 +25,6 @@ import {
   usePortfolioSummary,
   usePortfolioTokens,
   usePortfolioPositions,
-  usePortfolioFormatters,
 } from '@/providers/PortfolioProvider/PortfolioContext';
 import { DeFiPositionsFilteringProvider } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilteringContext';
 import { TokensFilteringProvider } from '@/providers/PortfolioProvider/filtering/TokensFilteringContext';
@@ -51,16 +50,6 @@ const formatTimestamp = (timestamp: number | null) => {
 const SummaryCard = () => {
   const summary = usePortfolioSummary();
   const state = usePortfolioState();
-  const { amountUSD, percentage } = usePortfolioFormatters();
-
-  const tokensPercentage =
-    summary.totalAmountUSD > 0
-      ? (summary.tokensAmountUSD / summary.totalAmountUSD) * 100
-      : 0;
-  const positionsPercentage =
-    summary.totalAmountUSD > 0
-      ? (summary.positionsAmountUSD / summary.totalAmountUSD) * 100
-      : 0;
 
   if (state.isLoading) {
     return (
@@ -88,7 +77,7 @@ const SummaryCard = () => {
               Total Value
             </Typography>
             <Typography variant="h4">
-              {amountUSD(summary.totalAmountUSD)}
+              {summary.displayTotalAmountUSD()}
             </Typography>
           </Box>
 
@@ -98,10 +87,10 @@ const SummaryCard = () => {
                 Tokens
               </Typography>
               <Typography variant="h6">
-                {amountUSD(summary.tokensAmountUSD, { compact: true })}
+                {summary.displayTokensAmountUSD({ compact: true })}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {percentage(tokensPercentage)}
+                {summary.displayTokensPercentage()}
               </Typography>
             </Box>
             <Box sx={{ flex: 1 }}>
@@ -109,10 +98,10 @@ const SummaryCard = () => {
                 DeFi Positions
               </Typography>
               <Typography variant="h6">
-                {amountUSD(summary.positionsAmountUSD, { compact: true })}
+                {summary.displayPositionsAmountUSD({ compact: true })}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {percentage(positionsPercentage)}
+                {summary.displayPositionsPercentage()}
               </Typography>
             </Box>
           </Stack>
@@ -241,7 +230,6 @@ const SummaryCard = () => {
 
 const TokensList = () => {
   const { data: tokens, isLoading, isEmpty } = useTokensFiltering();
-  const { amountUSD, amount } = usePortfolioFormatters();
 
   if (isLoading) {
     return (
@@ -307,10 +295,10 @@ const TokensList = () => {
             </Stack>
             <Box sx={{ textAlign: 'right' }}>
               <Typography variant="body2">
-                {amountUSD(tokenGroup.amountUSD)}
+                {tokenGroup.displayAmountUSD()}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {amount(tokenGroup.amount, tokenGroup.main.symbol)}
+                {tokenGroup.displayAmount()}
               </Typography>
             </Box>
           </Box>
@@ -398,7 +386,6 @@ const PositionsList = () => {
     isLoading,
     isAllDataEmpty,
   } = useDeFiPositionsFiltering();
-  const { amountUSD } = usePortfolioFormatters();
 
   const [updatingPositionKey, setUpdatingPositionKey] = useState<string | null>(
     null,
@@ -494,7 +481,7 @@ const PositionsList = () => {
                   </Typography>
                 </Box>
               </Stack>
-              <Typography variant="h6">{amountUSD(group.amountUSD)}</Typography>
+              <Typography variant="h6">{group.displayAmountUSD()}</Typography>
             </Stack>
 
             <Divider sx={{ my: 1 }} />
@@ -572,11 +559,11 @@ const PositionsList = () => {
                         )}
                         <Box sx={{ textAlign: 'right' }}>
                           <Typography variant="body2">
-                            {amountUSD(position.netUsd ?? 0)}
+                            {position.displayNetUsd()}
                           </Typography>
                           {position.debtUsd > 0 && (
                             <Typography variant="caption" color="error.main">
-                              Debt: {amountUSD(position.debtUsd)}
+                              Debt: {position.displayDebtUsd()}
                             </Typography>
                           )}
                         </Box>

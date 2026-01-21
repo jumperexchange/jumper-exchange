@@ -7,7 +7,7 @@ import { compact, max } from 'lodash';
 import {
   fetchTokensForAddress,
   type LiFiCommonToken,
-} from '../datasources/tokens.datasource';
+} from '../lib/fetchTokensForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import type { BatchFetcherControl } from '@/utils/batches/fetcher';
 

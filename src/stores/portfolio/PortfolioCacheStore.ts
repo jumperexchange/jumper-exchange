@@ -1,7 +1,7 @@
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { LiFiCommonToken } from '@/providers/PortfolioProvider/datasources/tokens.datasource';
+import type { LiFiCommonToken } from '@/providers/PortfolioProvider/lib/fetchTokensForAddresses';
 import type { DefiPosition } from '@/types/jumper-backend';
 
 /**

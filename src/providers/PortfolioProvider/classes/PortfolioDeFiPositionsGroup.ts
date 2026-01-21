@@ -1,6 +1,7 @@
 import { orderBy, sumBy } from 'lodash';
-import type { PortfolioDefiPosition } from '../types/positions.types';
-import type { PortfolioFormatters } from '../hooks/usePortfolioFormattersInternal';
+import type { PortfolioDefiPosition } from './PortfolioDefiPosition';
+import type { PortfolioFormatters } from '../hooks/usePortfolioFormatters';
+import { computePercentage } from '../utils/computePercentage';
 
 export class PortfolioDeFiPositionsGroup {
   main: PortfolioDefiPosition;
@@ -28,10 +29,10 @@ export class PortfolioDeFiPositionsGroup {
     this.main = sorted[0];
     this.all = sorted;
     this.amountUSD = sumBy(sorted, (p) => p.netUsd);
-    this.percentageOfAmountUSD =
-      totalPositionsValueUSD > 0
-        ? (this.amountUSD / totalPositionsValueUSD) * 100
-        : 0;
+    this.percentageOfAmountUSD = computePercentage(
+      this.amountUSD,
+      totalPositionsValueUSD,
+    );
   }
 
   displayAmountUSD(): string {

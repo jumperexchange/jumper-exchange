@@ -1,9 +1,9 @@
 import type { Token } from '@lifi/sdk';
 import type { ExtendedChain } from '@lifi/sdk';
 import { ExtendedToken } from '@/utils/Token';
-import type { LiFiCommonToken } from '../datasources/tokens.datasource';
+import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
 import type { Token as JumperToken, DefiToken } from '@/types/jumper-backend';
-import type { PortfolioFormatters } from '../hooks/usePortfolioFormattersInternal';
+import type { PortfolioFormatters } from '../hooks/usePortfolioFormatters';
 import { formatTokenAmount } from '@/utils/format';
 
 interface PortfolioTokenData {

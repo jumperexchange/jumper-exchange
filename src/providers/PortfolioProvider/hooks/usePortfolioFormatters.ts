@@ -1,5 +1,10 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PortfolioDefiPosition } from '../classes/PortfolioDefiPosition';
+import { PortfolioDeFiPositionsGroup } from '../classes/PortfolioDeFiPositionsGroup';
+import { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
+import { PortfolioSummary } from '../classes/PortfolioSummary';
+import { PortfolioTokenGroup } from '../classes/PortfolioTokenGroup';
 
 export interface FormatAmountUSDOptions {
   compact?: boolean;
@@ -64,4 +69,13 @@ export const usePortfolioFormattersInternal = (): PortfolioFormatters => {
     }),
     [amountUSD, amount, percentage, decimal],
   );
+};
+
+export const useInitializePortfolioFormatters = () => {
+  const formatters = usePortfolioFormattersInternal();
+  PortfolioExtendedToken.setFormatters(formatters);
+  PortfolioTokenGroup.setFormatters(formatters);
+  PortfolioDefiPosition.setFormatters(formatters);
+  PortfolioDeFiPositionsGroup.setFormatters(formatters);
+  PortfolioSummary.setFormatters(formatters);
 };

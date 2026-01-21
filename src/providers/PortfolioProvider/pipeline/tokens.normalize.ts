@@ -1,5 +1,5 @@
 import type { ExtendedChain } from '@lifi/sdk';
-import type { LiFiCommonToken } from '../datasources/tokens.datasource';
+import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
 import {
   PortfolioExtendedToken,
   type PriceLookup,
@@ -18,11 +18,19 @@ export const normalizeTokens = ({
 }: NormalizeTokensParams): PortfolioExtendedToken[] => {
   return tokens
     .map((token) => {
-      const chain = chains.find((c) => c.id === token.chainId);
-      if (!chain) {
+      try {
+        const chain = chains.find((c) => c.id === token.chainId);
+        if (!chain) {
+          return null;
+        }
+        return PortfolioExtendedToken.fromLiFiToken(token, chain, getPrice);
+      } catch (error) {
+        console.warn(
+          `[normalizeTokens] Failed to normalize token ${token.symbol} on chain ${token.chainId}:`,
+          error,
+        );
         return null;
       }
-      return PortfolioExtendedToken.fromLiFiToken(token, chain, getPrice);
     })
     .filter(Boolean) as PortfolioExtendedToken[];
 };

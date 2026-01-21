@@ -8,7 +8,7 @@ import { ONE_HOUR_MS } from 'src/const/time';
 import {
   fetchPositionsForAddress,
   type FetchPositionsResult,
-} from '../datasources/positions.datasource';
+} from '../lib/fetchPositionsForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
 

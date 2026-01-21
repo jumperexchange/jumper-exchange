@@ -3,18 +3,12 @@
 import type { PropsWithChildren } from 'react';
 import { useCallback, useMemo } from 'react';
 import { PortfolioContext } from './PortfolioContext';
-import { usePortfolioFormattersInternal } from './hooks/usePortfolioFormattersInternal';
+import { useInitializePortfolioFormatters } from './hooks/usePortfolioFormatters';
 import type { PortfolioContextValue } from './PortfolioContext.types';
 import { useTokensData } from './hooks/useTokensData';
 import { usePositionsData } from './hooks/usePositionsData';
-import { useTokens } from '@/hooks/useTokens';
+import { usePriceLookup } from './hooks/usePriceLookup';
 import { useChains } from '@/hooks/useChains';
-import {
-  PortfolioExtendedToken,
-  type PriceLookup,
-} from './classes/PortfolioExtendedToken';
-import { PortfolioTokenGroup } from './classes/PortfolioTokenGroup';
-import { PortfolioDeFiPositionsGroup } from './classes/PortfolioDeFiPositionsGroup';
 import {
   extractLpTokens,
   type LpTokenIdentifier,
@@ -36,28 +30,13 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
   const tokensData = useTokensData();
   const positionsData = usePositionsData();
   const {
-    tokens: allTokens,
+    getPrice,
     isLoading: isLoadingPrices,
-    isSuccess: hasFreshPrices,
+    hasFreshPrices,
     updatedAt: pricesUpdatedAt,
-  } = useTokens();
+  } = usePriceLookup();
 
-  const formatters = usePortfolioFormattersInternal();
-  PortfolioExtendedToken.setFormatters(formatters);
-  PortfolioTokenGroup.setFormatters(formatters);
-  PortfolioDeFiPositionsGroup.setFormatters(formatters);
-
-  const getPrice: PriceLookup = useMemo(() => {
-    if (!allTokens?.tokens) {
-      return () => undefined;
-    }
-    return (chainId: number, address: string) => {
-      const token = allTokens.tokens[chainId]?.find(
-        (t) => t.address.toLowerCase() === address.toLowerCase(),
-      );
-      return token ? parseFloat(token.priceUSD) : 0;
-    };
-  }, [allTokens?.tokens]);
+  useInitializePortfolioFormatters();
 
   const processPositionsData = useCallback(
     (rawData: ReturnType<typeof usePositionsData>) => {

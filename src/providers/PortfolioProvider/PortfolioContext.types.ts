@@ -7,6 +7,7 @@ import type {
   PortfolioDefiPosition,
   PortfolioDeFiPositionsGroup,
 } from './types/positions.types';
+import type { PortfolioSummary } from './classes/PortfolioSummary';
 
 export interface PortfolioTokensContextValue {
   /** Tokens grouped by symbol */
@@ -78,13 +79,7 @@ export interface PortfolioProcessors {
   ) => PortfolioTokensContextValue;
 }
 
-export interface PortfolioSummaryContextValue {
-  totalAmountUSD: number;
-  positionsAmountUSD: number;
-  tokensAmountUSD: number;
-  positionsByProtocol: PortfolioDeFiPositionsGroup[];
-  tokensBySymbol: PortfolioTokenGroup[];
-}
+export type PortfolioSummaryContextValue = PortfolioSummary;
 
 export interface PortfolioContextValue {
   tokens: PortfolioTokensContextValue;
