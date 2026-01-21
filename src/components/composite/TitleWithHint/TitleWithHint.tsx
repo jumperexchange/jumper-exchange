@@ -94,10 +94,7 @@ export const TitleWithHint: FC<TitleWithHintProps> = ({
       onMouseLeave={handleMouseLeave}
       data-hint-hover-active={isHoveringHintContent || undefined}
     >
-      <TitleWithHintTitle
-        variant={titleVariant}
-        data-testid={titleDataTestId || 'title-with-hint-title'}
-      >
+      <TitleWithHintTitle variant={titleVariant} data-testid={titleDataTestId}>
         {titleTooltip ? (
           <Tooltip title={titleTooltip}>
             <span>{title}</span>

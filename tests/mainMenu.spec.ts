@@ -44,10 +44,13 @@ test.describe('Main Menu flows', () => {
     async ({ page }) => {
       const missionsButton = page.getByTestId('navbar-missions-button');
       const missionTitle = page.locator(
-        'xpath=//p[normalize-space(text())="Hyperwave on HyperEVM"]',
+        'xpath=(//div[@class="MuiBox-root mui-1qhclh"]//p)[1]',
       );
       await missionsButton.click();
-      await page.getByTestId('mission-card-hyperwave-hyperevm-hlp').click();
+      await page
+        .locator('xpath=(//div[@class="MuiBox-root mui-prph5i"]//a)[2]')
+        .click();
+
       await expect(missionTitle).toBeVisible();
     },
   );

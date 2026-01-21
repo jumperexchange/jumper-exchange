@@ -21,9 +21,9 @@ export const MissionsSection: FC<MissionsSectionProps> = ({
 
   return (
     <SectionCard>
-      <MissionSectionContainer data-testid="missions-section-container">
+      <MissionSectionContainer>
         <MissionSectionHeaderContainer>
-          <Typography variant="titleSmall" data-testid="missions-section-title">
+          <Typography variant="titleSmall">
             {t('missions.wrapperCard.title')}
           </Typography>
           <Typography
