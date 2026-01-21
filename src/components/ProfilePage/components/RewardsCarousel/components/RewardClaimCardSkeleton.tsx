@@ -20,7 +20,7 @@ export const RewardClaimCardSkeleton = () => {
         variant="rounded"
         animation="wave"
         sx={{
-          height: 38,
+          height: 40,
           width: 64,
           borderRadius: 20,
         }}

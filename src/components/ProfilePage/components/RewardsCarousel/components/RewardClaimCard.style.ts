@@ -7,7 +7,8 @@ import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
 export const ClaimActionButton = styled(ButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'isDisabled',
 })<{ isDisabled?: boolean }>(({ theme, isDisabled }) => ({
-  height: 'auto',
+  height: theme.spacing(5),
+  minWidth: 'fit-content',
   padding: theme.spacing(1.25, 2),
   color: (theme.vars || theme).palette.text.primary,
   ...theme.applyStyles('light', {

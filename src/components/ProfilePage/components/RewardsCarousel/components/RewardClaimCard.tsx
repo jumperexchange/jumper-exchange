@@ -79,7 +79,7 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
           loading={isLoading}
           loadingPosition="start"
           aria-label="Claim"
-          size="large"
+          size="medium"
           onClick={onClaim}
         >
           {isLoading ? 'Claiming' : 'Claim'}
