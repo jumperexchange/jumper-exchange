@@ -324,7 +324,7 @@ export const EarnFilteringProvider = ({
     let isLoading = false;
     switch (tab) {
       case EarnFilterTab.FOR_YOU:
-        isLoading = !hasData && (forYou.isLoading || !address);
+        isLoading = !hasData && forYou.isLoading;
         break;
       case EarnFilterTab.YOUR_POSITIONS:
         isLoading = !hasData && yourPositionsNoFilter.isLoading;

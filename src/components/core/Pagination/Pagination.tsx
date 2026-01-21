@@ -19,6 +19,7 @@ interface PaginationProps {
   id?: number | string;
   onPrev?: () => void;
   onNext?: () => void;
+  onSetPage?: (page: number) => void;
 }
 
 export const Pagination = ({
@@ -28,11 +29,13 @@ export const Pagination = ({
   id,
   onPrev,
   onNext,
+  onSetPage,
 }: PaginationProps) => {
   const isFirstPage = page === 0;
   const isLastPage = page >= pagination.pageCount - 1;
 
   const handlePage = (newPage: number) => {
+    onSetPage?.(newPage);
     setPage(newPage);
   };
 

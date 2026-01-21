@@ -58,10 +58,13 @@ export function BlogArticlesTabs({
     [trackEvent, index],
   );
 
-  const setPage = useCallback(
+  const setPage = useCallback((page: number) => {
+    setPageTab(page);
+  }, []);
+
+  const handleSetPage = useCallback(
     (page: number) => {
       trackPagination('click-pagination', page);
-      setPageTab(page);
     },
     [trackPagination],
   );
@@ -120,6 +123,7 @@ export function BlogArticlesTabs({
           pagination={pagination}
           onPrev={handlePrev}
           onNext={handleNext}
+          onSetPage={handleSetPage}
         />
       )}
     </BlogArticlesCollectionsContainer>

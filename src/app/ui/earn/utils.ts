@@ -7,8 +7,24 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import type { EarnOpportunityFilterWithoutSortByAndOrder } from './types';
+import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import type {
+  EarnOpportunityFilterWithoutSortByAndOrder,
+  SortByEnum,
+} from './types';
 import { EarnFilterTab, OrderOptions, SortByOptions } from './types';
+
+export type SortAccessors = Partial<
+  Record<
+    SortByEnum,
+    (item: EarnOpportunityWithLatestAnalytics) => string | number
+  >
+>;
+
+export const sortAccessors: SortAccessors = {
+  [SortByOptions.APY]: (item) => item.latest?.apy?.total ?? 0,
+  [SortByOptions.TVL]: (item) => parseFloat(item.latest?.tvlUsd ?? '0'),
+};
 
 export const searchParamsParsers = {
   sortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(

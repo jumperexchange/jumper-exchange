@@ -1,4 +1,4 @@
-import { fromPairs, map, some, uniq, uniqBy } from 'lodash';
+import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash';
 import type { Nullable } from 'nuqs';
 
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
@@ -10,6 +10,24 @@ import type {
   SortByEnum,
 } from './types';
 import { OrderOptions, RewardsAPYOptions, SortByOptions } from './types';
+import { sortAccessors } from './utils';
+
+const isInRange = (
+  value: number | undefined,
+  min?: number,
+  max?: number,
+): boolean => {
+  if (value === undefined) {
+    return min === undefined && max === undefined;
+  }
+  if (min !== undefined && value < min) {
+    return false;
+  }
+  if (max !== undefined && value > max) {
+    return false;
+  }
+  return true;
+};
 
 export function filterOpportunities(
   data: EarnOpportunityWithLatestAnalytics[],
@@ -56,26 +74,22 @@ export function filterOpportunities(
     }
 
     // APY range filter
-    const apy = item.latest?.apy?.total;
-    if (minAPY !== undefined && (apy === undefined || apy < minAPY)) {
-      return false;
-    }
-    if (maxAPY !== undefined && (apy === undefined || apy > maxAPY)) {
+    if (!isInRange(item.latest?.apy?.total, minAPY, maxAPY)) {
       return false;
     }
 
     // TVL range filter
-    const tvl = item.latest?.tvlUsd
-      ? parseFloat(item.latest.tvlUsd)
-      : undefined;
-    if (minTVL !== undefined && (tvl === undefined || tvl < minTVL)) {
-      return false;
-    }
-    if (maxTVL !== undefined && (tvl === undefined || tvl > maxTVL)) {
+    if (
+      !isInRange(
+        item.latest?.tvlUsd ? parseFloat(item.latest.tvlUsd) : undefined,
+        minTVL,
+        maxTVL,
+      )
+    ) {
       return false;
     }
 
-    // Rewards APY filter
+    // Rewards APY filter (exclusive min to filter out 0 rewards)
     const rewardsApy = item.rewardsApy;
     if (
       minRewardsAPY !== undefined &&
@@ -99,21 +113,16 @@ export function sortOpportunities(
   sortBy: SortByEnum,
   order: OrderEnum = OrderOptions.DESC,
 ): EarnOpportunityWithLatestAnalytics[] {
-  const getValue = (item: EarnOpportunityWithLatestAnalytics): number => {
-    switch (sortBy) {
-      case SortByOptions.APY:
-        return item.latest?.apy?.total ?? 0;
-      case SortByOptions.TVL:
-        return parseFloat(item.latest?.tvlUsd ?? '0');
-      default:
-        return 0;
-    }
-  };
+  const accessor = sortAccessors[sortBy];
+  if (!accessor) {
+    return data;
+  }
 
-  return [...data].sort((a, b) => {
-    const diff = getValue(a) - getValue(b);
-    return order === OrderOptions.ASC ? diff : -diff;
-  });
+  return orderBy(
+    data,
+    [accessor],
+    [order === OrderOptions.ASC ? 'asc' : 'desc'],
+  );
 }
 
 export const extractFilteringParams = (

@@ -98,7 +98,7 @@ const EarnOpportunitiesAllInner = () => {
             variant={variant}
           />
           <EarnEmptyList />
-          {tab == EarnFilterTab.FOR_YOU && isConnected && !!data.length && (
+          {tab === EarnFilterTab.FOR_YOU && isConnected && !!data.length && (
             <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
           )}
         </Stack>

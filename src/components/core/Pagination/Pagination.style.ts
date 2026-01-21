@@ -7,7 +7,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   width: 'fit-content',
   flexWrap: 'wrap',
   padding: theme.spacing(1),
-  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   borderRadius: '24px',
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
@@ -15,7 +15,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(2),
   ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
   }),
 }));
 
