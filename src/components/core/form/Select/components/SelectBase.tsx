@@ -15,8 +15,7 @@ import { SelectorLabel } from './SelectLabel';
 import Fade from '@mui/material/Fade';
 
 interface ExtendedSelectBaseProps<T extends TData>
-  extends Omit<SelectBaseProps<T>, 'onChange'>,
-    PropsWithChildren {
+  extends Omit<SelectBaseProps<T>, 'onChange'>, PropsWithChildren {
   multiple?: boolean;
   onChange: SelectProps['onChange'];
   selectorContent?: React.ReactNode;

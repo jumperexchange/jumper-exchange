@@ -16,10 +16,7 @@ export const PortfolioAssetContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(1.5),
     boxShadow: theme.shadows[2],
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 );
 
@@ -70,10 +67,7 @@ export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
     height: 312,
     padding: theme.spacing(3),
     boxShadow: theme.shadows[2],
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 );
 

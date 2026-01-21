@@ -22,9 +22,6 @@ const EarnCardContainer = styled(Box, {
   '&:hover': {
     boxShadow: hasLink ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
   },
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 interface EarnCardBodyProps {
@@ -224,10 +221,7 @@ export const EarnCardMissingPositionInteractiveContent = styled(Stack, {
     height: '100%',
     zIndex: -1,
     filter: 'blur(32px)',
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   },
 }));
 

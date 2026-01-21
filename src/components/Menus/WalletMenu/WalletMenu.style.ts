@@ -14,10 +14,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     gap: theme.spacing(2),
     maxWidth: 416,
     zIndex: 2000,
-    background: (theme.vars || theme).palette.surface1.main,
-    ...theme.applyStyles('light', {
-      background: (theme.vars || theme).palette.surface2.main,
-    }),
+    background: (theme.vars || theme).palette.surface2.main,
   },
 }));
 

@@ -91,6 +91,8 @@ declare module '@mui/material/styles' {
     orchid: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     lavenderLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
     lavenderDark: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    rubyLight: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    rubyDark: Pick<Color, 100 | 200 | 300 | 400 | 500> & { 0: string };
     semanticPalette: SemanticPalette;
   }
 
@@ -137,6 +139,8 @@ declare module '@mui/material/styles' {
     orchid?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     lavenderLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
     lavenderDark?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    rubyLight?: Pick<Color, 100 | 200 | 300 | 400> & { 0: string };
+    rubyDark?: Pick<Color, 100 | 200 | 300 | 400 | 500> & { 0: string };
     semanticPalette?: SemanticPalette;
   }
   interface ButtonPropsColorOverrides {
@@ -181,6 +185,8 @@ declare module '@mui/material/styles' {
     orchid: true;
     lavenderLight: true;
     lavenderDark: true;
+    rubyLight: true;
+    rubyDark: true;
   }
 
   interface TypographyVariants {
@@ -1099,14 +1105,14 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             main: alpha('#653BA3', 0.42),
           },
           primary: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#543188',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: paletteDark.accent1,
           },
           secondary: {
-            light: '#321D52',
-            main: '#321D52',
-            dark: '#321D52',
+            light: paletteDark.accent2,
+            main: paletteDark.accent2,
+            dark: paletteDark.accent2,
           },
           tertiary: {
             light: '#33163D',
@@ -1114,34 +1120,34 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             dark: '#33163D',
           },
           accent1: {
-            light: '#653BA3',
-            main: '#653BA3',
-            dark: '#653BA3',
+            light: paletteDark.accent1,
+            main: paletteDark.accent1,
+            dark: paletteDark.accent1,
           },
           accent1Alt: {
-            light: '#BEA0EB',
-            main: '#BEA0EB',
-            dark: '#BEA0EB',
+            light: paletteDark.accent1Alt,
+            main: paletteDark.accent1Alt,
+            dark: paletteDark.accent1Alt,
           },
           accent2: {
-            light: '#D35CFF',
-            main: '#D35CFF',
-            dark: '#D35CFF',
+            light: paletteDark.accent2,
+            main: paletteDark.accent2,
+            dark: paletteDark.accent2,
           },
           surface1: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: paletteDark.surface1,
+            main: paletteDark.surface1,
+            dark: paletteDark.surface1,
           },
           surface2: {
-            light: '#24203D',
-            main: '#24203D',
-            dark: '#24203D',
+            light: paletteDark.surface2,
+            main: paletteDark.surface2,
+            dark: paletteDark.surface2,
           },
           surface3: {
-            light: '#120F29',
-            main: '#120F29',
-            dark: '#120F29',
+            light: paletteDark.surface3,
+            main: paletteDark.surface3,
+            dark: paletteDark.surface3,
           },
           surface4: {
             light: paletteDark.surface4,

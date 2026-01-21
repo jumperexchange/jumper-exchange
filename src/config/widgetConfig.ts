@@ -179,16 +179,10 @@ function formatWidgetPalette(
   }
 
   return {
-    background:
-      mode === 'dark'
-        ? {
-            paper: colorScheme.palette.surface2.main,
-            default: colorScheme.palette.surface1.main,
-          }
-        : {
-            paper: colorScheme.palette.surface1.main,
-            default: colorScheme.palette.surface2.main,
-          },
+    background: {
+      paper: colorScheme.palette.surface1.main,
+      default: colorScheme.palette.surface2.main,
+    },
     primary: colorScheme.palette.accent1,
     secondary: colorScheme.palette.accent2,
     grey: colorScheme.palette.grey,
