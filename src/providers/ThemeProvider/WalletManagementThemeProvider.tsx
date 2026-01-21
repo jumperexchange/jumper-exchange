@@ -13,7 +13,7 @@ export const WalletManagementThemeProvider: React.FC<
   const theme = useMemo(() => {
     const _theme = createTheme(widgetTheme.config.theme);
     _theme.components = deepmerge(
-      _theme.components,
+      _theme.components ?? {},
       widgetTheme.config.theme?.components ?? {},
     );
     return _theme;
