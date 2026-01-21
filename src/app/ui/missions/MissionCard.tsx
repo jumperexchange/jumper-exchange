@@ -1,6 +1,7 @@
 'use client';
 
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import {
@@ -10,7 +11,7 @@ import {
 } from 'src/const/trackingKeys';
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { useUserTracking } from 'src/hooks/userTracking';
-import { QuestData, StrapiResponseData } from 'src/types/strapi';
+import type { QuestData, StrapiResponseData } from 'src/types/strapi';
 import { Link } from 'src/components/Link';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
@@ -63,6 +64,8 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     />
   );
 
+  const testId = `mission-card-${missionDisplayData.slug || missionDisplayData.id}`;
+
   return !isDisabled ? (
     <Link
       href={missionDisplayData.href}
@@ -70,10 +73,11 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
         textDecoration: 'none',
         width: '100%',
       }}
+      data-testid={testId}
     >
       {missionCard}
     </Link>
   ) : (
-    missionCard
+    <div data-testid={testId}>{missionCard}</div>
   );
 };

@@ -7,7 +7,7 @@ import {
   MissionSectionContainer,
   MissionSectionHeaderContainer,
 } from './MissionsSection.style';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 interface MissionsSectionProps extends PropsWithChildren {
   count: number;
@@ -21,9 +21,9 @@ export const MissionsSection: FC<MissionsSectionProps> = ({
 
   return (
     <SectionCard>
-      <MissionSectionContainer>
+      <MissionSectionContainer data-testid="missions-section-container">
         <MissionSectionHeaderContainer>
-          <Typography variant="titleSmall">
+          <Typography variant="titleSmall" data-testid="missions-section-title">
             {t('missions.wrapperCard.title')}
           </Typography>
           <Typography
