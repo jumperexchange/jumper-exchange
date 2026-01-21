@@ -1,31 +1,29 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
-import type { TokenAssetProgressProps } from '../AssetProgress.types';
-import { BaseProgress } from './BaseProgress';
-import { useTokens } from 'src/hooks/useTokens';
 import {
   Avatar,
   AvatarPlaceholder,
   AvatarSkeleton,
 } from 'src/components/core/AvatarStack/AvatarStack.styles';
+import type { Address } from 'viem';
+import { useTokens } from '@/hooks/useTokens';
+import type { TokenAssetProgressProps } from '../AssetProgress.types';
+import { BaseProgress } from './BaseProgress';
 
 export const TokenProgress: FC<Omit<TokenAssetProgressProps, 'variant'>> = ({
   token,
   progress,
   amount,
 }) => {
-  const { getTokenByAddressAndChain } = useTokens();
+  const { getToken } = useTokens();
   const enhancedToken = useMemo(() => {
-    const _token = getTokenByAddressAndChain(
-      token.address,
-      token.chain.chainId,
-    );
+    const tokenInner = getToken(token.chain.chainId, token.address as Address);
     return {
-      id: (_token?.address ?? token.address) + token.chain.chainId,
-      src: _token?.logoURI || '',
-      alt: _token?.name || '',
+      id: (tokenInner?.address ?? token.address) + token.chain.chainId,
+      src: tokenInner?.logoURI || '',
+      alt: tokenInner?.name || '',
     };
-  }, [token, getTokenByAddressAndChain]);
+  }, [token, getToken]);
 
   return (
     <BaseProgress progress={progress} amount={amount}>
