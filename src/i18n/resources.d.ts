@@ -88,6 +88,11 @@ interface Resources {
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       emptyList: {
+        forYouNotConnected: {
+          connectWallet: 'Connect wallet';
+          description: 'Connect your wallet to view markets for you.';
+          title: 'No wallet connected';
+        };
         noResults: {
           clearFilters: 'Clear filters';
           description: 'Unfortunately there are no results for your search, try clearing your filters.';
@@ -99,9 +104,9 @@ interface Resources {
           viewAllMarkets: 'View all markets';
         };
         yourPositionsNotConnected: {
+          connectWallet: 'Connect wallet';
           description: 'Connect your wallet to view your positions.';
           title: 'No wallet connected';
-          viewAllMarkets: 'Connect wallet';
         };
       };
       filter: {

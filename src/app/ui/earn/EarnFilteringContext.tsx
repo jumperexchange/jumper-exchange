@@ -47,6 +47,7 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   isLoading: boolean;
   error: unknown | null;
   isAllDataLoading: boolean;
+  isNotConnected: boolean;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -72,6 +73,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   isLoading: false,
   error: null,
   isAllDataLoading: false,
+  isNotConnected: false,
 });
 
 export const EarnFilteringProvider = ({
@@ -109,12 +111,17 @@ export const EarnFilteringProvider = ({
   const [showYourPositions, setShowYourPositions] =
     useState(initialWithPositions);
 
-  const forYou = useEarnFilterOpportunities({
-    filter: {
-      forYou: true,
-      address,
+  const forYou = useEarnFilterOpportunities(
+    {
+      filter: {
+        forYou: true,
+        address,
+      },
     },
-  });
+    {
+      enabled: !!address,
+    },
+  );
 
   const all = useEarnFilterOpportunities(
     {
@@ -237,7 +244,7 @@ export const EarnFilteringProvider = ({
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
     const isLoading =
-      !hasData && (showForYou ? forYou.isLoading || !address : all.isLoading);
+      !hasData && (showForYou ? forYou.isLoading : all.isLoading);
     return {
       sortBy,
       setSortBy: updateSortBy,
@@ -254,6 +261,7 @@ export const EarnFilteringProvider = ({
       isLoading,
       error: (showForYou ? forYou.error : all.error) ?? null,
       isAllDataLoading: allNoFilter.isLoading,
+      isNotConnected: !address,
       ...stats,
     };
   }, [

@@ -29,6 +29,7 @@ const EarnOpportunitiesAllInner = () => {
     showForYou,
     changeTab,
     showYourPositions,
+    isNotConnected,
   } = useEarnFiltering();
 
   const [variant, setVariant] = useSettingsStore((state) => [
@@ -92,7 +93,7 @@ const EarnOpportunitiesAllInner = () => {
             variant={variant}
           />
           <EarnEmptyList />
-          {showForYou && (
+          {showForYou && !isNotConnected && !!data.length && (
             <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
           )}
         </Stack>
