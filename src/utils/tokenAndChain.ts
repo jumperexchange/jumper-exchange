@@ -1,5 +1,6 @@
 import type { Chain, ChainId, ExtendedChain, TokensResponse } from '@lifi/sdk';
 import { zeroAddress } from 'viem';
+import { AllTokens } from '../hooks/useTokens';
 
 export const getChainById = (chains: ExtendedChain[], id: ChainId) => {
   if (!chains.length || !id) {
@@ -34,47 +35,4 @@ export const getTokenBySymbolOnSpecificChain = (
     (el) => el.symbol.toLowerCase() === symbol.toLowerCase(),
   );
   return filteredToken;
-};
-
-export const getTokenBySymbol = (
-  tokens: TokensResponse['tokens'],
-  symbol: string,
-) => {
-  return Object.values(tokens)
-    .flat()
-    .filter((el) => {
-      return el.symbol.toLowerCase() === symbol.toLowerCase();
-    });
-};
-
-export const getTokenByName = (
-  tokens: TokensResponse['tokens'],
-  name: string,
-) => {
-  return Object.values(tokens)
-    .flat()
-    .filter((el) => {
-      return el.name.toLowerCase() === name.toLowerCase();
-    });
-};
-
-export const getTokenByAddressOnSpecificChain = (
-  tokens: TokensResponse['tokens'],
-  chainId: number,
-  address: string,
-) => {
-  const chainTokens = tokens[chainId] ?? [];
-  const filteredToken = chainTokens.find(
-    (el) => el.address.toLowerCase() === address.toLowerCase(),
-  );
-  return filteredToken;
-};
-
-// @Note: this works only for EVM chains
-export const getNativeTokenForChain = (
-  tokens: TokensResponse['tokens'],
-  chainId: number,
-) => {
-  const chainTokens = tokens[chainId] ?? [];
-  return chainTokens.find((token) => token.address === zeroAddress);
 };

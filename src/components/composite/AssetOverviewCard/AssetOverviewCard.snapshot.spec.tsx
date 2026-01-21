@@ -6,10 +6,8 @@ import { defiPositionGroups, tokens, tokenTinyAmounts } from './fixtures';
 
 vi.mock('src/hooks/useTokens', () => ({
   useTokens: () => ({
-    data: {
-      tokens: tokens,
-    },
-    getTokenByAddressAndChain: (address: string, chainId: number) =>
+    tokens,
+    getToken: (chainId: number, address: string) =>
       tokens.find(
         (token) => token.address === address && token.chain.chainId === chainId,
       ),
