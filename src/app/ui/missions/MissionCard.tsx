@@ -64,8 +64,6 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     />
   );
 
-  const testId = `mission-card-${missionDisplayData.slug || missionDisplayData.id}`;
-
   return !isDisabled ? (
     <Link
       href={missionDisplayData.href}
@@ -73,11 +71,10 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
         textDecoration: 'none',
         width: '100%',
       }}
-      data-testid={testId}
     >
       {missionCard}
     </Link>
   ) : (
-    <div data-testid={testId}>{missionCard}</div>
+    missionCard
   );
 };
