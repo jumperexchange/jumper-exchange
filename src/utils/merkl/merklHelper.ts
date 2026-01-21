@@ -1,9 +1,10 @@
-import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
-import {
+import { flatMap, uniq } from 'lodash';
+import type { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
+import type {
   MerklUserRewards,
   MerklUserRewardsData,
 } from 'src/app/lib/getMerklUserRewards';
-import { AvailableRewardsExtended } from 'src/types/merkl';
+import type { MerklReward } from 'src/types/rewards';
 import type { MerklRewardsData } from 'src/types/strapi';
 import { MERKL_CLAIMING_ADDRESS } from './merklApi';
 
@@ -27,10 +28,7 @@ const processTokenAddressesByChain = (
   }, {});
 };
 
-const processReward = (
-  reward: MerklUserRewards[0],
-  chainData: MerklUserRewardsData,
-): AvailableRewardsExtended => {
+const processReward = (reward: MerklUserRewards[0]): MerklReward => {
   const amountBigInt = BigInt(reward.amount);
   const claimedBigInt = BigInt(reward.claimed);
   const decimals = reward.token.decimals;
@@ -46,9 +44,6 @@ const processReward = (
     amountToClaim,
     amountAccumulated: Number(amountBigInt / BigInt(10 ** decimals)),
     proof: reward.proofs,
-    explorerLink: chainData.chain.explorers?.[0]?.url || '',
-    chainLogo: chainData.chain.icon,
-    tokenLogo: '', // Will be filled later if needed
     claimingAddress: MERKL_CLAIMING_ADDRESS,
     tokenDecimals: decimals,
   };
@@ -60,39 +55,32 @@ export const processRewardsData = (
 ) => {
   const tokenAddressesByChain = processTokenAddressesByChain(merklRewards);
 
-  // Process all rewards and collect campaign IDs
-  const processedData = userRewardsData.flatMap((chainData) => {
-    const chainId = Number(chainData.chain.id);
+  const rewardsToClaim = flatMap(userRewardsData, (chainData) => {
+    const chainTokens = tokenAddressesByChain[Number(chainData.chain.id)];
     return chainData.rewards
-      .filter((reward) => {
-        const chainTokens = tokenAddressesByChain[chainId];
-        if (chainTokens?.size > 0) {
-          return chainTokens.has(reward.token.address.toLowerCase());
-        }
-        return true;
-      })
-      .map((reward) => processReward(reward, chainData));
+      .filter(
+        (reward) =>
+          !chainTokens?.size ||
+          chainTokens.has(reward.token.address.toLowerCase()),
+      )
+      .map(processReward);
   });
 
-  // Collect all campaign IDs
-  const campaignIds = userRewardsData.flatMap((chainData) =>
-    chainData.rewards.flatMap((reward) =>
-      reward.breakdowns.map((breakdown) => String(breakdown.campaignId)),
+  const pastCampaigns = uniq(
+    flatMap(userRewardsData, (chainData) =>
+      flatMap(chainData.rewards, (reward) =>
+        reward.breakdowns.map((breakdown) => String(breakdown.campaignId)),
+      ),
     ),
   );
 
-  // Get unique chain IDs where user has claimable rewards
-  const chainsWithRewards = new Set(
-    processedData
+  const chainsWithClaimableRewards = uniq(
+    rewardsToClaim
       .filter((reward) => reward.amountToClaim > 0)
       .map((reward) => reward.chainId),
   );
 
-  return {
-    rewardsToClaim: processedData,
-    pastCampaigns: Array.from(new Set(campaignIds)),
-    chainsWithClaimableRewards: Array.from(chainsWithRewards),
-  };
+  return { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards };
 };
 
 // this filters out duplicate opportunities
@@ -107,7 +95,9 @@ export const filterUniqueByIdentifier = (
     const exists = acc.some(
       (existing) => existing.identifier === item.identifier,
     );
-    if (!exists) acc.push(item);
+    if (!exists) {
+      acc.push(item);
+    }
     return acc;
   }, []);
 };
@@ -115,7 +105,9 @@ export const filterUniqueByIdentifier = (
 export const calculateMaxApy = (opportunities: MerklOpportunity[]): number => {
   let currentMax = 0;
   for (const opportunity of opportunities) {
-    if (!opportunity?.aprRecord) continue;
+    if (!opportunity?.aprRecord) {
+      continue;
+    }
     for (const breakdown of opportunity.aprRecord.breakdowns) {
       if (breakdown.value > currentMax) {
         currentMax = breakdown.value;

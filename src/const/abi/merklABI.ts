@@ -486,4 +486,4 @@ export const MerklDistribABI = [
     stateMutability: 'payable',
     type: 'function',
   },
-];
+] as const;
