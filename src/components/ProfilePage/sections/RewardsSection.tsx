@@ -38,7 +38,7 @@ export const RewardsSection = ({
     data: deFiReacherAvailableRewards = [],
     isSuccess: isDeFiReacherSuccess,
     isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards(address);
+  } = useDeFiReacherRewards({ userAddress: address, merklRewards });
 
   const merklRewardsWithAmount = merklAvailableRewards.filter(
     (reward) => reward.amountToClaim > 0,

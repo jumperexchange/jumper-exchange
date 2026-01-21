@@ -6,27 +6,11 @@ import type {
 } from 'src/app/lib/getMerklUserRewards';
 import type { MerklReward } from 'src/types/rewards';
 import type { MerklRewardsData } from 'src/types/strapi';
+import {
+  buildRewardFilter,
+  isRewardAllowed,
+} from '@/utils/rewards/merklRewardFilter';
 import { MERKL_CLAIMING_ADDRESS } from './merklApi';
-
-interface TokenAddressesByChain {
-  [chainId: number]: Set<string>;
-}
-
-const processTokenAddressesByChain = (
-  merklRewards: MerklRewardsData[] = [],
-): TokenAddressesByChain => {
-  return merklRewards.reduce<TokenAddressesByChain>((acc, reward) => {
-    if (reward.ChainId && reward.TokenAddress) {
-      const chainId = Number(reward.ChainId);
-      const tokenAddress = reward.TokenAddress.toLowerCase();
-      if (!acc[chainId]) {
-        acc[chainId] = new Set();
-      }
-      acc[chainId].add(tokenAddress);
-    }
-    return acc;
-  }, {});
-};
 
 const processReward = (reward: MerklUserRewards[0]): MerklReward => {
   const amountBigInt = BigInt(reward.amount);
@@ -53,15 +37,13 @@ export const processRewardsData = (
   userRewardsData: MerklUserRewardsData[],
   merklRewards?: MerklRewardsData[],
 ) => {
-  const tokenAddressesByChain = processTokenAddressesByChain(merklRewards);
+  const filter = buildRewardFilter(merklRewards);
 
   const rewardsToClaim = flatMap(userRewardsData, (chainData) => {
-    const chainTokens = tokenAddressesByChain[Number(chainData.chain.id)];
+    const chainId = Number(chainData.chain.id);
     return chainData.rewards
-      .filter(
-        (reward) =>
-          !chainTokens?.size ||
-          chainTokens.has(reward.token.address.toLowerCase()),
+      .filter((reward) =>
+        isRewardAllowed(filter, chainId, reward.token.address),
       )
       .map(processReward);
   });
