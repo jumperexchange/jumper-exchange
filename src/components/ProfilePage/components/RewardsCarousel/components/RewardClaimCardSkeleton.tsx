@@ -1,20 +1,16 @@
-import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
-import {
-  BaseStyledSkeleton,
-  RewardCardContainer,
-} from './RewardClaimCard.style';
+import { RewardCardContainer } from './RewardClaimCard.style';
 import { EntityChainStackVariant } from '@/components/composite/EntityChainStack/EntityChainStack.types';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { EntityChainStack } from '@/components/composite/EntityChainStack/EntityChainStack';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { REWARD_CLAIM_CARD_CONFIG } from './constants';
 
 export const RewardClaimCardSkeleton = () => {
   return (
     <RewardCardContainer gap={2} sx={{ justifyContent: 'space-between' }}>
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}
-        tokenSize={AvatarSize.LG}
-        chainsSize={AvatarSize.XS}
+        tokenSize={REWARD_CLAIM_CARD_CONFIG.tokenSize}
+        chainsSize={REWARD_CLAIM_CARD_CONFIG.chainsSize}
         spacing={{
           chains: 0,
         }}

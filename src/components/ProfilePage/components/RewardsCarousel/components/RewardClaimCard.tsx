@@ -9,10 +9,10 @@ import {
   ExplorerLinkButton,
 } from './RewardClaimCard.style';
 import { TokenStackItem } from '@/components/composite/TokenListCard/TokenStackItem';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { useTokens } from '@/hooks/useTokens';
 import type { Address } from 'viem';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
+import { REWARD_CLAIM_CARD_CONFIG } from './constants';
 
 interface RewardClaimCardProps {
   availableReward: BaseReward;
@@ -39,51 +39,34 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
     'tx',
   );
 
-  const totalPriceUSD = useMemo(() => {
-    const token = getToken(
+  const token = useMemo(() => {
+    const _token = getToken(
       availableReward.chainId,
       availableReward.address as Address,
     );
-    return token?.priceUSD
-      ? Number(token.priceUSD) * availableReward.amountToClaim
+    const totalPriceUSD = _token?.priceUSD
+      ? Number(_token.priceUSD) * availableReward.amountToClaim
       : 0;
-  }, [
-    availableReward.chainId,
-    availableReward.address,
-    availableReward.amountToClaim,
-    getToken,
-  ]);
+    return {
+      address: availableReward.address,
+      logo: availableReward.logoURI,
+      name: availableReward.symbol,
+      symbol: availableReward.symbol,
+      decimals: availableReward.tokenDecimals,
+      chain: {
+        chainId: availableReward.chainId,
+        chainKey: availableReward.chainId.toString(),
+      },
+      balance: availableReward.amountToClaim,
+      totalPriceUSD,
+    };
+  }, [availableReward, getToken]);
 
   return (
     <RewardCardContainer gap={2}>
       <TokenStackItem
-        token={{
-          address: availableReward.address,
-          logo: availableReward.logoURI,
-          name: availableReward.symbol,
-          symbol: availableReward.symbol,
-          decimals: availableReward.tokenDecimals,
-          chain: {
-            chainId: availableReward.chainId,
-            chainKey: availableReward.chainId.toString(),
-          },
-          balance: availableReward.amountToClaim,
-          totalPriceUSD,
-        }}
-        config={{
-          tokenSize: AvatarSize.LG,
-          chainsSize: AvatarSize.XS,
-          titleVariant: 'bodySmallStrong',
-          descriptionVariant: 'bodyXSmall',
-          infoContainerGap: 0,
-          itemSx: {
-            '&:not(:has([data-hint-hover-active]))': {
-              '&:hover, &:focus-visible, &:focus': {
-                backgroundColor: 'transparent',
-              },
-            },
-          },
-        }}
+        token={token}
+        config={REWARD_CLAIM_CARD_CONFIG}
         chainsLimit={1}
         chainsSpacing={0}
         isClickable={false}

@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { ButtonSecondary } from 'src/components/Button';
 import IconButton, { type IconButtonProps } from '@mui/material/IconButton';
-import Skeleton from '@mui/material/Skeleton';
 
 export const ClaimActionButton = styled(ButtonSecondary, {
   shouldForwardProp: (prop) => prop !== 'isDisabled',
@@ -49,7 +48,3 @@ export const ExplorerLinkButton = styled(IconButton)<IconButtonProps>(
     },
   }),
 );
-
-export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
-}));
