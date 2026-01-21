@@ -3,7 +3,7 @@ import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
 import {
   PortfolioExtendedToken,
   type PriceLookup,
-} from '../classes/PortfolioExtendedToken';
+} from '../types/PortfolioExtendedToken';
 
 export interface NormalizeTokensParams {
   tokens: LiFiCommonToken[];

@@ -5,8 +5,8 @@ import {
   sumBy,
   values,
 } from 'lodash';
-import { PortfolioTokenGroup } from '../classes/PortfolioTokenGroup';
-import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
+import { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
+import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 
 export type TokenGroupingFn = (token: PortfolioExtendedToken) => string;
 

@@ -1,9 +1,9 @@
 import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
-import { PortfolioDefiPosition } from '../classes/PortfolioDefiPosition';
+import { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
 import {
   PortfolioExtendedToken,
   type PriceLookup,
-} from '../classes/PortfolioExtendedToken';
+} from '../types/PortfolioExtendedToken';
 
 const normalizeDefiToken = (
   token: DefiToken,

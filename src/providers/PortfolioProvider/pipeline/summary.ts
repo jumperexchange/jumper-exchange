@@ -1,7 +1,7 @@
-import { PortfolioDeFiPositionsGroup } from '../classes/PortfolioDeFiPositionsGroup';
-import { PortfolioSummary } from '../classes/PortfolioSummary';
+import { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
+import { PortfolioSummary } from '../types/PortfolioSummary';
 import { map, orderBy, sumBy } from 'lodash';
-import { PortfolioTokenGroup } from '../classes/PortfolioTokenGroup';
+import { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
 
 export const processSummary = (
   tokenGroups: PortfolioTokenGroup[],

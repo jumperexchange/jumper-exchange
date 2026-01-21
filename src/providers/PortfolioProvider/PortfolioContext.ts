@@ -4,7 +4,7 @@ import type {
   PortfolioPositionsContextValue,
   PortfolioTokensContextValue,
 } from './PortfolioContext.types';
-import { PortfolioSummary } from './classes/PortfolioSummary';
+import { PortfolioSummary } from './types/PortfolioSummary';
 
 const noop = () => {};
 

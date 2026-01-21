@@ -1,6 +1,6 @@
 import { differenceWith, isEmpty } from 'lodash';
 import type { LpTokenIdentifier } from './positions.lpTokens';
-import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
+import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 
 /**
  * Create a unique key for a token based on address and chainId.

@@ -7,7 +7,7 @@ import type {
   PortfolioDefiPosition,
   PortfolioDeFiPositionsGroup,
 } from './types/positions.types';
-import type { PortfolioSummary } from './classes/PortfolioSummary';
+import type { PortfolioSummary } from './types/PortfolioSummary';
 
 export interface PortfolioTokensContextValue {
   /** Tokens grouped by symbol */

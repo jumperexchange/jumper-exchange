@@ -3,7 +3,7 @@ import type { Chain, Protocol, Token } from '@/types/jumper-backend';
 import type { PortfolioDefiPosition } from '../types/positions.types';
 import type { PortfolioAccount } from '../types/tokens.types';
 import type { Account } from '@lifi/wallet-management';
-import type { PortfolioExtendedToken } from '../classes/PortfolioExtendedToken';
+import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 
 export interface TokensMetadata {
   wallets: PortfolioAccount[];
