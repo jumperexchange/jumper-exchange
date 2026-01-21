@@ -1,6 +1,7 @@
 'use client';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+import { useCallback, useMemo } from 'react';
 import type { DeFiReacherReward } from 'src/types/rewards';
 import type { MerklRewardsData } from 'src/types/strapi';
 import {
@@ -35,17 +36,22 @@ export const useDeFiReacherRewards = ({
   userAddress,
   merklRewards,
 }: UseDeFiReacherRewardsProps): UseDeFiReacherRewardsResult => {
-  const filter = buildRewardFilter(merklRewards);
+  const filter = useMemo(() => buildRewardFilter(merklRewards), [merklRewards]);
 
-  return useQuery({
-    queryKey: ['deFiReacherRewards', userAddress],
-    queryFn: () => getDeFiReacherRewards(userAddress!),
-    enabled: !!userAddress,
-    select: (data) =>
+  const selectFn = useCallback(
+    (data: DeFiReacherApiReward[]) =>
       data
         .filter((reward) =>
           isRewardAllowed(filter, reward.chainId, reward.tokenAddress),
         )
         .map(transformToDeFiReacherReward),
+    [filter],
+  );
+
+  return useQuery({
+    queryKey: ['deFiReacherRewards', userAddress],
+    queryFn: () => getDeFiReacherRewards(userAddress!),
+    enabled: !!userAddress,
+    select: selectFn,
   });
 };

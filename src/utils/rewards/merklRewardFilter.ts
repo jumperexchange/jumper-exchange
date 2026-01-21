@@ -37,6 +37,10 @@ export const isRewardAllowed = (
   chainId: number,
   tokenAddress: string,
 ): boolean => {
+  if (filter.allowedChains.size === 0) {
+    return true;
+  }
+
   if (!filter.allowedChains.has(chainId)) {
     return false;
   }

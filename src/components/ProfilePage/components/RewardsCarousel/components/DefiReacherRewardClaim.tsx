@@ -5,6 +5,7 @@ import type { DeFiReacherReward } from '@/types/rewards';
 import type { FC } from 'react';
 import { useAccount } from 'wagmi';
 import { BaseRewardClaim, type ClaimConfig } from './BaseRewardClaim';
+import { isAddress } from 'viem';
 
 interface DefiReacherRewardClaimProps {
   availableReward: DeFiReacherReward;
@@ -20,7 +21,11 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   const prepareClaim = async (): Promise<ClaimConfig | null> => {
     const { data: claimCalldata } = await fetchClaimCalldata();
 
-    if (!claimCalldata) {
+    if (
+      !claimCalldata ||
+      !isAddress(claimCalldata.args.account) ||
+      !isAddress(claimCalldata.contractAddress)
+    ) {
       return null;
     }
 
@@ -31,9 +36,9 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
       functionName: 'claim',
       args: [
         BigInt(claimCalldata.args.index),
-        claimCalldata.args.account as `0x${string}`,
+        claimCalldata.args.account,
         BigInt(claimCalldata.args.amount),
-        claimCalldata.args.merkleProof as `0x${string}`[],
+        claimCalldata.args.merkleProof,
       ],
     };
   };

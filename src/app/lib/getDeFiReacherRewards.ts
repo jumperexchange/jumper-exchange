@@ -18,7 +18,9 @@ export interface DeFiReacherApiResponse {
 export const getDeFiReacherRewards = async (
   userAddress: string,
 ): Promise<DeFiReacherApiReward[]> => {
-  const response = await fetch(`/api/rewards/defireacher/${userAddress}`);
+  const response = await fetch(
+    `/api/rewards/defireacher/${encodeURIComponent(userAddress)}`,
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch DeFi Reacher rewards');

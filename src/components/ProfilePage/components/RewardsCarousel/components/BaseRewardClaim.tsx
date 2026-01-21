@@ -8,6 +8,7 @@ import {
 import { RewardClaimCard } from './RewardClaimCard';
 import type { BaseReward } from '@/types/rewards';
 import type { Abi } from 'viem';
+import * as Sentry from '@sentry/nextjs';
 
 export interface ClaimConfig {
   chainId: number;
@@ -72,6 +73,7 @@ export const BaseRewardClaim = <T extends BaseReward>({
       });
     } catch (err) {
       console.error('Error during claim:', err);
+      Sentry.captureException(err);
     }
   };
 

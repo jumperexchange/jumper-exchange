@@ -17,7 +17,9 @@ export const getDeFiReacherRewardClaimCalldata = async (
   campaignId: string,
 ): Promise<DeFiReacherClaimCalldata> => {
   const response = await fetch(
-    `/api/rewards/defireacher/${userAddress}/${campaignId}/calldata`,
+    `/api/rewards/defireacher/${encodeURIComponent(
+      userAddress,
+    )}/${encodeURIComponent(campaignId)}/calldata`,
   );
 
   if (!response.ok) {
