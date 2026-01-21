@@ -95,7 +95,7 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
         >
           <ExplorerLinkButton>
             <OpenInNewIcon
-              sx={{ height: '32px', color: theme.palette.white.main }}
+              sx={{ width: 20, height: 20, color: theme.palette.white.main }}
             />
           </ExplorerLinkButton>
         </Link>

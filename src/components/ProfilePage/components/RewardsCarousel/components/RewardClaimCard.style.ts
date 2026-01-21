@@ -41,8 +41,8 @@ export const ExplorerLinkButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     color: (theme.vars || theme).palette.white.main,
     transition: 'background 0.3s',
-    width: theme.spacing(6),
-    height: theme.spacing(6),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
     backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
     '&:hover': {
       backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,

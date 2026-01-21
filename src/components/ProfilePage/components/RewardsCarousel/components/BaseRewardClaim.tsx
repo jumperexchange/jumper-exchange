@@ -31,8 +31,17 @@ export const BaseRewardClaim = <T extends BaseReward>({
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { data: hash, isPending, writeContract } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({ hash });
+  const {
+    isLoading: isConfirming,
+    isSuccess: isConfirmed,
+    isError,
+  } = useWaitForTransactionReceipt({
+    hash,
+    query: {
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    },
+  });
 
   const amount = availableReward.amountToClaim;
   const isLoading = isPending || isConfirming || isPreparingClaim;
@@ -72,7 +81,7 @@ export const BaseRewardClaim = <T extends BaseReward>({
       onClaim={handleClaimClick}
       isLoading={isLoading}
       isDisabled={isButtonDisabled}
-      isConfirmed={isConfirmed}
+      isConfirmed={isConfirmed || isError}
       hash={hash}
     />
   );
