@@ -27,6 +27,7 @@ import { makeClient } from '@/app/lib/client';
 
 interface RequestRedeemModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
+  refetchCallback?: () => void;
 }
 
 const formatUSD = currencyFormatter('en-US', {
@@ -41,6 +42,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   onClose,
   isOpen,
   earnOpportunity,
+  refetchCallback,
 }) => {
   // TODO: Will need to be refactorized depending of the design
   const accountAddress = useAccountAddress();
@@ -194,9 +196,13 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     } else {
       // All actions completed
       setCurrentStep('success');
-      // TODO: Refetch claims data and show success message
+      resetWrite();
+      // Refetch vault-specific-data to update claims
+      if (refetchCallback) {
+        refetchCallback();
+      }
     }
-  }, [isTxConfirmed, fetchCallDataMutation.data, currentActionIndex, resetWrite, executeAction]);
+  }, [isTxConfirmed, fetchCallDataMutation.data, currentActionIndex, resetWrite, executeAction, refetchCallback]);
 
   const handleSubmit = async () => {
     if (!accountAddress) {
