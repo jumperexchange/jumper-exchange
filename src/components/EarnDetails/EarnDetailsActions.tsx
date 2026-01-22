@@ -169,11 +169,15 @@ export const EarnDetailsActions = ({
   } = useSendTransaction();
 
   // Wait for transaction confirmation
-  const { isLoading: isTxConfirming, isSuccess: isTxConfirmed } =
-    useWaitForTransactionReceipt({
-      hash: txHash,
-      confirmations: 1,
-    });
+  const {
+    isLoading: isTxConfirming,
+    isSuccess: isTxConfirmed,
+    isError: isTxError,
+    error: txError,
+  } = useWaitForTransactionReceipt({
+    hash: txHash,
+    confirmations: 1,
+  });
 
   const executeClaimAction = useCallback(
     async (action: any) => {
@@ -197,6 +201,21 @@ export const EarnDetailsActions = ({
     },
     [account?.chainId, switchChainAsync, sendTransaction],
   );
+
+  // Handle transaction errors
+  useEffect(() => {
+    if (!isTxError || !claimingId) {
+      return;
+    }
+
+    // Log the transaction error
+    console.error('Transaction failed:', txError);
+
+    // Reset claiming state to allow retry
+    setClaimingId(null);
+    setCurrentActionIndex(0);
+    resetWrite();
+  }, [isTxError, txError, claimingId, resetWrite]);
 
   // Auto-execute transactions when confirmed
   useEffect(() => {
