@@ -66,7 +66,7 @@ export const usePortfolioDeFiPositions = ({
           evm: address,
           ...filter,
         });
-        const positions = result.data.data as unknown as WalletPositions;
+        const positions = result.data;
         return updateWalletPositionsPrice(positions, getTokenUSDPrice);
       },
       enabled: !!address && !isLoadingTokens,

@@ -952,7 +952,7 @@ export interface DefiToken {
 }
 
 export interface ChainDefiPosition {
-  source: string;
+  source: 'chain';
   name: string;
   /** Additional context about the position */
   description?: string;
@@ -1013,7 +1013,7 @@ export interface PredictionDetails {
 }
 
 export interface AppDefiPosition {
-  source: string;
+  source: 'app';
   name: string;
   /** Additional context about the position */
   description?: string;
