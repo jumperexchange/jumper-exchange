@@ -121,26 +121,39 @@ export const EarnDetailsActions = ({
   const areActionsDisabled =
     isDepositFeatureDisabled && isWithdrawFeatureDisabled;
 
-  const { isSuccess, data: claims, refetch: refetchClaims } = useQuery({
+  const {
+    isSuccess,
+    data: claims,
+    refetch: refetchClaims,
+  } = useQuery({
     queryKey: ['claims', accountAddress],
     queryFn: async () => {
       const client = makeClient();
       // Need to make sure that this refresh only every (1 day via the cache header)
-      const data = await client.v1.earnControllerGetVaultSpecificDataV1(earnOpportunity.slug, { address: accountAddress as Hex });
+      const data = await client.v1.earnControllerGetVaultSpecificDataV1(
+        earnOpportunity.slug,
+        { address: accountAddress as Hex },
+      );
       return data.data;
-
     },
-    enabled: !!accountAddress && !!earnOpportunity.slug && hasDeposited && !earnOpportunity.isRedeemable,
+    enabled:
+      !!accountAddress &&
+      !!earnOpportunity.slug &&
+      hasDeposited &&
+      !earnOpportunity.isRedeemable,
   });
 
   // Fetch claim call data mutation
   const fetchClaimCallDataMutation = useMutation({
     mutationFn: async ({ amount }: { amount: string }) => {
       const client = makeClient();
-      const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(earnOpportunity.slug, {
-        address: accountAddress as Hex,
-        amount,
-      });
+      const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(
+        earnOpportunity.slug,
+        {
+          address: accountAddress as Hex,
+          amount,
+        },
+      );
       return data.data;
     },
   });
@@ -154,33 +167,34 @@ export const EarnDetailsActions = ({
   } = useSendTransaction();
 
   // Wait for transaction confirmation
-  const {
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-  } = useWaitForTransactionReceipt({
-    hash: txHash,
-    confirmations: 1,
-  });
+  const { isLoading: isTxConfirming, isSuccess: isTxConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: txHash,
+      confirmations: 1,
+    });
 
-  const executeClaimAction = useCallback(async (action: any) => {
-    try {
-      // Switch chain if needed
-      if (account?.chainId !== action.tx.chainId) {
-        await switchChainAsync({ chainId: action.tx.chainId });
+  const executeClaimAction = useCallback(
+    async (action: any) => {
+      try {
+        // Switch chain if needed
+        if (account?.chainId !== action.tx.chainId) {
+          await switchChainAsync({ chainId: action.tx.chainId });
+        }
+
+        // Execute the transaction
+        sendTransaction({
+          to: action.tx.to as Hex,
+          data: action.tx.data as Hex,
+          chainId: action.tx.chainId,
+        });
+      } catch (error) {
+        console.error(`Failed to execute ${action.name}:`, error);
+        setClaimingId(null);
+        throw error;
       }
-
-      // Execute the transaction
-      sendTransaction({
-        to: action.tx.to as Hex,
-        data: action.tx.data as Hex,
-        chainId: action.tx.chainId,
-      });
-    } catch (error) {
-      console.error(`Failed to execute ${action.name}:`, error);
-      setClaimingId(null);
-      throw error;
-    }
-  }, [account?.chainId, switchChainAsync, sendTransaction]);
+    },
+    [account?.chainId, switchChainAsync, sendTransaction],
+  );
 
   // Auto-execute transactions when confirmed
   useEffect(() => {
@@ -216,7 +230,15 @@ export const EarnDetailsActions = ({
       // Refetch claims data to remove the completed claim from the list
       refetchClaims();
     }
-  }, [isTxConfirmed, fetchClaimCallDataMutation.data, claimingId, currentActionIndex, resetWrite, executeClaimAction, refetchClaims]);
+  }, [
+    isTxConfirmed,
+    fetchClaimCallDataMutation.data,
+    claimingId,
+    currentActionIndex,
+    resetWrite,
+    executeClaimAction,
+    refetchClaims,
+  ]);
 
   const handleClaim = async (claimId: string, amount: string) => {
     if (claimingId) {
@@ -226,7 +248,9 @@ export const EarnDetailsActions = ({
     setClaimingId(claimId);
 
     try {
-      const callDataResult = await fetchClaimCallDataMutation.mutateAsync({ amount });
+      const callDataResult = await fetchClaimCallDataMutation.mutateAsync({
+        amount,
+      });
 
       if (!callDataResult?.actions || callDataResult.actions.length === 0) {
         throw new Error('No actions returned from claim call data');
@@ -321,19 +345,18 @@ export const EarnDetailsActions = ({
         </EarnDetailsActionsButtonsFallbackContainer>
       );
     }
-  }
+  };
 
-    return (
-      <>
-
-    <EarnDetailsActionsContainer>
-      <EarnDetailsActionsPosition
-        token={earnOpportunity.lpToken}
-        amountUSD={depositAmountUSD}
-        amount={depositAmount}
-      />
-      {renderFooter()}
-    </EarnDetailsActionsContainer>
+  return (
+    <>
+      <EarnDetailsActionsContainer>
+        <EarnDetailsActionsPosition
+          token={earnOpportunity.lpToken}
+          amountUSD={depositAmountUSD}
+          amount={depositAmount}
+        />
+        {renderFooter()}
+      </EarnDetailsActionsContainer>
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton
           earnOpportunity={earnOpportunity}
@@ -365,99 +388,101 @@ export const EarnDetailsActions = ({
             data-testid="request-redeem-button"
             sx={{ flex: 1 }}
           />
-          {isSuccess && claims && claims.data.claimData && claims.data.claimData.length > 0 && (
-            <Box
-              sx={{
-                mt: 3,
-                p: 2,
-                borderRadius: '12px',
-                background: theme.vars.palette.surface2.main,
-                border: `1px solid ${theme.vars.palette.alpha100.main}`,
-              }}
-            >
-              {/* Table Header */}
+          {isSuccess &&
+            claims &&
+            claims.data.claimData &&
+            claims.data.claimData.length > 0 && (
               <Box
                 sx={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr 1fr auto',
-                  gap: 2,
-                  pb: 2,
-                  borderBottom: `1px solid ${theme.vars.palette.alpha100.main}`,
+                  mt: 3,
+                  p: 2,
+                  borderRadius: '12px',
+                  background: theme.vars.palette.surface2.main,
+                  border: `1px solid ${theme.vars.palette.alpha100.main}`,
                 }}
               >
-                <Typography variant="bodyXXSmall" color="text.secondary">
-                  {t('earn.claims.amount', 'Amount')}
-                </Typography>
-                <Typography variant="bodyXXSmall" color="text.secondary">
-                  {t('earn.claims.date', 'Date')}
-                </Typography>
-                <Typography
-                  variant="bodyXXSmall"
-                  color="text.secondary"
-                  sx={{ textAlign: 'right' }}
+                {/* Table Header */}
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr 1fr auto',
+                    gap: 2,
+                    pb: 2,
+                    borderBottom: `1px solid ${theme.vars.palette.alpha100.main}`,
+                  }}
                 >
-                  {t('earn.claims.status', 'Status')}
-                </Typography>
-                <Box sx={{ width: 80 }} />
-              </Box>
-
-              {/* Table Rows */}
-              {claims.data.claimData.map((claim: any) => {
-                const isClaimable = claim.status.toLowerCase() === 'ready';
-                const isClaiming = claimingId === claim.id;
-
-                return (
-                  <Box
-                    key={claim.id}
-                    sx={{
-                      display: 'grid',
-                      gridTemplateColumns: '1fr 1fr 1fr auto',
-                      gap: 2,
-                      py: 2,
-                      alignItems: 'center',
-                    }}
+                  <Typography variant="bodyXXSmall" color="text.secondary">
+                    {t('earn.claims.amount', 'Amount')}
+                  </Typography>
+                  <Typography variant="bodyXXSmall" color="text.secondary">
+                    {t('earn.claims.date', 'Date')}
+                  </Typography>
+                  <Typography
+                    variant="bodyXXSmall"
+                    color="text.secondary"
+                    sx={{ textAlign: 'right' }}
                   >
-                    <Typography variant="bodySmall" sx={{ fontWeight: 600 }}>
-                      {parseFloat(
-                        formatTokenAmount(
-                          BigInt(claim.assetAmount),
-                          earnOpportunity.lpToken.decimals,
-                        ),
-                      ).toFixed(2)}{' '}
-                      {earnOpportunity.lpToken.symbol}
-                    </Typography>
-                    <Typography variant="bodySmall" color="text.secondary">
-                      {formatDate(claim.timestamp)}
-                    </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <Badge
-                        variant={getStatusBadgeVariant(claim.status)}
-                        size={BadgeSize.SM}
-                        label={getStatusLabel(claim.status)}
-                      />
-                    </Box>
-                    <Button
-                      variant="primary"
-                      size="small"
-                      onClick={() => handleClaim(claim.id, claim.assetAmount)}
-                      disabled={!isClaimable || isClaiming || !!claimingId}
-                      loading={isClaiming}
-                      styles={{
-                        minWidth: 80,
-                        py: 0.5,
-                        fontSize: '14px',
+                    {t('earn.claims.status', 'Status')}
+                  </Typography>
+                  <Box sx={{ width: 80 }} />
+                </Box>
+
+                {/* Table Rows */}
+                {claims.data.claimData.map((claim: any) => {
+                  const isClaimable = claim.status.toLowerCase() === 'ready';
+                  const isClaiming = claimingId === claim.id;
+
+                  return (
+                    <Box
+                      key={claim.id}
+                      sx={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr 1fr auto',
+                        gap: 2,
+                        py: 2,
+                        alignItems: 'center',
                       }}
                     >
-                      {isClaiming
-                        ? t('earn.claims.claiming', 'Claiming...')
-                        : t('earn.claims.claim', 'Claim')
-                      }
-                    </Button>
-                  </Box>
-                );
-              })}
-            </Box>
-          )}
+                      <Typography variant="bodySmall" sx={{ fontWeight: 600 }}>
+                        {parseFloat(
+                          formatTokenAmount(
+                            BigInt(claim.assetAmount),
+                            earnOpportunity.lpToken.decimals,
+                          ),
+                        ).toFixed(2)}{' '}
+                        {earnOpportunity.lpToken.symbol}
+                      </Typography>
+                      <Typography variant="bodySmall" color="text.secondary">
+                        {formatDate(claim.timestamp)}
+                      </Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Badge
+                          variant={getStatusBadgeVariant(claim.status)}
+                          size={BadgeSize.SM}
+                          label={getStatusLabel(claim.status)}
+                        />
+                      </Box>
+                      <Button
+                        variant="primary"
+                        size="small"
+                        onClick={() => handleClaim(claim.id, claim.assetAmount)}
+                        disabled={!isClaimable || isClaiming || !!claimingId}
+                        loading={isClaiming}
+                        styles={{
+                          minWidth: 80,
+                          py: 0.5,
+                          fontSize: '14px',
+                        }}
+                      >
+                        {isClaiming
+                          ? t('earn.claims.claiming', 'Claiming...')
+                          : t('earn.claims.claim', 'Claim')}
+                      </Button>
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
         </>
       )}
     </>
