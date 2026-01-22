@@ -13,6 +13,7 @@ import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFl
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
 import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
+import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
 
 interface EarnPageProps {
   slug: string;
