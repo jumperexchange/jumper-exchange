@@ -171,7 +171,19 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       // Move to next action
       setCurrentActionIndex(nextIndex);
       resetWrite();
-      executeAction(callData.actions[nextIndex]);
+
+      // Execute next action with proper error handling
+      (async () => {
+        try {
+          await executeAction(callData.actions[nextIndex]);
+        } catch (error) {
+          console.error('Failed to execute action:', error);
+          // Reset state on error
+          setCurrentStep('idle');
+          setCurrentActionIndex(0);
+          resetWrite();
+        }
+      })();
     } else {
       // All actions completed
       setCurrentStep('success');
