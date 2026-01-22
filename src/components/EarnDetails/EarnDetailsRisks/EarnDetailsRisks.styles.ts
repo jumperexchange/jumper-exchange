@@ -52,7 +52,7 @@ export const EarnDetailsRisksNavButton = styled(ButtonTransparent, {
 export const EarnRiskTagsContainer = styled(Stack)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.alpha100.main,
   padding: theme.spacing(3),
-  borderRadius: theme.spacing(2),
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   [theme.breakpoints.up('md')]: {
     flex: 1,
   },

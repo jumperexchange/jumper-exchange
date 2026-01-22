@@ -20,7 +20,7 @@ export const ShareButton = styled(IconButtonTertiary, {
     },
     {
       props: ({ expanded }) => expanded,
-      style: { borderRadius: '24px' },
+      style: { borderRadius: theme.shape.cardBorderRadius },
     },
   ],
 }));

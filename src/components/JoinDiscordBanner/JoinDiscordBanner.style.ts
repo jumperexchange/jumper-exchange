@@ -16,7 +16,7 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   alignItems: 'center',
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   boxShadow: (theme.vars || theme).shadows[1],
-  borderRadius: '32px',
+  borderRadius: theme.shape.cardBorderRadius,
   cursor: 'pointer',
   padding: theme.spacing(6),
   transition: 'background-color 250ms',

@@ -30,6 +30,7 @@ export const AssetOverviewNavigationButton = styled(ButtonTransparent, {
 })<AssetOverviewNavigationButtonProps>(({ theme }) => ({
   '&.MuiButton-root.MuiButtonBase-root': {
     ...theme.typography.bodyXSmallStrong,
+    borderRadius: theme.shape.buttonBorderRadius,
     padding: theme.spacing(1),
     height: 'auto',
     backgroundColor: 'transparent',
