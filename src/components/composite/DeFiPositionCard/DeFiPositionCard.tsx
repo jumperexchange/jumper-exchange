@@ -202,7 +202,9 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
                     {!!description && (
                       <DeFiPositionOverview
                         icon={<NotesRoundedIcon sx={ICON_STYLES} />}
-                        header=""
+                        header={t(
+                          'portfolio.defiPositionCard.overview.details',
+                        )}
                         description={description}
                       />
                     )}
