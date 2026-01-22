@@ -42,6 +42,7 @@ interface Resources {
     buttons: {
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
+      requestRedeemButtonLabel: 'Request redeem';
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
       withdrawButtonLabel: 'Withdraw';

@@ -44,7 +44,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   }
 
   const relatedMarketsData =
-    relatedMarkets.data.filter(Boolean).slice(0, 3) ?? [];
+    relatedMarkets.data?.filter(Boolean).slice(0, 3) ?? [];
 
   console.log('29. EarnPage relatedMarkets', relatedMarketsData);
 
@@ -63,6 +63,7 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
       </EarnDetailsSection>
       <DepositFlowModal />
       <WithdrawFlowModal />
+      <RequestRedeemFlowModal />
       <ContactSupportEventProvider />
       <EarnPageTracking slug={slug} />
     </>
