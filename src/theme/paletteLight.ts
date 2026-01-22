@@ -1,19 +1,17 @@
 import { baseColors } from './baseColors';
-import { brandColors } from './brandColors';
+import type { BrandColors } from './brandColors';
+import { defaultBrandColors } from './brandColors';
 
-export const paletteLight = {
+export const createPaletteLight = (brandColors: BrandColors) => ({
   ...baseColors,
-  // primary and secondary colors need to be added
   primary: brandColors.light.accent1,
   secondary: brandColors.light.accent2,
 
-  // Accent
   accent1: brandColors.light.accent1,
   accent1Alt: brandColors.light.accent1Alt,
   accent2: brandColors.light.accent2,
   accent2Alt: brandColors.light.accent2Alt,
 
-  // Surface
   surface1: brandColors.light.surface1,
   surface2: brandColors.light.surface2,
   surface3: brandColors.light.surface3,
@@ -31,7 +29,6 @@ export const paletteLight = {
   surfaceSystem1: baseColors.grey[100],
   surfaceSystem2: baseColors.grey[300],
 
-  // Alpha
   alpha100: baseColors.alphaDark100,
   alpha200: baseColors.alphaDark200,
   alpha300: baseColors.alphaDark300,
@@ -42,7 +39,6 @@ export const paletteLight = {
   alpha800: baseColors.alphaDark800,
   alpha900: baseColors.alphaDark900,
 
-  // Text
   textPrimaryEmphasized: baseColors.black.main,
   textPrimary: baseColors.alphaDark900.main,
   textPrimaryInverted: baseColors.alphaLight900.main,
@@ -165,4 +161,6 @@ export const paletteLight = {
   statusError: baseColors.scarlet[500],
   statusErrorFg: baseColors.scarlet[500],
   statusErrorBg: baseColors.scarlet[100],
-};
+});
+
+export const paletteLight = createPaletteLight(defaultBrandColors);

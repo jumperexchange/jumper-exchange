@@ -1,6 +1,37 @@
 import { baseColors } from './baseColors';
 
-export const brandColors = {
+export interface BrandColors {
+  light: {
+    surface1: string;
+    surface2: string;
+    surface3: string;
+    surface4: string;
+    surfaceActiveAccent: string;
+    surfaceActive: { main: string };
+    accent1: string;
+    accent1Alt: string;
+    accent2: string;
+    accent2Alt: string;
+    borderAccent1: string;
+    border: { main: string };
+  };
+  dark: {
+    surface1: string;
+    surface2: string;
+    surface3: string;
+    surface4: string;
+    surfaceActiveAccent: string;
+    surfaceActive: { main: string };
+    accent1: string;
+    accent1Alt: string;
+    accent2: string;
+    accent2Alt: string;
+    borderAccent1: string;
+    border: { main: string };
+  };
+}
+
+export const defaultBrandColors: BrandColors = {
   light: {
     surface1: baseColors.lavenderLight[0],
     surface2: baseColors.lavenderLight[100],
@@ -30,3 +61,5 @@ export const brandColors = {
     border: baseColors.alphaLight200,
   },
 };
+
+export const brandColors = defaultBrandColors;
