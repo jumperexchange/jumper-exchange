@@ -8,7 +8,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   padding: theme.spacing(1),
   backgroundColor: (theme.vars || theme).palette.surface1.main,
-  borderRadius: '24px',
+  borderRadius: theme.shape.cardBorderRadius,
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),
   display: 'flex',

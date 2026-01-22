@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 export const BlogCarouselContainer = styled(MuiContainer)(({ theme }) => ({
   position: 'relative',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: '32px',
+  borderRadius: theme.shape.cardBorderRadius,
   boxShadow: (theme.vars || theme).shadows[1],
   margin: theme.spacing(6, 2, 0),
   padding: theme.spacing(2),

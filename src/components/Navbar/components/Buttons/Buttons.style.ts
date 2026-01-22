@@ -43,6 +43,7 @@ export const NavbarButton = styled(ButtonTransparent, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<NavbarButtonProps>(({ theme }) => ({
   padding: theme.spacing(1),
+  borderRadius: theme.shape.buttonBorderRadius,
   minWidth: 48,
   background: 'transparent',
   boxShadow: 'none',
@@ -155,9 +156,9 @@ export const BurgerMenuIcon = styled(MuiMenuRoundedIcon)(({ theme }) =>
 export const LevelIconBox = styled(Box)(({ theme }) => ({
   width: 32,
   height: 32,
-  borderRadius: '50%',
-  backgroundColor: (theme.vars || theme).palette.accent1.main,
-  color: (theme.vars || theme).palette.white.main,
+  borderRadius: theme.shape.buttonBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
+  color: (theme.vars || theme).palette.buttonPrimaryAction,
   alignContent: 'center',
   justifySelf: 'center',
 }));

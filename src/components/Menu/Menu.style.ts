@@ -188,7 +188,7 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
     height: 'auto',
-    borderRadius: '12px !important',
+    borderRadius: theme.shape.borderRadius,
     width: width ?? 288,
     marginTop: -2,
     boxShadow: theme.shadows[1],

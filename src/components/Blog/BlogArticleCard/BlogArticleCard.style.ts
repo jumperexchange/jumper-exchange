@@ -20,7 +20,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   maxWidth: 416,
   border: 'unset',
   padding: theme.spacing(2),
-  borderRadius: '32px',
+  borderRadius: theme.shape.cardBorderRadius,
   background: (theme.vars || theme).palette.surface1.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[2],
@@ -71,7 +71,7 @@ export const BlogArticleCardMetaSkeleton = styled(Skeleton)(({ theme }) => ({
 export const BlogArticleCardImage = styled(Image)(({ theme }) => ({
   width: '100%',
   height: 'auto',
-  borderRadius: '16px',
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   objectFit: 'cover',
   aspectRatio: 1.6,
   objectPosition: 'left',
@@ -82,7 +82,7 @@ export const BlogArticleCardImageSkeleton = styled(Skeleton)(({ theme }) => ({
   aspectRatio: 1.6,
   transform: 'unset',
   height: 'auto',
-  borderRadius: '16px',
+  borderRadius: theme.shape.cardBorderRadiusMedium,
 }));
 
 export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
