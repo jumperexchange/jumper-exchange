@@ -25,6 +25,7 @@ export const Default: Story = {
   args: {
     isOpen: true,
     earnOpportunity: {
+      isRedeemable: true,
       name: 'morpho',
       slug: 'morpho',
       protocol: {

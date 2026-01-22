@@ -135,9 +135,7 @@ export const EarnDetailsActions = ({
 
   // Fetch claim call data mutation
   const fetchClaimCallDataMutation = useMutation({
-    mutationFn: async ({ claimId, amount }: { claimId: string; amount: string }) => {
-      // TODO: Replace with actual API endpoint when available
-
+    mutationFn: async ({ amount }: { amount: string }) => {
       const client = makeClient();
       const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(earnOpportunity.slug, {
         address: accountAddress as Hex,
@@ -197,7 +195,19 @@ export const EarnDetailsActions = ({
       // Move to next action
       setCurrentActionIndex(nextIndex);
       resetWrite();
-      executeClaimAction(callData.actions[nextIndex]);
+
+      // Execute next action with proper error handling
+      (async () => {
+        try {
+          await executeClaimAction(callData.actions[nextIndex]);
+        } catch (error) {
+          console.error('Failed to execute claim action:', error);
+          // Reset state on error
+          setClaimingId(null);
+          setCurrentActionIndex(0);
+          resetWrite();
+        }
+      })();
     } else {
       // All actions completed
       setClaimingId(null);
@@ -216,7 +226,7 @@ export const EarnDetailsActions = ({
     setClaimingId(claimId);
 
     try {
-      const callDataResult = await fetchClaimCallDataMutation.mutateAsync({ claimId, amount });
+      const callDataResult = await fetchClaimCallDataMutation.mutateAsync({ amount });
 
       if (!callDataResult?.actions || callDataResult.actions.length === 0) {
         throw new Error('No actions returned from claim call data');

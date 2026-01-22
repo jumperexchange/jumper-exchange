@@ -3,6 +3,7 @@ import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton
 
 export const commonArgs = {
   data: {
+    isRedeemable: true,
     name: 'Moonwell Flagship USDC on base',
     asset: {
       name: 'USD Coin',

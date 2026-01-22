@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
-import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 import { RequestRedeemModal } from '../RequestRedeemModal/RequestRedeemModal';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
