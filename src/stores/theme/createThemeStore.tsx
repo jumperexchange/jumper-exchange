@@ -196,8 +196,8 @@ export const createThemeStore = (props: ThemeProps) =>
           const currentPartnerName = currentState.configTheme?.partnerName;
           const persistedPartnerName = persisted.configTheme?.partnerName;
           const partnerChanged =
-            !!currentPartnerName &&
-            !!persistedPartnerName &&
+            !currentPartnerName ||
+            !persistedPartnerName ||
             currentPartnerName !== persistedPartnerName;
 
           const baseConfigThemeStates = partnerChanged
