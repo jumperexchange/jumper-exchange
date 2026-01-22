@@ -1,5 +1,6 @@
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LockOutlineRoundedIcon from '@mui/icons-material/LockOutlineRounded';
+import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -173,6 +174,7 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
             const earn = position.earn;
             const openedAt = position.openedAt;
             const unlockAt = position.unlockAt;
+            const description = position.description;
             const chainId = isChainDefiPosition(position)
               ? position.chain.chainId
               : undefined;
@@ -195,6 +197,13 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
                         icon={<LockOutlineRoundedIcon sx={ICON_STYLES} />}
                         header={t('portfolio.defiPositionCard.overview.lockup')}
                         description={formatTimeDifference(unlockAt, t)}
+                      />
+                    )}
+                    {!!description && (
+                      <DeFiPositionOverview
+                        icon={<NotesRoundedIcon sx={ICON_STYLES} />}
+                        header=""
+                        description={description}
                       />
                     )}
                     <StyledOverviewActions>
