@@ -23,12 +23,12 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
   surface1ActiveAccent: brandColors.dark.surfaceActiveAccent,
   surface1Active: baseColors.alphaLight200.main,
   surfaceStark: baseColors.alphaLight900.main,
-  surfaceAccent1: brandColors.dark.accent1Alt,
-  surfaceAccent1Bg: brandColors.dark.surfaceActiveAccent,
-  surfaceAccent1Fg: brandColors.dark.accent1Alt,
-  surfaceAccent2: brandColors.dark.accent2,
-  surfaceAccent2Bg: brandColors.dark.accent2,
-  surfaceAccent2Fg: brandColors.dark.accent2,
+  surfaceAccent1: brandColors.dark.surfaceAccent1,
+  surfaceAccent1Bg: brandColors.dark.surfaceAccent1Bg,
+  surfaceAccent1Fg: brandColors.dark.surfaceAccent1Fg,
+  surfaceAccent2: brandColors.dark.surfaceAccent2,
+  surfaceAccent2Bg: brandColors.dark.surfaceAccent2Bg,
+  surfaceAccent2Fg: brandColors.dark.surfaceAccent2Fg,
   surfaceSystem1: baseColors.grey[800],
   surfaceSystem2: baseColors.grey[900],
 
@@ -53,8 +53,8 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
 
   textTertiary: baseColors.alphaLight400.main,
 
-  textAccent1: baseColors.rubyLight[100],
-  textAccent2: baseColors.rubyLight[400],
+  textAccent1: brandColors.dark.accent1,
+  textAccent2: brandColors.dark.accent2,
 
   textHint: baseColors.alphaLight600.main,
 
@@ -65,27 +65,27 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
   textInfo: baseColors.azure[500],
 
   // Background
-  bg: '#120b1e',
+  bg: brandColors.dark.bg,
   bgLighter: brandColors.dark.surface4,
-  bgDarker: brandColors.dark.surface3,
-  bgGlow1: baseColors.rubyLight[400],
-  bgGlow2: baseColors.rubyLight[400],
-  bgGlow3: baseColors.rubyLight[400],
+  bgDarker: brandColors.dark.bgDarker,
+  bgGlow1: brandColors.dark.bgGlow1,
+  bgGlow2: brandColors.dark.bgGlow2,
+  bgGlow3: brandColors.dark.bgGlow3,
 
   // Border
   border: baseColors.alphaLight200.main,
   borderInverted: baseColors.alphaDark200.main,
   borderEmphasized: baseColors.alphaLight600.main,
   borderInvertedEmphasized: baseColors.alphaDark600.main,
-  borderActive: baseColors.rubyLight[400],
+  borderActive: brandColors.dark.borderActive,
   borderError: baseColors.scarlet[500],
 
   // Button
-  buttonPrimaryBg: baseColors.rubyLight[400],
-  buttonPrimaryAction: baseColors.lavenderLight[0],
+  buttonPrimaryBg: brandColors.dark.buttonPrimaryBg,
+  buttonPrimaryAction: brandColors.dark.buttonPrimaryAction,
 
-  buttonSecondaryBg: baseColors.rubyLight[100],
-  buttonSecondaryAction: baseColors.rubyLight[400],
+  buttonSecondaryBg: brandColors.dark.buttonSecondaryBg,
+  buttonSecondaryAction: brandColors.dark.buttonSecondaryAction,
 
   buttonAlphaLightBg: baseColors.alphaLight100.main,
   buttonAlphaLightAction: baseColors.alphaLight900.main,
@@ -96,8 +96,8 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
   buttonDisabledBg: baseColors.alphaLight100.main,
   buttonDisabledAction: baseColors.alphaLight500.main,
 
-  buttonLightBg: baseColors.rubyDark[200],
-  buttonLightAction: baseColors.white.main,
+  buttonLightBg: brandColors.dark.buttonLightBg,
+  buttonLightAction: brandColors.dark.buttonLightAction,
 
   buttonActiveBg: baseColors.white.main,
   buttonActiveAction: baseColors.black.main,
@@ -106,10 +106,10 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
 
   // Badge
   badgeAccent1Fg: baseColors.white.main,
-  badgeAccent1Bg: baseColors.rubyLight[400],
+  badgeAccent1Bg: brandColors.dark.accent1,
 
-  badgeAccent1MutedFg: baseColors.rubyLight[400],
-  badgeAccent1MutedBg: baseColors.rubyLight[100],
+  badgeAccent1MutedFg: brandColors.dark.badgeAccent1MutedFg,
+  badgeAccent1MutedBg: brandColors.dark.badgeAccent1MutedBg,
 
   badgeAlphaFg: baseColors.alphaLight900.main,
   badgeAlphaBg: baseColors.alphaLight100.main,
@@ -124,15 +124,15 @@ export const createPaletteDark = (brandColors: BrandColors) => ({
   badgeLightBg: baseColors.white.main,
 
   // Link
-  linkPrimary: brandColors.dark.accent1,
-  linkSecondary: brandColors.dark.accent1,
+  linkPrimary: brandColors.dark.linkPrimary,
+  linkSecondary: brandColors.dark.linkSecondary,
   linkAlpha: baseColors.alphaLight900.main,
   linkAlphaDeemphasized: baseColors.alphaLight600.main,
   linkDisabled: baseColors.alphaLight400.main,
 
   // Logo
-  logoPrimary: baseColors.rubyLight[100],
-  logoSecondary: baseColors.violet[500],
+  logoPrimary: brandColors.dark.accent1Alt,
+  logoSecondary: brandColors.dark.accent2,
 
   // Icon
   iconEmphasized: baseColors.white.main,
