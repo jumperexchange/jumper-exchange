@@ -11,12 +11,11 @@ export const calculateTooltipPosition = (
   containerWidth: number,
   containerHeight: number,
 ) => {
-  const left = pointX;
-  let transform = 'translateX(0)';
-  if (left > containerWidth - TOOLTIP_CONFIG.MIN_WIDTH) {
-    transform = 'translateX(-100%)';
-  } else if (left > TOOLTIP_CONFIG.MIN_WIDTH) {
-    transform = 'translateX(-50%)';
+  let xOffset = 0;
+  if (pointX > containerWidth - TOOLTIP_CONFIG.MIN_WIDTH) {
+    xOffset = -100;
+  } else if (pointX > TOOLTIP_CONFIG.MIN_WIDTH) {
+    xOffset = -50;
   }
 
   let top = pointY + TOOLTIP_CONFIG.MARGIN;
@@ -24,7 +23,9 @@ export const calculateTooltipPosition = (
     top = pointY - TOOLTIP_CONFIG.HEIGHT - TOOLTIP_CONFIG.MARGIN;
   }
 
-  return { x: left, y: top, transform };
+  const transform = `translate3d(${xOffset}%, 0, 0)`;
+
+  return { x: pointX, y: top, transform };
 };
 
 /**

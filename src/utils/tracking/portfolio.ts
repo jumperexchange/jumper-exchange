@@ -4,10 +4,9 @@ import {
   sortAssetsByPrice,
 } from '@/components/composite/AssetOverviewCard/utils';
 import type { DefiPosition } from '@/types/jumper-backend';
-import type { MinimalToken } from '@/types/tokens';
+import type { PortfolioToken } from '@/types/tokens';
 import type { ChainId } from '@lifi/widget';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
-import type { CacheToken } from 'src/types/portfolio';
 
 const FLEXIBLE_STABLE_COINS_REGEX =
   /^.*(USD|EUR|XAU|YEN|IDR|CHF|CAD|CNH|MXN).*$/;
@@ -17,12 +16,11 @@ const FIXED_STABLE_COINS_REGEX =
 
 export const parsePortfolioDataToTrackingData = (
   portfolioTotalBalanceUSD: number,
-  tokens: CacheToken[],
+  tokens: PortfolioToken[],
   getNativeTokenAddresses: (chainIds: ChainId[]) => string[],
 ) => {
   const numberOfTokens = tokens.length;
 
-  // Single pass to collect all data
   const chainIds = new Set<ChainId>();
   const portfolioNativeTokensAddresses = new Set<string>();
   let nativeTokensBalanceUSD = 0;
@@ -30,8 +28,9 @@ export const parsePortfolioDataToTrackingData = (
   let otherTokensBalanceUSD = 0;
 
   for (const token of tokens) {
-    for (const chain of token.chains) {
-      chainIds.add(chain.chainId);
+    chainIds.add(token.chain.chainId);
+    for (const relatedToken of token.relatedTokens ?? []) {
+      chainIds.add(relatedToken.chain.chainId);
     }
   }
 
@@ -41,7 +40,7 @@ export const parsePortfolioDataToTrackingData = (
   );
 
   for (const token of tokens) {
-    const balance = token.cumulatedTotalUSD ?? 0;
+    const balance = token.totalPriceUSD ?? 0;
 
     if (portfolioNativeTokensAddresses.has(token.address ?? '')) {
       nativeTokensBalanceUSD += balance;
@@ -71,7 +70,7 @@ export const parsePortfolioDataToTrackingData = (
 
 export const parseEarnPortfolioDataToTrackingData = (
   addresses: string[],
-  tokens: MinimalToken[],
+  tokens: PortfolioToken[],
   defiPositionGroups: DefiPosition[][],
 ) => {
   const protocolGroups = mapPositionGroupsToProtocolData(defiPositionGroups);

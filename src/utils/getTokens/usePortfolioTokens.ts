@@ -1,8 +1,5 @@
 import { usePortfolioStore } from '@/stores/portfolio';
-import type {
-  ExtendedTokenAmount,
-  ExtendedTokenAmountWithChain,
-} from '@/utils/getTokens';
+import type { PortfolioToken } from '@/types/tokens';
 import getTokens from '@/utils/getTokens';
 import { useAccount } from '@lifi/wallet-management';
 import { useQueries } from '@tanstack/react-query';
@@ -10,7 +7,6 @@ import { useEffect, useMemo, useRef } from 'react';
 import { usePrevious } from 'src/hooks/usePrevious';
 import { differenceInHours } from 'date-fns';
 import { flatMap, sumBy } from 'lodash';
-import type { CacheToken } from '@/types/portfolio';
 import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 
 export function usePortfolioTokens() {
@@ -68,7 +64,7 @@ export function usePortfolioTokens() {
   const queriesByAddress = useMemo(() => {
     return new Map(
       accountQueries.map(({ account, address, query }) => {
-        let accountData: (ExtendedTokenAmountWithChain | CacheToken)[] =
+        let accountData: PortfolioToken[] =
           query?.isSuccess && query.data ? query.data : [];
 
         if (accountData.length === 0) {
@@ -97,7 +93,7 @@ export function usePortfolioTokens() {
   }, [queriesByAddress]);
 
   const totalValue = useMemo(() => {
-    return sumBy(data, (token) => token.cumulatedTotalUSD ?? 0);
+    return sumBy(data, (token) => token.totalPriceUSD ?? 0);
   }, [data]);
 
   useEffect(() => {
@@ -110,10 +106,10 @@ export function usePortfolioTokens() {
         return;
       }
 
-      const accountData = (query.data as ExtendedTokenAmount[]) ?? [];
+      const accountData = (query.data as PortfolioToken[]) ?? [];
       const accountTotalValue = sumBy(
         accountData,
-        (token) => token.cumulatedTotalUSD ?? 0,
+        (token) => token.totalPriceUSD ?? 0,
       );
 
       const { date: lastDate } = getLast(address);

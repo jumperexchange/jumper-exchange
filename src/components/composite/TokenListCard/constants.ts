@@ -2,6 +2,7 @@ import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type { ResponsiveValue } from '@/types/responsive';
 import { TokenListCardTokenSize } from './TokenListCard.types';
 import type { TypographyProps } from '@mui/material/Typography';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface TokenStackConfig {
   tokenSize: AvatarSize;
@@ -9,8 +10,8 @@ interface TokenStackConfig {
   chainsInlineSize?: AvatarSize;
   titleVariant: TypographyProps['variant'];
   descriptionVariant: TypographyProps['variant'];
-  padding: number;
   infoContainerGap: number;
+  itemSx?: SxProps<Theme>;
 }
 
 interface TokenListCardConfig {
@@ -29,16 +30,22 @@ const SM_CONFIG: TokenListCardConfig = {
     chainsInlineSize: AvatarSize.XXS,
     titleVariant: 'bodySmallStrong',
     descriptionVariant: 'bodyXXSmall',
-    padding: 1,
     infoContainerGap: 2,
+    itemSx: {
+      padding: 1,
+    },
   },
   expanded: {
-    tokenSize: AvatarSize.LG,
+    tokenSize: AvatarSize.MD,
     chainsSize: AvatarSize.XXS,
     titleVariant: 'bodySmallStrong',
     descriptionVariant: 'bodyXXSmall',
-    padding: 1,
     infoContainerGap: 0,
+    itemSx: (theme) => {
+      return {
+        padding: theme.spacing(1, 1, 1, 2),
+      };
+    },
   },
   dividerSpacing: 1,
   paddingBottom: 0.5,
@@ -53,16 +60,20 @@ const MD_CONFIG: TokenListCardConfig = {
     chainsInlineSize: AvatarSize.XS,
     titleVariant: 'titleXSmall',
     descriptionVariant: 'bodyXSmall',
-    padding: 1.5,
     infoContainerGap: 2,
+    itemSx: {
+      padding: 1.5,
+    },
   },
   expanded: {
     tokenSize: AvatarSize.LG,
     chainsSize: AvatarSize.XXS,
     titleVariant: 'bodySmallStrong',
     descriptionVariant: 'bodyXXSmall',
-    padding: 1.5,
     infoContainerGap: 0,
+    itemSx: {
+      padding: 1.5,
+    },
   },
   dividerSpacing: 1.5,
   paddingBottom: 1.5,

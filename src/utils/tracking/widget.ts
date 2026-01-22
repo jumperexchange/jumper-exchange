@@ -1,4 +1,4 @@
-import { SettingUpdated } from '@lifi/widget';
+import type { FormFieldChanged, SettingUpdated } from '@lifi/widget';
 import { isObject } from 'lodash';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 
@@ -40,5 +40,15 @@ export const parseWidgetSettingsToTrackingData = (settings: SettingUpdated) => {
     [TrackingEventParameter.PreviousSettingValue]: stringifyValue(
       settings.oldValue,
     ),
+  };
+};
+
+export const parseFormFieldChangedToTrackingData = (
+  data: NonNullable<FormFieldChanged>,
+) => {
+  return {
+    [TrackingEventParameter.FormField]: data.fieldName,
+    [TrackingEventParameter.NewValue]: stringifyValue(data.newValue),
+    [TrackingEventParameter.PreviousValue]: stringifyValue(data.oldValue),
   };
 };

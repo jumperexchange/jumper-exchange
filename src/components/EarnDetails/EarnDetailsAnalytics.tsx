@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState } from 'react';
 import {
   EarnDetailsAnalyticsButton,
   EarnDetailsAnalyticsButtonsContainer,
@@ -8,13 +8,10 @@ import {
   EarnDetailsAnalyticsHeaderContainer,
   EarnDetailsAnalyticsLineChartContainer,
 } from './EarnDetails.styles';
-import { LineChart } from '../core/charts/LineChart/LineChart';
-import { useAnalyticsChartData, useAnalyticsQuery } from './hooks';
+import { EarnDetailsApyChart } from './EarnDetailsApyChart';
+import { EarnDetailsTvlChart } from './EarnDetailsTvlChart';
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import type { ValueFormatConfig } from 'src/utils/formatNumbers';
-import { APY_FORMAT_CONFIG } from 'src/utils/numbers/apy';
-import { TVL_FORMAT_CONFIG } from 'src/utils/numbers/tvl';
 
 interface EarnDetailsAnalyticsProps {
   slug: string;
@@ -23,20 +20,14 @@ interface EarnDetailsAnalyticsProps {
 export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
   slug,
 }) => {
-  const { isLoading, error, data, value, range, setValue, setRange } =
-    useAnalyticsQuery(slug);
+  const [value, setValue] = useState<AnalyticsValueFieldEnum>(
+    AnalyticsValueFieldEnum.APY,
+  );
+  const [range, setRange] = useState<AnalyticsRangeFieldEnum>(
+    AnalyticsRangeFieldEnum.WEEK,
+  );
 
-  const valueFormatConfig = useMemo<ValueFormatConfig>(() => {
-    return value === AnalyticsValueFieldEnum.APY
-      ? APY_FORMAT_CONFIG
-      : TVL_FORMAT_CONFIG;
-  }, [value]);
-
-  const {
-    data: chartData,
-    theme: chartTheme,
-    dateFormat: chartDateFormat,
-  } = useAnalyticsChartData(data, range);
+  const isApy = value === AnalyticsValueFieldEnum.APY;
 
   return (
     <EarnDetailsAnalyticsContainer>
@@ -69,15 +60,11 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
         </EarnDetailsAnalyticsButtonsContainer>
       </EarnDetailsAnalyticsHeaderContainer>
       <EarnDetailsAnalyticsLineChartContainer>
-        <LineChart
-          isLoading={isLoading}
-          data={chartData}
-          dateFormat={chartDateFormat}
-          dataSetId={value}
-          valueFormatConfig={valueFormatConfig}
-          theme={chartTheme}
-          data-testid="analytics-chart"
-        />
+        {isApy ? (
+          <EarnDetailsApyChart slug={slug} range={range} />
+        ) : (
+          <EarnDetailsTvlChart slug={slug} range={range} />
+        )}
       </EarnDetailsAnalyticsLineChartContainer>
     </EarnDetailsAnalyticsContainer>
   );

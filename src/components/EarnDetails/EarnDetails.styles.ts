@@ -127,3 +127,17 @@ export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const EarnDetailsActionsButtonsFallbackContainer = styled(Box)(
+  ({ theme }) => ({
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    gap: theme.spacing(0.5),
+    maxWidth: '100%',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 360,
+    },
+  }),
+);

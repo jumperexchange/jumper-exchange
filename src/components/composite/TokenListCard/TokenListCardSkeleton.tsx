@@ -24,10 +24,8 @@ export const TokenListCardSkeleton: FC<TokenListCardSkeletonProps> = ({
       spacing={2}
       useFlexGap
       justifyContent="space-between"
-      sx={{
-        padding: config.primary.padding,
-        width: '100%',
-      }}
+      width="100%"
+      sx={config.primary.itemSx}
     >
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}

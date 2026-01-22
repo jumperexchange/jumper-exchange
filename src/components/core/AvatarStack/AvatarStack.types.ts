@@ -14,3 +14,9 @@ export type AvatarStackDirection =
   | 'column'
   | 'row-reverse'
   | 'column-reverse';
+
+export interface AvatarData {
+  id: string;
+  src?: string;
+  alt: string;
+}

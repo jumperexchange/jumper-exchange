@@ -233,9 +233,9 @@ export const useColumnDefinitions = (
 
 export const usePositionGroups = (
   positions: DefiPosition[] | undefined,
-  supplyColumns: ColumnDefinition<DefiToken>[],
-  borrowColumns: ColumnDefinition<DefiToken>[],
-  rewardColumns: ColumnDefinition<DefiToken>[],
+  supplyColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
+  borrowColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
+  rewardColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
 ): PositionGroup[] => {
   return useMemo(() => {
     if (!positions || positions.length === 0) {

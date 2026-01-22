@@ -1,9 +1,12 @@
-import type { EarnOpportunityFilter } from '@/app/lib/getOpportunitiesFiltered';
-import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
-import type { EarnOpportunities } from '@/types/jumper-backend';
-import type { UseQueryResult } from '@tanstack/react-query';
+import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import { ONE_HOUR_MS } from 'src/const/time';
+
+import {
+  type EarnOpportunityFilter,
+  getOpportunitiesFiltered,
+} from '@/app/lib/getOpportunitiesFiltered';
+import { ONE_HOUR_MS } from '@/const/time';
+import type { EarnOpportunities } from '@/types/jumper-backend';
 
 export interface Props {
   filter: EarnOpportunityFilter;
@@ -20,7 +23,13 @@ export type Result = UseQueryResult<
   unknown
 >;
 
-export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
+export const useEarnFilterOpportunities = (
+  { filter }: Props,
+  options: Omit<
+    UseQueryOptions<EarnOpportunities>,
+    'queryKey' | 'queryFn' | 'select' | 'placeholderData'
+  > = { enabled: true },
+): Result => {
   return useQuery({
     queryKey: ['earn-filter-opportunities', filter],
     queryFn: async () => {
@@ -37,6 +46,8 @@ export const useEarnFilterOpportunities = ({ filter }: Props): Result => {
       };
     },
     refetchInterval: ONE_HOUR_MS,
-    placeholderData: (previousData) => previousData,
+    placeholderData: (previousData) =>
+      !('enabled' in options) || options.enabled ? previousData : undefined,
+    ...options,
   });
 };

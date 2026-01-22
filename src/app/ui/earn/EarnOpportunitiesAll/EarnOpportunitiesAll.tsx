@@ -1,24 +1,27 @@
 'use client';
 
-import type { FC } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import Stack from '@mui/system/Stack';
 import { useInView } from 'motion/react';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { EarnFilterBar } from 'src/components/EarnFilterBar/EarnFilterBar';
+import type { FC } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+
+import { SectionCardContainer } from '@/components/Cards/SectionCard/SectionCard.style';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import Pagination from '@/components/core/Pagination/Pagination';
+import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
+import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
+import { HeaderHeight } from '@/const/headerHeight';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
+
+import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import {
   EarnFilteringProvider,
   useEarnFiltering,
 } from '../EarnFilteringContext';
-import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import Stack from '@mui/system/Stack';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
-import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
-import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
-import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
-import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
-import { HeaderHeight } from '@/const/headerHeight';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -26,12 +29,18 @@ const EarnOpportunitiesAllInner = () => {
     data,
     isLoading,
     isAllDataLoading,
-    showForYou,
+    tab,
     changeTab,
-    showYourPositions,
+    isConnected,
+    pagination,
+    page,
+    setPage,
   } = useEarnFiltering();
 
-  const [variant, setVariant] = useState<EarnCardVariant>('compact');
+  const [variant, setVariant] = useSettingsStore((state) => [
+    state.earnCardVariant,
+    state.setEarnCardVariant,
+  ]);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { amount: 0, initial: true });
@@ -85,15 +94,18 @@ const EarnOpportunitiesAllInner = () => {
           <EarnOpportunitiesCards
             items={data}
             isLoading={isLoading}
-            showPlaceholderCard={showYourPositions}
+            showPlaceholderCard={tab === EarnFilterTab.YOUR_POSITIONS}
             variant={variant}
           />
           <EarnEmptyList />
-          {showForYou && (
+          {tab === EarnFilterTab.FOR_YOU && isConnected && !!data.length && (
             <EarnViewAllMarketsButton onClick={handleNavigateToAllMarkets} />
           )}
         </Stack>
       </SectionCardContainer>
+      {pagination.pageCount > 1 && (
+        <Pagination page={page} setPage={setPage} pagination={pagination} />
+      )}
       <DepositFlowModal />
       <WithdrawFlowModal />
     </>

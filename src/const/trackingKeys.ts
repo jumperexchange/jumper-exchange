@@ -39,6 +39,9 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
   OnChainPinned = 'action_on_chain_pinned',
+  OnPageEntered = 'action_on_page_entered',
+  OnSendToWalletToggled = 'action_on_send_to_wallet_toggled',
+  OnFormFieldChanged = 'action_on_form_field_changed',
 
   // Mission Widget
   OnSourceChainAndTokenSelectionMission = 'action_on_source_selection_mission',
@@ -236,6 +239,11 @@ export enum TrackingEventParameter {
   NewSettingValue = 'param_new_setting_value',
   PreviousSettingValue = 'param_previous_setting_value',
   Pinned = 'param_pinned',
+  SendToWallet = 'param_send_to_wallet',
+  Page = 'param_page',
+  FormField = 'param_form_field',
+  NewValue = 'param_new_value',
+  PreviousValue = 'param_previous_value',
 
   // Pageload:
   PageloadSource = 'param_pageload_source',

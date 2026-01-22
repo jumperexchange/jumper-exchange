@@ -3,16 +3,24 @@ import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButt
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
 import {
   EarnDetailsActionsButtonsContainer,
+  EarnDetailsActionsButtonsFallbackContainer,
   EarnDetailsActionsContainer,
 } from './EarnDetails.styles';
 import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
 import type { Hex } from 'viem';
+import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import Typography from '@mui/material/Typography';
+import { ExternalLink } from '../Link/ExternalLink';
+import { EarnInteractionFeature } from '@/types/earn';
+import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
+import { ConnectButton } from '../ConnectButton';
+import { EmptyComponent } from '../core/EmptyComponent/EmptyComponent';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -23,6 +31,23 @@ export const EarnDetailsActions = ({
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
   const accountAddress = useAccountAddress();
+
+  const isConnected = !!accountAddress;
+
+  const {
+    isDisabled: isDepositFeatureDisabled,
+    isLoading: isLoadingDepositFeatureDisabled,
+  } = useIsEarnUIFeatureDisabled(
+    EarnInteractionFeature.Deposit,
+    earnOpportunity.interactionFlags,
+  );
+  const {
+    isDisabled: isWithdrawFeatureDisabled,
+    isLoading: isLoadingWithdrawFeatureDisabled,
+  } = useIsEarnUIFeatureDisabled(
+    EarnInteractionFeature.Withdraw,
+    earnOpportunity.interactionFlags,
+  );
 
   const {
     data: positionsData,
@@ -65,19 +90,64 @@ export const EarnDetailsActions = ({
   ]);
 
   const hasDeposited = !!depositAmount || !!depositAmountUSD;
+  const isLoading =
+    isLoadingPositions ||
+    isLoadingDepositTokenData ||
+    isLoadingDepositFeatureDisabled ||
+    isLoadingWithdrawFeatureDisabled;
+
+  const areActionsDisabled =
+    isDepositFeatureDisabled && isWithdrawFeatureDisabled;
 
   const handleRefreshBalances = () => {
     refetchPositions();
     refetchDepositAmount();
   };
 
-  return (
-    <EarnDetailsActionsContainer>
-      <EarnDetailsActionsPosition
-        token={earnOpportunity.lpToken}
-        amountUSD={depositAmountUSD}
-        amount={depositAmount}
-      />
+  const renderFooter = () => {
+    if (!isConnected) {
+      return (
+        <EarnDetailsActionsButtonsFallbackContainer>
+          <ConnectButton />
+        </EarnDetailsActionsButtonsFallbackContainer>
+      );
+    }
+    if (isLoading) {
+      return (
+        <EarnDetailsActionsButtonsContainer>
+          <BaseSurfaceSkeleton
+            variant="rounded"
+            sx={(theme) => ({
+              height: 48,
+              width: '100%',
+              borderRadius: theme.shape.buttonBorderRadius,
+            })}
+          />
+        </EarnDetailsActionsButtonsContainer>
+      );
+    }
+
+    if (areActionsDisabled) {
+      return (
+        <EarnDetailsActionsButtonsFallbackContainer>
+          <Typography variant="bodyMediumParagraph" color="text.secondary">
+            <Trans
+              i18nKey="earn.position.disabled"
+              values={{ protocolName: earnOpportunity.protocol.name }}
+              components={[
+                earnOpportunity.protocol.url ? (
+                  <ExternalLink href={earnOpportunity.protocol.url} />
+                ) : (
+                  <EmptyComponent />
+                ),
+              ]}
+            />
+          </Typography>
+        </EarnDetailsActionsButtonsFallbackContainer>
+      );
+    }
+
+    return (
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton
           earnOpportunity={earnOpportunity}
@@ -99,6 +169,17 @@ export const EarnDetailsActions = ({
           />
         )}
       </EarnDetailsActionsButtonsContainer>
+    );
+  };
+
+  return (
+    <EarnDetailsActionsContainer>
+      <EarnDetailsActionsPosition
+        token={earnOpportunity.lpToken}
+        amountUSD={depositAmountUSD}
+        amount={depositAmount}
+      />
+      {renderFooter()}
     </EarnDetailsActionsContainer>
   );
 };

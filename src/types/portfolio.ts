@@ -1,40 +1,21 @@
-import type {
-  ExtendedTokenAmount,
-  ExtendedTokenAmountWithChain,
-} from '@/utils/getTokens';
 import type { Account } from '@lifi/wallet-management';
-
-export type CacheToken = Pick<
-  ExtendedTokenAmountWithChain,
-  | 'address'
-  | 'chainId'
-  | 'chainLogoURI'
-  | 'chainName'
-  | 'cumulatedBalance'
-  | 'cumulatedTotalUSD'
-  | 'logoURI'
-  | 'name'
-  | 'priceUSD'
-  | 'symbol'
-  | 'totalPriceUSD'
-> & {
-  chains: CacheToken[];
-};
+import type { PortfolioToken } from '@/types/tokens';
 
 export interface PortfolioProps {
   lastTotalValue: Map<string, number>;
   lastDate: Map<string, number>;
   forceRefresh: Map<string, boolean>;
-  cacheTokens: Map<string, CacheToken[]>;
+  cacheTokens: Map<string, PortfolioToken[]>;
 }
+
 export interface PortfolioState extends PortfolioProps {
   getFormattedCacheTokens(accounts?: Account[]): {
     totalValue: number;
-    cache: CacheToken[];
+    cache: PortfolioToken[];
   };
   getLast: (address: string) => { value: number; date: number };
   setLast: (address: string, value: number, date: number) => void;
   setForceRefresh: (address: string, state: boolean) => void;
-  setCacheTokens: (account: string, state: ExtendedTokenAmount[]) => void;
+  setCacheTokens: (account: string, tokens: PortfolioToken[]) => void;
   deleteCacheTokenAddress: (account: string) => void;
 }

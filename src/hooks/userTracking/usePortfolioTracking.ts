@@ -9,8 +9,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import type { DefiPosition } from '@/types/jumper-backend';
-import type { MinimalToken } from '@/types/tokens';
-import type { CacheToken } from '@/types/portfolio';
+import type { PortfolioToken } from '@/types/tokens';
 import { zeroAddress } from 'viem';
 import type { ChainId } from '@lifi/sdk';
 import { useChains } from '../useChains';
@@ -23,7 +22,7 @@ export const usePortfolioTracking = () => {
   const trackPortfolioPageOverviewEvent = useCallback(
     (
       addresses: string[],
-      tokens: MinimalToken[],
+      tokens: PortfolioToken[],
       defiPositionGroups: DefiPosition[][],
     ) => {
       const trackingData = parseEarnPortfolioDataToTrackingData(
@@ -54,7 +53,7 @@ export const usePortfolioTracking = () => {
   }, [trackEvent]);
 
   const trackPortfolioMenuOverviewEvent = useCallback(
-    (totalValue: number, data: CacheToken[]) => {
+    (totalValue: number, data: PortfolioToken[]) => {
       const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
         chainsIds.map(
           (chainId) =>

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '../composite/ChainStack/ChainStack';
 import { TokenStack } from '../composite/TokenStack/TokenStack';
+import { toTokenStackTokens } from '../composite/TokenStack/utils';
 import type {
   EarnOpportunityFilterUI,
   RewardsAPYEnum,
@@ -74,7 +75,7 @@ export const useEarnFilterBar = () => {
         allAssets.map((asset) => ({
           value: asset.name,
           label: asset.name,
-          icon: <TokenStack tokens={[asset]} />,
+          icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
         })),
       ),
     [allAssets],

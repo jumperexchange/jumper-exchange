@@ -1,12 +1,15 @@
 import { zeroAddress } from 'viem';
+import type { PortfolioToken } from 'src/types/tokens';
 
-export const tokenMultipleChains = {
+export const tokenMultipleChains: PortfolioToken = {
   address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
   chain: {
     chainId: 1,
     chainKey: 'ethereum',
   },
   symbol: 'USDC',
+  name: 'USD Coin',
+  decimals: 6,
   balance: 2.5,
   totalPriceUSD: 8625.3,
   relatedTokens: [
@@ -17,6 +20,8 @@ export const tokenMultipleChains = {
         chainKey: 'ethereum',
       },
       symbol: 'USDC',
+      name: 'USD Coin',
+      decimals: 6,
       balance: 1.5,
       totalPriceUSD: 5175.18,
     },
@@ -27,19 +32,23 @@ export const tokenMultipleChains = {
         chainKey: 'base',
       },
       symbol: 'USDC',
+      name: 'USD Coin',
+      decimals: 6,
       balance: 1.0,
       totalPriceUSD: 3450.12,
     },
   ],
 };
 
-export const tokenSingleChain = {
+export const tokenSingleChain: PortfolioToken = {
   address: zeroAddress,
   chain: {
     chainId: 8453,
     chainKey: 'base',
   },
   symbol: 'ETH',
+  name: 'Ethereum',
+  decimals: 18,
   balance: 2.5,
   totalPriceUSD: 8625.3,
 };
