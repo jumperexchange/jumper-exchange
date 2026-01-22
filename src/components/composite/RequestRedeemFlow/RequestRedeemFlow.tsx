@@ -9,10 +9,11 @@ import { RequestRedeemModal } from '../RequestRedeemModal/RequestRedeemModal';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
-import { EarnOpportunityExtended, useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
+import type { EarnOpportunityExtended } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
+import { useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
 
 export const RequestRedeemFlowModal = () => {
-  const { selectedEarnOpportunity, isModalOpen, closeModal } =
+  const { selectedEarnOpportunity, isModalOpen, closeModal, refetchCallback } =
   useRequestRedeemFlowStore((state) => state);
 
   if (!selectedEarnOpportunity) {
@@ -45,6 +46,7 @@ export const RequestRedeemFlowModal = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         earnOpportunity={selectedEarnOpportunity!}
+        refetchCallback={refetchCallback}
       />
     </WidgetTrackingProvider>
   );
