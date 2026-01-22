@@ -1690,6 +1690,11 @@ export class JumperBackend<
          * @example "day"
          */
         range: 'day' | 'week' | 'month' | 'year';
+        /**
+         * Use instant (1-day) APY instead of 7-day rolling APY
+         * @example true
+         */
+        instant?: boolean;
       },
       params: RequestParams = {},
     ) =>
