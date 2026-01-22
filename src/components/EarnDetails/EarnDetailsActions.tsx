@@ -123,7 +123,9 @@ export const EarnDetailsActions = ({
 
   const {
     isSuccess,
+
     data: claims,
+
     refetch: refetchClaims,
   } = useQuery({
     queryKey: ['claims', accountAddress],
@@ -249,7 +251,6 @@ export const EarnDetailsActions = ({
 
     try {
       const callDataResult = await fetchClaimCallDataMutation.mutateAsync({
-        claimId,
         amount,
       });
 
@@ -350,14 +351,14 @@ export const EarnDetailsActions = ({
 
   return (
     <>
-      <>
+      <EarnDetailsActionsContainer>
         <EarnDetailsActionsPosition
           token={earnOpportunity.lpToken}
           amountUSD={depositAmountUSD}
           amount={depositAmount}
         />
         {renderFooter()}
-      </>
+      </EarnDetailsActionsContainer>
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton
           earnOpportunity={earnOpportunity}

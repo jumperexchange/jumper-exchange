@@ -36,7 +36,10 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
     getOpportunityBySlug(slug),
     getOpportunityRelatedMarket(slug),
   ]).catch((error) => {
-    return [{ error: true, data: null }, { error: true, data: null }];
+    return [
+      { error: true, data: null },
+      { error: true, data: null },
+    ];
   });
 >>>>>>> 0090e330d (various fixes)
 
