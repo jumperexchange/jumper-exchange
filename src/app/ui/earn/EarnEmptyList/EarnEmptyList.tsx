@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
-import { useEarnFiltering } from '../EarnFilteringContext';
-import { EarnEmptyListYourPositions } from './EarnEmptyListYourPositions';
-import { EarnEmptyListAllMarkets } from './EarnEmptyListAllMarkets';
 import { AnimatePresence, motion } from 'motion/react';
+import { useMemo } from 'react';
+
+import { useEarnFiltering } from '../EarnFilteringContext';
+import { EarnFilterTab } from '../types';
+import { EarnEmptyListAllMarkets } from './EarnEmptyListAllMarkets';
 import { EarnEmptyListForYou } from './EarnEmptyListForYou';
+import { EarnEmptyListYourPositions } from './EarnEmptyListYourPositions';
 
 export const EarnEmptyList = () => {
-  const { data, isLoading, showForYou, showYourPositions } = useEarnFiltering();
+  const { data, isLoading, tab } = useEarnFiltering();
 
   const isEmptyList = useMemo(() => {
     return !isLoading && (!data || data.length === 0);
@@ -14,7 +16,7 @@ export const EarnEmptyList = () => {
 
   return (
     <AnimatePresence mode="popLayout">
-      {isEmptyList && showYourPositions && (
+      {isEmptyList && tab === EarnFilterTab.YOUR_POSITIONS && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -27,7 +29,7 @@ export const EarnEmptyList = () => {
         </motion.div>
       )}
 
-      {isEmptyList && !showYourPositions && !showForYou && (
+      {isEmptyList && tab === EarnFilterTab.ALL && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -39,7 +41,7 @@ export const EarnEmptyList = () => {
           <EarnEmptyListAllMarkets />
         </motion.div>
       )}
-      {isEmptyList && showForYou && (
+      {isEmptyList && tab === EarnFilterTab.FOR_YOU && (
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

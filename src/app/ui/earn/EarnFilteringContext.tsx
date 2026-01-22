@@ -10,24 +10,31 @@ import {
 } from 'react';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import type { NullableFields } from 'src/types/internal';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { StrapiMetaPagination } from 'src/types/strapi';
 import type { Hex } from 'viem';
-import {
-  enrichDataWithFlag,
-  extractFilteringParams,
-  removeNullValuesFromFilter,
-  sanitizeFilter,
-  searchParamsParsers,
-} from './utils';
+import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
 import { EMPTY_FILTERING_PARAMS } from './constants';
+import {
+  extractFilteringParams,
+  filterOpportunities,
+  sanitizeFilter,
+  sortOpportunities,
+} from './filterOpportunities';
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
   SortByEnum,
 } from './types';
-import { EarnFilterTab, SortByOptions } from './types';
-import type { NullableFields } from 'src/types/internal';
-import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
+import { EarnFilterTab, OrderOptions, SortByOptions } from './types';
+import {
+  enrichDataWithFlag,
+  removeNullValuesFromFilter,
+  searchParamsParsers,
+} from './utils';
+
+const PAGE_SIZE = 18;
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -37,17 +44,19 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
     filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
   ) => void;
   clearFilters: () => void;
-  showForYou: boolean;
-  showYourPositions: boolean;
   usedYourAddress: boolean;
   changeTab: (tab: EarnFilterTab) => void;
   totalMarkets: number;
   data: EarnOpportunityWithLatestAnalytics[];
   updatedAt: Date | undefined;
   isLoading: boolean;
-  error: unknown | null;
+  error: unknown | undefined;
   isAllDataLoading: boolean;
-  isNotConnected: boolean;
+  isConnected: boolean;
+  tab: EarnFilterTab;
+  page: number;
+  setPage: (page: number) => void;
+  pagination: StrapiMetaPagination;
 }
 
 export const EarnFilteringContext = createContext<EarnFilteringContextType>({
@@ -56,8 +65,6 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   filter: {},
   updateFilter: () => {},
   clearFilters: () => {},
-  showForYou: false,
-  showYourPositions: false,
   usedYourAddress: false,
   changeTab: () => {},
   totalMarkets: 0,
@@ -71,9 +78,18 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   data: [],
   updatedAt: undefined,
   isLoading: false,
-  error: null,
+  error: undefined,
   isAllDataLoading: false,
-  isNotConnected: false,
+  isConnected: true,
+  tab: EarnFilterTab.FOR_YOU,
+  page: 0,
+  setPage: () => {},
+  pagination: {
+    page: 0,
+    pageSize: PAGE_SIZE,
+    pageCount: 0,
+    total: 0,
+  },
 });
 
 export const EarnFilteringProvider = ({
@@ -93,9 +109,10 @@ export const EarnFilteringProvider = ({
   const usedYourAddress = address !== undefined;
 
   const {
-    forYou: initialForYou,
+    forYou: forYouParam,
+    withPositions: withPositionsParam,
     sortBy: initialSortBy,
-    withPositions: initialWithPositions,
+    tab,
     ...rest
   } = searchParamsState;
 
@@ -103,13 +120,35 @@ export const EarnFilteringProvider = ({
     return removeNullValuesFromFilter(rest);
   }, [rest]);
 
-  // TODO: introduce the loading state?
+  // Backwards compatibility for existing bookmarks
+  const initialTab = useMemo(() => {
+    if (withPositionsParam) {
+      return EarnFilterTab.YOUR_POSITIONS;
+    }
+    if (forYouParam === true) {
+      return EarnFilterTab.FOR_YOU;
+    }
+    if (forYouParam === false) {
+      return EarnFilterTab.ALL;
+    }
+    return tab ?? EarnFilterTab.FOR_YOU;
+  }, [forYouParam, withPositionsParam, tab]);
+
+  // Replace deprecated query params
+  useEffect(() => {
+    if (forYouParam != null || withPositionsParam != null) {
+      setSearchParamsState({
+        forYou: null,
+        withPositions: null,
+        tab: initialTab,
+      });
+    }
+  }, [forYouParam, initialTab, setSearchParamsState, withPositionsParam]);
+
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
-  const [showForYou, setShowForYou] = useState(initialForYou);
-  const [showYourPositions, setShowYourPositions] =
-    useState(initialWithPositions);
+  const [page, setPage] = useState(0);
 
   const forYou = useEarnFilterOpportunities(
     {
@@ -123,24 +162,21 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  const all = useEarnFilterOpportunities(
+  const yourPositionsNoFilter = useEarnFilterOpportunities(
     {
       filter: {
-        ...filter,
-        ...(showYourPositions ? { hasPositions: true, address } : {}),
-        sortBy: sortBy,
+        hasPositions: true,
+        address,
       },
     },
     {
-      enabled: showYourPositions ? !!address : true,
+      enabled: !!address,
     },
   );
 
   const allNoFilter = useEarnFilterOpportunities({
     filter: {},
   });
-
-  const forYouUpdatedAt = forYou.data?.meta?.updatedAt ?? undefined;
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],
@@ -149,13 +185,89 @@ export const EarnFilteringProvider = ({
 
   const totalMarkets = allNoFilterData.length;
 
+  const { sourceData, error, updatedAt } = useMemo(() => {
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        return {
+          sourceData: forYou.data?.data ?? [],
+          updatedAt: forYou.data?.meta?.updatedAt,
+          error: forYou.error,
+        };
+      case EarnFilterTab.YOUR_POSITIONS:
+        return {
+          sourceData: yourPositionsNoFilter.data?.data ?? [],
+          updatedAt: yourPositionsNoFilter.data?.meta?.updatedAt,
+          error: yourPositionsNoFilter.error,
+        };
+      case EarnFilterTab.ALL:
+        return {
+          sourceData: allNoFilterData,
+          updatedAt: allNoFilter.data?.meta?.updatedAt,
+          error: allNoFilter.error,
+        };
+    }
+  }, [tab, forYou, yourPositionsNoFilter, allNoFilterData, allNoFilter]);
+
+  const filteredAndSortedData = useMemo(() => {
+    // FOR_YOU tab is already filtered by backend
+    if (tab === EarnFilterTab.FOR_YOU) {
+      return sourceData;
+    }
+
+    const filtered = filterOpportunities(sourceData, filter);
+
+    const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
+
+    return sorted;
+  }, [sourceData, filter, sortBy, tab]);
+
+  const enrichedData = useMemo(() => {
+    const forYouSlugsSet = new Set(
+      (forYou.data?.data ?? []).map((item) => item.slug),
+    );
+    return enrichDataWithFlag(filteredAndSortedData, 'forYou', forYouSlugsSet);
+  }, [filteredAndSortedData, forYou.data?.data]);
+
+  const { data, pagination } = useMemo(() => {
+    const total = enrichedData.length;
+    const pageCount = Math.ceil(total / PAGE_SIZE);
+    const pagination = {
+      page,
+      pageSize: PAGE_SIZE,
+      pageCount,
+      total,
+    };
+
+    const startIndex = page * PAGE_SIZE;
+    const endIndex = startIndex + PAGE_SIZE;
+    const paginatedData = enrichedData.slice(startIndex, endIndex);
+
+    return { data: paginatedData, pagination };
+  }, [enrichedData, page]);
+
+  const unfilteredTabData = useMemo(() => {
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        return forYou.data?.data ?? [];
+      case EarnFilterTab.YOUR_POSITIONS:
+        return yourPositionsNoFilter.data?.data ?? [];
+      case EarnFilterTab.ALL:
+        return allNoFilterData;
+    }
+  }, [
+    tab,
+    forYou.data?.data,
+    yourPositionsNoFilter.data?.data,
+    allNoFilterData,
+  ]);
+
   const stats = useMemo((): EarnFilteringParams => {
-    if (allNoFilterData.length === 0) {
+    if (unfilteredTabData.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(allNoFilterData);
-  }, [allNoFilterData]);
+    return extractFilteringParams(unfilteredTabData);
+  }, [unfilteredTabData]);
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
@@ -167,41 +279,15 @@ export const EarnFilteringProvider = ({
 
   const changeTab = useCallback(
     (tab: EarnFilterTab) => {
-      let _newShowForYou;
-      let _newShowYourPositions;
-      switch (tab) {
-        case EarnFilterTab.FOR_YOU: {
-          _newShowForYou = true;
-          _newShowYourPositions = false;
-          break;
-        }
-        case EarnFilterTab.YOUR_POSITIONS: {
-          _newShowForYou = false;
-          _newShowYourPositions = true;
-          break;
-        }
-        case EarnFilterTab.ALL: {
-          _newShowForYou = false;
-          _newShowYourPositions = false;
-          break;
-        }
-        default: {
-          throw new Error(`Invalid tab: ${tab}`);
-        }
-      }
-
-      setShowForYou(_newShowForYou);
-      setShowYourPositions(_newShowYourPositions);
-      setSearchParamsState({
-        forYou: _newShowForYou,
-        withPositions: _newShowYourPositions,
-      });
+      setPage(0);
+      setSearchParamsState({ tab });
     },
-    [setShowForYou, setShowYourPositions, setSearchParamsState],
+    [setSearchParamsState],
   );
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>) => {
+      setPage(0);
       const newFilterValue = { ...filter, ...newFilter };
       setFilter(removeNullValuesFromFilter(newFilterValue));
       setSearchParamsState(newFilterValue);
@@ -211,6 +297,7 @@ export const EarnFilteringProvider = ({
 
   const updateSortBy = useCallback(
     (newSortBy: SortByEnum) => {
+      setPage(0);
       setSortBy(newSortBy);
       setSearchParamsState({ sortBy: newSortBy });
     },
@@ -232,58 +319,62 @@ export const EarnFilteringProvider = ({
     });
   }, [updateFilter]);
 
-  const data = useMemo(() => {
-    const sourceData = showForYou ? forYou.data?.data : all.data?.data;
-    const forYouSlugsSet = new Set(
-      (forYou.data?.data ?? []).map((item) => item.slug),
-    );
-
-    return enrichDataWithFlag(sourceData, 'forYou', forYouSlugsSet);
-  }, [showForYou, forYou.data, all.data]);
-
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
-    const isLoading =
-      !hasData && (showForYou ? forYou.isLoading : all.isLoading);
+    let isLoading = false;
+    switch (tab) {
+      case EarnFilterTab.FOR_YOU:
+        isLoading = !hasData && forYou.isLoading;
+        break;
+      case EarnFilterTab.YOUR_POSITIONS:
+        isLoading = !hasData && yourPositionsNoFilter.isLoading;
+        break;
+      case EarnFilterTab.ALL:
+        isLoading = !hasData && allNoFilter.isLoading;
+        break;
+    }
+
     return {
       sortBy,
       setSortBy: updateSortBy,
       filter,
       updateFilter,
       clearFilters,
-      showForYou,
-      showYourPositions,
+      tab,
       usedYourAddress,
       changeTab,
       totalMarkets,
       data,
-      updatedAt: showForYou ? forYouUpdatedAt : undefined,
+      updatedAt,
       isLoading,
-      error: (showForYou ? forYou.error : all.error) ?? null,
+      error,
       isAllDataLoading: allNoFilter.isLoading,
-      isNotConnected: !address,
+      isConnected: !!address,
+      page,
+      setPage,
+      pagination,
       ...stats,
     };
   }, [
+    error,
     sortBy,
     filter,
     updateFilter,
     updateSortBy,
     clearFilters,
-    showForYou,
-    showYourPositions,
+    tab,
     usedYourAddress,
     totalMarkets,
-    data,
-    forYouUpdatedAt,
+    pagination,
+    page,
+    updatedAt,
     address,
-    all.isLoading,
-    all.error,
     allNoFilter.isLoading,
     forYou.isLoading,
-    forYou.error,
+    yourPositionsNoFilter.isLoading,
     stats,
     changeTab,
+    data,
   ]);
 
   return (

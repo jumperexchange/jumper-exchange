@@ -1,13 +1,13 @@
-import { useEarnFiltering } from '@/app/ui/earn/EarnFilteringContext';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useEarnFiltering } from '@/app/ui/earn/EarnFilteringContext';
 import { EarnFilterTab } from '@/app/ui/earn/types';
-import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import { Select } from '@/components/core/form/Select/Select';
+import { SelectVariant } from '@/components/core/form/Select/Select.types';
 
 export const EarnFilterViewTablet = () => {
   const { t } = useTranslation();
-  const { changeTab, showForYou, showYourPositions } = useEarnFiltering();
+  const { changeTab, tab } = useEarnFiltering();
 
   const options = useMemo(() => {
     return [
@@ -29,23 +29,14 @@ export const EarnFilterViewTablet = () => {
     ];
   }, [t]);
 
-  const value = useMemo(() => {
-    return showForYou
-      ? EarnFilterTab.FOR_YOU
-      : showYourPositions
-        ? EarnFilterTab.YOUR_POSITIONS
-        : EarnFilterTab.ALL;
-  }, [showForYou, showYourPositions]);
-
   const handleChange = (value: string) => {
-    const _value = value as EarnFilterTab;
-    changeTab(_value);
+    changeTab(value as EarnFilterTab);
   };
 
   return (
     <Select
       options={options}
-      value={value}
+      value={tab}
       onChange={handleChange}
       label={t('earn.views.viewBy')}
       variant={SelectVariant.Single}
