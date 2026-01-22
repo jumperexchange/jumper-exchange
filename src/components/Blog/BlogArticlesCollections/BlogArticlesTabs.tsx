@@ -1,17 +1,24 @@
 'use client';
 
+import type { Breakpoint } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
+import { useCallback, useState } from 'react';
+
+import { Pagination } from '@/components/core/Pagination/Pagination';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type {
   BlogArticleData,
   StrapiMetaPagination,
   TagAttributes,
 } from '@/types/strapi';
-import type { Breakpoint } from '@mui/material';
-import { Box, useTheme } from '@mui/material';
-import { useState } from 'react';
-import { TrackingCategory } from 'src/const/trackingKeys';
-import { chunkArray } from 'src/utils/chunkArray';
+import { chunkArray } from '@/utils/chunkArray';
+
 import { BlogArticleCard } from '../BlogArticleCard';
-import { Pagination } from '../Pagination/Pagination';
 import {
   BlogArticlesCollectionsContainer,
   BlogArticlesCollectionsTitle,
@@ -32,8 +39,43 @@ export function BlogArticlesTabs({
   pagination,
 }: BlogArticlesTabsProps) {
   const theme = useTheme();
+  const { trackEvent } = useUserTracking();
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
+
+  const trackPagination = useCallback(
+    (label: string, page: number) => {
+      trackEvent({
+        category: TrackingCategory.BlogArticlesBoard,
+        label,
+        action: TrackingAction.ClickPagination,
+        data: {
+          [TrackingEventParameter.Pagination]: page,
+          [TrackingEventParameter.PaginationCat]: index ?? '',
+        },
+      });
+    },
+    [trackEvent, index],
+  );
+
+  const setPage = useCallback((page: number) => {
+    setPageTab(page);
+  }, []);
+
+  const handleSetPage = useCallback(
+    (page: number) => {
+      trackPagination('click-pagination', page);
+    },
+    [trackPagination],
+  );
+
+  const handlePrev = useCallback(() => {
+    trackPagination('click-pagination-prev', pageTab - 1);
+  }, [trackPagination, pageTab]);
+
+  const handleNext = useCallback(() => {
+    trackPagination('click-pagination-next', pageTab + 1);
+  }, [trackPagination, pageTab]);
 
   if (!chunkedPages) {
     return null;
@@ -73,18 +115,17 @@ export function BlogArticlesTabs({
             ),
         )}
       </Box>
-      {
-        /* todo: enable pagination*/
-        pagination.pageCount > 1 && (
-          <Pagination
-            id={tag?.Title}
-            page={pageTab}
-            setPage={setPageTab}
-            pagination={pagination}
-            categoryId={index}
-          />
-        )
-      }
+      {pagination.pageCount > 1 && (
+        <Pagination
+          id={tag?.Title}
+          page={pageTab}
+          setPage={setPage}
+          pagination={pagination}
+          onPrev={handlePrev}
+          onNext={handleNext}
+          onSetPage={handleSetPage}
+        />
+      )}
     </BlogArticlesCollectionsContainer>
   );
 }

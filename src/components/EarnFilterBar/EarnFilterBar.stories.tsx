@@ -35,8 +35,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const mockContextValue = () => {
-  const [showForYou, setShowForYou] = useState(false);
-  const [showYourPositions, setShowYourPositions] = useState(false);
+  const [tab, changeTab] = useState(EarnFilterTab.ALL);
   const [sortBy, setSortBy] = useState<SortByEnum>(SortByOptions.APY);
 
   return {
@@ -45,30 +44,24 @@ const mockContextValue = () => {
     filter: {},
     updateFilter: () => {},
     clearFilters: () => {},
-    showForYou,
-    showYourPositions,
-    changeTab: (tab: EarnFilterTab) => {
-      if (tab === EarnFilterTab.FOR_YOU) {
-        setShowForYou(true);
-        setShowYourPositions(false);
-      } else if (tab === EarnFilterTab.YOUR_POSITIONS) {
-        setShowForYou(false);
-        setShowYourPositions(true);
-      } else if (tab === EarnFilterTab.ALL) {
-        setShowForYou(false);
-        setShowYourPositions(false);
-      } else {
-        throw new Error(`Invalid tab: ${tab}`);
-      }
-    },
+    tab,
+    changeTab,
     usedYourAddress: false,
     data: [],
     updatedAt: undefined,
     isLoading: false,
     error: null,
     isAllDataLoading: false,
-    isNotConnected: false,
+    isConnected: true,
     totalMarkets: 150,
+    page: 0,
+    setPage: () => {},
+    pagination: {
+      page: 0,
+      pageSize: 18,
+      pageCount: 9,
+      total: 150,
+    },
     allChains: [
       { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
       { chainId: 137, chainKey: 'polygon', name: 'Polygon' },
