@@ -1,4 +1,4 @@
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 
 export enum TokenListCardTokenSize {
   SM = 'sm',
@@ -6,7 +6,8 @@ export enum TokenListCardTokenSize {
 }
 
 export interface TokenListCardProps {
-  token: MinimalToken;
+  token: PortfolioToken;
   size?: TokenListCardTokenSize;
-  onSelect?: (token: MinimalToken) => void;
+  onSelect?: (token: PortfolioToken) => void;
+  shouldShowExpandedEndDivider?: boolean;
 }

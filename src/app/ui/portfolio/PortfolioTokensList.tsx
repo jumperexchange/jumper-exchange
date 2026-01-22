@@ -8,7 +8,7 @@ import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContain
 import { TokenListCardSkeleton } from '@/components/composite/TokenListCard/TokenListCardSkeleton';
 import { AnimatePresence } from 'motion/react';
 import { useWidgetCacheStore } from '@/stores/widgetCache';
-import type { MinimalToken } from '@/types/tokens';
+import type { PortfolioToken } from '@/types/tokens';
 import { useRouter } from 'next/navigation';
 
 export const PortfolioTokensList = () => {
@@ -21,7 +21,7 @@ export const PortfolioTokensList = () => {
 
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
 
-  const handleSelectToken = (token: MinimalToken) => {
+  const handleSelectToken = (token: PortfolioToken) => {
     setFrom(token.address, token.chain.chainId);
     router.push('/');
   };

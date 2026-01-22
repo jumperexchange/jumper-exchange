@@ -72,13 +72,35 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     return zapData?.meta.name ? capitalizeString(zapData.meta.name) : '';
   }, [zapData?.meta.name]);
 
-  const toToken = useMemo(() => {
+  const toTokenAddress = useMemo(() => {
     return zapData?.market?.address;
   }, [zapData?.market?.address]);
 
-  const toChain = useMemo(() => {
+  const toChainId = useMemo(() => {
     return zapData?.market?.depositToken.chainId;
   }, [zapData?.market?.depositToken.chainId]);
+
+  const fromToken = useMemo(() => {
+    const depositToken = zapData?.market?.depositToken;
+    if (!depositToken?.address) {
+      return undefined;
+    }
+    return {
+      tokenAddress: depositToken.address,
+      tokenSymbol: depositToken.symbol,
+    };
+  }, [zapData?.market?.depositToken]);
+
+  const fromChain = useMemo(() => {
+    const depositToken = zapData?.market?.depositToken;
+    if (!depositToken?.chainId) {
+      return undefined;
+    }
+    return {
+      chainId: depositToken.chainId.toString(),
+      chainKey: projectData?.chain ?? '',
+    };
+  }, [zapData?.market?.depositToken, projectData?.chain]);
 
   const minFromAmountUSD = useMemo(() => {
     return projectData?.minFromAmountUSD
@@ -95,18 +117,20 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       // variant: 'wide' as const,
       formData: {
         minFromAmountUSD,
+        sourceToken: fromToken,
+        sourceChain: fromChain,
       },
     };
-  }, [ctx, minFromAmountUSD, poolName, integrator]);
+  }, [ctx, minFromAmountUSD, poolName, integrator, fromToken, fromChain]);
 
   useEffect(() => {
-    if (toChain && toToken) {
+    if (toChainId && toTokenAddress) {
       setDestinationChainTokenForTracking({
-        chainId: toChain,
-        tokenAddress: toToken,
+        chainId: toChainId,
+        tokenAddress: toTokenAddress,
       });
     }
-  }, [toChain, toToken, setDestinationChainTokenForTracking]);
+  }, [toChainId, toTokenAddress, setDestinationChainTokenForTracking]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
@@ -155,7 +179,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     );
   }
 
-  return isZapDataSuccess && toChain && toToken ? (
+  return isZapDataSuccess && toChainId && toTokenAddress ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}
@@ -169,8 +193,8 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
       }
       contractComponent={
         <ZapDepositSettings
-          toChain={toChain}
-          toToken={toToken}
+          toChainId={toChainId}
+          toTokenAddress={toTokenAddress}
           contractCalls={[]}
         />
       }

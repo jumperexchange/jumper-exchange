@@ -84,10 +84,8 @@ vi.mock('src/hooks/useChains', () => ({
 
 vi.mock('src/hooks/useTokens', () => ({
   useTokens: () => ({
-    data: {
-      tokens: mockedTokens,
-    },
-    getTokenByAddressAndChain: (address: string, chainId: number) =>
+    tokens: mockedTokens,
+    getToken: (chainId: number, address: string) =>
       mockedTokens.find(
         (token) => token.address === address && token.chain.chainId === chainId,
       ),

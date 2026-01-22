@@ -11,6 +11,10 @@ import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug'
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
+import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
+import type { EarnInteractionFlags } from '@/types/jumper-backend';
+import { EarnInteractionFeature } from '@/types/earn';
+import { DisabledEarnFeatureTooltip } from '@/components/EarnDetails/DisabledEarnFeatureTooltip';
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -60,6 +64,14 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
   refetchCallback,
   ...props
 }) => {
+  const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
+    useIsEarnUIFeatureDisabled(
+      EarnInteractionFeature.Withdraw,
+      earnOpportunity.interactionFlags,
+    );
+  const effectiveIsDisabled =
+    props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
+  const effectiveProps = { ...props, disabled: effectiveIsDisabled };
   const { t } = useTranslation();
   const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
@@ -67,11 +79,19 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
     trackEarnWithdrawClickEvent(earnOpportunity.slug);
     openModal(earnOpportunity, refetchCallback);
   };
+  const tooltipContent = isFeatureDisabled ? (
+    <DisabledEarnFeatureTooltip
+      i18nKey="tooltips.withdrawDisabled"
+      protocolName={earnOpportunity.protocol.name}
+      protocolUrl={earnOpportunity.protocol.url}
+    />
+  ) : undefined;
   return (
     <WithdrawButton
       onClick={handleClick}
       label={t('buttons.withdrawButtonLabel')}
-      {...props}
+      tooltip={tooltipContent}
+      {...effectiveProps}
     />
   );
 };
@@ -79,8 +99,26 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
 export const WithdrawFlowOnDemandButton: FC<
   Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
+    earnOpportunityInteractionFlags?: EarnInteractionFlags;
+    protocolUrl?: string;
+    protocolName?: string;
   }
-> = ({ earnOpportunitySlug, refetchCallback, ...props }) => {
+> = ({
+  earnOpportunitySlug,
+  earnOpportunityInteractionFlags,
+  refetchCallback,
+  protocolUrl,
+  protocolName,
+  ...props
+}) => {
+  const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
+    useIsEarnUIFeatureDisabled(
+      EarnInteractionFeature.Withdraw,
+      earnOpportunityInteractionFlags,
+    );
+  const effectiveIsDisabled =
+    props.disabled || isFeatureDisabled || isLoadingFeatureDisabled;
+  const effectiveProps = { ...props, disabled: effectiveIsDisabled };
   const { t } = useTranslation();
   const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
@@ -110,11 +148,19 @@ export const WithdrawFlowOnDemandButton: FC<
       console.error('Failed to fetch earn opportunity:', error);
     }
   };
+  const tooltipContent = isFeatureDisabled ? (
+    <DisabledEarnFeatureTooltip
+      i18nKey="tooltips.withdrawDisabled"
+      protocolUrl={protocolUrl}
+      protocolName={protocolName}
+    />
+  ) : undefined;
   return (
     <WithdrawButton
       onClick={handleClick}
       label={t('buttons.withdrawButtonLabel')}
-      {...props}
+      tooltip={tooltipContent}
+      {...effectiveProps}
     />
   );
 };

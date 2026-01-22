@@ -49,5 +49,13 @@ export const commonArgs = {
         total: 0.07150000000000001,
       },
     },
+    interactionFlags: {
+      canDeposit: true,
+      canWithdraw: true,
+      canRewardClaim: true,
+      canRewardCompound: true,
+      canRepay: true,
+      canBorrow: true,
+    },
   },
 };

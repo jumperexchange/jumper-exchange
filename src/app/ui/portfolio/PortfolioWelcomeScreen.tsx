@@ -1,6 +1,5 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
 import type { FC, MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,13 +12,11 @@ import {
   WelcomeScreenSubtitle,
 } from '@/components/WelcomeScreen/WelcomeScreen.style';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
-import { AppPaths } from '@/const/urls';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import {
   PortfolioWelcomeScreenButton,
   PortfolioWelcomeScreenButtonsContainer,
-  PortfolioWelcomeScreenLink,
 } from './PortfolioPage.styles';
 import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 
@@ -96,11 +93,6 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
           >
             {t('portfolio.welcome.getStarted')}
           </PortfolioWelcomeScreenButton>
-          <PortfolioWelcomeScreenLink href={AppPaths.Profile}>
-            <Typography variant="bodyMediumStrong">
-              {t('portfolio.welcome.explorePass')}
-            </Typography>
-          </PortfolioWelcomeScreenLink>
         </PortfolioWelcomeScreenButtonsContainer>
       </WelcomeContent>
     </ContentWrapper>

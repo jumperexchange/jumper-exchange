@@ -1,21 +1,16 @@
-import type { EarnOpportunityFilter } from 'src/app/lib/getOpportunitiesFiltered';
 import type { Chain, Protocol, Token } from 'src/types/jumper-backend';
-
-type SortByType = NonNullable<NonNullable<EarnOpportunityFilter>['sortBy']>;
 
 export const SortByOptions = {
   APY: 'apy',
   TVL: 'tvl',
-} as const satisfies Record<string, SortByType>;
+} as const;
 
 export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
-
-type OrderType = NonNullable<NonNullable<EarnOpportunityFilter>['order']>;
 
 export const OrderOptions = {
   ASC: 'asc',
   DESC: 'desc',
-} as const satisfies Record<string, OrderType>;
+} as const;
 
 export type OrderEnum = (typeof OrderOptions)[keyof typeof OrderOptions];
 
@@ -36,10 +31,18 @@ export interface EarnFilteringParams {
   allRewardsOptions: string[];
 }
 
-export type EarnOpportunityFilterWithoutSortByAndOrder = Omit<
-  NonNullable<EarnOpportunityFilter>,
-  'sortBy' | 'order'
->;
+export interface EarnOpportunityFilterWithoutSortByAndOrder {
+  chains?: number[];
+  protocols?: string[];
+  assets?: string[];
+  tags?: string[];
+  minAPY?: number;
+  maxAPY?: number;
+  minTVL?: number;
+  maxTVL?: number;
+  minRewardsAPY?: number;
+  maxRewardsAPY?: number;
+}
 
 export type EarnOpportunityFilterUI =
   EarnOpportunityFilterWithoutSortByAndOrder & {

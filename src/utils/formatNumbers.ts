@@ -82,12 +82,12 @@ export interface ValueFormatConfig {
 export const formatValueWithConfig = (
   value: number | string,
   config: ValueFormatConfig,
-  options?: { includePrefixSuffix?: boolean },
+  options?: { includePrefixSuffix?: boolean } & Intl.NumberFormatOptions,
 ): string => {
   const numValue = Number(value);
 
-  if (isNaN(numValue) || numValue === 0) {
-    return numValue === 0 ? '0' : value.toString();
+  if (isNaN(numValue)) {
+    return value.toString();
   }
 
   const includePrefixSuffix = options?.includePrefixSuffix ?? true;
@@ -120,3 +120,11 @@ export const formatValueWithConfig = (
 
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
+
+export const formatUSD = currencyFormatter('en-US', {
+  notation: 'compact',
+  currency: 'USD',
+  useGrouping: true,
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});

@@ -7,6 +7,7 @@ import { EntityChainStackChainsPlacement } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from 'src/utils/chains/getChainName';
+import { toTokenStackTokens } from '../../TokenStack/utils';
 
 export const TokenWithChainsStack: FC<TokenWithChainsChainStackProps> = (
   props,
@@ -42,7 +43,7 @@ export const TokenWithChainsStack: FC<TokenWithChainsChainStackProps> = (
 
   const mainStack = (
     <TokenStack
-      tokens={props.token ? [props.token] : []}
+      tokens={props.token ? toTokenStackTokens([props.token]) : []}
       size={props.tokenSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}

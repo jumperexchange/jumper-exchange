@@ -50,5 +50,24 @@ test.describe('Portfolio page', () => {
         });
       },
     );
+
+    test(
+      qase(
+        57,
+        'verify value filter is cleared when clicking clear filter button',
+      ),
+      async ({ page }) => {
+        const portfolioPage = new PortfolioPage(page);
+        await portfolioPage.verifyValueSelectFilterIsVisible();
+
+        await test.step('click clear filters button', async () => {
+          await portfolioPage.clickClearFiltersButton();
+        });
+
+        await test.step('verify value filter is cleared', async () => {
+          await portfolioPage.verifyValueSelectFilterIsCleared();
+        });
+      },
+    );
   });
 });

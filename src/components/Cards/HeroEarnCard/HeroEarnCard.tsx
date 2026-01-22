@@ -26,7 +26,7 @@ const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
   protocol: { textTransform: 'capitalize' },
   apy: {},
   token: {},
-  tag: {},
+  tag: { textTransform: 'lowercase' },
   chain: {},
 };
 

@@ -1,8 +1,6 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Percent } from './Percent';
 import { PercentSize } from './Percent.types';
-import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import { AvatarSize } from '../AvatarStack/AvatarStack.types';
 import { Avatar } from '@mui/material';
 
 const meta = {

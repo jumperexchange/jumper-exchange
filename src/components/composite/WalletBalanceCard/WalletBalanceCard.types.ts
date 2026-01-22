@@ -1,11 +1,10 @@
-import type { CacheToken } from 'src/types/portfolio';
-import type { ExtendedTokenAmount } from 'src/utils/getTokens';
+import type { PortfolioToken } from 'src/types/tokens';
 
 export interface WalletBalanceCardProps {
   walletAddress: string;
   refetch: () => void;
   isFetching: boolean;
   isSuccess: boolean;
-  data: (ExtendedTokenAmount | CacheToken)[];
+  data: PortfolioToken[];
   ['data-testid']?: string;
 }

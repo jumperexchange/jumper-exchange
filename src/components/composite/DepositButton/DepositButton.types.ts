@@ -10,4 +10,5 @@ export interface DepositButtonProps extends ButtonProps {
   onClick: () => void;
   displayMode?: DepositButtonDisplayMode;
   label?: string;
+  tooltip?: React.ReactNode;
 }

@@ -42,7 +42,7 @@
       "resources": "Resources",
       "profile": "Profile",
       "privacyPolicy": "Privacy Policy",
-      "termsConditions": "Terms & Conditions",
+      "termsOfBusiness": "Terms Of Business",
       "newsletter": "Newsletter"
     },
     "walletMenu": {
@@ -319,7 +319,9 @@
     "chains_other": "The chains you will earn from",
     "protocol": "The protocol you will earn from",
     "noPositionsToManage": "You do not have any positions to manage",
-    "capInDollar": "Available liquidity capacity of the market"
+    "capInDollar": "Available liquidity capacity of the market",
+    "depositDisabled": "Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
+    "withdrawDisabled": "Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
   },
   "labels": {
     "apy": "APY",
@@ -337,7 +339,7 @@
   },
   "earn": {
     "top": {
-      "useYourSpare": "Use your spare <asset/> with <protocol/> and earn up to <apy/> APY",
+      "useYourSpare": "Deposit your spare <asset/> with <protocol/> and earn up to <apy/> APY",
       "maximizeYourRevenue": "Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool",
       "makeTheJump": "Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!",
       "earnUpTo": "Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>"
@@ -407,17 +409,28 @@
       "goToPortfolio": "Go to Portfolio"
     },
     "position": {
-      "label": "Your position"
+      "label": "Your position",
+      "disabled": "Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
     },
     "missingPosition": {
       "title": "Missing a position?",
       "description": "Check your portfolio tokens before contacting support."
     },
     "emptyList": {
+      "forYouNotConnected": {
+        "title": "No wallet connected",
+        "description": "Connect your wallet to view markets for you.",
+        "connectWallet": "Connect wallet"
+      },
       "yourPositions": {
         "title": "No positions",
         "description": "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.",
         "viewAllMarkets": "View all markets"
+      },
+      "yourPositionsNotConnected": {
+        "title": "No wallet connected",
+        "description": "Connect your wallet to view your positions.",
+        "connectWallet": "Connect wallet"
       },
       "noResults": {
         "title": "No results",
@@ -428,10 +441,9 @@
   },
   "portfolio": {
     "welcome": {
-      "title": "One platform, all of DeFi",
-      "subtitle": "<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>",
-      "getStarted": "Get started",
-      "explorePass": "Explore Jumper Pass"
+      "title": "Welcome to Jumper Portfolio!",
+      "subtitle": "<strong>DeFi's interactive portfolio.</strong>",
+      "getStarted": "Get started"
     },
     "overviewCard": {
       "title": "Portfolio",

@@ -1,4 +1,3 @@
-// Constants
 import type {
   ExtendedChain,
   Token,
@@ -6,18 +5,14 @@ import type {
   TokensResponse,
 } from '@lifi/sdk';
 import { getTokenBalances as LifiGetTokenBalances } from '@lifi/sdk';
-import type {
-  ExtendedTokenAmount,
-  ExtendedTokenAmountWithChain,
-} from '@/utils/getTokens/index';
-import { getBalance } from '@/utils/getTokens/utils';
+import type { PortfolioToken, PortfolioTokenWithRelated } from '@/types/tokens';
+import { getBalance, transformToPortfolioToken } from '@/utils/getTokens/utils';
 
 const MAX_CROSS_CHAIN_FETCH = 10000; // Maximum tokens per fetch round across all chains
 const MAX_TOKENS_PER_CHAIN = 300; // Maximum tokens to fetch per chain per round
 const FETCH_DELAY = 3000;
 const MAX_TOKENS_FIRST_ROUND = 7; // Maximum tokens to fetch on the first load
 
-// Main function to fetch all tokens in batches
 /**
  * Fetches token balances across multiple chains with specified constraints.
  *
@@ -28,8 +23,6 @@ const MAX_TOKENS_FIRST_ROUND = 7; // Maximum tokens to fetch on the first load
  * @param handleComplete
  * @returns A Promise that resolves to the final cumulative sum, total USD value, and all fetched balances.
  */
-
-// Main function to fetch all tokens in batches
 export function fetchAllTokensBalanceByChain(
   account: string,
   chains: ExtendedChain[],
@@ -38,15 +31,14 @@ export function fetchAllTokensBalanceByChain(
     account: string,
     round: number,
     cumulativePriceUSD: number,
-    fetchedBalances: ExtendedTokenAmount[],
+    fetchedBalances: PortfolioToken[],
   ) => void,
-  handleComplete: (combinedWallet: ExtendedTokenAmountWithChain[]) => void,
+  handleComplete: (combinedWallet: PortfolioToken[]) => void,
 ): NodeJS.Timeout {
   let totalPriceUSD: number = 0;
   let round = 1;
 
-  // This will store all fetched tokens indexed by their symbol
-  const symbolMap: Record<string, ExtendedTokenAmount> = {};
+  const symbolMap: Record<string, PortfolioTokenWithRelated> = {};
 
   const tokensByChain: Record<string, Token[]> = Object.keys(tokens).reduce(
     (acc, chainId) => {
@@ -100,81 +92,60 @@ export function fetchAllTokensBalanceByChain(
 
     const fetchResults = await Promise.all(fetchPromises);
 
-    const detailedBalances: ExtendedTokenAmount[] = fetchResults
+    const detailedBalances = fetchResults
       .flat()
       .filter((t) => t.amount && t.amount > BigInt(0))
-      .map((balance) => {
-        const humanReadableBalance = getBalance(balance);
-        const chain = chains.find((c) => c.id === balance.chainId);
-
-        return {
-          ...balance,
-          chains: [],
-          chainName: chain?.name,
-          chainLogoURI: chain?.logoURI,
-          totalPriceUSD: humanReadableBalance * parseFloat(balance.priceUSD),
-        };
+      .map((tokenBalance) => {
+        const humanReadableBalance = getBalance(tokenBalance);
+        const chain = chains.find((c) => c.id === tokenBalance.chainId);
+        return transformToPortfolioToken(
+          tokenBalance,
+          chain,
+          humanReadableBalance,
+        );
       });
 
     const roundPriceUSD = detailedBalances.reduce(
-      (sum, balance) => sum + balance.totalPriceUSD!,
+      (sum, token) => sum + token.totalPriceUSD,
       0,
     );
 
     totalPriceUSD += roundPriceUSD;
 
-    // Update symbolMap with fetched tokens and compute cumulated totals
-    for (const balance of detailedBalances) {
-      let existingToken = symbolMap[balance.symbol];
+    for (const token of detailedBalances) {
+      const existingToken = symbolMap[token.symbol];
 
       if (existingToken) {
-        // If this symbol already exists, add this balance as a "chain" entry
-        existingToken.chains = existingToken.chains || [];
-        const chain = chains.find((c) => c.id === balance.chainId);
-        const humanReadableBalance = getBalance(balance);
-
-        existingToken = {
-          ...existingToken,
-          chains: [
-            ...existingToken.chains,
-            {
-              ...balance,
-              chainLogoURI: chain?.logoURI,
-              chainName: chain?.name,
-              cumulatedBalance: humanReadableBalance,
-              totalPriceUSD:
-                humanReadableBalance * parseFloat(balance.priceUSD),
-            },
-          ],
-        };
-
-        existingToken.chains = existingToken.chains.sort(
+        const updatedRelatedTokens = [...existingToken.relatedTokens, token];
+        updatedRelatedTokens.sort(
           (a, b) => (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0),
         );
-        existingToken.cumulatedBalance = existingToken.chains.reduce(
-          (sum, chain) => sum + (chain.cumulatedBalance ?? 0),
-          0,
-        );
-        existingToken.cumulatedTotalUSD = existingToken.chains.reduce(
-          (sum, chain) => sum + (chain.totalPriceUSD ?? 0),
-          0,
-        );
-        symbolMap[balance.symbol] = existingToken;
-      } else {
-        balance.cumulatedBalance = getBalance(balance);
 
-        // If this symbol is new, store it in the symbol map
-        symbolMap[balance.symbol] = {
-          ...balance,
-          chains: [balance],
-          cumulatedTotalUSD: balance.totalPriceUSD!,
+        const cumulatedBalance = updatedRelatedTokens.reduce(
+          (sum, t) => sum + t.balance,
+          0,
+        );
+        const cumulatedTotalUSD = updatedRelatedTokens.reduce(
+          (sum, t) => sum + t.totalPriceUSD,
+          0,
+        );
+
+        symbolMap[token.symbol] = {
+          ...existingToken,
+          balance: cumulatedBalance,
+          totalPriceUSD: cumulatedTotalUSD,
+          relatedTokens: updatedRelatedTokens,
+        };
+      } else {
+        symbolMap[token.symbol] = {
+          ...token,
+          relatedTokens: [token],
         };
       }
     }
 
-    // Pass the cumulative sum, cumulative price, and current state of the symbolMap to onProgress
     const combinedBalances = Object.values(symbolMap).sort((a, b) => {
-      return (b.cumulatedTotalUSD ?? 0) - (a.cumulatedTotalUSD ?? 0);
+      return (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0);
     });
 
     onProgress(account, round, totalPriceUSD, combinedBalances);

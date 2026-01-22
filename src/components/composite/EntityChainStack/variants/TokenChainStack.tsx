@@ -6,6 +6,7 @@ import type { TokenChainStackProps } from '../EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from 'src/utils/chains/getChainName';
+import { toTokenStackTokens } from '../../TokenStack/utils';
 
 export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
   const { getChainById } = useChains();
@@ -27,7 +28,7 @@ export const TokenChainStack: FC<TokenChainStackProps> = (props) => {
 
   const mainStack = (
     <TokenStack
-      tokens={props.tokens ?? []}
+      tokens={props.tokens ? toTokenStackTokens(props.tokens) : []}
       size={props.tokensSize ?? AvatarSize.XL}
       spacing={props.spacing?.main}
       direction={props.layout?.direction}
