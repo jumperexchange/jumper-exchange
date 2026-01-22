@@ -21,7 +21,11 @@ import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
 import type { Hex } from 'viem';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useToken } from '@/hooks/useToken';
-import { formatTokenAmount, formatTokenPrice, priceToTokenAmount } from '@lifi/widget';
+import {
+  formatTokenAmount,
+  formatTokenPrice,
+  priceToTokenAmount,
+} from '@lifi/widget';
 import { currencyFormatter } from '@/utils/formatNumbers';
 import { makeClient } from '@/app/lib/client';
 
@@ -47,9 +51,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   // TODO: Will need to be refactorized depending of the design
   const accountAddress = useAccountAddress();
 
-  const {
-    depositTokenData: amount,
-  } = useGetZapInPoolBalance(
+  const { depositTokenData: amount } = useGetZapInPoolBalance(
     accountAddress as Hex,
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
@@ -94,18 +96,14 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       formattedAmountUSD: formatUSD(computedAmountUSD),
       hasAmount,
     };
-  }, [
-    amount,
-    token.decimals,
-    token.symbol,
-    hasPriceUSD,
-    priceUSD,
-  ]);
+  }, [amount, token.decimals, token.symbol, hasPriceUSD, priceUSD]);
 
   const { t } = useTranslation();
   const theme = useTheme();
   const { account } = useAccount();
-  const [currentStep, setCurrentStep] = useState<'idle' | 'fetching' | 'approving' | 'requesting' | 'success'>('idle');
+  const [currentStep, setCurrentStep] = useState<
+    'idle' | 'fetching' | 'approving' | 'requesting' | 'success'
+  >('idle');
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
   const { switchChainAsync } = useSwitchChain();
 
@@ -113,10 +111,13 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   const fetchCallDataMutation = useMutation({
     mutationFn: async () => {
       const client = makeClient();
-      const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(earnOpportunity.slug, {
-        address: accountAddress as Hex,
-        amount: amount?.toString() ?? '0',
-      });
+      const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
+        earnOpportunity.slug,
+        {
+          address: accountAddress as Hex,
+          amount: amount?.toString() ?? '0',
+        },
+      );
       return data.data;
     },
   });
@@ -130,33 +131,34 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   } = useSendTransaction();
 
   // Wait for transaction confirmation
-  const {
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-  } = useWaitForTransactionReceipt({
-    hash: txHash,
-    confirmations: 1,
-  });
+  const { isLoading: isTxConfirming, isSuccess: isTxConfirmed } =
+    useWaitForTransactionReceipt({
+      hash: txHash,
+      confirmations: 1,
+    });
 
-  const executeAction = useCallback(async (action: any) => {
-    try {
-      // Switch chain if needed
-      if (account?.chainId !== action.tx.chainId) {
-        await switchChainAsync({ chainId: action.tx.chainId });
+  const executeAction = useCallback(
+    async (action: any) => {
+      try {
+        // Switch chain if needed
+        if (account?.chainId !== action.tx.chainId) {
+          await switchChainAsync({ chainId: action.tx.chainId });
+        }
+
+        // Execute the transaction
+        sendTransaction({
+          to: action.tx.to as Hex,
+          data: action.tx.data as Hex,
+          chainId: action.tx.chainId,
+        });
+      } catch (error) {
+        console.error(`Failed to execute ${action.name}:`, error);
+        setCurrentStep('idle');
+        throw error;
       }
-
-      // Execute the transaction
-      sendTransaction({
-        to: action.tx.to as Hex,
-        data: action.tx.data as Hex,
-        chainId: action.tx.chainId,
-      });
-    } catch (error) {
-      console.error(`Failed to execute ${action.name}:`, error);
-      setCurrentStep('idle');
-      throw error;
-    }
-  }, [account?.chainId, switchChainAsync, sendTransaction]);
+    },
+    [account?.chainId, switchChainAsync, sendTransaction],
+  );
 
   // Auto-execute transactions when confirmed
   useEffect(() => {
@@ -193,7 +195,14 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         refetchCallback();
       }
     }
-  }, [isTxConfirmed, fetchCallDataMutation.data, currentActionIndex, resetWrite, executeAction, refetchCallback]);
+  }, [
+    isTxConfirmed,
+    fetchCallDataMutation.data,
+    currentActionIndex,
+    resetWrite,
+    executeAction,
+    refetchCallback,
+  ]);
 
   const handleSubmit = async () => {
     if (!accountAddress) {
@@ -250,13 +259,19 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     }
     if (currentStep === 'approving') {
       if (isTxConfirming) {
-        return t('earn.requestRedeem.confirmingApproval', 'Confirming approval...');
+        return t(
+          'earn.requestRedeem.confirmingApproval',
+          'Confirming approval...',
+        );
       }
       return t('earn.requestRedeem.approving', 'Approving...');
     }
     if (currentStep === 'requesting') {
       if (isTxConfirming) {
-        return t('earn.requestRedeem.confirmingRequest', 'Confirming request...');
+        return t(
+          'earn.requestRedeem.confirmingRequest',
+          'Confirming request...',
+        );
       }
       return t('earn.requestRedeem.requesting', 'Requesting...');
     }
@@ -276,13 +291,15 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
           borderRadius: '24px',
           background: theme.vars.palette.background.default,
           backdropFilter: 'blur(20px)',
-          border: `1px solid ${theme.palette.mode === 'dark'
-            ? 'rgba(139, 92, 246, 0.2)'
-            : 'rgba(79, 70, 229, 0.15)'
+          border: `1px solid ${
+            theme.palette.mode === 'dark'
+              ? 'rgba(139, 92, 246, 0.2)'
+              : 'rgba(79, 70, 229, 0.15)'
           }`,
-          boxShadow: theme.palette.mode === 'dark'
-            ? '0 8px 32px rgba(0, 0, 0, 0.4)'
-            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+          boxShadow:
+            theme.palette.mode === 'dark'
+              ? '0 8px 32px rgba(0, 0, 0, 0.4)'
+              : '0 8px 32px rgba(0, 0, 0, 0.1)',
           [theme.breakpoints.down('sm')]: {
             maxWidth: '100%',
             borderRadius: '24px 24px 0 0',

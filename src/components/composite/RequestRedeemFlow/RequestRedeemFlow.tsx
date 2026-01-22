@@ -13,7 +13,7 @@ import { useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRed
 
 export const RequestRedeemFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal, refetchCallback } =
-  useRequestRedeemFlowStore((state) => state);
+    useRequestRedeemFlowStore((state) => state);
 
   if (!selectedEarnOpportunity) {
     return null;
@@ -51,7 +51,10 @@ export const RequestRedeemFlowModal = () => {
   );
 };
 
-interface RequestRedeemFlowButtonProps extends Omit<WithdrawButtonProps, 'onClick'> {
+interface RequestRedeemFlowButtonProps extends Omit<
+  WithdrawButtonProps,
+  'onClick'
+> {
   earnOpportunity: EarnOpportunityExtended;
   refetchCallback?: () => void;
 }

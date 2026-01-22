@@ -16,29 +16,30 @@ interface RequestRedeemFlowState {
   closeModal: () => void;
 }
 
-export const useRequestRedeemFlowStore = createWithEqualityFn<RequestRedeemFlowState>(
-  (set) => ({
-    isModalOpen: false,
-    selectedEarnOpportunity: null,
-    refetchCallback: undefined,
+export const useRequestRedeemFlowStore =
+  createWithEqualityFn<RequestRedeemFlowState>(
+    (set) => ({
+      isModalOpen: false,
+      selectedEarnOpportunity: null,
+      refetchCallback: undefined,
 
-    openModal: (
-      earnOpportunity: EarnOpportunityExtended,
-      refetchCallback?: () => void,
-    ) => {
-      set({
-        isModalOpen: true,
-        selectedEarnOpportunity: earnOpportunity,
-        refetchCallback,
-      });
-    },
+      openModal: (
+        earnOpportunity: EarnOpportunityExtended,
+        refetchCallback?: () => void,
+      ) => {
+        set({
+          isModalOpen: true,
+          selectedEarnOpportunity: earnOpportunity,
+          refetchCallback,
+        });
+      },
 
-    closeModal: () => {
-      set({
-        isModalOpen: false,
-        refetchCallback: undefined,
-      });
-    },
-  }),
-  shallow,
-);
+      closeModal: () => {
+        set({
+          isModalOpen: false,
+          refetchCallback: undefined,
+        });
+      },
+    }),
+    shallow,
+  );

@@ -1,5 +1,5 @@
 import config from '@/config/env-config';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 
 /* eslint-disable */
 /* tslint:disable */
@@ -1466,9 +1466,13 @@ export class JumperBackend<
      * @summary Get an earn opportunity by slug
      * @request GET:/v1/earn/items/{slug}
      */
-    earnControllerGetVaultSpecificDataV1: (slug: string, query?: {
-      address: Hex;
-    }, params: RequestParams = {}) =>
+    earnControllerGetVaultSpecificDataV1: (
+      slug: string,
+      query?: {
+        address: Hex;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<VaultSpecificData, any>({
         path: `/v1/earn/items/${slug}/vault-specific-data`,
         method: 'GET',
@@ -1485,10 +1489,14 @@ export class JumperBackend<
      * @summary Get an earn opportunity by slug
      * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
      */
-    earnControllerGetRequestRedeemCallDataV1: (slug: string, query?: {
-      address: Hex;
-      amount: string;
-    }, params: RequestParams = {}) =>
+    earnControllerGetRequestRedeemCallDataV1: (
+      slug: string,
+      query?: {
+        address: Hex;
+        amount: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<{ data: VaultsFYICallDataResponse }, any>({
         path: `/v1/earn/items/${slug}/request-redeem/call-data`,
         method: 'GET',
@@ -1505,10 +1513,14 @@ export class JumperBackend<
      * @summary Get an earn opportunity by slug
      * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
      */
-    earnControllerGetClaimRedeemCalldataV1: (slug: string, query?: {
-      address: Hex;
-      amount: string;
-    }, params: RequestParams = {}) =>
+    earnControllerGetClaimRedeemCalldataV1: (
+      slug: string,
+      query?: {
+        address: Hex;
+        amount: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<{ data: VaultsFYICallDataResponse }, any>({
         path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
