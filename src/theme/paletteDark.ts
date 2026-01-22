@@ -1,8 +1,12 @@
-import { baseColors } from './baseColors';
+import type { BaseColors } from './baseColors';
+import { baseColors as defaultBaseColors } from './baseColors';
 import type { BrandColors } from './brandColors';
 import { defaultBrandColors } from './brandColors';
 
-export const createPaletteDark = (brandColors: BrandColors) => ({
+export const createPaletteDark = (
+  brandColors: BrandColors,
+  baseColors: BaseColors = defaultBaseColors,
+) => ({
   ...baseColors,
   // primary and secondary colors need to be added
   primary: brandColors.dark.accent1,

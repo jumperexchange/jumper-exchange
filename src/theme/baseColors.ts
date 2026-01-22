@@ -199,3 +199,5 @@ export const baseColors = {
     400: '#0C001F',
   },
 };
+
+export type BaseColors = typeof baseColors;

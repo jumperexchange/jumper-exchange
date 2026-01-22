@@ -1,8 +1,10 @@
 import { alpha } from '@mui/material/styles';
-import { baseColors } from './baseColors';
+import type { BaseColors } from './baseColors';
+import { baseColors as defaultBaseColors } from './baseColors';
 
 export const createPalette = (
   paletteLight: ReturnType<typeof import('./paletteLight').createPaletteLight>,
+  baseColors: BaseColors = defaultBaseColors,
 ) => ({
   ...paletteLight,
   ...baseColors,
@@ -29,10 +31,10 @@ export const createPalette = (
     main: paletteLight.bg,
   },
   bgSecondary: {
-    main: alpha(paletteLight.white.main, 0.48),
+    main: alpha(baseColors.white.main, 0.48),
   },
   bgTertiary: {
-    main: paletteLight.white.main,
+    main: baseColors.white.main,
   },
   bgQuaternary: {
     hover: alpha('#653BA3', 0.12),
