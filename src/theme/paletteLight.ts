@@ -105,8 +105,8 @@ export const createPaletteLight = (
   buttonErrorBg: baseColors.scarlet[500],
 
   // Badge
-  badgeAccent1Fg: baseColors.white.main,
-  badgeAccent1Bg: brandColors.light.accent1,
+  badgeAccent1Fg: brandColors.light.badgeAccent1Fg,
+  badgeAccent1Bg: brandColors.light.badgeAccent1Bg,
 
   badgeAccent1MutedFg: brandColors.light.badgeAccent1MutedFg,
   badgeAccent1MutedBg: brandColors.light.badgeAccent1MutedBg,

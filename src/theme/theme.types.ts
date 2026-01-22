@@ -4,7 +4,6 @@ import type {
   ComponentsOverrides,
   ComponentsVariants,
 } from '@mui/material';
-import type { Theme } from '@mui/material/styles';
 import type React from 'react';
 
 import type {} from '@mui/material/themeCssVarsAugmentation';
@@ -31,6 +30,7 @@ declare module '@mui/material/styles' {
     borderRadiusTertiary: number;
     tabBarRadius: number;
     cardBorderRadius: number;
+    cardBorderRadiusMedium: number;
     buttonBorderRadius: number;
     inputTextBorderRadius: number;
   }

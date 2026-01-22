@@ -33,6 +33,8 @@ export interface BrandColors {
     buttonLightAction: string;
 
     // Badge
+    badgeAccent1Fg: string;
+    badgeAccent1Bg: string;
     badgeAccent1MutedFg: string;
     badgeAccent1MutedBg: string;
 
@@ -90,6 +92,8 @@ export interface BrandColors {
     buttonLightAction: string;
 
     // Badge
+    badgeAccent1Fg: string;
+    badgeAccent1Bg: string;
     badgeAccent1MutedFg: string;
     badgeAccent1MutedBg: string;
 
@@ -150,6 +154,8 @@ export const defaultBrandColors: BrandColors = {
     buttonLightAction: baseColors.black.main,
 
     // Badge
+    badgeAccent1Fg: baseColors.white.main,
+    badgeAccent1Bg: '#31007a',
     badgeAccent1MutedFg: baseColors.lavenderDark[0],
     badgeAccent1MutedBg: baseColors.lavenderLight[400],
 
@@ -207,6 +213,8 @@ export const defaultBrandColors: BrandColors = {
     buttonLightAction: baseColors.white.main,
 
     // Badge
+    badgeAccent1Fg: baseColors.white.main,
+    badgeAccent1Bg: baseColors.rubyLight[400],
     badgeAccent1MutedFg: baseColors.rubyLight[400],
     badgeAccent1MutedBg: baseColors.rubyLight[100],
 

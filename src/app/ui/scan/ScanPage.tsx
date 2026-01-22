@@ -38,6 +38,7 @@ export default function ScanPage({ lng }: { lng: string }) {
           borderRadiusTertiary: 900,
           borderRadius: 12,
           cardBorderRadius: 24,
+          cardBorderRadiusMedium: 16,
           buttonBorderRadius: 128,
           tabBarRadius: 12,
           inputTextBorderRadius: 12,

@@ -6,6 +6,7 @@ export const defaultShape: Shape = {
   borderRadiusTertiary: 4,
   tabBarRadius: 128,
   cardBorderRadius: 24,
+  cardBorderRadiusMedium: 16,
   buttonBorderRadius: 128,
   inputTextBorderRadius: 24,
 };
