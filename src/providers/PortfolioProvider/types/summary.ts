@@ -1,7 +1,7 @@
 import type { PortfolioFormatters } from '../hooks/usePortfolioFormatters';
-import type { PortfolioTokenGroup } from './PortfolioTokenGroup';
-import type { PortfolioDeFiPositionsGroup } from './PortfolioDeFiPositionsGroup';
-import { computePercentage } from '../utils/computePercentage';
+import { computePercentage } from '../utils/summary';
+import type { PortfolioTokenGroup } from './tokens';
+import type { PortfolioDeFiPositionsGroup } from './positions';
 
 export class PortfolioSummary {
   totalAmountUSD: number;

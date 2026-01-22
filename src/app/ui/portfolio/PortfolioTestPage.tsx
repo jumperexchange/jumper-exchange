@@ -32,7 +32,7 @@ import { useTokensFiltering } from '@/providers/PortfolioProvider/filtering/Toke
 import { TokensFilterControls } from '@/providers/PortfolioProvider/filtering/TokensFilterControls';
 import { useDeFiPositionsFiltering } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilteringContext';
 import { DeFiPositionsFilterControls } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilterControls';
-import type { PortfolioExtendedToken } from '@/providers/PortfolioProvider/types/PortfolioExtendedToken';
+import type { PortfolioExtendedToken } from '@/providers/PortfolioProvider/types/tokens';
 
 const formatTimestamp = (timestamp: number | null) => {
   if (!timestamp) {

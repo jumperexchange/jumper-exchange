@@ -1,7 +1,11 @@
-import { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
-import { PortfolioSummary } from '../types/PortfolioSummary';
 import { map, orderBy, sumBy } from 'lodash';
-import { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
+import { PortfolioTokenGroup } from '../types/tokens';
+import { PortfolioDeFiPositionsGroup } from '../types/positions';
+import { PortfolioSummary } from '../types/summary';
+
+export const computePercentage = (value: number, total: number): number => {
+  return total > 0 ? (value / total) * 100 : 0;
+};
 
 export const processSummary = (
   tokenGroups: PortfolioTokenGroup[],

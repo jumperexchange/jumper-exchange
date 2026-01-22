@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
-import { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
-import { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
-import { PortfolioSummary } from '../types/PortfolioSummary';
-import { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
+import { PortfolioExtendedToken, PortfolioTokenGroup } from '../types/tokens';
+import {
+  PortfolioDefiPosition,
+  PortfolioDeFiPositionsGroup,
+} from '../types/positions';
+import { PortfolioSummary } from '../types/summary';
 
 export interface FormatAmountUSDOptions {
   compact?: boolean;

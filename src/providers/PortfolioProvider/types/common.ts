@@ -5,4 +5,7 @@ export type PortfolioPositionsQueryWithoutEvm = Omit<
   PortfolioPositionsQuery,
   'evm'
 >;
-export type PortfolioAccount = Omit<Account, 'address'> & { address: string };
+
+export type PortfolioAccount = Omit<Account, 'address'> & {
+  address: string;
+};

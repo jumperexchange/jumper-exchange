@@ -7,18 +7,18 @@ import {
   usePositionsData,
   type UsePositionsDataParams,
 } from './usePositionsData';
-import { normalizePositions } from '../utils/normalizePositions';
-import { groupPositions } from '../utils/groupPositions';
 import {
-  extractPositionsMetadata,
-  type PositionsMetadata,
-} from '../utils/extractMetadata';
-import {
+  normalizePositions,
+  groupPositions,
   extractLpTokens,
-  type LpTokenIdentifier,
-} from '../utils/extractLpTokens';
-import type { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
-import type { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
+} from '../utils/positions';
+import { extractPositionsMetadata } from '../utils/metadata';
+import type {
+  PortfolioDeFiPositionsGroup,
+  PortfolioDefiPosition,
+  LpTokenIdentifier,
+} from '../types/positions';
+import type { PositionsMetadata } from '../types/metadata';
 
 export interface ProcessedPositionsResult {
   positions: PortfolioDefiPosition[];

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useTokens } from '@/hooks/useTokens';
-import type { PriceLookup } from '../types/PortfolioExtendedToken';
+import type { PriceLookup } from '../types/tokens';
 
 export interface UsePriceLookupResult {
   getPrice: PriceLookup;

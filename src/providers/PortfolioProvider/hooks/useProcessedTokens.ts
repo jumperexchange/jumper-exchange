@@ -5,16 +5,16 @@ import { mapValues } from 'lodash';
 import { useChains } from '@/hooks/useChains';
 import { usePriceLookup } from './usePriceLookup';
 import { useTokensData } from './useTokensData';
-import { normalizeTokens } from '../utils/normalizeTokens';
-import { groupTokens } from '../utils/groupTokens';
-import { dedupTokensFromLpPositions } from '../utils/dedupTokens';
-import {
-  extractTokensMetadata,
-  type TokensMetadata,
-} from '../utils/extractMetadata';
-import type { LpTokenIdentifier } from '../utils/extractLpTokens';
-import type { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
 import type { Account } from '@lifi/wallet-management';
+import {
+  normalizeTokens,
+  groupTokens,
+  dedupTokensFromLpPositions,
+} from '../utils/tokens';
+import { extractTokensMetadata } from '../utils/metadata';
+import type { PortfolioTokenGroup } from '../types/tokens';
+import type { TokensMetadata } from '../types/metadata';
+import type { LpTokenIdentifier } from '../types/positions';
 
 export interface ProcessedTokensResult {
   tokens: PortfolioTokenGroup[];

@@ -1,12 +1,11 @@
-import type {
-  TokensMetadata,
-  PositionsMetadata,
-} from './utils/extractMetadata';
 import type { Account } from '@lifi/wallet-management';
-import type { PortfolioTokenGroup } from './types/PortfolioTokenGroup';
-import type { PortfolioDefiPosition } from './types/PortfolioDefiPosition';
-import type { PortfolioDeFiPositionsGroup } from './types/PortfolioDeFiPositionsGroup';
-import type { PortfolioSummary } from './types/PortfolioSummary';
+import type { PortfolioTokenGroup } from './types/tokens';
+import type {
+  PortfolioDefiPosition,
+  PortfolioDeFiPositionsGroup,
+} from './types/positions';
+import type { PortfolioSummary } from './types/summary';
+import type { TokensMetadata, PositionsMetadata } from './types/metadata';
 
 export interface PortfolioTokensContextValue {
   tokens: PortfolioTokenGroup[];

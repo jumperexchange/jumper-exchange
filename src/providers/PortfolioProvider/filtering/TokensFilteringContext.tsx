@@ -30,7 +30,7 @@ import {
 import type { PortfolioTokensFilteringParams } from './types';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioTokens } from '../PortfolioContext';
-import type { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
+import type { PortfolioTokenGroup } from '../types/tokens';
 
 export interface TokensFilteringContextType extends PortfolioTokensFilteringParams {
   sortBy: SortByEnum;

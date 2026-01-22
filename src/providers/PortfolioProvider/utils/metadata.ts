@@ -1,24 +1,10 @@
 import { uniqBy, uniq, flatMap, min, max, minBy, maxBy } from 'lodash';
 import type { Chain, Protocol, Token } from '@/types/jumper-backend';
-import type { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
-import type { PortfolioAccount } from '../types/common';
 import type { Account } from '@lifi/wallet-management';
-import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
-
-export interface TokensMetadata {
-  wallets: PortfolioAccount[];
-  chains: Chain[];
-  assets: Token[];
-  valueRange: { min: number; max: number };
-}
-
-export interface PositionsMetadata {
-  chains: Chain[];
-  protocols: Protocol[];
-  types: string[];
-  assets: Token[];
-  valueRange: { min: number; max: number };
-}
+import type { PortfolioAccount } from '../types/common';
+import type { PortfolioExtendedToken } from '../types/tokens';
+import type { PortfolioDefiPosition } from '../types/positions';
+import type { TokensMetadata, PositionsMetadata } from '../types/metadata';
 
 export const toAssetToken = (token: PortfolioExtendedToken): Token => ({
   name: token.name,

@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo } from 'react';
-import { processSummary } from '../utils/processSummary';
-import type { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
-import type { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
-import type { PortfolioSummary } from '../types/PortfolioSummary';
+import { processSummary } from '../utils/summary';
+import type { PortfolioTokenGroup } from '../types/tokens';
+import type { PortfolioDeFiPositionsGroup } from '../types/positions';
+import type { PortfolioSummary } from '../types/summary';
 
 export interface UsePortfolioSummaryParams {
   tokensBySymbol: PortfolioTokenGroup[];
