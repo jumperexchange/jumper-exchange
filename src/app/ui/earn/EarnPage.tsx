@@ -13,6 +13,7 @@ import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFl
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
 import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
+import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
 
 interface EarnPageProps {
   slug: string;
@@ -25,7 +26,9 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
   const [opportunity, relatedMarkets] = await Promise.all([
     getOpportunityBySlug(slug),
     getOpportunityRelatedMarket(slug),
-  ]);
+  ]).catch((error) => {
+    return [{ error: true, data: null }];
+  });
 
   console.log('28. EarnPage opportunity', opportunity);
 
