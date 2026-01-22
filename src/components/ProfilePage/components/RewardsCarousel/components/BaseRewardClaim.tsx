@@ -51,8 +51,8 @@ export const BaseRewardClaim = <T extends BaseReward>({
 
   const amount = availableReward.amountToClaim;
   const isLoading = isPending || isConfirming || isPreparingClaim;
-  const isZeroAmount = !amount || amount === 0;
-  const isButtonDisabled = isLoading || isZeroAmount;
+  const isAmountValid = amount && amount > 0;
+  const isButtonDisabled = isLoading || !isAmountValid;
 
   const handleError = useCallback(() => {
     setSnackbarState(true, t('profile_page.rewardsClaim.error'), 'error');
@@ -70,7 +70,8 @@ export const BaseRewardClaim = <T extends BaseReward>({
         chainId: claimConfig.chainId,
       });
 
-      if (id !== claimConfig.chainId || !address || amount <= 0) {
+      if (id !== claimConfig.chainId || !address || !isAmountValid) {
+        handleError();
         return;
       }
 
@@ -85,10 +86,10 @@ export const BaseRewardClaim = <T extends BaseReward>({
       handleError();
     }
   }, [
+    isAmountValid,
+    address,
     prepareClaim,
     switchChainAsync,
-    address,
-    amount,
     writeContract,
     handleError,
   ]);
