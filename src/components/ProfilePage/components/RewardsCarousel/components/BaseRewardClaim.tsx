@@ -9,6 +9,9 @@ import { RewardClaimCard } from './RewardClaimCard';
 import type { BaseReward } from '@/types/rewards';
 import type { Abi } from 'viem';
 import * as Sentry from '@sentry/nextjs';
+import { useMenuStore } from '@/stores/menu/MenuStore';
+import { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export interface ClaimConfig {
   chainId: number;
@@ -29,8 +32,10 @@ export const BaseRewardClaim = <T extends BaseReward>({
   prepareClaim,
   isPreparingClaim = false,
 }: BaseRewardClaimProps<T>) => {
+  const { t } = useTranslation();
   const { address } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const setSnackbarState = useMenuStore((state) => state.setSnackbarState);
   const { data: hash, isPending, writeContract } = useWriteContract();
   const {
     isLoading: isConfirming,
@@ -49,7 +54,11 @@ export const BaseRewardClaim = <T extends BaseReward>({
   const isZeroAmount = !amount || amount === 0;
   const isButtonDisabled = isLoading || isZeroAmount;
 
-  const handleClaimClick = async () => {
+  const handleError = useCallback(() => {
+    setSnackbarState(true, t('profile_page.rewardsClaim.error'), 'error');
+  }, [setSnackbarState, t]);
+
+  const handleClaimClick = useCallback(async () => {
     try {
       const claimConfig = await prepareClaim();
 
@@ -72,10 +81,23 @@ export const BaseRewardClaim = <T extends BaseReward>({
         args: claimConfig.args,
       });
     } catch (err) {
-      console.error('Error during claim:', err);
       Sentry.captureException(err);
+      handleError();
     }
-  };
+  }, [
+    prepareClaim,
+    switchChainAsync,
+    address,
+    amount,
+    writeContract,
+    handleError,
+  ]);
+
+  useEffect(() => {
+    if (isError) {
+      handleError();
+    }
+  }, [isError, handleError]);
 
   return (
     <RewardClaimCard
@@ -83,7 +105,8 @@ export const BaseRewardClaim = <T extends BaseReward>({
       onClaim={handleClaimClick}
       isLoading={isLoading}
       isDisabled={isButtonDisabled}
-      isConfirmed={isConfirmed || isError}
+      isConfirmed={isConfirmed}
+      isError={isError}
       hash={hash}
     />
   );

@@ -257,6 +257,14 @@
       "description": "No {{entity}} yet? Let's change that!",
       "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
       "cta": "Start swapping"
+    },
+    "rewardsClaim": {
+      "action": {
+        "claiming": "Claiming",
+        "retry": "Retry",
+        "claim": "Claim"
+      },
+      "error": "An unknown error occurred. Please try again."
     }
   },
   "campaign": {

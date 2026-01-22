@@ -7,12 +7,14 @@ import {
   RewardCardContainer,
   ClaimActionButton,
   ExplorerLinkButton,
+  RewardCardActionsContainer,
 } from './RewardClaimCard.style';
 import { TokenStackItem } from '@/components/composite/TokenListCard/TokenStackItem';
 import { useTokens } from '@/hooks/useTokens';
 import type { Address } from 'viem';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 import { REWARD_CLAIM_CARD_CONFIG } from './constants';
+import { useTranslation } from 'react-i18next';
 
 interface RewardClaimCardProps {
   availableReward: BaseReward;
@@ -20,6 +22,7 @@ interface RewardClaimCardProps {
   isLoading: boolean;
   isDisabled: boolean;
   isConfirmed: boolean;
+  isError: boolean;
   hash: string | undefined;
 }
 
@@ -29,8 +32,10 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
   isLoading,
   isDisabled,
   isConfirmed,
+  isError,
   hash,
 }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const { getToken } = useTokens();
   const explorerLink = useBlockchainExplorerURL(
@@ -38,6 +43,20 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
     hash,
     'tx',
   );
+
+  const isFinalized = !!hash && (isConfirmed || isError);
+  const showClaimButton = !isConfirmed || isError;
+  const showExplorerLink = !isLoading && isFinalized && explorerLink;
+
+  const claimButtonLabel = useMemo(() => {
+    if (isLoading) {
+      return t('profile_page.rewardsClaim.action.claiming');
+    }
+    if (isError) {
+      return t('profile_page.rewardsClaim.action.retry');
+    }
+    return t('profile_page.rewardsClaim.action.claim');
+  }, [isLoading, isError, t]);
 
   const token = useMemo(() => {
     const _token = getToken(
@@ -72,34 +91,36 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
         isClickable={false}
       />
 
-      {!isConfirmed && (
-        <ClaimActionButton
-          isDisabled={isDisabled}
-          disabled={isDisabled}
-          loading={isLoading}
-          loadingPosition="start"
-          aria-label="Claim"
-          size="medium"
-          onClick={onClaim}
-        >
-          {isLoading ? 'Claiming' : 'Claim'}
-        </ClaimActionButton>
-      )}
+      <RewardCardActionsContainer>
+        {showClaimButton && (
+          <ClaimActionButton
+            isDisabled={isDisabled}
+            disabled={isDisabled}
+            loading={isLoading}
+            loadingPosition="start"
+            aria-label="Claim"
+            size="medium"
+            onClick={onClaim}
+          >
+            {claimButtonLabel}
+          </ClaimActionButton>
+        )}
 
-      {hash && isConfirmed && explorerLink && (
-        <Link
-          href={explorerLink}
-          target="_blank"
-          rel="noreferrer"
-          style={{ textDecoration: 'none', color: 'inherit' }}
-        >
-          <ExplorerLinkButton>
-            <OpenInNewIcon
-              sx={{ width: 20, height: 20, color: theme.palette.white.main }}
-            />
-          </ExplorerLinkButton>
-        </Link>
-      )}
+        {showExplorerLink && (
+          <Link
+            href={explorerLink}
+            target="_blank"
+            rel="noreferrer"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <ExplorerLinkButton>
+              <OpenInNewIcon
+                sx={{ width: 20, height: 20, color: theme.palette.white.main }}
+              />
+            </ExplorerLinkButton>
+          </Link>
+        )}
+      </RewardCardActionsContainer>
     </RewardCardContainer>
   );
 };

@@ -37,6 +37,15 @@ export const RewardCardContainer = styled(Box)(({ theme }) => ({
   }),
 }));
 
+export const RewardCardActionsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  alignContent: 'center',
+  flexDirection: 'row',
+  gap: theme.spacing(1),
+}));
+
 export const ExplorerLinkButton = styled(IconButton)<IconButtonProps>(
   ({ theme }) => ({
     color: (theme.vars || theme).palette.white.main,
