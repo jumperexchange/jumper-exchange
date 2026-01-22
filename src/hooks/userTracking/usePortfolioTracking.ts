@@ -8,7 +8,7 @@ import {
   TrackingAction,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { DefiPosition } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { PortfolioToken } from '@/types/tokens';
 import { zeroAddress } from 'viem';
 import type { ChainId } from '@lifi/sdk';

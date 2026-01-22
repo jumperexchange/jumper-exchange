@@ -5,7 +5,8 @@ import { ONE_HOUR_MS } from 'src/const/time';
 import type { Address, Hex } from 'viem';
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
-import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
+import type { WalletPositions } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useTokens } from '../useTokens';
@@ -65,7 +66,7 @@ export const usePortfolioDeFiPositions = ({
           evm: address,
           ...filter,
         });
-        const positions = result.data;
+        const positions = result.data.data as unknown as WalletPositions;
         return updateWalletPositionsPrice(positions, getTokenUSDPrice);
       },
       enabled: !!address && !isLoadingTokens,

@@ -1,4 +1,5 @@
-import type { DefiPosition, Protocol } from 'src/types/jumper-backend';
+import type { Protocol } from 'src/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import { orderBy } from 'lodash';
 import type { ProtocolGroupData } from './AssetOverviewCard.types';
 

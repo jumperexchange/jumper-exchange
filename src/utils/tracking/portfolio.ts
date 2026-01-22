@@ -3,10 +3,13 @@ import {
   mapPositionGroupsToProtocolData,
   sortAssetsByPrice,
 } from '@/components/composite/AssetOverviewCard/utils';
-import type { DefiPosition } from '@/types/jumper-backend';
 import type { PortfolioToken } from '@/types/tokens';
 import type { ChainId } from '@lifi/widget';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
+import {
+  isChainDefiPosition,
+  type DefiPosition,
+} from '@/utils/positions/type-guards';
 
 const FLEXIBLE_STABLE_COINS_REGEX =
   /^.*(USD|EUR|XAU|YEN|IDR|CHF|CAD|CNH|MXN).*$/;
@@ -96,7 +99,9 @@ export const parseEarnPortfolioDataToTrackingData = (
 
   for (const positionGroup of defiPositionGroups) {
     for (const position of positionGroup) {
-      chainIds.add(position.chain.chainId);
+      if (isChainDefiPosition(position)) {
+        chainIds.add(position.chain.chainId);
+      }
     }
   }
 

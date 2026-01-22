@@ -1,9 +1,10 @@
-import type { DefiPosition } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import { describe, expect, it, vi } from 'vitest';
 import { updatePositionPrice } from './update-price';
 
 // Generated from http://localhost:3001/v1/portfolio/positions?evm=0xb29601eB52a052042FB6c68C69a442BD0AE90082 on 2025-12-10
 const ASSET_FIXTURE: DefiPosition = {
+  source: 'chain',
   name: 'Aave V3',
   assetUsd: 0.115107514249528,
   debtUsd: 0,

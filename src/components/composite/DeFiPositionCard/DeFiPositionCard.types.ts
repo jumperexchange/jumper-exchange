@@ -1,7 +1,8 @@
 import type { TypographyProps } from '@mui/material/Typography';
 import type { TFunction } from 'i18next';
 import type { ColumnDefinition } from 'src/components/core/ColumnTable/ColumnTable.types';
-import type { DefiPosition, DefiToken } from 'src/types/jumper-backend';
+import type { AppToken, DefiToken } from 'src/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 
 export interface DeFiPositionCardProps {
   defiPositions?: DefiPosition[];
@@ -25,7 +26,7 @@ export interface TableSection<T> {
   showHeader: boolean;
 }
 
-export type EnhancedDefiTokenWithPositionData = DefiToken &
+export type EnhancedDefiTokenWithPositionData = (DefiToken | AppToken) &
   Pick<DefiPosition, 'latest' | 'earn' | 'protocol' | 'earnInteractionFlags'>;
 
 export type SupplySection = TableSection<EnhancedDefiTokenWithPositionData>;

@@ -1,10 +1,7 @@
-import type {
-  DefiPosition,
-  DefiToken,
-  WalletPositions,
-} from '@/types/jumper-backend';
+import type { DefiToken, WalletPositions } from '@/types/jumper-backend';
 import { formatTokenPrice } from '@lifi/widget';
 import { sumBy } from 'lodash';
+import { isAppDefiPosition, type DefiPosition } from './type-guards';
 
 export type GetTokenUSDPrice = (token: {
   chainId: number;
@@ -50,6 +47,10 @@ export const updatePositionPrice = async (
   position: DefiPosition,
   getTokenUSDPrice: GetTokenUSDPrice,
 ): Promise<DefiPosition> => {
+  if (isAppDefiPosition(position)) {
+    return position;
+  }
+
   const [
     supplyTokens,
     borrowTokens,
@@ -89,12 +90,15 @@ export const updateWalletPositionsPrice = async (
   wallet: WalletPositions,
   getTokenUSDPrice: GetTokenUSDPrice,
 ): Promise<WalletPositions> => {
+  const positions = wallet.data as DefiPosition[];
+  const updatedPositions = await Promise.all(
+    positions.map((position) =>
+      updatePositionPrice(position, getTokenUSDPrice),
+    ),
+  );
+
   return {
     ...wallet,
-    data: await Promise.all(
-      wallet.data.map((position) =>
-        updatePositionPrice(position, getTokenUSDPrice),
-      ),
-    ),
+    data: updatedPositions as WalletPositions['data'],
   };
 };

@@ -3,6 +3,7 @@ import { differenceWith } from 'lodash';
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
 import type { PortfolioToken } from 'src/types/tokens';
+import { isChainDefiPosition } from '@/utils/positions/type-guards';
 
 const getTokenKey = (address: string, chainId: number) =>
   `${address.toLowerCase()}-${chainId}`;
@@ -45,6 +46,7 @@ export const useLpPositions = () => {
       return [];
     }
     return positions
+      .filter(isChainDefiPosition)
       .filter((p) => p.lpToken?.address && p.lpToken?.chain.chainId)
       .map((p) => ({
         address: p.lpToken!.address,
