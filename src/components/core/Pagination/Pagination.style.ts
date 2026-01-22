@@ -14,9 +14,6 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'center',
   gap: theme.spacing(2),
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 export interface PaginationIndexButtonProps extends IconButtonProps {

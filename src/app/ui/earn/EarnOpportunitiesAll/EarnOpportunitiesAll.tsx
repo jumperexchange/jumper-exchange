@@ -104,7 +104,14 @@ const EarnOpportunitiesAllInner = () => {
         </Stack>
       </SectionCardContainer>
       {pagination.pageCount > 1 && (
-        <Pagination page={page} setPage={setPage} pagination={pagination} />
+        <Pagination
+          page={page}
+          setPage={setPage}
+          pagination={pagination}
+          sx={(theme) => ({
+            backgroundColor: (theme.vars || theme).palette.surface1.main,
+          })}
+        />
       )}
       <DepositFlowModal />
       <WithdrawFlowModal />
