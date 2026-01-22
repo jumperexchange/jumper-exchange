@@ -970,7 +970,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
           semanticPalette: paletteLight,
           mode: 'light',
           background: {
-            default: paletteLight.bg,
+            default: paletteLight.surface2,
+            paper: paletteLight.surface1,
           },
           text: {
             primary: paletteLight.textPrimary,
@@ -1070,8 +1071,8 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             bg: themeBase.palette.black.main,
           },
           background: {
-            default: paletteDark.bg, //'#241D52',
-            paper: '#24203d', //'#241D52',
+            default: paletteDark.surface2, //'#241D52',
+            paper: paletteDark.surface1, //'#241D52',
           },
           text: {
             primary: themeBase.palette.white.main,
@@ -1089,7 +1090,7 @@ export const themeCustomized: Omit<Theme, 'applyStyles'> & CssVarsTheme =
             900: paletteDark.alpha900.main,
           },
           bg: {
-            main: '#120F29',
+            main: paletteDark.bg,
           },
           bgSecondary: {
             main: alpha(themeBase.palette.white.main, 0.12),

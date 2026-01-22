@@ -29,7 +29,7 @@ export const ClaimActionButton = styled(ButtonSecondary, {
 }));
 
 export const RewardCardContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

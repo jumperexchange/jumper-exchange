@@ -70,6 +70,9 @@ export default function ScanPage({ lng }: { lng: string }) {
             xs: 12,
             md: 8,
           },
+          '& .MuiPaper-root': {
+            backgroundImage: 'none',
+          },
         }}
       >
         <FetchInterceptorProvider />

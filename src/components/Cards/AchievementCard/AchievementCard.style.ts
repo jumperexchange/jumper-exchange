@@ -13,7 +13,7 @@ import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
 export const AchievementCardContainer = styled(Card)(({ theme, onClick }) => ({
   borderRadius: theme.shape.cardBorderRadius,
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  background: (theme.vars || theme).palette.surface1.main,
   boxShadow: theme.shadows[2],
   cursor: onClick ? 'pointer' : 'default',
   '&:hover': {
