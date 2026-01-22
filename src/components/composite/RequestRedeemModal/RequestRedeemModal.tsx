@@ -49,58 +49,38 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
 
   const {
     depositTokenData: amount,
-    refetchDepositToken: refetchDepositAmount,
   } = useGetZapInPoolBalance(
     accountAddress as Hex,
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
   );
   const token = earnOpportunity.lpToken;
-  const amountUSD = 0n;
-    // IMPORTANT: We use the useToken hook to get the token data instead of the useTokens hook as the override is only present on /token for now
-    const { token: tokenData, isSuccess: isSuccessTokens } = useToken(
-      token.chain.chainId,
-      token.address as Hex,
-      { extended: true },
-    );
 
-    const tokenPriceUSD = tokenData?.priceUSD ?? '0';
-    const hasTokenPriceUSD = Number(tokenPriceUSD) > 0;
-    const shouldActivateFallbackToken = !hasTokenPriceUSD && isSuccessTokens;
+  // IMPORTANT: We use the useToken hook to get the token data instead of the useTokens hook as the override is only present on /token for now
+  const { token: tokenData } = useToken(
+    token.chain.chainId,
+    token.address as Hex,
+    { extended: true },
+  );
 
-    const { token: fallbackToken } = useToken(
-      token.chain.chainId,
-      token.address as Hex,
-      { extended: true },
-    );
-
-    const effectivePriceUSD = hasTokenPriceUSD
-      ? tokenPriceUSD
-      : (fallbackToken?.priceUSD ?? '0');
-
-    const hasEffectivePriceUSD = Number(effectivePriceUSD) > 0;
+  const priceUSD = tokenData?.priceUSD ?? '0';
+  const hasPriceUSD = Number(priceUSD) > 0;
 
   const { formattedAmount, formattedAmountUSD, hasAmount } = useMemo(() => {
     const calculateTokenAmount = (): string => {
       if (amount) {
         return formatTokenAmount(BigInt(amount), token.decimals);
       }
-      if (amountUSD && hasEffectivePriceUSD) {
-        return priceToTokenAmount(amountUSD, effectivePriceUSD);
-      }
       return '0';
     };
 
     const calculateAmountUSD = (): number => {
-      if (amount && hasEffectivePriceUSD) {
+      if (amount && hasPriceUSD) {
         const formattedTokenAmount = formatTokenAmount(
           BigInt(amount),
           token.decimals,
         );
-        return formatTokenPrice(formattedTokenAmount, effectivePriceUSD);
-      }
-      if (amountUSD) {
-        return amountUSD;
+        return formatTokenPrice(formattedTokenAmount, priceUSD);
       }
       return 0;
     };
@@ -115,12 +95,11 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       hasAmount,
     };
   }, [
-    amountUSD,
     amount,
     token.decimals,
     token.symbol,
-    hasEffectivePriceUSD,
-    effectivePriceUSD,
+    hasPriceUSD,
+    priceUSD,
   ]);
 
   const { t } = useTranslation();
@@ -246,8 +225,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     isWritePending ||
     isTxConfirming;
 
-  const isDisabled = !accountAddress || !formattedAmount || isLoading;
-
+  const isDisabled = !accountAddress || !hasAmount || isLoading;
   const getButtonText = () => {
     if (!accountAddress) {
       return t('earn.requestRedeem.connectWallet', 'Connect Wallet');
