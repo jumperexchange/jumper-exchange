@@ -609,6 +609,7 @@
   },
   "buttons": {
     "depositButtonLabel": "Quick deposit",
+    "requestRedeemButtonLabel": "Request redeem",
     "withdrawButtonLabel": "Withdraw",
     "managePositionsButtonLabel": "Manage positions",
     "deposit": "Deposit",

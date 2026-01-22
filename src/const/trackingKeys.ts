@@ -144,6 +144,7 @@ export enum TrackingAction {
 
   // Earn
   ClickEarnDepositButton = 'action_click_earn_deposit_button',
+  ClickEarnRequestRedeemButton = 'action_click_earn_request_redeem_button',
   ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
   EarnPageOverview = 'action_earn_page_overview',
 }

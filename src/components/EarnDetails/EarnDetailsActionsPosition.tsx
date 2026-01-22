@@ -14,6 +14,7 @@ import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
 import { EntityChainStack } from '../composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '../composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from '../core/AvatarStack/AvatarStack.types';
+import { currencyFormatter } from '@/utils/formatNumbers';
 import { Tooltip } from '../core/Tooltip/Tooltip';
 
 interface EarnDetailsActionsPositionProps {

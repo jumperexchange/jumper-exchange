@@ -596,6 +596,7 @@
   },
   "buttons": {
     "depositButtonLabel": "",
+    "requestRedeemButtonLabel": "",
     "withdrawButtonLabel": "",
     "managePositionsButtonLabel": "",
     "deposit": "",

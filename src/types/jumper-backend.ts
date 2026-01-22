@@ -1,4 +1,5 @@
 import config from '@/config/env-config';
+import { Hex } from 'viem';
 
 /* eslint-disable */
 /* tslint:disable */
@@ -872,6 +873,7 @@ export interface EarnOpportunityHistoryItem {
 
 export interface EarnOpportunityWithLatestAnalytics {
   name: string;
+  isRedeemable: boolean;
   asset: Token;
   protocol: Protocol;
   url?: string;
@@ -1016,6 +1018,7 @@ export interface TaskVerificationDto {
 
 export interface EarnOpportunityWithScore {
   name: string;
+  isRedeemable: boolean;
   asset: Token;
   protocol: Protocol;
   url?: string;
@@ -1119,6 +1122,25 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   baseUrl?: string;
   /** request cancellation token */
   cancelToken?: CancelToken;
+}
+
+export type VaultSpecificData = Record<string, any> | null;
+
+export type VaultsFYICallDataResponse = {
+  currentActionIndex: number;
+  actions: VaultsFYICallDataActionResponse[];
+};
+
+export type VaultsFYICallDataActionResponse = {
+  name: string;
+  tx: WalletCall;
+};
+
+export interface WalletCall {
+  to: Hex;
+  data: `0x${string}`;
+  value?: string;
+  chainId: number;
 }
 
 export type RequestParams = Omit<
@@ -1698,6 +1720,65 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/filter`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name earnControllerGetVaultSpecificDataV1
+     * @summary Get an earn opportunity by slug
+     * @request GET:/v1/earn/items/{slug}
+     */
+    earnControllerGetVaultSpecificDataV1: (slug: string, query?: {
+      address: Hex;
+    }, params: RequestParams = {}) =>
+      this.request<VaultSpecificData, any>({
+        path: `/v1/earn/items/${slug}/vault-specific-data`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name earnControllerGetRequestRedeemCallDataV1
+     * @summary Get an earn opportunity by slug
+     * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
+     */
+    earnControllerGetRequestRedeemCallDataV1: (slug: string, query?: {
+      address: Hex;
+      amount: string;
+    }, params: RequestParams = {}) =>
+      this.request<{ data: VaultsFYICallDataResponse }, any>({
+        path: `/v1/earn/items/${slug}/request-redeem/call-data`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name earnControllerGetClaimRedeemCalldataV1
+     * @summary Get an earn opportunity by slug
+     * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
+     */
+    earnControllerGetClaimRedeemCalldataV1: (slug: string, query?: {
+      address: Hex;
+      amount: string;
+    }, params: RequestParams = {}) =>
+      this.request<{ data: VaultsFYICallDataResponse }, any>({
+        path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
         query: query,
         format: 'json',
