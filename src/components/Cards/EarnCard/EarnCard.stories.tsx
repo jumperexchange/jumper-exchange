@@ -36,6 +36,7 @@ export const CompactNoRecommendation: Story = {
     data: {
       ...commonArgs.data,
       forYou: false,
+      isRedeemable: true,
     },
     variant: 'compact',
     primaryAction: compactPrimaryAction,
@@ -73,6 +74,7 @@ export const CompactWithTwoItems: Story = {
       ...commonArgs.data,
       lockupMonths: undefined,
       capInDollar: undefined,
+      isRedeemable: true,
       latest: {
         date: '2021-01-01',
         tvlUsd: '',
@@ -103,6 +105,7 @@ export const ListItemNoRecommendation: Story = {
     data: {
       ...commonArgs.data,
       forYou: false,
+      isRedeemable: true,
     },
     variant: 'list-item',
     primaryAction: listItemPrimaryAction,
@@ -148,7 +151,7 @@ export const OverviewLoading: Story = {
   },
 };
 
-export const OvervieWithBadge: Story = {
+export const OverviewWithBadge: Story = {
   args: {
     ...commonArgs,
     variant: 'overview',
