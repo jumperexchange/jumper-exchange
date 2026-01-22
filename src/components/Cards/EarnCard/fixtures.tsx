@@ -43,6 +43,7 @@ export const commonArgs = {
     capInDollar: '1000000000000000000',
     featured: true,
     forYou: true,
+    isRedeemable: true,
     latest: {
       date: '+057679-11-04T06:34:08.000Z',
       tvlUsd: '62572415',
