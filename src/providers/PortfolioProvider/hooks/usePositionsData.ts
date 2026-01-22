@@ -10,7 +10,7 @@ import {
   type FetchPositionsResult,
 } from '../lib/fetchPositionsForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
-import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
+import type { PortfolioPositionsQueryWithoutEvm } from '../types/common';
 
 export interface UsePositionsDataParams {
   filter?: PortfolioPositionsQueryWithoutEvm;

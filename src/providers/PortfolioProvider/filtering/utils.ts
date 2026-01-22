@@ -7,7 +7,7 @@ import {
   parseAsStringEnum,
 } from 'nuqs';
 import { sortBy } from 'lodash';
-import type { PortfolioTokenGroup } from '../types/tokens.types';
+import type { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
@@ -18,7 +18,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
-import type { PortfolioDeFiPositionsGroup } from '../types/positions.types';
+import type { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>

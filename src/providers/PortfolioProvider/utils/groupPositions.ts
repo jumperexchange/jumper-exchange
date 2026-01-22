@@ -1,6 +1,6 @@
 import { compact, groupBy as groupByLodash, orderBy, values } from 'lodash';
 import { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
-import type { PortfolioDefiPosition } from '../types/positions.types';
+import type { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
 
 export type PositionGroupingFn = (position: PortfolioDefiPosition) => string;
 

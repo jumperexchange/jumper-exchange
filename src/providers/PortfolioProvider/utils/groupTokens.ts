@@ -1,10 +1,4 @@
-import {
-  compact,
-  groupBy as groupByLodash,
-  orderBy,
-  sumBy,
-  values,
-} from 'lodash';
+import { compact, groupBy as groupByLodash, orderBy, values } from 'lodash';
 import { PortfolioTokenGroup } from '../types/PortfolioTokenGroup';
 import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 

@@ -1,7 +1,7 @@
 import { uniqBy, uniq, flatMap, min, max, minBy, maxBy } from 'lodash';
 import type { Chain, Protocol, Token } from '@/types/jumper-backend';
-import type { PortfolioDefiPosition } from '../types/positions.types';
-import type { PortfolioAccount } from '../types/tokens.types';
+import type { PortfolioDefiPosition } from '../types/PortfolioDefiPosition';
+import type { PortfolioAccount } from '../types/common';
 import type { Account } from '@lifi/wallet-management';
 import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 
@@ -32,7 +32,6 @@ export const toAssetToken = (token: PortfolioExtendedToken): Token => ({
   },
 });
 
-/** Extract unique chains from tokens */
 export const extractChainsFromTokens = (
   tokens: PortfolioExtendedToken[],
 ): Chain[] => {
@@ -47,7 +46,6 @@ export const extractChainsFromTokens = (
   );
 };
 
-/** Extract metadata from tokens */
 export const extractTokensMetadata = (
   tokens: PortfolioExtendedToken[],
   accounts: Account[],
@@ -74,7 +72,6 @@ export const extractTokensMetadata = (
   };
 };
 
-/** Extract unique chains from positions */
 export const extractChainsFromPositions = (
   positions: PortfolioDefiPosition[],
 ): Chain[] => {
@@ -85,7 +82,6 @@ export const extractChainsFromPositions = (
   );
 };
 
-/** Extract unique protocols from positions */
 export const extractProtocolsFromPositions = (
   positions: PortfolioDefiPosition[],
 ): Protocol[] => {
@@ -96,7 +92,6 @@ export const extractProtocolsFromPositions = (
   );
 };
 
-/** Extract metadata from positions */
 export const extractPositionsMetadata = (
   positions: PortfolioDefiPosition[],
 ): PositionsMetadata => {

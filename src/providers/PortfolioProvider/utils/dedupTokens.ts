@@ -1,19 +1,10 @@
 import { differenceWith, isEmpty } from 'lodash';
-import type { LpTokenIdentifier } from './positions.lpTokens';
+import type { LpTokenIdentifier } from './extractLpTokens';
 import type { PortfolioExtendedToken } from '../types/PortfolioExtendedToken';
 
-/**
- * Create a unique key for a token based on address and chainId.
- */
 const getTokenKey = (address: string, chainId: number): string =>
   `${address.toLowerCase()}-${chainId}`;
 
-/**
- * Filter out tokens that are LP tokens from DeFi positions.
- * This prevents double-counting tokens that are already represented in positions.
- *
- * IMPORTANT: This should run BEFORE aggregation to avoid incorrect groupings.
- */
 export const dedupTokensFromLpPositions = (
   tokens: PortfolioExtendedToken[],
   lpTokens: LpTokenIdentifier[],

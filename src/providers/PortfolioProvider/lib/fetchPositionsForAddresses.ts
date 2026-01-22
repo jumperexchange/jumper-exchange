@@ -3,7 +3,7 @@ import type {
   DefiPosition,
   MetadataWithUpdatedAt,
 } from '@/types/jumper-backend';
-import type { PortfolioPositionsQueryWithoutEvm } from '../types/positions.types';
+import type { PortfolioPositionsQueryWithoutEvm } from '../types/common';
 
 export interface FetchPositionsParams {
   address: string;

@@ -1,16 +1,10 @@
-import { useMemo } from 'react';
-import { usePortfolio } from '../PortfolioContext';
+'use client';
+
 import type { UsePositionsDataParams } from './usePositionsData';
-import { usePositionsData } from './usePositionsData';
+import { useProcessedPositions } from './useProcessedPositions';
 
 export const useFilteredPositionsData = (
   filters: UsePositionsDataParams['filter'],
 ) => {
-  const { processors } = usePortfolio();
-  const rawFilteredData = usePositionsData({ filter: filters });
-  const processedData = useMemo(() => {
-    return processors.positions(rawFilteredData);
-  }, [rawFilteredData, processors]);
-
-  return processedData;
+  return useProcessedPositions({ filter: filters });
 };

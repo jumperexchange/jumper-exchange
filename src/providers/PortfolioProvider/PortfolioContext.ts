@@ -67,10 +67,6 @@ const defaultContextValue: PortfolioContextValue = {
     hasError: false,
     refetchAll: noop,
   },
-  processors: {
-    positions: () => defaultPositionsContextValue,
-    tokens: () => defaultTokensContextValue,
-  },
 };
 
 export const PortfolioContext =

@@ -30,7 +30,7 @@ import {
 } from './utils';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions } from '../PortfolioContext';
-import type { PortfolioDeFiPositionsGroup } from '../types/positions.types';
+import type { PortfolioDeFiPositionsGroup } from '../types/PortfolioDeFiPositionsGroup';
 import { useFilteredPositionsData } from '../hooks/useFilteredPositionsData';
 
 export interface DeFiPositionsFilteringContextType extends PortfolioDeFiPositionsFilteringParams {
