@@ -24,7 +24,6 @@ export interface WalletButtonProps extends ButtonProps {
 
 export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
   ({ theme }) => ({
-    borderRadius: '24px',
     padding: '11px 16px',
     height: 40,
     width: '100%',

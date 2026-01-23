@@ -25,7 +25,7 @@ export const BannerSlideContainer = styled(Box)(({ onClick }) => ({
 export const BannerImageWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   overflow: 'hidden',
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.cardBorderRadiusLarge,
 }));
 
 interface BannerImageProps extends ImageProps {

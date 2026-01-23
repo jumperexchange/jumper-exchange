@@ -4,7 +4,7 @@ import { alpha, Box, Divider, Stack, styled } from '@mui/material';
 export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
   backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: '32px',
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   width: '100%',
   padding: theme.spacing(4, 2),
   boxShadow: (theme.vars || theme).shadows[2],
@@ -37,7 +37,7 @@ export const LeaderboardUpdateDateBox = styled(Box)(() => ({
 export const LeaderboardEntryStack = styled(Stack)(({ theme }) => ({
   background: (theme.vars || theme).palette.surface1.main,
   padding: theme.spacing(0, 1),
-  borderRadius: '24px',
+  borderRadius: theme.shape.cardBorderRadiusLarge,
   marginTop: theme.spacing(3),
   boxShadow: (theme.vars || theme).shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {

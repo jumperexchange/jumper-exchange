@@ -17,7 +17,7 @@ export const Tag = styled(Typography, {
   backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
   color: (theme.vars || theme).palette.text.primary,
   userSelect: 'none',
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.radius24,
   flexShrink: 0,
   ':not(:first-of-type)': {
     marginLeft: theme.spacing(0.5),

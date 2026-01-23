@@ -4,12 +4,12 @@ export const LeaderboardSkeleton = ({ length }: { length: number }) => {
   return (
     <Skeleton
       variant="rectangular"
-      sx={{
+      sx={(theme) => ({
         height: `${length * 44}px`,
         width: '288px',
         textAlign: 'center',
-        borderRadius: '8px',
-      }}
+        borderRadius: theme.shape.radius8,
+      })}
     />
   );
 };

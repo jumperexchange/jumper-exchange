@@ -20,34 +20,20 @@ export const IconButton = styled(MuiIconButton)(({ theme }) => ({
 }));
 
 export const IconButtonPrimary = styled(IconButton)(({ theme }) => ({
-  color: (theme.vars || theme).palette.white.main,
-  backgroundColor: (theme.vars || theme).palette.primary.main,
+  color: (theme.vars || theme).palette.buttonPrimaryAction,
+  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
   ':hover': {
-    backgroundColor: `oklch(from ${(theme.vars || theme).palette.primary.main} calc(l - 0.1) c h)`,
-    ...theme.applyStyles('light', {
-      backgroundColor: `oklch(from ${(theme.vars || theme).palette.accent1.main} calc(l - 0.1) c h)`,
-    }),
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.buttonPrimaryBg} calc(l - 0.1) c h)`,
   },
-  ...theme.applyStyles('light', {
-    color: theme.palette.white.main,
-    backgroundColor: (theme.vars || theme).palette.accent1.main,
-  }),
 }));
 
 export const IconButtonSecondary = styled(IconButton)(({ theme }) => ({
   // todo add color to theme
-  color: (theme.vars || theme).palette.white.main,
-  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+  color: (theme.vars || theme).palette.buttonSecondaryAction,
+  backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
   '&:hover': {
-    backgroundColor: alpha(theme.palette.white.main, 0.04),
-    ...theme.applyStyles('light', {
-      backgroundColor: alpha(theme.palette.black.main, 0.04),
-    }),
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.buttonSecondaryBg} calc(l - 0.1) c h)`,
   },
-  ...theme.applyStyles('light', {
-    color: '#240752',
-    backgroundColor: (theme.vars || theme).palette.white.main,
-  }),
 }));
 
 export const IconButtonTertiary = styled(IconButton)(({ theme }) => ({

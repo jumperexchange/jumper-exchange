@@ -28,11 +28,31 @@ declare module '@mui/material/styles' {
     borderRadius: number;
     borderRadiusSecondary: number;
     borderRadiusTertiary: number;
+    radiusRoundedFull: string;
+    radius4: number;
+    radius8: number;
+    radius12: number;
+    radius16: number;
+    radius20: number;
+    radius24: number;
+    radius32: number;
+    radius64: number;
+    radius128: number;
     tabBarRadius: number;
+    tabRadius: number;
+    menuRadius: number;
+    cardContainerBorderRadius: number;
+    /** @deprecated Use cardBorderRadiusLarge instead */
     cardBorderRadius: number;
+    cardBorderRadiusSmall: number;
     cardBorderRadiusMedium: number;
+    cardBorderRadiusLarge: number;
+    cardBorderRadiusXLarge: number;
     buttonBorderRadius: number;
     inputTextBorderRadius: number;
+    scanBorderRadiusSecondary?: number;
+    scanBorderRadiusTertiary?: number;
+    scanBorderRadius?: number;
   }
 
   interface ThemeOptions {

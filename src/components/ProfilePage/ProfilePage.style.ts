@@ -5,7 +5,7 @@ export const PageContainer = styled(Container)(({ theme }) => ({
   marginTop: 16,
   fontFamily: 'var(--font-inter)',
   background: 'transparent',
-  borderRadius: '8px',
+  borderRadius: theme.shape.radius8,
   position: 'relative',
   width: '100% !important',
   overflow: 'visible', //'hidden',
