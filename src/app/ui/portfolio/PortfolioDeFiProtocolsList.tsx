@@ -36,7 +36,7 @@ export const PortfolioDeFiProtocolsList = () => {
     if (protocolGroups.length > 0) {
       return protocolGroups.map((positions, index) => (
         <PortfolioAnimatedAssetContainer
-          key={`${getPositionGroupKey(positions[0])}-${index}`}
+          key={getPositionGroupKey(positions[0])}
         >
           <DeFiPositionCard defiPositions={positions} isLoading={isLoading} />
         </PortfolioAnimatedAssetContainer>
