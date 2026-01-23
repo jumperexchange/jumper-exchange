@@ -1,3 +1,5 @@
+import { type Abi } from 'viem';
+
 export const DeFiReacherClaimABI = [
   {
     inputs: [
@@ -11,4 +13,4 @@ export const DeFiReacherClaimABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-] as const;
+] as Abi;
