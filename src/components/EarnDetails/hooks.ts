@@ -9,6 +9,15 @@ import type { LineChartProps } from '../core/charts/LineChart/LineChart';
 import type { StackedAreaChartProps } from '../core/charts/StackedAreaChart/StackedAreaChart';
 import { AnalyticsRangeFieldEnum } from './types';
 
+/**
+ * Trims leading entries from an array where the predicate returns false.
+ * Returns the array starting from the first element where hasValue returns true.
+ */
+function trimLeadingNulls<T>(data: T[], hasValue: (item: T) => boolean): T[] {
+  const firstValidIndex = data.findIndex(hasValue);
+  return firstValidIndex === -1 ? [] : data.slice(firstValidIndex);
+}
+
 const useDefaultDateFormat = (range: AnalyticsRangeFieldEnum) => {
   return range === AnalyticsRangeFieldEnum.WEEK ||
     range === AnalyticsRangeFieldEnum.MONTH
@@ -21,12 +30,12 @@ export const useSimpleAnalyticsChartConfig = (
   range: AnalyticsRangeFieldEnum,
 ): LineChartProps => {
   const data = useMemo(() => {
-    return (
+    const mapped =
       rawData?.points.map((point) => ({
         date: new Date(point.t).toISOString(),
         value: point.v,
-      })) ?? []
-    );
+      })) ?? [];
+    return trimLeadingNulls(mapped, (item) => item.value != null);
   }, [rawData]);
 
   const dateFormat = useDefaultDateFormat(range);
@@ -46,13 +55,20 @@ export const useApyAnalyticsChartConfig = (
   range: AnalyticsRangeFieldEnum,
 ): StackedAreaChartProps => {
   const data = useMemo(() => {
-    return (
+    const mapped =
       rawData?.points.map((point) => ({
         date: new Date(point.t).toISOString(),
         base: point.base,
         reward: point.reward,
-      })) ?? []
-    );
+        total:
+          point.base != null && point.reward != null
+            ? point.base + point.reward
+            : null,
+      })) ?? [];
+    return trimLeadingNulls(
+      mapped,
+      (item) => item.total != null,
+    ) as StackedAreaChartProps['data'];
   }, [rawData]);
 
   const theme = useRewardChartTheme();

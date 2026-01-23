@@ -31,14 +31,20 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
     return null;
   }
 
-  const formatValue = (value: number) => {
+  const formatValue = (value: number | null | undefined) => {
+    if (value == null) {
+      return 'NULL';
+    }
     if (valueFormatConfig) {
       return formatValueWithConfig(value, valueFormatConfig);
     }
     return value.toFixed(2);
   };
 
-  const total = payload.base + payload.reward;
+  const total =
+    payload.base != null && payload.reward != null
+      ? payload.base + payload.reward
+      : null;
 
   return (
     <Box

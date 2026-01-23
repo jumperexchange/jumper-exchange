@@ -234,10 +234,16 @@ export const LineChart = <
             type="monotone"
             dataKey="value"
             stroke={theme.lineColor}
+            connectNulls={true}
             activeDot={
               enableCrosshair
                 ? (props: ActiveDotProps) => {
                     const { cx, cy, payload } = props;
+
+                    // Skip null values - no dot, no tooltip
+                    if (payload.value == null) {
+                      return null;
+                    }
 
                     if (enableTooltip) {
                       setActiveDot((prev) => {

@@ -68,9 +68,11 @@ export const CustomTooltip: FC<CustomTooltipProps> = ({
         {formatDateLocalized(label ?? '', 'PP @ HH:mm')}
       </Typography>
       <Typography variant="bodySmall">
-        {valueFormatConfig
-          ? formatValueWithConfig(data.value, valueFormatConfig)
-          : data.value}{' '}
+        {data.value == null
+          ? 'NULL'
+          : valueFormatConfig
+            ? formatValueWithConfig(data.value, valueFormatConfig)
+            : data.value}{' '}
         <strong>{dataSetId?.toString().toUpperCase()}</strong>
       </Typography>
     </Box>
