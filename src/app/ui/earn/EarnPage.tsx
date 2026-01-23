@@ -23,8 +23,12 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
 
   // TODO: LF-14853: Opportunity Details
   const [opportunity, relatedMarkets] = await Promise.all([
-    getOpportunityBySlug(slug),
-    getOpportunityRelatedMarket(slug),
+    getOpportunityBySlug(slug).catch((error) => {
+      return { error, data: undefined };
+    }),
+    getOpportunityRelatedMarket(slug).catch((error) => {
+      return { error, data: [] };
+    }),
   ]);
 
   console.log('28. EarnPage opportunity', opportunity);
