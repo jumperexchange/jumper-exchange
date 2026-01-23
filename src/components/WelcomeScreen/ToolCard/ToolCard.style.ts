@@ -16,7 +16,7 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
   color: (theme.vars || theme).palette.accent1Alt.main,
   userSelect: 'none',
   backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
-  borderRadius: '16px',
+  borderRadius: theme.shape.radius16,
   transitionProperty: 'box-shadow, background',
   transitionDuration: '.3s',
   transitionTimingFunction: 'ease-in-out',

@@ -131,8 +131,8 @@ export const createPaletteLight = (
   linkDisabled: baseColors.alphaDark400.main,
 
   // Logo
-  logoPrimary: brandColors.light.accent1,
-  logoSecondary: brandColors.light.accent2,
+  logoPrimary: brandColors.light.logoPrimary,
+  logoSecondary: brandColors.light.logoSecondary,
 
   // Icon
   iconEmphasized: baseColors.black.main,

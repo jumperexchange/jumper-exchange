@@ -135,8 +135,8 @@ export const createPaletteDark = (
   linkDisabled: baseColors.alphaLight400.main,
 
   // Logo
-  logoPrimary: brandColors.dark.accent1Alt,
-  logoSecondary: brandColors.dark.accent2,
+  logoPrimary: brandColors.dark.logoPrimary,
+  logoSecondary: brandColors.dark.logoSecondary,
 
   // Icon
   iconEmphasized: baseColors.white.main,

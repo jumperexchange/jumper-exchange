@@ -71,7 +71,6 @@ export const WelcomeScreenButton = styled(ButtonPrimary)(({ theme }) => ({
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(6, 'auto'),
     height: 56,
-    borderRadius: '28px',
     width: 247,
   },
 }));
