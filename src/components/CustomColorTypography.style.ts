@@ -19,6 +19,6 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
     lineHeight: '72px',
   },
   ...theme.applyStyles('light', {
-    backgroundImage: `linear-gradient(90deg, ${(theme.vars || theme).palette.primary.main} 10%, ${(theme.vars || theme).palette.violet[500]} 100%);`,
+    backgroundImage: `linear-gradient(90deg, ${(theme.vars || theme).palette.primary.main} 10%, ${(theme.vars || theme).palette.violet[500]} 100%)`,
   }),
 }));
