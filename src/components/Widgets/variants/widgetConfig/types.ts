@@ -6,7 +6,8 @@ import type {
   TaskWidgetInformationWalletData,
 } from 'src/types/strapi';
 import { TaskType } from 'src/types/strapi';
-import type { ThemeProps } from 'src/types/theme';
+import type { WidgetThemeConfig } from 'src/types/theme';
+import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import type { TFunction, i18n } from 'i18next';
 import type { Hex } from 'viem';
 import type { Theme as MuiTheme } from '@mui/material/styles';
@@ -24,7 +25,9 @@ export interface HookDependencies {
     i18n: i18n;
     t: TFunction<'translation', undefined>;
   };
-  theme: Pick<ThemeProps, 'widgetTheme' | 'configTheme'> & {
+  theme: {
+    widgetTheme: WidgetThemeConfig;
+    configTheme: Partial<PartnerThemeConfig>;
     muiTheme: MuiTheme;
   };
   wallet: {

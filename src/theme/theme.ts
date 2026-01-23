@@ -26,7 +26,7 @@ type DeepPartial<T> = {
 export interface CreateJumperThemeOptions {
   baseColors?: DeepPartial<BaseColors>;
   brandColors?: DeepPartial<BrandColors>;
-  shape?: Shape;
+  shape?: DeepPartial<Shape>;
   components?: Components<Omit<Theme, 'components'>>;
   fonts?: ThemeFonts;
 }

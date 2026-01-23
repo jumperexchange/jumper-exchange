@@ -2,6 +2,7 @@ import type { WidgetConfig } from '@lifi/widget';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
+import type { CreateJumperThemeOptions } from 'src/theme/theme';
 
 /* Strapi */
 export interface ImageData<T> {
@@ -239,12 +240,11 @@ export interface PartnerThemesData extends PartnerThemesAttributes {
   // attributes: PartnerThemesAttributes;
 }
 
+// Partner UI flags (not theme styling)
 export interface Customization {
-  palette: { [colorName: string]: { main: string } };
   backgroundImagePosition?: string;
   logoName?: string;
   footerBannerUrl?: string;
-  typography?: string;
   hasBackgroundGradient?: boolean;
   hasBlurredNavigation?: boolean;
   hasThemeModeSwitch?: boolean;
@@ -257,6 +257,7 @@ type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
 export interface PartnerTheme {
   config: WidgetConfigProps;
   customization?: Customization;
+  jumperTheme?: CreateJumperThemeOptions;
 }
 
 // TODO: Make it dynamic
