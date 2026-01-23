@@ -16,7 +16,7 @@ export function getPartnerTheme(
   return themes?.find((d) => d?.uid === activeTheme);
 }
 
-// @deprecated
+/** @deprecated Use createJumperTheme with jumperTheme options instead */
 export function getMuiTheme(
   themeMode: Appearance,
   themes?: PartnerThemesData[],
@@ -37,7 +37,7 @@ export function getMuiTheme(
     ? themeCustomized.colorSchemes['light']
     : themeCustomized.colorSchemes['dark'];
 
-  return deepmerge(baseTheme, formattedTheme.activeMUITheme);
+  return deepmerge(baseTheme, formattedTheme.jumperTheme);
 }
 
 // @deprecated
@@ -61,6 +61,10 @@ export function getWidgetTheme(
   return widgetTheme;
 }
 
+/**
+ * @deprecated Widget themes are now pre-computed in DefaultThemeProvider.
+ * Use useWidgetTheme hook to access the appropriate theme variant.
+ */
 export function getWidgetThemeV2(
   mode: PaletteMode,
   partnerThemeAttributes?: PartnerThemesData,
