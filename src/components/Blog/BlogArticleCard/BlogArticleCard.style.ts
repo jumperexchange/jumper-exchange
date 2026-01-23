@@ -20,7 +20,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   maxWidth: 416,
   border: 'unset',
   padding: theme.spacing(2),
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   background: (theme.vars || theme).palette.surface1.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[2],

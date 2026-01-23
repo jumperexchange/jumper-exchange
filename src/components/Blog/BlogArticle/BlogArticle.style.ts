@@ -59,7 +59,7 @@ export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
 export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
   height: '48px',
   width: '120px',
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.cardBorderRadiusLarge,
   transform: 'unset',
 }));
 

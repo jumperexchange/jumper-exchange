@@ -22,7 +22,10 @@ export const LeaderboardEntrySkeleton = ({
           animation="wave"
           variant="rectangular"
           height={24}
-          sx={{ minWidth: '160px', borderRadius: '12px' }}
+          sx={(theme) => ({
+            minWidth: '160px',
+            borderRadius: theme.shape.radius12,
+          })}
         />
       </LeaderboardEntryInfos>
       <RankPointsContainer>
@@ -31,7 +34,7 @@ export const LeaderboardEntrySkeleton = ({
           variant="rectangular"
           width={48}
           height={24}
-          sx={{ borderRadius: '12px' }}
+          sx={(theme) => ({ borderRadius: theme.shape.radius12 })}
         />
         <XPIcon />
       </RankPointsContainer>

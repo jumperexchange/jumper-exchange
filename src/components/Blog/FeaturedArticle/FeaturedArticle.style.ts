@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   position: 'relative',
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[1],
@@ -51,7 +51,7 @@ export const FeaturedArticleCard = styled(Box)(({ theme }) => ({
   top: theme.spacing(-4),
   margin: theme.spacing(4, 2.5),
   padding: theme.spacing(4),
-  borderRadius: theme.shape.cardBorderRadius,
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   width: 'auto',
   alignItems: 'center',
   [theme.breakpoints.up('md' as Breakpoint)]: {

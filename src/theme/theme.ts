@@ -37,7 +37,7 @@ export const createJumperTheme = (
   const {
     baseColors: customBaseColors,
     brandColors: customBrandColors,
-    shape = defaultShape,
+    shape: customShape = defaultShape,
     components: customComponents,
     fonts = defaultFonts,
   } = options;
@@ -63,6 +63,10 @@ export const createJumperTheme = (
   const defaultComponents = createComponents(themeBase);
   const typography = createTypography(themeBase, fonts);
   const colorSchemes = createColorSchemes(themeBase, paletteLight, paletteDark);
+
+  const shape = customShape
+    ? (deepmerge(defaultShape, customShape) as Shape)
+    : defaultShape;
 
   const components = customComponents
     ? deepmerge(defaultComponents, customComponents)
