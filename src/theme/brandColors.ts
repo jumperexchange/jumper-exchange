@@ -42,6 +42,10 @@ export interface BrandColors {
     linkPrimary: string;
     linkSecondary: string;
 
+    // Logo
+    logoPrimary: string;
+    logoSecondary: string;
+
     // Border
     borderActive: string;
 
@@ -100,6 +104,10 @@ export interface BrandColors {
     // Link
     linkPrimary: string;
     linkSecondary: string;
+
+    // Logo
+    logoPrimary: string;
+    logoSecondary: string;
 
     // Border
     borderActive: string;
@@ -163,6 +171,10 @@ export const defaultBrandColors: BrandColors = {
     linkPrimary: baseColors.lavenderDark[0],
     linkSecondary: baseColors.lavenderDark[0],
 
+    // Logo
+    logoPrimary: '#31007a',
+    logoSecondary: '#8700B8',
+
     // Border
     borderActive: baseColors.orchid[400],
 
@@ -221,6 +233,10 @@ export const defaultBrandColors: BrandColors = {
     // Link
     linkPrimary: baseColors.rubyLight[400],
     linkSecondary: baseColors.rubyLight[400],
+
+    // Logo
+    logoPrimary: baseColors.rubyLight[100],
+    logoSecondary: baseColors.violet[500],
 
     // Border
     borderActive: baseColors.rubyLight[400],
