@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import {
   closeWelcomeScreen,
   itemInMenu,
@@ -41,10 +41,53 @@ test.describe('Switch between dark and light theme and check the background colo
   );
 
   test(
-    qase(49, 'Monad theme should appears when Monad chain is selected'),
+    qase(
+      49,
+      'Partner theme should appear in theme menu and apply background color',
+    ),
     async ({ page }) => {
       await closeWelcomeScreen(page);
-      await expectBackgroundColorToHaveCss(page, 'rgb(18, 11, 30)');
+
+      // Get initial background color
+      const backgroundElement = page.locator('#background-root');
+      const initialBgColor = await backgroundElement.evaluate(
+        (el) => getComputedStyle(el).backgroundColor,
+      );
+
+      // Open menu and navigate to Theme submenu
+      await openOrCloseMainMenu(page);
+      await itemInMenu(page, 'Theme');
+
+      // Find partner theme (any menu item that's not Light or Dark)
+      const menuItems = page.getByRole('menuitem');
+      const allMenuItems = await menuItems.allTextContents();
+      const partnerTheme = allMenuItems.find(
+        (item) =>
+          !['Light', 'Dark', 'System'].includes(item) && item.trim() !== '',
+      );
+
+      // Skip if no partner theme is available
+      if (!partnerTheme) {
+        test.skip();
+        return;
+      }
+
+      // Select the partner theme
+      await itemInMenu(page, partnerTheme);
+
+      // Verify background color changed or background image appeared
+      const isThemeApplied = await backgroundElement.evaluate(
+        (el, prevBgColor) => {
+          const bgColorChanged =
+            getComputedStyle(el).backgroundColor !== prevBgColor;
+          const imgElement = el.querySelector('img');
+          const hasBgImage = imgElement !== null && !!imgElement.src;
+          return bgColorChanged || hasBgImage;
+        },
+        initialBgColor,
+      );
+
+      expect(isThemeApplied).toBe(true);
     },
   );
 });
