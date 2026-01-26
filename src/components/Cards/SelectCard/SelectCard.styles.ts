@@ -1,4 +1,3 @@
-import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -40,7 +39,6 @@ export const SelectCardContainer = styled(Card, {
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[2],
   background: (theme.vars || theme).palette.surface2.main,
-  border: getSurfaceBorder(theme, 'surface2'),
   padding: theme.spacing(2),
   position: 'relative',
   display: 'flex',
