@@ -12,7 +12,7 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   borderRadius: '32px',
   transition: 'background-color 250ms',
   marginBottom: theme.spacing(14.5),

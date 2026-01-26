@@ -52,8 +52,8 @@ export const paletteDark = {
 
   textTertiary: baseColors.alphaLight400.main,
 
-  textAccent1: brandColors.dark.accent1,
-  textAccent2: brandColors.dark.accent2,
+  textAccent1: baseColors.rubyLight[100],
+  textAccent2: baseColors.rubyLight[400],
 
   textHint: baseColors.alphaLight600.main,
 
@@ -64,30 +64,30 @@ export const paletteDark = {
   textInfo: baseColors.azure[500],
 
   // Background
-  bg: baseColors.lavenderDark[300],
-  bgLighter: baseColors.lavenderDark[300],
-  bgDarker: baseColors.lavenderDark[400],
-  bgGlow1: brandColors.dark.accent1Alt,
-  bgGlow2: brandColors.dark.accent1Alt,
-  bgGlow3: brandColors.dark.accent1Alt,
+  bg: '#120b1e',
+  bgLighter: brandColors.dark.surface4,
+  bgDarker: brandColors.dark.surface3,
+  bgGlow1: baseColors.rubyLight[400],
+  bgGlow2: baseColors.rubyLight[400],
+  bgGlow3: baseColors.rubyLight[400],
 
   // Border
   border: baseColors.alphaLight200.main,
   borderInverted: baseColors.alphaDark200.main,
   borderEmphasized: baseColors.alphaLight600.main,
   borderInvertedEmphasized: baseColors.alphaDark600.main,
-  borderActive: baseColors.orchid[600],
+  borderActive: baseColors.rubyLight[400],
   borderError: baseColors.scarlet[500],
 
   // Button
-  buttonPrimaryBg: brandColors.dark.accent1,
+  buttonPrimaryBg: baseColors.rubyLight[400],
   buttonPrimaryAction: baseColors.lavenderLight[0],
 
-  buttonSecondaryBg: baseColors.lavenderDark[0],
-  buttonSecondaryAction: baseColors.lavenderLight[0],
+  buttonSecondaryBg: baseColors.rubyLight[100],
+  buttonSecondaryAction: baseColors.rubyLight[400],
 
-  buttonAlphaLightBg: baseColors.alphaLight900.main,
-  buttonAlphaLightAction: baseColors.alphaLight100.main,
+  buttonAlphaLightBg: baseColors.alphaLight100.main,
+  buttonAlphaLightAction: baseColors.alphaLight900.main,
 
   buttonAlphaDarkBg: baseColors.alphaLight100.main,
   buttonAlphaDarkAction: baseColors.alphaLight900.main,
@@ -95,8 +95,8 @@ export const paletteDark = {
   buttonDisabledBg: baseColors.alphaLight100.main,
   buttonDisabledAction: baseColors.alphaLight500.main,
 
-  buttonLightBg: baseColors.white.main,
-  buttonLightAction: baseColors.black.main,
+  buttonLightBg: baseColors.rubyDark[200],
+  buttonLightAction: baseColors.white.main,
 
   buttonActiveBg: baseColors.white.main,
   buttonActiveAction: baseColors.black.main,
@@ -105,10 +105,10 @@ export const paletteDark = {
 
   // Badge
   badgeAccent1Fg: baseColors.white.main,
-  badgeAccent1Bg: brandColors.dark.accent1,
+  badgeAccent1Bg: baseColors.rubyLight[400],
 
-  badgeAccent1MutedFg: brandColors.dark.accent1,
-  badgeAccent1MutedBg: brandColors.dark.accent1Alt,
+  badgeAccent1MutedFg: baseColors.rubyLight[400],
+  badgeAccent1MutedBg: baseColors.rubyLight[100],
 
   badgeAlphaFg: baseColors.alphaLight900.main,
   badgeAlphaBg: baseColors.alphaLight100.main,
@@ -123,15 +123,15 @@ export const paletteDark = {
   badgeLightBg: baseColors.white.main,
 
   // Link
-  linkPrimary: baseColors.lavenderDark[0],
-  linkSecondary: baseColors.lavenderDark[0],
+  linkPrimary: brandColors.dark.accent1,
+  linkSecondary: brandColors.dark.accent1,
   linkAlpha: baseColors.alphaLight900.main,
   linkAlphaDeemphasized: baseColors.alphaLight600.main,
   linkDisabled: baseColors.alphaLight400.main,
 
   // Logo
-  logoPrimary: brandColors.dark.accent1,
-  logoSecondary: brandColors.dark.accent2,
+  logoPrimary: baseColors.rubyLight[100],
+  logoSecondary: baseColors.violet[500],
 
   // Icon
   iconEmphasized: baseColors.white.main,

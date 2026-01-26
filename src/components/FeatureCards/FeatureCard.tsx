@@ -25,6 +25,7 @@ import {
   FeatureCardSubtitle,
   FeatureCardTitle,
 } from '.';
+import { useGetContrastTextColor } from '@/hooks/images/useGetContrastTextColor';
 
 interface FeatureCardProps {
   data: FeatureCardData;
@@ -172,6 +173,16 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
     handleSpindl(data);
   };
 
+  const { contrastTextColor } = useGetContrastTextColor(imageUrl?.href || '');
+
+  const effectTypographyColor = useMemo(() => {
+    if (imageUrl?.href) {
+      return contrastTextColor;
+    } else {
+      return typographyColor;
+    }
+  }, [imageUrl?.href, contrastTextColor, typographyColor]);
+
   return (
     <Slide
       direction="up"
@@ -201,7 +212,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               sx={{
                 width: 24,
                 height: 24,
-                color: typographyColor,
+                color: effectTypographyColor,
               }}
             />
           </FeatureCardCloseButton>
@@ -209,7 +220,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
             <FeatureCardTitle
               variant="headerSmall"
               data={data}
-              typographyColor={data?.TitleColor || typographyColor}
+              typographyColor={data?.TitleColor || effectTypographyColor}
               gutterBottom
             >
               {data?.Title}
@@ -218,7 +229,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
           {!!data?.Subtitle && (
             <FeatureCardSubtitle
               variant="bodySmall"
-              typographyColor={data?.SubtitleColor || typographyColor}
+              typographyColor={data?.SubtitleColor || effectTypographyColor}
             >
               {data?.Subtitle}
             </FeatureCardSubtitle>
@@ -234,7 +245,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               <FeatureCardCtaLabel
                 variant="bodySmallStrong"
                 data={data}
-                typographyColor={data?.CTAColor || typographyColor}
+                typographyColor={data?.CTAColor || effectTypographyColor}
               >
                 {data?.CTACall ?? t('featureCard.learnMore')}
               </FeatureCardCtaLabel>

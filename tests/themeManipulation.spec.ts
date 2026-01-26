@@ -23,7 +23,7 @@ test.describe('Switch between dark and light theme and check the background colo
       await closeWelcomeScreen(page);
       await openOrCloseMainMenu(page);
       await switchTheme(page, Theme.Dark);
-      await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
+      await expectBackgroundColorToHaveCss(page, 'rgb(18, 11, 30)');
     },
   );
 
@@ -44,7 +44,7 @@ test.describe('Switch between dark and light theme and check the background colo
     qase(49, 'Monad theme should appears when Monad chain is selected'),
     async ({ page }) => {
       await closeWelcomeScreen(page);
-      await expectBackgroundColorToHaveCss(page, 'rgb(16, 0, 41)');
+      await expectBackgroundColorToHaveCss(page, 'rgb(18, 11, 30)');
     },
   );
 });

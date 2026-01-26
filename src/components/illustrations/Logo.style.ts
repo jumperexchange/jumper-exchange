@@ -2,20 +2,15 @@
 import { styled } from '@mui/material';
 
 export const LogoWrapper = styled('div')(({ theme }) => {
-  const subCol = (theme.vars || theme).palette.accent2.main;
-
   return {
     cursor: 'pointer',
     display: 'flex',
     fill: 'none',
     '.main-color': {
-      fill: (theme.vars || theme).palette.accent1Alt.main,
-      ...theme.applyStyles('light', {
-        fill: (theme.vars || theme).palette.accent1.main,
-      }),
+      fill: (theme.vars || theme).palette.logoPrimary,
     },
     '.sub-color': {
-      fill: subCol,
+      fill: (theme.vars || theme).palette.logoSecondary,
     },
   };
 });

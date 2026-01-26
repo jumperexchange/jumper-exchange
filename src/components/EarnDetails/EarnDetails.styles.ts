@@ -12,9 +12,6 @@ export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 export const EarnDetailsAnalyticsContainer = styled(
@@ -91,9 +88,6 @@ export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   borderRadius: theme.shape.buttonBorderRadius,
   transform: 'none',
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
 }));
 
 export const EarnDetailsFlexContainer = styled(Box)(({ theme }) => ({

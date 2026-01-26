@@ -11,9 +11,6 @@ export const PortfolioFilterBarContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
   gap: theme.spacing(2),
   overflow: 'hidden',
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 export const PortfolioFilterBarHeaderContainer = styled(Box)(({ theme }) => ({

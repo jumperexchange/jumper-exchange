@@ -3,7 +3,7 @@
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -376,7 +376,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -463,7 +463,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -532,7 +532,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     W
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -601,7 +601,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -670,7 +670,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
                     T
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -760,7 +760,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with four assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -933,7 +933,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
 exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with loading 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-a5552t"
@@ -942,15 +942,15 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
         class="MuiBox-root css-g2ojj3"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
           style="width: 40px; height: 24px;"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
           style="width: 40px; height: 24px;"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
           style="width: 40px; height: 24px;"
         />
       </div>
@@ -967,16 +967,16 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
               class="MuiBox-root css-pipn1k"
             >
               <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
                 style="width: 42px; height: 16px;"
               />
               <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
                 style="width: 108px; height: 32px;"
               />
             </div>
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
               style="width: 24px; height: 24px;"
             />
           </div>
@@ -987,16 +987,16 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
               class="MuiBox-root css-pipn1k"
             >
               <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
                 style="width: 42px; height: 16px;"
               />
               <span
-                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
                 style="width: 108px; height: 32px;"
               />
             </div>
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-11ote6i-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-fkhrk8-MuiSkeleton-root"
               style="width: 24px; height: 24px;"
             />
           </div>
@@ -1010,7 +1010,7 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
 exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no content 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-1pds7ma"
@@ -1080,14 +1080,14 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
           class="MuiBox-root css-1c20ww1"
         >
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1ib84il-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-cf3g3c-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
             portfolio.assetOverviewCard.noContent.cta.startEarning
           </button>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1jan64m-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-jl48ew-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -1103,7 +1103,7 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for DeFi Positions view with no positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1242,7 +1242,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1330,7 +1330,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1399,7 +1399,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     W
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1468,7 +1468,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1537,7 +1537,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     T
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1606,7 +1606,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
                     D
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -1696,7 +1696,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot with no DeFi positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1835,7 +1835,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2275,7 +2275,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Tokens view with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2418,7 +2418,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2561,7 +2561,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2736,7 +2736,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2823,7 +2823,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -2913,7 +2913,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one asset 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3035,7 +3035,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi Positions view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3474,7 +3474,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Tokens view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3561,7 +3561,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -3630,7 +3630,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     W
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -3699,7 +3699,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -3768,7 +3768,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     T
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -3837,7 +3837,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
                     D
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -3927,7 +3927,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with overflow (more than 4 assets) 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4112,7 +4112,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4419,7 +4419,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4506,7 +4506,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -4575,7 +4575,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -4644,7 +4644,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
                     T
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -4734,7 +4734,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with three assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4888,7 +4888,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5327,7 +5327,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for Tokens view with tiny amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5414,7 +5414,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -5484,7 +5484,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     W
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -5554,7 +5554,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -5624,7 +5624,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
                     T
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -5715,7 +5715,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot with tiny token amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5900,7 +5900,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -6141,7 +6141,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -6228,7 +6228,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                     E
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -6297,7 +6297,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
                     U
                   </p>
                   <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
                   />
                 </div>
               </div>
@@ -6387,7 +6387,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with two assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-x5bp0x"
+    class="MuiBox-root css-anv23b"
   >
     <div
       class="MuiBox-root css-g2ojj3"

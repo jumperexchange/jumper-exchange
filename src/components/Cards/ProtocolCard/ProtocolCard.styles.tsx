@@ -13,9 +13,6 @@ export const ProtocolCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   transition: 'all 0.3s ease-in-out',
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
   overflow: 'hidden',
   display: 'flex',
   flexDirection: 'column',
@@ -82,12 +79,8 @@ export const ProtocolCardProtocolAvatar = styled(Image)(({ theme }) => ({
   aspectRatio: '1 / 1',
   borderRadius: '50%',
   border: `2px solid`,
-  borderColor: (theme.vars || theme).palette.surface2.main,
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    borderColor: (theme.vars || theme).palette.surface1.main,
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  borderColor: (theme.vars || theme).palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const ProtocolCardContentContainer = styled(Box)(({ theme }) => ({
@@ -96,10 +89,7 @@ export const ProtocolCardContentContainer = styled(Box)(({ theme }) => ({
   flex: 1,
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const ProtocolCardContentHeaderContainer = styled(Box)(({ theme }) => ({

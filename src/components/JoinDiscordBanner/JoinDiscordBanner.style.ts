@@ -14,7 +14,7 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   justifyContent: 'center',
   gap: theme.spacing(1.5),
   alignItems: 'center',
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   boxShadow: (theme.vars || theme).shadows[1],
   borderRadius: '32px',
   cursor: 'pointer',
@@ -23,11 +23,10 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   margin: theme.spacing(6, 2),
   marginBottom: theme.spacing(14.5),
   '&:hover': {
-    backgroundColor:
-      alpha(theme.palette.white.main, 0.2),
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.white.main
-    })
+    backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, white 4%)`,
+    ...theme.applyStyles('light', {
+      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, black 4%)`,
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(12, 8),

@@ -500,7 +500,7 @@ exports[`AssetProgress snapshot > Token variant > token progress matches snapsho
             E
           </p>
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -565,7 +565,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with USDC match
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -635,7 +635,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with large amou
             E
           </p>
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
           />
         </div>
       </div>
@@ -700,7 +700,7 @@ exports[`AssetProgress snapshot > Token variant > token progress with small amou
           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1abku3x-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-re5nls-MuiSkeleton-root"
           />
         </div>
       </div>
