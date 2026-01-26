@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
 import { useWalletMenu } from '@lifi/wallet-management';
 import { useThemeStore } from 'src/stores/theme/ThemeStore';
-import { HookDependencies } from './types';
+import { useGetPartnerWidgetTheme } from 'src/hooks/theme/useGetPartnerWidgetTheme';
+import type { HookDependencies } from './types';
 
 /**
  * Hook that provides all the React hook dependencies needed for widget configuration.
@@ -12,10 +13,8 @@ import { HookDependencies } from './types';
 export function useWidgetDependencies(): HookDependencies {
   const { i18n, t } = useTranslation();
   const muiTheme = useTheme();
-  const [widgetTheme, configTheme] = useThemeStore((state) => [
-    state.widgetTheme,
-    state.configTheme,
-  ]);
+  const configTheme = useThemeStore((state) => state.configTheme);
+  const widgetTheme = useGetPartnerWidgetTheme();
   const { openWalletMenu } = useWalletMenu();
 
   return useMemo(

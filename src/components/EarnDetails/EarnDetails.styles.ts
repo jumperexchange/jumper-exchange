@@ -41,10 +41,11 @@ export const EarnDetailsAnalyticsButtonsContainer = styled(Stack)(
 
 interface EarnDetailsAnalyticsButtonProps extends Omit<ButtonProps, 'variant'> {
   isActive: boolean;
+  isDisabled?: boolean;
 }
 
 export const EarnDetailsAnalyticsButton = styled(ButtonPrimary, {
-  shouldForwardProp: (prop) => prop !== 'isActive',
+  shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'isDisabled',
 })<EarnDetailsAnalyticsButtonProps>(({ theme }) => ({
   ...theme.typography.bodyXSmallStrong,
   padding: theme.spacing(1),
@@ -66,6 +67,14 @@ export const EarnDetailsAnalyticsButton = styled(ButtonPrimary, {
       props: { isActive: true },
       style: {
         cursor: 'default',
+        pointerEvents: 'none',
+      },
+    },
+    {
+      props: { isDisabled: true },
+      style: {
+        opacity: 0.5,
+        cursor: 'not-allowed',
         pointerEvents: 'none',
       },
     },
@@ -127,3 +136,17 @@ export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const EarnDetailsActionsButtonsFallbackContainer = styled(Box)(
+  ({ theme }) => ({
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    gap: theme.spacing(0.5),
+    maxWidth: '100%',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 360,
+    },
+  }),
+);

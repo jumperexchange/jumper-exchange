@@ -845,6 +845,15 @@ export interface Protocol {
   url?: string;
 }
 
+export interface EarnInteractionFlags {
+  canBorrow: boolean;
+  canDeposit: boolean;
+  canRepay: boolean;
+  canRewardClaim: boolean;
+  canRewardCompound: boolean;
+  canWithdraw: boolean;
+}
+
 export interface APYItem {
   base: number;
   reward: number;
@@ -877,7 +886,24 @@ export interface EarnOpportunityWithLatestAnalytics {
   capInDollar?: string;
   rewardsApy?: number;
   forYou: boolean;
+  interactionFlags: EarnInteractionFlags;
   latest: EarnOpportunityHistoryItem;
+}
+
+export interface ApyHistoryPoint {
+  /** The timestamp of the data point */
+  t: number;
+  /** The base APY */
+  base: number;
+  /** The reward APY */
+  reward: number;
+  /** The total APY (base + reward) */
+  total: number;
+}
+
+export interface ApyAnalyticsHistory {
+  /** The APY data points with base, reward, and total */
+  points: ApyHistoryPoint[];
 }
 
 export interface EarnOpportunityHistoryPoint {
@@ -938,6 +964,7 @@ export interface DefiPosition {
   address: string;
   chain: Chain;
   earn?: string;
+  earnInteractionFlags?: EarnInteractionFlags;
   latest?: EarnOpportunityHistoryItem;
   /** @format date-time */
   unlockAt?: string;
@@ -1003,6 +1030,7 @@ export interface EarnOpportunityWithScore {
   capInDollar?: string;
   rewardsApy?: number;
   forYou: boolean;
+  interactionFlags: EarnInteractionFlags;
   latest: EarnOpportunityHistoryItem;
 }
 
@@ -1579,97 +1607,32 @@ export class JumperBackend<
      * No description
      *
      * @tags Earn, Public
-     * @name EarnControllerFilterV1
-     * @summary Filter earn opportunities
-     * @request GET:/v1/earn/filter
+     * @name EarnControllerAllV1
+     * @summary Get all earn opportunities
+     * @request GET:/v1/earn/all
      */
-    earnControllerFilterV1: (
+    earnControllerAllV1: (
       query?: {
-        /**
-         * Sort by field.
-         * @example "apy"
-         */
-        sortBy?: 'apy' | 'tvl' | 'slug' | 'chain' | 'protocol' | 'asset';
-        /**
-         * Sort order.
-         * @example "asc"
-         */
-        order?: 'asc' | 'desc';
         /**
          * The address to filter for
          * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
          */
         address?: string;
         /**
-         * Whether to filter for "for you" opportunities
-         * @example true
-         */
-        forYou?: boolean;
-        /**
-         * Whether to filter for featured opportunities
-         * @example true
-         */
-        featured?: boolean;
-        /**
-         * The chain ids to filter for
-         * @example [1,10,137]
-         */
-        chains?: number[];
-        /**
-         * The protocols to filter for
-         * @example ["Aave","Compound","Yearn"]
-         */
-        protocols?: string[];
-        /**
-         * The assets to filter for
-         * @example ["USDC","USDT","DAI"]
-         */
-        assets?: string[];
-        /**
-         * The tags to filter for
-         * @example ["Lending","Staking","Earn"]
-         */
-        tags?: string[];
-        /**
-         * The minimum APY to filter for
-         * @example 5.5
-         */
-        minAPY?: number;
-        /**
-         * The maximum APY to filter for
-         * @example 25
-         */
-        maxAPY?: number;
-        /**
-         * The minimum TVL to filter for
-         * @example 5.5
-         */
-        minTVL?: number;
-        /**
-         * The maximum TVL to filter for
-         * @example 25
-         */
-        maxTVL?: number;
-        /**
          * Filter for opportunities where the user has positions
          * @example true
          */
         hasPositions?: boolean;
         /**
-         * The minimum rewards APY to filter for
-         * @example 5.5
+         * Whether to filter for "for you" opportunities
+         * @example true
          */
-        minRewardsAPY?: number;
-        /**
-         * The maximum rewards APY to filter for
-         * @example 5.5
-         */
-        maxRewardsAPY?: number;
+        forYou?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
-        path: `/v1/earn/filter`,
+        path: `/v1/earn/all`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -1707,6 +1670,38 @@ export class JumperBackend<
       this.request<EarnOpportunityWithLatestAnalytics[], any>({
         path: `/v1/earn/items/${slug}/related`,
         method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetApyAnalyticsV1
+     * @summary Get APY analytics breakdown for an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/analytics/apy
+     */
+    earnControllerGetApyAnalyticsV1: (
+      slug: string,
+      query: {
+        /**
+         * The range field to filter for
+         * @example "day"
+         */
+        range: 'day' | 'week' | 'month' | 'year';
+        /**
+         * Use instant (1-day) APY instead of 7-day rolling APY
+         * @example true
+         */
+        instant?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<ApyAnalyticsHistory, any>({
+        path: `/v1/earn/items/${slug}/analytics/apy`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
@@ -1890,97 +1885,32 @@ export class JumperBackend<
      * No description
      *
      * @tags Recommendation, Public
-     * @name RecommendationControllerFilterV1
-     * @summary Filter earn opportunities
-     * @request GET:/v1/recommendation/filter
+     * @name RecommendationControllerAllV1
+     * @summary Get all earn opportunities
+     * @request GET:/v1/recommendation/all
      */
-    recommendationControllerFilterV1: (
+    recommendationControllerAllV1: (
       query?: {
-        /**
-         * Sort by field.
-         * @example "apy"
-         */
-        sortBy?: 'apy' | 'tvl' | 'slug' | 'chain' | 'protocol' | 'asset';
-        /**
-         * Sort order.
-         * @example "asc"
-         */
-        order?: 'asc' | 'desc';
         /**
          * The address to filter for
          * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
          */
         address?: string;
         /**
-         * Whether to filter for "for you" opportunities
-         * @example true
-         */
-        forYou?: boolean;
-        /**
-         * Whether to filter for featured opportunities
-         * @example true
-         */
-        featured?: boolean;
-        /**
-         * The chain ids to filter for
-         * @example [1,10,137]
-         */
-        chains?: number[];
-        /**
-         * The protocols to filter for
-         * @example ["Aave","Compound","Yearn"]
-         */
-        protocols?: string[];
-        /**
-         * The assets to filter for
-         * @example ["USDC","USDT","DAI"]
-         */
-        assets?: string[];
-        /**
-         * The tags to filter for
-         * @example ["Lending","Staking","Earn"]
-         */
-        tags?: string[];
-        /**
-         * The minimum APY to filter for
-         * @example 5.5
-         */
-        minAPY?: number;
-        /**
-         * The maximum APY to filter for
-         * @example 25
-         */
-        maxAPY?: number;
-        /**
-         * The minimum TVL to filter for
-         * @example 5.5
-         */
-        minTVL?: number;
-        /**
-         * The maximum TVL to filter for
-         * @example 25
-         */
-        maxTVL?: number;
-        /**
          * Filter for opportunities where the user has positions
          * @example true
          */
         hasPositions?: boolean;
         /**
-         * The minimum rewards APY to filter for
-         * @example 5.5
+         * Whether to filter for "for you" opportunities
+         * @example true
          */
-        minRewardsAPY?: number;
-        /**
-         * The maximum rewards APY to filter for
-         * @example 5.5
-         */
-        maxRewardsAPY?: number;
+        forYou?: boolean;
       },
       params: RequestParams = {},
     ) =>
       this.request<EarnOpportunities, any>({
-        path: `/v1/recommendation/filter`,
+        path: `/v1/recommendation/all`,
         method: 'GET',
         query: query,
         format: 'json',

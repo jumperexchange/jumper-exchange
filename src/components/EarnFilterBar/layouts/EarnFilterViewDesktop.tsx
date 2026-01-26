@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export const EarnFilterViewDesktop = () => {
   const { t } = useTranslation();
-  const { changeTab, showForYou, showYourPositions } = useEarnFiltering();
+  const { changeTab, tab } = useEarnFiltering();
 
   const tabOptions: HorizontalTabItem[] = [
     {
@@ -34,13 +34,7 @@ export const EarnFilterViewDesktop = () => {
   return (
     <HorizontalTabs
       tabs={tabOptions}
-      value={
-        showForYou
-          ? EarnFilterTab.FOR_YOU
-          : showYourPositions
-            ? EarnFilterTab.YOUR_POSITIONS
-            : EarnFilterTab.ALL
-      }
+      value={tab}
       size={HorizontalTabSize.MD}
       data-testid="earn-filter-tabs"
       onChange={handleTabChange}

@@ -1,4 +1,5 @@
 export enum AnalyticsValueFieldEnum {
+  INSTANT_APY = 'instant-apy',
   APY = 'apy',
   TVL = 'tvl',
 }

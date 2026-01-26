@@ -282,9 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
-    "currencyCompact": "{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}",
+    "currencyCompact": "",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
-    "decimalCompact": "{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}",
+    "decimalCompact": "",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",

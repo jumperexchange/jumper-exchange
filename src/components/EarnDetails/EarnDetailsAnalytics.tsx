@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useState } from 'react';
 import {
   EarnDetailsAnalyticsButton,
   EarnDetailsAnalyticsButtonsContainer,
@@ -8,13 +8,20 @@ import {
   EarnDetailsAnalyticsHeaderContainer,
   EarnDetailsAnalyticsLineChartContainer,
 } from './EarnDetails.styles';
-import { LineChart } from '../core/charts/LineChart/LineChart';
-import { useAnalyticsChartData, useAnalyticsQuery } from './hooks';
+import { EarnDetailsApyChart } from './EarnDetailsApyChart';
+import { EarnDetailsTvlChart } from './EarnDetailsTvlChart';
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import type { ValueFormatConfig } from 'src/utils/formatNumbers';
-import { APY_FORMAT_CONFIG } from 'src/utils/numbers/apy';
-import { TVL_FORMAT_CONFIG } from 'src/utils/numbers/tvl';
+
+const INSTANT_APY_ALLOWED_RANGES: AnalyticsRangeFieldEnum[] = [
+  AnalyticsRangeFieldEnum.WEEK,
+];
+
+const VALUE_LABELS: Record<AnalyticsValueFieldEnum, string> = {
+  [AnalyticsValueFieldEnum.APY]: 'APY',
+  [AnalyticsValueFieldEnum.INSTANT_APY]: 'Instant APY',
+  [AnalyticsValueFieldEnum.TVL]: 'TVL',
+};
 
 interface EarnDetailsAnalyticsProps {
   slug: string;
@@ -23,20 +30,27 @@ interface EarnDetailsAnalyticsProps {
 export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
   slug,
 }) => {
-  const { isLoading, error, data, value, range, setValue, setRange } =
-    useAnalyticsQuery(slug);
+  const [value, setValue] = useState<AnalyticsValueFieldEnum>(
+    AnalyticsValueFieldEnum.APY,
+  );
+  const [range, setRange] = useState<AnalyticsRangeFieldEnum>(
+    AnalyticsRangeFieldEnum.WEEK,
+  );
 
-  const valueFormatConfig = useMemo<ValueFormatConfig>(() => {
-    return value === AnalyticsValueFieldEnum.APY
-      ? APY_FORMAT_CONFIG
-      : TVL_FORMAT_CONFIG;
-  }, [value]);
+  const isInstantApy = value === AnalyticsValueFieldEnum.INSTANT_APY;
+  const isApy = value === AnalyticsValueFieldEnum.APY || isInstantApy;
 
-  const {
-    data: chartData,
-    theme: chartTheme,
-    dateFormat: chartDateFormat,
-  } = useAnalyticsChartData(data, range);
+  const handleValueChange = (newValue: AnalyticsValueFieldEnum) => {
+    setValue(newValue);
+    if (newValue === AnalyticsValueFieldEnum.INSTANT_APY) {
+      if (!INSTANT_APY_ALLOWED_RANGES.includes(range)) {
+        setRange(AnalyticsRangeFieldEnum.WEEK);
+      }
+    }
+  };
+
+  const isRangeDisabled = (rangeItem: AnalyticsRangeFieldEnum) =>
+    isInstantApy && !INSTANT_APY_ALLOWED_RANGES.includes(rangeItem);
 
   return (
     <EarnDetailsAnalyticsContainer>
@@ -46,6 +60,7 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
             <EarnDetailsAnalyticsButton
               key={rangeItem}
               isActive={rangeItem === range}
+              isDisabled={isRangeDisabled(rangeItem)}
               onClick={() => setRange(rangeItem as AnalyticsRangeFieldEnum)}
               size="small"
               data-testid={`analytics-range-${rangeItem}`}
@@ -59,25 +74,25 @@ export const EarnDetailsAnalytics: React.FC<EarnDetailsAnalyticsProps> = ({
             <EarnDetailsAnalyticsButton
               key={valueItem}
               isActive={valueItem === value}
-              onClick={() => setValue(valueItem as AnalyticsValueFieldEnum)}
+              onClick={() => handleValueChange(valueItem)}
               size="small"
               data-testid={`analytics-value-${valueItem}`}
             >
-              {valueItem.toUpperCase()}
+              {VALUE_LABELS[valueItem]}
             </EarnDetailsAnalyticsButton>
           ))}
         </EarnDetailsAnalyticsButtonsContainer>
       </EarnDetailsAnalyticsHeaderContainer>
       <EarnDetailsAnalyticsLineChartContainer>
-        <LineChart
-          isLoading={isLoading}
-          data={chartData}
-          dateFormat={chartDateFormat}
-          dataSetId={value}
-          valueFormatConfig={valueFormatConfig}
-          theme={chartTheme}
-          data-testid="analytics-chart"
-        />
+        {isApy ? (
+          <EarnDetailsApyChart
+            slug={slug}
+            range={range}
+            instant={isInstantApy}
+          />
+        ) : (
+          <EarnDetailsTvlChart slug={slug} range={range} />
+        )}
       </EarnDetailsAnalyticsLineChartContainer>
     </EarnDetailsAnalyticsContainer>
   );
