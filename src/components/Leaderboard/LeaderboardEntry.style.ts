@@ -114,7 +114,7 @@ export const LeaderboardEntryConnect = styled(ButtonSecondary)(({ theme }) => ({
 export const RankLabel = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
   display: 'inline-block',
-  backgroundColor: alpha(theme.palette.text.primary, 0.04),
+  backgroundColor: (theme.vars || theme).palette.alpha100.main,
   borderRadius: theme.shape.radius16,
   minWidth: 32,
   textAlign: 'center',
