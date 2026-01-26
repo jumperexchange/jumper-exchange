@@ -3,7 +3,8 @@
 import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
 import { MissionTask } from './MissionTask';
@@ -100,6 +101,11 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
             rewardGroups={missionDisplayData.rewardGroups}
             partnerLink={missionDisplayData.partnerLink}
             fullWidth
+            dataTestId={
+              missionDisplayData.slug || missionDisplayData.id
+                ? `mission-card-${missionDisplayData.slug || missionDisplayData.id}`
+                : undefined
+            }
           />
           {enhancedTasks.map((task, i) => (
             <MissionTask

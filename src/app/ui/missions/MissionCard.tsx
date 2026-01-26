@@ -49,6 +49,11 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     });
   };
 
+  const dataTestId =
+    missionDisplayData.slug || missionDisplayData.id
+      ? `mission-card-${missionDisplayData.slug || missionDisplayData.id}`
+      : undefined;
+
   const missionCard = (
     <EntityCard
       variant="compact"
@@ -61,6 +66,7 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       rewardGroups={missionDisplayData.rewardGroups}
       onClick={!isDisabled ? handleClick : undefined}
       fullWidth
+      dataTestId={dataTestId}
     />
   );
 

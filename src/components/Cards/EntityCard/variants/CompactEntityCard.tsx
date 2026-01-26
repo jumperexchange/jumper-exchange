@@ -35,8 +35,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   onClick,
   isLoading,
   fullWidth,
-  slug,
-  id,
+  dataTestId,
 }) => {
   const flattenedRewards = useMemo(() => {
     // Flatten rewards into a single array for easier measurement
@@ -129,8 +128,6 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
     return <CompactEntityCardSkeleton fullWidth={fullWidth} />;
   }
 
-  const testId = slug || id ? `mission-card-${slug || id}` : undefined;
-
   return (
     <StyledEntityCard
       sx={{
@@ -138,7 +135,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
         maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
-      data-testid={testId}
+      data-testid={dataTestId}
     >
       <StyledEntityCardImageContainer
         sx={{
