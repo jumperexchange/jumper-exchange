@@ -72,7 +72,6 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionUpdated?: TrackingAction;
     routeHighValueLoss?: TrackingAction;
     lowAddressActivityConfirmed?: TrackingAction;
-    pageEntered?: TrackingAction;
     sendToWalletToggled?: TrackingAction;
     formFieldChanged?: TrackingAction;
   };
@@ -97,7 +96,6 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionUpdated: '',
     routeHighValueLoss: '',
     lowAddressActivityConfirmed: '',
-    pageEntered: '',
     sendToWalletToggled: '',
     formFieldChanged: '',
   },
@@ -398,24 +396,6 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     [trackEvent, trackingActionKeys.lowAddressActivityConfirmed],
   );
 
-  const pageEntered = useCallback(
-    (page: string) => {
-      if (!trackingActionKeys.pageEntered) {
-        return;
-      }
-      trackEvent({
-        category: TrackingCategory.WidgetEvent,
-        action: trackingActionKeys.pageEntered,
-        label: `page_entered`,
-        data: {
-          [TrackingEventParameter.Page]: page,
-        },
-        enableAddressable: true,
-      });
-    },
-    [trackEvent, trackingActionKeys.pageEntered],
-  );
-
   const sendToWalletToggled = useCallback(
     (sendToWallet: boolean) => {
       if (!trackingActionKeys.sendToWalletToggled) {
@@ -499,7 +479,6 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       settingUpdated,
       routeHighValueLoss,
       lowAddressActivityConfirmed,
-      pageEntered,
       sendToWalletToggled,
       formFieldChanged,
       routeSelected: posthogTracker.onRouteSelected,
@@ -523,7 +502,6 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     destinationChainTokenSelected,
     routeHighValueLoss,
     lowAddressActivityConfirmed,
-    pageEntered,
     sendToWalletToggled,
     formFieldChanged,
     posthogTracker.onRouteSelected,
