@@ -84,8 +84,8 @@ export const HighRewards: Story = {
     ...commonArgs,
     data: stackedApyData.map((d) => ({
       ...d,
-      reward: d.reward * 3,
-      total: d.base + d.reward * 3,
+      reward: d.reward! * 3,
+      total: d.base! + d.reward! * 3,
     })),
   },
 };
@@ -96,9 +96,9 @@ export const VerySmallValues: Story = {
     ...commonArgs,
     data: stackedApyData.map((d) => ({
       ...d,
-      base: d.base * 0.01,
-      reward: d.reward * 0.01,
-      total: (d.base + d.reward) * 0.01,
+      base: d.base! * 0.01,
+      reward: d.reward! * 0.01,
+      total: (d.base! + d.reward!) * 0.01,
     })),
   },
 };

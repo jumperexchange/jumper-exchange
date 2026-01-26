@@ -33,7 +33,8 @@ export const useSimpleAnalyticsChartConfig = (
     const mapped =
       rawData?.points.map((point) => ({
         date: new Date(point.t).toISOString(),
-        value: point.v,
+        // Normalize potential nulls to undefined to match chart value typings
+        value: point.v ?? undefined,
       })) ?? [];
     return trimLeadingNulls(mapped, (item) => item.value != null);
   }, [rawData]);
@@ -65,10 +66,7 @@ export const useApyAnalyticsChartConfig = (
             ? point.base + point.reward
             : null,
       })) ?? [];
-    return trimLeadingNulls(
-      mapped,
-      (item) => item.total != null,
-    ) as StackedAreaChartProps['data'];
+    return trimLeadingNulls(mapped, (item) => item.total != null);
   }, [rawData]);
 
   const theme = useRewardChartTheme();

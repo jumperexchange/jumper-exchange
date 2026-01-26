@@ -46,9 +46,9 @@ const StyledResponsiveContainer = styled(ResponsiveContainer, {
 
 export interface StackedChartDataPoint {
   date: string;
-  base: number;
-  reward: number;
-  total: number;
+  base: number | null;
+  reward: number | null;
+  total: number | null;
 }
 
 export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
@@ -74,7 +74,9 @@ export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
 
 const calculateStackedVisibleYRange = (data: StackedChartDataPoint[]) => {
   const points = data
-    .filter((d) => d.total != null)
+    .filter(
+      (d): d is StackedChartDataPoint & { total: number } => d.total != null,
+    )
     .map((d) => ({
       date: d.date,
       value: d.total,
@@ -140,7 +142,9 @@ export const StackedAreaChart = ({
   const xAxisTicks = useMemo(() => {
     // Adapt the data format for calculateEvenXAxisTicks
     const adaptedData = data
-      .filter((d) => d.total != null)
+      .filter(
+        (d): d is StackedChartDataPoint & { total: number } => d.total != null,
+      )
       .map((d) => ({
         date: d.date,
         value: d.total,
@@ -169,6 +173,9 @@ export const StackedAreaChart = ({
     const { cx, cy, payload } = props;
 
     if (payload.total == null) {
+      if (enableTooltip) {
+        setActiveDot(null);
+      }
       return null;
     }
 

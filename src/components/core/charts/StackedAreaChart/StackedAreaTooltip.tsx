@@ -42,9 +42,11 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
   };
 
   const total =
-    payload.base != null && payload.reward != null
-      ? payload.base + payload.reward
-      : null;
+    payload.total != null
+      ? payload.total
+      : payload.base != null && payload.reward != null
+        ? payload.base + payload.reward
+        : null;
 
   return (
     <Box
