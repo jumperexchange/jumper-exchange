@@ -8,7 +8,7 @@ import {
 } from 'lodash';
 import type { ExtendedChain } from '@lifi/sdk';
 import type { AllTokens } from '@/hooks/useTokens';
-import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
+import type { LiFiCommonToken } from '../lib/fetchBalancesForAddresses';
 import {
   PortfolioExtendedToken,
   PortfolioTokenGroup,
@@ -16,32 +16,25 @@ import {
   type NormalizeTokensParams,
   type TokenGroupingKey,
   type TokenGroupingFn,
+  PortfolioBalance,
 } from '../types/tokens';
 import type { LpTokenIdentifier } from '../types/positions';
 import { TokenBalance } from '@/types/tokens';
+import { formatUnits } from 'viem';
 
-export const normalizeTokens = ({
-  tokens,
-  chains,
-  getPrice,
-}: NormalizeTokensParams): TokenBalance[] => {
-  return tokens
-    .map((token) => {
-      try {
-        const chain = chains.find((c) => c.id === token.chainId);
-        if (!chain) {
-          return null;
-        }
-        return PortfolioExtendedToken.fromLiFiToken(token, chain, getPrice);
-      } catch (error) {
-        console.warn(
-          `[normalizeTokens] Failed to normalize token ${token.symbol} on chain ${token.chainId}:`,
-          error,
-        );
-        return null;
-      }
+export const toPortfolioBalances = (
+  balances: TokenBalance[],
+): PortfolioBalance[] => {
+  return balances
+    .map((balance) => {
+      const amount = formatUnits(balance.amount, balance.token.decimals);
+      const amountUSD = Number(amount) * Number(balance.token.priceUSD);
+      return {
+        ...balance,
+        amountUSD,
+      };
     })
-    .filter(Boolean) as PortfolioExtendedToken[];
+    .filter(Boolean) as PortfolioBalance[];
 };
 
 export const groupBySymbol: TokenGroupingFn = (t) => t.symbol || 'Unknown';
@@ -54,20 +47,20 @@ export const tokenGroupingFns: Record<TokenGroupingKey, TokenGroupingFn> = {
 };
 
 export const toTokensGroup = (
-  tokens: PortfolioExtendedToken[],
+  balances: TokenBalance[],
 ): PortfolioTokenGroup | null => {
-  if (tokens.length === 0) {
+  if (balances.length === 0) {
     return null;
   }
   return new PortfolioTokenGroup(tokens, 0);
 };
 
 export const groupTokens = (
-  tokens: PortfolioExtendedToken[],
+  balances: TokenBalance[],
   groupBy: TokenGroupingKey,
 ): PortfolioTokenGroup[] => {
   const groupingFn = tokenGroupingFns[groupBy];
-  const grouped = groupByLodash(tokens, groupingFn);
+  const grouped = groupByLodash(balances, groupingFn);
   const groups = values(grouped).map(toTokensGroup);
   return orderBy(compact(groups), (g) => g.amountUSD, 'desc');
 };
@@ -76,15 +69,15 @@ const getTokenKey = (address: string, chainId: number): string =>
   `${address.toLowerCase()}-${chainId}`;
 
 export const dedupTokensFromLpPositions = (
-  tokens: PortfolioExtendedToken[],
+  balances: TokenBalance[],
   lpTokens: LpTokenIdentifier[],
-): PortfolioExtendedToken[] => {
-  if (isEmpty(tokens) || isEmpty(lpTokens)) {
-    return tokens;
+): TokenBalance[] => {
+  if (isEmpty(balances) || isEmpty(lpTokens)) {
+    return balances;
   }
 
-  return differenceWith(tokens, lpTokens, (token, lpToken) => {
-    const tokenKey = getTokenKey(token.address, token.chainId);
+  return differenceWith(balances, lpTokens, (balance, lpToken) => {
+    const tokenKey = getTokenKey(balance.token.address, balance.token.chainId);
     const lpKey = getTokenKey(lpToken.address, lpToken.chainId);
 
     return tokenKey === lpKey;

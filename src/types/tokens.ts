@@ -6,7 +6,7 @@ import type {
   TokenTag,
 } from '@lifi/sdk';
 
-import type { Token as JumperToken } from '@/types/jumper-backend';
+import type { DefiToken, Token as JumperToken } from '@/types/jumper-backend';
 import { safeBigInt } from '@/utils/numbers/safeBigInt';
 
 const isJumperToken = (
@@ -98,15 +98,33 @@ export const createExtendedToken = (
   };
 };
 
-export const createTokenBalance = (
+const isDefiToken = (token: DefiToken | ExtendedToken): token is DefiToken => {
+  return 'chainType' in token;
+};
+
+export function createTokenBalance(
   token: ExtendedToken,
   amount: bigint | string,
-): TokenBalance => {
+): TokenBalance;
+export function createTokenBalance(
+  token: DefiToken,
+  amount: never,
+): TokenBalance;
+export function createTokenBalance(
+  token: ExtendedToken | DefiToken,
+  amount: bigint | string | never,
+): TokenBalance {
+  if (isDefiToken(token)) {
+    return {
+      amount: safeBigInt(token.amount),
+      token: createExtendedToken(token),
+    };
+  }
   return {
     amount: safeBigInt(amount),
     token,
   };
-};
+}
 
 // export interface PortfolioBalance {
 //   relatedBalances: Omit<PortfolioBalance, 'relatedBalances'>[];

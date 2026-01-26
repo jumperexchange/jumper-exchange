@@ -14,29 +14,29 @@ export interface FormatAmountOptions {
 export const useTokenFormatters = () => {
   const { t } = useTranslation();
 
-  const toFormatAmount = useCallback((balance: TokenBalance): string => {
+  const toAmount = useCallback((balance: TokenBalance): string => {
     return formatTokenAmount(balance.amount, balance.token.decimals);
   }, []);
 
-  const toFormatAmountUSD = useCallback(
+  const toAmountUSD = useCallback(
     (balance: TokenBalance): string => {
       return formatTokenPrice(
-        toFormatAmount(balance),
+        toAmount(balance),
         balance.token.priceUSD.toString(),
       ).toString();
     },
-    [toFormatAmount],
+    [toAmount],
   );
 
   const toDisplayAmountUSD = useCallback(
     (balance: TokenBalance, options?: FormatAmountUSDOptions): string => {
-      const value = toFormatAmountUSD(balance);
+      const value = toAmountUSD(balance);
       const formatKey = options?.compact
         ? 'format.currencyCompact'
         : 'format.currency';
       return t(formatKey, { value });
     },
-    [t, toFormatAmountUSD],
+    [t, toAmountUSD],
   );
 
   const toDisplayAmount = useCallback(
@@ -45,15 +45,17 @@ export const useTokenFormatters = () => {
       symbol: string,
       _options?: FormatAmountOptions,
     ): string => {
-      const amount = toFormatAmount(balance);
+      const amount = toAmount(balance);
       const formatted = t('format.decimal', { value: amount });
       return `${formatted} ${symbol}`;
     },
-    [t, toFormatAmount],
+    [t, toAmount],
   );
 
   return {
-    amountUSD: toDisplayAmountUSD,
-    amount: toDisplayAmount,
+    toAmount,
+    toAmountUSD,
+    toDisplayAmountUSD,
+    toDisplayAmount,
   };
 };

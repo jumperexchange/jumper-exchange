@@ -4,10 +4,10 @@ import { useMemo } from 'react';
 import { mapValues } from 'lodash';
 import { useChains } from '@/hooks/useChains';
 import { usePriceLookup } from './usePriceLookup';
-import { useTokensData } from './useTokensData';
+import { useBalancesData } from './useBalancesData';
 import type { Account } from '@lifi/wallet-management';
 import {
-  normalizeTokens,
+  toPortfolioBalances,
   groupTokens,
   dedupTokensFromLpPositions,
 } from '../utils/tokens';
@@ -15,6 +15,7 @@ import { extractTokensMetadata } from '../utils/metadata';
 import type { PortfolioTokenGroup } from '../types/tokens';
 import type { TokensMetadata } from '../types/metadata';
 import type { LpTokenIdentifier } from '../types/positions';
+import { useTokenFormatters } from '@/hooks/useTokenFormatters';
 
 export interface ProcessedTokensResult {
   tokens: PortfolioTokenGroup[];
@@ -38,75 +39,67 @@ export interface UseProcessedTokensParams {
 export const useProcessedTokens = ({
   lpTokens = [],
 }: UseProcessedTokensParams = {}): ProcessedTokensResult => {
-  const { chains } = useChains();
-  const rawData = useTokensData();
-  const { getPrice } = usePriceLookup();
+  const rawData = useBalancesData();
 
-  const normalizedTokens = useMemo(
-    () =>
-      normalizeTokens({
-        tokens: rawData.tokens,
-        chains,
-        getPrice,
-      }),
-    [rawData.tokens, chains, getPrice],
+  const balances = useMemo(
+    () => toPortfolioBalances(rawData.balances),
+    [rawData.balances],
   );
 
-  const tokensByAddress = useMemo(
-    () =>
-      mapValues(rawData.tokensByAddress, (addressTokens) =>
-        normalizeTokens({
-          tokens: addressTokens,
-          chains,
-          getPrice,
-        }),
-      ),
-    [rawData.tokensByAddress, chains, getPrice],
-  );
+  const balancesByAddress = useMemo(() => {
+    return mapValues(rawData.balancesByAddress, toPortfolioBalances);
+  }, [rawData.balancesByAddress]);
 
+  // TODO make lpTokens as PortfolioBalance
   const dedupedTokens = useMemo(
-    () => dedupTokensFromLpPositions(normalizedTokens, lpTokens),
-    [normalizedTokens, lpTokens],
+    () => dedupTokensFromLpPositions(balances, lpTokens),
+    [balances, lpTokens],
   );
 
   const dedupedTokensByAddress = useMemo(
     () =>
-      mapValues(tokensByAddress, (tokens) =>
-        dedupTokensFromLpPositions(tokens, lpTokens),
+      mapValues(balancesByAddress, (balances) =>
+        dedupTokensFromLpPositions(balances, lpTokens),
       ),
-    [tokensByAddress, lpTokens],
+    [balancesByAddress, lpTokens],
   );
 
-  const bySymbol = useMemo(
-    () => groupTokens(dedupedTokens, 'bySymbol'),
-    [dedupedTokens],
-  );
+  // const bySymbol = useMemo(
+  //   () => groupTokens(dedupedTokens, 'bySymbol'),
+  //   [dedupedTokens],
+  // );
 
-  const bySymbolByAddress = useMemo(
-    () =>
-      mapValues(dedupedTokensByAddress, (tokens) =>
-        groupTokens(tokens, 'bySymbol'),
-      ),
-    [dedupedTokensByAddress],
-  );
+  // const bySymbolByAddress = useMemo(
+  //   () =>
+  //     mapValues(dedupedTokensByAddress, (tokens) =>
+  //       groupTokens(tokens, 'bySymbol'),
+  //     ),
+  //   [dedupedTokensByAddress],
+  // );
 
-  const byChain = useMemo(
-    () => groupTokens(dedupedTokens, 'byChain'),
-    [dedupedTokens],
-  );
+  // const byChain = useMemo(
+  //   () => groupTokens(dedupedTokens, 'byChain'),
+  //   [dedupedTokens],
+  // );
 
-  const metadata = useMemo(
-    () => extractTokensMetadata(dedupedTokens, rawData.accounts),
-    [dedupedTokens, rawData.accounts],
-  );
+  // FIXME: Implement metadata extraction
+  // const metadata = useMemo(
+  //   () => extractTokensMetadata(dedupedTokens, rawData.accounts),
+  //   [dedupedTokens, rawData.accounts],
+  // );
 
   return {
-    tokens: bySymbol,
-    tokensByAddress: bySymbolByAddress,
-    tokensBySymbol: bySymbol,
-    tokensByChain: byChain,
+    tokens: [],
+    tokensByAddress: {},
+    tokensBySymbol: [],
+    tokensByChain: [],
     accounts: rawData.accounts,
-    metadata,
+    metadata: {
+      wallets: [],
+      chains: [],
+      assets: [],
+      valueRange: { min: 0, max: 0 },
+    },
     isEmpty: dedupedTokens.length === 0,
     isLoading: rawData.isLoading,
     error: rawData.error,

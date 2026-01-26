@@ -1,8 +1,12 @@
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { LiFiCommonToken } from '@/providers/PortfolioProvider/lib/fetchTokensForAddresses';
+import type { TokenBalance } from '@/types/tokens';
 import type { DefiPosition } from '@/types/jumper-backend';
+import superjson from 'superjson';
+
+const getLocalStorage = () =>
+  typeof window === 'undefined' ? undefined : localStorage;
 
 /**
  * Helper to ensure we always work with a Map
@@ -25,8 +29,8 @@ export interface PositionKey {
  * Cache state interface
  */
 export interface PortfolioCacheState {
-  /** Cached tokens by wallet address */
-  tokens: Map<string, LiFiCommonToken[]>;
+  /** Cached balances by wallet address */
+  balances: Map<string, TokenBalance[]>;
   /** Cached positions by wallet address */
   positions: Map<string, DefiPosition[]>;
   /** Force refresh flags by wallet address */
@@ -40,9 +44,9 @@ export interface PortfolioCacheState {
  */
 export interface PortfolioCacheActions {
   /** Get cached tokens for an address */
-  getTokens: (address: string) => LiFiCommonToken[];
+  getBalances: (address: string) => TokenBalance[];
   /** Set cached tokens for an address */
-  setTokens: (address: string, tokens: LiFiCommonToken[]) => void;
+  setBalances: (address: string, balances: TokenBalance[]) => void;
   /** Get cached positions for an address */
   getPositions: (address: string) => DefiPosition[];
   /** Set cached positions for an address */
@@ -66,7 +70,7 @@ export interface PortfolioCacheActions {
 export type PortfolioCacheStore = PortfolioCacheState & PortfolioCacheActions;
 
 const createDefaultCacheState = (): PortfolioCacheState => ({
-  tokens: new Map<string, LiFiCommonToken[]>(),
+  balances: new Map<string, TokenBalance[]>(),
   positions: new Map<string, DefiPosition[]>(),
   forceRefresh: new Map<string, boolean>(),
   positionPatchVersion: 0,
@@ -80,14 +84,14 @@ export const usePortfolioCacheStore = createWithEqualityFn(
     (set, get) => ({
       ...createDefaultCacheState(),
 
-      getTokens: (address: string) => {
-        return get().tokens.get(address) ?? [];
+      getBalances: (address: string) => {
+        return get().balances.get(address) ?? [];
       },
 
-      setTokens: (address: string, tokens: LiFiCommonToken[]) => {
-        const currentTokens = getOrCreateMap(get().tokens);
-        currentTokens.set(address, tokens);
-        set({ tokens: currentTokens });
+      setBalances: (address: string, balances: TokenBalance[]) => {
+        const currentBalances = getOrCreateMap(get().balances);
+        currentBalances.set(address, balances);
+        set({ balances: currentBalances });
       },
 
       getPositions: (address: string) => {
@@ -156,15 +160,15 @@ export const usePortfolioCacheStore = createWithEqualityFn(
       },
 
       clearCacheForAddress: (address: string) => {
-        const tokens = getOrCreateMap(get().tokens);
+        const balances = getOrCreateMap(get().balances);
         const positions = getOrCreateMap(get().positions);
         const forceRefresh = getOrCreateMap(get().forceRefresh);
 
-        tokens.delete(address);
+        balances.delete(address);
         positions.delete(address);
         forceRefresh.delete(address);
 
-        set({ tokens, positions, forceRefresh });
+        set({ balances, positions, forceRefresh });
       },
 
       clearAll: () => {
@@ -174,12 +178,23 @@ export const usePortfolioCacheStore = createWithEqualityFn(
     {
       name: 'jumper-portfolio-cache',
       version: 1,
-      storage: createJSONStorage(() => localStorage),
+      storage: {
+        getItem: (name) => {
+          const str = getLocalStorage()?.getItem(name);
+          return str ? superjson.parse(str) : null;
+        },
+        setItem: (name, value) => {
+          getLocalStorage()?.setItem(name, superjson.stringify(value));
+        },
+        removeItem: (name) => {
+          getLocalStorage()?.removeItem(name);
+        },
+      },
       partialize: (state: PortfolioCacheStore) => {
-        const { tokens, positions, forceRefresh } = state;
+        const { balances, positions, forceRefresh } = state;
 
         return {
-          tokens: Object.fromEntries(tokens.entries()),
+          balances: Object.fromEntries(balances.entries()),
           positions: Object.fromEntries(positions.entries()),
           forceRefresh: Object.fromEntries(forceRefresh.entries()),
         } as unknown as PortfolioCacheStore;
@@ -188,7 +203,7 @@ export const usePortfolioCacheStore = createWithEqualityFn(
         if (!state) {
           return;
         }
-        state.tokens = new Map(Object.entries(state.tokens || {}));
+        state.balances = new Map(Object.entries(state.balances || {}));
         state.positions = new Map(Object.entries(state.positions || {}));
         state.forceRefresh = new Map(Object.entries(state.forceRefresh || {}));
       },

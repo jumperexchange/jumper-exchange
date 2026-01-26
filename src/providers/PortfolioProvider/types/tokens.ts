@@ -1,12 +1,12 @@
 import { orderBy, sumBy } from 'lodash';
-import type { Token, TokenBalance } from '@lifi/sdk';
+import type { Token } from '@lifi/sdk';
 import type { ExtendedChain } from '@lifi/sdk';
 import { ExtendedToken } from '@/utils/Token';
-import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
 import type { Token as JumperToken, DefiToken } from '@/types/jumper-backend';
 import type { PortfolioFormatters } from '../hooks/usePortfolioFormatters';
 import { formatTokenAmount } from '@/utils/format';
 import { computePercentage } from '../utils/summary';
+import { TokenBalance } from '@/types/tokens';
 
 export type PriceLookup = (
   chainId: number,
@@ -19,14 +19,17 @@ export type GetTokenPrice = (
 ) => number | undefined;
 
 export interface NormalizeTokensParams {
-  tokens: TokenBalance[];
+  balances: TokenBalance[];
   chains: ExtendedChain[];
-  getPrice: PriceLookup;
 }
 
 export type TokenGroupingFn = (token: PortfolioExtendedToken) => string;
 
 export type TokenGroupingKey = 'bySymbol' | 'byChain';
+
+export interface PortfolioBalance extends TokenBalance {
+  amountUSD: number;
+}
 
 interface PortfolioTokenData {
   amount: number;
@@ -82,7 +85,7 @@ export class PortfolioExtendedToken extends ExtendedToken {
   }
 
   static fromLiFiToken(
-    token: LiFiCommonToken,
+    token: any,
     chain: ExtendedChain,
     getPrice?: PriceLookup,
   ): PortfolioExtendedToken {
@@ -162,8 +165,8 @@ export class PortfolioExtendedToken extends ExtendedToken {
 }
 
 export class PortfolioTokenGroup {
-  main: PortfolioExtendedToken;
-  all: PortfolioExtendedToken[];
+  main: TokenBalance;
+  all: TokenBalance[];
   amountUSD: number;
   amount: number;
   percentageOfAmountUSD?: number;
@@ -174,12 +177,12 @@ export class PortfolioTokenGroup {
     PortfolioTokenGroup.formatters = formatters;
   }
 
-  constructor(tokens: PortfolioExtendedToken[], totalTokensValueUSD: number) {
-    if (tokens.length === 0) {
+  constructor(balances: TokenBalance[], totalTokensValueUSD: number) {
+    if (balances.length === 0) {
       throw new Error('PortfolioTokenGroup requires at least one token');
     }
 
-    const sorted = orderBy(tokens, (t) => t.amountUSD, 'desc');
+    const sorted = orderBy(balances, (t) => t.amountUSD, 'desc');
     this.main = sorted[0];
     this.all = sorted;
     this.amountUSD = sumBy(sorted, (t) => t.amountUSD);

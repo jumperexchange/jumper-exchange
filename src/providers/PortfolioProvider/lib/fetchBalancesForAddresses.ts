@@ -33,7 +33,7 @@ const createTokenBalancesFromPlainArray = <
     .map((token) => createTokensBalanceFromPlain(token));
 };
 
-export interface FetchTokensParams {
+export interface FetchBalancesParams {
   address: string;
   chainType: ChainType;
   onProgress?: (round: number, tokens: TokenBalance[]) => void;
@@ -41,30 +41,30 @@ export interface FetchTokensParams {
 }
 
 /** Fetch tokens for EVM wallet (no batching needed) */
-export const fetchTokensForAddressEVM = async (address: string) => {
+export const fetchBalancesForEVMAddress = async (address: string) => {
   const walletBalances = await getWalletBalances(address);
   return createTokenBalancesFromPlainArray(flatMap(walletBalances));
 };
 
 /** Fetch tokens for a wallet address */
-export const fetchTokensForAddress = async ({
+export const fetchBalancesForAddress = async ({
   address,
   chainType,
   onProgress,
   onComplete,
-}: FetchTokensParams) => {
+}: FetchBalancesParams) => {
   // EVM: use getWalletBalances (no batching needed)
   if (chainType === ChainType.EVM) {
-    const tokens = await fetchTokensForAddressEVM(address);
-    onProgress?.(1, tokens);
-    onComplete?.(tokens);
-    return { tokens, address, control: null };
+    const balances = await fetchBalancesForEVMAddress(address);
+    onProgress?.(1, balances);
+    onComplete?.(balances);
+    return { balances, address, control: null };
   }
 
   // Non-EVM: use batched fetching with getTokenBalances
   const tokensResponse = await getTokens({ chainTypes: [chainType] });
 
-  let finalTokens: TokenBalance[] = [];
+  let balances: TokenBalance[] = [];
 
   const batchFetcherControl = createBatchFetcher<Token, TokenAmount>(
     tokensResponse.tokens,
@@ -74,21 +74,23 @@ export const fetchTokensForAddress = async ({
     },
     {
       onProgress: (round, results) => {
-        finalTokens = createTokenBalancesFromPlainArray(results);
+        balances = createTokenBalancesFromPlainArray(results);
 
-        onProgress?.(round, finalTokens);
+        onProgress?.(round, balances);
       },
       onComplete: (results) => {
-        finalTokens = createTokenBalancesFromPlainArray(results);
-        onComplete?.(finalTokens);
+        balances = createTokenBalancesFromPlainArray(results);
+        onComplete?.(balances);
       },
     },
   );
 
-  return { tokens: finalTokens, address, control: batchFetcherControl };
+  return { balances, address, control: batchFetcherControl };
 };
 
-/** Fetch tokens for multiple addresses */
-export const fetchTokensForAddresses = async (params: FetchTokensParams[]) => {
-  return Promise.all(params.map(fetchTokensForAddress));
+/** Fetch balances for multiple addresses */
+export const fetchBalancesForAddresses = async (
+  params: FetchBalancesParams[],
+) => {
+  return Promise.all(params.map(fetchBalancesForAddress));
 };

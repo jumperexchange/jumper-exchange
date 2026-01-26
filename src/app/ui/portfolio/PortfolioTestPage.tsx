@@ -33,6 +33,8 @@ import { TokensFilterControls } from '@/providers/PortfolioProvider/filtering/To
 import { useDeFiPositionsFiltering } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilteringContext';
 import { DeFiPositionsFilterControls } from '@/providers/PortfolioProvider/filtering/DeFiPositionsFilterControls';
 import type { PortfolioExtendedToken } from '@/providers/PortfolioProvider/types/tokens';
+import { useBalancesData } from '@/providers/PortfolioProvider/hooks/useBalancesData';
+import { useTokenFormatters } from '@/hooks/useTokenFormatters';
 
 const formatTimestamp = (timestamp: number | null) => {
   if (!timestamp) {
@@ -117,7 +119,7 @@ const SummaryCard = () => {
             />
           </Stack>
 
-          {summary.tokensBySymbol.length > 0 && (
+          {/* {summary.tokensBySymbol.length > 0 && (
             <Box>
               <Typography variant="subtitle2" gutterBottom>
                 Top Tokens by Symbol
@@ -165,7 +167,7 @@ const SummaryCard = () => {
                 ))}
               </Stack>
             </Box>
-          )}
+          )} */}
 
           {summary.positionsByProtocol.length > 0 && (
             <Box>
@@ -228,8 +230,132 @@ const SummaryCard = () => {
   );
 };
 
-const TokensList = () => {
-  const { data: tokens, isLoading, isEmpty } = useTokensFiltering();
+// const TokensList = () => {
+//   const { data: tokens, isLoading, isEmpty } = useTokensFiltering();
+
+//   if (isLoading) {
+//     return (
+//       <Stack alignItems="center" spacing={2}>
+//         <CircularProgress size={24} />
+//         <Typography>Loading tokens...</Typography>
+//       </Stack>
+//     );
+//   }
+
+//   if (isEmpty) {
+//     return (
+//       <Typography color="text.secondary">
+//         No tokens found. Connect a wallet to see your tokens.
+//       </Typography>
+//     );
+//   }
+
+//   if (tokens.length === 0) {
+//     return (
+//       <Typography color="text.secondary">
+//         No tokens match the current filters.
+//       </Typography>
+//     );
+//   }
+
+//   return (
+//     <Stack spacing={1} sx={{ maxHeight: 400, overflow: 'auto' }}>
+//       {tokens.slice(0, 20).map((tokenGroup, index) => (
+//         <Box
+//           key={`${tokenGroup.main.chainId}-${tokenGroup.main.address}-${index}`}
+//           sx={{
+//             p: 1,
+//             borderRadius: 1,
+//             bgcolor: 'action.hover',
+//           }}
+//         >
+//           <Box
+//             sx={{
+//               display: 'flex',
+//               justifyContent: 'space-between',
+//               alignItems: 'center',
+//             }}
+//           >
+//             <Stack direction="row" spacing={2} alignItems="center">
+//               {tokenGroup.main.logoURI && (
+//                 <Box
+//                   component="img"
+//                   src={tokenGroup.main.logoURI}
+//                   alt={tokenGroup.main.symbol}
+//                   sx={{ width: 32, height: 32, borderRadius: '50%' }}
+//                 />
+//               )}
+//               <Box>
+//                 <Typography variant="body1">
+//                   {tokenGroup.main.symbol}
+//                 </Typography>
+//                 <Typography variant="caption" color="text.secondary">
+//                   {tokenGroup.all.length} chain
+//                   {tokenGroup.all.length !== 1 ? 's' : ''}
+//                 </Typography>
+//               </Box>
+//             </Stack>
+//             <Box sx={{ textAlign: 'right' }}>
+//               <Typography variant="body2">
+//                 {tokenGroup.displayAmountUSD()}
+//               </Typography>
+//               <Typography variant="caption" color="text.secondary">
+//                 {tokenGroup.displayAmount()}
+//               </Typography>
+//             </Box>
+//           </Box>
+
+//           {tokenGroup.all.length > 1 && (
+//             <Stack spacing={0.5} sx={{ mt: 1, pl: 5 }}>
+//               {tokenGroup.all.map((token, tokenIndex) => (
+//                 <Box
+//                   key={`${token.chainId}-${token.address}-${tokenIndex}`}
+//                   sx={{
+//                     display: 'flex',
+//                     justifyContent: 'space-between',
+//                     alignItems: 'center',
+//                     py: 0.5,
+//                     borderLeft: 2,
+//                     borderColor: 'divider',
+//                     pl: 1,
+//                   }}
+//                 >
+//                   <Typography variant="caption" color="text.secondary">
+//                     {token.chainKey}
+//                   </Typography>
+//                   <Stack direction="row" spacing={1} alignItems="center">
+//                     <Typography variant="caption">
+//                       {token.displayAmountUSD()}
+//                     </Typography>
+//                     <Typography variant="caption" color="text.secondary">
+//                       {token.displayAmount()}
+//                     </Typography>
+//                   </Stack>
+//                 </Box>
+//               ))}
+//             </Stack>
+//           )}
+//         </Box>
+//       ))}
+//       {tokens.length > 20 && (
+//         <Typography
+//           variant="body2"
+//           color="text.secondary"
+//           sx={{ textAlign: 'center', py: 1 }}
+//         >
+//           ... and {tokens.length - 20} more tokens
+//         </Typography>
+//       )}
+//     </Stack>
+//   );
+// };
+
+const TokensSection = () => {
+  const { allChains } = useTokensFiltering();
+  const { updatedAt } = usePortfolioTokens();
+
+  const { balances, isLoading } = useBalancesData();
+  const formatters = useTokenFormatters();
 
   if (isLoading) {
     return (
@@ -240,117 +366,13 @@ const TokensList = () => {
     );
   }
 
-  if (isEmpty) {
-    return (
-      <Typography color="text.secondary">
-        No tokens found. Connect a wallet to see your tokens.
-      </Typography>
-    );
-  }
-
-  if (tokens.length === 0) {
+  if (balances.length === 0) {
     return (
       <Typography color="text.secondary">
         No tokens match the current filters.
       </Typography>
     );
   }
-
-  return (
-    <Stack spacing={1} sx={{ maxHeight: 400, overflow: 'auto' }}>
-      {tokens.slice(0, 20).map((tokenGroup, index) => (
-        <Box
-          key={`${tokenGroup.main.chainId}-${tokenGroup.main.address}-${index}`}
-          sx={{
-            p: 1,
-            borderRadius: 1,
-            bgcolor: 'action.hover',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              {tokenGroup.main.logoURI && (
-                <Box
-                  component="img"
-                  src={tokenGroup.main.logoURI}
-                  alt={tokenGroup.main.symbol}
-                  sx={{ width: 32, height: 32, borderRadius: '50%' }}
-                />
-              )}
-              <Box>
-                <Typography variant="body1">
-                  {tokenGroup.main.symbol}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {tokenGroup.all.length} chain
-                  {tokenGroup.all.length !== 1 ? 's' : ''}
-                </Typography>
-              </Box>
-            </Stack>
-            <Box sx={{ textAlign: 'right' }}>
-              <Typography variant="body2">
-                {tokenGroup.displayAmountUSD()}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {tokenGroup.displayAmount()}
-              </Typography>
-            </Box>
-          </Box>
-
-          {tokenGroup.all.length > 1 && (
-            <Stack spacing={0.5} sx={{ mt: 1, pl: 5 }}>
-              {tokenGroup.all.map((token, tokenIndex) => (
-                <Box
-                  key={`${token.chainId}-${token.address}-${tokenIndex}`}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    py: 0.5,
-                    borderLeft: 2,
-                    borderColor: 'divider',
-                    pl: 1,
-                  }}
-                >
-                  <Typography variant="caption" color="text.secondary">
-                    {token.chainKey}
-                  </Typography>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography variant="caption">
-                      {token.displayAmountUSD()}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {token.displayAmount()}
-                    </Typography>
-                  </Stack>
-                </Box>
-              ))}
-            </Stack>
-          )}
-        </Box>
-      ))}
-      {tokens.length > 20 && (
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ textAlign: 'center', py: 1 }}
-        >
-          ... and {tokens.length - 20} more tokens
-        </Typography>
-      )}
-    </Stack>
-  );
-};
-
-const TokensSection = () => {
-  const { allChains } = useTokensFiltering();
-  const { updatedAt } = usePortfolioTokens();
 
   return (
     <Card sx={{ mb: 3 }}>
@@ -372,7 +394,21 @@ const TokensSection = () => {
         <Divider sx={{ my: 2 }} />
         <TokensFilterControls />
         <Divider sx={{ my: 2 }} />
-        <TokensList />
+        {balances.map((balance) => (
+          <Box key={`${balance.token.chainId}-${balance.token.address}`}>
+            <Typography variant="body1">{balance.token.symbol}</Typography>
+            <Typography variant="caption" color="text.secondary">
+              {balance.token.chainId}
+            </Typography>
+            <Typography variant="body2">
+              {formatters.toAmount(balance)}
+            </Typography>
+            <Typography variant="body2">
+              {formatters.toDisplayAmountUSD(balance, { compact: true })}
+            </Typography>
+          </Box>
+        ))}
+        {/* <TokensList /> */}
       </CardContent>
     </Card>
   );
