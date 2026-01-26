@@ -53,7 +53,7 @@ export const EarnCardBody = styled(Box, {
 export const CompactEarnCardContainer = styled(EarnCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(1.5),
-    minHeight: 266,
+    minHeight: 234,
     height: '100%',
   }),
 );

@@ -30,7 +30,7 @@ export const EarnOpportunitiesCards = ({
     <GridContainer
       gridTemplateColumns={
         isCompact
-          ? 'repeat(auto-fill, minmax(min(328px, 100%), 1fr))'
+          ? 'repeat(auto-fill, minmax(min(320px, 100%), 1fr))'
           : 'repeat(auto-fit, 100%)'
       }
       gap={3}
