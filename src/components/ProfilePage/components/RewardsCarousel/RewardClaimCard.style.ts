@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -30,6 +31,7 @@ export const ClaimActionButton = styled(ButtonSecondary, {
 
 export const RewardCardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',

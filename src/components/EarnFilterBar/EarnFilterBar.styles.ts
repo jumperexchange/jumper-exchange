@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
@@ -9,6 +10,7 @@ export const EarnFilterBarContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   padding: theme.spacing(2),
   gap: theme.spacing(2),
   overflow: 'hidden',

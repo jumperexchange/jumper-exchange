@@ -3,7 +3,7 @@
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -376,7 +376,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -760,7 +760,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with four assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -933,7 +933,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
 exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with loading 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-a5552t"
@@ -1010,7 +1010,7 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
 exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no content 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-1pds7ma"
@@ -1103,7 +1103,7 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for DeFi Positions view with no positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1242,7 +1242,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1696,7 +1696,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot with no DeFi positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -1835,7 +1835,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2275,7 +2275,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Tokens view with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2418,7 +2418,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2561,7 +2561,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2736,7 +2736,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -2913,7 +2913,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one asset 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3035,7 +3035,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi Positions view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3474,7 +3474,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Tokens view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -3927,7 +3927,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with overflow (more than 4 assets) 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4112,7 +4112,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4419,7 +4419,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4734,7 +4734,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with three assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -4888,7 +4888,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5327,7 +5327,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for Tokens view with tiny amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5715,7 +5715,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot with tiny token amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -5900,7 +5900,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -6141,7 +6141,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
@@ -6387,7 +6387,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with two assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"

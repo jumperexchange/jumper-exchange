@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { ButtonPrimary } from '@/components/Button/Button.style';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 interface EarnCardContainerProps {
   hasLink?: boolean;
@@ -15,6 +16,7 @@ const EarnCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hasLink',
 })<EarnCardContainerProps>(({ theme, hasLink }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   cursor: hasLink ? 'pointer' : 'default',

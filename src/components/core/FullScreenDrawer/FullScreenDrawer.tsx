@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Drawer from '@mui/material/Drawer';
 import type { FC, PropsWithChildren } from 'react';
 import {
@@ -42,6 +43,7 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
             maxHeight: '100dvh',
             overflow: 'auto',
             background: (theme.vars || theme).palette.surface1.main,
+            border: getSurfaceBorder(theme, 'surface1'),
           }),
         },
       }}

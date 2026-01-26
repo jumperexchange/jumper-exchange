@@ -1,4 +1,5 @@
 import { ButtonPrimary } from '@/components/Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
@@ -72,6 +73,7 @@ export const NavbarButton = styled(ButtonTransparent, {
       props: ({ isActive }) => isActive,
       style: {
         background: (theme.vars || theme).palette.surface2.main,
+        border: getSurfaceBorder(theme, 'surface2'),
         color: (theme.vars || theme).palette.text.primary,
         pointerEvents: 'none',
         ...theme.applyStyles('light', {
@@ -119,6 +121,7 @@ export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
     minWidth: 'unset',
     '&[aria-expanded="true"]': {
       backgroundColor: (theme.vars || theme).palette.surface2.main,
+      border: getSurfaceBorder(theme, 'surface2'),
     },
     ':not([aria-expanded="true"]):hover': {
       backgroundColor: (theme.vars || theme).palette.alphaLight100.main,

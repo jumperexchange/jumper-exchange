@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -16,7 +17,8 @@ import { Link } from 'src/components/Link';
 
 export const StyledEntityCard = styled(Card)<CardProps>(
   ({ theme, onClick }) => ({
-    borderRadius: theme.shape.cardBorderRadius,
+    borderRadius: theme.shape.cardBorderRadiusMedium,
+    border: getSurfaceBorder(theme, 'surface1'),
     boxShadow: theme.shadows[2],
     cursor: onClick ? 'pointer' : 'default',
     '&:hover': {

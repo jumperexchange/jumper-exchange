@@ -1,4 +1,6 @@
-import Box, { BoxProps } from '@mui/material/Box';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { WIDGET_WIDTH } from 'src/config/widgetConfig';
 
@@ -82,8 +84,10 @@ export const AnnouncementBannerContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(1, 1.5, 1, 1),
   zIndex: 1,
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.surface2.main,
+    border: getSurfaceBorder(theme, 'surface2'),
   }),
   borderRadius: theme.spacing(4),
 }));

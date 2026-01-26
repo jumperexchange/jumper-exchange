@@ -8,6 +8,8 @@ import './theme.types';
 
 import type { BaseColors } from './baseColors';
 import { baseColors as defaultBaseColors } from './baseColors';
+import type { ThemeBorders } from './borders';
+import { defaultBorders } from './borders';
 import type { BrandColors } from './brandColors';
 import { defaultBrandColors } from './brandColors';
 import { createColorSchemes } from './colorSchemes';
@@ -27,6 +29,7 @@ export interface CreateJumperThemeOptions {
   baseColors?: DeepPartial<BaseColors>;
   brandColors?: DeepPartial<BrandColors>;
   shape?: DeepPartial<Shape>;
+  borders?: DeepPartial<ThemeBorders>;
   components?: Components<Omit<Theme, 'components'>>;
   fonts?: ThemeFonts;
 }
@@ -38,6 +41,7 @@ export const createJumperTheme = (
     baseColors: customBaseColors,
     brandColors: customBrandColors,
     shape: customShape = defaultShape,
+    borders: customBorders,
     components: customComponents,
     fonts = defaultFonts,
   } = options;
@@ -68,6 +72,10 @@ export const createJumperTheme = (
     ? (deepmerge(defaultShape, customShape) as Shape)
     : defaultShape;
 
+  const borders = customBorders
+    ? (deepmerge(defaultBorders, customBorders) as ThemeBorders)
+    : defaultBorders;
+
   const components = customComponents
     ? deepmerge(defaultComponents, customComponents)
     : defaultComponents;
@@ -77,6 +85,7 @@ export const createJumperTheme = (
     cssVarPrefix: 'jumper',
     colorSchemeSelector: 'class',
     shape,
+    borders,
     components,
     typography,
     palette,

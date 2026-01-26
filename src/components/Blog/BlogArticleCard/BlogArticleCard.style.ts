@@ -1,4 +1,5 @@
 import { Tag } from '@/components/Tag.style';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { BoxProps } from '@mui/material';
 import {
   Box,
@@ -18,7 +19,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexDirection: 'column',
   width: 'auto',
   maxWidth: 416,
-  border: 'unset',
+  border: getSurfaceBorder(theme, 'surface1'),
   padding: theme.spacing(2),
   borderRadius: theme.shape.cardBorderRadiusXLarge,
   background: (theme.vars || theme).palette.surface1.main,

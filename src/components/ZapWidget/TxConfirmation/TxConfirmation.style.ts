@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { alpha, Box, Breakpoint, styled, IconButton } from '@mui/material';
 
 export const TxConfirmationMainBox = styled(Box)(({ theme }) => ({
@@ -9,7 +10,7 @@ export const TxConfirmationMainBox = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   padding: theme.spacing(2),
   marginTop: theme.spacing(2),
-  border: `1px solid ${alpha(theme.palette.white.main, 0.08)}`,
+  border: getSurfaceBorder(theme, 'surface2'),
   gap: '8px',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   boxShadow:
@@ -29,6 +30,7 @@ export const FlexRowCenterGapBox = styled(Box)(({ theme }) => ({
 
 export const RoundedColoredBox = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: '50%',
   display: 'flex',
   flexDirection: 'row',

@@ -8,6 +8,7 @@ import type React from 'react';
 
 import type {} from '@mui/material/themeCssVarsAugmentation';
 
+import type { ThemeBorders } from './borders';
 import type { createPaletteLight } from './paletteLight';
 
 declare module '@mui/material/styles' {
@@ -57,6 +58,11 @@ declare module '@mui/material/styles' {
 
   interface ThemeOptions {
     shape?: Partial<Shape>;
+    borders?: Partial<ThemeBorders>;
+  }
+
+  interface Theme {
+    borders: ThemeBorders;
   }
 
   type SemanticPalette = ReturnType<typeof createPaletteLight>;

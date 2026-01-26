@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { SelectBaseProps, TData } from '../Select.types';
 import type { PropsWithChildren } from 'react';
 import { useCallback, useState } from 'react';
@@ -93,6 +94,7 @@ export const SelectBase = <T extends TData>({
         PaperProps: {
           sx: (theme) => ({
             backgroundColor: (theme.vars || theme).palette.surface1.main,
+            border: getSurfaceBorder(theme, 'surface1'),
             borderRadius: theme.shape.cardBorderRadiusMedium,
             boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
             marginTop: theme.spacing(1),

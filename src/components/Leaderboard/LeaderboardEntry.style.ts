@@ -11,6 +11,7 @@ import {
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { ButtonSecondary } from '../Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 interface LeaderboardEntryWrapperProps extends BoxProps {
   isUserConnected?: boolean;
@@ -36,6 +37,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
       props: ({ isUserEntry }) => isUserEntry,
       style: {
         background: (theme.vars || theme).palette.surface1ActiveAccent,
+        border: getSurfaceBorder(theme, 'surface1'),
         borderRadius: theme.shape.cardBorderRadiusLarge,
         boxShadow: (theme.vars || theme).shadows[2],
         marginTop: theme.spacing(3),
@@ -53,6 +55,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
         isUserEntry && isUserConnected,
       style: {
         transition: 'background-color 250ms',
+        border: getSurfaceBorder(theme, 'surface1'),
         ':hover': {
           cursor: 'pointer',
           backgroundColor: (theme.vars || theme).palette.rubyDark[100],

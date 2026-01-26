@@ -1,5 +1,6 @@
 import { ButtonPrimary } from '@/components/Button/Button.style';
 import { Link } from '@/components/Link';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import FormGroup from '@mui/material/FormGroup';
 import { styled } from '@mui/material/styles';
@@ -50,6 +51,7 @@ export const NewsletterFormGroup = styled(FormGroup, {
   flexWrap: 'nowrap',
   ...theme.applyStyles?.('light', {
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
   }),
   '.MuiInputBase-root': {
     ':before, :after': {

@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
@@ -16,6 +17,7 @@ export const RewardsSectionContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
     overflowX: 'hidden',
     backgroundColor: (theme.vars || theme).palette.surface2.main,
+    border: getSurfaceBorder(theme, 'surface2'),
   }),
 );
 

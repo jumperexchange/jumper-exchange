@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import type { ButtonProps } from 'src/components/Button';
@@ -8,6 +9,7 @@ export const AssetOverviewCardContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(4),
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
   }),
 );
 

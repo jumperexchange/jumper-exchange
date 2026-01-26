@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
@@ -7,4 +8,5 @@ export const SectionCardContainer = styled(Box)(({ theme }) => ({
   // elevation-4
   boxShadow: `0px 4px 24px 0px rgba(0, 0, 0, 0.08)`,
   backgroundColor: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
 }));

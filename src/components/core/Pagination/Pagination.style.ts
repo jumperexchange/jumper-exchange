@@ -1,6 +1,7 @@
 import type { IconButtonProps } from '@mui/material';
 import { alpha, Box, IconButton } from '@mui/material';
 import { darken, lighten, styled } from '@mui/material/styles';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
@@ -8,6 +9,7 @@ export const PaginationContainer = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
   padding: theme.spacing(1),
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: theme.shape.cardBorderRadiusLarge,
   left: '50%',
   margin: theme.spacing(2, 'auto', 0, 'auto'),

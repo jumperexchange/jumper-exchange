@@ -1,6 +1,7 @@
 'use client';
 
 import { ButtonTransparent } from '@/components/Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { ButtonProps } from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import { styled, alpha } from '@mui/material/styles';
@@ -15,6 +16,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     maxWidth: 416,
     zIndex: 2000,
     background: (theme.vars || theme).palette.surface2.main,
+    border: getSurfaceBorder(theme, 'surface2'),
   },
 }));
 

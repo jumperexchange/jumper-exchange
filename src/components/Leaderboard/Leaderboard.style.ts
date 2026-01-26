@@ -1,9 +1,11 @@
 import type { Breakpoint } from '@mui/material';
 import { alpha, Box, Divider, Stack, styled } from '@mui/material';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 export const LeaderboardContainer = styled(Box)(({ theme }) => ({
   color: (theme.vars || theme).palette.text.primary,
   backgroundColor: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
   borderRadius: theme.shape.cardBorderRadiusXLarge,
   width: '100%',
   padding: theme.spacing(4, 2),
@@ -36,6 +38,7 @@ export const LeaderboardUpdateDateBox = styled(Box)(() => ({
 
 export const LeaderboardEntryStack = styled(Stack)(({ theme }) => ({
   background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   padding: theme.spacing(0, 1),
   borderRadius: theme.shape.cardBorderRadiusLarge,
   marginTop: theme.spacing(3),
