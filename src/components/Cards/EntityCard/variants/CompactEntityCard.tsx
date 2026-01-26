@@ -1,5 +1,6 @@
-import { FC, ReactElement, useMemo, cloneElement } from 'react';
-import { EntityCardProps } from '../EntityCard.types';
+import type { FC, ReactElement } from 'react';
+import { useMemo, cloneElement } from 'react';
+import type { EntityCardProps } from '../EntityCard.types';
 import { useOverflowItems } from '../../../../hooks/useOverflowItems';
 import {
   StyledEntityCard,
@@ -34,13 +35,16 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   onClick,
   isLoading,
   fullWidth,
+  dataTestId,
 }) => {
   const flattenedRewards = useMemo(() => {
     // Flatten rewards into a single array for easier measurement
     const _flattenedRewards: FlattenedReward[] = [];
 
     Object.entries(rewardGroups || {}).forEach(([rewardKey, rewards]) => {
-      if (rewards.length === 0) return;
+      if (rewards.length === 0) {
+        return;
+      }
 
       if (rewardKey === 'generic') {
         rewards.forEach((reward, index) => {
@@ -131,6 +135,7 @@ export const CompactEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
         maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.COMPACT.CARD_WIDTH,
       }}
       onClick={onClick}
+      data-testid={dataTestId}
     >
       <StyledEntityCardImageContainer
         sx={{

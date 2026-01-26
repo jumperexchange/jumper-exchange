@@ -7,7 +7,7 @@ import {
   MissionSectionContainer,
   MissionSectionHeaderContainer,
 } from './MissionsSection.style';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 interface MissionsSectionProps extends PropsWithChildren {
   count: number;

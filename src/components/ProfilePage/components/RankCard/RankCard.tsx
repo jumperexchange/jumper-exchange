@@ -1,4 +1,5 @@
-import { FC, useContext } from 'react';
+import type { FC } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
@@ -75,7 +76,10 @@ export const RankCard: FC<RankCardProps> = () => {
           />
           {renderRankPosition()}
           <RankButtonContainer>
-            <RankButton href={AppPaths.Leaderboard}>
+            <RankButton
+              href={AppPaths.Leaderboard}
+              data-testid="leaderboard-button"
+            >
               {t('leaderboard.title')}
             </RankButton>
           </RankButtonContainer>

@@ -27,14 +27,6 @@ export const selectWalletOption = async (page: Page, option: string) => {
   await selectWalletDialog(page).getByText(option).click();
 };
 
-export const openConnectedWallet = async (page: Page, address: string) => {
-  const truncatedAddress = `${address.slice(0, 7)}...${address.slice(-5)}`;
-  const connectedWalletButton = page.getByRole('button', {
-    name: `wallet-avatar chain-avatar ${truncatedAddress}`,
-  });
-  await connectedWalletButton.click();
-};
-
 export const connectAnotherWalletButton = (page: Page) => {
   return page.locator('#connect-another-wallet-button');
 };
@@ -58,10 +50,6 @@ export const openWalletDrawer = async (page: Page) => {
 
 export const getConnectedWalletCount = async (page: Page) => {
   return walletCards(page).count();
-};
-
-export const expectConnectedWalletCount = async (page: Page, count: number) => {
-  await expect(walletCards(page)).toHaveCount(count);
 };
 
 export const closeWalletDrawer = async (page: Page) => {

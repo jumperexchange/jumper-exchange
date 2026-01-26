@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { EntityCardProps } from '../EntityCard.types';
+import type { FC } from 'react';
+import type { EntityCardProps } from '../EntityCard.types';
 import {
   StyledEntityCard,
   StyledEntityCardContentContainer,
@@ -35,6 +35,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
   onClick,
   isLoading,
   fullWidth,
+  dataTestId,
 }) => {
   if (isLoading) {
     return <WideEntityCardSkeleton fullWidth />;
@@ -63,6 +64,7 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
         maxWidth: fullWidth ? '100%' : ENTITY_CARD_SIZES.WIDE.CARD_WIDTH,
       }}
       onClick={onClick}
+      data-testid={dataTestId}
     >
       <StyledEntityCardImageContainer
         sx={{
@@ -113,7 +115,9 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
         {Object.keys(rewardGroups || {}).length > 0 && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups || {}).map(([rewardKey, rewards]) => {
-              if (rewards.length === 0) return null;
+              if (rewards.length === 0) {
+                return null;
+              }
 
               return rewards.map((reward) => (
                 <StyledWideRewardChipContainer
