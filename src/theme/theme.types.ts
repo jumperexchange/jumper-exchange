@@ -143,6 +143,7 @@ declare module '@mui/material/styles' {
     alphaDark600?: PaletteOptions['primary'];
     alphaDark700?: PaletteOptions['primary'];
     alphaDark800?: PaletteOptions['primary'];
+    alphaDark900?: PaletteOptions['primary'];
     alphaLight100?: PaletteOptions['primary'];
     alphaLight200?: PaletteOptions['primary'];
     alphaLight300?: PaletteOptions['primary'];
@@ -151,6 +152,7 @@ declare module '@mui/material/styles' {
     alphaLight600?: PaletteOptions['primary'];
     alphaLight700?: PaletteOptions['primary'];
     alphaLight800?: PaletteOptions['primary'];
+    alphaLight900?: PaletteOptions['primary'];
     mint?: Pick<Color, 100 | 500>;
     amber?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;
     violet?: Pick<Color, 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900>;

@@ -186,6 +186,7 @@ export const createTypography = (
     lineHeight: '40px',
   },
   titleLarge: {
+    fontFamily: fonts.body,
     fontSize: '48px',
     fontStyle: 'normal',
     fontWeight: 700,
@@ -234,6 +235,7 @@ export const createTypography = (
     lineHeight: '96px',
   },
   urbanistTitle3XLarge: {
+    fontFamily: fonts.display,
     fontSize: '96px',
     fontStyle: 'normal',
     fontWeight: 700,

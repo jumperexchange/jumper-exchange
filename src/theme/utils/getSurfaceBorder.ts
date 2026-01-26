@@ -11,7 +11,11 @@ export const getSurfaceBorder = (
   theme: Theme,
   surfaceKey: SurfaceKey,
 ): string => {
-  const borderConfig: BorderConfig = theme.borders[surfaceKey];
+  const borderConfig: BorderConfig = theme.borders?.[surfaceKey];
+
+  if (!borderConfig) {
+    return 'none';
+  }
 
   if (borderConfig.width === 0 || borderConfig.style === 'none') {
     return 'none';

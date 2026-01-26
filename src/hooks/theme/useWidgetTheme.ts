@@ -7,7 +7,7 @@ import type { WidgetThemeConfig } from 'src/types/theme';
 /**
  * Returns the appropriate pre-computed widget theme based on:
  * - Current color mode (light/dark)
- * - Partner theme conditions (active, path, expiration)
+ * - Partner theme conditions (active, expiration)
  *
  * This hook is a pure selector - no computation needed at runtime.
  */

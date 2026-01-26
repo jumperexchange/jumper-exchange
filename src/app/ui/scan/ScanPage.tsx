@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { fallbackLng } from 'src/i18n';
 import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
@@ -60,7 +61,7 @@ export default function ScanPage({ lng }: { lng: string }) {
           },
         },
       }) as LiFiExplorerConfig,
-    [lng, theme.colorSchemes, defaultSuccessPalette],
+    [lng, theme.colorSchemes, theme.shape, defaultSuccessPalette],
   );
 
   return (
@@ -74,6 +75,10 @@ export default function ScanPage({ lng }: { lng: string }) {
           },
           '& .MuiPaper-root': {
             backgroundImage: 'none',
+            border: getSurfaceBorder(theme, 'surface2'),
+          },
+          '& .MuiList-root > .MuiGrid-root.MuiGrid-container': {
+            border: getSurfaceBorder(theme, 'surface1'),
           },
         }}
       >
