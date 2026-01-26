@@ -1,6 +1,12 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { darken, lighten, Typography } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import {
+  type SxProps,
+  type Theme,
+  darken,
+  lighten,
+} from '@mui/material/styles';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
 
@@ -20,6 +26,7 @@ interface PaginationProps {
   onPrev?: () => void;
   onNext?: () => void;
   onSetPage?: (page: number) => void;
+  sx?: SxProps<Theme>;
 }
 
 export const Pagination = ({
@@ -30,6 +37,7 @@ export const Pagination = ({
   onPrev,
   onNext,
   onSetPage,
+  sx,
 }: PaginationProps) => {
   const isFirstPage = page === 0;
   const isLastPage = page >= pagination.pageCount - 1;
@@ -54,7 +62,7 @@ export const Pagination = ({
   };
 
   return (
-    <PaginationContainer>
+    <PaginationContainer sx={sx}>
       <SmoothScrollWrapper id={id}>
         <PaginationButton
           onClick={handlePrev}

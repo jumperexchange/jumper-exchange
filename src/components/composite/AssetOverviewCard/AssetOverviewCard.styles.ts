@@ -7,10 +7,7 @@ import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCa
 export const AssetOverviewCardContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
     padding: theme.spacing(4),
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
   }),
 );
 

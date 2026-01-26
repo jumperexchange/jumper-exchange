@@ -1,10 +1,13 @@
 import { styled } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Card, { CardProps } from '@mui/material/Card';
-import Chip, { ChipProps } from '@mui/material/Chip';
+import type { CardProps } from '@mui/material/Card';
+import Card from '@mui/material/Card';
+import type { ChipProps } from '@mui/material/Chip';
+import Chip from '@mui/material/Chip';
 import Skeleton from '@mui/material/Skeleton';
-import Stack, { StackProps } from '@mui/material/Stack';
+import type { StackProps } from '@mui/material/Stack';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { Link } from 'src/components/Link';
@@ -27,11 +30,8 @@ export const StyledEntityCardContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   position: 'relative',
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
 }));
 
 export const StyledEntityCardBadgeContainer = styled(Box)(({ theme }) => ({
@@ -54,10 +54,7 @@ export const StyledEntityCardImage = styled(Image)(({ theme }) => ({
   aspectRatio: '2 / 1',
   height: '100%',
   width: '100%',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 // Titles & Description
@@ -122,12 +119,8 @@ const BaseAvatar = styled(Avatar)(({ theme }) => ({
   boxSizing: 'content-box',
   border: 2,
   borderStyle: 'solid',
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-    borderColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  borderColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 export const StyledCompactParticipantAvatar = styled(BaseAvatar)(() => ({

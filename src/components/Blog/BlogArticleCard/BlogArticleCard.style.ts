@@ -21,7 +21,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   border: 'unset',
   padding: theme.spacing(2),
   borderRadius: '32px',
-  background: (theme.vars || theme).palette.bgTertiary.main,
+  background: (theme.vars || theme).palette.surface1.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[2],
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -30,9 +30,9 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   },
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
+    backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, white 4%)`,
     ...theme.applyStyles('light', {
-      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.white.main} 96%, black 4%)`,
+      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, black 4%)`,
     }),
   },
 }));

@@ -38,8 +38,8 @@ export const GlowContainer = styled(Box, {
       transitionProperty: 'top, opacity',
       transitionDuration: '.4s',
       transitionTimingFunction: 'ease-in-out',
-      background:
-        'radial-gradient(50% 50% at 50% 50%, #6600FF 0%, rgba(255, 255, 255, 0) 100%);',
+      background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow1} 0%, rgba(255, 255, 255, 0) 100%);`,
+      opacity: overlayOpen ? 0.48 : 0,
       zIndex: -1,
       pointerEvents: 'none',
       width: 1080,
@@ -50,10 +50,6 @@ export const GlowContainer = styled(Box, {
       transform: 'translate(-50%, -50%)',
       left: '50%',
       top: GLOW_EFFECT_TOP_POSITIONS.xs,
-      opacity: overlayOpen ? 0.24 : 0,
-      ...theme.applyStyles('light', {
-        opacity: overlayOpen ? 0.12 : 0,
-      }),
       [theme.breakpoints.up('md')]: {
         top: GLOW_EFFECT_TOP_POSITIONS.md,
       },
@@ -62,8 +58,8 @@ export const GlowContainer = styled(Box, {
         maxHeight: '90vh',
       },
       ...theme.applyStyles('light', {
-        background:
-          'radial-gradient(50% 50% at 50% 50%, #8700B8 0%, rgba(255, 255, 255, 0) 100%);',
+        opacity: overlayOpen ? 1 : 0,
+        background: `radial-gradient(50% 50% at 50% 50%, ${(theme.vars || theme).palette.bgGlow2} 0%, rgba(255, 255, 255, 0) 100%);`,
       }),
     },
     variants: [
@@ -102,7 +98,7 @@ export const GlowContainer = styled(Box, {
           '&:hover:after': {
             opacity: 0.48,
             ...theme.applyStyles('light', {
-              opacity: 0.34,
+              opacity: 1,
             }),
             top: `calc( ${GLOW_EFFECT_TOP_POSITIONS.xs} + ${GLOW_EFFECT_TOP_OFFSET_POSITION})`,
             [theme.breakpoints.up('md')]: {

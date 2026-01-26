@@ -1,5 +1,5 @@
 import Drawer from '@mui/material/Drawer';
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import {
   StyledDrawerContent,
   StyledDrawerHeader,
@@ -41,6 +41,7 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
             height: '100dvh',
             maxHeight: '100dvh',
             overflow: 'auto',
+            background: (theme.vars || theme).palette.surface1.main,
           }),
         },
       }}
