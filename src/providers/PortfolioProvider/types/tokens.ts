@@ -1,5 +1,5 @@
 import { orderBy, sumBy } from 'lodash';
-import type { Token } from '@lifi/sdk';
+import type { Token, TokenBalance } from '@lifi/sdk';
 import type { ExtendedChain } from '@lifi/sdk';
 import { ExtendedToken } from '@/utils/Token';
 import type { LiFiCommonToken } from '../lib/fetchTokensForAddresses';
@@ -19,7 +19,7 @@ export type GetTokenPrice = (
 ) => number | undefined;
 
 export interface NormalizeTokensParams {
-  tokens: LiFiCommonToken[];
+  tokens: TokenBalance[];
   chains: ExtendedChain[];
   getPrice: PriceLookup;
 }

@@ -4,16 +4,14 @@ import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 import type { ChainType } from '@lifi/sdk';
 import { compact, max } from 'lodash';
-import {
-  fetchTokensForAddress,
-  type LiFiCommonToken,
-} from '../lib/fetchTokensForAddresses';
+import { fetchTokensForAddress } from '../lib/fetchTokensForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import type { BatchFetcherControl } from '@/utils/batches/fetcher';
+import type { TokenBalance } from '@/types/tokens';
 
 export interface UseTokensDataResult {
-  tokens: LiFiCommonToken[];
-  tokensByAddress: Record<string, LiFiCommonToken[]>;
+  tokens: TokenBalance[];
+  tokensByAddress: Record<string, TokenBalance[]>;
   accounts: Account[];
   isLoading: boolean;
   error: Error | null;
@@ -24,7 +22,7 @@ export interface UseTokensDataResult {
 }
 
 interface TokenQueryData {
-  tokens: LiFiCommonToken[];
+  tokens: TokenBalance[];
   round: number;
   updatedAt: number | null;
 }
@@ -133,7 +131,7 @@ export const useTokensData = (): UseTokensDataResult => {
         }
         return acc;
       },
-      {} as Record<string, LiFiCommonToken[]>,
+      {} as Record<string, TokenBalance[]>,
     );
   }, [queries, connectedAccounts]);
 

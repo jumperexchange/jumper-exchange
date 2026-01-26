@@ -18,12 +18,13 @@ import {
   type TokenGroupingFn,
 } from '../types/tokens';
 import type { LpTokenIdentifier } from '../types/positions';
+import { TokenBalance } from '@/types/tokens';
 
 export const normalizeTokens = ({
   tokens,
   chains,
   getPrice,
-}: NormalizeTokensParams): PortfolioExtendedToken[] => {
+}: NormalizeTokensParams): TokenBalance[] => {
   return tokens
     .map((token) => {
       try {

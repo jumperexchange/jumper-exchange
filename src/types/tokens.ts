@@ -7,6 +7,7 @@ import type {
 } from '@lifi/sdk';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';
+import { safeBigInt } from '@/utils/numbers/safeBigInt';
 
 const isJumperToken = (
   token: StaticToken | JumperToken,
@@ -67,7 +68,7 @@ export interface ExtendedToken extends BaseToken {
 
 export interface TokenBalance {
   amount: bigint;
-  token: Token;
+  token: ExtendedToken;
 }
 
 export const isExtendedToken = (token: Token): token is ExtendedToken => {
@@ -79,6 +80,32 @@ export const hasMarketData = (
   token: LifiToken | TokenExtended,
 ): token is TokenExtended => {
   return 'marketCapUSD' in token;
+};
+
+export const createExtendedToken = (
+  token: StaticToken | JumperToken | LifiToken,
+  priceUSD?: string | undefined,
+): ExtendedToken => {
+  const baseToken = createBaseToken(token);
+  const effectivePriceUSD = 'priceUSD' in token ? token.priceUSD : priceUSD;
+  if (effectivePriceUSD === undefined) {
+    throw new Error('Price USD is required');
+  }
+  return {
+    ...baseToken,
+    priceUSD: effectivePriceUSD,
+    type: 'extended',
+  };
+};
+
+export const createTokenBalance = (
+  token: ExtendedToken,
+  amount: bigint | string,
+): TokenBalance => {
+  return {
+    amount: safeBigInt(amount),
+    token,
+  };
 };
 
 // export interface PortfolioBalance {
