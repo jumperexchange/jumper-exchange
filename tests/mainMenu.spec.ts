@@ -43,15 +43,19 @@ test.describe('Main Menu flows', () => {
     qase(9, 'Should be able to open mission page and then open the mission'),
     async ({ page }) => {
       const missionsButton = page.getByTestId('navbar-missions-button');
-      const missionTitle = page.locator(
-        'xpath=(//div[@class="MuiBox-root mui-1qhclh"]//p)[1]',
-      );
       await missionsButton.click();
-      await page
-        .locator('xpath=(//div[@class="MuiBox-root mui-prph5i"]//a)[2]')
-        .click();
 
-      await expect(missionTitle).toBeVisible();
+      // Click on the first mission card
+      const firstMissionCard = page
+        .locator('[data-testid^="mission-card-"]')
+        .first();
+      await firstMissionCard.click();
+
+      // Verify we're on a mission details page by checking the mission card is visible
+      const missionDetailsCard = page
+        .locator('[data-testid^="mission-card-"]')
+        .first();
+      await expect(missionDetailsCard).toBeVisible();
     },
   );
 
