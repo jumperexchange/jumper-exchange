@@ -1,11 +1,7 @@
-import {
-  IconButton as MuiIconButtom,
-  alpha,
-  darken,
-  styled,
-} from '@mui/material';
+import MuiIconButton from '@mui/material/IconButton';
+import { alpha, styled } from '@mui/material/styles';
 
-export const IconButton = styled(MuiIconButtom)(({ theme }) => ({
+export const IconButton = styled(MuiIconButton)(({ theme }) => ({
   color: alpha(theme.palette.white.main, 0.88),
   transition: 'background 0.3s',
   width: '48px',
@@ -27,9 +23,9 @@ export const IconButtonPrimary = styled(IconButton)(({ theme }) => ({
   color: (theme.vars || theme).palette.white.main,
   backgroundColor: (theme.vars || theme).palette.primary.main,
   ':hover': {
-    backgroundColor: darken(theme.palette.primary.main, 0.16),
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.primary.main} calc(l - 0.1) c h)`,
     ...theme.applyStyles('light', {
-      backgroundColor: darken(theme.palette.accent1.main, 0.16),
+      backgroundColor: `oklch(from ${(theme.vars || theme).palette.accent1.main} calc(l - 0.1) c h)`,
     }),
   },
   ...theme.applyStyles('light', {
