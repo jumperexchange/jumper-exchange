@@ -39,7 +39,6 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
   OnChainPinned = 'action_on_chain_pinned',
-  OnPageEntered = 'action_on_page_entered',
   OnSendToWalletToggled = 'action_on_send_to_wallet_toggled',
   OnFormFieldChanged = 'action_on_form_field_changed',
 
