@@ -241,12 +241,24 @@ export const createThemeStore = (props: ThemeProps) =>
                 ...currentState.configThemeStates,
               };
 
+          // Clean up entries for themes that no longer exist in partnerThemes,
+          // but preserve entries with isSelected=true so the component can detect
+          // orphaned selected themes and reset the color mode appropriately
+          const validPartnerUids = new Set(
+            currentState.partnerThemes?.map((theme) => theme.uid) ?? [],
+          );
+          const cleanedConfigThemeStates = Object.fromEntries(
+            Object.entries(baseConfigThemeStates).filter(
+              ([uid, state]) => validPartnerUids.has(uid) || state.isSelected,
+            ),
+          );
+
           return {
             ...persisted,
             ...currentState,
             configThemeStates: initializeConfigThemeStates(
               currentState.configTheme,
-              baseConfigThemeStates,
+              cleanedConfigThemeStates,
             ),
           };
         },

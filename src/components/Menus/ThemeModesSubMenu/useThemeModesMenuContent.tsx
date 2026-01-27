@@ -89,6 +89,14 @@ export const useThemeModesMenuContent = () => {
     }
   }, [activeConfigTheme, mode, setMode]);
 
+  // Reset mode when the selected partner theme no longer exists (removed from CMS)
+  useEffect(() => {
+    if (activeConfigThemeUid && !activeConfigTheme) {
+      setMode('system');
+      setConfigThemeState(activeConfigThemeUid, { isSelected: false });
+    }
+  }, [activeConfigThemeUid, activeConfigTheme, setMode, setConfigThemeState]);
+
   const handleSwitchMode = useCallback(
     (newMode: Appearance) => {
       trackEvent({
