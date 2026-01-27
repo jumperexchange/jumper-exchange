@@ -937,11 +937,6 @@ export interface TokenBalances {
   updatedAt: string;
 }
 
-export interface MetadataWithUpdatedAt {
-  /** @format date-time */
-  updatedAt: string;
-}
-
 export interface DefiToken {
   name: string;
   symbol: string;
@@ -956,13 +951,15 @@ export interface DefiToken {
   priceUSD: number;
 }
 
-export interface DefiPosition {
+export interface ChainDefiPosition {
+  source: 'chain';
   name: string;
+  /** Additional context about the position */
+  description?: string;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
   address: string;
-  chain: Chain;
   earn?: string;
   earnInteractionFlags?: EarnInteractionFlags;
   latest?: EarnOpportunityHistoryItem;
@@ -972,6 +969,7 @@ export interface DefiPosition {
   openedAt?: string;
   type: string;
   protocol: Protocol;
+  chain: Chain;
   supplyTokens: DefiToken[];
   borrowTokens: DefiToken[];
   assetTokens: DefiToken[];
@@ -980,9 +978,82 @@ export interface DefiPosition {
   lpToken?: Token;
 }
 
+export interface App {
+  /** Unique identifier for the app, e.g., "hyperliquid", "polymarket" */
+  key: string;
+  /** URL to app logo */
+  logo?: string;
+  /** App website URL */
+  url: string;
+}
+
+export interface AppToken {
+  chainType: string;
+  /** The amount of the token in the native currency */
+  amount: string;
+  amountUSD: number;
+  name: string;
+  symbol: string;
+  decimals: number;
+  /** URL to token logo */
+  logo?: string;
+  address: string;
+  app: App;
+  priceUSD: number;
+}
+
+export interface PredictionDetails {
+  name: string;
+  side: string;
+  amount: number;
+  price: number;
+  claimable: boolean;
+  eventEndAt?: number | null;
+  isMarketClosed: boolean;
+}
+
+export interface AppDefiPosition {
+  source: 'app';
+  name: string;
+  /** Additional context about the position */
+  description?: string;
+  assetUsd: number;
+  debtUsd: number;
+  netUsd: number;
+  address: string;
+  earn?: string;
+  earnInteractionFlags?: EarnInteractionFlags;
+  latest?: EarnOpportunityHistoryItem;
+  /** @format date-time */
+  unlockAt?: string;
+  /** @format date-time */
+  openedAt?: string;
+  type: string;
+  protocol: Protocol;
+  app: App;
+  supplyTokens: AppToken[];
+  borrowTokens: AppToken[];
+  assetTokens: AppToken[];
+  collateralTokens: AppToken[];
+  rewardTokens: AppToken[];
+  predictionDetails?: PredictionDetails;
+}
+
+export interface MetadataWithUpdatedAt {
+  /** @format date-time */
+  updatedAt: string;
+}
+
 export interface WalletPositions {
   meta: MetadataWithUpdatedAt;
-  data: DefiPosition[];
+  data: (
+    | ({
+        source: 'chain';
+      } & ChainDefiPosition)
+    | ({
+        source: 'app';
+      } & AppDefiPosition)
+  )[];
 }
 
 export interface TaskVerificationDto {

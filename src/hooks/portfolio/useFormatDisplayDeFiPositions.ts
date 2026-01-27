@@ -1,4 +1,4 @@
-import type { DefiPosition } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import { groupBy } from 'lodash';
 import { useMemo } from 'react';
 import type { OrderEnum, SortByEnum } from '@/app/ui/portfolio/types';

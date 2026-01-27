@@ -17,9 +17,13 @@ import type {
   OrderEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
-import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
+import type { WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
+import {
+  isChainDefiPosition,
+  type DefiPosition,
+} from '@/utils/positions/type-guards';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -60,7 +64,13 @@ export const tokenSortAccessors: SortAccessors<PortfolioToken> = {
 export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
   [SortByOptions.VALUE]: (group) =>
     sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
-  [SortByOptions.CHAIN]: (group) => group[0]?.chain?.chainKey ?? '',
+  [SortByOptions.CHAIN]: (group) => {
+    const pos = group[0];
+    if (!pos) {
+      return '';
+    }
+    return isChainDefiPosition(pos) ? pos.chain.chainKey : pos.app.key;
+  },
   [SortByOptions.ASSET]: (group) => group[0]?.protocol?.name ?? '',
 };
 
@@ -247,10 +257,11 @@ export const deFiPositionsSearchParamsParsers = {
 export const extractDeFiPositionsFilteringParams = (
   wallet: WalletPositions,
 ): PortfolioDeFiPositionsFilteringParams => {
-  const allPositions = wallet.data;
+  const allPositions: DefiPosition[] = wallet.data;
+  const chainPositions = allPositions.filter(isChainDefiPosition);
 
   const allChains = uniqBy(
-    map(allPositions, (position) => position.chain).filter(Boolean),
+    chainPositions.map((position) => position.chain),
     'chainId',
   );
 
@@ -261,7 +272,7 @@ export const extractDeFiPositionsFilteringParams = (
 
   const allTypes = uniq(map(allPositions, 'type').filter(Boolean));
 
-  const allTokens = flatMap(allPositions, (position) => [
+  const allTokens = flatMap(chainPositions, (position) => [
     ...(position.supplyTokens || []),
     ...(position.assetTokens || []),
     ...(position.collateralTokens || []),

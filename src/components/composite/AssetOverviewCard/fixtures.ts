@@ -1,4 +1,4 @@
-import type { DefiPosition } from 'src/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { PortfolioToken } from 'src/types/tokens';
 
 const ethereumChain = {
@@ -81,6 +81,7 @@ export const tokens: PortfolioToken[] = [
 
 export const aavePositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Aave V3',
     assetUsd: 1.0017831783178317,
     debtUsd: 0,
@@ -130,6 +131,7 @@ export const aavePositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Aave V3',
     assetUsd: 7.04781961968e-9,
     debtUsd: 1,
@@ -198,6 +200,7 @@ export const aavePositions: DefiPosition[] = [
 
 export const morphoPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 0.33359629049812184,
     debtUsd: 0,
@@ -248,6 +251,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 5.931475,
     debtUsd: 0,
@@ -297,6 +301,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 119.705551,
     debtUsd: 0,
@@ -347,6 +352,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 10.65361505075361,
     debtUsd: 0,
@@ -399,6 +405,7 @@ export const morphoPositions: DefiPosition[] = [
 
 export const hyperwavePositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Hyperwave',
     assetUsd: 17.148273267639563,
     debtUsd: 0,
@@ -440,6 +447,7 @@ export const hyperwavePositions: DefiPosition[] = [
 
 export const merklPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Merkl',
     assetUsd: 0.03301631879858625,
     debtUsd: 0,
@@ -522,6 +530,7 @@ export const merklPositions: DefiPosition[] = [
 
 export const eulerPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Euler',
     assetUsd: 12.020139013901389,
     debtUsd: 0,

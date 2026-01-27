@@ -12,7 +12,7 @@ import { useQueryStates } from 'nuqs';
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { usePortfolioDeFiPositions } from 'src/hooks/portfolio/usePortfolioDeFiPositions';
 import { isEqual } from 'lodash';
-import type { DefiPosition } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import type {
   OrderEnum,
   PortfolioDeFiPositionsFilter,

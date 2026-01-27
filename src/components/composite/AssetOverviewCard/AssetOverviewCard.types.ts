@@ -1,4 +1,5 @@
-import type { DefiPosition, Protocol } from 'src/types/jumper-backend';
+import type { Protocol } from 'src/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { PortfolioToken } from 'src/types/tokens';
 
 export enum AssetOverviewCardView {

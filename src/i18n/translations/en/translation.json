@@ -477,6 +477,7 @@
       "overview": {
         "opened": "Opened",
         "lockup": "Lockup",
+        "details": "Details",
         "lockupPeriod": {
           "lessThanOneMinute": "<1 minute ago",
           "minutes_one": "{{count}} minute ago",

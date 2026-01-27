@@ -1,5 +1,6 @@
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LockOutlineRoundedIcon from '@mui/icons-material/LockOutlineRounded';
+import NotesRoundedIcon from '@mui/icons-material/NotesRounded';
 import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -40,6 +41,7 @@ import { openInNewTab } from '@/utils/openInNewTab';
 import { AppPaths } from '@/const/urls';
 import { useRouter } from 'next/navigation';
 import { DeFiPositionOverviewButton } from './components/DeFiPositionOverviewButton';
+import { isChainDefiPosition } from '@/utils/positions/type-guards';
 
 export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
   defiPositions,
@@ -105,7 +107,9 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
             }
             protocol={firstPosition.protocol}
             protocolSize={AvatarSize.XXL}
-            chains={[firstPosition.chain]}
+            chains={
+              isChainDefiPosition(firstPosition) ? [firstPosition.chain] : []
+            }
             content={{
               title: firstPosition.protocol.name,
               titleVariant: TYPOGRAPHY_VARIANTS.title,
@@ -166,11 +170,16 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
       <StyledAccordionDetails>
         <StyledDetailsContainer>
           {positionGroups.map((positionGroup, index) => {
-            const earn = positionGroup.position.earn;
-            const openedAt = positionGroup.position.openedAt;
-            const unlockAt = positionGroup.position.unlockAt;
+            const { position } = positionGroup;
+            const earn = position.earn;
+            const openedAt = position.openedAt;
+            const unlockAt = position.unlockAt;
+            const description = position.description;
+            const chainId = isChainDefiPosition(position)
+              ? position.chain.chainId
+              : undefined;
             return (
-              <Fragment key={positionGroup.position.address}>
+              <Fragment key={position.address}>
                 <StyledSectionDivider
                   sx={{ marginTop: index === 0 ? 1.5 : 0 }}
                 />
@@ -190,21 +199,32 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
                         description={formatTimeDifference(unlockAt, t)}
                       />
                     )}
-                    <StyledOverviewActions>
-                      <DeFiPositionOverviewButton
-                        tooltip={t(
-                          'portfolio.defiPositionCard.overview.tooltip.address',
+                    {!!description && (
+                      <DeFiPositionOverview
+                        icon={<NotesRoundedIcon sx={ICON_STYLES} />}
+                        header={t(
+                          'portfolio.defiPositionCard.overview.details',
                         )}
-                        onClick={() =>
-                          handleAddressExplorerClick(
-                            positionGroup.position.chain.chainId,
-                            positionGroup.position.address,
-                          )
-                        }
-                        slots={{
-                          icon: CodeRoundedIcon,
-                        }}
+                        description={description}
                       />
+                    )}
+                    <StyledOverviewActions>
+                      {chainId !== undefined && (
+                        <DeFiPositionOverviewButton
+                          tooltip={t(
+                            'portfolio.defiPositionCard.overview.tooltip.address',
+                          )}
+                          onClick={() =>
+                            handleAddressExplorerClick(
+                              chainId,
+                              position.address,
+                            )
+                          }
+                          slots={{
+                            icon: CodeRoundedIcon,
+                          }}
+                        />
+                      )}
                       {!!earn && (
                         <DeFiPositionOverviewButton
                           tooltip={t(

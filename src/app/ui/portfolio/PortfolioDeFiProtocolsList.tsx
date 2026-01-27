@@ -3,6 +3,7 @@ import { DeFiPositionCard } from '@/components/composite/DeFiPositionCard/DeFiPo
 import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
 import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
 import { usePortfolioDeFiPositionsFiltering } from './PortfolioDeFiPositionsFilteringContext';
+import { getPositionGroupKey } from '@/utils/positions/type-guards';
 import { PortfolioEmptyList } from './PortfolioEmptyList';
 import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
@@ -19,7 +20,7 @@ export const PortfolioDeFiProtocolsList = () => {
 
   const protocolGroups = useFormatDisplayDeFiPositions(
     data,
-    (position) => `${position.protocol.name}-${position.chain.chainId}`,
+    getPositionGroupKey,
     { sortBy, order },
   );
 
@@ -35,7 +36,7 @@ export const PortfolioDeFiProtocolsList = () => {
     if (protocolGroups.length > 0) {
       return protocolGroups.map((positions, index) => (
         <PortfolioAnimatedAssetContainer
-          key={`${positions[0].protocol.name}-${positions[0].chain.chainId}-${index}`}
+          key={getPositionGroupKey(positions[0])}
         >
           <DeFiPositionCard defiPositions={positions} isLoading={isLoading} />
         </PortfolioAnimatedAssetContainer>
