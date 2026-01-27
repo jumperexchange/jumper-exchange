@@ -156,7 +156,7 @@ jobs:
           retention-days: 2
 
   publish-report:
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && github.event_name != 'pull_request' }}
     needs: [merge-reports]
     runs-on: ubuntu-latest
     outputs:
@@ -231,4 +231,4 @@ jobs:
 
             ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
 
-            ${{ needs.publish-report.outputs.page_url != '' && needs.publish-report.outputs.page_url != null && format('📊 [View HTML Test Report]({0})', needs.publish-report.outputs.page_url) || '📊 HTML Test Report will be available after deployment' }}
+            📊 [Download HTML Test Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) - Available in the workflow artifacts
