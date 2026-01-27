@@ -313,44 +313,6 @@ declare module '@mui/material/Typography' {
     bodyXXSmall: true;
     brandHeaderXLarge: true;
     titleSmall: true;
-    titleXSmall: true;
-    title2XSmall: true;
-    titleLarge: true;
-    title2XLarge: true;
-    urbanistTitleXSmall: true;
-    urbanistTitleLarge: true;
-    urbanistTitle2XLarge: true;
-    urbanistTitleXLarge: true;
-    urbanistTitle3XLarge: true;
-    urbanistTitleMedium: true;
-    urbanistBodyLarge: true;
-    urbanistBodyXLarge: true;
-    urbanistBody2XLarge: true;
-  }
-
-  interface TypographyPropsVariantOverrides {
-    '@supports (font-variation-settings: normal)': true;
-    headerXLarge: true;
-    headerLarge: true;
-    headerMedium: true;
-    headerSmall: true;
-    headerXSmall: true;
-    bodyXLargeStrong: true;
-    bodyXLarge: true;
-    bodyLargeStrong: true;
-    bodyLarge: true;
-    bodyMediumStrong: true;
-    bodyMedium: true;
-    bodyMediumParagraph: true;
-    bodySmallStrong: true;
-    bodySmallParagraph: true;
-    bodySmall: true;
-    bodyXSmallStrong: true;
-    bodyXSmall: true;
-    bodyXXSmallStrong: true;
-    bodyXXSmall: true;
-    brandHeaderXLarge: true;
-    titleSmall: true;
     titleMedium: true;
     titleXSmall: true;
     title2XSmall: true;
