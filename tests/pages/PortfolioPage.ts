@@ -15,6 +15,8 @@ export class PortfolioPage {
   private readonly valueSelectFilter: Locator;
   private readonly sortSelectFilter: Locator;
   private readonly clearFiltersButton: Locator;
+  private readonly filterBarContent: Locator;
+  private readonly filterBarSkeleton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
 
@@ -41,6 +43,12 @@ export class PortfolioPage {
     );
     this.clearFiltersButton = this.page.getByTestId(
       'portfolio-filter-clear-filters-button',
+    );
+    this.filterBarContent = this.page.getByTestId(
+      'portfolio-filter-bar-content',
+    );
+    this.filterBarSkeleton = this.page.getByTestId(
+      'portfolio-filter-bar-skeleton',
     );
     this.tokensFilterLocators = [
       this.walletSelectFilter,
@@ -80,6 +88,12 @@ export class PortfolioPage {
     await expect(this.defiProtocolsTab).toBeVisible();
   }
 
+  async waitForFilterBarReady(): Promise<void> {
+    // Wait for skeleton to disappear and content to appear
+    await this.filterBarSkeleton.waitFor({ state: 'hidden', timeout: 30000 });
+    await this.filterBarContent.waitFor({ state: 'visible', timeout: 30000 });
+  }
+
   private async verifyFiltersVisible(filters: Locator[]): Promise<void> {
     for (const filter of filters) {
       await expect(filter).toBeVisible();
@@ -90,6 +104,8 @@ export class PortfolioPage {
     await openWalletDrawer(this.page);
     const connectedWalletCount = await getConnectedWalletCount(this.page);
     await closeWalletDrawer(this.page);
+
+    await this.waitForFilterBarReady();
 
     const filtersToCheck =
       connectedWalletCount > 1
@@ -106,6 +122,8 @@ export class PortfolioPage {
     const connectedWalletCount = await getConnectedWalletCount(this.page);
     await closeWalletDrawer(this.page);
 
+    await this.waitForFilterBarReady();
+
     const filtersToCheck =
       connectedWalletCount > 1
         ? this.defiProtocolsFilterLocators
@@ -117,6 +135,7 @@ export class PortfolioPage {
   }
 
   async verifyAllFiltersAreVisible(): Promise<void> {
+    await this.waitForFilterBarReady();
     await this.verifyFiltersVisible(this.tokensFilterLocators);
   }
 
@@ -137,6 +156,7 @@ export class PortfolioPage {
   }
 
   async verifyValueSelectFilterIsVisible(): Promise<void> {
+    await this.waitForFilterBarReady();
     await expect(this.valueSelectFilter).toBeVisible();
   }
 
