@@ -82,13 +82,13 @@ export const Pagination = (props: PaginationProps) => {
 
   const handleFirst = () => {
     if (!isFirstPage) {
-      setPage(0);
+      handlePage(0);
     }
   };
 
   const handleLast = () => {
     if (!isLastPage) {
-      setPage(totalPages - 1);
+      handlePage(totalPages - 1);
     }
   };
 
