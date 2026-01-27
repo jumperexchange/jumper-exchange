@@ -4,7 +4,10 @@ import type { Breakpoint } from '@mui/material';
 import { Box, useTheme } from '@mui/material';
 import { useCallback, useState } from 'react';
 
-import { Pagination } from '@/components/core/Pagination/Pagination';
+import {
+  Pagination,
+  PaginationVariant,
+} from '@/components/core/Pagination/Pagination';
 import {
   TrackingAction,
   TrackingCategory,
@@ -117,6 +120,7 @@ export function BlogArticlesTabs({
       </Box>
       {pagination.pageCount > 1 && (
         <Pagination
+          variant={PaginationVariant.AllPages}
           id={tag?.Title}
           page={pageTab}
           setPage={setPage}

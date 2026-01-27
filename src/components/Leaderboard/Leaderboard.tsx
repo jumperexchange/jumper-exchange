@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useAccount } from '@lifi/wallet-management';
 import { Box } from '@mui/material';
+import { useRouter, usePathname } from 'next/navigation';
 import useClient from 'src/hooks/useClient';
 import type { LeaderboardEntryData } from '../../hooks/useLeaderboard';
 import {
@@ -12,8 +13,12 @@ import {
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
 import IconHeader from '../ProfilePage/Common/IconHeader';
-import { Pagination } from '../ProfilePage/Common/Pagination';
+import {
+  Pagination,
+  PaginationVariant,
+} from '@/components/core/Pagination/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
+import type { StrapiMetaPagination } from '@/types/strapi';
 import {
   LeaderboardContainer,
   LeaderboardEntryDivider,
@@ -39,6 +44,8 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const isClient = useClient();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { data: leaderboardData, meta } = useLeaderboardList(
     defaultPage,
@@ -46,11 +53,25 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
   );
   const { data: leaderboardUserData } = useLeaderboardUser(account?.address);
 
+  const totalPages = meta?.pagination?.pagesLength || 1;
+
   const currentPage = useMemo(() => {
-    return isValidPage(defaultPage, meta?.pagination?.pagesLength)
-      ? defaultPage
-      : 1;
-  }, [defaultPage, meta?.pagination.pagesLength]);
+    return isValidPage(defaultPage, totalPages) ? defaultPage : 1;
+  }, [defaultPage, totalPages]);
+
+  const pagination: StrapiMetaPagination = useMemo(
+    () => ({
+      page: currentPage,
+      pageSize: LEADERBOARD_LENGTH,
+      pageCount: totalPages,
+      total: totalPages * LEADERBOARD_LENGTH,
+    }),
+    [currentPage, totalPages],
+  );
+
+  const handleSetPage = (newPage: number) => {
+    router.push(`${pathname}?page=${newPage + 1}`);
+  };
 
   // const date = new Date().toLocaleDateString('en-GB', {
   //   day: 'numeric',
@@ -121,10 +142,14 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
                 },
               )}
         </LeaderboardEntryStack>
-        {meta?.pagination?.pagesLength > 1 && (
+        {totalPages > 1 && (
           <Pagination
-            page={currentPage}
-            maxPages={meta.pagination.pagesLength}
+            variant={PaginationVariant.WindowedPages}
+            page={currentPage - 1}
+            setPage={handleSetPage}
+            pagination={pagination}
+            maxVisiblePages={5}
+            sx={{ width: '100%' }}
           />
         )}
       </LeaderboardContainer>
