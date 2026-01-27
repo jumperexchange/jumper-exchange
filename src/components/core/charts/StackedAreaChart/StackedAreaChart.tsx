@@ -46,8 +46,9 @@ const StyledResponsiveContainer = styled(ResponsiveContainer, {
 
 export interface StackedChartDataPoint {
   date: string;
-  base: number;
-  reward: number;
+  base: number | null;
+  reward: number | null;
+  total: number | null;
 }
 
 export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
@@ -72,10 +73,14 @@ export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const calculateStackedVisibleYRange = (data: StackedChartDataPoint[]) => {
-  const points = data.map((d) => ({
-    date: d.date,
-    value: d.base + d.reward,
-  }));
+  const points = data
+    .filter(
+      (d): d is StackedChartDataPoint & { total: number } => d.total != null,
+    )
+    .map((d) => ({
+      date: d.date,
+      value: d.total,
+    }));
 
   return calculateVisibleYRange(points);
 };
@@ -136,10 +141,14 @@ export const StackedAreaChart = ({
 
   const xAxisTicks = useMemo(() => {
     // Adapt the data format for calculateEvenXAxisTicks
-    const adaptedData = data.map((d) => ({
-      date: d.date,
-      value: d.base + d.reward,
-    }));
+    const adaptedData = data
+      .filter(
+        (d): d is StackedChartDataPoint & { total: number } => d.total != null,
+      )
+      .map((d) => ({
+        date: d.date,
+        value: d.total,
+      }));
     return calculateEvenXAxisTicks(adaptedData, dateFormatter);
   }, [data, dateFormatter]);
 
@@ -162,6 +171,13 @@ export const StackedAreaChart = ({
 
   const handleActiveDot = (props: ActiveDotProps) => {
     const { cx, cy, payload } = props;
+
+    if (payload.total == null) {
+      if (enableTooltip) {
+        setActiveDot(null);
+      }
+      return null;
+    }
 
     if (enableTooltip) {
       setActiveDot((prev) => {
@@ -276,26 +292,12 @@ export const StackedAreaChart = ({
               tickFormatter={valueFormatter}
             />
           )}
-          {/* Base area fill (bottom of stack, no stroke) */}
+          {/* Total area (reward gradient) - rendered first as background */}
           <Area
             type="monotone"
-            dataKey="base"
-            stackId="apy"
-            stroke="transparent"
-            fillOpacity={1}
-            fill={`url(#${baseGradientId})`}
-            isAnimationActive
-            activeDot={false}
-            style={{
-              transform: AREA_CONFIG.TRANSFORM,
-            }}
-          />
-          {/* Reward area (stacked on top of base) - dot appears here */}
-          <Area
-            type="monotone"
-            dataKey="reward"
-            stackId="apy"
+            dataKey="total"
             stroke={theme.rewardLineColor}
+            connectNulls={true}
             fillOpacity={1}
             fill={`url(#${rewardGradientId})`}
             isAnimationActive
@@ -304,11 +306,26 @@ export const StackedAreaChart = ({
               transform: AREA_CONFIG.TRANSFORM,
             }}
           />
-          {/* Base line rendered last (always on top in z-order) */}
+          {/* Base area - overlays bottom portion */}
+          <Area
+            type="monotone"
+            dataKey="base"
+            stroke="transparent"
+            connectNulls={true}
+            fillOpacity={1}
+            fill={`url(#${baseGradientId})`}
+            isAnimationActive
+            activeDot={false}
+            style={{
+              transform: AREA_CONFIG.TRANSFORM,
+            }}
+          />
+          {/* Base line (divider between base and reward) */}
           <Area
             type="monotone"
             dataKey="base"
             stroke={theme.baseLineColor}
+            connectNulls={true}
             fillOpacity={0}
             fill="transparent"
             isAnimationActive
