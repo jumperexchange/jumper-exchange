@@ -11,6 +11,7 @@ import {
 import type { ImageProps } from 'next/image';
 import Image from 'next/image';
 import { ButtonSecondary } from '../Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 interface LeaderboardEntryWrapperProps extends BoxProps {
   isUserConnected?: boolean;
@@ -35,8 +36,9 @@ export const LeaderboardEntryWrapper = styled(Box, {
     {
       props: ({ isUserEntry }) => isUserEntry,
       style: {
-        background: (theme.vars || theme).palette.rubyDark[0],
-        borderRadius: '24px',
+        background: (theme.vars || theme).palette.surface1ActiveAccent,
+        border: getSurfaceBorder(theme, 'surface1'),
+        borderRadius: theme.shape.cardBorderRadiusLarge,
         boxShadow: (theme.vars || theme).shadows[2],
         marginTop: theme.spacing(3),
         padding: theme.spacing(2, 1),
@@ -53,6 +55,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
         isUserEntry && isUserConnected,
       style: {
         transition: 'background-color 250ms',
+        border: getSurfaceBorder(theme, 'surface1'),
         ':hover': {
           cursor: 'pointer',
           backgroundColor: (theme.vars || theme).palette.rubyDark[100],
@@ -73,7 +76,7 @@ export const LeaderboardEntryWrapper = styled(Box, {
           bottom: -1,
           left: -2,
           right: -2,
-          borderRadius: '6px',
+          borderRadius: theme.shape.radius8,
           border: `1px solid`,
           borderColor: (theme.vars || theme).palette.borderActive,
           backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
@@ -111,8 +114,8 @@ export const LeaderboardEntryConnect = styled(ButtonSecondary)(({ theme }) => ({
 export const RankLabel = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(1),
   display: 'inline-block',
-  backgroundColor: alpha(theme.palette.text.primary, 0.04),
-  borderRadius: '16px',
+  backgroundColor: (theme.vars || theme).palette.alpha100.main,
+  borderRadius: theme.shape.radius16,
   minWidth: 32,
   textAlign: 'center',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -123,7 +126,7 @@ export const RankLabel = styled(Typography)(({ theme }) => ({
 export const RankLabelSkeleton = styled(Skeleton)(({ theme }) => ({
   padding: theme.spacing(1),
   display: 'inline-block',
-  borderRadius: '16px',
+  borderRadius: theme.shape.radius16,
   height: 24,
   width: 48,
   minWidth: 84,
@@ -141,7 +144,7 @@ interface RankWalletProps extends ImageProps {
 export const RankWalletImage = styled(Image, {
   shouldForwardProp: (prop) => prop !== 'isUserEntry',
 })<RankWalletProps>(({ theme }) => ({
-  borderRadius: '100%',
+  borderRadius: theme.shape.radiusRoundedFull,
   width: 24,
   height: 24,
   [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -160,7 +163,7 @@ export const RankWalletImage = styled(Image, {
 }));
 
 export const RankWalletImageSkeleton = styled(Skeleton)(({ theme }) => ({
-  borderRadius: '100%',
+  borderRadius: theme.shape.radiusRoundedFull,
   display: 'none',
   width: 24,
   height: 24,

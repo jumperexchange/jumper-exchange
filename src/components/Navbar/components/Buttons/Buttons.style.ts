@@ -1,4 +1,5 @@
 import { ButtonPrimary } from '@/components/Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Typography from '@mui/material/Typography';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
@@ -43,6 +44,7 @@ export const NavbarButton = styled(ButtonTransparent, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<NavbarButtonProps>(({ theme }) => ({
   padding: theme.spacing(1),
+  borderRadius: theme.shape.buttonBorderRadius,
   minWidth: 48,
   background: 'transparent',
   boxShadow: 'none',
@@ -71,6 +73,7 @@ export const NavbarButton = styled(ButtonTransparent, {
       props: ({ isActive }) => isActive,
       style: {
         background: (theme.vars || theme).palette.surface2.main,
+        border: getSurfaceBorder(theme, 'surface2'),
         color: (theme.vars || theme).palette.text.primary,
         pointerEvents: 'none',
         ...theme.applyStyles('light', {
@@ -118,6 +121,7 @@ export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
     minWidth: 'unset',
     '&[aria-expanded="true"]': {
       backgroundColor: (theme.vars || theme).palette.surface2.main,
+      border: getSurfaceBorder(theme, 'surface2'),
     },
     ':not([aria-expanded="true"]):hover': {
       backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
@@ -155,9 +159,9 @@ export const BurgerMenuIcon = styled(MuiMenuRoundedIcon)(({ theme }) =>
 export const LevelIconBox = styled(Box)(({ theme }) => ({
   width: 32,
   height: 32,
-  borderRadius: '50%',
-  backgroundColor: (theme.vars || theme).palette.accent1.main,
-  color: (theme.vars || theme).palette.white.main,
+  borderRadius: theme.shape.buttonBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
+  color: (theme.vars || theme).palette.buttonPrimaryAction,
   alignContent: 'center',
   justifySelf: 'center',
 }));

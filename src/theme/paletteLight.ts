@@ -1,19 +1,21 @@
-import { baseColors } from './baseColors';
-import { brandColors } from './brandColors';
+import type { BaseColors } from './baseColors';
+import { baseColors as defaultBaseColors } from './baseColors';
+import type { BrandColors } from './brandColors';
+import { defaultBrandColors } from './brandColors';
 
-export const paletteLight = {
+export const createPaletteLight = (
+  brandColors: BrandColors,
+  baseColors: BaseColors = defaultBaseColors,
+) => ({
   ...baseColors,
-  // primary and secondary colors need to be added
   primary: brandColors.light.accent1,
   secondary: brandColors.light.accent2,
 
-  // Accent
   accent1: brandColors.light.accent1,
   accent1Alt: brandColors.light.accent1Alt,
   accent2: brandColors.light.accent2,
   accent2Alt: brandColors.light.accent2Alt,
 
-  // Surface
   surface1: brandColors.light.surface1,
   surface2: brandColors.light.surface2,
   surface3: brandColors.light.surface3,
@@ -22,16 +24,15 @@ export const paletteLight = {
   surface1ActiveAccent: brandColors.light.surfaceActiveAccent,
   surface1Active: brandColors.light.surfaceActive.main,
   surfaceStark: baseColors.alphaDark900.main,
-  surfaceAccent1: baseColors.lavenderLight[100],
-  surfaceAccent1Bg: baseColors.lavenderLight[100],
-  surfaceAccent1Fg: baseColors.lavenderDark[0],
-  surfaceAccent2: baseColors.orchid[800],
-  surfaceAccent2Bg: baseColors.orchid[200],
-  surfaceAccent2Fg: baseColors.orchid[800],
+  surfaceAccent1: brandColors.light.surfaceAccent1,
+  surfaceAccent1Bg: brandColors.light.surfaceAccent1Bg,
+  surfaceAccent1Fg: brandColors.light.surfaceAccent1Fg,
+  surfaceAccent2: brandColors.light.surfaceAccent2,
+  surfaceAccent2Bg: brandColors.light.surfaceAccent2Bg,
+  surfaceAccent2Fg: brandColors.light.surfaceAccent2Fg,
   surfaceSystem1: baseColors.grey[100],
   surfaceSystem2: baseColors.grey[300],
 
-  // Alpha
   alpha100: baseColors.alphaDark100,
   alpha200: baseColors.alphaDark200,
   alpha300: baseColors.alphaDark300,
@@ -42,7 +43,6 @@ export const paletteLight = {
   alpha800: baseColors.alphaDark800,
   alpha900: baseColors.alphaDark900,
 
-  // Text
   textPrimaryEmphasized: baseColors.black.main,
   textPrimary: baseColors.alphaDark900.main,
   textPrimaryInverted: baseColors.alphaLight900.main,
@@ -64,12 +64,12 @@ export const paletteLight = {
   textInfo: baseColors.azure[500],
 
   // Background
-  bg: baseColors.lavenderLight[200],
-  // bgLighter: baseColors.lavenderLight[50]
-  bgDarker: baseColors.lavenderLight[400],
-  bgGlow1: `rgba(136, 0, 255, 0.12)`,
-  bgGlow2: `rgba(187, 0, 255, 0.12)`,
-  bgGlow3: `rgba(0, 68, 255, 0.12)`,
+  bg: brandColors.light.bg,
+  // bgLighter: baseColors.lavenderLight[50],
+  bgDarker: brandColors.light.bgDarker,
+  bgGlow1: brandColors.light.bgGlow1,
+  bgGlow2: brandColors.light.bgGlow2,
+  bgGlow3: brandColors.light.bgGlow3,
 
   // Border
 
@@ -77,15 +77,15 @@ export const paletteLight = {
   borderInverted: baseColors.alphaLight200.main,
   borderEmphasized: baseColors.alphaDark600.main,
   borderInvertedEmphasized: baseColors.alphaLight600.main,
-  borderActive: baseColors.orchid[400],
+  borderActive: brandColors.light.borderActive,
   borderError: baseColors.scarlet[500],
 
   // Button
-  buttonPrimaryBg: baseColors.lavenderDark[0],
-  buttonPrimaryAction: baseColors.lavenderLight[0],
+  buttonPrimaryBg: brandColors.light.buttonPrimaryBg,
+  buttonPrimaryAction: brandColors.light.buttonPrimaryAction,
 
-  buttonSecondaryBg: baseColors.lavenderLight[400],
-  buttonSecondaryAction: baseColors.lavenderDark[100],
+  buttonSecondaryBg: brandColors.light.buttonSecondaryBg,
+  buttonSecondaryAction: brandColors.light.buttonSecondaryAction,
 
   buttonAlphaLightBg: baseColors.alphaLight600.main,
   buttonAlphaLightAction: baseColors.alphaDark900.main,
@@ -96,8 +96,8 @@ export const paletteLight = {
   buttonDisabledBg: baseColors.alphaDark100.main,
   buttonDisabledAction: baseColors.alphaDark500.main,
 
-  buttonLightBg: baseColors.white.main,
-  buttonLightAction: baseColors.black.main,
+  buttonLightBg: brandColors.light.buttonLightBg,
+  buttonLightAction: brandColors.light.buttonLightAction,
 
   buttonActiveBg: baseColors.white.main,
   buttonActiveAction: baseColors.black.main,
@@ -105,11 +105,11 @@ export const paletteLight = {
   buttonErrorBg: baseColors.scarlet[500],
 
   // Badge
-  badgeAccent1Fg: baseColors.white.main,
-  badgeAccent1Bg: brandColors.light.accent1,
+  badgeAccent1Fg: brandColors.light.badgeAccent1Fg,
+  badgeAccent1Bg: brandColors.light.badgeAccent1Bg,
 
-  badgeAccent1MutedFg: baseColors.lavenderDark[0],
-  badgeAccent1MutedBg: baseColors.lavenderLight[400],
+  badgeAccent1MutedFg: brandColors.light.badgeAccent1MutedFg,
+  badgeAccent1MutedBg: brandColors.light.badgeAccent1MutedBg,
 
   badgeAlphaFg: baseColors.alphaDark900.main,
   badgeAlphaBg: baseColors.alphaDark100.main,
@@ -124,15 +124,15 @@ export const paletteLight = {
   badgeLightBg: baseColors.white.main,
 
   // Link
-  linkPrimary: baseColors.lavenderDark[0],
-  linkSecondary: baseColors.lavenderDark[0],
+  linkPrimary: brandColors.light.linkPrimary,
+  linkSecondary: brandColors.light.linkSecondary,
   linkAlpha: baseColors.alphaDark900.main,
   linkAlphaDeemphasized: baseColors.alphaDark600.main,
   linkDisabled: baseColors.alphaDark400.main,
 
   // Logo
-  logoPrimary: brandColors.light.accent1,
-  logoSecondary: brandColors.light.accent2,
+  logoPrimary: brandColors.light.logoPrimary,
+  logoSecondary: brandColors.light.logoSecondary,
 
   // Icon
   iconEmphasized: baseColors.black.main,
@@ -165,4 +165,6 @@ export const paletteLight = {
   statusError: baseColors.scarlet[500],
   statusErrorFg: baseColors.scarlet[500],
   statusErrorBg: baseColors.scarlet[100],
-};
+});
+
+export const paletteLight = createPaletteLight(defaultBrandColors);

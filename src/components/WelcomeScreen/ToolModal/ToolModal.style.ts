@@ -1,4 +1,5 @@
 'use client';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Breakpoint, GridProps } from '@mui/material';
 import {
   AppBar,
@@ -24,8 +25,8 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
   maxWidth: 640,
   maxHeight: '85%',
   overflowY: 'auto',
-  background:
-    (theme.vars || theme).palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
   '&:focus-visible': {
     outline: 0,
   },
@@ -33,9 +34,10 @@ export const ModalContainer = styled(Box)(({ theme }) => ({
     margin: 0,
     width: 640,
   },
-  ...theme.applyStyles("light", {
-    background: (theme.vars || theme).palette.surface1.main
-  })
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
+  }),
 }));
 
 export const ModalContent = styled(Grid)<GridProps>(({ theme }) => ({
@@ -61,19 +63,21 @@ export const ModalHeaderAppBar = styled(AppBar)(({ theme }) => ({
   top: 0,
   padding: theme.spacing(1.5, 3),
   backgroundColor: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
   backdropFilter: 'blur(12px)',
   boxShadow: 'unset',
   backgroundImage: 'unset',
   '@supports ( -moz-appearance:none )': {
-    backgroundColor:
-      (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles("light", {
-      backgroundColor: (theme.vars || theme).palette.surface1.main
-    })
+    backgroundColor: (theme.vars || theme).palette.surface2.main,
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+      border: getSurfaceBorder(theme, 'surface1'),
+    }),
   },
-  ...theme.applyStyles("light", {
-    backgroundColor: alpha(theme.palette.surface1.main, 0.84)
-  })
+  ...theme.applyStyles('light', {
+    backgroundColor: alpha(theme.palette.surface1.main, 0.84),
+    border: getSurfaceBorder(theme, 'surface1'),
+  }),
 }));
 
 export const ModalHeader = styled(Box)(() => ({

@@ -1,4 +1,5 @@
 'use client';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type {
   AppBarProps,
   ListItemProps,
@@ -165,6 +166,7 @@ export const MenuPaper = styled(Paper, {
 })<MenuPaperProps>(({ theme, isMobile, show, width }) => ({
   display: !show ? 'none' : 'block',
   background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   padding: 0,
   marginTop: 0,
   borderRadius: 0,
@@ -188,7 +190,7 @@ export const MenuPaper = styled(Paper, {
     transformOrigin: 'inherit',
     maxHeight: 'calc( 100vh - 80px - 12px )',
     height: 'auto',
-    borderRadius: '12px !important',
+    borderRadius: theme.shape.borderRadius,
     width: width ?? 288,
     marginTop: -2,
     boxShadow: theme.shadows[1],

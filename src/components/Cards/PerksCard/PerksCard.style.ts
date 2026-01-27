@@ -1,4 +1,5 @@
 'use client';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import type { CardProps } from '@mui/material/Card';
 import Card from '@mui/material/Card';
@@ -18,6 +19,7 @@ export const PerksCardContainer = styled(Card, {
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
   background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   overflow: 'hidden',
   '&:hover': {
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4

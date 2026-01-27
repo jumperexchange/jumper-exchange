@@ -1,4 +1,5 @@
 import { urbanist } from '@/fonts/fonts';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Breakpoint, TypographyProps } from '@mui/material';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
@@ -7,8 +8,9 @@ import Link from 'next/link';
 
 export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   position: 'relative',
-  borderRadius: 32,
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[1],
   display: 'grid',
@@ -51,7 +53,7 @@ export const FeaturedArticleCard = styled(Box)(({ theme }) => ({
   top: theme.spacing(-4),
   margin: theme.spacing(4, 2.5),
   padding: theme.spacing(4),
-  borderRadius: '36px',
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   width: 'auto',
   alignItems: 'center',
   [theme.breakpoints.up('md' as Breakpoint)]: {

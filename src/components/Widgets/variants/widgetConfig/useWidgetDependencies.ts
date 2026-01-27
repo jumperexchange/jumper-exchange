@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
 import { useWalletMenu } from '@lifi/wallet-management';
 import { useThemeStore } from 'src/stores/theme/ThemeStore';
-import { useGetPartnerWidgetTheme } from 'src/hooks/theme/useGetPartnerWidgetTheme';
+import { useWidgetTheme } from 'src/hooks/theme/useWidgetTheme';
 import type { HookDependencies } from './types';
 
 /**
@@ -14,7 +14,7 @@ export function useWidgetDependencies(): HookDependencies {
   const { i18n, t } = useTranslation();
   const muiTheme = useTheme();
   const configTheme = useThemeStore((state) => state.configTheme);
-  const widgetTheme = useGetPartnerWidgetTheme();
+  const widgetTheme = useWidgetTheme();
   const { openWalletMenu } = useWalletMenu();
 
   return useMemo(

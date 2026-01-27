@@ -34,7 +34,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     left: '0',
     height: 'auto',
     width: '100%',
-    borderRadius: 24,
+    borderRadius: theme.shape.tabBarRadius,
     transform: 'translateX(0) scaleX(0.98)',
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface1.main,
@@ -51,7 +51,7 @@ export const HorizontalTabContainer = styled(Tab, {
 })<HorizontalTabProps>(({ theme, disabled }) => ({
   fontWeight: theme.typography.fontWeightBold,
   textTransform: 'none',
-  borderRadius: 24,
+  borderRadius: theme.shape.tabBarRadius,
   width: 'auto',
   background: 'transparent',
   margin: 0,

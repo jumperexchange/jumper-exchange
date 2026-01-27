@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box, { type BoxProps } from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
@@ -20,6 +21,7 @@ export const AddressBoxContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: (theme.vars || theme).shadows[1],
   background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   width: '100%',
   minHeight: 212,
   [theme.breakpoints.up('lg')]: {

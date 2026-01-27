@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { styled } from '@mui/material/styles';
 import type { BoxProps } from '@mui/material/Box';
 import Box from '@mui/material/Box';
@@ -17,6 +18,7 @@ export const PortfolioAssetContainer = styled(SectionCardContainer)(
     padding: theme.spacing(1.5),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
   }),
 );
 
@@ -68,6 +70,7 @@ export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
     padding: theme.spacing(3),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
   }),
 );
 

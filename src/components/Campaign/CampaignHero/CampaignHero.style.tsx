@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
@@ -23,6 +24,7 @@ export const CampaignHeroCardContainer = styled(Box)(({ theme }) => ({
   overflow: 'hidden',
   [theme.breakpoints.up('sm')]: {
     backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
     borderRadius: theme.shape.cardBorderRadius,
     boxShadow: theme.shadows[2],
   },

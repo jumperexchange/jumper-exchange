@@ -122,43 +122,54 @@ export function formatConfig(
 
 export function formatTheme(theme: PartnerThemesAttributes) {
   const config = formatConfig(theme);
+  const themeConfig = theme.lightConfig || theme.darkConfig;
 
-  const formattedMUITheme = {
-    // @ts-expect-error TODO: Fix this
-    ...(theme.lightConfig || theme.darkConfig).customization,
-    components: {
-      Background: {
-        styleOverrides: {
-          // functions cannot merged because of mui... I know it's bad :(
-          root: {
-            position: 'fixed',
-            left: 0,
-            bottom: 0,
-            right: 0,
-            top: 0,
-            zIndex: -1,
-            overflow: 'hidden',
-            pointerEvents: 'none',
-            ...(config.backgroundColor && {
-              backgroundColor: config.backgroundColor,
-            }),
-            ...(config.backgroundImageUrl && {
-              background: `url('${config.backgroundImageUrl}') ${config.backgroundColor ?? ''} no-repeat center center / cover`,
-            }),
-          },
+  // Jumper theme options (for createJumperTheme)
+  const jumperTheme = themeConfig?.jumperTheme ?? {};
+
+  // Background component overrides
+  const backgroundComponent = {
+    Background: {
+      styleOverrides: {
+        root: {
+          position: 'fixed',
+          left: 0,
+          bottom: 0,
+          right: 0,
+          top: 0,
+          zIndex: -1,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+          ...(config.backgroundColor && {
+            backgroundColor: config.backgroundColor,
+          }),
+          // @Note we use the animated background image component instead of the background image url
+          // ...(config.backgroundImageUrl && {
+          //   background: `url('${config.backgroundImageUrl}') ${config.backgroundColor ?? ''} no-repeat center center / cover`,
+          // }),
         },
       },
     },
   };
 
-  const formattedWidgetTheme =
-    (theme.lightConfig || theme.darkConfig)?.config ?? {};
+  // Merge jumperTheme components with Background override
+  const formattedJumperTheme = {
+    ...jumperTheme,
+    components: {
+      ...jumperTheme.components,
+      ...backgroundComponent,
+    },
+  };
+
+  const formattedWidgetTheme = themeConfig?.config ?? {};
 
   return {
     config,
-    activeMUITheme: formattedMUITheme,
+    jumperTheme: formattedJumperTheme,
     activeWidgetTheme: formattedWidgetTheme,
     themeName: theme.uid,
+    /** @deprecated Use jumperTheme instead */
+    activeMUITheme: formattedJumperTheme,
   };
 }
 

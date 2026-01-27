@@ -3,12 +3,11 @@ import { useThemeConditionsMet } from './useThemeConditionsMet';
 
 export const useGetPartnerThemeImage = () => {
   const configTheme = useThemeStore((state) => state.configTheme);
-  const { shouldShowForTheme, shouldShowForPath } = useThemeConditionsMet();
+  const { shouldShowForTheme } = useThemeConditionsMet();
 
-  const imageUrl =
-    shouldShowForPath && shouldShowForTheme
-      ? configTheme?.backgroundImageUrl?.href
-      : null;
+  const imageUrl = shouldShowForTheme
+    ? configTheme?.backgroundImageUrl?.href
+    : null;
 
   return imageUrl;
 };

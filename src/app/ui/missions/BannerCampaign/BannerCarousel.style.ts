@@ -1,4 +1,5 @@
-import Box, { BoxProps } from '@mui/material/Box';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import type { ImageProps } from 'next/image';
@@ -24,7 +25,7 @@ export const BannerSlideContainer = styled(Box)(({ onClick }) => ({
 export const BannerImageWrapper = styled(Box)(({ theme }) => ({
   width: '100%',
   overflow: 'hidden',
-  borderRadius: 24,
+  borderRadius: theme.shape.cardBorderRadiusLarge,
 }));
 
 interface BannerImageProps extends ImageProps {
@@ -53,5 +54,5 @@ export const BannerContentOverlay = styled(Box)(({ theme }) => ({
 
 export const CarouselSkeletonBox = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
-  borderRadius: 16,
+  borderRadius: theme.shape.cardBorderRadiusMedium,
 }));

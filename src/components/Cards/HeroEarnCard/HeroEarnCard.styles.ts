@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
@@ -12,6 +13,7 @@ export const HeroEarnCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hasLink',
 })<HeroEarnCardContainerProps>(({ theme, hasLink }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[3],
   cursor: hasLink ? 'pointer' : 'default',

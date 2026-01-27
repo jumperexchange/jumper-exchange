@@ -4,7 +4,7 @@ import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
 export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
   display: 'none',
-  borderRadius: 28,
+  borderRadius: theme.shape.tabBarRadius,
   padding: 0,
   alignItems: 'center',
   boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @Note Figma elevation 4
@@ -20,7 +20,7 @@ export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
     left: '4px',
     height: '48px',
     width: '48px',
-    borderRadius: '28px',
+    borderRadius: theme.shape.tabBarRadius,
     transform: 'translateY(0) scaleY(0.98)',
     backgroundColor: (theme.vars || theme).palette.alpha100.main,
     zIndex: '-1',
@@ -39,7 +39,7 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   width: 48,
   padding: 0,
   minWidth: 48,
-  borderRadius: 24,
+  borderRadius: theme.shape.tabBarRadius,
   flexGrow: 1,
   flexDirection: 'row',
   justifyContent: 'center',

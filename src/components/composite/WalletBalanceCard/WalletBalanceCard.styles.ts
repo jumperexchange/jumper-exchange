@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -10,6 +11,7 @@ import Typography from '@mui/material/Typography';
 
 export const WalletBalanceCardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.cardBorderRadius,
   padding: theme.spacing(2),
@@ -41,6 +43,7 @@ export const WalletTotalBalanceValue = styled(Typography)(({ theme }) => ({
 
 export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
   transform: 'none',
 }));
 

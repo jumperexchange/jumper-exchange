@@ -3,7 +3,7 @@
 exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1nmziuz"
+    class="MuiBox-root css-1c6mbxq"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -145,7 +145,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1nmziuz"
+    class="MuiBox-root css-1c6mbxq"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -287,7 +287,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
 exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1nmziuz"
+    class="MuiBox-root css-1c6mbxq"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -429,7 +429,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
 exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1nmziuz"
+    class="MuiBox-root css-1c6mbxq"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -575,7 +575,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-us05dp"
+      class="MuiBox-root css-1w2ajjw"
     >
       <div
         class="MuiStack-root css-imab1l-MuiStack-root"
@@ -718,7 +718,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1c53729"
+    class="MuiBox-root css-14oljxr"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -761,7 +761,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1nmziuz"
+    class="MuiBox-root css-1c6mbxq"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -895,7 +895,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-5y03qs-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >

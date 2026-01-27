@@ -24,7 +24,7 @@ export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
         {t('earn.relatedMarkets.title')}
       </Typography>
       <GridContainer
-        gridTemplateColumns="repeat(auto-fill, minmax(328px, 1fr))"
+        gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
         gap={3}
         justifyContent="space-evenly"
       >

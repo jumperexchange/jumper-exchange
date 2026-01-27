@@ -3,13 +3,13 @@
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -17,7 +17,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -25,7 +25,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -376,13 +376,13 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for De
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -390,7 +390,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -398,7 +398,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -760,13 +760,13 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot for To
 exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with four assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -774,7 +774,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -782,7 +782,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -933,7 +933,7 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
 exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with loading 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-a5552t"
@@ -1010,7 +1010,7 @@ exports[`AssetOverviewCard Snapshots > Loading > should match snapshot with load
 exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no content 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-1pds7ma"
@@ -1080,14 +1080,14 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
           class="MuiBox-root css-1c20ww1"
         >
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-cf3g3c-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1685net-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
             portfolio.assetOverviewCard.noContent.cta.startEarning
           </button>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-jl48ew-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-l9dzf7-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -1103,13 +1103,13 @@ exports[`AssetOverviewCard Snapshots > NoContent > should match snapshot with no
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for DeFi Positions view with no positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -1117,7 +1117,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -1125,7 +1125,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         disabled=""
         tabindex="-1"
@@ -1242,13 +1242,13 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -1256,7 +1256,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -1264,7 +1264,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         disabled=""
         tabindex="-1"
@@ -1696,13 +1696,13 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
 exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot with no DeFi positions 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -1710,7 +1710,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -1718,7 +1718,7 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         disabled=""
         tabindex="-1"
@@ -1835,13 +1835,13 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -1849,7 +1849,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         disabled=""
         tabindex="-1"
@@ -1858,7 +1858,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -2275,13 +2275,13 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Tokens view with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -2289,7 +2289,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         disabled=""
         tabindex="-1"
@@ -2298,7 +2298,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -2418,13 +2418,13 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no tokens 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -2432,7 +2432,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-pfe1fb-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-71ggce-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         disabled=""
         tabindex="-1"
@@ -2441,7 +2441,7 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -2561,13 +2561,13 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -2575,7 +2575,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -2583,7 +2583,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -2736,13 +2736,13 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -2750,7 +2750,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -2758,7 +2758,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -2913,13 +2913,13 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one asset 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -2927,7 +2927,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -2935,7 +2935,7 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -3035,13 +3035,13 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi Positions view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -3049,7 +3049,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -3057,7 +3057,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -3474,13 +3474,13 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for DeFi
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Tokens view with overflow 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -3488,7 +3488,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -3496,7 +3496,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -3927,13 +3927,13 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot for Toke
 exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with overflow (more than 4 assets) 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -3941,7 +3941,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -3949,7 +3949,7 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -4112,13 +4112,13 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -4126,7 +4126,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -4134,7 +4134,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -4419,13 +4419,13 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for D
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -4433,7 +4433,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -4441,7 +4441,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -4734,13 +4734,13 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot for T
 exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with three assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -4748,7 +4748,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -4756,7 +4756,7 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -4888,13 +4888,13 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -4902,7 +4902,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -4910,7 +4910,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -5327,13 +5327,13 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot for Tokens view with tiny amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -5341,7 +5341,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -5349,7 +5349,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -5715,13 +5715,13 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot with tiny token amounts 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -5729,7 +5729,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -5737,7 +5737,7 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -5900,13 +5900,13 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeFi Positions view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -5914,7 +5914,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -5922,7 +5922,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -6141,13 +6141,13 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for DeF
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tokens view 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -6155,7 +6155,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -6163,7 +6163,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"
@@ -6387,13 +6387,13 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot for Tok
 exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with two assets 1`] = `
 <div>
   <div
-    class="MuiBox-root css-anv23b"
+    class="MuiBox-root css-qboydv"
   >
     <div
       class="MuiBox-root css-g2ojj3"
     >
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ndy3iu-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-tq12fm-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-overview"
         tabindex="0"
         type="button"
@@ -6401,7 +6401,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
         portfolio.assetOverviewCard.navigation.overview
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-tokens"
         tabindex="0"
         type="button"
@@ -6409,7 +6409,7 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
         portfolio.assetOverviewCard.navigation.tokens
       </button>
       <button
-        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-o9dgq5-MuiButtonBase-root-MuiButton-root"
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1a9kq2f-MuiButtonBase-root-MuiButton-root"
         data-testid="asset-overview-nav-defiPositions"
         tabindex="0"
         type="button"

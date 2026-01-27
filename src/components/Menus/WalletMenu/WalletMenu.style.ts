@@ -1,6 +1,7 @@
 'use client';
 
 import { ButtonTransparent } from '@/components/Button';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { ButtonProps } from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import { styled, alpha } from '@mui/material/styles';
@@ -15,6 +16,7 @@ export const CustomDrawer = styled(Drawer)(({ theme }) => ({
     maxWidth: 416,
     zIndex: 2000,
     background: (theme.vars || theme).palette.surface2.main,
+    border: getSurfaceBorder(theme, 'surface2'),
   },
 }));
 
@@ -24,7 +26,6 @@ export interface WalletButtonProps extends ButtonProps {
 
 export const WalletButton = styled(ButtonTransparent)<WalletButtonProps>(
   ({ theme }) => ({
-    borderRadius: '24px',
     padding: '11px 16px',
     height: 40,
     width: '100%',

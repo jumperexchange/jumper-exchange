@@ -2,6 +2,7 @@ import type { Breakpoint } from '@mui/material';
 import { Typography, alpha } from '@mui/material';
 
 import { urbanist } from '@/fonts/fonts';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { styled } from '@mui/material/styles';
 import Link from 'next/link';
 import { IconButtonPrimary } from '../IconButton.style';
@@ -15,8 +16,9 @@ export const DiscordBannerLink = styled(Link)(({ theme }) => ({
   gap: theme.spacing(1.5),
   alignItems: 'center',
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   boxShadow: (theme.vars || theme).shadows[1],
-  borderRadius: '32px',
+  borderRadius: theme.shape.cardBorderRadius,
   cursor: 'pointer',
   padding: theme.spacing(6),
   transition: 'background-color 250ms',

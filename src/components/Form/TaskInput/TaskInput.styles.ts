@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import InputBase from '@mui/material/InputBase';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -16,6 +17,7 @@ export const TaskInputField = styled(InputBase)(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
     ...theme.applyStyles?.('light', {
       backgroundColor: (theme.vars || theme).palette.surface1.main,
+      border: getSurfaceBorder(theme, 'surface1'),
     }),
     '&:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
       borderColor: (theme.vars || theme).palette.borderActive,

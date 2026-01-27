@@ -1,11 +1,8 @@
 import { WidgetSkeleton as LiFiWidgetSkeleton } from '@lifi/widget/skeleton';
-import { useThemeStore } from 'src/stores/theme/ThemeStore';
+import { useWidgetTheme } from 'src/hooks/theme/useWidgetTheme';
 
 export const WidgetSkeleton = () => {
-  const [widgetTheme] = useThemeStore((state) => [
-    state.widgetTheme,
-    state.configTheme,
-  ]);
+  const widgetTheme = useWidgetTheme();
 
   return (
     <LiFiWidgetSkeleton

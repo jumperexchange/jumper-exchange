@@ -4,7 +4,7 @@ import { alpha, styled } from '@mui/material/styles';
 import MuiButton, { buttonClasses } from '@mui/material/Button';
 
 export const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
-  borderRadius: '24px',
+  borderRadius: theme.shape.buttonBorderRadius,
   fontSize: '16px',
   letterSpacing: 0,
   textTransform: 'none',
@@ -21,15 +21,16 @@ export const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
 }));
 
 export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
-  color: (theme.vars || theme).palette.white.main,
-  backgroundColor: (theme.vars || theme).palette.primary.main,
+  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
+  color: (theme.vars || theme).palette.buttonPrimaryAction,
   ':hover': {
     backgroundColor: `oklch(from ${(theme.vars || theme).palette.primary.main} calc(l - 0.1) c h)`,
   },
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
+  backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
+  color: (theme.vars || theme).palette.buttonSecondaryAction,
   '&:hover': {
     backgroundColor: `oklch(from ${(theme.vars || theme).palette.bgQuaternary.main} calc(l - 0.1) c h)`,
   },

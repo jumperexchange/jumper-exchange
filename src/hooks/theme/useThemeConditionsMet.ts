@@ -1,13 +1,8 @@
 import { useMemo } from 'react';
 import { isBefore } from 'date-fns';
-import { AppPaths } from 'src/const/urls';
 import { useThemeStore } from 'src/stores/theme';
-import { usePathnameWithoutLocale } from '../routing/usePathnameWithoutLocale';
-
-const ALLOWED_PATHS = [AppPaths.Main, AppPaths.Gas];
 
 export const useThemeConditionsMet = () => {
-  const pathname = usePathnameWithoutLocale();
   const [configTheme, configThemeStates] = useThemeStore((state) => [
     state.configTheme,
     state.configThemeStates,
@@ -32,10 +27,7 @@ export const useThemeConditionsMet = () => {
     return isBefore(new Date(), activeConfigThemeState.expirationDate);
   }, [activeConfigThemeState]);
 
-  const shouldShowForPath = ALLOWED_PATHS.includes(pathname as AppPaths);
-
   return {
     shouldShowForTheme,
-    shouldShowForPath,
   };
 };

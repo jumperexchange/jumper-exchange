@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -28,6 +29,7 @@ export const PortfolioEmptyListContentContainer = styled(Stack)(
       height: `calc(100% + ${theme.spacing(2)})`,
       transform: 'translateX(-50%)',
       backgroundColor: (theme.vars || theme).palette.surface2.main,
+      border: getSurfaceBorder(theme, 'surface2'),
       filter: 'blur(32px)',
     },
   }),

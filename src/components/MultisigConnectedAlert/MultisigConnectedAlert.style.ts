@@ -1,5 +1,6 @@
 'use client';
 
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { InfoRounded } from '@mui/icons-material';
 import type { Breakpoint } from '@mui/material';
 import { Box, Button, alpha } from '@mui/material';
@@ -22,12 +23,13 @@ export const MultisigConnectedAlertContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(3),
   borderRadius: '16px',
-  background:
-    (theme.vars || theme).palette.surface2.main,
+  background: (theme.vars || theme).palette.surface2.main,
+  border: getSurfaceBorder(theme, 'surface2'),
   boxShadow: (theme.vars || theme).shadows[1],
-  ...theme.applyStyles("light", {
-    background: (theme.vars || theme).palette.surface1.main
-  })
+  ...theme.applyStyles('light', {
+    background: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
+  }),
 }));
 
 export const MultisigConnectedAlertButton = styled(Button)(({ theme }) => ({

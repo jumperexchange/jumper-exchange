@@ -23,7 +23,7 @@ export const MissionHeroStatsBox = styled(Box, {
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: theme.spacing(1),
-    borderRadius: 16,
+    borderRadius: theme.shape.cardBorderRadiusMedium,
     overflow: 'hidden',
 
     ...(variant === MissionHeroStatsCardVariant.Default && {

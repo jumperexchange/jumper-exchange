@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
@@ -17,6 +18,7 @@ export const FloatingMainLinksContainer = styled(Stack)(({ theme }) => ({
   borderRadius: 64,
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.surface3.main,
+    border: getSurfaceBorder(theme, 'surface3'),
   }),
 }));
 

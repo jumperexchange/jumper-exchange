@@ -3,11 +3,11 @@
 exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-46hnbh"
+    class="MuiBox-root css-to367d"
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1n3ldtq"
+      class="MuiBox-root css-1mlhzir"
     >
       <div
         class="MuiBox-root css-716jf3"
@@ -87,11 +87,11 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
 exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-46hnbh"
+    class="MuiBox-root css-to367d"
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1n3ldtq"
+      class="MuiBox-root css-1mlhzir"
     >
       <div
         class="MuiBox-root css-1f6e6uc"
@@ -184,7 +184,7 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
 exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-46hnbh"
+    class="MuiBox-root css-to367d"
   >
     <div
       class="MuiBox-root css-1yz1h9d"
@@ -216,11 +216,11 @@ exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`]
 exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-46hnbh"
+    class="MuiBox-root css-to367d"
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1n3ldtq"
+      class="MuiBox-root css-1mlhzir"
     >
       <div
         class="MuiBox-root css-716jf3"

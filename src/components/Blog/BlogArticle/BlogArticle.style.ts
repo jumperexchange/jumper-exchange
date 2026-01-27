@@ -48,7 +48,7 @@ export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'unset',
   width: 164,
   height: 32,
-  borderRadius: 16,
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   marginTop: theme.spacing(1.5),
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     marginLeft: theme.spacing(3),
@@ -59,7 +59,7 @@ export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
 export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
   height: '48px',
   width: '120px',
-  borderRadius: '24px',
+  borderRadius: theme.shape.cardBorderRadiusLarge,
   transform: 'unset',
 }));
 
@@ -83,7 +83,7 @@ export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
 export const BlogArticleImage = styled(Image)(({ theme }) => ({
   width: '100%',
   height: 'auto',
-  borderRadius: '16px',
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   maxWidth: theme.breakpoints.values.lg,
   aspectRatio: '16/12',
   objectFit: 'cover',
@@ -96,7 +96,7 @@ export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
   width: '100%',
   height: 'auto',
   transform: 'unset',
-  borderRadius: '16px',
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   margin: theme.spacing(0, 'auto', 0.75),
   maxWidth: theme.breakpoints.values.lg,
   textAlign: 'center',
@@ -248,7 +248,7 @@ export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
 export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
   marginTop: theme.spacing(4),
   transform: 'unset',
-  borderRadius: 16,
+  borderRadius: theme.shape.cardBorderRadiusMedium,
   height: 320,
   width: '100%',
   [theme.breakpoints.up('sm' as Breakpoint)]: {

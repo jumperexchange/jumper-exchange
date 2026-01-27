@@ -3,7 +3,7 @@
 exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -67,7 +67,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-5y03qs-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -346,7 +346,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -667,7 +667,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-1ky10ex"
+      class="MuiBox-root css-43o07u"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -985,7 +985,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-1wj7dar"
@@ -1042,7 +1042,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1359,7 +1359,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
 exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1676,7 +1676,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
 exports[`EarnCard snapshot > compact card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1709,7 +1709,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-5y03qs-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -1988,7 +1988,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2052,7 +2052,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-5y03qs-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2331,7 +2331,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1yq1fio"
+    class="MuiBox-root css-1tyjne1"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2395,7 +2395,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-5y03qs-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2602,7 +2602,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2796,7 +2796,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-ejku7-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -2831,7 +2831,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3038,7 +3038,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-1t7mxtg"
+      class="MuiBox-root css-1c0785"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -3242,7 +3242,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-1wj7dar"
@@ -3304,7 +3304,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3507,7 +3507,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
 exports[`EarnCard snapshot > list item card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3710,7 +3710,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
 exports[`EarnCard snapshot > list item card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3873,7 +3873,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-ejku7-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -3908,7 +3908,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 exports[`EarnCard snapshot > list item card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-n0afi4"
+    class="MuiBox-root css-nhh3oc"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -4111,7 +4111,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
 exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -4480,7 +4480,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -4852,7 +4852,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5221,7 +5221,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
 exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5255,7 +5255,7 @@ exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5624,7 +5624,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
 exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-19butzf"
+    class="MuiBox-root css-4gp3vo"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"

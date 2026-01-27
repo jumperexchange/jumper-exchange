@@ -3,11 +3,12 @@ import type { PartnerThemesData } from '@/types/strapi';
 import type {
   ConfigThemeState,
   ConfigThemeStates,
+  JumperThemeVariants,
   PersistedThemeState,
   ThemeProps,
   ThemeState,
+  WidgetThemeVariants,
 } from '@/types/theme';
-import type { WidgetConfig } from '@lifi/widget';
 import { addDays, isBefore } from 'date-fns';
 import { isEqual } from 'lodash';
 import superjson from 'superjson';
@@ -86,6 +87,12 @@ const initializeConfigThemeStates = (
   };
 };
 
+// Default empty widget theme config
+const emptyWidgetThemeConfig = { config: {} };
+
+// Default empty jumper theme
+const emptyJumperTheme = {};
+
 export const createThemeStore = (props: ThemeProps) =>
   createWithEqualityFn(
     persist<ThemeState, [], [], PersistedThemeState>(
@@ -94,8 +101,11 @@ export const createThemeStore = (props: ThemeProps) =>
         setConfigTheme: (configTheme: Partial<PartnerThemeConfig>) => {
           set({ configTheme });
         },
-        setWidgetTheme: (widgetTheme: { config: Partial<WidgetConfig> }) => {
+        setWidgetTheme: (widgetTheme: WidgetThemeVariants) => {
           set({ widgetTheme });
+        },
+        setJumperTheme: (jumperTheme: JumperThemeVariants) => {
+          set({ jumperTheme });
         },
         setConfigThemeState: (
           uid: string,
@@ -119,7 +129,7 @@ export const createThemeStore = (props: ThemeProps) =>
       }),
       {
         name: 'jumper-theme-store',
-        version: 2,
+        version: 3,
         storage: {
           getItem: (name) => {
             const str = getLocalStorage()?.getItem(name);
@@ -138,10 +148,22 @@ export const createThemeStore = (props: ThemeProps) =>
         ): PersistedThemeState => {
           const state = persistedState as Partial<PersistedThemeState> & {
             configThemeState?: ConfigThemeState & { uid?: string };
+            // v2 structure
+            widgetTheme?: { config: unknown };
           };
+
           const newStore: PersistedThemeState = {
             configTheme: state.configTheme ?? {},
-            widgetTheme: state.widgetTheme ?? { config: {} },
+            widgetTheme: {
+              light: emptyWidgetThemeConfig,
+              dark: emptyWidgetThemeConfig,
+              partnerLight: emptyWidgetThemeConfig,
+              partnerDark: emptyWidgetThemeConfig,
+            },
+            jumperTheme: {
+              default: emptyJumperTheme,
+              partner: emptyJumperTheme,
+            },
             configThemeStates: state.configThemeStates ?? {},
           };
 
@@ -177,6 +199,17 @@ export const createThemeStore = (props: ThemeProps) =>
             };
           }
 
+          // v2 → v3: Migrate old single widgetTheme to new structure
+          if (version === 2 && state.widgetTheme?.config) {
+            const oldWidgetTheme = state.widgetTheme as {
+              config: Record<string, unknown>;
+            };
+            // Preserve old widget theme as partner themes (best effort)
+            newStore.widgetTheme.partnerLight = oldWidgetTheme;
+            newStore.widgetTheme.partnerDark = oldWidgetTheme;
+            console.debug('widgetTheme migrated from v2 to v3');
+          }
+
           Object.values(newStore.configThemeStates).forEach((themeState) => {
             if (typeof themeState.expirationDate === 'string') {
               themeState.expirationDate = new Date(themeState.expirationDate);
@@ -188,6 +221,7 @@ export const createThemeStore = (props: ThemeProps) =>
         partialize: (state: ThemeState): PersistedThemeState => ({
           configTheme: state.configTheme,
           widgetTheme: state.widgetTheme,
+          jumperTheme: state.jumperTheme,
           configThemeStates: state.configThemeStates,
         }),
         merge: (persistedState, currentState) => {
@@ -207,12 +241,24 @@ export const createThemeStore = (props: ThemeProps) =>
                 ...currentState.configThemeStates,
               };
 
+          // Clean up entries for themes that no longer exist in partnerThemes,
+          // but preserve entries with isSelected=true so the component can detect
+          // orphaned selected themes and reset the color mode appropriately
+          const validPartnerUids = new Set(
+            currentState.partnerThemes?.map((theme) => theme.uid) ?? [],
+          );
+          const cleanedConfigThemeStates = Object.fromEntries(
+            Object.entries(baseConfigThemeStates).filter(
+              ([uid, state]) => validPartnerUids.has(uid) || state.isSelected,
+            ),
+          );
+
           return {
             ...persisted,
             ...currentState,
             configThemeStates: initializeConfigThemeStates(
               currentState.configTheme,
-              baseConfigThemeStates,
+              cleanedConfigThemeStates,
             ),
           };
         },

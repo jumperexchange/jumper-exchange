@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Breakpoint } from '@mui/material';
 import { Grid } from '@mui/material';
 
@@ -13,7 +14,8 @@ export const BlogArticlesCollectionsContainer = styled(Grid)(({ theme }) => ({
   gap: theme.spacing(1.5),
   alignItems: 'center',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
-  borderRadius: '32px',
+  border: getSurfaceBorder(theme, 'surface2'),
+  borderRadius: theme.shape.cardBorderRadiusXLarge,
   transition: 'background-color 250ms',
   marginBottom: theme.spacing(14.5),
   padding: theme.spacing(2),

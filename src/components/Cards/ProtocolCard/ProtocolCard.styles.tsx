@@ -1,3 +1,4 @@
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
@@ -10,6 +11,7 @@ import Button from '@mui/material/Button';
 
 export const ProtocolCardContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   transition: 'all 0.3s ease-in-out',
@@ -38,6 +40,7 @@ export const ProtocolCardHeaderContainer = styled(Box, {
     right: 0,
     bottom: 0,
     background: `url(${backgroundUrl}), ${(theme.vars || theme).palette.surface2.main}`,
+    border: getSurfaceBorder(theme, 'surface2'),
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
