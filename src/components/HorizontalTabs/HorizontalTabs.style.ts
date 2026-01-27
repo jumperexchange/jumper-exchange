@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
-import Tab, { TabProps } from '@mui/material/Tab';
+import type { TabProps } from '@mui/material/Tab';
+import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 export enum HorizontalTabSize {
@@ -36,10 +37,7 @@ export const HorizontalTabsContainer = styled(Tabs)(({ theme }) => ({
     borderRadius: 24,
     transform: 'translateX(0) scaleX(0.98)',
     boxShadow: theme.shadows[2],
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-    ...theme.applyStyles('light', {
-      backgroundColor: (theme.vars || theme).palette.surface1.main,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
     zIndex: 1,
   },
 }));

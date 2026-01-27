@@ -88,6 +88,11 @@ interface Resources {
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';
       };
       emptyList: {
+        forYouNotConnected: {
+          connectWallet: 'Connect wallet';
+          description: 'Connect your wallet to view markets for you.';
+          title: 'No wallet connected';
+        };
         noResults: {
           clearFilters: 'Clear filters';
           description: 'Unfortunately there are no results for your search, try clearing your filters.';
@@ -97,6 +102,11 @@ interface Resources {
           description: "Looks like you don't have any active positions in any market yet.\nIf you think a position is missing try visiting your portfolio.";
           title: 'No positions';
           viewAllMarkets: 'View all markets';
+        };
+        yourPositionsNotConnected: {
+          connectWallet: 'Connect wallet';
+          description: 'Connect your wallet to view your positions.';
+          title: 'No wallet connected';
         };
       };
       filter: {
@@ -124,6 +134,7 @@ interface Resources {
         updated: 'Updated {{time}} ago';
       };
       position: {
+        disabled: 'Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
         label: 'Your position';
       };
       relatedMarkets: {
@@ -158,7 +169,7 @@ interface Resources {
         earnUpTo: 'Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>';
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
-        useYourSpare: 'Use your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+        useYourSpare: 'Deposit your spare <asset/> with <protocol/> and earn up to <apy/> APY';
       };
       views: {
         all: 'All';
@@ -396,7 +407,7 @@ interface Resources {
         resources: 'Resources';
         scan: 'Scan';
         support: 'Support';
-        termsConditions: 'Terms & Conditions';
+        termsOfBusiness: 'Terms Of Business';
         theme: 'Theme';
       };
       pass: 'Pass';
@@ -503,6 +514,7 @@ interface Resources {
           value: 'Value';
         };
         overview: {
+          details: 'Details';
           lockup: 'Lockup';
           lockupPeriod: {
             days_one: '{{count}} day ago';
@@ -557,10 +569,9 @@ interface Resources {
         viewBy: 'View by';
       };
       welcome: {
-        explorePass: 'Explore Jumper Pass';
         getStarted: 'Get started';
-        subtitle: '<strong>Bridge, swap, earn,</strong> and <strong>manage</strong> your entire portfolio with <strong>Jumper</strong>';
-        title: 'One platform, all of DeFi';
+        subtitle: "<strong>DeFi's interactive portfolio.</strong>";
+        title: 'Welcome to Jumper Portfolio!';
       };
     };
     profile_page: {
@@ -624,6 +635,7 @@ interface Resources {
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       deposit: 'The token on which the market is defined and yield accrues on.';
+      depositDisabled: 'Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       deposited: 'The token you have deposited into this market.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
@@ -631,6 +643,7 @@ interface Resources {
       protocol: 'The protocol you will earn from';
       rewardsApy: 'Expected yearly return rate of the rewards tokens invested.';
       tvl: 'Total value of crypto assets deposited in this market.';
+      withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
     };
     widget: {
       depositCard: {

@@ -18,12 +18,13 @@ import Stack from '@mui/material/Stack';
 import generateKey from 'src/app/lib/generateKey';
 import { TokenListCardSkeleton } from '../TokenListCard/TokenListCardSkeleton';
 import { TokenListCard } from '../TokenListCard/TokenListCard';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
 import { WalletWithActions } from './components/WalletWithActions';
 import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
+import { useSettingsStore } from '@/stores/settings';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -43,6 +44,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   );
   const [isExpanded, setIsExpanded] = useState(!hasMultipleAccountsConnected);
   const { isMainPaths } = useMainPaths();
+  const { setWelcomeScreenClosed } = useSettingsStore((state) => state);
   const router = useRouter();
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
@@ -68,9 +70,10 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
     setIsExpanded((prev) => !prev);
   };
 
-  const handleSelectToken = (token: MinimalToken) => {
+  const handleSelectToken = (token: PortfolioToken) => {
     setFrom(token.address, token.chain.chainId);
     setWalletMenuState(false);
+    setWelcomeScreenClosed(true);
 
     if (!isMainPaths) {
       router.push('/');
@@ -119,11 +122,12 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
                 Array.from({ length: 8 }).map(() => (
                   <TokenListCardSkeleton key={generateKey('token')} />
                 ))}
-              {tokens.map((token) => (
+              {tokens.map((token, index) => (
                 <TokenListCard
                   token={token}
                   key={`${token.chain.chainId}-${token.address}`}
                   onSelect={handleSelectToken}
+                  shouldShowExpandedEndDivider={index !== tokens.length - 1}
                 />
               ))}
             </Stack>

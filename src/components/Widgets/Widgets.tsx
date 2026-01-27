@@ -85,6 +85,8 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           routeHighValueLoss: TrackingAction.OnRouteHighValueLoss,
           lowAddressActivityConfirmed:
             TrackingAction.OnLowAddressActivityConfirmed,
+          sendToWalletToggled: TrackingAction.OnSendToWalletToggled,
+          formFieldChanged: TrackingAction.OnFormFieldChanged,
         }}
         trackingDataActionKeys={{
           routeExecutionStarted: TrackingEventDataAction.ExecutionStart,

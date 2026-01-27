@@ -1,7 +1,9 @@
-import type { DefiPosition } from '@/types/jumper-backend';
+import type { AppDefiPosition } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 
 export const aavePositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Aave V3',
     assetUsd: 1.0017831783178317,
     debtUsd: 0,
@@ -51,6 +53,7 @@ export const aavePositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Aave V3',
     assetUsd: 7.04781961968e-9,
     debtUsd: 1,
@@ -119,6 +122,7 @@ export const aavePositions: DefiPosition[] = [
 
 export const morphoPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 0.33359629049812184,
     debtUsd: 0,
@@ -169,6 +173,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 5.931475,
     debtUsd: 0,
@@ -218,6 +223,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 119.705551,
     debtUsd: 0,
@@ -268,6 +274,7 @@ export const morphoPositions: DefiPosition[] = [
     rewardTokens: [],
   },
   {
+    source: 'chain',
     name: 'Morpho',
     assetUsd: 10.65361505075361,
     debtUsd: 0,
@@ -320,6 +327,7 @@ export const morphoPositions: DefiPosition[] = [
 
 export const gauntletPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Gauntlet USDC Prime',
     assetUsd: 1.5076017601760177,
     debtUsd: 0,
@@ -374,6 +382,7 @@ export const gauntletPositions: DefiPosition[] = [
 
 export const merklPositions: DefiPosition[] = [
   {
+    source: 'chain',
     name: 'Merkl',
     assetUsd: 0.03301631879858625,
     debtUsd: 0,
@@ -447,6 +456,87 @@ export const merklPositions: DefiPosition[] = [
         priceUSD: 3023.72,
       },
     ],
+    borrowTokens: [],
+    assetTokens: [],
+    collateralTokens: [],
+    rewardTokens: [],
+  },
+];
+
+export const hyperliquidPositions: ({ source: 'app' } & AppDefiPosition)[] = [
+  {
+    source: 'app',
+    name: 'Hyperliquid',
+    description: 'Main-Account Spot',
+    assetUsd: 101.45,
+    debtUsd: 0,
+    netUsd: 101.45,
+    address: '0x1234567890abcdef1234567890abcdef12345678',
+    type: 'Deposit',
+    protocol: {
+      name: 'Hyperliquid',
+      logo: 'https://static.debank.com/image/project/logo_url/hyperliquid/hyperliquid.png',
+      url: 'https://app.hyperliquid.xyz',
+    },
+    app: {
+      key: 'hyperliquid',
+      logo: 'https://static.debank.com/image/project/logo_url/hyperliquid/hyperliquid.png',
+      url: 'https://app.hyperliquid.xyz',
+    },
+    supplyTokens: [
+      {
+        chainType: 'EVM',
+        amount: '101451288',
+        amountUSD: 101.45,
+        name: 'USDC',
+        symbol: 'USDC',
+        decimals: 8,
+        logo: 'https://static.debank.com/image/coin/logo_url/usdc/usdc.png',
+        address: 'cbc85c2463806ead7328a5da06425a2b',
+        priceUSD: 1,
+        app: {
+          key: 'hyperliquid',
+          logo: 'https://static.debank.com/image/project/logo_url/hyperliquid/hyperliquid.png',
+          url: 'https://app.hyperliquid.xyz',
+        },
+      },
+    ],
+    borrowTokens: [],
+    assetTokens: [],
+    collateralTokens: [],
+    rewardTokens: [],
+  },
+];
+
+export const polymarketPositions: ({ source: 'app' } & AppDefiPosition)[] = [
+  {
+    source: 'app',
+    name: 'Polymarket',
+    assetUsd: 399.99,
+    debtUsd: 0,
+    netUsd: 399.99,
+    address: '0xabcdef1234567890abcdef1234567890abcdef12',
+    type: 'Prediction',
+    protocol: {
+      name: 'Polymarket',
+      logo: 'https://static.debank.com/image/project/logo_url/polymarket/polymarket.png',
+      url: 'https://polymarket.com/',
+    },
+    app: {
+      key: 'polymarket',
+      logo: 'https://static.debank.com/image/project/logo_url/polymarket/polymarket.png',
+      url: 'https://polymarket.com/',
+    },
+    predictionDetails: {
+      name: 'Ethereum Up or Down - January 3',
+      side: 'Up',
+      amount: 399.9865,
+      price: 1,
+      claimable: true,
+      eventEndAt: null,
+      isMarketClosed: false,
+    },
+    supplyTokens: [],
     borrowTokens: [],
     assetTokens: [],
     collateralTokens: [],

@@ -82,6 +82,9 @@
     "ctaHeadline": "Приєднуйтесь до нашого Discord, щоб дізнатися більше",
     "ctaButton": "Доєднуйся до нас у Discord"
   },
+  "badge": {
+    "updated": ""
+  },
   "blog": {
     "title": "Поради та навчальні матеріали",
     "categories": "Категорії",
@@ -279,9 +282,9 @@
   },
   "format": {
     "currency": "{{value, currencyExt(currency: USD)}}",
-    "currencyCompact": "{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}",
+    "currencyCompact": "",
     "decimal": "{{value, decimalExt(maximumFractionDigits: 3)}}",
-    "decimalCompact": "{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}",
+    "decimalCompact": "",
     "percent": "{{value, percentExt()}}",
     "decimal2Digit": "{{value, decimalExt(maximumFractionDigits: 2)}}",
     "date": "{{value, dateExt(month: long)}}",
@@ -303,6 +306,7 @@
   "tooltips": {
     "tvl": "Загальна вартість криптовалютних активів на цьому ринку.",
     "apy": "Очікувана річна ставка токенів що вкладені.",
+    "rewardsApy": "",
     "deposit": "",
     "deposited": "",
     "boostedApy": "",
@@ -319,6 +323,7 @@
   },
   "labels": {
     "apy": "",
+    "rewardsApy": "",
     "lockupPeriod": "",
     "tvl": "",
     "assets_one": "",
@@ -357,7 +362,12 @@
       "protocol": "",
       "tag": "",
       "asset": "",
-      "apy": ""
+      "apy": "",
+      "tvl": "",
+      "rewards": {
+        "label": "",
+        "withRewards": ""
+      }
     },
     "views": {
       "viewBy": "",
@@ -393,10 +403,15 @@
     },
     "actions": {
       "viewAllMarkets": "",
-      "seeMore": ""
+      "seeMore": "",
+      "goToPortfolio": ""
     },
     "position": {
       "label": ""
+    },
+    "missingPosition": {
+      "title": "",
+      "description": ""
     },
     "emptyList": {
       "yourPositions": {
@@ -415,8 +430,7 @@
     "welcome": {
       "title": "",
       "subtitle": "",
-      "getStarted": "",
-      "explorePass": ""
+      "getStarted": ""
     },
     "overviewCard": {
       "title": "",
@@ -462,6 +476,10 @@
           "months_other": "",
           "years_one": "",
           "years_other": ""
+        },
+        "tooltip": {
+          "address": "",
+          "info": ""
         }
       },
       "actions": {

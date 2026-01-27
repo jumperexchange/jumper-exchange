@@ -4,7 +4,8 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ColumnDefinition } from 'src/components/core/ColumnTable/ColumnTable.types';
 import { createEmptyColumn } from 'src/components/core/ColumnTable/utils';
-import type { DefiPosition, DefiToken } from 'src/types/jumper-backend';
+import type { DefiToken } from 'src/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
 import {
   createEnhancedToken,
   renderApyCell,
@@ -233,9 +234,9 @@ export const useColumnDefinitions = (
 
 export const usePositionGroups = (
   positions: DefiPosition[] | undefined,
-  supplyColumns: ColumnDefinition<DefiToken>[],
-  borrowColumns: ColumnDefinition<DefiToken>[],
-  rewardColumns: ColumnDefinition<DefiToken>[],
+  supplyColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
+  borrowColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
+  rewardColumns: ColumnDefinition<EnhancedDefiTokenWithPositionData>[],
 ): PositionGroup[] => {
   return useMemo(() => {
     if (!positions || positions.length === 0) {

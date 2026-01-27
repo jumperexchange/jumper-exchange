@@ -19,7 +19,10 @@ interface LeaderboardEntryWrapperProps extends BoxProps {
 }
 
 export const LeaderboardEntryWrapper = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isUserEntry' && prop !== 'isUserConnected' && prop !== 'isUserPosition',
+  shouldForwardProp: (prop) =>
+    prop !== 'isUserEntry' &&
+    prop !== 'isUserConnected' &&
+    prop !== 'isUserPosition',
 })<LeaderboardEntryWrapperProps>(({ theme }) => ({
   display: 'flex',
   padding: theme.spacing(2, 0),
@@ -27,11 +30,12 @@ export const LeaderboardEntryWrapper = styled(Box, {
   alignItems: 'center',
   width: '100%',
   position: 'relative',
+  zIndex: 1,
   variants: [
     {
       props: ({ isUserEntry }) => isUserEntry,
       style: {
-        background: (theme.vars || theme).palette.bgTertiary.main,
+        background: (theme.vars || theme).palette.rubyDark[0],
         borderRadius: '24px',
         boxShadow: (theme.vars || theme).shadows[2],
         marginTop: theme.spacing(3),
@@ -51,10 +55,10 @@ export const LeaderboardEntryWrapper = styled(Box, {
         transition: 'background-color 250ms',
         ':hover': {
           cursor: 'pointer',
-          backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
-        ...theme.applyStyles('light', {
-          background: darken(theme.palette.white.main, 0.04),
-        }),
+          backgroundColor: (theme.vars || theme).palette.rubyDark[100],
+          ...theme.applyStyles('light', {
+            background: darken(theme.palette.white.main, 0.04),
+          }),
         },
       },
     },
@@ -64,13 +68,15 @@ export const LeaderboardEntryWrapper = styled(Box, {
         '&:before': {
           content: '""',
           position: 'absolute',
+          zIndex: -1,
           top: -1,
           bottom: -1,
           left: -2,
           right: -2,
           borderRadius: '6px',
-          backgroundColor: alpha(theme.palette.black.main, 0.04),
-          boxShadow: `inset 0 0 0 1px ${(theme.vars || theme).palette.grey[400]}`,
+          border: `1px solid`,
+          borderColor: (theme.vars || theme).palette.borderActive,
+          backgroundColor: (theme.vars || theme).palette.surface1ActiveAccent,
           [theme.breakpoints.up('sm' as Breakpoint)]: {
             left: -12,
             right: -12,

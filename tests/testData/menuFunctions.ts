@@ -12,7 +12,7 @@ export async function openOrCloseMainMenu(page) {
 }
 
 export async function openLeaderboardPage(page) {
-  await page.locator('#leaderboard-button').click();
+  await page.getByTestId('leaderboard-button').click();
 }
 
 export async function checkTheNumberOfMenuItems(

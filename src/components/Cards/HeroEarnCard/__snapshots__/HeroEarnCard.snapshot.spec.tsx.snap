@@ -3,7 +3,7 @@
 exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1y44ltr"
+    class="MuiBox-root css-1nmziuz"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -107,7 +107,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -145,7 +145,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1y44ltr"
+    class="MuiBox-root css-1nmziuz"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -249,7 +249,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -287,7 +287,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
 exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1y44ltr"
+    class="MuiBox-root css-1nmziuz"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -391,7 +391,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -429,7 +429,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
 exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1y44ltr"
+    class="MuiBox-root css-1nmziuz"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -533,7 +533,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -575,7 +575,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-yyhbh8"
+      class="MuiBox-root css-us05dp"
     >
       <div
         class="MuiStack-root css-imab1l-MuiStack-root"
@@ -679,7 +679,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -718,7 +718,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-gpbse"
+    class="MuiBox-root css-1c53729"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -733,7 +733,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
       class="MuiBox-root css-1e1l0gs"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-nhq034-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-rtmze2-MuiSkeleton-root"
       />
     </div>
     <div
@@ -746,11 +746,11 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
           class="MuiBox-root css-1lr3mj0"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ja4xpg-MuiSkeleton-root"
           />
         </div>
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-cjo817-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vecn6p-MuiSkeleton-root"
         />
       </div>
     </div>
@@ -761,7 +761,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
 exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1y44ltr"
+    class="MuiBox-root css-1nmziuz"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -865,7 +865,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -895,8 +895,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-          data-mui-internal-clone-element="true"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >

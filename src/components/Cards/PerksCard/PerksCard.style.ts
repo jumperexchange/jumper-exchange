@@ -1,6 +1,7 @@
 'use client';
 import Box from '@mui/material/Box';
-import Card, { CardProps } from '@mui/material/Card';
+import type { CardProps } from '@mui/material/Card';
+import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import Skeleton from '@mui/material/Skeleton';
@@ -16,11 +17,8 @@ export const PerksCardContainer = styled(Card, {
 })<PerksCardContainerProps>(({ theme }) => ({
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
+  background: (theme.vars || theme).palette.surface1.main,
   overflow: 'hidden',
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
-  }),
   '&:hover': {
     boxShadow: '0px 4px 24px 0px rgba(0, 0, 0, 0.08)', // @todo FIGMA: should be applied as elevation 4
   },
@@ -80,10 +78,7 @@ export const PerksCardImage = styled(Image)(({ theme }) => ({
   aspectRatio: '2/1',
   objectFit: 'cover',
   justifySelf: 'center',
-  backgroundColor: (theme.vars || theme).palette.surface3.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.lavenderLight[0],
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
 }));
 
 // Skeletons

@@ -3,7 +3,7 @@
 exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-dy5pm"
+    class="MuiBox-root css-46hnbh"
     data-testid="protocol-card"
   >
     <div
@@ -14,7 +14,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
       >
         <img
           alt="morpho"
-          class="css-12y411v"
+          class="css-1untznu"
           height="56"
           src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
@@ -22,12 +22,12 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          morpho
+          Morpho
         </p>
       </div>
     </div>
     <div
-      class="MuiBox-root css-pqmg6p"
+      class="MuiBox-root css-877zpa"
     >
       <div
         class="MuiBox-root css-15r232g"
@@ -87,7 +87,7 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
 exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-dy5pm"
+    class="MuiBox-root css-46hnbh"
     data-testid="protocol-card"
   >
     <div
@@ -111,7 +111,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
       >
         <img
           alt="morpho"
-          class="css-12y411v"
+          class="css-1untznu"
           height="56"
           src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
@@ -119,12 +119,12 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          morpho
+          Morpho
         </p>
       </div>
     </div>
     <div
-      class="MuiBox-root css-pqmg6p"
+      class="MuiBox-root css-877zpa"
     >
       <div
         class="MuiBox-root css-15r232g"
@@ -184,28 +184,28 @@ Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral
 exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-dy5pm"
+    class="MuiBox-root css-46hnbh"
   >
     <div
       class="MuiBox-root css-1yz1h9d"
     />
     <div
-      class="MuiBox-root css-pqmg6p"
+      class="MuiBox-root css-877zpa"
     >
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1ohqa4v-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-6qhel-MuiSkeleton-root"
       />
       <div
         class="MuiBox-root css-1a7ncva"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vxtztc-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1aqlwgt-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-vxtztc-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1aqlwgt-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1c9d3f5-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1w2h4xy-MuiSkeleton-root"
         />
       </div>
     </div>
@@ -216,7 +216,7 @@ exports[`ProtocolCard snapshot > protocol card with loading matches snapshot 1`]
 exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-dy5pm"
+    class="MuiBox-root css-46hnbh"
     data-testid="protocol-card"
   >
     <div
@@ -227,7 +227,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
       >
         <img
           alt="this is a very long protocol name that should be truncated"
-          class="css-12y411v"
+          class="css-1untznu"
           height="56"
           src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
@@ -235,12 +235,12 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
         <p
           class="MuiTypography-root MuiTypography-body1 css-15kxehp-MuiTypography-root"
         >
-          this is a very long protocol name that should be truncated
+          This is a very long protocol name that should be truncated
         </p>
       </div>
     </div>
     <div
-      class="MuiBox-root css-pqmg6p"
+      class="MuiBox-root css-877zpa"
     >
       <div
         class="MuiBox-root css-15r232g"

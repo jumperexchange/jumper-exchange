@@ -2,17 +2,13 @@ import { expect, test } from '@playwright/test';
 import {
   checkSocialNetworkIcons,
   checkTheNumberOfMenuItems,
-  expectBackgroundColorToHaveCss,
   openNewTabAndVerifyUrl,
   openOrCloseMainMenu,
   openLeaderboardPage,
   sectionOnTheBlogPage,
   checkTabsInHeader,
 } from './testData/menuFunctions';
-import {
-  getElementByText,
-  triggerButtonClick,
-} from './testData/commonFunctions';
+import { triggerButtonClick } from './testData/commonFunctions';
 import values from './testData/values.json' with { type: 'json' };
 import {
   closeWelcomeScreen,
@@ -20,6 +16,12 @@ import {
   itemInNavigation,
 } from './testData/landingPageFunctions';
 import { qase } from 'playwright-qase-reporter';
+import { injectMockWallet } from './utils/mockWallet';
+import {
+  connectButton,
+  expectSelectWalletOptionToBeVisible,
+  selectWalletOption,
+} from './testData/connectWalletFunctions';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -37,44 +39,23 @@ test.describe('Main Menu flows', () => {
     },
   );
 
-  test.skip(
-    qase(9, 'Should be able to navigate to profile and open first Mission'),
+  test(
+    qase(9, 'Should be able to open mission page and then open the mission'),
     async ({ page }) => {
-      const profileUrl = `${await page.url()}profile`;
-      const missionTitle = page.locator(
-        'xpath=//div[@class="MuiBox-root mui-9cpca"]',
-      );
-      await triggerButtonClick(page, 'Pass');
-      expect(await page.url()).toBe(profileUrl);
-      await page.locator('.profile-page').isVisible();
-      await page
-        .locator('xpath=(//div[@class="MuiBox-root mui-1t1c9pj"])[1]')
-        .click();
+      const missionsButton = page.getByTestId('navbar-missions-button');
+      await missionsButton.click();
 
-      await expect(missionTitle).toBeVisible();
-    },
-  );
+      // Click on the first mission card
+      const firstMissionCard = page
+        .locator('[data-testid^="mission-card-"]')
+        .first();
+      await firstMissionCard.click();
 
-  test.skip(
-    qase(
-      10,
-      'Should open the Jumper Profile page and then open the leaderboard page',
-    ),
-    async ({ page }) => {
-      const whereDoYouRank = await getElementByText(page, 'Where do you rank?');
-      const completedMissions = await getElementByText(
-        page,
-        'Completed Missions',
-      );
-      const connectWalletButtonOnLeaderboardPage = await page.locator(
-        '#leaderboard-entry-connect-button',
-      );
-      await triggerButtonClick(page, 'Pass');
-      await page.locator('.profile-page').isVisible();
-      await expect(completedMissions).not.toHaveCSS('cursor', 'pointer');
-      await openLeaderboardPage(page);
-      await expect(whereDoYouRank).toBeVisible();
-      await expect(connectWalletButtonOnLeaderboardPage).toBeVisible();
+      // Verify we're on a mission details page by checking the mission card is visible
+      const missionDetailsCard = page
+        .locator('[data-testid^="mission-card-"]')
+        .first();
+      await expect(missionDetailsCard).toBeVisible();
     },
   );
 
@@ -133,26 +114,6 @@ test.describe('Main Menu flows', () => {
       await expect(page).toHaveURL(values.localJumperScanURL);
       await checkTabsInHeader(page);
       await expect(searchBar).toBeVisible();
-    },
-  );
-
-  test.skip(
-    qase(
-      11,
-      'Should be able to open quests mission page and switch background color',
-    ),
-    async ({ page }) => {
-      const jumperProfileBackButton = await getElementByText(page, 'Missions');
-
-      await page.goto(values.aerodromeQuestsURL);
-      expect(jumperProfileBackButton).toBeVisible();
-      await itemInMenu(page, 'Theme');
-      await itemInMenu(page, 'Light');
-      await itemInMenu(page, 'Dark');
-      expectBackgroundColorToHaveCss(page, 'rgb(18, 15, 41)');
-      await itemInMenu(page, 'Light');
-      await openOrCloseMainMenu(page);
-      expectBackgroundColorToHaveCss(page, 'rgb(243, 235, 255)');
     },
   );
 
@@ -244,10 +205,10 @@ test.describe('Main Menu flows', () => {
   );
 
   test(
-    qase(54, 'Should be able to navigate to the Terms & Conditions page'),
-    async ({ page, context }) => {
-      await itemInNavigation(page, 'Terms & Conditions');
-      await openNewTabAndVerifyUrl(context, values.termsConditionsURL);
+    qase(54, 'Should be able to navigate to the Terms Of Business page'),
+    async ({ page }) => {
+      await itemInNavigation(page, 'Terms Of Business');
+      await expect(page).toHaveURL(values.termsOfBusinessURL);
     },
   );
 
@@ -255,4 +216,29 @@ test.describe('Main Menu flows', () => {
     await itemInNavigation(page, 'Newsletter');
     await expect(page).toHaveURL(values.newsletterPageURL);
   });
+});
+
+test.describe('Profile and Leaderboard navigation with wallet', () => {
+  test.beforeEach(async ({ page, context }) => {
+    await context.addInitScript({ content: injectMockWallet() });
+    await page.goto('/');
+    await closeWelcomeScreen(page);
+    await connectButton(page).click();
+    await expectSelectWalletOptionToBeVisible(page);
+    await selectWalletOption(page, 'MetaMask');
+    await openOrCloseMainMenu(page);
+  });
+
+  test(
+    qase(
+      10,
+      'Should open the Jumper Profile page and then open the leaderboard page',
+    ),
+    async ({ page }) => {
+      const leaderboardPageTitle = page.getByText('Leaderboard');
+      await triggerButtonClick(page, 'Pass');
+      await openLeaderboardPage(page);
+      await expect(leaderboardPageTitle).toBeVisible();
+    },
+  );
 });

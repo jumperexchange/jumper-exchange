@@ -5,6 +5,10 @@ export async function selectAllMarketsTab(page: Page) {
   await allMarketsTab.click();
 }
 
+export async function selectYourPositionsTab(page: Page) {
+  const yourPositionsTab = page.getByTestId('earn-filter-tab-your-positions');
+  await yourPositionsTab.click();
+}
 export async function verifyAnalyticsButtonsAreVisible(page: Page) {
   const chartButtons = [
     'analytics-range-week',
@@ -19,13 +23,6 @@ export async function verifyAnalyticsButtonsAreVisible(page: Page) {
   for (const chartButton of chartButtons.slice(1)) {
     await expect(page.getByTestId(chartButton)).toBeVisible();
   }
-}
-export async function verifyNoSelectedChainsAreVisible(
-  page: Page,
-  chain1: string,
-  chain2: string,
-) {
-  await verifyNoSelectedItemsAreVisible(page, [chain1, chain2]);
 }
 
 export async function selectOptionFromDropDown(
@@ -173,6 +170,7 @@ export async function verifyFiltersAreVisible(page: Page) {
     'earn-filter-tag-select',
     'earn-filter-asset-select',
     'earn-filter-apy-select',
+    'earn-filter-tvl-select',
   ];
   for (const filterId of filterIds) {
     await expect(page.getByTestId(filterId)).toBeVisible();

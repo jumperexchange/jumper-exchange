@@ -1,5 +1,6 @@
 import type {
   ChainTokenSelected,
+  FormFieldChanged,
   Route,
   RouteExecutionUpdate,
   RouteHighValueLossUpdate,
@@ -32,7 +33,10 @@ import { useUserTracking } from 'src/hooks/userTracking';
 import type { TransformedRoute } from 'src/types/internal';
 import type { TrackTransactionDataProps } from 'src/types/userTracking';
 import { handleRouteData } from 'src/utils/routes';
-import { parseWidgetSettingsToTrackingData } from 'src/utils/tracking/widget';
+import {
+  parseFormFieldChangedToTrackingData,
+  parseWidgetSettingsToTrackingData,
+} from 'src/utils/tracking/widget';
 
 interface WidgetTrackingState {
   setDestinationChainTokenForTracking: (
@@ -68,6 +72,8 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionUpdated?: TrackingAction;
     routeHighValueLoss?: TrackingAction;
     lowAddressActivityConfirmed?: TrackingAction;
+    sendToWalletToggled?: TrackingAction;
+    formFieldChanged?: TrackingAction;
   };
   trackingDataActionKeys?: {
     routeExecutionStarted: TrackingEventDataAction;
@@ -90,6 +96,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionUpdated: '',
     routeHighValueLoss: '',
     lowAddressActivityConfirmed: '',
+    sendToWalletToggled: '',
+    formFieldChanged: '',
   },
   trackingDataActionKeys = {
     routeExecutionStarted: TrackingEventDataAction.ExecutionStartZap,
@@ -388,6 +396,44 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     [trackEvent, trackingActionKeys.lowAddressActivityConfirmed],
   );
 
+  const sendToWalletToggled = useCallback(
+    (sendToWallet: boolean) => {
+      if (!trackingActionKeys.sendToWalletToggled) {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.sendToWalletToggled,
+        label: `send_to_wallet_toggled`,
+        data: {
+          [TrackingEventParameter.SendToWallet]: sendToWallet,
+        },
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.sendToWalletToggled],
+  );
+
+  const formFieldChanged = useCallback(
+    (data: FormFieldChanged) => {
+      if (!trackingActionKeys.formFieldChanged || !data) {
+        return;
+      }
+      // Currently we only track the toAddress field
+      if (data.fieldName !== 'toAddress') {
+        return;
+      }
+      trackEvent({
+        category: TrackingCategory.WidgetEvent,
+        action: trackingActionKeys.formFieldChanged,
+        label: `form_field_changed`,
+        data: parseFormFieldChangedToTrackingData(data),
+        enableAddressable: true,
+      });
+    },
+    [trackEvent, trackingActionKeys.formFieldChanged],
+  );
+
   const destinationChainTokenSelected = useCallback(
     (toChainData: ChainTokenSelected) => {
       if (!trackingActionKeys.destinationChainAndTokenSelection) {
@@ -433,6 +479,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       settingUpdated,
       routeHighValueLoss,
       lowAddressActivityConfirmed,
+      sendToWalletToggled,
+      formFieldChanged,
       routeSelected: posthogTracker.onRouteSelected,
       chainPinned: posthogTracker.onChainPinned,
     };
@@ -454,6 +502,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     destinationChainTokenSelected,
     routeHighValueLoss,
     lowAddressActivityConfirmed,
+    sendToWalletToggled,
+    formFieldChanged,
     posthogTracker.onRouteSelected,
     posthogTracker.onChainPinned,
   ]);

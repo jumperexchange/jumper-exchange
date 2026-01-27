@@ -4,19 +4,13 @@ export const IllustrationWrapper = styled('div')(({ theme }) => {
   return {
     display: 'contents',
     '.background-color': {
-      fill: (theme.vars || theme).palette.surface2.main,
-      ...theme.applyStyles('light', {
-        fill: (theme.vars || theme).palette.surface1.main,
-      }),
+      fill: (theme.vars || theme).palette.surface1.main,
     },
     '.primary-text-color': {
       fill: (theme.vars || theme).palette.text.primary,
     },
     '.stroke-color': {
-      stroke: (theme.vars || theme).palette.surface2.main,
-      ...theme.applyStyles('light', {
-        stroke: (theme.vars || theme).palette.surface1.main,
-      }),
+      stroke: (theme.vars || theme).palette.surface1.main,
     },
     '.deposit-action': {
       fill: (theme.vars || theme).palette.primary.main,
@@ -28,13 +22,10 @@ export const IllustrationWrapper = styled('div')(({ theme }) => {
       fill: (theme.vars || theme).palette.badgeAccent1MutedFg,
     },
     '.main-logo-color': {
-      fill: (theme.vars || theme).palette.accent1Alt.main,
-      ...theme.applyStyles('light', {
-        fill: (theme.vars || theme).palette.accent1.main,
-      }),
+      fill: (theme.vars || theme).palette.logoPrimary,
     },
     '.sub-logo-color': {
-      fill: (theme.vars || theme).palette.accent2.main,
+      fill: (theme.vars || theme).palette.logoSecondary,
     },
   };
 });

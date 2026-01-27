@@ -1,15 +1,3 @@
-import {
-  TrackingAction,
-  TrackingCategory,
-  TrackingEventParameter,
-} from '@/const/trackingKeys';
-import { useChains } from '@/hooks/useChains';
-import { useMultisig } from '@/hooks/useMultisig';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useMenuStore } from '@/stores/menu';
-import { usePortfolioStore } from '@/stores/portfolio';
-import { openInNewTab } from '@/utils/openInNewTab';
-import { walletDigest } from '@/utils/walletDigest';
 import type { Account } from '@lifi/wallet-management';
 import {
   getConnectorIcon,
@@ -22,26 +10,36 @@ import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 import { ButtonTransparent } from 'src/components/Button';
 import { JUMPER_SCAN_PATH } from 'src/const/urls';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
+import { useChains } from '@/hooks/useChains';
+import { useMultisig } from '@/hooks/useMultisig';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMenuStore } from '@/stores/menu';
+import { usePortfolioStore } from '@/stores/portfolio';
+import { useSettingsStore } from '@/stores/settings/SettingsStore';
+import { openInNewTab } from '@/utils/openInNewTab';
+import { walletDigest } from '@/utils/walletDigest';
 import {
   DarkIconButton,
   SecondaryIconButton,
   WalletBalanceSharedContainer,
   WalletInfoContainer,
 } from '../WalletBalanceCard.styles';
-import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
-import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
 interface WalletWithActionsProps {
   account: Account;
 }
 export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const { t } = useTranslation();
-  const setPortfolioWelcomeScreenClosed = useSettingsStore(
-    (state) => state.setPortfolioWelcomeScreenClosed,
-  );
+
   const disconnectWallet = useAccountDisconnect();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
@@ -141,7 +139,6 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
 
     disconnectWallet(account).then(() => {
       deleteCacheTokenAddress(walletAddress);
-      setPortfolioWelcomeScreenClosed(false);
     });
 
     trackEvent({

@@ -21,7 +21,7 @@ export interface ContentWrapperProps extends BoxProps {
 
 export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
   textAlign: 'center',
-  background: '#1A1033',
+  background: (theme.vars || theme).palette.bg.main,
   width: '100%',
   zIndex: '1400',
   height: 'auto',
@@ -33,15 +33,9 @@ export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
     pointerEvents: 'none',
     left: 0,
     right: 0,
-    background: 'linear-gradient(to top, #1A1033 0%, transparent 100%)',
+    background: `linear-gradient(to top, ${(theme.vars || theme).palette.bg.main} 0%, transparent 100%)`,
     zIndex: '1000',
-    ...theme.applyStyles('light', {
-      background: 'linear-gradient(to top, #F3EBFF 0%, transparent 100%)',
-    }),
   },
-  ...theme.applyStyles('light', {
-    background: '#F3EBFF',
-  }),
 }));
 
 export const WelcomeContent = styled(Box)(({ theme }) => ({

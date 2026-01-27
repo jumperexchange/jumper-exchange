@@ -8,21 +8,21 @@ import {
   TrackingAction,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { DefiPosition } from '@/types/jumper-backend';
-import type { MinimalToken } from '@/types/tokens';
-import type { CacheToken } from '@/types/portfolio';
+import type { DefiPosition } from '@/utils/positions/type-guards';
+import type { PortfolioToken } from '@/types/tokens';
 import { zeroAddress } from 'viem';
 import type { ChainId } from '@lifi/sdk';
 import { useChains } from '../useChains';
+import { useCallback } from 'react';
 
 export const usePortfolioTracking = () => {
   const { trackEvent } = useUserTracking();
   const { getChainById } = useChains();
 
-  return {
-    trackPortfolioPageOverviewEvent: (
+  const trackPortfolioPageOverviewEvent = useCallback(
+    (
       addresses: string[],
-      tokens: MinimalToken[],
+      tokens: PortfolioToken[],
       defiPositionGroups: DefiPosition[][],
     ) => {
       const trackingData = parseEarnPortfolioDataToTrackingData(
@@ -37,21 +37,23 @@ export const usePortfolioTracking = () => {
         data: trackingData,
       });
     },
-    trackPortfolioBalanceLoadedEvent: () => {
-      trackEvent({
-        category: TrackingCategory.Wallet,
-        action: TrackingAction.PortfolioLoaded,
-        label: 'portfolio_balance_loaded',
-        data: {
-          [TrackingEventParameter.Status]: 'success',
-          [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
-        },
-      });
-    },
-    trackPortfolioMenuOverviewEvent: (
-      totalValue: number,
-      data: CacheToken[],
-    ) => {
+    [trackEvent],
+  );
+
+  const trackPortfolioBalanceLoadedEvent = useCallback(() => {
+    trackEvent({
+      category: TrackingCategory.Wallet,
+      action: TrackingAction.PortfolioLoaded,
+      label: 'portfolio_balance_loaded',
+      data: {
+        [TrackingEventParameter.Status]: 'success',
+        [TrackingEventParameter.Timestamp]: new Date().toUTCString(),
+      },
+    });
+  }, [trackEvent]);
+
+  const trackPortfolioMenuOverviewEvent = useCallback(
+    (totalValue: number, data: PortfolioToken[]) => {
       const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
         chainsIds.map(
           (chainId) =>
@@ -72,5 +74,12 @@ export const usePortfolioTracking = () => {
         data: trackingData,
       });
     },
+    [trackEvent, getChainById],
+  );
+
+  return {
+    trackPortfolioPageOverviewEvent,
+    trackPortfolioBalanceLoadedEvent,
+    trackPortfolioMenuOverviewEvent,
   };
 };

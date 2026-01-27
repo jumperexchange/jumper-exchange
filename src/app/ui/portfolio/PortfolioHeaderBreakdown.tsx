@@ -7,13 +7,12 @@ import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking'
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useEffect, useMemo, useRef } from 'react';
-import type { MinimalToken } from 'src/types/tokens';
+import type { PortfolioToken } from 'src/types/tokens';
+import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 
 export const PortfolioHeaderBreakdown = () => {
-  const portfolioWelcomeScreenClosed = useSettingsStore(
-    (state) => state.portfolioWelcomeScreenClosed,
-  );
+  const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { trackPortfolioPageOverviewEvent } = usePortfolioTracking();
   const portfolioHasBeenTracked = useRef(false);
   const connectedAddresses = useConnectedEvmAddresses();
@@ -26,7 +25,7 @@ export const PortfolioHeaderBreakdown = () => {
 
   const isLoading = isLoadingPositions || isFetchingTokens;
 
-  const tokens = useMemo<MinimalToken[]>(() => {
+  const tokens = useMemo<PortfolioToken[]>(() => {
     if (
       !formattedTokens ||
       formattedTokens.length === 0 ||

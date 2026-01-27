@@ -19,13 +19,10 @@ export const HeroEarnCardContainer = styled(Box, {
   '&:hover': {
     boxShadow: hasLink ? `0 4px 24px 0 rgba(0,0,0,.08)` : theme.shadows[2],
   },
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
   padding: theme.spacing(4),
   gap: theme.spacing(0.5),
   minHeight: 312,
-  height: '-webkit-fill-available',
+  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   [theme.breakpoints.up('md')]: {

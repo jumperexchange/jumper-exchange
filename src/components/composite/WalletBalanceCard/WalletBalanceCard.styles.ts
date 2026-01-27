@@ -9,10 +9,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const WalletBalanceCardContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface2.main,
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   boxShadow: theme.shadows[2],
   borderRadius: theme.shape.cardBorderRadius,
   padding: theme.spacing(2),
@@ -43,11 +40,8 @@ export const WalletTotalBalanceValue = styled(Typography)(({ theme }) => ({
 }));
 
 export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.surface1.main,
+  backgroundColor: (theme.vars || theme).palette.surface2.main,
   transform: 'none',
-  ...theme.applyStyles('light', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 export const BaseIconButton = styled(IconButton)(({ theme }) => ({
@@ -97,6 +91,9 @@ export const StyledAccordion = styled(Accordion)(({ theme }) => ({
 }));
 
 export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+  '& .MuiAccordionSummary-content': {
+    width: '100%',
+  },
   '&, & .MuiAccordionSummary-content, & .MuiAccordionSummary-content.Mui-expanded':
     {
       padding: 0,

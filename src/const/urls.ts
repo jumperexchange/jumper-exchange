@@ -29,6 +29,7 @@ export const JUMPER_CAMPAIGN_PATH = '/campaign';
 export const JUMPER_LEADERBOARD_PATH = '/leaderboard';
 export const JUMPER_EARN_PATH = '/earn';
 export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
+export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 
@@ -66,6 +67,7 @@ export enum AppPaths {
   Leaderboard = JUMPER_LEADERBOARD_PATH,
   Earn = JUMPER_EARN_PATH,
   PrivacyPolicy = JUMPER_PRIVACY_POLICY_PATH,
+  TermsOfBusiness = JUMPER_TERMS_OF_BUSINESS_PATH,
   Portfolio = JUMPER_PORTFOLIO_PATH,
   Newsletter = JUMPER_NEWSLETTER_PATH,
 }

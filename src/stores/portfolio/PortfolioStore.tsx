@@ -1,13 +1,9 @@
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { CacheToken, PortfolioState } from '@/types/portfolio';
-import type {
-  ExtendedTokenAmount,
-  ExtendedTokenAmountWithChain,
-} from '@/utils/getTokens';
+import type { PortfolioState } from '@/types/portfolio';
+import type { PortfolioToken } from '@/types/tokens';
 import { createJSONStorage } from 'zustand/middleware';
-import type { Account } from '@lifi/wallet-management';
 
 export function getOrCreateMap<T>(
   data: Map<string, T> | { [key: string]: T },
@@ -15,41 +11,11 @@ export function getOrCreateMap<T>(
   return new Map(data instanceof Map ? data : Object.entries(data));
 }
 
-function cacheTokenPartialize({
-  address,
-  chainId,
-  chainLogoURI,
-  chainName,
-  cumulatedBalance,
-  cumulatedTotalUSD,
-  logoURI,
-  name,
-  priceUSD,
-  symbol,
-  totalPriceUSD,
-  chains,
-}: ExtendedTokenAmountWithChain): CacheToken {
-  return {
-    address,
-    chainId,
-    chainLogoURI,
-    chainName,
-    cumulatedBalance,
-    cumulatedTotalUSD,
-    logoURI,
-    name,
-    priceUSD,
-    symbol,
-    totalPriceUSD,
-    chains: chains.map(cacheTokenPartialize),
-  };
-}
-
 const defaultSettings = {
   lastTotalValue: new Map<string, number>(),
   lastDate: new Map<string, number>(),
   forceRefresh: new Map<string, boolean>(),
-  cacheTokens: new Map<string, CacheToken[]>(),
+  cacheTokens: new Map<string, PortfolioToken[]>(),
 };
 
 /*--  Use Zustand  --*/
@@ -105,7 +71,7 @@ export const usePortfolioStore = createWithEqualityFn(
           forceRefresh,
         });
       },
-      getFormattedCacheTokens(accounts?: Account[]) {
+      getFormattedCacheTokens(accounts) {
         const cacheTokens = get().cacheTokens;
         let accountsValues = Array.from(cacheTokens.values());
 
@@ -119,7 +85,7 @@ export const usePortfolioStore = createWithEqualityFn(
         const totalValue = accountsValues
           .map((account) => {
             return account.reduce((sum, item) => {
-              return sum + (item.cumulatedTotalUSD ?? 0);
+              return sum + (item.totalPriceUSD ?? 0);
             }, 0);
           })
           .reduce((sum, value) => {
@@ -129,13 +95,13 @@ export const usePortfolioStore = createWithEqualityFn(
         return {
           totalValue,
           cache: accountsValues.flat().sort((a, b) => {
-            return (b.cumulatedTotalUSD ?? 0) - (a.cumulatedTotalUSD ?? 0);
+            return (b.totalPriceUSD ?? 0) - (a.totalPriceUSD ?? 0);
           }),
         };
       },
-      setCacheTokens(account: string, tokens: ExtendedTokenAmount[]) {
+      setCacheTokens(account: string, tokens: PortfolioToken[]) {
         const cacheTokens = getOrCreateMap(get().cacheTokens);
-        cacheTokens.set(account, tokens.map(cacheTokenPartialize));
+        cacheTokens.set(account, tokens);
 
         set({
           cacheTokens,
@@ -143,61 +109,59 @@ export const usePortfolioStore = createWithEqualityFn(
       },
     }),
     {
-      name: 'jumper-portfolio', // name of the item in the storage (must be unique)
-      version: 1,
+      name: 'jumper-portfolio',
+      version: 2,
       storage: createJSONStorage(() => localStorage),
-      migrate: async (state: any, version: number) => {
-        if (version === 0) {
+      migrate: async (_state, version: number): Promise<PortfolioState> => {
+        if (version < 2) {
           return {
-            cacheTokens: new Map<string, CacheToken[]>(),
+            cacheTokens: new Map<string, PortfolioToken[]>(),
             lastTotalValue: new Map<string, number>(),
             lastDate: new Map<string, number>(),
             forceRefresh: new Map<string, boolean>(),
-          };
+          } as PortfolioState;
         }
 
-        return state;
+        return _state as PortfolioState;
       },
       partialize: (state: PortfolioState) => {
         const { cacheTokens, lastTotalValue, lastDate, forceRefresh } = state;
-        const serialized: any = {};
 
-        serialized.cacheTokens = Array.from(cacheTokens.entries()).reduce(
-          (acc, [account, tokens]) => {
-            acc[account] = tokens;
-            return acc;
-          },
-          {} as Record<string, CacheToken[]>,
-        );
-
-        serialized.lastTotalValue = Array.from(lastTotalValue.entries()).reduce(
-          (acc, [address, value]) => {
-            acc[address] = value;
-            return acc;
-          },
-          {} as Record<string, number>,
-        );
-
-        serialized.lastDate = Array.from(lastDate.entries()).reduce(
-          (acc, [address, date]) => {
-            acc[address] = date;
-            return acc;
-          },
-          {} as Record<string, number>,
-        );
-
-        serialized.forceRefresh = Array.from(forceRefresh.entries()).reduce(
-          (acc, [address, value]) => {
-            acc[address] = value;
-            return acc;
-          },
-          {} as Record<string, boolean>,
-        );
-
-        return serialized;
+        return {
+          cacheTokens: Array.from(cacheTokens.entries()).reduce(
+            (acc, [account, tokens]) => {
+              acc[account] = tokens;
+              return acc;
+            },
+            {} as Record<string, PortfolioToken[]>,
+          ),
+          lastTotalValue: Array.from(lastTotalValue.entries()).reduce(
+            (acc, [address, value]) => {
+              acc[address] = value;
+              return acc;
+            },
+            {} as Record<string, number>,
+          ),
+          lastDate: Array.from(lastDate.entries()).reduce(
+            (acc, [address, date]) => {
+              acc[address] = date;
+              return acc;
+            },
+            {} as Record<string, number>,
+          ),
+          forceRefresh: Array.from(forceRefresh.entries()).reduce(
+            (acc, [address, value]) => {
+              acc[address] = value;
+              return acc;
+            },
+            {} as Record<string, boolean>,
+          ),
+        } as unknown as PortfolioState;
       },
       onRehydrateStorage: () => (state) => {
-        if (!state) return;
+        if (!state) {
+          return;
+        }
         state.cacheTokens = new Map(Object.entries(state.cacheTokens || {}));
         state.lastTotalValue = new Map(
           Object.entries(state.lastTotalValue || {}),

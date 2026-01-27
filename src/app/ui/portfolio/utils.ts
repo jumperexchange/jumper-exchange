@@ -7,7 +7,7 @@ import {
   parseAsStringEnum,
 } from 'nuqs';
 import { map, uniq, uniqBy, flatMap, min, max, sortBy, sumBy } from 'lodash';
-import type { CacheToken } from 'src/types/portfolio';
+import type { PortfolioToken } from 'src/types/tokens';
 import type {
   PortfolioTokensFilteringParams,
   PortfolioTokensFilter,
@@ -17,9 +17,13 @@ import type {
   OrderEnum,
 } from './types';
 import type { Account } from '@lifi/wallet-management';
-import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
+import type { WalletPositions } from '@/types/jumper-backend';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_DEFI_POSITIONS_MIN_VALUE } from './constants';
+import {
+  isChainDefiPosition,
+  type DefiPosition,
+} from '@/utils/positions/type-guards';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -51,17 +55,22 @@ export const sortPortfolioItems = <T>(
   return sorted;
 };
 
-export const tokenSortAccessors: SortAccessors<CacheToken> = {
-  [SortByOptions.VALUE]: (token) =>
-    token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
-  [SortByOptions.CHAIN]: (token) => token.chainName ?? '',
+export const tokenSortAccessors: SortAccessors<PortfolioToken> = {
+  [SortByOptions.VALUE]: (token) => token.totalPriceUSD ?? 0,
+  [SortByOptions.CHAIN]: (token) => token.chain.chainKey ?? '',
   [SortByOptions.ASSET]: (token) => token.name ?? '',
 };
 
 export const defiGroupSortAccessors: SortAccessors<DefiPosition[]> = {
   [SortByOptions.VALUE]: (group) =>
     sumBy(group, (pos) => pos.netUsd || pos.assetUsd || 0),
-  [SortByOptions.CHAIN]: (group) => group[0]?.chain?.chainKey ?? '',
+  [SortByOptions.CHAIN]: (group) => {
+    const pos = group[0];
+    if (!pos) {
+      return '';
+    }
+    return isChainDefiPosition(pos) ? pos.chain.chainKey : pos.app.key;
+  },
   [SortByOptions.ASSET]: (group) => group[0]?.protocol?.name ?? '',
 };
 
@@ -95,7 +104,7 @@ export const tokensSearchParamsParsers = {
 };
 
 export const extractTokensFilteringParams = (
-  data: CacheToken[],
+  data: PortfolioToken[],
   accounts: Account[],
 ): PortfolioTokensFilteringParams => {
   const allWallets = accounts
@@ -107,13 +116,10 @@ export const extractTokensFilteringParams = (
 
   const allChains = uniqBy(
     flatMap(data, (token) => [
-      ...(token.chainId && token.chainName
-        ? [{ chainId: token.chainId, chainKey: token.chainName || '' }]
-        : []),
-      ...flatMap(token.chains || [], (chain) =>
-        chain.chainId && chain.chainName
-          ? [{ chainId: chain.chainId, chainKey: chain.chainName || '' }]
-          : [],
+      token.chain,
+      ...flatMap(
+        token.relatedTokens || [],
+        (relatedToken) => relatedToken.chain,
       ),
     ]),
     'chainId',
@@ -121,10 +127,7 @@ export const extractTokensFilteringParams = (
 
   const allAssets = uniqBy(data, 'address');
 
-  const allValues = map(
-    data,
-    (token) => token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0,
-  );
+  const allValues = map(data, (token) => token.totalPriceUSD ?? 0);
 
   const minValue = allValues.length > 0 ? (min(allValues) ?? 0) : 0;
   const maxValue = allValues.length > 0 ? (max(allValues) ?? 0) : 0;
@@ -183,12 +186,12 @@ export const sanitizeTokensFilter = (
 };
 
 export const filterSortPortfolioTokensData = (
-  queriesByAddress: Map<string, { data: CacheToken[] }>,
+  queriesByAddress: Map<string, { data: PortfolioToken[] }>,
   filter: PortfolioTokensFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
-): CacheToken[] => {
-  let allData: CacheToken[] = [];
+): PortfolioToken[] => {
+  let allData: PortfolioToken[] = [];
 
   const walletsToInclude = filter.tokensWallets?.length
     ? filter.tokensWallets
@@ -202,10 +205,12 @@ export const filterSortPortfolioTokensData = (
   });
 
   if (filter.tokensChains?.length) {
-    allData = allData.filter((token) =>
-      token.chains?.some((chain) =>
-        filter.tokensChains!.includes(chain.chainId),
-      ),
+    allData = allData.filter(
+      (token) =>
+        filter.tokensChains!.includes(token.chain.chainId) ||
+        token.relatedTokens?.some((rt) =>
+          filter.tokensChains!.includes(rt.chain.chainId),
+        ),
     );
   }
 
@@ -220,7 +225,7 @@ export const filterSortPortfolioTokensData = (
     filter.tokensMaxValue !== undefined
   ) {
     allData = allData.filter((token) => {
-      const value = token.cumulatedTotalUSD ?? token.totalPriceUSD ?? 0;
+      const value = token.totalPriceUSD ?? 0;
       return isWithinValueRange(
         sanitizeValue(value),
         filter.tokensMinValue,
@@ -230,13 +235,6 @@ export const filterSortPortfolioTokensData = (
   }
 
   allData = sortPortfolioItems(allData, sortByValue, order, tokenSortAccessors);
-
-  allData = allData.map((token) => ({
-    ...token,
-    chains: token.chains
-      ? sortPortfolioItems(token.chains, sortByValue, order, tokenSortAccessors)
-      : [],
-  }));
 
   return allData;
 };
@@ -259,10 +257,11 @@ export const deFiPositionsSearchParamsParsers = {
 export const extractDeFiPositionsFilteringParams = (
   wallet: WalletPositions,
 ): PortfolioDeFiPositionsFilteringParams => {
-  const allPositions = wallet.data;
+  const allPositions: DefiPosition[] = wallet.data;
+  const chainPositions = allPositions.filter(isChainDefiPosition);
 
   const allChains = uniqBy(
-    map(allPositions, (position) => position.chain).filter(Boolean),
+    chainPositions.map((position) => position.chain),
     'chainId',
   );
 
@@ -273,7 +272,7 @@ export const extractDeFiPositionsFilteringParams = (
 
   const allTypes = uniq(map(allPositions, 'type').filter(Boolean));
 
-  const allTokens = flatMap(allPositions, (position) => [
+  const allTokens = flatMap(chainPositions, (position) => [
     ...(position.supplyTokens || []),
     ...(position.assetTokens || []),
     ...(position.collateralTokens || []),

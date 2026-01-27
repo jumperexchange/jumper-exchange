@@ -21,7 +21,12 @@ import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
 import { formatApy } from '@/utils/numbers/apy';
-import type { DefiPosition, DefiToken } from '@/types/jumper-backend';
+import type { AppToken, DefiToken, Token } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
+
+const isTokenWithChain = (
+  token: DefiToken | AppToken,
+): token is DefiToken & Token => 'chain' in token && token.chain !== undefined;
 
 export const formatTimeDifference = (date: string, t: TFunction) => {
   const now = new Date();
@@ -72,34 +77,60 @@ export const formatTimeDifference = (date: string, t: TFunction) => {
 };
 
 export const createEnhancedToken = (
-  token: DefiToken,
+  token: DefiToken | AppToken,
   position: DefiPosition,
 ): EnhancedDefiTokenWithPositionData => ({
   ...token,
   latest: position.latest,
   earn: position.earn,
+  earnInteractionFlags: position.earnInteractionFlags,
+  protocol: position.protocol,
 });
 
 export const renderEntityCell = ({
   item,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => (
-  <EntityChainStack
-    variant={EntityChainStackVariant.Tokens}
-    tokens={[item]}
-    tokensSize={AvatarSize.XL}
-    content={{
-      title: item.name,
-      titleVariant,
-      descriptionVariant,
-    }}
-    spacing={{
-      chains: COLUMN_SPACING.chains,
-      infoContainerGap: COLUMN_SPACING.infoContainerGap,
-    }}
-  />
-);
+}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => {
+  if (isTokenWithChain(item)) {
+    return (
+      <EntityChainStack
+        variant={EntityChainStackVariant.Tokens}
+        tokens={[item]}
+        tokensSize={AvatarSize.XL}
+        content={{
+          title: item.name,
+          titleVariant,
+          descriptionVariant,
+        }}
+        spacing={{
+          chains: COLUMN_SPACING.chains,
+          infoContainerGap: COLUMN_SPACING.infoContainerGap,
+        }}
+      />
+    );
+  }
+
+  return (
+    <EntityChainStack
+      variant={EntityChainStackVariant.Protocol}
+      protocol={{
+        name: item.name,
+        logo: item.logo,
+      }}
+      protocolSize={AvatarSize.XL}
+      content={{
+        title: item.name,
+        titleVariant,
+        descriptionVariant,
+      }}
+      spacing={{
+        chains: COLUMN_SPACING.chains,
+        infoContainerGap: COLUMN_SPACING.infoContainerGap,
+      }}
+    />
+  );
+};
 
 export const renderValueCell = ({
   item,
@@ -152,6 +183,9 @@ export const renderPositionActions = ({
         label={t('portfolio.defiPositionCard.actions.withdraw')}
         fullWidth={isMobile}
         earnOpportunitySlug={item.earn || ''}
+        earnOpportunityInteractionFlags={item.earnInteractionFlags}
+        protocolUrl={item.protocol.url}
+        protocolName={item.protocol.name}
         disabled={!item.earn}
       />
       <DepositFlowOnDemandButton
@@ -159,6 +193,9 @@ export const renderPositionActions = ({
         label={t('portfolio.defiPositionCard.actions.deposit')}
         fullWidth={isMobile}
         earnOpportunitySlug={item.earn || ''}
+        earnOpportunityInteractionFlags={item.earnInteractionFlags}
+        protocolUrl={item.protocol.url}
+        protocolName={item.protocol.name}
         disabled={!item.earn}
       />
     </StyledPositionActions>

@@ -24,14 +24,14 @@ export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
   color: (theme.vars || theme).palette.white.main,
   backgroundColor: (theme.vars || theme).palette.primary.main,
   ':hover': {
-    backgroundColor: (theme.vars || theme).palette.primary.dark,
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.primary.main} calc(l - 0.1) c h)`,
   },
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.bgQuaternary.main,
   '&:hover': {
-    backgroundColor: (theme.vars || theme).palette.bgQuaternary.hover,
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.bgQuaternary.main} calc(l - 0.1) c h)`,
   },
 }));
 
@@ -41,7 +41,7 @@ export const ButtonTertiary = styled(MuiButton)(({ theme }) => ({
   color: theme.vars.palette.text.primary,
   backgroundColor: (theme.vars || theme).palette.alpha100.main,
   '&:hover, &:active': {
-    backgroundColor: (theme.vars || theme).palette.alpha200.main,
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.alpha100.main} calc(l - 0.1) c h)`,
   },
   [`&.${buttonClasses.loading}:disabled`]: {
     backgroundColor: (theme.vars || theme).palette.alpha100.main,

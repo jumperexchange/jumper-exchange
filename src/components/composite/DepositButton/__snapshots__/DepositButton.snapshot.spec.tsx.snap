@@ -3,8 +3,7 @@
 exports[`DepositButton snapshot > disabled state matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
     disabled=""
     tabindex="-1"
     type="button"
@@ -41,8 +40,7 @@ exports[`DepositButton snapshot > disabled state matches snapshot 1`] = `
 exports[`DepositButton snapshot > icon and label matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -78,8 +76,7 @@ exports[`DepositButton snapshot > icon and label matches snapshot 1`] = `
 exports[`DepositButton snapshot > icon and label with large size matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -115,8 +112,7 @@ exports[`DepositButton snapshot > icon and label with large size matches snapsho
 exports[`DepositButton snapshot > icon and label with small size matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-e6v5za-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1oeg042-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -152,9 +148,7 @@ exports[`DepositButton snapshot > icon and label with small size matches snapsho
 exports[`DepositButton snapshot > icon only mode matches snapshot 1`] = `
 <div>
   <button
-    aria-label="Quick deposit"
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -185,9 +179,7 @@ exports[`DepositButton snapshot > icon only mode matches snapshot 1`] = `
 exports[`DepositButton snapshot > icon only with large size matches snapshot 1`] = `
 <div>
   <button
-    aria-label="Quick deposit"
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -218,9 +210,7 @@ exports[`DepositButton snapshot > icon only with large size matches snapshot 1`]
 exports[`DepositButton snapshot > icon only with small size matches snapshot 1`] = `
 <div>
   <button
-    aria-label="Quick deposit"
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-e6v5za-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1oeg042-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -251,8 +241,7 @@ exports[`DepositButton snapshot > icon only with small size matches snapshot 1`]
 exports[`DepositButton snapshot > label only mode matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -272,8 +261,7 @@ exports[`DepositButton snapshot > label only mode matches snapshot 1`] = `
 exports[`DepositButton snapshot > label only with large size matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -293,8 +281,7 @@ exports[`DepositButton snapshot > label only with large size matches snapshot 1`
 exports[`DepositButton snapshot > label only with small size matches snapshot 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-e6v5za-MuiButtonBase-root-MuiButton-root"
-    data-mui-internal-clone-element="true"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1oeg042-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >

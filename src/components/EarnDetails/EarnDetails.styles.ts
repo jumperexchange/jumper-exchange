@@ -12,9 +12,6 @@ export const EarnDetailsSectionContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface2.main,
-  }),
 }));
 
 export const EarnDetailsAnalyticsContainer = styled(
@@ -41,10 +38,11 @@ export const EarnDetailsAnalyticsButtonsContainer = styled(Stack)(
 
 interface EarnDetailsAnalyticsButtonProps extends Omit<ButtonProps, 'variant'> {
   isActive: boolean;
+  isDisabled?: boolean;
 }
 
 export const EarnDetailsAnalyticsButton = styled(ButtonPrimary, {
-  shouldForwardProp: (prop) => prop !== 'isActive',
+  shouldForwardProp: (prop) => prop !== 'isActive' && prop !== 'isDisabled',
 })<EarnDetailsAnalyticsButtonProps>(({ theme }) => ({
   ...theme.typography.bodyXSmallStrong,
   padding: theme.spacing(1),
@@ -69,6 +67,14 @@ export const EarnDetailsAnalyticsButton = styled(ButtonPrimary, {
         pointerEvents: 'none',
       },
     },
+    {
+      props: { isDisabled: true },
+      style: {
+        opacity: 0.5,
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+      },
+    },
   ],
 }));
 
@@ -82,9 +88,6 @@ export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   borderRadius: theme.shape.buttonBorderRadius,
   transform: 'none',
-  ...theme.applyStyles('dark', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-  }),
 }));
 
 export const EarnDetailsFlexContainer = styled(Box)(({ theme }) => ({
@@ -127,3 +130,17 @@ export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const EarnDetailsActionsButtonsFallbackContainer = styled(Box)(
+  ({ theme }) => ({
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    gap: theme.spacing(0.5),
+    maxWidth: '100%',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: 360,
+    },
+  }),
+);

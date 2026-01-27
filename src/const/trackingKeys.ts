@@ -39,6 +39,8 @@ export enum TrackingAction {
   ContributeImpression = 'action_contribute_impression',
   ContributeSuccess = 'action_contribute_success',
   OnChainPinned = 'action_on_chain_pinned',
+  OnSendToWalletToggled = 'action_on_send_to_wallet_toggled',
+  OnFormFieldChanged = 'action_on_form_field_changed',
 
   // Mission Widget
   OnSourceChainAndTokenSelectionMission = 'action_on_source_selection_mission',
@@ -125,6 +127,7 @@ export enum TrackingAction {
   ClickMissionCta = 'action_click_mission_cta',
   ClickMissionCtaSteps = 'action_click_mission_cta_steps',
   ClickMissionVerify = 'action_click_mission_task_verify',
+  MissionPageOverview = 'action_mission_page_overview',
 
   // Pagination
   ClickPagination = 'action_click_pagination',
@@ -141,6 +144,7 @@ export enum TrackingAction {
   // Earn
   ClickEarnDepositButton = 'action_click_earn_deposit_button',
   ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
+  EarnPageOverview = 'action_earn_page_overview',
 }
 
 export enum TrackingEventDataAction {
@@ -234,6 +238,11 @@ export enum TrackingEventParameter {
   NewSettingValue = 'param_new_setting_value',
   PreviousSettingValue = 'param_previous_setting_value',
   Pinned = 'param_pinned',
+  SendToWallet = 'param_send_to_wallet',
+  Page = 'param_page',
+  FormField = 'param_form_field',
+  NewValue = 'param_new_value',
+  PreviousValue = 'param_previous_value',
 
   // Pageload:
   PageloadSource = 'param_pageload_source',
@@ -320,6 +329,7 @@ export enum TrackingEventParameter {
   MissionCtaStepsCTA = 'param_mission_cta_steps_cta',
   MissionCtaStepsIndex = 'param_mission_cta_steps_index',
   MissionTaskInputPrepend = 'param_mission_task_input_field_',
+  MissionSlug = 'param_mission_slug',
 
   // Search
   SearchValue = 'param_search_value',

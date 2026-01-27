@@ -1,13 +1,14 @@
-import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
-import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
-import type { DefiPosition, WalletPositions } from '@/types/jumper-backend';
-import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
-import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useQueries } from '@tanstack/react-query';
 import { min } from 'date-fns';
 import { useCallback, useMemo } from 'react';
 import { ONE_HOUR_MS } from 'src/const/time';
-import type { Hex } from 'viem';
+import type { Address, Hex } from 'viem';
+import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
+import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
+import type { WalletPositions } from '@/types/jumper-backend';
+import type { DefiPosition } from '@/utils/positions/type-guards';
+import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
+import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useTokens } from '../useTokens';
 
 export interface Props {
@@ -27,19 +28,12 @@ export const usePortfolioDeFiPositions = ({
   addresses,
   filter,
 }: Props): Result => {
-  const {
-    getTokenByAddressAndChain,
-    isLoading: isLoadingTokens,
-    updatedAt,
-  } = useTokens();
+  const { getToken, isLoading: isLoadingTokens, updatedAt } = useTokens();
 
   const getTokenUSDPrice: GetTokenUSDPrice = useCallback(
     (token: { chainId: number; address: string }) => {
       try {
-        const tokenFound = getTokenByAddressAndChain(
-          token.address,
-          token.chainId,
-        );
+        const tokenFound = getToken(token.chainId, token.address as Address);
 
         if (!tokenFound) {
           throw new Error(
@@ -61,7 +55,7 @@ export const usePortfolioDeFiPositions = ({
         return undefined;
       }
     },
-    [getTokenByAddressAndChain],
+    [getToken],
   );
 
   const queries = useQueries({

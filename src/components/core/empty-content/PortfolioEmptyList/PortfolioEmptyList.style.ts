@@ -28,9 +28,6 @@ export const PortfolioEmptyListContentContainer = styled(Stack)(
       height: `calc(100% + ${theme.spacing(2)})`,
       transform: 'translateX(-50%)',
       backgroundColor: (theme.vars || theme).palette.surface2.main,
-      ...theme.applyStyles('light', {
-        backgroundColor: (theme.vars || theme).palette.surface1.main,
-      }),
       filter: 'blur(32px)',
     },
   }),

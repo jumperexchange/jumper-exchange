@@ -3,7 +3,7 @@
 exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -67,8 +67,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-          data-mui-internal-clone-element="true"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -135,7 +134,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -318,10 +317,13 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -344,7 +346,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -449,7 +451,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -632,10 +634,13 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -662,7 +667,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-1kf7s28"
+      class="MuiBox-root css-1ky10ex"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -767,7 +772,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -950,10 +955,13 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -977,7 +985,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-1wj7dar"
@@ -995,7 +1003,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
           />
         </div>
         <span
-          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-n8le6-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1e07m8s-MuiSkeleton-root"
           style="width: 48px; height: 48px;"
         />
       </div>
@@ -1006,24 +1014,24 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
           class="MuiBox-root css-1lr3mj0"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
           />
           <div
             class="MuiBox-root css-fxacz8"
           >
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-eribh-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1whkccd-MuiSkeleton-root"
             />
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-eribh-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1whkccd-MuiSkeleton-root"
             />
           </div>
         </div>
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1letoxv-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-124qmxc-MuiSkeleton-root"
         />
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1letoxv-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-124qmxc-MuiSkeleton-root"
         />
       </div>
     </div>
@@ -1034,7 +1042,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > compact card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1139,7 +1147,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1322,10 +1330,13 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -1348,7 +1359,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
 exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1453,7 +1464,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1636,10 +1647,13 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -1662,7 +1676,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
 exports[`EarnCard snapshot > compact card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1695,8 +1709,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-          data-mui-internal-clone-element="true"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -1763,7 +1776,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -1946,10 +1959,13 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -1972,7 +1988,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2036,8 +2052,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-          data-mui-internal-clone-element="true"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2104,7 +2119,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2287,10 +2302,13 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -2313,7 +2331,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1wvwwcz"
+    class="MuiBox-root css-1yq1fio"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2377,8 +2395,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-zben4u-MuiButtonBase-root-MuiButton-root"
-          data-mui-internal-clone-element="true"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-19hrzk-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2445,7 +2462,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-5ylplk-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1dpscep-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-6y1h1j-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2556,10 +2573,13 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
                     class="MuiStack-root css-k0vgmj-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                     >
-                      <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      <img
+                        alt="USD Coin"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                       />
                     </div>
                   </div>
@@ -2582,7 +2602,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2628,7 +2648,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2757,10 +2777,13 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -2773,8 +2796,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-            data-mui-internal-clone-element="true"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -2809,7 +2831,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2855,7 +2877,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -2984,10 +3006,13 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -3013,7 +3038,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
     href="/earn/moonwell-flagship-usdc-on-base"
   >
     <div
-      class="MuiBox-root css-fa41q3"
+      class="MuiBox-root css-1t7mxtg"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -3059,7 +3084,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -3188,10 +3213,13 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                   >
-                    <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                    <img
+                      alt="USD Coin"
+                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      loading="lazy"
+                      src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                     />
                   </div>
                 </div>
@@ -3214,7 +3242,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
 exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-1wj7dar"
@@ -3226,16 +3254,16 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
           class="MuiBox-root css-1lr3mj0"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-f9555f-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ja4xpg-MuiSkeleton-root"
           />
           <div
             class="MuiBox-root css-fxacz8"
           >
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-eribh-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1whkccd-MuiSkeleton-root"
             />
             <span
-              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-eribh-MuiSkeleton-root"
+              class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1whkccd-MuiSkeleton-root"
             />
           </div>
         </div>
@@ -3263,7 +3291,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
             color="default"
           />
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-n8le6-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1e07m8s-MuiSkeleton-root"
             style="width: 40px; height: 40px;"
           />
         </div>
@@ -3276,7 +3304,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
 exports[`EarnCard snapshot > list item card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3322,7 +3350,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -3451,10 +3479,13 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -3476,7 +3507,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
 exports[`EarnCard snapshot > list item card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3522,7 +3553,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -3651,10 +3682,13 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -3676,7 +3710,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
 exports[`EarnCard snapshot > list item card with no recommendation matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3722,7 +3756,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -3820,10 +3854,13 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -3836,8 +3873,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-rvb98k-MuiButtonBase-root-MuiButton-root"
-            data-mui-internal-clone-element="true"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-em6d67-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -3872,7 +3908,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 exports[`EarnCard snapshot > list item card with single asset matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-u5hlft"
+    class="MuiBox-root css-n0afi4"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3918,7 +3954,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1ksgy38-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-upfo8e-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -4047,10 +4083,13 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                 class="MuiStack-root css-k0vgmj-MuiStack-root"
               >
                 <div
-                  class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                  class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                 >
-                  <span
-                    class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                  <img
+                    alt="USD Coin"
+                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    loading="lazy"
+                    src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                   />
                 </div>
               </div>
@@ -4072,7 +4111,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
 exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -4247,10 +4286,13 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -4268,7 +4310,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -4330,7 +4372,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -4413,7 +4455,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -4438,7 +4480,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -4616,10 +4658,13 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -4637,7 +4682,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -4699,7 +4744,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -4782,7 +4827,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -4807,7 +4852,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -4982,10 +5027,13 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -5003,7 +5051,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -5065,7 +5113,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -5148,7 +5196,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -5173,7 +5221,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
 exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5182,7 +5230,7 @@ exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
         class="MuiBox-root css-ynzgks"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-11n9n3v-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-108z5fv-MuiSkeleton-root"
         />
         <span
           class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-tew9o2-MuiSkeleton-root"
@@ -5191,13 +5239,13 @@ exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
         />
       </div>
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1o29s3j-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-10137up-MuiSkeleton-root"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1o29s3j-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-10137up-MuiSkeleton-root"
       />
       <span
-        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-1o29s3j-MuiSkeleton-root"
+        class="MuiSkeleton-root MuiSkeleton-rounded MuiSkeleton-pulse css-10137up-MuiSkeleton-root"
       />
     </div>
   </div>
@@ -5207,7 +5255,7 @@ exports[`EarnCard snapshot > overview card with loading matches snapshot 1`] = `
 exports[`EarnCard snapshot > overview card with lockup months and cap in dollar matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5382,10 +5430,13 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -5403,7 +5454,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -5465,7 +5516,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -5548,7 +5599,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -5573,7 +5624,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
 exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-13fpmno"
+    class="MuiBox-root css-19butzf"
   >
     <div
       class="MuiStack-root css-h345r2-MuiStack-root"
@@ -5748,10 +5799,13 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                       class="MuiStack-root css-k0vgmj-MuiStack-root"
                     >
                       <div
-                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
+                        class="MuiAvatar-root MuiAvatar-circular css-1luopuh-MuiAvatar-root"
                       >
-                        <span
-                          class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                        <img
+                          alt="USD Coin"
+                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          loading="lazy"
+                          src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
                         />
                       </div>
                     </div>
@@ -5769,7 +5823,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>
@@ -5831,7 +5885,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ed36ue-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-lvnl87-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-2ek4cj-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -5914,7 +5968,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                           class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1itdt8o-MuiAvatar-root"
                         >
                           <span
-                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-9nsmbt-MuiSkeleton-root"
+                            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1esbst0-MuiSkeleton-root"
                           />
                         </div>
                       </div>

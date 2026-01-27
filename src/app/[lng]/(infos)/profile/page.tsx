@@ -1,4 +1,9 @@
-import { getSiteUrl } from '@/const/urls';
+import {
+  pageMetadataFields,
+  pageOpenGraph,
+  pageTwitter,
+} from '@/app/lib/metadata';
+import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { getMerklRewards } from 'src/app/lib/getMerklRewards';
@@ -8,11 +13,17 @@ import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkele
 import { PAGE_SIZE } from 'src/const/perks';
 
 export const metadata: Metadata = {
-  title: 'Jumper Loyalty Pass',
-  description:
-    'Jumper Loyalty Pass is the page explaining the Loyalty Pass system.',
+  title: pageMetadataFields.profile.title,
+  description: pageMetadataFields.profile.description,
   alternates: {
-    canonical: `${getSiteUrl()}/profile`,
+    canonical: `${getSiteUrl()}${AppPaths.Profile}`,
+  },
+  openGraph: {
+    ...pageOpenGraph.profile,
+    url: `${getSiteUrl()}${AppPaths.Profile}`,
+  },
+  twitter: {
+    ...pageTwitter.profile,
   },
 };
 

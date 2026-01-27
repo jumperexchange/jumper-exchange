@@ -8,6 +8,7 @@ import {
   verifyOnlySelectedTagIsVisible,
   verifyAnalyticsButtonsAreVisible,
   verifyFiltersAreVisible,
+  selectYourPositionsTab,
 } from './testData/earnPageFunctions';
 import { qase } from 'playwright-qase-reporter';
 import { injectMockWallet } from './utils/mockWallet';
@@ -249,6 +250,27 @@ test.describe('Analytics filters on Earn page', () => {
     async ({ page }) => {
       await test.step('Verify analytics range filters are visible', async () => {
         await verifyAnalyticsButtonsAreVisible(page);
+      });
+    },
+  );
+});
+
+test.describe('Should be able to navigate to the "Your Positions" tab', () => {
+  test.beforeEach(async ({ page, context }) => {
+    await context.addInitScript({ content: injectMockWallet() });
+    await page.goto('/earn');
+    await expect(connectButton(page)).toBeVisible();
+    await connectButton(page).click();
+    await expectSelectWalletOptionToBeVisible(page);
+    await selectWalletOption(page, 'MetaMask');
+    await selectYourPositionsTab(page);
+  });
+
+  test(
+    qase(56, 'Should be able to navigate to the "Your Positions" tab'),
+    async ({ page }) => {
+      await test.step('Navigate to the "Your Positions" tab and verify filters are visible', async () => {
+        await verifyFiltersAreVisible(page);
       });
     },
   );

@@ -1,3 +1,4 @@
+import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
 import type { StoreApi } from 'zustand';
 import type { UseBoundStoreWithEqualityFn } from 'zustand/traditional';
 
@@ -7,7 +8,8 @@ export interface SettingsProps {
   clientWallets: string[];
   disabledFeatureCards: string[];
   welcomeScreenClosed: boolean;
-  portfolioWelcomeScreenClosed: boolean;
+  portfolioWelcomeScreenClosed: Record<string, boolean>;
+  earnCardVariant: EarnCardVariant;
 }
 
 export interface SettingsActions {
@@ -24,7 +26,13 @@ export interface SettingsActions {
   setWelcomeScreenClosed: (shown: boolean) => void;
 
   // Portfolio Welcome Screen
-  setPortfolioWelcomeScreenClosed: (shown: boolean) => void;
+  setPortfolioWelcomeScreenClosed: (
+    address: string | undefined,
+    shown: boolean,
+  ) => void;
+
+  // Earn Card Variant
+  setEarnCardVariant: (variant: EarnCardVariant) => void;
 }
 
 export type SettingsState = SettingsActions & SettingsProps;

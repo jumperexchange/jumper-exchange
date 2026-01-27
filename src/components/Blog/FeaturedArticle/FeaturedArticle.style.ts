@@ -8,7 +8,7 @@ import Link from 'next/link';
 export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   position: 'relative',
   borderRadius: 32,
-  backgroundColor: (theme.vars || theme).palette.bgSecondary.main,
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
   transition: 'background-color 250ms',
   boxShadow: (theme.vars || theme).shadows[1],
   display: 'grid',
@@ -19,11 +19,10 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor:
-      alpha(theme.palette.white.main, 0.2),
-    ...theme.applyStyles("light", {
-      backgroundColor: alpha(theme.palette.white.main, 0.8)
-    })
+    backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, white 4%)`,
+    ...theme.applyStyles('light', {
+      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, black 4%)`,
+    }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     margin: theme.spacing(6, 8, 0),
