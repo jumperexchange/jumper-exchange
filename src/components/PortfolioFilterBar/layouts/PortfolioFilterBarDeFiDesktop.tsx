@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
+import Box from '@mui/material/Box';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
@@ -41,7 +42,10 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
         {isLoading ? (
           <PortfolioFilterOptionsSkeleton />
         ) : (
-          <>
+          <Box
+            data-testid="portfolio-filter-bar-content"
+            sx={{ display: 'contents' }}
+          >
             {chainOptions.length > 1 && (
               <Select
                 options={chainOptions}
@@ -113,7 +117,7 @@ export const PortfolioFilterBarDeFiDesktop: FC<PropsWithChildren> = ({
                 <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
               </PortfolioFilterBarClearFiltersButton>
             )}
-          </>
+          </Box>
         )}
       </PortfolioAnimatedLayoutContainer>
 

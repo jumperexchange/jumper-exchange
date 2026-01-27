@@ -9,6 +9,7 @@ export const PortfolioFilterOptionsSkeleton = () => {
       direction="row"
       alignItems="center"
       sx={(theme) => ({ gap: theme.spacing(2) })}
+      data-testid="portfolio-filter-bar-skeleton"
     >
       {!isMobile &&
         Array.from({ length: 5 }).map((_, index) => (
