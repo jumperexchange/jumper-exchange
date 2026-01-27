@@ -202,9 +202,7 @@ jobs:
           else
             REPORT_PATH="${{ github.run_id }}"
           fi
-          # Extract repo name from github.repository (format: owner/repo)
-          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-          PAGE_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/${REPORT_PATH}/"
+          PAGE_URL="https://jumperexchange.github.io/jumper-exchange/${REPORT_PATH}/"
           echo "page_url=$PAGE_URL" >> "$GITHUB_OUTPUT"
           echo "Report URL: $PAGE_URL"
       - name: Add report link to summary
@@ -215,9 +213,7 @@ jobs:
           else
             REPORT_PATH="${{ github.run_id }}"
           fi
-          # Extract repo name from github.repository (format: owner/repo)
-          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-          PAGES_URL="https://${{ github.repository_owner }}.github.io/${REPO_NAME}/${REPORT_PATH}/"
+          PAGES_URL="https://jumperexchange.github.io/jumper-exchange/${REPORT_PATH}/"
           echo "## 📊 Playwright Test Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "🔗 **[View Report](${PAGES_URL})**" >> $GITHUB_STEP_SUMMARY
