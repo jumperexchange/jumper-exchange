@@ -13,7 +13,10 @@ import {
   useLeaderboardUser,
 } from '../../hooks/useLeaderboard';
 import IconHeader from '../ProfilePage/Common/IconHeader';
-import { Pagination } from '@/components/core/Pagination/Pagination';
+import {
+  Pagination,
+  PaginationVariant,
+} from '@/components/core/Pagination/Pagination';
 import { PageContainer } from '../ProfilePage/ProfilePage.style';
 import type { StrapiMetaPagination } from '@/types/strapi';
 import {
@@ -141,11 +144,10 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
         </LeaderboardEntryStack>
         {totalPages > 1 && (
           <Pagination
+            variant={PaginationVariant.WindowedPages}
             page={currentPage - 1}
             setPage={handleSetPage}
             pagination={pagination}
-            showFirstLast
-            showEllipsis
             maxVisiblePages={5}
             sx={{ width: '100%' }}
           />

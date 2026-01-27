@@ -8,7 +8,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import { SectionCardContainer } from '@/components/Cards/SectionCard/SectionCard.style';
 import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
 import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
-import Pagination from '@/components/core/Pagination/Pagination';
+import Pagination, {
+  PaginationVariant,
+} from '@/components/core/Pagination/Pagination';
 import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
@@ -105,12 +107,10 @@ const EarnOpportunitiesAllInner = () => {
       </SectionCardContainer>
       {pagination.pageCount > 1 && (
         <Pagination
+          variant={PaginationVariant.AllPages}
           page={page}
           setPage={setPage}
           pagination={pagination}
-          sx={(theme) => ({
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
-          })}
         />
       )}
       <DepositFlowModal />

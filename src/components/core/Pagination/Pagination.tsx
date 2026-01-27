@@ -22,7 +22,12 @@ import {
 } from './Pagination.style';
 import { getVisiblePages } from './utils';
 
-interface PaginationProps {
+export enum PaginationVariant {
+  AllPages = 'allPages',
+  WindowedPages = 'windowedPages',
+}
+
+interface BasePaginationProps {
   page: number;
   setPage: (page: number) => void;
   pagination: StrapiMetaPagination;
@@ -31,24 +36,28 @@ interface PaginationProps {
   onNext?: () => void;
   onSetPage?: (page: number) => void;
   sx?: SxProps<Theme>;
-  showFirstLast?: boolean;
-  showEllipsis?: boolean;
-  maxVisiblePages?: number;
 }
 
-export const Pagination = ({
-  page,
-  setPage,
-  pagination,
-  id,
-  onPrev,
-  onNext,
-  onSetPage,
-  sx,
-  showFirstLast = false,
-  showEllipsis = false,
-  maxVisiblePages,
-}: PaginationProps) => {
+interface AllPagesPaginationProps extends BasePaginationProps {
+  variant: PaginationVariant.AllPages;
+}
+
+interface WindowedPagesPaginationProps extends BasePaginationProps {
+  variant: PaginationVariant.WindowedPages;
+  maxVisiblePages: number;
+}
+
+type PaginationProps = AllPagesPaginationProps | WindowedPagesPaginationProps;
+
+export const Pagination = (props: PaginationProps) => {
+  const { page, setPage, pagination, id, onPrev, onNext, onSetPage, sx } =
+    props;
+
+  const isWindowedVariant = props.variant === PaginationVariant.WindowedPages;
+  const showFirstLast = isWindowedVariant ? true : false;
+  const showEllipsis = isWindowedVariant ? true : false;
+  const maxVisiblePages = isWindowedVariant ? props.maxVisiblePages : undefined;
+
   const isFirstPage = page === 0;
   const isLastPage = page >= pagination.pageCount - 1;
   const totalPages = pagination.pageCount;
