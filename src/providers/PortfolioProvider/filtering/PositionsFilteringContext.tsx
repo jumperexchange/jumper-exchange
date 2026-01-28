@@ -43,8 +43,6 @@ export interface PositionsFilteringContextType extends PositionsFilteringParams 
   data: Record<string, PortfolioPosition[]>;
   isLoading: boolean;
   isEmpty: boolean;
-  error: Error | null;
-  updatedAt: number | null;
 }
 
 export const PositionsFilteringContext =
@@ -63,8 +61,6 @@ export const PositionsFilteringContext =
     data: {},
     isLoading: false,
     isEmpty: false,
-    error: null,
-    updatedAt: null,
   });
 
 export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
@@ -232,8 +228,6 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
     data: filteredSortedData,
     isLoading: positionsSourceState.isLoading,
     isEmpty,
-    error: orchestrationState.error,
-    updatedAt: positionsSourceState.updatedAt,
     ...stats,
   };
 

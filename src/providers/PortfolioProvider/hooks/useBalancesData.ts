@@ -75,6 +75,9 @@ export const useBalancesData = (): UseTokensDataResult => {
             );
             setBalancesInCache(account.address!, fetchedTokens);
             setNeedsRefresh(account.address!, false);
+            controlsRef.current = controlsRef.current.filter(
+              (c) => c !== result.control,
+            );
           },
         });
 

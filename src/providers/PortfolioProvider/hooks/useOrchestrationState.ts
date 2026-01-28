@@ -103,7 +103,7 @@ export const useOrchestrationState = ({
   const refresh = useCallback(() => {
     balances.refetch();
     positions.refetch();
-  }, [balances, positions]);
+  }, [balances.refetch, positions.refetch]);
 
   return useMemo(
     () => ({

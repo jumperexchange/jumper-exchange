@@ -52,10 +52,13 @@ export const toPositionBalance = (
   token: DefiToken | AppToken,
   getPrice?: GetPrice,
 ): PositionBalance => {
-  // Try to get fresh price for chain-based tokens
-  let freshPriceUSD: number | undefined = token.priceUSD;
+  let freshPriceUSD: number | undefined;
   if (getPrice && 'chain' in token) {
     freshPriceUSD = getPrice(token.chain.chainId, token.address);
+  }
+
+  if (freshPriceUSD === undefined) {
+    freshPriceUSD = token.priceUSD;
   }
 
   return createPositionBalance(token, freshPriceUSD);

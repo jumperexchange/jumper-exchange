@@ -104,7 +104,7 @@ export const usePositionsData = ({
     shouldSetCacheRef.current = false;
 
     queries.forEach((query) => {
-      if (query.isSuccess && query.data) {
+      if (query.isSuccess && query.data && !query.isPlaceholderData) {
         const { address, data: positions } = query.data;
         setPositionsCache(address, positions);
       }

@@ -34,6 +34,7 @@ import type { WalletPortfolioBalance } from '../types';
 
 export interface BalancesFilteringContextType extends BalancesFilteringParams {
   sortBy: SortByEnum;
+  order: OrderEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: BalancesFilterUI;
   updateFilter: (filter: NullableFields<BalancesFilterUI>) => void;
@@ -46,6 +47,7 @@ export interface BalancesFilteringContextType extends BalancesFilteringParams {
 export const BalancesFilteringContext =
   createContext<BalancesFilteringContextType>({
     sortBy: SortByOptions.VALUE,
+    order: OrderOptions.DESC,
     setSortBy: () => {},
     filter: {},
     updateFilter: () => {},
@@ -197,6 +199,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
   );
 
   const context: BalancesFilteringContextType = {
+    order,
     sortBy,
     setSortBy: updateSortBy,
     filter,
