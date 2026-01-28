@@ -462,6 +462,7 @@ export interface PerkItemData {
 export interface PerksDataAttributes {
   id: number;
   documentId: string;
+  Featured: boolean;
   Title: string;
   Description: string;
   Slug: string;

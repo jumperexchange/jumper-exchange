@@ -382,6 +382,7 @@ type PerkField =
   | 'ClaimableSteps'
   | 'HowToUseDescription'
   | 'NextStepsDescription'
+  | 'Featured'
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt';
@@ -398,6 +399,7 @@ class PerkParams {
     'ClaimableSteps',
     'HowToUseDescription',
     'NextStepsDescription',
+    'Featured',
     'createdAt',
     'updatedAt',
   ];
@@ -726,11 +728,15 @@ class PerkStrapiApi extends StrapiApi {
     this.apiUrl = perkParams.addParams();
   }
 
-  sortBy(
-    field: Pick<PerkField, 'createdAt' & 'UnlockLevel'>,
-    order: SortOrder = 'asc',
-  ): this {
+  sortBy(field: PerkField, order: SortOrder = 'asc'): this {
     this.apiUrl.searchParams.set('sort', `${field}:${order}`);
+    return this;
+  }
+
+  sortByMultiple(fields: Array<{ field: PerkField; order: SortOrder }>): this {
+    fields.forEach((f, index) => {
+      this.apiUrl.searchParams.set(`sort[${index}]`, `${f.field}:${f.order}`);
+    });
     return this;
   }
 
