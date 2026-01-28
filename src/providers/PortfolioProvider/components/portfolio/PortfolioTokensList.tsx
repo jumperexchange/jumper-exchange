@@ -1,0 +1,50 @@
+'use client';
+
+import { BalanceCard } from '../composite/BalanceCard/BalanceCard';
+import { BalanceCardSkeleton } from '../composite/BalanceCard/components/BalanceCardSkeleton';
+import { useBalancesFiltering } from '../../filtering/BalancesFilteringContext';
+import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
+import { PortfolioEmptyList } from './PortfolioEmptyList';
+import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
+import { AnimatePresence } from 'motion/react';
+import { BalanceCardSize } from '../composite/BalanceCard/types';
+
+export const PortfolioTokensList = () => {
+  const { data, isLoading, isEmpty, clearFilters } = useBalancesFiltering();
+
+  const balanceGroups = Object.entries(data);
+
+  if (isEmpty) {
+    return null;
+  }
+
+  const renderContent = () => {
+    if (isLoading && balanceGroups.length === 0) {
+      return Array.from({ length: 3 }).map((_, index) => (
+        <PortfolioAnimatedAssetContainer key={index}>
+          <BalanceCardSkeleton size={BalanceCardSize.MD} />
+        </PortfolioAnimatedAssetContainer>
+      ));
+    }
+
+    if (balanceGroups.length > 0) {
+      return balanceGroups.map(([symbol, balances]) => (
+        <PortfolioAnimatedAssetContainer key={symbol}>
+          <BalanceCard balances={balances} size={BalanceCardSize.MD} />
+        </PortfolioAnimatedAssetContainer>
+      ));
+    }
+
+    return (
+      <PortfolioAnimatedAssetContainer>
+        <PortfolioEmptyList onClearFilters={clearFilters} />
+      </PortfolioAnimatedAssetContainer>
+    );
+  };
+
+  return (
+    <PortfolioAssetsListContainer useFlexGap direction="column">
+      <AnimatePresence mode="popLayout">{renderContent()}</AnimatePresence>
+    </PortfolioAssetsListContainer>
+  );
+};
