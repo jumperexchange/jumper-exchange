@@ -12,7 +12,7 @@ export interface FormatAmountOptions {
   decimals?: number;
 }
 
-export const useTokenFormatters = () => {
+export const usePortfolioFormatters = () => {
   const { t } = useTranslation();
 
   const toAggregatedAmount = useCallback(
