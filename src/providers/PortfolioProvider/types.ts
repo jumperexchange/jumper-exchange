@@ -73,7 +73,7 @@ export interface SummaryData {
   totalBalancesUsd: number;
   totalPositionsUsd: number;
   totalPortfolioUsd: number;
-  balancesByAddress: Record<string, BalancesByAddressSummary>;
+  balancesBySymbol: Record<string, BalancesByAddressSummary>;
   positionsByProtocol: Record<string, PositionsByProtocolSummary>;
 }
 

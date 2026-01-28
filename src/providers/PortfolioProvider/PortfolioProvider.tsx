@@ -53,7 +53,7 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
   );
 
   const summary = usePortfolioSummaryData({
-    balancesByAddress: balancesData.balancesByAddress,
+    balances: balancesData.balances,
     positions: positionsData.positions,
     positionsByProtocol: positionsData.positionsByProtocol,
   });

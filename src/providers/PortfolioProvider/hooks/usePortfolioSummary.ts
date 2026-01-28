@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import mapValues from 'lodash/mapValues';
 import sumBy from 'lodash/sumBy';
-import flatMap from 'lodash/flatMap';
 import map from 'lodash/map';
 import flatten from 'lodash/flatten';
 import values from 'lodash/values';
@@ -15,31 +14,28 @@ import type {
 import { calcPercentage } from '../utils';
 
 interface UsePortfolioSummaryParams {
-  balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>;
+  balances: Record<string, WalletPortfolioBalance[]>;
   positions: PortfolioPosition[];
   positionsByProtocol: Record<string, PortfolioPosition[]>;
 }
 
 export const usePortfolioSummaryData = ({
-  balancesByAddress,
+  balances,
   positions,
   positionsByProtocol,
 }: UsePortfolioSummaryParams): SummaryData => {
   return useMemo(() => {
-    const allBalances = flatMap(values(balancesByAddress), (grouped) =>
-      flatten(values(grouped)),
-    );
+    const allBalances = flatten(values(balances));
     const totalBalancesUsd = sumBy(allBalances, 'amountUSD');
     const totalPositionsUsd = sumBy(positions, 'netUsd');
     const totalPortfolioUsd = totalBalancesUsd + totalPositionsUsd;
 
-    const balancesByAddressSummary = mapValues(
-      balancesByAddress,
-      (grouped): BalancesByAddressSummary => {
-        const flatBalances = flatten(values(grouped));
-        const totalUsd = sumBy(flatBalances, 'amountUSD');
+    const balancesBySymbolSummary = mapValues(
+      balances,
+      (symbolBalances): BalancesByAddressSummary => {
+        const totalUsd = sumBy(symbolBalances, 'amountUSD');
         return {
-          balances: map(flatBalances, (b) => ({
+          balances: map(symbolBalances, (b) => ({
             ...b,
             percentage: calcPercentage(b.amountUSD, totalPortfolioUsd),
           })),
@@ -68,8 +64,8 @@ export const usePortfolioSummaryData = ({
       totalBalancesUsd,
       totalPositionsUsd,
       totalPortfolioUsd,
-      balancesByAddress: balancesByAddressSummary,
+      balancesBySymbol: balancesBySymbolSummary,
       positionsByProtocol: positionsByProtocolSummary,
     };
-  }, [balancesByAddress, positions, positionsByProtocol]);
+  }, [balances, positions, positionsByProtocol]);
 };

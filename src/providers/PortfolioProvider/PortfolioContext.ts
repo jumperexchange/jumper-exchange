@@ -62,7 +62,7 @@ const defaultSummaryState: SummaryData = {
   totalBalancesUsd: 0,
   totalPositionsUsd: 0,
   totalPortfolioUsd: 0,
-  balancesByAddress: {},
+  balancesBySymbol: {},
   positionsByProtocol: {},
 };
 

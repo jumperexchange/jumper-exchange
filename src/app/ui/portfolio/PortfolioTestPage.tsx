@@ -85,7 +85,7 @@ export const PortfolioTestPage = () => {
           }}
         >
           {safeStringify(
-            Object.entries(summaryState.balancesByAddress).map(
+            Object.entries(summaryState.balancesBySymbol).map(
               ([address, data]) => ({
                 address,
                 totalUsd: data.totalUsd.toFixed(2),
