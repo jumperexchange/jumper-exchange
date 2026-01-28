@@ -1,13 +1,10 @@
 import type {
   PortfolioBalance as GenericPortfolioBalance,
-  PortfolioToken,
+  PositionToken,
   TokenBalance,
 } from '@/types/tokens';
 import type { App, Chain } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
-
-// Re-export for convenience
-export type { PortfolioToken } from '@/types/tokens';
 
 /**
  * Balance for wallet tokens (from LiFi) with USD value.
@@ -18,9 +15,9 @@ export interface WalletPortfolioBalance extends TokenBalance {
 
 /**
  * Balance for position tokens (from backend) with USD value.
- * Uses PortfolioToken which preserves chain/app info.
+ * Uses PositionToken which preserves chain/app info.
  */
-export type PositionBalance = GenericPortfolioBalance<PortfolioToken>;
+export type PositionBalance = GenericPortfolioBalance<PositionToken>;
 
 /**
  * Position with all token arrays converted to PositionBalance format.

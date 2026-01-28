@@ -16,21 +16,53 @@ import type {
 import { safeBigInt } from '@/utils/numbers/safeBigInt';
 import { formatUnits } from 'viem';
 
+/**
+ * Legacy token type for wallet balance display.
+ * Used by: getTokens, PortfolioStore, TokenListCard, WalletBalanceCard, etc.
+ *
+ * @deprecated Will be replaced by WalletPortfolioBalance from PortfolioProvider.
+ */
+export interface PortfolioToken extends JumperToken {
+  balance: number;
+  totalPriceUSD: number;
+  relatedTokens?: PortfolioToken[];
+}
+
+/**
+ * Portfolio token with required relatedTokens array.
+ * Used when tokens are grouped by symbol across chains.
+ *
+ * @deprecated Will be replaced after migration to PortfolioProvider.
+ */
+export interface PortfolioTokenWithRelated extends PortfolioToken {
+  relatedTokens: PortfolioToken[];
+}
+
 // ============================================================================
-// Base Display Token - Foundation for all token types
+// Core Token - Shared foundation for all token types
 // ============================================================================
 
 /**
- * Minimal token interface for display purposes.
- * All token types extend this base.
+ * Core token properties shared by all token types.
  */
-export interface BaseDisplayToken {
-  type: 'base' | 'extended' | 'portfolio';
+export interface CoreToken {
   address: string;
   name: string;
   symbol: string;
   decimals: number;
   logoURI?: string;
+}
+
+// ============================================================================
+// Base Display Token - For display with price
+// ============================================================================
+
+/**
+ * Token interface for display purposes with price.
+ * Used by ExtendedToken, PositionToken.
+ */
+export interface BaseDisplayToken extends CoreToken {
+  type: 'base' | 'extended' | 'position';
   priceUSD: string;
 }
 
@@ -54,13 +86,13 @@ export interface ExtendedToken extends BaseDisplayToken {
 // ============================================================================
 
 /**
- * Token for portfolio display that preserves source info.
+ * Token for position display that preserves source info.
  * - chainId is optional (AppTokens don't have it)
  * - chain is preserved from DefiToken
  * - app is preserved from AppToken
  */
-export interface PortfolioToken extends BaseDisplayToken {
-  type: 'portfolio';
+export interface PositionToken extends BaseDisplayToken {
+  type: 'position';
   chainId?: number;
   chain?: Chain;
   app?: App;
@@ -88,20 +120,16 @@ export interface PortfolioBalance<
 }
 
 // ============================================================================
-// Backwards Compatible Types
+// Base Token - For LiFi SDK tokens (without price)
 // ============================================================================
 
 /**
- * @deprecated Use BaseDisplayToken or ExtendedToken instead
+ * Token from LiFi SDK with chain context but without price.
+ * Used for raw token data before price lookup.
  */
-export interface BaseToken {
+export interface BaseToken extends CoreToken {
   type: 'base' | 'extended';
   chainId: number;
-  address: string;
-  symbol: string;
-  decimals: number;
-  name: string;
-  logoURI?: string;
   coinKey?: CoinKey;
   tags?: TokenTag[];
 }
@@ -114,6 +142,18 @@ export type Token = BaseToken | ExtendedToken;
 export type TokenBalance = Balance<ExtendedToken>;
 
 // ============================================================================
+// Legacy Portfolio Token - For old wallet balance display system
+// ============================================================================
+
+/**
+ * Chain info for legacy wallet portfolio tokens.
+ */
+export interface PortfolioTokenChain {
+  chainId: number;
+  chainKey: string;
+}
+
+// ============================================================================
 // Type Guards
 // ============================================================================
 
@@ -123,10 +163,10 @@ export const isExtendedToken = (
   return token.type === 'extended';
 };
 
-export const isPortfolioToken = (
+export const isPositionToken = (
   token: BaseDisplayToken,
-): token is PortfolioToken => {
-  return token.type === 'portfolio';
+): token is PositionToken => {
+  return token.type === 'position';
 };
 
 const isJumperToken = (
@@ -233,15 +273,15 @@ export const createExtendedToken = (
 };
 
 /**
- * Create a PortfolioToken from backend token types.
+ * Create a PositionToken from backend token types.
  * Preserves chain/app info from the source.
  */
-export const createPortfolioToken = (
+export const createPositionToken = (
   token: DefiToken | AppToken,
-): PortfolioToken => {
+): PositionToken => {
   if (isDefiToken(token)) {
     return {
-      type: 'portfolio',
+      type: 'position',
       address: token.address,
       name: token.name,
       symbol: token.symbol,
@@ -255,7 +295,7 @@ export const createPortfolioToken = (
 
   // AppToken
   return {
-    type: 'portfolio',
+    type: 'position',
     address: token.address,
     name: token.name,
     symbol: token.symbol,
@@ -301,13 +341,13 @@ export function createTokenBalance(
 }
 
 /**
- * Create a PortfolioBalance from backend token types.
+ * Create a PositionBalance from backend token types.
  * Optionally accepts a fresh price for recalculation.
  */
-export const createPortfolioBalance = (
+export const createPositionBalance = (
   token: DefiToken | AppToken,
   freshPriceUSD?: number,
-): PortfolioBalance<PortfolioToken> => {
+): PortfolioBalance<PositionToken> => {
   const amount = safeBigInt(token.amount);
   const priceUSD = freshPriceUSD ?? token.priceUSD;
   const amountNum = Number(formatUnits(amount, token.decimals));
@@ -315,6 +355,6 @@ export const createPortfolioBalance = (
   return {
     amount,
     amountUSD: amountNum * priceUSD,
-    token: createPortfolioToken(token),
+    token: createPositionToken(token),
   };
 };

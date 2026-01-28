@@ -1,5 +1,5 @@
 import type { App, AppToken, Chain, DefiToken } from '@/types/jumper-backend';
-import { createPortfolioBalance, type TokenBalance } from '@/types/tokens';
+import { createPositionBalance, type TokenBalance } from '@/types/tokens';
 import { formatUnits } from 'viem';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 import { isChainDefiPosition } from '@/utils/positions/type-guards';
@@ -51,7 +51,7 @@ export const toPositionBalance = (
     freshPriceUSD = getPrice(token.chain.chainId, token.address);
   }
 
-  return createPortfolioBalance(token, freshPriceUSD);
+  return createPositionBalance(token, freshPriceUSD);
 };
 
 /**
@@ -148,9 +148,8 @@ export const extractBalancesMetadata = (
   balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>,
 ): BalancesMetadata => {
   const wallets = Object.keys(balancesByAddress);
-  const allBalances = flatMap(
-    Object.values(balancesByAddress),
-    (grouped) => flatMap(Object.values(grouped)),
+  const allBalances = flatMap(Object.values(balancesByAddress), (grouped) =>
+    flatMap(Object.values(grouped)),
   );
 
   const chains = uniq(compact(map(allBalances, (b) => b.token.chainId)));
