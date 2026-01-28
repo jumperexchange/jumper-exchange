@@ -31,6 +31,7 @@ import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioPositions, usePortfolioState } from '../PortfolioContext';
 import type { PortfolioPosition } from '../types';
+import { useProcessedPositions } from '../hooks/useProcessPositions';
 
 export interface PositionsFilteringContextType extends PositionsFilteringParams {
   sortBy: SortByEnum;
@@ -116,6 +117,17 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
 
   const isEmpty = positionsState.positions.length === 0;
 
+  const filteredPositions = useProcessedPositions({
+    filter: {
+      chains: filter?.chains,
+      protocols: filter?.protocols,
+      type: filter?.types,
+      assets: filter?.assets,
+      sortBy: sortBy,
+      order: order,
+    },
+  });
+
   const stats = useMemo((): PositionsFilteringParams => {
     if (isEmpty) {
       return EMPTY_POSITIONS_FILTERING_PARAMS;
@@ -160,12 +172,12 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
 
   const filteredSortedData = useMemo(() => {
     return filterSortPositionsData(
-      positionsState.positions,
+      filteredPositions.positions,
       filter,
       sortBy,
       order,
     );
-  }, [positionsState.positions, filter, sortBy, order]);
+  }, [filteredPositions.positions, filter, sortBy, order]);
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<PositionsFilter>) => {

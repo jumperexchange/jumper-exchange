@@ -67,6 +67,22 @@ export interface BaseDisplayToken extends CoreToken {
 }
 
 // ============================================================================
+// Base Token - For LiFi SDK tokens (without price)
+// ============================================================================
+
+/**
+ * Token from LiFi SDK with chain context but without price.
+ * Used for raw token data before price lookup.
+ */
+export interface BaseToken extends CoreToken {
+  type: 'base' | 'extended';
+  chainId: number;
+  chainKey?: string;
+  coinKey?: CoinKey;
+  tags?: TokenTag[];
+}
+
+// ============================================================================
 // Extended Token - For LiFi/Widget operations (requires chainId)
 // ============================================================================
 
@@ -74,11 +90,9 @@ export interface BaseDisplayToken extends CoreToken {
  * Token with chain context for swap/bridge operations.
  * Requires chainId for on-chain operations.
  */
-export interface ExtendedToken extends BaseDisplayToken {
+export interface ExtendedToken extends BaseToken {
   type: 'extended';
-  chainId: number;
-  coinKey?: CoinKey;
-  tags?: TokenTag[];
+  priceUSD: string;
 }
 
 // ============================================================================
@@ -117,21 +131,6 @@ export interface PortfolioBalance<
   T extends BaseDisplayToken = BaseDisplayToken,
 > extends Balance<T> {
   amountUSD: number;
-}
-
-// ============================================================================
-// Base Token - For LiFi SDK tokens (without price)
-// ============================================================================
-
-/**
- * Token from LiFi SDK with chain context but without price.
- * Used for raw token data before price lookup.
- */
-export interface BaseToken extends CoreToken {
-  type: 'base' | 'extended';
-  chainId: number;
-  coinKey?: CoinKey;
-  tags?: TokenTag[];
 }
 
 export type Token = BaseToken | ExtendedToken;
@@ -205,7 +204,7 @@ export const hasMarketData = (
 // ============================================================================
 
 /**
- * @deprecated Use createExtendedToken instead
+ * Create a BaseToken from a StaticToken or JumperToken.
  */
 export const createBaseToken = (
   token: StaticToken | JumperToken,
@@ -224,6 +223,7 @@ export const createBaseToken = (
       ...base,
       type: 'base',
       chainId: token.chain.chainId,
+      chainKey: token.chain.chainKey,
       logoURI: token.logo,
     };
   } else {
@@ -243,24 +243,10 @@ export const createBaseToken = (
  * Create an ExtendedToken from various source types.
  */
 export const createExtendedToken = (
-  token: StaticToken | JumperToken | LifiToken | DefiToken,
+  token: StaticToken | JumperToken | LifiToken,
   priceUSD?: string | undefined,
 ): ExtendedToken => {
-  // Handle DefiToken
-  if (isDefiToken(token)) {
-    return {
-      type: 'extended',
-      address: token.address,
-      name: token.name,
-      symbol: token.symbol,
-      decimals: token.decimals,
-      logoURI: token.logo,
-      chainId: token.chain.chainId,
-      priceUSD: String(token.priceUSD),
-    };
-  }
-
-  const baseToken = createBaseToken(token as StaticToken | JumperToken);
+  const baseToken = createBaseToken(token);
   const effectivePriceUSD = 'priceUSD' in token ? token.priceUSD : priceUSD;
   if (effectivePriceUSD === undefined) {
     throw new Error('Price USD is required');

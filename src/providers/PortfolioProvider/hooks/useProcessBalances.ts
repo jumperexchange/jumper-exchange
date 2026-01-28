@@ -10,18 +10,22 @@ import mapValues from 'lodash/mapValues';
 import orderBy from 'lodash/orderBy';
 import groupBy from 'lodash/groupBy';
 import { type PositionBalance } from '../types';
+import { useChains } from '@/hooks/useChains';
 
 export const useProcessBalances = (lpTokens: PositionBalance[]) => {
   const rawData = useBalancesData();
+  const { chains } = useChains();
 
   const balances = useMemo(
-    () => toWalletPortfolioBalances(rawData.balances),
-    [rawData.balances],
+    () => toWalletPortfolioBalances(rawData.balances, chains),
+    [rawData.balances, chains],
   );
 
   const balancesByAddress = useMemo(() => {
-    return mapValues(rawData.balancesByAddress, toWalletPortfolioBalances);
-  }, [rawData.balancesByAddress]);
+    return mapValues(rawData.balancesByAddress, (balances) =>
+      toWalletPortfolioBalances(balances, chains),
+    );
+  }, [rawData.balancesByAddress, chains]);
 
   const dedupedBalances = useMemo(
     () => dedupTokensFromLpPositions(balances, lpTokens),

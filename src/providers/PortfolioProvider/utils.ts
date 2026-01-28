@@ -18,6 +18,7 @@ import type {
   BalancesMetadata,
   PositionsMetadata,
 } from './types';
+import type { ExtendedChain } from '@lifi/sdk';
 
 type GetPrice = (chainId: number, address: string) => number | undefined;
 
@@ -26,13 +27,19 @@ type GetPrice = (chainId: number, address: string) => number | undefined;
  */
 export const toWalletPortfolioBalances = (
   balances: TokenBalance[],
+  chains: ExtendedChain[],
 ): WalletPortfolioBalance[] => {
   return balances.map((balance) => {
     const amount = formatUnits(balance.amount, balance.token.decimals);
     const amountUSD = Number(amount) * Number(balance.token.priceUSD);
+    const chain = chains.find((c) => c.id === balance.token.chainId);
     return {
       ...balance,
       amountUSD,
+      token: {
+        ...balance.token,
+        chainKey: chain?.key ?? '',
+      },
     };
   });
 };
@@ -222,6 +229,7 @@ export const isAppPortfolioPosition = (
 
 export const BalanceAccessorKeys = {
   chainId: 'chainId',
+  chainKey: 'chainKey',
   symbol: 'symbol',
   address: 'address',
   name: 'name',
@@ -239,6 +247,7 @@ export type BalanceAccessors = Record<
 
 export const balanceAccessors: BalanceAccessors = {
   [BalanceAccessorKeys.chainId]: (b) => b.token.chainId,
+  [BalanceAccessorKeys.chainKey]: (b) => b.token.chainKey,
   [BalanceAccessorKeys.symbol]: (b) => b.token.symbol,
   [BalanceAccessorKeys.address]: (b) => b.token.address,
   [BalanceAccessorKeys.name]: (b) => b.token.name,
@@ -284,6 +293,7 @@ export const PositionAccessorKeys = {
   assetUsd: 'assetUsd',
   debtUsd: 'debtUsd',
   chainId: 'chainId',
+  chainKey: 'chainKey',
   chain: 'chain',
   appKey: 'appKey',
   app: 'app',
@@ -306,6 +316,10 @@ export const positionAccessors = {
   [PositionAccessorKeys.source]: (p: PortfolioPosition) => p.source,
   [PositionAccessorKeys.chainId]: (p: PortfolioPosition): number | undefined =>
     isChainPortfolioPosition(p) ? p.chain.chainId : undefined,
+  [PositionAccessorKeys.chainKey]: (
+    p: PortfolioPosition,
+  ): string | undefined =>
+    isChainPortfolioPosition(p) ? p.chain.chainKey : undefined,
   [PositionAccessorKeys.chain]: (p: PortfolioPosition): Chain | undefined =>
     isChainPortfolioPosition(p) ? p.chain : undefined,
   [PositionAccessorKeys.appKey]: (p: PortfolioPosition): string | undefined =>

@@ -6,7 +6,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import { sortBy, orderBy, groupBy } from 'lodash';
+import { sortBy, orderBy, groupBy, sumBy, minBy } from 'lodash';
 import type {
   BalancesFilteringParams,
   BalancesFilter,
@@ -18,11 +18,7 @@ import type {
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_POSITIONS_MIN_VALUE } from './constants';
 import type { WalletPortfolioBalance, PortfolioPosition } from '../types';
-import {
-  isChainPortfolioPosition,
-  balanceAccessors,
-  positionAccessors,
-} from '../utils';
+import { balanceAccessors, positionAccessors } from '../utils';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -54,17 +50,31 @@ export const sortPortfolioItems = <T>(
   return sorted;
 };
 
-export const balanceSortAccessors: SortAccessors<WalletPortfolioBalance> = {
-  [SortByOptions.VALUE]: (balance) => balance.amountUSD,
-  [SortByOptions.CHAIN]: (balance) => balance.token.chainId ?? 0,
-  [SortByOptions.ASSET]: (balance) => balance.token.symbol ?? '',
+export type BalanceGroup = [string, WalletPortfolioBalance[]];
+
+export const balanceGroupSortAccessors: SortAccessors<BalanceGroup> = {
+  [SortByOptions.VALUE]: ([, group]) =>
+    sumBy(group, (b) => Number(balanceAccessors.amountUSD(b) ?? 0)),
+  [SortByOptions.CHAIN]: ([, group]) => {
+    const getKey = (b: WalletPortfolioBalance) =>
+      balanceAccessors.chainKey(b) ?? '';
+    return getKey(minBy(group, getKey) ?? group[0]);
+  },
+  [SortByOptions.ASSET]: ([symbol]) => symbol,
 };
 
-export const positionSortAccessors: SortAccessors<PortfolioPosition> = {
-  [SortByOptions.VALUE]: (position) => position.netUsd,
-  [SortByOptions.CHAIN]: (position) =>
-    isChainPortfolioPosition(position) ? (position.chain.chainId ?? 0) : 0,
-  [SortByOptions.ASSET]: (position) => position.protocol.name ?? '',
+export type PositionGroup = [string, PortfolioPosition[]];
+
+export const positionGroupSortAccessors: SortAccessors<PositionGroup> = {
+  [SortByOptions.VALUE]: ([, group]) =>
+    sumBy(group, (p) => Number(positionAccessors.netUsd(p) ?? 0)),
+  [SortByOptions.CHAIN]: ([, group]) => {
+    const getKey = (p: PortfolioPosition) =>
+      positionAccessors.chainKey(p) ?? positionAccessors.appKey(p) ?? '';
+    return getKey(minBy(group, getKey) ?? group[0]);
+  },
+  [SortByOptions.ASSET]: ([, group]) =>
+    positionAccessors.protocol(group[0]) ?? '',
 };
 
 export const isWithinValueRange = (
@@ -184,12 +194,7 @@ export const filterSortBalancesData = (
     Object.entries(groupedBySymbol),
     sortByValue,
     order,
-    {
-      [SortByOptions.VALUE]: ([, group]) =>
-        group.reduce((sum, b) => sum + b.amountUSD, 0),
-      [SortByOptions.CHAIN]: ([, group]) => group[0]?.token.chainId ?? 0,
-      [SortByOptions.ASSET]: ([symbol]) => symbol,
-    },
+    balanceGroupSortAccessors,
   );
 
   return Object.fromEntries(sortedGroups);
@@ -268,38 +273,6 @@ export const filterSortPositionsData = (
 ): Record<string, PortfolioPosition[]> => {
   let result = [...positions];
 
-  if (filter.chains?.length) {
-    result = result.filter((position) => {
-      if (!isChainPortfolioPosition(position)) {
-        return false;
-      }
-      return filter.chains!.includes(position.chain.chainId);
-    });
-  }
-
-  if (filter.protocols?.length) {
-    result = result.filter((position) =>
-      filter.protocols!.includes(position.protocol.name),
-    );
-  }
-
-  if (filter.types?.length) {
-    result = result.filter((position) => filter.types!.includes(position.type));
-  }
-
-  if (filter.assets?.length) {
-    result = result.filter((position) => {
-      const allTokens = [
-        ...position.assetTokens,
-        ...position.supplyTokens,
-        ...position.collateralTokens,
-      ];
-      return allTokens.some((token) =>
-        filter.assets!.includes(token.token.symbol),
-      );
-    });
-  }
-
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     result = result.filter((position) => {
       const value = position.netUsd;
@@ -311,10 +284,12 @@ export const filterSortPositionsData = (
     });
   }
 
-  const sortedByNetUsd = orderBy(result, [positionAccessors.netUsd], ['desc']);
+  if (sortByValue === SortByOptions.VALUE) {
+    result = orderBy(result, [positionAccessors.netUsd], ['desc']);
+  }
 
   const groupedByProtocolAndChain = groupBy(
-    sortedByNetUsd,
+    result,
     positionAccessors.protocolAndChain,
   );
 
@@ -322,15 +297,7 @@ export const filterSortPositionsData = (
     Object.entries(groupedByProtocolAndChain),
     sortByValue,
     order,
-    {
-      [SortByOptions.VALUE]: ([, group]) =>
-        group.reduce((sum, p) => sum + p.netUsd, 0),
-      [SortByOptions.CHAIN]: ([, group]) =>
-        isChainPortfolioPosition(group[0])
-          ? group[0].chain.chainId ?? 0
-          : 0,
-      [SortByOptions.ASSET]: ([key]) => key,
-    },
+    positionGroupSortAccessors,
   );
 
   return Object.fromEntries(sortedGroups);
