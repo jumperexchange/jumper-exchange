@@ -29,7 +29,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
-import { usePortfolioBalances } from '../PortfolioContext';
+import { usePortfolioBalances, usePortfolioState } from '../PortfolioContext';
 import type { WalletPortfolioBalance } from '../types';
 
 export interface BalancesFilteringContextType extends BalancesFilteringParams {
@@ -101,9 +101,13 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
   );
 
   const balancesState = usePortfolioBalances();
+  const orchestrationState = usePortfolioState();
+  const balancesSourceState = orchestrationState.sources.balances;
+
+  const isEmpty = balancesSourceState.isEmpty;
 
   const stats = useMemo((): BalancesFilteringParams => {
-    if (balancesState.isEmpty) {
+    if (isEmpty) {
       return EMPTY_BALANCES_FILTERING_PARAMS;
     }
 
@@ -113,7 +117,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
       allAssets: balancesState.metadata.assets,
       allValueRange: balancesState.metadata.valueRange,
     };
-  }, [balancesState.metadata, balancesState.isEmpty]);
+  }, [balancesState.metadata, isEmpty]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -192,11 +196,6 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     [setSortBy, setSearchParamsState],
   );
 
-  const isEmpty = useMemo(
-    () => Object.keys(sortedData).length === 0,
-    [sortedData],
-  );
-
   const context: BalancesFilteringContextType = {
     sortBy,
     setSortBy: updateSortBy,
@@ -204,7 +203,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     updateFilter,
     clearFilters,
     data: sortedData,
-    isLoading: balancesState.isLoading,
+    isLoading: balancesSourceState.isLoading,
     isEmpty,
     ...stats,
   };

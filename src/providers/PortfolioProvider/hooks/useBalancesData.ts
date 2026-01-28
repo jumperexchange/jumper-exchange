@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
@@ -14,6 +14,8 @@ export interface UseTokensDataResult {
   balancesByAddress: Record<string, TokenBalance[]>;
   accounts: Account[];
   isLoading: boolean;
+  isFetching: boolean;
+  isPlaceholderData: boolean;
   error: Error | null;
   round: number;
   updatedAt: number | null;
@@ -90,24 +92,19 @@ export const useBalancesData = (): UseTokensDataResult => {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchInterval: false,
+      placeholderData: (): TokenQueryData | undefined => {
+        const cached = getBalancesFromCache(account.address!);
+        if (cached.length > 0) {
+          return {
+            balances: cached,
+            round: 0,
+            updatedAt: null,
+          };
+        }
+        return undefined;
+      },
     })),
   });
-
-  useEffect(() => {
-    connectedAccounts.forEach((acc) => {
-      const cachedBalances = getBalancesFromCache(acc.address!);
-      if (cachedBalances.length > 0) {
-        queryClient.setQueryData<TokenQueryData>(
-          ['portfolio-tokens', acc.address],
-          {
-            balances: cachedBalances,
-            round: 0,
-            updatedAt: Date.now(),
-          },
-        );
-      }
-    });
-  }, [connectedAccounts, getBalancesFromCache, queryClient]);
 
   const refetch = useCallback(() => {
     controlsRef.current.forEach((ctrl) => ctrl.cancel());
@@ -150,7 +147,9 @@ export const useBalancesData = (): UseTokensDataResult => {
     return timestamps.length > 0 ? (max(timestamps) ?? null) : null;
   }, [queries]);
 
-  const isLoading = queries.some((q) => q.isLoading || q.isFetching);
+  const isLoading = queries.some((q) => q.isLoading);
+  const isFetching = queries.some((q) => q.isFetching);
+  const isPlaceholderData = queries.some((q) => q.isPlaceholderData);
   const error =
     (queries.find((q) => q.error)?.error as Error | null | undefined) ?? null;
 
@@ -159,6 +158,8 @@ export const useBalancesData = (): UseTokensDataResult => {
     balancesByAddress,
     accounts: connectedAccounts,
     isLoading,
+    isFetching,
+    isPlaceholderData,
     error,
     round,
     updatedAt,

@@ -17,6 +17,8 @@ export interface UsePositionsDataResult {
   positions: DefiPosition[];
   positionsByAddress: Record<string, DefiPosition[]>;
   isLoading: boolean;
+  isFetching: boolean;
+  isPlaceholderData: boolean;
   isSuccess: boolean;
   error: Error | null;
   updatedAt: number | null;
@@ -116,6 +118,8 @@ export const usePositionsData = ({
   }, [positionPatchVersion, wasCachePatched]);
 
   const isLoading = queries.some((query) => query.isLoading);
+  const isFetching = queries.some((query) => query.isFetching);
+  const isPlaceholderData = queries.some((query) => query.isPlaceholderData);
   const isSuccess = queries.every((query) => query.isSuccess);
   const error = (queries.find((query) => query.error)?.error as Error) ?? null;
 
@@ -189,6 +193,8 @@ export const usePositionsData = ({
     positions,
     positionsByAddress,
     isLoading,
+    isFetching,
+    isPlaceholderData,
     isSuccess,
     error,
     updatedAt,

@@ -95,3 +95,41 @@ export interface PositionsMetadata {
   assets: string[];
   valueRange: { min: number; max: number };
 }
+
+/**
+ * Loading/freshness state for a single data source.
+ */
+export interface SourceState {
+  isEmpty: boolean;
+  isLoading: boolean;
+  isRefreshing: boolean;
+  isStale: boolean;
+  updatedAt: number | null;
+}
+
+/**
+ * Unified orchestration state for the portfolio.
+ * Single source of truth for all loading/error/refresh states.
+ */
+export interface OrchestrationState {
+  /** No data at all (balances + positions) */
+  isEmpty: boolean;
+  /** First load, no data yet */
+  isInitialLoading: boolean;
+  /** Has data, fetching updates in background */
+  isRefreshing: boolean;
+  /** Showing cached/placeholder data */
+  isStale: boolean;
+  /** Oldest timestamp across sources */
+  updatedAt: number | null;
+  /** First error encountered from any source */
+  error: Error | null;
+  /** Granular per-source states */
+  sources: {
+    balances: SourceState;
+    positions: SourceState;
+    prices: SourceState;
+  };
+  /** Refresh all data sources */
+  refresh: () => void;
+}

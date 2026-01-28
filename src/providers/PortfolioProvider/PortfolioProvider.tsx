@@ -9,6 +9,7 @@ import {
 import { useProcessBalances } from './hooks/useProcessBalances';
 import { useProcessedPositions } from './hooks/useProcessPositions';
 import { usePortfolioSummaryData } from './hooks/usePortfolioSummary';
+import { useOrchestrationState } from './hooks/useOrchestrationState';
 import compact from 'lodash/compact';
 
 export const PortfolioProvider = ({ children }: PropsWithChildren) => {
@@ -24,13 +25,12 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       balances: balancesData.balances,
       balancesByAddress: balancesData.balancesByAddress,
       metadata: balancesData.metadata,
-      isLoading: balancesData.isLoading,
-      error: balancesData.error,
-      updatedAt: balancesData.updatedAt,
-      refetch: balancesData.refetch,
-      isEmpty: balancesData.isEmpty,
     }),
-    [balancesData],
+    [
+      balancesData.balances,
+      balancesData.balancesByAddress,
+      balancesData.metadata,
+    ],
   );
 
   const positions: PositionsState = useMemo(
@@ -41,13 +41,15 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       positionsByProtocol: positionsData.positionsByProtocol,
       metadata: positionsData.metadata,
       lpTokens: positionsData.lpTokens,
-      isLoading: positionsData.isLoading,
-      error: positionsData.error,
-      updatedAt: positionsData.updatedAt,
-      refetch: positionsData.refetch,
-      isEmpty: positionsData.isEmpty,
     }),
-    [positionsData],
+    [
+      positionsData.positions,
+      positionsData.positionsByAddress,
+      positionsData.positionsByProtocolAndChain,
+      positionsData.positionsByProtocol,
+      positionsData.metadata,
+      positionsData.lpTokens,
+    ],
   );
 
   const summary = usePortfolioSummaryData({
@@ -56,9 +58,30 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
     positionsByProtocol: positionsData.positionsByProtocol,
   });
 
+  const state = useOrchestrationState({
+    balances: {
+      isEmpty: balancesData.isEmpty,
+      isLoading: balancesData.isLoading,
+      isFetching: balancesData.isFetching,
+      isPlaceholderData: balancesData.isPlaceholderData,
+      error: balancesData.error,
+      updatedAt: balancesData.updatedAt,
+      refetch: balancesData.refetch,
+    },
+    positions: {
+      isEmpty: positionsData.isEmpty,
+      isLoading: positionsData.isLoading,
+      isFetching: positionsData.isFetching,
+      isPlaceholderData: positionsData.isPlaceholderData,
+      error: positionsData.error,
+      updatedAt: positionsData.updatedAt,
+      refetch: positionsData.refetch,
+    },
+  });
+
   const value = useMemo(
-    () => ({ balances, positions, summary }),
-    [balances, positions, summary],
+    () => ({ balances, positions, summary, state }),
+    [balances, positions, summary, state],
   );
 
   return (

@@ -29,7 +29,7 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
-import { usePortfolioPositions } from '../PortfolioContext';
+import { usePortfolioPositions, usePortfolioState } from '../PortfolioContext';
 import type { PortfolioPosition } from '../types';
 
 export interface PositionsFilteringContextType extends PositionsFilteringParams {
@@ -111,9 +111,13 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
   );
 
   const positionsState = usePortfolioPositions();
+  const orchestrationState = usePortfolioState();
+  const positionsSourceState = orchestrationState.sources.positions;
+
+  const isEmpty = positionsState.positions.length === 0;
 
   const stats = useMemo((): PositionsFilteringParams => {
-    if (positionsState.isEmpty) {
+    if (isEmpty) {
       return EMPTY_POSITIONS_FILTERING_PARAMS;
     }
 
@@ -124,7 +128,7 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
       allAssets: positionsState.metadata.assets,
       allValueRange: positionsState.metadata.valueRange,
     };
-  }, [positionsState.metadata, positionsState.isEmpty]);
+  }, [positionsState.metadata, isEmpty]);
 
   useEffect(() => {
     if (isEqual(prevStatsRef.current, stats)) {
@@ -214,10 +218,10 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
     updateFilter,
     clearFilters,
     data: filteredSortedData,
-    isLoading: positionsState.isLoading,
-    isEmpty: positionsState.isEmpty,
-    error: positionsState.error,
-    updatedAt: positionsState.updatedAt,
+    isLoading: positionsSourceState.isLoading,
+    isEmpty,
+    error: orchestrationState.error,
+    updatedAt: positionsSourceState.updatedAt,
     ...stats,
   };
 

@@ -21,6 +21,7 @@ import {
   usePortfolioBalances,
   usePortfolioPositions,
   usePortfolioSummary,
+  usePortfolioState,
 } from '@/providers/PortfolioProvider/PortfolioContext';
 import { useBalancesFiltering } from '@/providers/PortfolioProvider/filtering/BalancesFilteringContext';
 import { usePositionsFiltering } from '@/providers/PortfolioProvider/filtering/PositionsFilteringContext';
@@ -37,8 +38,12 @@ export const PortfolioTestPage = () => {
   const balancesState = usePortfolioBalances();
   const positionsState = usePortfolioPositions();
   const summaryState = usePortfolioSummary();
+  const orchestrationState = usePortfolioState();
   const balancesFiltering = useBalancesFiltering();
   const positionsFiltering = usePositionsFiltering();
+
+  const balancesSourceState = orchestrationState.sources.balances;
+  const positionsSourceState = orchestrationState.sources.positions;
 
   return (
     <Box sx={{ p: 4, maxWidth: 1200, mx: 'auto' }}>
@@ -237,8 +242,10 @@ export const PortfolioTestPage = () => {
 
           <FormControl fullWidth>
             <FormLabel>
-              Value Range: ${balancesFiltering.filter.minValue?.toFixed(2) ??
-                balancesFiltering.allValueRange.min.toFixed(2)} - $
+              Value Range: $
+              {balancesFiltering.filter.minValue?.toFixed(2) ??
+                balancesFiltering.allValueRange.min.toFixed(2)}{' '}
+              - $
               {balancesFiltering.filter.maxValue?.toFixed(2) ??
                 balancesFiltering.allValueRange.max.toFixed(2)}
             </FormLabel>
@@ -252,7 +259,8 @@ export const PortfolioTestPage = () => {
               onChange={(_, newValue) => {
                 const [min, max] = newValue as number[];
                 balancesFiltering.updateFilter({
-                  minValue: min !== balancesFiltering.allValueRange.min ? min : null,
+                  minValue:
+                    min !== balancesFiltering.allValueRange.min ? min : null,
                   maxValue:
                     max !== balancesFiltering.allValueRange.max ? max : null,
                 });
@@ -280,9 +288,8 @@ export const PortfolioTestPage = () => {
 
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Filtered:{' '}
-              {Object.values(balancesFiltering.data).flat().length} balances
-              ({Object.keys(balancesFiltering.data).length} symbols)
+              Filtered: {Object.values(balancesFiltering.data).flat().length}{' '}
+              balances ({Object.keys(balancesFiltering.data).length} symbols)
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Loading: {String(balancesFiltering.isLoading)}
@@ -299,20 +306,29 @@ export const PortfolioTestPage = () => {
           Balances (Filtered)
         </Typography>
 
-        {balancesState.isLoading && <CircularProgress size={24} />}
+        {balancesSourceState.isLoading && <CircularProgress size={24} />}
 
-        {balancesState.error && (
+        {orchestrationState.error && (
           <Typography color="error">
-            Error: {balancesState.error.message}
+            Error: {orchestrationState.error.message}
           </Typography>
         )}
 
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            isEmpty: {String(balancesState.isEmpty)}
+            isEmpty: {String(balancesSourceState.isEmpty)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            updatedAt: {balancesState.updatedAt ? new Date(balancesState.updatedAt).toISOString() : 'null'}
+            updatedAt:{' '}
+            {balancesSourceState.updatedAt
+              ? new Date(balancesSourceState.updatedAt).toISOString()
+              : 'null'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            isRefreshing: {String(balancesSourceState.isRefreshing)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            isStale: {String(balancesSourceState.isStale)}
           </Typography>
         </Box>
 
@@ -333,16 +349,20 @@ export const PortfolioTestPage = () => {
           }}
         >
           {safeStringify(
-            Object.entries(balancesFiltering.data).map(([symbol, balances]) => ({
-              symbol,
-              count: balances.length,
-              totalUSD: balances.reduce((sum, b) => sum + b.amountUSD, 0).toFixed(2),
-              balances: balances.map((b) => ({
-                chainId: b.token.chainId,
-                amountUSD: b.amountUSD.toFixed(2),
-                address: b.token.address,
-              })),
-            })),
+            Object.entries(balancesFiltering.data).map(
+              ([symbol, balances]) => ({
+                symbol,
+                count: balances.length,
+                totalUSD: balances
+                  .reduce((sum, b) => sum + b.amountUSD, 0)
+                  .toFixed(2),
+                balances: balances.map((b) => ({
+                  chainId: b.token.chainId,
+                  amountUSD: b.amountUSD.toFixed(2),
+                  address: b.token.address,
+                })),
+              }),
+            ),
           )}
         </Box>
       </Paper>
@@ -486,8 +506,10 @@ export const PortfolioTestPage = () => {
 
           <FormControl fullWidth>
             <FormLabel>
-              Value Range: ${positionsFiltering.filter.minValue?.toFixed(2) ??
-                positionsFiltering.allValueRange.min.toFixed(2)} - $
+              Value Range: $
+              {positionsFiltering.filter.minValue?.toFixed(2) ??
+                positionsFiltering.allValueRange.min.toFixed(2)}{' '}
+              - $
               {positionsFiltering.filter.maxValue?.toFixed(2) ??
                 positionsFiltering.allValueRange.max.toFixed(2)}
             </FormLabel>
@@ -531,9 +553,8 @@ export const PortfolioTestPage = () => {
 
           <Box>
             <Typography variant="body2" color="text.secondary">
-              Filtered:{' '}
-              {Object.values(positionsFiltering.data).flat().length} positions
-              ({Object.keys(positionsFiltering.data).length} groups)
+              Filtered: {Object.values(positionsFiltering.data).flat().length}{' '}
+              positions ({Object.keys(positionsFiltering.data).length} groups)
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Loading: {String(positionsFiltering.isLoading)}
@@ -550,20 +571,29 @@ export const PortfolioTestPage = () => {
           Positions (Filtered)
         </Typography>
 
-        {positionsState.isLoading && <CircularProgress size={24} />}
+        {positionsSourceState.isLoading && <CircularProgress size={24} />}
 
-        {positionsState.error && (
+        {orchestrationState.error && (
           <Typography color="error">
-            Error: {positionsState.error.message}
+            Error: {orchestrationState.error.message}
           </Typography>
         )}
 
         <Box sx={{ mb: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            isEmpty: {String(positionsState.isEmpty)}
+            isEmpty: {String(positionsSourceState.isEmpty)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            updatedAt: {positionsState.updatedAt ? new Date(positionsState.updatedAt).toISOString() : 'null'}
+            updatedAt:{' '}
+            {positionsSourceState.updatedAt
+              ? new Date(positionsSourceState.updatedAt).toISOString()
+              : 'null'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            isRefreshing: {String(positionsSourceState.isRefreshing)}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            isStale: {String(positionsSourceState.isStale)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Total positions: {positionsState.positions.length}
@@ -644,23 +674,21 @@ export const PortfolioTestPage = () => {
           }}
         >
           {safeStringify(
-            Object.entries(positionsFiltering.data).map(
-              ([key, positions]) => ({
-                key,
-                count: positions.length,
-                totalNetUsd: positions
-                  .reduce((sum, p) => sum + p.netUsd, 0)
-                  .toFixed(2),
-                positions: positions.map((p) => ({
-                  protocol: p.protocol.name,
-                  name: p.name,
-                  type: p.type,
-                  netUsd: p.netUsd.toFixed(2),
-                  assetUsd: p.assetUsd.toFixed(2),
-                  debtUsd: p.debtUsd.toFixed(2),
-                })),
-              }),
-            ),
+            Object.entries(positionsFiltering.data).map(([key, positions]) => ({
+              key,
+              count: positions.length,
+              totalNetUsd: positions
+                .reduce((sum, p) => sum + p.netUsd, 0)
+                .toFixed(2),
+              positions: positions.map((p) => ({
+                protocol: p.protocol.name,
+                name: p.name,
+                type: p.type,
+                netUsd: p.netUsd.toFixed(2),
+                assetUsd: p.assetUsd.toFixed(2),
+                debtUsd: p.debtUsd.toFixed(2),
+              })),
+            })),
           )}
         </Box>
       </Paper>

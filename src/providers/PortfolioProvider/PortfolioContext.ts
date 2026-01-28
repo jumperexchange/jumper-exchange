@@ -6,6 +6,8 @@ import type {
   SummaryData,
   BalancesMetadata,
   PositionsMetadata,
+  OrchestrationState,
+  SourceState,
 } from './types';
 
 export type {
@@ -16,17 +18,14 @@ export type {
   PositionsByProtocolSummary,
   BalancesMetadata,
   PositionsMetadata,
+  OrchestrationState,
+  SourceState,
 } from './types';
 
 export interface BalancesState {
   balances: Record<string, WalletPortfolioBalance[]>;
   balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>;
   metadata: BalancesMetadata;
-  isLoading: boolean;
-  error: Error | null;
-  updatedAt: number | null;
-  refetch: () => void;
-  isEmpty: boolean;
 }
 
 export interface PositionsState {
@@ -36,17 +35,13 @@ export interface PositionsState {
   positionsByProtocol: Record<string, PortfolioPosition[]>;
   metadata: PositionsMetadata;
   lpTokens: (PositionBalance | undefined)[];
-  isLoading: boolean;
-  error: Error | null;
-  updatedAt: number | null;
-  refetch: () => void;
-  isEmpty: boolean;
 }
 
 export interface PortfolioContextValue {
   balances: BalancesState;
   positions: PositionsState;
   summary: SummaryData;
+  state: OrchestrationState;
 }
 
 const defaultBalancesState: BalancesState = {
@@ -58,11 +53,6 @@ const defaultBalancesState: BalancesState = {
     assets: [],
     valueRange: { min: 0, max: 0 },
   },
-  isLoading: false,
-  error: null,
-  updatedAt: null,
-  refetch: () => {},
-  isEmpty: true,
 };
 
 const defaultPositionsState: PositionsState = {
@@ -78,11 +68,6 @@ const defaultPositionsState: PositionsState = {
     valueRange: { min: 0, max: 0 },
   },
   lpTokens: [],
-  isLoading: false,
-  error: null,
-  updatedAt: null,
-  refetch: () => {},
-  isEmpty: true,
 };
 
 const defaultSummaryState: SummaryData = {
@@ -93,10 +78,34 @@ const defaultSummaryState: SummaryData = {
   positionsByProtocol: {},
 };
 
+const defaultSourceState: SourceState = {
+  isEmpty: true,
+  isLoading: false,
+  isRefreshing: false,
+  isStale: false,
+  updatedAt: null,
+};
+
+const defaultOrchestrationState: OrchestrationState = {
+  isEmpty: true,
+  isInitialLoading: false,
+  isRefreshing: false,
+  isStale: false,
+  updatedAt: null,
+  error: null,
+  sources: {
+    balances: defaultSourceState,
+    positions: defaultSourceState,
+    prices: defaultSourceState,
+  },
+  refresh: () => {},
+};
+
 export const PortfolioContext = createContext<PortfolioContextValue>({
   balances: defaultBalancesState,
   positions: defaultPositionsState,
   summary: defaultSummaryState,
+  state: defaultOrchestrationState,
 });
 
 export const usePortfolio = () => useContext(PortfolioContext);
@@ -114,4 +123,9 @@ export const usePortfolioPositions = () => {
 export const usePortfolioSummary = () => {
   const { summary } = usePortfolio();
   return summary;
+};
+
+export const usePortfolioState = () => {
+  const { state } = usePortfolio();
+  return state;
 };
