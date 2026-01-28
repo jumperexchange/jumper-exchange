@@ -47,6 +47,8 @@ export const useBalancesData = (): UseTokensDataResult => {
       queryKey: ['portfolio-tokens', account.address],
       queryFn: async (): Promise<TokenQueryData> => {
         let lastRound = 0;
+        let controlRef: BatchFetcherControl | null = null;
+
         const result = await fetchBalancesForAddress({
           address: account.address!,
           chainType: account.chainType as ChainType,
@@ -75,14 +77,17 @@ export const useBalancesData = (): UseTokensDataResult => {
             );
             setBalancesInCache(account.address!, fetchedTokens);
             setNeedsRefresh(account.address!, false);
-            controlsRef.current = controlsRef.current.filter(
-              (c) => c !== result.control,
-            );
+            if (controlRef) {
+              controlsRef.current = controlsRef.current.filter(
+                (c) => c !== controlRef,
+              );
+            }
           },
         });
 
-        if (result.control) {
-          controlsRef.current.push(result.control);
+        controlRef = result.control;
+        if (controlRef) {
+          controlsRef.current.push(controlRef);
         }
 
         return {
