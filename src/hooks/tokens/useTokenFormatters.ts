@@ -1,4 +1,4 @@
-import { TokenBalance } from '@/types/tokens';
+import type { TokenBalance } from '@/types/tokens';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

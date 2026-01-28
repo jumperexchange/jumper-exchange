@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
-import { usePositionsData, type UsePositionsDataProps } from './usePositionsData';
+import {
+  usePositionsData,
+  type UsePositionsDataProps,
+} from './usePositionsData';
 import { usePriceLookup } from './usePriceLookup';
 import mapValues from 'lodash/mapValues';
 import orderBy from 'lodash/orderBy';

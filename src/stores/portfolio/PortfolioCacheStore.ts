@@ -7,10 +7,8 @@ import type {
   AppDefiPosition,
 } from '@/types/jumper-backend';
 import superjson from 'superjson';
-import {
-  DefiPosition,
-  isChainDefiPosition,
-} from '@/utils/positions/type-guards';
+import type { DefiPosition } from '@/utils/positions/type-guards';
+import { isChainDefiPosition } from '@/utils/positions/type-guards';
 
 const getLocalStorage = () =>
   typeof window === 'undefined' ? undefined : localStorage;
