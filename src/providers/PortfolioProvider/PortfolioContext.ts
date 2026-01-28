@@ -10,18 +10,6 @@ import type {
   SourceState,
 } from './types';
 
-export type {
-  SummaryData,
-  BalanceWithPercentage,
-  PositionWithPercentage,
-  BalancesByAddressSummary,
-  PositionsByProtocolSummary,
-  BalancesMetadata,
-  PositionsMetadata,
-  OrchestrationState,
-  SourceState,
-} from './types';
-
 export interface BalancesState {
   balances: Record<string, WalletPortfolioBalance[]>;
   balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>;

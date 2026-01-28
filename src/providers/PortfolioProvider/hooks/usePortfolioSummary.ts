@@ -14,14 +14,6 @@ import type {
 } from '../types';
 import { calcPercentage } from '../utils';
 
-export type {
-  SummaryData,
-  BalanceWithPercentage,
-  PositionWithPercentage,
-  BalancesByAddressSummary,
-  PositionsByProtocolSummary,
-} from '../types';
-
 interface UsePortfolioSummaryParams {
   balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>;
   positions: PortfolioPosition[];

@@ -53,22 +53,18 @@ export type AppPortfolioPosition = PortfolioPosition & {
   app: App;
 };
 
-export interface BalanceWithPercentage extends WalletPortfolioBalance {
+export type WithPercentage<T> = T & {
   percentage: number;
-}
-
-export interface PositionWithPercentage extends PortfolioPosition {
-  percentage: number;
-}
+};
 
 export interface BalancesByAddressSummary {
-  balances: BalanceWithPercentage[];
+  balances: WithPercentage<WalletPortfolioBalance>[];
   totalUsd: number;
   percentage: number;
 }
 
 export interface PositionsByProtocolSummary {
-  positions: PositionWithPercentage[];
+  positions: WithPercentage<PortfolioPosition>[];
   totalUsd: number;
   percentage: number;
 }
