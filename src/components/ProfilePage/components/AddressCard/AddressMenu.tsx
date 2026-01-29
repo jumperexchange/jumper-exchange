@@ -27,7 +27,13 @@ export const AddressMenu = ({
         }, 150);
       }}
     >
-      <MenuPopper open={open} anchorEl={anchorEl} transition placement="bottom">
+      <MenuPopper
+        open={open}
+        anchorEl={anchorEl}
+        transition
+        placement="bottom"
+        sx={(theme) => ({ top: `${theme.spacing(1)} !important` })}
+      >
         {({ TransitionProps }) => (
           <Fade
             {...TransitionProps}
@@ -39,7 +45,10 @@ export const AddressMenu = ({
             <MenuPaper
               show={open}
               className="menu-paper"
-              sx={{ borderRadius: '12px', width: '320px' }}
+              sx={(theme) => ({
+                borderRadius: theme.shape.radius12,
+                width: theme.spacing(40),
+              })}
             >
               <AddressMenuList
                 autoFocusItem={open}
@@ -48,14 +57,6 @@ export const AddressMenu = ({
                 autoFocus={open}
                 aria-labelledby="address-menu"
                 hasLabel={true}
-                sx={{
-                  ':first-child': {
-                    marginTop: '16px',
-                  },
-                  'li:last-of-type': {
-                    marginBottom: '16px',
-                  },
-                }}
               >
                 {addressBoxMenuItems.map((el, index) => (
                   <MenuItem

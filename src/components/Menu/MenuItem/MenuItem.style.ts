@@ -25,7 +25,7 @@ export const MenuItemBaseContainer = styled(MUIMenuItem)(({ theme }) => ({
   justifyContent: 'space-between',
   margin: theme.spacing(0, 1),
   height: 48,
-  borderRadius: '12px',
+  borderRadius: theme.shape.radius12,
   width: 'auto',
   pointerEvents: 'auto',
   placeContent: 'space-between',
