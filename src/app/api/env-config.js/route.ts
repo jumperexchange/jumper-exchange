@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { NextResponse } from 'next/server';
 import { getPublicEnvVars } from 'src/config/env-config';
 
