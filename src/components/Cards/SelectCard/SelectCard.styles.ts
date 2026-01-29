@@ -45,9 +45,6 @@ export const SelectCardContainer = styled(Card, {
   flexDirection: 'column',
   gap: theme.spacing(1),
   cursor: isClickable ? 'pointer' : 'initial',
-  ...theme.applyStyles?.('light', {
-    background: (theme.vars || theme).palette.background.default,
-  }),
 }));
 
 export const SelectCardContentContainer = styled(Box)(({ theme }) => ({
