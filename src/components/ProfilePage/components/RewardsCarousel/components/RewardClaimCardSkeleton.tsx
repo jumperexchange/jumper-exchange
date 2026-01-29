@@ -19,11 +19,11 @@ export const RewardClaimCardSkeleton = () => {
       <BaseSurfaceSkeleton
         variant="rounded"
         animation="wave"
-        sx={{
+        sx={(theme) => ({
           height: 40,
           width: 64,
-          borderRadius: 20,
-        }}
+          borderRadius: theme.shape.radius20,
+        })}
       />
     </RewardCardContainer>
   );

@@ -24,7 +24,7 @@ export const RewardCardContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   alignContent: 'center',
-  borderRadius: theme.spacing(3),
+  borderRadius: theme.shape.cardBorderRadiusLarge,
   flexDirection: 'row',
   padding: theme.spacing(2),
   marginRight: theme.spacing(2),
