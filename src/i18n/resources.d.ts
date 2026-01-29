@@ -641,7 +641,7 @@ interface Resources {
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       noPositionsToManage: 'You do not have any positions to manage';
       protocol: 'The protocol you will earn from';
-      rewardsApy: 'Expected yearly return rate of the rewards tokens invested.';
+      rewardsApy: 'Expected yearly return rate distributed in reward token.';
       tvl: 'Total value of crypto assets deposited in this market.';
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
     };
