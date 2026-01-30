@@ -225,7 +225,7 @@ export const limitationList = [
 export const disputeList = [
   {
     description:
-      'Informal Resolution. Before initiating any legal or arbitral action, you and we agree to make reasonable, good-faith efforts to resolve any dispute, claim, or controversy arising out of or relating to these terms (each, a "Dispute"). Either party may start this process by sending written notice describing the issue and requested resolution. Such written notice must be sent to legal@jumper.exchange and must clearly state that it is submitted pursuant to clause 13 (Dispute Resolution) of these Terms. If the Dispute is not resolved within forty-five (45) business days, either party may proceed as set forth below.  ',
+      'Informal Resolution. Before initiating any legal or arbitral action, you and we agree to make reasonable, good-faith efforts to resolve any dispute, claim, or controversy arising out of or relating to these terms (each, a "Dispute"). Either party may start this process by sending written notice describing the issue and requested resolution. Such written notice must be sent to legal@jumper.xyz and must clearly state that it is submitted pursuant to clause 13 (Dispute Resolution) of these Terms. If the Dispute is not resolved within forty-five (45) business days, either party may proceed as set forth below.  ',
   },
   {
     description:

@@ -34,11 +34,11 @@ export const TermsOfBusinessPage = () => {
           (“you”, “your”, or “User”) the ability to access the functionality
           provided by one or more third parties using a native interface
           (collectively “Functionality”). The Functionality shall include, but
-          not limited to, (a) a website available at https://jumper.exchange and
-          (b) the aggregation of access to various third-party tools and
-          services across multiple blockchain networks, such as decentralized
-          exchange (DEX) and/or yield/staking aggregation protocols. The
-          Functionality is provided on a{' '}
+          not limited to, (a) a website available at https://jumper.xyz and (b)
+          the aggregation of access to various third-party tools and services
+          across multiple blockchain networks, such as decentralized exchange
+          (DEX) and/or yield/staking aggregation protocols. The Functionality is
+          provided on a{' '}
           <strong>
             non-custodial, user-directed basis. We do not custody or control
             your digital assets at any time, do not serve as a counterparty to
