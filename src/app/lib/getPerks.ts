@@ -1,5 +1,6 @@
 import type { PerksDataAttributes, StrapiResponse } from '@/types/strapi';
-import { PaginationProps, PerkStrapiApi } from '@/utils/strapi/StrapiApi';
+import type { PaginationProps } from '@/utils/strapi/StrapiApi';
+import { PerkStrapiApi } from '@/utils/strapi/StrapiApi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
 export async function getPerks(
@@ -10,7 +11,12 @@ export async function getPerks(
   },
 ) {
   const urlParams = new PerkStrapiApi()
-    .sortBy('UnlockLevel')
+    .sortByMultiple([
+      { field: 'Featured', order: 'desc' },
+      { field: 'UnlockLevel', order: 'asc' },
+      { field: 'publishedAt', order: 'desc' },
+      { field: 'createdAt', order: 'desc' },
+    ])
     .addPaginationParams({
       page: pagination.page,
       pageSize: pagination.pageSize,

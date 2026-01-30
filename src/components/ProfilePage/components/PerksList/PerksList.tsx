@@ -1,6 +1,6 @@
 import { InfiniteScroll } from 'src/components/InfiniteScroll/InfiniteScroll';
 import { usePerksInfinite } from 'src/hooks/perks/usePerksInfinite';
-import { PerksDataAttributes } from 'src/types/strapi';
+import type { PerksDataAttributes } from 'src/types/strapi';
 import { PerksListSkeleton } from './PerksListSkeleton';
 import { PerksCard } from './PerksCard';
 import { NoDataPlaceholder } from '../NoDataPlaceholder/NoDataPlaceholder';
