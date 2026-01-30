@@ -5,7 +5,9 @@ import type { DeFiReacherReward } from '@/types/rewards';
 import type { FC } from 'react';
 import { useAccount } from 'wagmi';
 import { BaseRewardClaim, type ClaimConfig } from './BaseRewardClaim';
+import type { Hex } from 'viem';
 import { isAddress } from 'viem';
+import { useDeFiReacherValidateHash } from '@/hooks/rewards/useDeFiReacherValidateHash';
 
 interface DefiReacherRewardClaimProps {
   availableReward: DeFiReacherReward;
@@ -17,6 +19,8 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   const { address } = useAccount();
   const { refetch: fetchClaimCalldata, isFetching } =
     useDeFiReacherRewardClaimCalldata(address, availableReward.campaignId);
+
+  const { mutate: validateHash } = useDeFiReacherValidateHash();
 
   const prepareClaim = async (): Promise<ClaimConfig | null> => {
     const { data: claimCalldata } = await fetchClaimCalldata();
@@ -43,11 +47,17 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
     };
   };
 
+  const postClaim = async (txHash: Hex) => {
+    console.log('30. DefiReacherRewardClaim postClaim', txHash);
+    await validateHash(txHash);
+  };
+
   return (
     <BaseRewardClaim
       availableReward={availableReward}
       prepareClaim={prepareClaim}
       isPreparingClaim={isFetching}
+      postClaim={postClaim}
     />
   );
 };

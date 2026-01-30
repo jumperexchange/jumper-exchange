@@ -7,7 +7,7 @@ import {
 } from 'wagmi';
 import { RewardClaimCard } from './RewardClaimCard';
 import type { BaseReward } from '@/types/rewards';
-import type { Abi } from 'viem';
+import type { Abi, Hex } from 'viem';
 import * as Sentry from '@sentry/nextjs';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import { useCallback, useEffect } from 'react';
@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 export interface ClaimConfig {
   chainId: number;
-  address: `0x${string}`;
+  address: Hex;
   abi: Abi;
   functionName: string;
   args: readonly unknown[];
@@ -24,12 +24,14 @@ export interface ClaimConfig {
 interface BaseRewardClaimProps<T extends BaseReward> {
   availableReward: T;
   prepareClaim: () => Promise<ClaimConfig | null>;
+  postClaim?: (txHash: Hex) => Promise<void>;
   isPreparingClaim?: boolean;
 }
 
 export const BaseRewardClaim = <T extends BaseReward>({
   availableReward,
   prepareClaim,
+  postClaim,
   isPreparingClaim = false,
 }: BaseRewardClaimProps<T>) => {
   const { t } = useTranslation();
@@ -99,6 +101,12 @@ export const BaseRewardClaim = <T extends BaseReward>({
       handleError();
     }
   }, [isError, handleError]);
+
+  useEffect(() => {
+    if (hash && postClaim) {
+      postClaim(hash);
+    }
+  }, [hash, postClaim]);
 
   return (
     <RewardClaimCard
