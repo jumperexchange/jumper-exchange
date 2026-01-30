@@ -2,9 +2,10 @@ import { type Process, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
-import { isIframeEnvironment } from 'src/utils/iframe';
-import { getRouteStatus } from 'src/utils/routes';
 import type { Connector } from 'wagmi';
+
+import { isIframeEnvironment } from '@/utils/iframe';
+import { getRouteStatus } from '@/utils/routes';
 
 const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
   let isSafeConnector = connector?.id === 'safe';
@@ -27,6 +28,15 @@ export const useMultisig = () => {
   const [isSafeConnector, setIsSafeConnector] = useState(false);
 
   const checkMultisigEnvironment = async () => {
+    // Check if connected via Safe connector or WalletConnect to a Safe wallet
+    const isSafeConnector = await getIsSafeConnector(
+      account.connector as Connector,
+    );
+    if (isSafeConnector) {
+      return true;
+    }
+
+    // Check if running inside Safe iframe environment
     if (!isIframeEnvironment()) {
       return false;
     }
