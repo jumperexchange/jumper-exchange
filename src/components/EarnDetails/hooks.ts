@@ -106,13 +106,17 @@ export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {
   return {
     baseLineColor: (theme.vars || theme).palette.accent2.main,
     baseAreaTopColor: isLightTheme
-      ? `#F2D9F6`
+      ? (theme.vars || theme).palette.violet[200]
       : (theme.vars || theme).palette.accent2Alt,
     baseAreaBottomColor: isLightTheme
       ? (theme.vars || theme).palette.white.main
       : (theme.vars || theme).palette.bg.main,
-    rewardLineColor: isLightTheme ? '#7B61FF' : '#9B8AFF',
-    rewardAreaTopColor: isLightTheme ? '#E8E4FF' : '#3D3270',
+    rewardLineColor: isLightTheme
+      ? (theme.vars || theme).palette.blue[500]
+      : (theme.vars || theme).palette.blue[400],
+    rewardAreaTopColor: isLightTheme
+      ? (theme.vars || theme).palette.blue[100]
+      : (theme.vars || theme).palette.rubyDark[0],
     rewardAreaBottomColor: isLightTheme
       ? (theme.vars || theme).palette.white.main
       : (theme.vars || theme).palette.bg.main,
