@@ -58,26 +58,7 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
     positionsByProtocol: positionsData.positionsByProtocol,
   });
 
-  const state = useOrchestrationState({
-    balances: {
-      isEmpty: balancesData.isEmpty,
-      isLoading: balancesData.isLoading,
-      isFetching: balancesData.isFetching,
-      isPlaceholderData: balancesData.isPlaceholderData,
-      error: balancesData.error,
-      updatedAt: balancesData.updatedAt,
-      refetch: balancesData.refetch,
-    },
-    positions: {
-      isEmpty: positionsData.isEmpty,
-      isLoading: positionsData.isLoading,
-      isFetching: positionsData.isFetching,
-      isPlaceholderData: positionsData.isPlaceholderData,
-      error: positionsData.error,
-      updatedAt: positionsData.updatedAt,
-      refetch: positionsData.refetch,
-    },
-  });
+  const state = useOrchestrationState(balancesData, positionsData);
 
   const value = useMemo(
     () => ({ balances, positions, summary, state }),

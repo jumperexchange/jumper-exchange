@@ -17,8 +17,9 @@ import type {
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
 import { DEFAULT_POSITIONS_MIN_VALUE } from './constants';
-import type { WalletPortfolioBalance, PortfolioPosition } from '../types';
+import type { PortfolioPosition } from '../types';
 import { balanceAccessors, positionAccessors } from '../utils';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -50,13 +51,13 @@ export const sortPortfolioItems = <T>(
   return sorted;
 };
 
-export type BalanceGroup = [string, WalletPortfolioBalance[]];
+export type BalanceGroup = [string, PortfolioBalance<WalletToken>[]];
 
 export const balanceGroupSortAccessors: SortAccessors<BalanceGroup> = {
   [SortByOptions.VALUE]: ([, group]) =>
     sumBy(group, (b) => Number(balanceAccessors.amountUSD(b) ?? 0)),
   [SortByOptions.CHAIN]: ([, group]) => {
-    const getKey = (b: WalletPortfolioBalance) =>
+    const getKey = (b: PortfolioBalance<WalletToken>) =>
       balanceAccessors.chainKey(b) ?? '';
     return getKey(minBy(group, getKey) ?? group[0]);
   },
@@ -141,12 +142,15 @@ export const sanitizeBalancesFilter = (
 };
 
 export const filterSortBalancesData = (
-  balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>,
+  balancesByAddress: Record<
+    string,
+    Record<string, PortfolioBalance<WalletToken>[]>
+  >,
   filter: BalancesFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
-): Record<string, WalletPortfolioBalance[]> => {
-  let allBalances: WalletPortfolioBalance[] = [];
+): Record<string, PortfolioBalance<WalletToken>[]> => {
+  let allBalances: PortfolioBalance<WalletToken>[] = [];
 
   const walletsToInclude = filter.wallets?.length
     ? filter.wallets

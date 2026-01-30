@@ -5,16 +5,16 @@ import map from 'lodash/map';
 import flatten from 'lodash/flatten';
 import values from 'lodash/values';
 import type {
-  WalletPortfolioBalance,
   PortfolioPosition,
   SummaryData,
   BalancesByAddressSummary,
   PositionsByProtocolSummary,
 } from '../types';
 import { calcPercentage } from '../utils';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 
 interface UsePortfolioSummaryParams {
-  balances: Record<string, WalletPortfolioBalance[]>;
+  balances: Record<string, PortfolioBalance<WalletToken>[]>;
   positions: PortfolioPosition[];
   positionsByProtocol: Record<string, PortfolioPosition[]>;
 }

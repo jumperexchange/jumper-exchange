@@ -1,5 +1,3 @@
-import type { WalletPortfolioBalance, PortfolioPosition } from '../types';
-
 export type SortByType = 'value' | 'chain' | 'asset';
 
 export const SortByOptions = {

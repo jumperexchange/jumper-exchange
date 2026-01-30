@@ -9,10 +9,12 @@ import { useBalancesData } from './useBalancesData';
 import mapValues from 'lodash/mapValues';
 import orderBy from 'lodash/orderBy';
 import groupBy from 'lodash/groupBy';
-import { type PositionBalance } from '../types';
 import { useChains } from '@/hooks/useChains';
+import type { PortfolioBalance, PositionToken } from '@/types/tokens';
 
-export const useProcessBalances = (lpTokens: PositionBalance[]) => {
+export const useProcessBalances = (
+  lpTokens: PortfolioBalance<PositionToken>[],
+) => {
   const rawData = useBalancesData();
   const { chains } = useChains();
 

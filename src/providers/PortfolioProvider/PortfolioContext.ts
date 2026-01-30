@@ -1,18 +1,24 @@
 import { createContext, useContext } from 'react';
 import type {
   PortfolioPosition,
-  PositionBalance,
-  WalletPortfolioBalance,
   SummaryData,
   BalancesMetadata,
   PositionsMetadata,
   OrchestrationState,
   SourceState,
 } from './types';
+import type {
+  PortfolioBalance,
+  PositionToken,
+  WalletToken,
+} from '@/types/tokens';
 
 export interface BalancesState {
-  balances: Record<string, WalletPortfolioBalance[]>;
-  balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>;
+  balances: Record<string, PortfolioBalance<WalletToken>[]>;
+  balancesByAddress: Record<
+    string,
+    Record<string, PortfolioBalance<WalletToken>[]>
+  >;
   metadata: BalancesMetadata;
 }
 
@@ -22,7 +28,7 @@ export interface PositionsState {
   positionsByProtocolAndChain: Record<string, PortfolioPosition[]>;
   positionsByProtocol: Record<string, PortfolioPosition[]>;
   metadata: PositionsMetadata;
-  lpTokens: (PositionBalance | undefined)[];
+  lpTokens: (PortfolioBalance<PositionToken> | undefined)[];
 }
 
 export interface PortfolioContextValue {

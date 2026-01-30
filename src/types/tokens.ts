@@ -16,35 +16,18 @@ import type {
 import { safeBigInt } from '@/utils/numbers/safeBigInt';
 import { formatUnits } from 'viem';
 
-/**
- * Legacy token type for wallet balance display.
- * Used by: getTokens, PortfolioStore, TokenListCard, WalletBalanceCard, etc.
- *
- * @deprecated Will be replaced by WalletPortfolioBalance from PortfolioProvider.
- */
+/** @deprecated Will be replaced by WalletPortfolioBalance from PortfolioProvider. */
 export interface PortfolioToken extends JumperToken {
   balance: number;
   totalPriceUSD: number;
-  relatedTokens?: PortfolioToken[];
+  relatedTokens?: Omit<PortfolioToken, 'relatedTokens'>[];
 }
 
-/**
- * Portfolio token with required relatedTokens array.
- * Used when tokens are grouped by symbol across chains.
- *
- * @deprecated Will be replaced after migration to PortfolioProvider.
- */
+/** @deprecated Will be replaced after migration to PortfolioProvider. */
 export interface PortfolioTokenWithRelated extends PortfolioToken {
   relatedTokens: PortfolioToken[];
 }
 
-// ============================================================================
-// Core Token - Shared foundation for all token types
-// ============================================================================
-
-/**
- * Core token properties shared by all token types.
- */
 export interface CoreToken {
   address: string;
   name: string;
@@ -53,119 +36,63 @@ export interface CoreToken {
   logoURI?: string;
 }
 
-// ============================================================================
-// Base Display Token - For display with price
-// ============================================================================
-
-/**
- * Token interface for display purposes with price.
- * Used by ExtendedToken, PositionToken.
- */
-export interface BaseDisplayToken extends CoreToken {
-  type: 'base' | 'extended' | 'position';
-  priceUSD: string;
-}
-
-// ============================================================================
-// Base Token - For LiFi SDK tokens (without price)
-// ============================================================================
-
-/**
- * Token from LiFi SDK with chain context but without price.
- * Used for raw token data before price lookup.
- */
 export interface BaseToken extends CoreToken {
-  type: 'base' | 'extended';
+  type: 'base' | 'extended' | 'position' | 'wallet';
   chainId: number;
-  chainKey?: string;
   coinKey?: CoinKey;
   tags?: TokenTag[];
 }
 
-// ============================================================================
-// Extended Token - For LiFi/Widget operations (requires chainId)
-// ============================================================================
-
-/**
- * Token with chain context for swap/bridge operations.
- * Requires chainId for on-chain operations.
- */
-export interface ExtendedToken extends BaseToken {
-  type: 'extended';
+export interface PricedToken extends BaseToken {
+  type: 'extended' | 'position' | 'wallet';
   priceUSD: string;
 }
 
-// ============================================================================
-// Portfolio Token - For portfolio display (chainId optional)
-// ============================================================================
+export interface ExtendedToken extends PricedToken {
+  type: 'extended';
+}
 
-/**
- * Token for position display that preserves source info.
- * - chainId is optional (AppTokens don't have it)
- * - chain is preserved from DefiToken
- * - app is preserved from AppToken
- */
-export interface PositionToken extends BaseDisplayToken {
+export interface WalletToken extends PricedToken {
+  type: 'wallet';
+  chainKey: string;
+}
+
+export interface PositionToken extends PricedToken {
   type: 'position';
-  chainId?: number;
   chain?: Chain;
   app?: App;
 }
 
-// ============================================================================
-// Generic Balance
-// ============================================================================
-
-/**
- * Generic balance that works with any token type.
- */
-export interface Balance<T extends BaseDisplayToken = BaseDisplayToken> {
+export interface Balance<T extends PricedToken = ExtendedToken> {
   amount: bigint;
   token: T;
 }
 
-/**
- * Balance with computed USD value.
- */
 export interface PortfolioBalance<
-  T extends BaseDisplayToken = BaseDisplayToken,
+  T extends PricedToken = ExtendedToken,
 > extends Balance<T> {
   amountUSD: number;
 }
 
-export type Token = BaseToken | ExtendedToken;
+export type Token = BaseToken | ExtendedToken | PositionToken | WalletToken;
 
-/**
- * Balance with ExtendedToken - for wallet balances from LiFi.
- */
 export type TokenBalance = Balance<ExtendedToken>;
 
-// ============================================================================
-// Legacy Portfolio Token - For old wallet balance display system
-// ============================================================================
-
-/**
- * Chain info for legacy wallet portfolio tokens.
- */
 export interface PortfolioTokenChain {
   chainId: number;
   chainKey: string;
 }
 
-// ============================================================================
-// Type Guards
-// ============================================================================
-
-export const isExtendedToken = (
-  token: BaseDisplayToken,
-): token is ExtendedToken => {
+export const isExtendedToken = (token: BaseToken): token is ExtendedToken => {
   return token.type === 'extended';
 };
 
-export const isPositionToken = (
-  token: BaseDisplayToken,
-): token is PositionToken => {
+export const isPositionToken = (token: BaseToken): token is PositionToken => {
   return token.type === 'position';
+};
+
+export const isWalletToken = (token: BaseToken): token is WalletToken => {
+  return token.type === 'wallet';
 };
 
 const isJumperToken = (
@@ -192,20 +119,12 @@ const isAppToken = (token: unknown): token is AppToken => {
   );
 };
 
-// FIXME: Let's see if we need this
 export const hasMarketData = (
   token: LifiToken | TokenExtended,
 ): token is TokenExtended => {
   return 'marketCapUSD' in token;
 };
 
-// ============================================================================
-// Token Creators
-// ============================================================================
-
-/**
- * Create a BaseToken from a StaticToken or JumperToken.
- */
 export const createBaseToken = (
   token: StaticToken | JumperToken,
 ): BaseToken => {
@@ -223,7 +142,6 @@ export const createBaseToken = (
       ...base,
       type: 'base',
       chainId: token.chain.chainId,
-      chainKey: token.chain.chainKey,
       logoURI: token.logo,
     };
   } else {
@@ -239,9 +157,6 @@ export const createBaseToken = (
   return result;
 };
 
-/**
- * Create an ExtendedToken from various source types.
- */
 export const createExtendedToken = (
   token: StaticToken | JumperToken | LifiToken,
   priceUSD?: string | undefined,
@@ -258,10 +173,16 @@ export const createExtendedToken = (
   };
 };
 
-/**
- * Create a PositionToken from backend token types.
- * Preserves chain/app info from the source.
- */
+export const createWalletToken = (
+  token: LifiToken & { chainKey: string },
+): WalletToken => {
+  return {
+    ...createExtendedToken(token),
+    type: 'wallet',
+    chainKey: token.chainKey,
+  };
+};
+
 export const createPositionToken = (
   token: DefiToken | AppToken,
 ): PositionToken => {
@@ -279,7 +200,6 @@ export const createPositionToken = (
     };
   }
 
-  // AppToken
   return {
     type: 'position',
     address: token.address,
@@ -288,17 +208,11 @@ export const createPositionToken = (
     decimals: token.decimals,
     logoURI: token.logo,
     priceUSD: String(token.priceUSD),
+    chainId: -1, // App tokens don't have a chainId
     app: token.app,
   };
 };
 
-// ============================================================================
-// Balance Creators
-// ============================================================================
-
-/**
- * Create a TokenBalance from ExtendedToken or DefiToken.
- */
 export function createTokenBalance(
   token: ExtendedToken,
   amount: bigint | string,
@@ -326,10 +240,6 @@ export function createTokenBalance(
   };
 }
 
-/**
- * Create a PositionBalance from backend token types.
- * Optionally accepts a fresh price for recalculation.
- */
 export const createPositionBalance = (
   token: DefiToken | AppToken,
   freshPriceUSD?: number,

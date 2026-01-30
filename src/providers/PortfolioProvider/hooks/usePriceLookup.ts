@@ -8,6 +8,11 @@ export interface UsePriceLookupResult {
   updatedAt: number | undefined;
 }
 
+/**
+ * Hook to get the price of a token for a given chain and address.
+ * @Note: The useTokens hooks doesn't necessarily return the correct price for a token, as backend is not patched yet.
+ * @Note: Might need to use the useToken hook instead.
+ */
 export const usePriceLookup = (): UsePriceLookupResult => {
   const {
     tokens: allTokens,

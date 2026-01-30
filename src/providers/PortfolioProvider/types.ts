@@ -1,23 +1,10 @@
 import type {
-  PortfolioBalance as GenericPortfolioBalance,
+  PortfolioBalance,
   PositionToken,
-  TokenBalance,
+  WalletToken,
 } from '@/types/tokens';
 import type { App, Chain } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
-
-/**
- * Balance for wallet tokens (from LiFi) with USD value.
- */
-export interface WalletPortfolioBalance extends TokenBalance {
-  amountUSD: number;
-}
-
-/**
- * Balance for position tokens (from backend) with USD value.
- * Uses PositionToken which preserves chain/app info.
- */
-export type PositionBalance = GenericPortfolioBalance<PositionToken>;
 
 /**
  * Position with all token arrays converted to PositionBalance format.
@@ -31,12 +18,12 @@ export type PortfolioPosition = Omit<
   | 'rewardTokens'
   | 'supplyTokens'
 > & {
-  lpToken?: PositionBalance;
-  supplyTokens: PositionBalance[];
-  borrowTokens: PositionBalance[];
-  assetTokens: PositionBalance[];
-  collateralTokens: PositionBalance[];
-  rewardTokens: PositionBalance[];
+  lpToken?: PortfolioBalance<PositionToken>;
+  supplyTokens: PortfolioBalance<PositionToken>[];
+  borrowTokens: PortfolioBalance<PositionToken>[];
+  assetTokens: PortfolioBalance<PositionToken>[];
+  collateralTokens: PortfolioBalance<PositionToken>[];
+  rewardTokens: PortfolioBalance<PositionToken>[];
 };
 
 /**
@@ -58,7 +45,7 @@ export type WithPercentage<T> = T & {
 };
 
 export interface BalancesByAddressSummary {
-  balances: WithPercentage<WalletPortfolioBalance>[];
+  balances: WithPercentage<PortfolioBalance<WalletToken>>[];
   totalUsd: number;
   percentage: number;
 }

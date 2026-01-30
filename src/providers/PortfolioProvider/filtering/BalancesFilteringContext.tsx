@@ -30,7 +30,7 @@ import type {
 import { OrderOptions, SortByOptions } from './types';
 import type { NullableFields } from '@/types/internal';
 import { usePortfolioBalances, usePortfolioState } from '../PortfolioContext';
-import type { WalletPortfolioBalance } from '../types';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 
 export interface BalancesFilteringContextType extends BalancesFilteringParams {
   sortBy: SortByEnum;
@@ -39,7 +39,7 @@ export interface BalancesFilteringContextType extends BalancesFilteringParams {
   filter: BalancesFilterUI;
   updateFilter: (filter: NullableFields<BalancesFilterUI>) => void;
   clearFilters: () => void;
-  data: Record<string, WalletPortfolioBalance[]>;
+  data: Record<string, PortfolioBalance<WalletToken>[]>;
   isLoading: boolean;
   isEmpty: boolean;
 }

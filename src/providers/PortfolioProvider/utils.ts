@@ -1,5 +1,11 @@
 import type { App, AppToken, Chain, DefiToken } from '@/types/jumper-backend';
-import { createPositionBalance, type TokenBalance } from '@/types/tokens';
+import type {
+  Balance,
+  ExtendedToken,
+  PortfolioBalance,
+  PositionToken,
+} from '@/types/tokens';
+import { createPositionBalance, type WalletToken } from '@/types/tokens';
 import { formatUnits } from 'viem';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 import { isChainDefiPosition } from '@/utils/positions/type-guards';
@@ -13,8 +19,6 @@ import type {
   AppPortfolioPosition,
   ChainPortfolioPosition,
   PortfolioPosition,
-  PositionBalance,
-  WalletPortfolioBalance,
   BalancesMetadata,
   PositionsMetadata,
 } from './types';
@@ -26,9 +30,9 @@ type GetPrice = (chainId: number, address: string) => number | undefined;
  * Convert wallet balances (from LiFi) to portfolio balances with USD value.
  */
 export const toWalletPortfolioBalances = (
-  balances: TokenBalance[],
+  balances: Balance<ExtendedToken>[],
   chains: ExtendedChain[],
-): WalletPortfolioBalance[] => {
+): PortfolioBalance<WalletToken>[] => {
   return balances.map((balance) => {
     const amount = formatUnits(balance.amount, balance.token.decimals);
     const amountUSD = Number(amount) * Number(balance.token.priceUSD);
@@ -39,6 +43,7 @@ export const toWalletPortfolioBalances = (
       token: {
         ...balance.token,
         chainKey: chain?.key ?? '',
+        type: 'wallet',
       },
     };
   });
@@ -51,7 +56,7 @@ export const toWalletPortfolioBalances = (
 export const toPositionBalance = (
   token: DefiToken | AppToken,
   getPrice?: GetPrice,
-): PositionBalance => {
+): PortfolioBalance<PositionToken> => {
   let freshPriceUSD: number | undefined;
   if (getPrice && 'chain' in token) {
     freshPriceUSD = getPrice(token.chain.chainId, token.address);
@@ -70,7 +75,7 @@ export const toPositionBalance = (
 export const toPositionBalances = (
   tokens: DefiToken[] | AppToken[],
   getPrice?: GetPrice,
-): PositionBalance[] => {
+): PortfolioBalance<PositionToken>[] => {
   return tokens.map((token) => toPositionBalance(token, getPrice));
 };
 
@@ -134,9 +139,9 @@ export const toPortfolioPositions = (
 };
 
 export const dedupTokensFromLpPositions = (
-  balances: WalletPortfolioBalance[],
-  lpTokens: PositionBalance[],
-): WalletPortfolioBalance[] => {
+  balances: PortfolioBalance<WalletToken>[],
+  lpTokens: PortfolioBalance<PositionToken>[],
+): PortfolioBalance<WalletToken>[] => {
   return balances.filter(
     (balance) =>
       !lpTokens.some(
@@ -155,7 +160,10 @@ export const calcPercentage = (value: number, total: number): number =>
 // ============================================================================
 
 export const extractBalancesMetadata = (
-  balancesByAddress: Record<string, Record<string, WalletPortfolioBalance[]>>,
+  balancesByAddress: Record<
+    string,
+    Record<string, PortfolioBalance<WalletToken>[]>
+  >,
 ): BalancesMetadata => {
   const wallets = Object.keys(balancesByAddress);
   const allBalances = flatMap(Object.values(balancesByAddress), (grouped) =>
@@ -245,7 +253,7 @@ export type BalanceAccessorKey =
 
 export type BalanceAccessors = Record<
   BalanceAccessorKey,
-  (b: WalletPortfolioBalance) => string | number | undefined
+  (b: PortfolioBalance<WalletToken>) => string | number | undefined
 >;
 
 export const balanceAccessors: BalanceAccessors = {
@@ -274,15 +282,21 @@ export type PositionBalanceAccessorKey =
   (typeof PositionBalanceAccessorKeys)[keyof typeof PositionBalanceAccessorKeys];
 
 export const positionBalanceAccessors = {
-  [PositionBalanceAccessorKeys.chainId]: (b: PositionBalance) =>
+  [PositionBalanceAccessorKeys.chainId]: (b: PortfolioBalance<PositionToken>) =>
     b.token.chainId,
-  [PositionBalanceAccessorKeys.symbol]: (b: PositionBalance) => b.token.symbol,
-  [PositionBalanceAccessorKeys.address]: (b: PositionBalance) =>
+  [PositionBalanceAccessorKeys.symbol]: (b: PortfolioBalance<PositionToken>) =>
+    b.token.symbol,
+  [PositionBalanceAccessorKeys.address]: (b: PortfolioBalance<PositionToken>) =>
     b.token.address,
-  [PositionBalanceAccessorKeys.name]: (b: PositionBalance) => b.token.name,
-  [PositionBalanceAccessorKeys.amountUSD]: (b: PositionBalance) => b.amountUSD,
-  [PositionBalanceAccessorKeys.chain]: (b: PositionBalance) => b.token.chain,
-  [PositionBalanceAccessorKeys.app]: (b: PositionBalance) => b.token.app,
+  [PositionBalanceAccessorKeys.name]: (b: PortfolioBalance<PositionToken>) =>
+    b.token.name,
+  [PositionBalanceAccessorKeys.amountUSD]: (
+    b: PortfolioBalance<PositionToken>,
+  ) => b.amountUSD,
+  [PositionBalanceAccessorKeys.chain]: (b: PortfolioBalance<PositionToken>) =>
+    b.token.chain,
+  [PositionBalanceAccessorKeys.app]: (b: PortfolioBalance<PositionToken>) =>
+    b.token.app,
 };
 
 // --- PortfolioPosition Accessors ---

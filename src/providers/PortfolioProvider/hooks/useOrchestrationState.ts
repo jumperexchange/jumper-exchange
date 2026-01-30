@@ -1,32 +1,13 @@
 import { useCallback, useMemo } from 'react';
 import type { OrchestrationState, SourceState } from '../types';
 import { usePriceLookup } from './usePriceLookup';
+import type { useProcessBalances } from './useProcessBalances';
+import type { useProcessedPositions } from './useProcessPositions';
 
-interface UseOrchestrationStateParams {
-  balances: {
-    isEmpty: boolean;
-    isLoading: boolean;
-    isFetching: boolean;
-    isPlaceholderData: boolean;
-    error: Error | null;
-    updatedAt: number | null;
-    refetch: () => void;
-  };
-  positions: {
-    isEmpty: boolean;
-    isLoading: boolean;
-    isFetching: boolean;
-    isPlaceholderData: boolean;
-    error: Error | null;
-    updatedAt: number | null;
-    refetch: () => void;
-  };
-}
-
-export const useOrchestrationState = ({
-  balances,
-  positions,
-}: UseOrchestrationStateParams): OrchestrationState => {
+export const useOrchestrationState = (
+  balances: ReturnType<typeof useProcessBalances>,
+  positions: ReturnType<typeof useProcessedPositions>,
+): OrchestrationState => {
   const pricesData = usePriceLookup();
 
   const balancesSource: SourceState = useMemo(
