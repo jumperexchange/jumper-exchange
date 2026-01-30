@@ -15,9 +15,11 @@ import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
 import { SettingsStoreProvider } from 'src/stores/settings/SettingsStore';
 import { ServerNavbar } from 'src/components/Navbar/ServerNavbar';
+import { getPartnerThemes } from './lib/getPartnerThemes';
 
 export default async function NotFound() {
   const { resources } = await initTranslations(fallbackLng, namespaces);
+  const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
 
   return (
     <html
@@ -52,7 +54,10 @@ export default async function NotFound() {
               locale={fallbackLng}
               resources={resources}
             >
-              <DefaultThemeProvider themes={[]}>
+              <DefaultThemeProvider
+                themes={partnerThemes.data ?? []}
+                activeTheme={'default'}
+              >
                 <WalletProvider>
                   <MUIThemeProvider>
                     <SettingsStoreProvider welcomeScreenClosed={true}>
