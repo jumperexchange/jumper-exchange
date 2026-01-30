@@ -46,6 +46,7 @@ export const AddressMenu = ({
               show={open}
               className="menu-paper"
               sx={(theme) => ({
+                height: 'fit-content',
                 borderRadius: theme.shape.radius12,
                 width: theme.spacing(40),
               })}
