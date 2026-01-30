@@ -52,7 +52,7 @@ export const useBalancesData = (): UseTokensDataResult => {
         const result = await fetchBalancesForAddress({
           address: account.address!,
           chainType: account.chainType as ChainType,
-          onProgress: (round, fetchedTokens) => {
+          onProgress: (round, totalBatches, fetchedTokens) => {
             lastRound = round;
             const updatedAt = Date.now();
             queryClient.setQueryData<TokenQueryData>(

@@ -36,7 +36,11 @@ const createTokenBalancesFromPlainArray = <
 export interface FetchBalancesParams {
   address: string;
   chainType: ChainType;
-  onProgress?: (round: number, tokens: TokenBalance[]) => void;
+  onProgress?: (
+    completedBatches: number,
+    totalBatches: number,
+    tokens: TokenBalance[],
+  ) => void;
   onComplete?: (tokens: TokenBalance[]) => void;
 }
 
@@ -56,7 +60,7 @@ export const fetchBalancesForAddress = async ({
   // EVM: use getWalletBalances (no batching needed)
   if (chainType === ChainType.EVM) {
     const balances = await fetchBalancesForEVMAddress(address);
-    onProgress?.(1, balances);
+    onProgress?.(1, 1, balances);
     onComplete?.(balances);
     return { balances, address, control: null };
   }
@@ -73,10 +77,9 @@ export const fetchBalancesForAddress = async ({
       return balances.filter((t) => t.amount && t.amount > BigInt(0));
     },
     {
-      onProgress: (round, results) => {
+      onProgress: (completedBatches, totalBatches, results) => {
         balances = createTokenBalancesFromPlainArray(results);
-
-        onProgress?.(round, balances);
+        onProgress?.(completedBatches, totalBatches, balances);
       },
       onComplete: (results) => {
         balances = createTokenBalancesFromPlainArray(results);

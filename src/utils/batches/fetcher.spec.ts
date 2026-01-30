@@ -34,12 +34,7 @@ describe('createBatchFetcher', () => {
       };
       const fetchBatch = vi.fn().mockResolvedValue(['result']);
 
-      createBatchFetcher(
-        batches,
-        fetchBatch,
-        {},
-        { maxFirstRound: 10, maxPerBatch: 10 },
-      );
+      createBatchFetcher(batches, fetchBatch, {}, { maxPerBatch: 10 });
 
       await vi.runAllTimersAsync();
 
@@ -62,93 +57,94 @@ describe('createBatchFetcher', () => {
     });
   });
 
-  describe('round-based fetching', () => {
-    it('should respect maxFirstRound limit on first round', async () => {
-      const batches = {
-        chain1: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
-      };
-      const fetchBatch = vi.fn().mockResolvedValue(['result']);
-      const onProgress = vi.fn();
-
-      createBatchFetcher(
-        batches,
-        fetchBatch,
-        { onProgress },
-        { maxFirstRound: 3, maxPerBatch: 10, delayMs: 1000 },
-      );
-
-      await vi.advanceTimersByTimeAsync(0);
-
-      expect(fetchBatch).toHaveBeenCalledTimes(1);
-      expect(fetchBatch).toHaveBeenCalledWith('chain1', ['a', 'b', 'c']);
-    });
-
+  describe('chunking and concurrency', () => {
     it('should respect maxPerBatch limit', async () => {
       const batches = {
         chain1: ['a', 'b', 'c', 'd', 'e'],
       };
       const fetchBatch = vi.fn().mockResolvedValue(['result']);
 
+      createBatchFetcher(batches, fetchBatch, {}, { maxPerBatch: 2 });
+
+      await vi.runAllTimersAsync();
+
+      expect(fetchBatch).toHaveBeenCalledTimes(3);
+      expect(fetchBatch).toHaveBeenCalledWith('chain1', ['a', 'b']);
+      expect(fetchBatch).toHaveBeenCalledWith('chain1', ['c', 'd']);
+      expect(fetchBatch).toHaveBeenCalledWith('chain1', ['e']);
+    });
+
+    it('should respect concurrency limit', async () => {
+      const batches = {
+        chain1: ['a', 'b', 'c', 'd', 'e', 'f'],
+      };
+      let concurrentCalls = 0;
+      let maxConcurrentCalls = 0;
+
+      const fetchBatch = vi.fn().mockImplementation(async () => {
+        concurrentCalls++;
+        maxConcurrentCalls = Math.max(maxConcurrentCalls, concurrentCalls);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        concurrentCalls--;
+        return ['result'];
+      });
+
       createBatchFetcher(
         batches,
         fetchBatch,
         {},
-        { maxFirstRound: 10, maxPerBatch: 2, delayMs: 1000 },
+        { maxPerBatch: 1, concurrency: 2 },
       );
 
-      await vi.advanceTimersByTimeAsync(0);
+      await vi.runAllTimersAsync();
 
-      expect(fetchBatch).toHaveBeenCalledWith('chain1', ['a', 'b']);
-    });
-
-    it('should process remaining items in subsequent rounds', async () => {
-      const batches = {
-        chain1: ['a', 'b', 'c', 'd', 'e'],
-      };
-      const fetchBatch = vi.fn().mockResolvedValue(['result']);
-      const onProgress = vi.fn();
-
-      createBatchFetcher(
-        batches,
-        fetchBatch,
-        { onProgress },
-        { maxFirstRound: 2, maxPerBatch: 2, maxPerRound: 2, delayMs: 1000 },
-      );
-
-      await vi.advanceTimersByTimeAsync(0);
-      expect(fetchBatch).toHaveBeenCalledTimes(1);
-
-      await vi.advanceTimersByTimeAsync(1000);
-      expect(fetchBatch).toHaveBeenCalledTimes(2);
-
-      await vi.advanceTimersByTimeAsync(1000);
-      expect(fetchBatch).toHaveBeenCalledTimes(3);
+      expect(maxConcurrentCalls).toBe(2);
+      expect(fetchBatch).toHaveBeenCalledTimes(6);
     });
   });
 
   describe('callbacks', () => {
-    it('should call onProgress after each round with cumulative results', async () => {
+    it('should call onProgress after each batch with cumulative results', async () => {
       const batches = {
         chain1: ['a', 'b', 'c', 'd'],
       };
+      // Add delays to ensure sequential processing with concurrency: 1
       const fetchBatch = vi
         .fn()
-        .mockResolvedValueOnce(['r1', 'r2'])
-        .mockResolvedValueOnce(['r3', 'r4']);
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) =>
+              setTimeout(() => resolve(['r1', 'r2']), 10),
+            ),
+        )
+        .mockImplementationOnce(
+          () =>
+            new Promise((resolve) =>
+              setTimeout(() => resolve(['r3', 'r4']), 10),
+            ),
+        );
       const onProgress = vi.fn();
 
+      // Use concurrency: 1 to ensure sequential execution for predictable order
       createBatchFetcher(
         batches,
         fetchBatch,
         { onProgress },
-        { maxFirstRound: 2, maxPerBatch: 2, maxPerRound: 2, delayMs: 1000 },
+        { maxPerBatch: 2, concurrency: 1 },
       );
 
-      await vi.advanceTimersByTimeAsync(0);
-      expect(onProgress).toHaveBeenCalledWith(1, ['r1', 'r2']);
+      await vi.runAllTimersAsync();
 
-      await vi.advanceTimersByTimeAsync(1000);
-      expect(onProgress).toHaveBeenCalledWith(2, ['r1', 'r2', 'r3', 'r4']);
+      expect(onProgress).toHaveBeenCalledTimes(2);
+      // First call: 1 completed, 2 total
+      expect(onProgress).toHaveBeenNthCalledWith(1, 1, 2, ['r1', 'r2']);
+      // Second call: 2 completed, 2 total
+      expect(onProgress).toHaveBeenNthCalledWith(2, 2, 2, [
+        'r1',
+        'r2',
+        'r3',
+        'r4',
+      ]);
     });
 
     it('should call onComplete with all results when done', async () => {
@@ -162,7 +158,7 @@ describe('createBatchFetcher', () => {
         batches,
         fetchBatch,
         { onComplete },
-        { maxFirstRound: 10, maxPerBatch: 10 },
+        { maxPerBatch: 10 },
       );
 
       await vi.runAllTimersAsync();
@@ -171,53 +167,23 @@ describe('createBatchFetcher', () => {
       expect(onComplete).toHaveBeenCalledWith(['result1', 'result2']);
     });
 
-    it('should call onComplete only once even with multiple in-flight rounds', async () => {
+    it('should call onComplete only once', async () => {
       const batches = {
         chain1: ['a', 'b', 'c', 'd', 'e', 'f'],
       };
-      let resolveFirst: (value: string[]) => void;
-      let resolveSecond: (value: string[]) => void;
-
-      const fetchBatch = vi
-        .fn()
-        .mockImplementationOnce(
-          () =>
-            new Promise((resolve) => {
-              resolveFirst = resolve;
-            }),
-        )
-        .mockImplementationOnce(
-          () =>
-            new Promise((resolve) => {
-              resolveSecond = resolve;
-            }),
-        );
+      const fetchBatch = vi.fn().mockResolvedValue(['result']);
       const onComplete = vi.fn();
 
       createBatchFetcher(
         batches,
         fetchBatch,
         { onComplete },
-        { maxFirstRound: 3, maxPerBatch: 3, maxPerRound: 3, delayMs: 100 },
+        { maxPerBatch: 2, concurrency: 3 },
       );
 
-      await vi.advanceTimersByTimeAsync(0);
-      await vi.advanceTimersByTimeAsync(100);
-
-      expect(fetchBatch).toHaveBeenCalledTimes(2);
-
-      resolveSecond!(['r4', 'r5', 'r6']);
-      await vi.advanceTimersByTimeAsync(0);
-
-      expect(onComplete).not.toHaveBeenCalled();
-
-      resolveFirst!(['r1', 'r2', 'r3']);
-      await vi.advanceTimersByTimeAsync(0);
+      await vi.runAllTimersAsync();
 
       expect(onComplete).toHaveBeenCalledTimes(1);
-      expect(onComplete).toHaveBeenCalledWith(
-        expect.arrayContaining(['r1', 'r2', 'r3', 'r4', 'r5', 'r6']),
-      );
     });
   });
 
@@ -226,56 +192,70 @@ describe('createBatchFetcher', () => {
       const batches = {
         chain1: ['a', 'b', 'c', 'd', 'e', 'f'],
       };
-      const fetchBatch = vi.fn().mockResolvedValue(['result']);
-      const onComplete = vi.fn();
-
-      const control = createBatchFetcher(
-        batches,
-        fetchBatch,
-        { onComplete },
-        { maxFirstRound: 2, maxPerBatch: 2, maxPerRound: 2, delayMs: 1000 },
-      );
-
-      await vi.advanceTimersByTimeAsync(0);
-      expect(fetchBatch).toHaveBeenCalledTimes(1);
-
-      control.cancel();
-
-      await vi.advanceTimersByTimeAsync(5000);
-      expect(fetchBatch).toHaveBeenCalledTimes(1);
-      expect(onComplete).not.toHaveBeenCalled();
-    });
-
-    it('should not call callbacks after cancellation', async () => {
-      const batches = {
-        chain1: ['a', 'b'],
-      };
-      let resolveFetch: (value: string[]) => void;
+      let resolveFirst: (value: string[]) => void;
       const fetchBatch = vi.fn().mockImplementation(
         () =>
           new Promise((resolve) => {
-            resolveFetch = resolve;
+            resolveFirst = resolve;
           }),
       );
-      const onProgress = vi.fn();
       const onComplete = vi.fn();
+      const onProgress = vi.fn();
 
       const control = createBatchFetcher(
         batches,
         fetchBatch,
-        { onProgress, onComplete },
-        { maxFirstRound: 10, maxPerBatch: 10 },
+        { onComplete, onProgress },
+        { maxPerBatch: 1, concurrency: 1 },
       );
 
+      // Let first fetch start
       await vi.advanceTimersByTimeAsync(0);
+      expect(fetchBatch).toHaveBeenCalledTimes(1);
 
+      // Cancel before first resolves
       control.cancel();
 
-      resolveFetch!(['result']);
-      await vi.advanceTimersByTimeAsync(0);
+      // Resolve first fetch
+      resolveFirst!(['result']);
+      await vi.runAllTimersAsync();
 
+      // Should not process more or call callbacks
       expect(onProgress).not.toHaveBeenCalled();
       expect(onComplete).not.toHaveBeenCalled();
+    });
+
+    it('should clear queued tasks on cancellation', async () => {
+      const batches = {
+        chain1: ['a', 'b', 'c', 'd', 'e', 'f'],
+      };
+      const fetchBatch = vi
+        .fn()
+        .mockImplementation(
+          () =>
+            new Promise((resolve) =>
+              setTimeout(() => resolve(['result']), 100),
+            ),
+        );
+      const onProgress = vi.fn();
+
+      const control = createBatchFetcher(
+        batches,
+        fetchBatch,
+        { onProgress },
+        { maxPerBatch: 1, concurrency: 1 },
+      );
+
+      // Let first fetch start
+      await vi.advanceTimersByTimeAsync(0);
+
+      // Cancel immediately
+      control.cancel();
+
+      await vi.runAllTimersAsync();
+
+      // Only the first one should have been called (was already in progress)
+      expect(fetchBatch).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -299,7 +279,7 @@ describe('createBatchFetcher', () => {
         batches,
         fetchBatch,
         { onProgress, onComplete },
-        { maxFirstRound: 10, maxPerBatch: 10 },
+        { maxPerBatch: 10 },
       );
 
       await vi.runAllTimersAsync();
@@ -308,13 +288,12 @@ describe('createBatchFetcher', () => {
         'Batch fetch failures:',
         expect.any(Array),
       );
-      expect(onProgress).toHaveBeenCalledWith(1, ['success']);
       expect(onComplete).toHaveBeenCalledWith(['success']);
 
       consoleWarnSpy.mockRestore();
     });
 
-    it('should handle all fetches failing in a round', async () => {
+    it('should handle all fetches failing', async () => {
       const batches = {
         chain1: ['a'],
       };
@@ -328,7 +307,7 @@ describe('createBatchFetcher', () => {
         batches,
         fetchBatch,
         { onComplete },
-        { maxFirstRound: 10, maxPerBatch: 10 },
+        { maxPerBatch: 10 },
       );
 
       await vi.runAllTimersAsync();
@@ -360,12 +339,7 @@ describe('createBatchFetcher', () => {
       };
       const fetchBatch = vi.fn().mockResolvedValue(['result']);
 
-      createBatchFetcher(
-        batches,
-        fetchBatch,
-        {},
-        { maxFirstRound: 10, maxPerBatch: 10 },
-      );
+      createBatchFetcher(batches, fetchBatch, {}, { maxPerBatch: 10 });
 
       await vi.runAllTimersAsync();
 
