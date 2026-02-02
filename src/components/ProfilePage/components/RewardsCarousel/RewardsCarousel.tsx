@@ -1,5 +1,6 @@
 import { useTheme } from '@mui/material/styles';
-import { FC, PropsWithChildren, useMemo } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import { useMemo } from 'react';
 import { Carousel } from 'src/components/Carousel/Carousel';
 import { RewardsCarouselContainer } from './RewardsCarousel.style';
 
@@ -13,6 +14,8 @@ export const RewardsCarousel: FC<RewardsCarouselProps> = ({ children }) => {
       <Carousel
         fixedSlideWidth={true}
         shouldAutoplay={false}
+        spaceBetween={0}
+        slidesPerGroupAuto
         sx={{
           '.carousel-swiper.swiper': {
             marginTop: `${theme.spacing(-2)} !important`,
@@ -21,9 +24,6 @@ export const RewardsCarousel: FC<RewardsCarouselProps> = ({ children }) => {
             paddingBottom: `${theme.spacing(2)} !important`,
             paddingTop: `${theme.spacing(2)} !important`,
             paddingLeft: `${theme.spacing(0.5)} !important`,
-          },
-          '.carousel-swiper .swiper-slide': {
-            marginRight: '0 !important',
           },
           marginTop: theme.spacing(2),
           [theme.breakpoints.up('md')]: {

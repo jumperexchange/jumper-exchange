@@ -9,9 +9,9 @@ import {
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { AutoplayOptions, SwiperOptions } from 'swiper/types';
+import type { AutoplayOptions, SwiperOptions } from 'swiper/types';
 import { CarouselContainer } from './Carousel.style';
-import {
+import type {
   CarouselNavigationBase,
   CarouselPaginationBase,
 } from './Carousel.types';
@@ -34,6 +34,7 @@ export interface CarouselProps {
   autoplayOptions?: AutoplayOptions;
   shouldAutoplay?: boolean;
   shouldLoop?: boolean;
+  slidesPerGroupAuto?: boolean;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -49,6 +50,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   autoplayOptions,
   shouldAutoplay = true,
   shouldLoop = true,
+  slidesPerGroupAuto = false,
 }) => {
   const classNames = useSwiperScopedClassNames();
 
@@ -109,6 +111,7 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         breakpoints={breakpoints}
         hashNavigation={!!CarouselNavigation}
         spaceBetween={spaceBetween}
+        slidesPerGroupAuto={slidesPerGroupAuto}
       >
         {slides}
       </Swiper>

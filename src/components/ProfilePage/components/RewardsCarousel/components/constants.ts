@@ -7,6 +7,7 @@ export const REWARD_CLAIM_CARD_CONFIG = {
   descriptionVariant: 'bodyXSmall',
   infoContainerGap: 0,
   itemSx: {
+    borderRadius: 0,
     '&:not(:has([data-hint-hover-active]))': {
       '&:hover, &:focus-visible, &:focus': {
         backgroundColor: 'transparent',
