@@ -1,6 +1,6 @@
 export interface RewardFilterCriteria {
   chainId: number;
-  tokenAddress: string;
+  tokenAddress?: string;
 }
 
 export interface BaseReward {

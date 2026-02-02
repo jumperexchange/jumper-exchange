@@ -18,10 +18,12 @@ export const buildRewardFilter = (
   for (const { chainId, tokenAddress } of criteria) {
     allowedChains.add(chainId);
 
-    if (!tokenAddressesByChain[chainId]) {
-      tokenAddressesByChain[chainId] = new Set();
+    if (tokenAddress) {
+      if (!tokenAddressesByChain[chainId]) {
+        tokenAddressesByChain[chainId] = new Set();
+      }
+      tokenAddressesByChain[chainId].add(tokenAddress.toLowerCase());
     }
-    tokenAddressesByChain[chainId].add(tokenAddress.toLowerCase());
   }
 
   return { allowedChains, tokenAddressesByChain };

@@ -6,10 +6,10 @@ export const fromMerklRewardsData = (
   rewards: MerklRewardsData[] = [],
 ): RewardFilterCriteria[] => {
   return rewards
-    .filter((r) => r.ChainId !== null && r.TokenAddress !== null)
+    .filter((r) => r.ChainId !== null)
     .map((r) => ({
       chainId: Number(r.ChainId),
-      tokenAddress: r.TokenAddress!.toLowerCase(),
+      tokenAddress: r.TokenAddress?.toLowerCase(),
     }));
 };
 
