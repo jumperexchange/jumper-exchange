@@ -34,7 +34,6 @@ export interface CarouselProps {
   autoplayOptions?: AutoplayOptions;
   shouldAutoplay?: boolean;
   shouldLoop?: boolean;
-  slidesPerGroupAuto?: boolean;
 }
 
 export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
@@ -50,7 +49,6 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
   autoplayOptions,
   shouldAutoplay = true,
   shouldLoop = true,
-  slidesPerGroupAuto = false,
 }) => {
   const classNames = useSwiperScopedClassNames();
 
@@ -111,7 +109,6 @@ export const Carousel: React.FC<PropsWithChildren<CarouselProps>> = ({
         breakpoints={breakpoints}
         hashNavigation={!!CarouselNavigation}
         spaceBetween={spaceBetween}
-        slidesPerGroupAuto={slidesPerGroupAuto}
       >
         {slides}
       </Swiper>
