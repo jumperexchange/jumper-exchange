@@ -11,13 +11,14 @@ import {
   isRewardAllowed,
 } from '@/utils/rewards/merklRewardFilter';
 import { MERKL_CLAIMING_ADDRESS } from './merklApi';
+import { formatTokenAmount } from '@lifi/widget';
 
 const processReward = (reward: MerklUserRewards[0]): MerklReward => {
   const amountBigInt = BigInt(reward.amount);
   const claimedBigInt = BigInt(reward.claimed);
   const decimals = reward.token.decimals;
   const amountToClaim = Number(
-    (amountBigInt - claimedBigInt) / BigInt(10 ** decimals),
+    formatTokenAmount(amountBigInt - claimedBigInt, decimals),
   );
 
   return {
@@ -26,7 +27,7 @@ const processReward = (reward: MerklUserRewards[0]): MerklReward => {
     symbol: reward.token.symbol,
     accumulatedAmountForContractBN: String(reward.amount),
     amountToClaim,
-    amountAccumulated: Number(amountBigInt / BigInt(10 ** decimals)),
+    amountAccumulated: Number(formatTokenAmount(amountBigInt, decimals)),
     proof: reward.proofs,
     claimingAddress: MERKL_CLAIMING_ADDRESS,
     tokenDecimals: decimals,
