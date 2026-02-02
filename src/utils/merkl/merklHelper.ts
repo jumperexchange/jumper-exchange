@@ -4,8 +4,7 @@ import type {
   MerklUserRewards,
   MerklUserRewardsData,
 } from 'src/app/lib/getMerklUserRewards';
-import type { MerklReward } from 'src/types/rewards';
-import type { MerklRewardsData } from 'src/types/strapi';
+import type { MerklReward, RewardFilterCriteria } from 'src/types/rewards';
 import {
   buildRewardFilter,
   isRewardAllowed,
@@ -36,9 +35,9 @@ const processReward = (reward: MerklUserRewards[0]): MerklReward => {
 
 export const processRewardsData = (
   userRewardsData: MerklUserRewardsData[],
-  merklRewards?: MerklRewardsData[],
+  filterCriteria?: RewardFilterCriteria[],
 ) => {
-  const filter = buildRewardFilter(merklRewards);
+  const filter = buildRewardFilter(filterCriteria);
 
   const rewardsToClaim = flatMap(userRewardsData, (chainData) => {
     const chainId = Number(chainData.chain.id);
@@ -66,7 +65,6 @@ export const processRewardsData = (
   return { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards };
 };
 
-// this filters out duplicate opportunities
 export const filterUniqueByIdentifier = (
   array: MerklOpportunity[],
 ): MerklOpportunity[] => {
@@ -101,7 +99,5 @@ export const calculateMaxApy = (opportunities: MerklOpportunity[]): number => {
 };
 
 export const sanitizeSearchQuery = (query: string): string => {
-  // If the query contains an underscore, it's likely a chainId_identifier format
-  // We only want the identifier part for the search
   return query.includes('_') ? query.split('_')[1] : query;
 };

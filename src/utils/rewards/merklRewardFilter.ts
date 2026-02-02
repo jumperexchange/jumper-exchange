@@ -1,4 +1,4 @@
-import type { MerklRewardsData } from 'src/types/strapi';
+import type { RewardFilterCriteria } from 'src/types/rewards';
 
 interface TokenAddressesByChain {
   [chainId: number]: Set<string>;
@@ -10,23 +10,18 @@ export interface RewardFilterConfig {
 }
 
 export const buildRewardFilter = (
-  merklRewards: MerklRewardsData[] = [],
+  criteria: RewardFilterCriteria[] = [],
 ): RewardFilterConfig => {
   const allowedChains = new Set<number>();
   const tokenAddressesByChain: TokenAddressesByChain = {};
 
-  for (const reward of merklRewards) {
-    if (reward.ChainId) {
-      const chainId = Number(reward.ChainId);
-      allowedChains.add(chainId);
+  for (const { chainId, tokenAddress } of criteria) {
+    allowedChains.add(chainId);
 
-      if (reward.TokenAddress) {
-        if (!tokenAddressesByChain[chainId]) {
-          tokenAddressesByChain[chainId] = new Set();
-        }
-        tokenAddressesByChain[chainId].add(reward.TokenAddress.toLowerCase());
-      }
+    if (!tokenAddressesByChain[chainId]) {
+      tokenAddressesByChain[chainId] = new Set();
     }
+    tokenAddressesByChain[chainId].add(tokenAddress.toLowerCase());
   }
 
   return { allowedChains, tokenAddressesByChain };

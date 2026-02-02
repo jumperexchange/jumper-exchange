@@ -6,7 +6,7 @@ import {
   RewardsSectionContainer,
 } from './Section.style';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
@@ -15,6 +15,7 @@ import type { MerklRewardsData } from 'src/types/strapi';
 import { MerklRewardClaim } from '../components/RewardsCarousel/components/MerklRewardClaim';
 import { DefiReacherRewardClaim } from '../components/RewardsCarousel/components/DefiReacherRewardClaim';
 import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
+import { fromMerklRewardsData } from '@/utils/rewards/rewardFilterAdapters';
 
 export const RewardsSection = ({
   merklRewards,
@@ -24,6 +25,11 @@ export const RewardsSection = ({
   const { t } = useTranslation();
   const { walletAddress: address } = useContext(ProfileContext);
 
+  const filterCriteria = useMemo(
+    () => fromMerklRewardsData(merklRewards),
+    [merklRewards],
+  );
+
   const {
     availableRewards: merklAvailableRewards,
     isSuccess: isMerklSuccess,
@@ -31,14 +37,14 @@ export const RewardsSection = ({
   } = useMerklRewards({
     userAddress: address,
     claimableOnly: true,
-    merklRewards,
+    filterCriteria,
   });
 
   const {
     data: deFiReacherAvailableRewards = [],
     isSuccess: isDeFiReacherSuccess,
     isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards({ userAddress: address, merklRewards });
+  } = useDeFiReacherRewards({ userAddress: address, filterCriteria });
 
   const merklRewardsWithAmount = merklAvailableRewards.filter(
     (reward) => reward.amountToClaim > 0,

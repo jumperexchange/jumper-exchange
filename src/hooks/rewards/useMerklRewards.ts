@@ -4,15 +4,14 @@ import { getMerklUserRewards } from '@/app/lib/getMerklUserRewards';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
-import type { MerklReward } from 'src/types/rewards';
-import type { MerklRewardsData } from 'src/types/strapi';
+import type { MerklReward, RewardFilterCriteria } from 'src/types/rewards';
 import { MERKL_CACHE_TIME, MERKL_STALE_TIME } from 'src/utils/merkl/merklApi';
 import { processRewardsData } from 'src/utils/merkl/merklHelper';
 import { isAddress } from 'viem';
 
 interface UseMerklRewardsProps {
   userAddress?: string;
-  merklRewards?: MerklRewardsData[];
+  filterCriteria?: RewardFilterCriteria[];
   claimableOnly?: boolean;
 }
 
@@ -25,24 +24,17 @@ interface UseMerklRewardsResult {
 
 export const useMerklRewards = ({
   userAddress,
-  merklRewards,
+  filterCriteria = [],
   claimableOnly = false,
 }: UseMerklRewardsProps): UseMerklRewardsResult => {
   const isValidAddress = !!userAddress && isAddress(userAddress);
 
   const chainIds = useMemo(() => {
-    if (!merklRewards?.length) {
+    if (!filterCriteria.length) {
       return REWARDS_CHAIN_IDS;
     }
-    return [
-      ...new Set(
-        merklRewards
-          .map((r) => r.ChainId)
-          .filter(Boolean)
-          .map(String),
-      ),
-    ];
-  }, [merklRewards]);
+    return [...new Set(filterCriteria.map((c) => String(c.chainId)))];
+  }, [filterCriteria]);
 
   const {
     data: userRewardsData,
@@ -67,8 +59,8 @@ export const useMerklRewards = ({
           chainsWithClaimableRewards: [],
         };
       }
-      return processRewardsData(userRewardsData, merklRewards);
-    }, [userRewardsData, merklRewards, isValidAddress]);
+      return processRewardsData(userRewardsData, filterCriteria);
+    }, [userRewardsData, filterCriteria, isValidAddress]);
 
   const tokenAddressMap = useQueries({
     queries: chainsWithClaimableRewards.map((chainId) => ({

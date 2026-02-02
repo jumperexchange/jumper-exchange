@@ -2,8 +2,10 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import type { DeFiReacherReward } from 'src/types/rewards';
-import type { MerklRewardsData } from 'src/types/strapi';
+import type {
+  DeFiReacherReward,
+  RewardFilterCriteria,
+} from 'src/types/rewards';
 import {
   getDeFiReacherRewards,
   type DeFiReacherApiReward,
@@ -28,16 +30,19 @@ const transformToDeFiReacherReward = (
 
 interface UseDeFiReacherRewardsProps {
   userAddress?: string;
-  merklRewards?: MerklRewardsData[];
+  filterCriteria?: RewardFilterCriteria[];
 }
 
 type UseDeFiReacherRewardsResult = UseQueryResult<DeFiReacherReward[], Error>;
 
 export const useDeFiReacherRewards = ({
   userAddress,
-  merklRewards,
+  filterCriteria = [],
 }: UseDeFiReacherRewardsProps): UseDeFiReacherRewardsResult => {
-  const filter = useMemo(() => buildRewardFilter(merklRewards), [merklRewards]);
+  const filter = useMemo(
+    () => buildRewardFilter(filterCriteria),
+    [filterCriteria],
+  );
 
   const selectFn = useCallback(
     (data: DeFiReacherApiReward[]) =>
