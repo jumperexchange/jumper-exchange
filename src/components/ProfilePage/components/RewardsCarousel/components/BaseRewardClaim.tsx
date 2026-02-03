@@ -103,10 +103,10 @@ export const BaseRewardClaim = <T extends BaseReward>({
   }, [isError, handleError]);
 
   useEffect(() => {
-    if (hash && postClaim) {
+    if (isConfirmed && hash && postClaim) {
       postClaim(hash);
     }
-  }, [hash, postClaim]);
+  }, [isConfirmed, hash, postClaim]);
 
   return (
     <RewardClaimCard

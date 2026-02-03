@@ -48,7 +48,6 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   };
 
   const postClaim = async (txHash: Hex) => {
-    console.log('30. DefiReacherRewardClaim postClaim', txHash);
     await validateHash(txHash);
   };
 
