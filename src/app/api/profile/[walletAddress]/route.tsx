@@ -129,7 +129,7 @@ export async function GET(
                 paddingLeft: 10,
               }}
             >
-              Level {loyaltyPass?.level} • {loyaltyPass?.points}
+              Level {loyaltyPass?.level ?? '-'} • {loyaltyPass?.points ?? 0}
               <svg
                 width="48"
                 height="48"
