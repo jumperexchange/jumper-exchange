@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { fetchTaskOpportunities } from 'src/utils/merkl/fetchTaskOpportunities';
-import { fetchOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
 import { MissionDetails } from './MissionDetails';
 import { MissionWidget } from './MissionWidget/MissionWidget';
 import { TwoColumnLayout } from 'src/components/TwoColumnLayout/TwoColumnLayout';
@@ -19,12 +18,10 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
     return notFound();
   }
 
-  const rewardsIds = data.CustomInformation?.['rewardsIds'];
   const tasksVerification = data.tasks_verification;
-  const [rewardOpportunities, taskOpportunities] = await Promise.all([
-    fetchOpportunitiesByRewardsIds(rewardsIds),
-    fetchTaskOpportunities(tasksVerification),
-  ]);
+  const taskOpportunities = await fetchTaskOpportunities(
+    tasksVerification ?? [],
+  );
 
   return (
     <>

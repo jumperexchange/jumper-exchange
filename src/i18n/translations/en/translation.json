@@ -314,6 +314,7 @@
   "tooltips": {
     "tvl": "Total value of crypto assets deposited in this market.",
     "apy": "Expected yearly return rate of the tokens invested.",
+    "apr": "Expected yearly return rate of the tokens invested and rewards.",
     "rewardsApy": "Expected yearly return rate distributed in reward token.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
@@ -333,6 +334,7 @@
   },
   "labels": {
     "apy": "APY",
+    "apr": "APR",
     "rewardsApy": "Rewards APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",

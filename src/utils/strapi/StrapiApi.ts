@@ -231,6 +231,10 @@ class QuestParams {
     'tasks_verification.TaskWidgetInformation.destinationToken',
     'tasks_verification.TaskWidgetInformation.toAddress',
     'tasks_verification.TaskWidgetInformation.inputs',
+    'tasks_verification.rewardApiLinks',
+    'tasks_verification.rewardApiLinks.chain',
+    'rewardApiLinks',
+    'rewardApiLinks.chain',
   ];
 
   constructor(apiUrl: URL) {
@@ -294,6 +298,8 @@ class CampaignParams {
 
   private static defaultPopulates = [
     'quests.Image',
+    'quests.rewardApiLinks',
+    'quests.rewardApiLinks.chain',
     'Background',
     'Icon',
     'ProfileBannerImage',

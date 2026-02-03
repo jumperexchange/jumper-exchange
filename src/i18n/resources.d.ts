@@ -210,6 +210,7 @@ interface Resources {
       title: 'Welcome to {{pageTitle}}!';
     };
     labels: {
+      apr: 'APR';
       apy: 'APY';
       assets_one: 'Asset';
       assets_other: 'Assets';
@@ -634,6 +635,7 @@ interface Resources {
       title: 'Limited Solana token support';
     };
     tooltips: {
+      apr: 'Expected yearly return rate of the tokens invested and rewards.';
       apy: 'Expected yearly return rate of the tokens invested.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';

@@ -649,6 +649,12 @@ export interface EarnInteractionFlags {
   canWithdraw: boolean;
 }
 
+export interface RewardApiLink {
+  type: 'merkl-campaign' | 'merkl-opportunity' | 'merkl-opportunity-breakdown';
+  identifier: string;
+  chain?: Chain;
+}
+
 export interface APYItem {
   base: number;
   reward: number;
@@ -682,6 +688,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
+  rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
 }
 
@@ -943,6 +950,7 @@ export interface EarnOpportunityWithScore {
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
+  rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
 }
 

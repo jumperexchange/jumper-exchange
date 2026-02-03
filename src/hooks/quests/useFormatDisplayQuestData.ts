@@ -1,12 +1,16 @@
 import { useMemo } from 'react';
 import { AppPaths } from 'src/const/urls';
-import { ParticipantChain, Quest, RewardGroup } from 'src/types/loyaltyPass';
+import type {
+  ParticipantChain,
+  Quest,
+  RewardGroup,
+} from 'src/types/loyaltyPass';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { useFormatDisplayRewardsData } from './useFormatDisplayRewardsData';
-import { QuestData } from 'src/types/strapi';
-import { Chain } from 'src/types/questDetails';
-import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { QuestData } from 'src/types/strapi';
+import type { Chain } from 'src/types/questDetails';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 interface DisplayQuestData {
   id: string;
@@ -55,6 +59,7 @@ export function useFormatDisplayQuestData(
   const rewardGroups = useFormatDisplayRewardsData(
     quest.CustomInformation,
     quest.Points ?? undefined,
+    quest.rewardApiLinks,
   );
 
   return useMemo(() => {
