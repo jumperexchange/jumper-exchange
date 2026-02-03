@@ -79,7 +79,7 @@ export default async function RootLayout({
   params: Params;
 }) {
   const { lng } = await params;
-  const partnerThemes = await getPartnerThemes();
+  const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
   const { resources } = await initTranslations(lng || fallbackLng, namespaces);
 
   return (
@@ -159,7 +159,7 @@ export default async function RootLayout({
                 resources={resources}
               >
                 <DefaultThemeProvider
-                  themes={partnerThemes.data}
+                  themes={partnerThemes.data ?? []}
                   activeTheme={'default'}
                 >
                   <WalletProvider>

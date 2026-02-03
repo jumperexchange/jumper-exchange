@@ -71,6 +71,7 @@ export const SubMenu = ({
       autoFocus={open}
       component="ul"
       ref={menuListRef}
+      sx={{ border: 'none' }}
     >
       <MenuHeaderAppWrapper>
         <MenuHeaderAppBar component={'div'} elevation={0}>

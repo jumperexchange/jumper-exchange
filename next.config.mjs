@@ -67,13 +67,19 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'strapi-staging.jumper.exchange',
+        hostname: 'strapi-staging.jumper.xyz',
         port: '',
         pathname: '/uploads/**',
       },
       {
         protocol: 'https',
         hostname: 'strapi.jumper.exchange',
+        port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'strapi.jumper.xyz',
         port: '',
         pathname: '/uploads/**',
       },
