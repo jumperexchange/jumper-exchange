@@ -157,7 +157,7 @@ export const TermsOfBusinessPage = () => {
         <>
           If you have any questions about these Terms or the Functionality,
           please contact us at{' '}
-          <a href={`mailto:legal@${JUMPER_DOMAIN}`}>legal@${JUMPER_DOMAIN}</a>.
+          <a href={`mailto:legal@${JUMPER_DOMAIN}`}>legal@{JUMPER_DOMAIN}</a>.
         </>
       ),
     },
