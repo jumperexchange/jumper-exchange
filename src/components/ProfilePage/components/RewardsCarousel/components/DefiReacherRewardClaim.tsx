@@ -52,14 +52,8 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   );
 
   const handleValidationError = useCallback(() => {
-    removePendingClaimedReward(pendingClaimedRewardKey);
     setSnackbarState(true, t('profile_page.rewardsClaim.error'), 'error');
-  }, [
-    pendingClaimedRewardKey,
-    removePendingClaimedReward,
-    setSnackbarState,
-    t,
-  ]);
+  }, [setSnackbarState, t]);
 
   const prepareClaim = useCallback(async (): Promise<ClaimConfig | null> => {
     const { data: claimCalldata } = await fetchClaimCalldata();
@@ -93,34 +87,47 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
     [pendingClaimedRewardKey, setPendingClaimedReward],
   );
 
+  const runValidation = useCallback(
+    (txHash: Hex) => {
+      validateHash(txHash, {
+        onSuccess: (result) => {
+          if (result?.success) {
+            removePendingClaimedReward(pendingClaimedRewardKey);
+          } else {
+            handleValidationError();
+          }
+        },
+        onError: handleValidationError,
+      });
+    },
+    [
+      pendingClaimedRewardKey,
+      removePendingClaimedReward,
+      validateHash,
+      handleValidationError,
+    ],
+  );
+
   useEffect(() => {
-    if (!pendingTxHash) {
-      return;
+    if (pendingTxHash) {
+      runValidation(pendingTxHash);
     }
-    validateHash(pendingTxHash, {
-      onSuccess: (result) => {
-        if (result?.success) {
-          removePendingClaimedReward(pendingClaimedRewardKey);
-        } else {
-          handleValidationError();
-        }
-      },
-      onError: handleValidationError,
-    });
-  }, [
-    pendingClaimedRewardKey,
-    pendingTxHash,
-    removePendingClaimedReward,
-    validateHash,
-    handleValidationError,
-  ]);
+  }, []);
+
+  const afterConfirm = useCallback(
+    (txHash: Hex) => {
+      runValidation(txHash);
+    },
+    [runValidation],
+  );
 
   return (
     <BaseRewardClaim
       availableReward={availableReward}
       prepareClaim={prepareClaim}
-      isPreparingClaim={isFetching}
       postClaim={postClaim}
+      afterConfirm={afterConfirm}
+      isPreparingClaim={isFetching}
       pendingTxHash={pendingTxHash}
       isPendingValidation={isPendingValidation}
     />

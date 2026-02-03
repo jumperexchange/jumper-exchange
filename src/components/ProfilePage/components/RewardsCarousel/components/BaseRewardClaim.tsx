@@ -25,6 +25,7 @@ interface BaseRewardClaimProps<T extends BaseReward> {
   availableReward: T;
   prepareClaim: () => Promise<ClaimConfig | null>;
   postClaim?: (txHash: Hex) => Promise<void>;
+  afterConfirm?: (hash: Hex) => void;
   isPreparingClaim?: boolean;
   pendingTxHash?: Hex;
   isPendingValidation?: boolean;
@@ -34,6 +35,7 @@ export const BaseRewardClaim = <T extends BaseReward>({
   availableReward,
   prepareClaim,
   postClaim,
+  afterConfirm,
   isPreparingClaim = false,
   pendingTxHash,
   isPendingValidation = false,
@@ -111,6 +113,13 @@ export const BaseRewardClaim = <T extends BaseReward>({
       postClaim(hash);
     }
   }, [hash, postClaim]);
+
+  useEffect(() => {
+    if (!hash || !isConfirmed || !afterConfirm) {
+      return;
+    }
+    afterConfirm(hash);
+  }, [hash, isConfirmed, afterConfirm]);
 
   const displayHash = hash ?? pendingTxHash;
   const hasPendingTx = !!pendingTxHash;
