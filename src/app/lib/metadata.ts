@@ -1,10 +1,12 @@
+import { JUMPER_SITE_NAME } from '@/const/domain';
+import { JUMPER_URL } from '@/const/urls';
 import type { Metadata } from 'next';
 
-export const siteName = 'Jumper.Exchange';
+export const siteName = JUMPER_SITE_NAME;
 
 export const pageMetadataFields = {
   default: {
-    title: 'Jumper Exchange | Smart App for the Universal Market',
+    title: 'Jumper | Smart App for the Universal Market',
     description:
       'Move, deploy and manage your capital with Jumper. Fast swaps, capital deployment, and portfolio management in one smart app.',
   },
@@ -36,7 +38,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.default.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview-default.png',
+        url: `${JUMPER_URL}/preview-default.png`,
         width: 900,
         height: 450,
       },
@@ -49,7 +51,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.earn.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview-earn.png',
+        url: `${JUMPER_URL}/preview-earn.png`,
         width: 900,
         height: 450,
       },
@@ -62,7 +64,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.earnOpportunity.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview-earn.png',
+        url: `${JUMPER_URL}/preview-earn.png`,
         width: 900,
         height: 450,
       },
@@ -75,7 +77,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.portfolio.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview-portfolio.png',
+        url: `${JUMPER_URL}/preview-portfolio.png`,
         width: 900,
         height: 450,
       },
@@ -88,7 +90,7 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
     description: pageMetadataFields.profile.description,
     images: [
       {
-        url: 'https://jumper.exchange/preview-profile.png',
+        url: `${JUMPER_URL}/preview-profile.png`,
         width: 900,
         height: 450,
       },
@@ -103,13 +105,13 @@ export const pageTwitter: Record<string, Metadata['twitter']> = {
     site: '@JumperExchange',
     title: pageMetadataFields.default.title,
     description: pageMetadataFields.default.description,
-    images: 'https://jumper.exchange/preview-default.png',
+    images: `${JUMPER_URL}/preview-default.png`,
   },
   earn: {
     site: '@JumperExchange',
     title: pageMetadataFields.earn.title,
     description: pageMetadataFields.earn.description,
-    images: 'https://jumper.exchange/preview-earn.png',
+    images: `${JUMPER_URL}/preview-earn.png`,
   },
   earnOpportunity: {
     site: '@JumperExchange',
@@ -120,12 +122,12 @@ export const pageTwitter: Record<string, Metadata['twitter']> = {
     site: '@JumperExchange',
     title: pageMetadataFields.portfolio.title,
     description: pageMetadataFields.portfolio.description,
-    images: 'https://jumper.exchange/preview-portfolio.png',
+    images: `${JUMPER_URL}/preview-portfolio.png`,
   },
   profile: {
     site: '@JumperExchange',
     title: pageMetadataFields.profile.title,
     description: pageMetadataFields.profile.description,
-    images: 'https://jumper.exchange/preview-profile.png',
+    images: `${JUMPER_URL}/preview-profile.png`,
   },
 };

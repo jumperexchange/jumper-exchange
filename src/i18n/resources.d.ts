@@ -20,7 +20,7 @@ interface Resources {
       copiedLink: 'Copied Link';
       faq: 'FAQ';
       goToArticle: 'Go to article';
-      jumperCta: 'Try jumper.exchange';
+      jumperCta: 'Try jumper.xyz';
       minRead: '{{minRead}} min read';
       openApp: 'Open app';
       recentPosts: 'Recent Posts';

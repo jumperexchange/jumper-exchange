@@ -27,7 +27,7 @@ jobs:
             exit 0
           fi
 
-          RUN_TITLE="[Jumper Exchange] CI Run ${{ github.run_id }}"
+          RUN_TITLE="[Jumper] CI Run ${{ github.run_id }}"
 
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             PR_URL="${{ github.event.pull_request.html_url }}"

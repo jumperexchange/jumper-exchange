@@ -7,7 +7,7 @@ import { getTags } from 'src/app/lib/getTags';
 
 export const metadata: Metadata = {
   title: 'Jumper Learn',
-  description: 'Jumper Learn is the blog of Jumper Exchange.',
+  description: 'Jumper Learn is the blog of Jumper.',
   alternates: {
     canonical: `${getSiteUrl()}/learn`,
   },

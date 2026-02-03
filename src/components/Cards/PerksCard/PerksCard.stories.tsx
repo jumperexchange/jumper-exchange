@@ -6,6 +6,7 @@ import { Badge } from '../../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../../Badge/Badge.styles';
 import { PerksCard } from './PerksCard';
 import { PerksCardSkeleton } from './PerksCardSkeleton';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 const meta = {
   title: 'Components/Cards/PerksCard',
   component: PerksCard,
@@ -23,8 +24,7 @@ export const NansenPerksCard: Story = {
     title: 'Nansen',
     description:
       'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
-    imageUrl:
-      'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
+    imageUrl: `${JUMPER_STRAPI_URL}/uploads/perks_example_card_3d452f1424.png`,
     perksBadge: (
       <Badge
         label={
@@ -56,8 +56,7 @@ export const NansenPerksCardWithUnlockedBadge: Story = {
     title: 'Nansen',
     description:
       'Save 20% on all Nansen plans regardless of whether you pay monthly, 6 monthly or yearly.',
-    imageUrl:
-      'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
+    imageUrl: `${JUMPER_STRAPI_URL}/uploads/perks_example_card_3d452f1424.png`,
     perksBadge: (
       <Badge
         label={
@@ -89,8 +88,7 @@ export const PerksCardWithLargeTitleAndDescription: Story = {
     title: 'This is a very long title that should be truncated',
     description:
       'This is a very long description that should be truncated [lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.]',
-    imageUrl:
-      'https://strapi.jumper.exchange/uploads/perks_example_card_3d452f1424.png',
+    imageUrl: `${JUMPER_STRAPI_URL}/uploads/perks_example_card_3d452f1424.png`,
     perksBadge: (
       <Badge
         label={
@@ -122,7 +120,7 @@ export const PerksCardWithTransparentImageBackground: Story = {
     title: 'Perk with transparent img background',
     description:
       'This is a perk with transparent image background and only level badge',
-    imageUrl: 'https://strapi.jumper.exchange/uploads/galxe_d62ffaaad1.png',
+    imageUrl: `${JUMPER_STRAPI_URL}/uploads/galxe_d62ffaaad1.png`,
     levelBadge: (
       <Badge
         startIcon={<LockIcon />}

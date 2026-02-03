@@ -13,6 +13,7 @@ import {
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ICON_SIZES } from './constants';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 
 type CampaignHeroCardStoryProps = ComponentProps<typeof CampaignHeroCard> & {
   heroStatsCardVariant?: MissionHeroStatsCardVariant;
@@ -114,10 +115,9 @@ export const Default: Story = {
     title: 'Pre-mine on Berachain',
     description:
       'Jumper and Berachain DAO are hosting Lisk Surge, a 9-week DeFi Campaign with above market yields opportunities for key assets including USDT0, ETH and BTC.',
-    imageSrc:
-      'https://strapi.jumper.exchange/uploads/Surge_Banner_2880x720_1_f24f7490bc.png',
+    imageSrc: `${JUMPER_STRAPI_URL}/uploads/Surge_Banner_2880x720_1_f24f7490bc.png`,
     alt: 'Pre-mine on Berachain',
-    icon: 'https://strapi.jumper.exchange/uploads/lisk_chain_de4347a5f9.png',
+    icon: `${JUMPER_STRAPI_URL}/uploads/lisk_chain_de4347a5f9.png`,
     benefitLabel: 'Total Rewards',
     benefitValue: '$100K',
     missionsCount: 5,

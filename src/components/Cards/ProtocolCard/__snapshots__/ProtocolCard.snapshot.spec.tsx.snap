@@ -7,7 +7,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1mlhzir"
+      class="MuiBox-root css-156evdk"
     >
       <div
         class="MuiBox-root css-716jf3"
@@ -16,7 +16,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
           alt="morpho"
           class="css-1untznu"
           height="56"
-          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
         />
         <p
@@ -91,7 +91,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1mlhzir"
+      class="MuiBox-root css-156evdk"
     >
       <div
         class="MuiBox-root css-1f6e6uc"
@@ -113,7 +113,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
           alt="morpho"
           class="css-1untznu"
           height="56"
-          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
         />
         <p
@@ -220,7 +220,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
     data-testid="protocol-card"
   >
     <div
-      class="MuiBox-root css-1mlhzir"
+      class="MuiBox-root css-156evdk"
     >
       <div
         class="MuiBox-root css-716jf3"
@@ -229,7 +229,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
           alt="this is a very long protocol name that should be truncated"
           class="css-1untznu"
           height="56"
-          src="https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+          src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
           width="56"
         />
         <p

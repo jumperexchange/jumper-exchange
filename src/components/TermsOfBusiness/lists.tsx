@@ -1,3 +1,4 @@
+import { JUMPER_DOMAIN } from '@/const/domain';
 import { orderedListWithSmallRomanNumbers } from './utils';
 
 export const eligibilityList = [
@@ -191,7 +192,7 @@ export const disclaimersList = [
   },
   {
     description:
-      'Swapping Risks. You acknowledge that we do not facilitate the execution or settlement of your trades, which occur entirely on blockchain networks. As a result, we do not (and cannot) guarantee market best pricing or best execution through our Functionality or when using our Jumper Exchange (an interface aggregating third-party liquidity sources) functionality, which routes trades across a variety of protocols. Any references in the Functionality to "best price" or similar expressions describe the output of automated, technical aggregation logic based on predefined parameters and available third-party data and do not constitute a representation, warranty or recommendation about pricing available through such Functionality, nor do they imply that we have assessed or selected any Third-Party Functionality on your behalf. Routing outcomes are determined by technical aggregation logic and user-selected parameters and do not involve discretionary decision-making or protocol selection by us.',
+      'Swapping Risks. You acknowledge that we do not facilitate the execution or settlement of your trades, which occur entirely on blockchain networks. As a result, we do not (and cannot) guarantee market best pricing or best execution through our Functionality or when using our Jumper (an interface aggregating third-party liquidity sources) functionality, which routes trades across a variety of protocols. Any references in the Functionality to "best price" or similar expressions describe the output of automated, technical aggregation logic based on predefined parameters and available third-party data and do not constitute a representation, warranty or recommendation about pricing available through such Functionality, nor do they imply that we have assessed or selected any Third-Party Functionality on your behalf. Routing outcomes are determined by technical aggregation logic and user-selected parameters and do not involve discretionary decision-making or protocol selection by us.',
   },
   {
     description:
@@ -224,8 +225,7 @@ export const limitationList = [
 
 export const disputeList = [
   {
-    description:
-      'Informal Resolution. Before initiating any legal or arbitral action, you and we agree to make reasonable, good-faith efforts to resolve any dispute, claim, or controversy arising out of or relating to these terms (each, a "Dispute"). Either party may start this process by sending written notice describing the issue and requested resolution. Such written notice must be sent to legal@jumper.exchange and must clearly state that it is submitted pursuant to clause 13 (Dispute Resolution) of these Terms. If the Dispute is not resolved within forty-five (45) business days, either party may proceed as set forth below.  ',
+    description: `Informal Resolution. Before initiating any legal or arbitral action, you and we agree to make reasonable, good-faith efforts to resolve any dispute, claim, or controversy arising out of or relating to these terms (each, a "Dispute"). Either party may start this process by sending written notice describing the issue and requested resolution. Such written notice must be sent to legal@${JUMPER_DOMAIN} and must clearly state that it is submitted pursuant to clause 13 (Dispute Resolution) of these Terms. If the Dispute is not resolved within forty-five (45) business days, either party may proceed as set forth below.  `,
   },
   {
     description:

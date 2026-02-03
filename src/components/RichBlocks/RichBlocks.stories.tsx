@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { RichBlocks } from './RichBlocks';
 import { RichBlocksVariant } from './types';
+import { JUMPER_STRAPI_URL, JUMPER_URL } from '@/const/urls';
 
 const meta: Meta<typeof RichBlocks> = {
   title: 'Components/RichBlocks',
@@ -254,7 +255,7 @@ export const BlogArticleImages: Story = {
           height: 600,
           formats: {
             small: {
-              url: 'https://strapi.jumper.exchange/uploads/small_AI_Memecoins_and_Crypto_f98c61b932.png',
+              url: `${JUMPER_STRAPI_URL}/uploads/small_AI_Memecoins_and_Crypto_f98c61b932.png`,
               width: 400,
               height: 300,
               hash: 'small_hash_123',
@@ -263,7 +264,7 @@ export const BlogArticleImages: Story = {
               size: 45.2,
             },
             medium: {
-              url: 'https://strapi.jumper.exchange/uploads/medium_AI_Memecoins_and_Crypto_f98c61b932.png',
+              url: `${JUMPER_STRAPI_URL}/uploads/medium_AI_Memecoins_and_Crypto_f98c61b932.png`,
               width: 600,
               height: 450,
               hash: 'medium_hash_123',
@@ -272,7 +273,7 @@ export const BlogArticleImages: Story = {
               size: 89.7,
             },
             large: {
-              url: 'https://strapi.jumper.exchange/uploads/large_AI_Memecoins_and_Crypto_f98c61b932.png',
+              url: `${JUMPER_STRAPI_URL}/uploads/large_AI_Memecoins_and_Crypto_f98c61b932.png`,
               width: 800,
               height: 600,
               hash: 'large_hash_123',
@@ -281,7 +282,7 @@ export const BlogArticleImages: Story = {
               size: 156.3,
             },
             thumbnail: {
-              url: 'https://strapi.jumper.exchange/uploads/thumb_AI_Memecoins_and_Crypto_f98c61b932.png',
+              url: `${JUMPER_STRAPI_URL}/uploads/thumb_AI_Memecoins_and_Crypto_f98c61b932.png`,
               width: 150,
               height: 150,
               hash: 'thumb_hash_123',
@@ -294,9 +295,8 @@ export const BlogArticleImages: Story = {
           ext: '.png',
           mime: 'image/png',
           size: 156.3,
-          url: 'https://strapi.jumper.exchange/uploads/AI_Memecoins_and_Crypto_f98c61b932.png',
-          previewUrl:
-            'https://strapi.jumper.exchange/uploads/AI_Memecoins_and_Crypto_f98c61b932.png',
+          url: `${JUMPER_STRAPI_URL}/uploads/AI_Memecoins_and_Crypto_f98c61b932.png`,
+          previewUrl: `${JUMPER_STRAPI_URL}/uploads/AI_Memecoins_and_Crypto_f98c61b932.png`,
           provider: 'local',
           provider_metadata: {},
           createdAt: '2024-11-18T10:00:00.000Z',
@@ -322,7 +322,7 @@ export const BlogArticleCTA: Story = {
         children: [
           {
             type: 'text',
-            text: '<JUMPER_CTA title="Jumper" url="https://jumper.exchange" />',
+            text: `<JUMPER_CTA title="Jumper" url="${JUMPER_URL}" />`,
           },
         ],
       },
@@ -352,22 +352,22 @@ const instructionsJSON = [
   {
     title: 'Step 1',
     step: '1',
-    link: { label: 'Connect Wallet', url: 'https://jumper.exchange' },
+    link: { label: 'Connect Wallet', url: JUMPER_URL },
   },
   {
     title: 'Step 2',
     step: '2',
-    link: { label: 'Select Token', url: 'https://jumper.exchange' },
+    link: { label: 'Select Token', url: JUMPER_URL },
   },
   {
     title: 'Step 3',
     step: '3',
-    link: { label: 'Select Amount', url: 'https://jumper.exchange' },
+    link: { label: 'Select Amount', url: JUMPER_URL },
   },
   {
     title: 'Step 4',
     step: '4',
-    link: { label: 'Review Transaction', url: 'https://jumper.exchange' },
+    link: { label: 'Review Transaction', url: JUMPER_URL },
   },
 ];
 
