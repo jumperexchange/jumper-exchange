@@ -3,13 +3,13 @@ import './global.css';
 import type { Metadata } from 'next';
 import {
   iconUrl,
-  miniAppUrl,
   splashBackgroundColor,
   splashImageUrl,
 } from '@/utils/miniApp';
 import { getMiniAppSettings } from './lib/getMiniAppSettings';
 
 export async function generateMetadata(): Promise<Metadata> {
+  const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
   const {
     data: { appId },
   } = await getMiniAppSettings();
@@ -25,8 +25,8 @@ export async function generateMetadata(): Promise<Metadata> {
           action: {
             type: 'launch_miniapp',
             name: 'Jumper',
-            url: miniAppUrl,
-            splashImageUrl: splashImageUrl,
+            url: PUBLIC_URL,
+            splashImageUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
             splashBackgroundColor: splashBackgroundColor,
           },
         },

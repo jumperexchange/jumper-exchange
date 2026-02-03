@@ -1,8 +1,8 @@
-import type { SingleStrapiResponse, StrapiResponse } from '@/types/strapi';
 import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import type { SingleStrapiResponse } from '@/types/strapi';
 
 const BASE_MINI_APP_SETTING_API_ENDPOINT = 'base-mini-app-setting';
 
@@ -10,6 +10,7 @@ export interface MiniAppSettingAttributes {
   id: number;
   documentId: string;
   appId: string;
+  // Using any, because it's just a JSON object
   accountAssociation: any;
   createdAt: string;
   updatedAt: string;
