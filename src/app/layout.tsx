@@ -10,16 +10,14 @@ import { getMiniAppSettings } from './lib/getMiniAppSettings';
 
 export async function generateMetadata(): Promise<Metadata> {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
-  const {
-    data: { appId },
-  } = await getMiniAppSettings();
+  const { appId } = await getMiniAppSettings();
 
   return {
     other: {
       'base:app_id': appId,
       'fc:miniapp': JSON.stringify({
         version: 'next',
-        imageUrl: iconUrl,
+        imageUrl: new URL(iconUrl, PUBLIC_URL).toString(),
         button: {
           title: `Launch Jumper`,
           action: {

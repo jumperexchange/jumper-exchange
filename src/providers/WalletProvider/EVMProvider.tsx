@@ -1,19 +1,30 @@
 'use client';
-import { defaultCoinbaseConfig } from '@/config/coinbase';
-import { defaultMetaMaskConfig } from '@/config/metaMask';
-import { defaultWalletConnectConfig } from '@/config/walletConnect';
-import { useChains } from '@/hooks/useChains';
+import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import type { ExtendedChain } from '@lifi/sdk';
 import {
   createDefaultWagmiConfig,
   useSyncWagmiConfig,
 } from '@lifi/wallet-management';
-import { type FC, type PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
-import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import { baseAccount } from 'wagmi/connectors';
+import { defaultCoinbaseConfig } from '@/config/coinbase';
+import { defaultMetaMaskConfig } from '@/config/metaMask';
+import { defaultWalletConnectConfig } from '@/config/walletConnect';
+import { useChains } from '@/hooks/useChains';
+import { miniAppName, splashImageUrl } from '@/utils/miniApp';
 
+const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
 const { config, connectors } = createDefaultWagmiConfig({
-  connectors: [abstractWalletConnector()],
+  connectors: [
+    farcasterMiniApp(),
+    baseAccount({
+      appName: miniAppName,
+      appLogoUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
+    }),
+    abstractWalletConnector(),
+  ],
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,

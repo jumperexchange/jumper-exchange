@@ -69,11 +69,6 @@ export interface StrapiMetaPagination {
 
 export type StrapiResponseData<T> = T[];
 
-export interface SingleStrapiResponse<T> {
-  data: T;
-  meta: StrapiMeta;
-}
-
 export interface StrapiResponse<T> {
   data: StrapiResponseData<T>;
   meta: StrapiMeta;

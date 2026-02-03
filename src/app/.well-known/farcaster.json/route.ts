@@ -1,6 +1,7 @@
 import { getMiniAppSettings } from '@/app/lib/getMiniAppSettings';
 import {
   iconUrl,
+  miniAppName,
   splashBackgroundColor,
   splashImageUrl,
 } from '@/utils/miniApp';
@@ -8,15 +9,13 @@ import {
 export async function GET() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
 
-  const {
-    data: { accountAssociation },
-  } = await getMiniAppSettings();
+  const { accountAssociation } = await getMiniAppSettings();
 
   return Response.json({
     ...accountAssociation,
     miniapp: {
       version: '1',
-      name: 'Jumper Mini App',
+      name: miniAppName,
       homeUrl: PUBLIC_URL,
       iconUrl: new URL(iconUrl, PUBLIC_URL).toString(),
       splashImageUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
@@ -25,7 +24,7 @@ export async function GET() {
       subtitle: 'Find the best route',
       description: 'A fast way to get any token you want',
       screenshotUrls: [],
-      primaryCategory: 'swap',
+      primaryCategory: 'finance',
       tags: ['jumper', 'finance', 'swap', 'defi'],
       heroImageUrl: 'https://ex.co/og.png',
       tagline: 'Play instantly',
