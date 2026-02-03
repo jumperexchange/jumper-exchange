@@ -102,30 +102,30 @@ export const pageOpenGraph: Record<string, Metadata['openGraph']> = {
 
 export const pageTwitter: Record<string, Metadata['twitter']> = {
   default: {
-    site: '@JumperExchange',
+    site: '@Jumper',
     title: pageMetadataFields.default.title,
     description: pageMetadataFields.default.description,
     images: `${JUMPER_URL}/preview-default.png`,
   },
   earn: {
-    site: '@JumperExchange',
+    site: '@Jumper',
     title: pageMetadataFields.earn.title,
     description: pageMetadataFields.earn.description,
     images: `${JUMPER_URL}/preview-earn.png`,
   },
   earnOpportunity: {
-    site: '@JumperExchange',
+    site: '@Jumper',
     title: pageMetadataFields.earnOpportunity.title,
     description: pageMetadataFields.earnOpportunity.description,
   },
   portfolio: {
-    site: '@JumperExchange',
+    site: '@Jumper',
     title: pageMetadataFields.portfolio.title,
     description: pageMetadataFields.portfolio.description,
     images: `${JUMPER_URL}/preview-portfolio.png`,
   },
   profile: {
-    site: '@JumperExchange',
+    site: '@Jumper',
     title: pageMetadataFields.profile.title,
     description: pageMetadataFields.profile.description,
     images: `${JUMPER_URL}/preview-profile.png`,
