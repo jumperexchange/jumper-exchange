@@ -34,6 +34,6 @@ export const publicRPCList = {
 };
 
 export const mergedRPCList = {
-  ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
+  ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
   ...publicRPCList,
 };
