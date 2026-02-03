@@ -28,7 +28,7 @@ export async function verifyTaskQuery(props: VerifyTaskProps) {
   const jsonResponse = await res.json();
 
   if (!jsonResponse) {
-    throw new Error(jsonResponse.message);
+    throw new Error("Invalid response from server");
   }
 
   // TODO: Needs to be improved
