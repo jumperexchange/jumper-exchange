@@ -26,6 +26,8 @@ interface BaseRewardClaimProps<T extends BaseReward> {
   prepareClaim: () => Promise<ClaimConfig | null>;
   postClaim?: (txHash: Hex) => Promise<void>;
   isPreparingClaim?: boolean;
+  pendingTxHash?: Hex;
+  isPendingValidation?: boolean;
 }
 
 export const BaseRewardClaim = <T extends BaseReward>({
@@ -33,6 +35,8 @@ export const BaseRewardClaim = <T extends BaseReward>({
   prepareClaim,
   postClaim,
   isPreparingClaim = false,
+  pendingTxHash,
+  isPendingValidation = false,
 }: BaseRewardClaimProps<T>) => {
   const { t } = useTranslation();
   const { address } = useAccount();
@@ -103,10 +107,13 @@ export const BaseRewardClaim = <T extends BaseReward>({
   }, [isError, handleError]);
 
   useEffect(() => {
-    if (isConfirmed && hash && postClaim) {
+    if (hash && postClaim) {
       postClaim(hash);
     }
-  }, [isConfirmed, hash, postClaim]);
+  }, [hash, postClaim]);
+
+  const displayHash = hash ?? pendingTxHash;
+  const hasPendingTx = !!pendingTxHash;
 
   return (
     <RewardClaimCard
@@ -116,7 +123,9 @@ export const BaseRewardClaim = <T extends BaseReward>({
       isDisabled={isButtonDisabled}
       isConfirmed={isConfirmed}
       isError={isError}
-      hash={hash}
+      hash={displayHash}
+      hasPendingTx={hasPendingTx}
+      isPendingValidation={isPendingValidation}
     />
   );
 };

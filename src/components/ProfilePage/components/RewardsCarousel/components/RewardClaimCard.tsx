@@ -24,6 +24,8 @@ interface RewardClaimCardProps {
   isConfirmed: boolean;
   isError: boolean;
   hash: string | undefined;
+  hasPendingTx?: boolean;
+  isPendingValidation?: boolean;
 }
 
 export const RewardClaimCard: FC<RewardClaimCardProps> = ({
@@ -34,6 +36,8 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
   isConfirmed,
   isError,
   hash,
+  hasPendingTx = false,
+  isPendingValidation = false,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -45,8 +49,11 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
   );
 
   const isFinalized = !!hash && (isConfirmed || isError);
-  const showClaimButton = !isConfirmed || isError;
-  const showExplorerLink = !isLoading && isFinalized && explorerLink;
+  const showLinkForPending = hasPendingTx && !!explorerLink;
+  const showClaimButton =
+    (!isConfirmed || isError) && !(hasPendingTx && isPendingValidation);
+  const showExplorerLink =
+    !isLoading && (isFinalized || showLinkForPending) && !!explorerLink;
 
   const claimButtonLabel = useMemo(() => {
     if (isLoading) {

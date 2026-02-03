@@ -1,13 +1,22 @@
 'use client';
-import { DeFiReacherClaimABI } from '@/const/abi/deFiReacherABI';
-import { useDeFiReacherRewardClaimCalldata } from '@/hooks/rewards/useDeFiReacherRewardClaimCalldata';
-import type { DeFiReacherReward } from '@/types/rewards';
-import type { FC } from 'react';
+
+import { useCallback, useEffect, useMemo, type FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAccount } from 'wagmi';
-import { BaseRewardClaim, type ClaimConfig } from './BaseRewardClaim';
 import type { Hex } from 'viem';
 import { isAddress } from 'viem';
+
+import { DeFiReacherClaimABI } from '@/const/abi/deFiReacherABI';
+import { useDeFiReacherRewardClaimCalldata } from '@/hooks/rewards/useDeFiReacherRewardClaimCalldata';
 import { useDeFiReacherValidateHash } from '@/hooks/rewards/useDeFiReacherValidateHash';
+import {
+  generatePendingClaimedRewardKey,
+  useRewardsStore,
+} from '@/stores/rewards/RewardsStore';
+import { useMenuStore } from '@/stores/menu/MenuStore';
+import type { DeFiReacherReward } from '@/types/rewards';
+
+import { BaseRewardClaim, type ClaimConfig } from './BaseRewardClaim';
 
 interface DefiReacherRewardClaimProps {
   availableReward: DeFiReacherReward;
@@ -16,13 +25,43 @@ interface DefiReacherRewardClaimProps {
 export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   availableReward,
 }) => {
+  const { t } = useTranslation();
   const { address } = useAccount();
+  const setSnackbarState = useMenuStore((state) => state.setSnackbarState);
+  const setPendingClaimedReward = useRewardsStore(
+    (state) => state.setPendingClaimedReward,
+  );
+  const removePendingClaimedReward = useRewardsStore(
+    (state) => state.removePendingClaimedReward,
+  );
   const { refetch: fetchClaimCalldata, isFetching } =
     useDeFiReacherRewardClaimCalldata(address, availableReward.campaignId);
+  const { mutate: validateHash, isPending: isPendingValidation } =
+    useDeFiReacherValidateHash();
 
-  const { mutate: validateHash } = useDeFiReacherValidateHash();
+  const pendingClaimedRewardKey = useMemo(
+    () =>
+      generatePendingClaimedRewardKey(
+        availableReward.campaignId,
+        address ?? '',
+      ),
+    [availableReward.campaignId, address],
+  );
+  const pendingTxHash = useRewardsStore((state) =>
+    state.getPendingClaimedReward(pendingClaimedRewardKey),
+  );
 
-  const prepareClaim = async (): Promise<ClaimConfig | null> => {
+  const handleValidationError = useCallback(() => {
+    removePendingClaimedReward(pendingClaimedRewardKey);
+    setSnackbarState(true, t('profile_page.rewardsClaim.error'), 'error');
+  }, [
+    pendingClaimedRewardKey,
+    removePendingClaimedReward,
+    setSnackbarState,
+    t,
+  ]);
+
+  const prepareClaim = useCallback(async (): Promise<ClaimConfig | null> => {
     const { data: claimCalldata } = await fetchClaimCalldata();
 
     if (
@@ -45,11 +84,36 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
         claimCalldata.args.merkleProof,
       ],
     };
-  };
+  }, [fetchClaimCalldata]);
 
-  const postClaim = async (txHash: Hex) => {
-    await validateHash(txHash);
-  };
+  const postClaim = useCallback(
+    async (txHash: Hex) => {
+      setPendingClaimedReward(pendingClaimedRewardKey, txHash);
+    },
+    [pendingClaimedRewardKey, setPendingClaimedReward],
+  );
+
+  useEffect(() => {
+    if (!pendingTxHash) {
+      return;
+    }
+    validateHash(pendingTxHash, {
+      onSuccess: (result) => {
+        if (result?.success) {
+          removePendingClaimedReward(pendingClaimedRewardKey);
+        } else {
+          handleValidationError();
+        }
+      },
+      onError: handleValidationError,
+    });
+  }, [
+    pendingClaimedRewardKey,
+    pendingTxHash,
+    removePendingClaimedReward,
+    validateHash,
+    handleValidationError,
+  ]);
 
   return (
     <BaseRewardClaim
@@ -57,6 +121,8 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
       prepareClaim={prepareClaim}
       isPreparingClaim={isFetching}
       postClaim={postClaim}
+      pendingTxHash={pendingTxHash}
+      isPendingValidation={isPendingValidation}
     />
   );
 };
