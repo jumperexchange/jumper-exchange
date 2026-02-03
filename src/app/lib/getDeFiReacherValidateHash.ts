@@ -2,7 +2,10 @@ import type { Hex } from 'viem';
 
 export interface DeFiReacherValidateHashResponse {
   success: boolean;
-  message: string;
+  status: string;
+  campaignId?: string;
+  transactionHash?: string;
+  walletAddress?: string;
 }
 
 export const getDeFiReacherValidateHash = async (
