@@ -595,6 +595,14 @@ interface Resources {
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
       rewards: 'Rewards Earned';
+      rewardsClaim: {
+        action: {
+          claim: 'Claim';
+          claiming: 'Claiming';
+          retry: 'Retry';
+        };
+        error: 'An unknown error occurred. Please try again.';
+      };
       shareProfile: 'Share profile';
       tooltips: {
         unlockAtLevel: 'Unlocked at Level {{level}}';

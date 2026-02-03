@@ -13,6 +13,7 @@ export const LINK3_URL = 'https://link3.to/jumperexchange';
 export const TELEGRAM_URL = 'https://t.me/officialjumperexchange';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
 export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
+export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_LEARN_PATH = '/learn';

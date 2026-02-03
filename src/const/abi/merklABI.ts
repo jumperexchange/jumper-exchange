@@ -1,3 +1,5 @@
+import { type Abi } from 'viem';
+
 export const MerklDistribABI = [
   { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
   { inputs: [], name: 'InvalidDispute', type: 'error' },
@@ -486,4 +488,4 @@ export const MerklDistribABI = [
     stateMutability: 'payable',
     type: 'function',
   },
-];
+] as Abi;
