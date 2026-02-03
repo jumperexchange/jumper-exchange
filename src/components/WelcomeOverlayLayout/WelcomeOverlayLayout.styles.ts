@@ -21,7 +21,7 @@ export const GlowContainer = styled(Box, {
   return {
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'inherit',
+    overflow: 'auto',
     width: '100%',
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
