@@ -14,7 +14,6 @@ import {
   buildRewardFilter,
   isRewardAllowed,
 } from '@/utils/rewards/merklRewardFilter';
-import { isProduction } from '@/utils/isProduction';
 
 const transformToDeFiReacherReward = (
   apiReward: DeFiReacherApiReward,
@@ -57,7 +56,7 @@ export const useDeFiReacherRewards = ({
   return useQuery({
     queryKey: ['deFiReacherRewards', userAddress],
     queryFn: () => getDeFiReacherRewards(userAddress!),
-    enabled: !!userAddress && !isProduction,
+    enabled: !!userAddress,
     select: selectFn,
   });
 };
