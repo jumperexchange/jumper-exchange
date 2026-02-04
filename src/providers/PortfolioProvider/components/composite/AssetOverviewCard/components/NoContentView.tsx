@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { EntityStack } from '../../EntityStack/EntityStack';
 import { Button } from '@/components/Button/Button';
 import { AppPaths } from '@/const/urls';

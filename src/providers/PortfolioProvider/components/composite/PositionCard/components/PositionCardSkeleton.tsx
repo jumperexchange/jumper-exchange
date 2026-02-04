@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { EntityStackWithBadge } from '../../EntityStackWithBadge/EntityStackWithBadge';
 import { EntityStackBadgePlacement } from '../../EntityStackWithBadge/types';
 import { StyledSummaryContent, StyledTagsRow } from '../PositionCard.styles';

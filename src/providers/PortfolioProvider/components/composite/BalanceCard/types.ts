@@ -1,5 +1,5 @@
 import type { SxProps, Theme } from '@mui/material/styles';
-import type { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import type { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
 import type { ResponsiveValue } from '@/types/responsive';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';

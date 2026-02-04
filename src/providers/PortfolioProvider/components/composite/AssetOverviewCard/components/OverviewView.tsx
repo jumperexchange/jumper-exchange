@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EntityStack } from '../../EntityStack/EntityStack';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { OverviewContainer } from '../AssetOverviewCard.styles';
 import { OverviewColumn } from './OverviewColumn';
 import { MAX_DISPLAY_ASSETS_COUNT } from '../constants';

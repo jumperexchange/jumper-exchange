@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { ExtendedChain } from '@lifi/sdk';
 import { EntityStackWithBadge } from './EntityStackWithBadge';
 import { EntityStackBadgePlacement } from './types';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import {
   mockExtendedTokens,
   mockExtendedChains,

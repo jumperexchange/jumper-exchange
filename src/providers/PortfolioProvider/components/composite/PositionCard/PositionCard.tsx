@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { ColumnTable } from '@/components/core/ColumnTable/ColumnTable';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { EntityStackWithBadge } from '../EntityStackWithBadge/EntityStackWithBadge';
 import { PositionOverview } from './components/PositionOverview';
 import { PositionOverviewButton } from './components/PositionOverviewButton';
