@@ -1,35 +1,35 @@
-import initTranslations from '@/app/i18n';
-import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import config from '@/config/env-config';
-import { getSiteUrl } from '@/const/urls';
-import { fonts } from '@/fonts/fonts';
-import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import {
-  MUIThemeProvider,
-  DefaultThemeProvider,
-} from '@/providers/ThemeProvider';
-import TranslationsProvider from '@/providers/TranslationProvider';
-import { WalletProvider } from '@/providers/WalletProvider';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { ReactNode } from 'react';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
-import { SettingsStoreProvider } from 'src/stores/settings';
-import {
-  pageOpenGraph,
-  pageMetadataFields,
-  pageTwitter,
-  baseMiniApp,
-} from '../lib/metadata';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
-import { getMiniAppSettings } from '../lib/getMiniAppSettings';
+import { SettingsStoreProvider } from 'src/stores/settings';
+import initTranslations from '@/app/i18n';
+import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import config from '@/config/env-config';
 import envConfig from '@/config/env-config';
+import { getSiteUrl } from '@/const/urls';
+import { fonts } from '@/fonts/fonts';
+import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
+import {
+  DefaultThemeProvider,
+  MUIThemeProvider,
+} from '@/providers/ThemeProvider';
+import TranslationsProvider from '@/providers/TranslationProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
+import { getMiniAppSettings } from '../lib/getMiniAppSettings';
+import {
+  baseMiniApp,
+  pageMetadataFields,
+  pageOpenGraph,
+  pageTwitter,
+} from '../lib/metadata';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -120,6 +120,7 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        {/* keeping that here, because base needs to match it in the head */}
         <meta name="base:app_id" content={appId} />
         <style>
           {`
