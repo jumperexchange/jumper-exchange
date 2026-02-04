@@ -1,10 +1,5 @@
 import { getMiniAppSettings } from '@/app/lib/getMiniAppSettings';
-import {
-  iconUrl,
-  miniAppName,
-  splashBackgroundColor,
-  splashImageUrl,
-} from '@/utils/miniApp';
+import { baseMiniApp } from '@/app/lib/metadata';
 
 export async function GET() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
@@ -17,11 +12,14 @@ export async function GET() {
     ...accountAssociation,
     miniapp: {
       version: '1',
-      name: miniAppName,
+      name: baseMiniApp.miniAppName,
       homeUrl: PUBLIC_URL,
-      iconUrl: new URL(iconUrl, PUBLIC_URL).toString(),
-      splashImageUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
-      splashBackgroundColor: splashBackgroundColor,
+      iconUrl: new URL(baseMiniApp.iconUrl, PUBLIC_URL).toString(),
+      splashImageUrl: new URL(
+        baseMiniApp.splashImageUrl,
+        PUBLIC_URL,
+      ).toString(),
+      splashBackgroundColor: baseMiniApp.splashBackgroundColor,
       webhookUrl: '',
       subtitle: 'Find the best route',
       description: 'A fast way to get any token you want',

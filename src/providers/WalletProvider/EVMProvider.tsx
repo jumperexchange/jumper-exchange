@@ -9,19 +9,19 @@ import {
 import type { FC, PropsWithChildren } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { baseAccount } from 'wagmi/connectors';
+import { baseMiniApp } from '@/app/lib/metadata';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
-import { miniAppName, splashImageUrl } from '@/utils/miniApp';
 
 const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
 const { config, connectors } = createDefaultWagmiConfig({
   connectors: [
     farcasterMiniApp(),
     baseAccount({
-      appName: miniAppName,
-      appLogoUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
+      appName: baseMiniApp.miniAppName,
+      appLogoUrl: new URL(baseMiniApp.splashImageUrl, PUBLIC_URL).toString(),
     }),
     abstractWalletConnector(),
   ],

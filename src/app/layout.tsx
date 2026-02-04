@@ -1,12 +1,8 @@
 import type { ReactNode } from 'react';
 import './global.css';
 import type { Metadata } from 'next';
-import {
-  iconUrl,
-  splashBackgroundColor,
-  splashImageUrl,
-} from '@/utils/miniApp';
 import { getMiniAppSettings } from './lib/getMiniAppSettings';
+import { baseMiniApp } from './lib/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
@@ -17,15 +13,18 @@ export async function generateMetadata(): Promise<Metadata> {
       'base:app_id': appId,
       'fc:miniapp': JSON.stringify({
         version: 'next',
-        imageUrl: new URL(iconUrl, PUBLIC_URL).toString(),
+        imageUrl: new URL(baseMiniApp.iconUrl, PUBLIC_URL).toString(),
         button: {
           title: `Launch Jumper`,
           action: {
             type: 'launch_miniapp',
             name: 'Jumper',
             url: PUBLIC_URL,
-            splashImageUrl: new URL(splashImageUrl, PUBLIC_URL).toString(),
-            splashBackgroundColor: splashBackgroundColor,
+            splashImageUrl: new URL(
+              baseMiniApp.splashImageUrl,
+              PUBLIC_URL,
+            ).toString(),
+            splashBackgroundColor: baseMiniApp.splashBackgroundColor,
           },
         },
       }),
