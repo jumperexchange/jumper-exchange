@@ -19,7 +19,7 @@ export interface MiniAppSettingAttributes {
 }
 
 export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
-  const publicUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL || '');
+  const publicUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL);
 
   const baseUrl = getStrapiBaseUrl();
   const accessToken = getStrapiApiAccessToken();
