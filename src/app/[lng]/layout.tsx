@@ -25,9 +25,13 @@ import {
   pageOpenGraph,
   pageMetadataFields,
   pageTwitter,
+  baseMiniApp,
 } from '../lib/metadata';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
+import { getMiniAppSettings } from '../lib/getMiniAppSettings';
+import envConfig from '@/config/env-config';
 
+const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
   title: pageMetadataFields.default.title,
   description: pageMetadataFields.default.description,
@@ -62,6 +66,25 @@ export const metadata: Metadata = {
       },
     ],
   },
+  other: {
+    'fc:miniapp': JSON.stringify({
+      version: 'next',
+      imageUrl: new URL(baseMiniApp.iconUrl, PUBLIC_URL).toString(),
+      button: {
+        title: `Launch Jumper`,
+        action: {
+          type: 'launch_miniapp',
+          name: 'Jumper',
+          url: PUBLIC_URL,
+          splashImageUrl: new URL(
+            baseMiniApp.splashImageUrl,
+            PUBLIC_URL,
+          ).toString(),
+          splashBackgroundColor: baseMiniApp.splashBackgroundColor,
+        },
+      },
+    }),
+  },
 };
 
 export const viewport: Viewport = {
@@ -81,6 +104,13 @@ export default async function RootLayout({
   const { lng } = await params;
   const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
   const { resources } = await initTranslations(lng || fallbackLng, namespaces);
+  const { appId } = await getMiniAppSettings().catch((e) => {
+    console.error(
+      'Failed to fetch mini app settings, using default values.',
+      e,
+    );
+    return { appId: '' };
+  });
 
   return (
     <html
@@ -90,6 +120,7 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        <meta name="base:app_id" content={appId} />
         <style>
           {`
           // Adding default loading background colors
