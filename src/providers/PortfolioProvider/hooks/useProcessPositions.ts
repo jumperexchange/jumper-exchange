@@ -55,14 +55,27 @@ export const useProcessedPositions = (params: UsePositionsDataProps) => {
     [sortedPositions],
   );
 
-  return {
-    ...rawData,
-    positions: sortedPositions,
+  const isEmpty = positions.length === 0;
+
+  return useMemo(() => {
+    return {
+      ...rawData,
+      positions: sortedPositions,
+      positionsByAddress,
+      positionsByProtocolAndChain,
+      positionsByProtocol,
+      metadata,
+      lpTokens,
+      isEmpty,
+    };
+  }, [
+    rawData,
+    sortedPositions,
     positionsByAddress,
     positionsByProtocolAndChain,
     positionsByProtocol,
     metadata,
     lpTokens,
-    isEmpty: positions.length === 0,
-  };
+    isEmpty,
+  ]);
 };

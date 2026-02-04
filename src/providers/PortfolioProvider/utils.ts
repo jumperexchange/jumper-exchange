@@ -236,114 +236,46 @@ export const isAppPortfolioPosition = (
   p: PortfolioPosition,
 ): p is AppPortfolioPosition => p.source === 'app';
 
-// --- WalletPortfolioBalance Accessors ---
-
-export const BalanceAccessorKeys = {
-  chainId: 'chainId',
-  chainKey: 'chainKey',
-  symbol: 'symbol',
-  address: 'address',
-  name: 'name',
-  amountUSD: 'amountUSD',
-  priceUSD: 'priceUSD',
-} as const;
-
-export type BalanceAccessorKey =
-  (typeof BalanceAccessorKeys)[keyof typeof BalanceAccessorKeys];
-
-export type BalanceAccessors = Record<
-  BalanceAccessorKey,
-  (b: PortfolioBalance<WalletToken>) => string | number | undefined
->;
-
-export const balanceAccessors: BalanceAccessors = {
-  [BalanceAccessorKeys.chainId]: (b) => b.token.chainId,
-  [BalanceAccessorKeys.chainKey]: (b) => b.token.chainKey,
-  [BalanceAccessorKeys.symbol]: (b) => b.token.symbol,
-  [BalanceAccessorKeys.address]: (b) => b.token.address,
-  [BalanceAccessorKeys.name]: (b) => b.token.name,
-  [BalanceAccessorKeys.amountUSD]: (b) => b.amountUSD,
-  [BalanceAccessorKeys.priceUSD]: (b) => Number(b.token.priceUSD),
+export const balanceAccessors = {
+  chainId: (b: PortfolioBalance<WalletToken>) => b.token.chainId,
+  chainKey: (b: PortfolioBalance<WalletToken>) => b.token.chainKey,
+  symbol: (b: PortfolioBalance<WalletToken>) => b.token.symbol,
+  address: (b: PortfolioBalance<WalletToken>) => b.token.address,
+  name: (b: PortfolioBalance<WalletToken>) => b.token.name,
+  amountUSD: (b: PortfolioBalance<WalletToken>) => b.amountUSD,
+  priceUSD: (b: PortfolioBalance<WalletToken>) => Number(b.token.priceUSD),
 };
-
-// --- PositionBalance Accessors ---
-
-export const PositionBalanceAccessorKeys = {
-  chainId: 'chainId',
-  symbol: 'symbol',
-  address: 'address',
-  name: 'name',
-  amountUSD: 'amountUSD',
-  chain: 'chain',
-  app: 'app',
-} as const;
-
-export type PositionBalanceAccessorKey =
-  (typeof PositionBalanceAccessorKeys)[keyof typeof PositionBalanceAccessorKeys];
 
 export const positionBalanceAccessors = {
-  [PositionBalanceAccessorKeys.chainId]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.chainId,
-  [PositionBalanceAccessorKeys.symbol]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.symbol,
-  [PositionBalanceAccessorKeys.address]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.address,
-  [PositionBalanceAccessorKeys.name]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.name,
-  [PositionBalanceAccessorKeys.amountUSD]: (
-    b: PortfolioBalance<PositionToken>,
-  ) => b.amountUSD,
-  [PositionBalanceAccessorKeys.chain]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.chain,
-  [PositionBalanceAccessorKeys.app]: (b: PortfolioBalance<PositionToken>) =>
-    b.token.app,
+  chainId: (b: PortfolioBalance<PositionToken>) => b.token.chainId,
+  symbol: (b: PortfolioBalance<PositionToken>) => b.token.symbol,
+  address: (b: PortfolioBalance<PositionToken>) => b.token.address,
+  name: (b: PortfolioBalance<PositionToken>) => b.token.name,
+  amountUSD: (b: PortfolioBalance<PositionToken>) => b.amountUSD,
+  chain: (b: PortfolioBalance<PositionToken>) => b.token.chain,
+  app: (b: PortfolioBalance<PositionToken>) => b.token.app,
 };
 
-// --- PortfolioPosition Accessors ---
-
-export const PositionAccessorKeys = {
-  protocol: 'protocol',
-  protocolLogo: 'protocolLogo',
-  type: 'type',
-  name: 'name',
-  netUsd: 'netUsd',
-  assetUsd: 'assetUsd',
-  debtUsd: 'debtUsd',
-  chainId: 'chainId',
-  chainKey: 'chainKey',
-  chain: 'chain',
-  appKey: 'appKey',
-  app: 'app',
-  source: 'source',
-  protocolAndChain: 'protocolAndChain',
-} as const;
-
-export type PositionAccessorKey =
-  (typeof PositionAccessorKeys)[keyof typeof PositionAccessorKeys];
-
 export const positionAccessors = {
-  [PositionAccessorKeys.protocol]: (p: PortfolioPosition) => p.protocol.name,
-  [PositionAccessorKeys.protocolLogo]: (p: PortfolioPosition) =>
-    p.protocol.logo,
-  [PositionAccessorKeys.type]: (p: PortfolioPosition) => p.type,
-  [PositionAccessorKeys.name]: (p: PortfolioPosition) => p.name,
-  [PositionAccessorKeys.netUsd]: (p: PortfolioPosition) => p.netUsd,
-  [PositionAccessorKeys.assetUsd]: (p: PortfolioPosition) => p.assetUsd,
-  [PositionAccessorKeys.debtUsd]: (p: PortfolioPosition) => p.debtUsd,
-  [PositionAccessorKeys.source]: (p: PortfolioPosition) => p.source,
-  [PositionAccessorKeys.chainId]: (p: PortfolioPosition): number | undefined =>
+  protocol: (p: PortfolioPosition) => p.protocol.name,
+  protocolLogo: (p: PortfolioPosition) => p.protocol.logo,
+  type: (p: PortfolioPosition) => p.type,
+  name: (p: PortfolioPosition) => p.name,
+  netUsd: (p: PortfolioPosition) => p.netUsd,
+  assetUsd: (p: PortfolioPosition) => p.assetUsd,
+  debtUsd: (p: PortfolioPosition) => p.debtUsd,
+  source: (p: PortfolioPosition) => p.source,
+  chainId: (p: PortfolioPosition): number | undefined =>
     isChainPortfolioPosition(p) ? p.chain.chainId : undefined,
-  [PositionAccessorKeys.chainKey]: (
-    p: PortfolioPosition,
-  ): string | undefined =>
+  chainKey: (p: PortfolioPosition): string | undefined =>
     isChainPortfolioPosition(p) ? p.chain.chainKey : undefined,
-  [PositionAccessorKeys.chain]: (p: PortfolioPosition): Chain | undefined =>
+  chain: (p: PortfolioPosition): Chain | undefined =>
     isChainPortfolioPosition(p) ? p.chain : undefined,
-  [PositionAccessorKeys.appKey]: (p: PortfolioPosition): string | undefined =>
+  appKey: (p: PortfolioPosition): string | undefined =>
     isAppPortfolioPosition(p) ? p.app.key : undefined,
-  [PositionAccessorKeys.app]: (p: PortfolioPosition): App | undefined =>
+  app: (p: PortfolioPosition): App | undefined =>
     isAppPortfolioPosition(p) ? p.app : undefined,
-  [PositionAccessorKeys.protocolAndChain]: (p: PortfolioPosition): string => {
+  protocolAndChain: (p: PortfolioPosition): string => {
     if (isChainPortfolioPosition(p)) {
       return `${p.protocol.name}-${p.chain.chainId}`;
     }

@@ -101,19 +101,25 @@ const isJumperToken = (
   return 'chain' in token;
 };
 
-const isDefiToken = (token: unknown): token is DefiToken => {
+const isDefiToken = (
+  token: ExtendedToken | DefiToken | AppToken,
+): token is DefiToken => {
   return (
     typeof token === 'object' &&
     token !== null &&
+    !('type' in token) &&
     'chain' in token &&
     'chainType' in token
   );
 };
 
-const isAppToken = (token: unknown): token is AppToken => {
+const isAppToken = (
+  token: ExtendedToken | DefiToken | AppToken,
+): token is AppToken => {
   return (
     typeof token === 'object' &&
     token !== null &&
+    !('type' in token) &&
     'app' in token &&
     !('chain' in token)
   );

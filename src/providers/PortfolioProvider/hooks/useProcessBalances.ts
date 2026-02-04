@@ -67,11 +67,16 @@ export const useProcessBalances = (
     [groupedBalancesByAddress],
   );
 
-  return {
-    ...rawData,
-    balances: groupedBalances,
-    balancesByAddress: groupedBalancesByAddress,
-    metadata,
-    isEmpty: dedupedBalances.length === 0,
-  };
+  const isEmpty = dedupedBalances.length === 0;
+
+  return useMemo(
+    () => ({
+      ...rawData,
+      balances: groupedBalances,
+      balancesByAddress: groupedBalancesByAddress,
+      metadata,
+      isEmpty,
+    }),
+    [rawData, groupedBalances, groupedBalancesByAddress, metadata, isEmpty],
+  );
 };

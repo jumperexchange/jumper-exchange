@@ -25,13 +25,10 @@ import {
 } from '@/providers/PortfolioProvider/PortfolioContext';
 import { useBalancesFiltering } from '@/providers/PortfolioProvider/filtering/BalancesFilteringContext';
 import { usePositionsFiltering } from '@/providers/PortfolioProvider/filtering/PositionsFilteringContext';
+import superjson from 'superjson';
 
 const safeStringify = (obj: unknown, indent = 2): string => {
-  return JSON.stringify(
-    obj,
-    (_key, value) => (typeof value === 'bigint' ? value.toString() : value),
-    indent,
-  );
+  return JSON.stringify(superjson.serialize(obj), null, indent);
 };
 
 export const PortfolioTestPage = () => {
