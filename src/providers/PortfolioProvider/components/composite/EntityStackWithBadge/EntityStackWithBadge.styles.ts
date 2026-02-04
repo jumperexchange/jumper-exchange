@@ -1,5 +1,10 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import type { AvatarSize } from '../../core/AvatarStack/AvatarStack.types';
+import {
+  getAvatarSize,
+  getMaskRadius,
+} from '../../core/AvatarStack/AvatarStack.styles';
 
 interface EntityStackContainerProps {
   isContentVisible?: boolean;
@@ -23,9 +28,32 @@ export const EntityStackContainer = styled(Box, {
 /**
  * Wrapper for main avatar stack - positions badge overlay relative to this
  */
-export const EntityStackWrapper = styled(Box)({
+export const EntityStackWrapper = styled(Box)(() => ({
   position: 'relative',
   width: 'fit-content',
+}));
+
+interface MainStackWrapperProps {
+  hasOverlayMask?: boolean;
+  badgeSize?: AvatarSize;
+}
+
+export const MainStackWrapper = styled(Box, {
+  shouldForwardProp: (prop) =>
+    prop !== 'hasOverlayMask' && prop !== 'badgeSize',
+})<MainStackWrapperProps>(({ hasOverlayMask, badgeSize }) => {
+  if (!hasOverlayMask || !badgeSize) {
+    return {};
+  }
+  const borderWidth = 2;
+
+  const badgeWidth = getAvatarSize(badgeSize).width;
+
+  const maskRadius = getMaskRadius(badgeSize, borderWidth);
+
+  return {
+    mask: `radial-gradient(circle at calc(100% - ${borderWidth}px) calc(100% - ${badgeWidth / 2}px + ${borderWidth}px), transparent ${maskRadius}px, black ${maskRadius}px)`,
+  };
 });
 
 /**

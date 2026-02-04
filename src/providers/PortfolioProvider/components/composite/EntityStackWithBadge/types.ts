@@ -1,7 +1,7 @@
 import type {
   AvatarSize,
   AvatarStackDirection,
-} from '@/components/core/AvatarStack/AvatarStack.types';
+} from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
 import type { DisplayableEntity } from '../EntityAvatar/types';
 

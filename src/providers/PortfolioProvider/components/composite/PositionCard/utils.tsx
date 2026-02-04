@@ -5,7 +5,7 @@ import {
   differenceInMonths,
   differenceInYears,
 } from 'date-fns';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { DepositButtonDisplayMode } from '@/components/composite/DepositButton/DepositButton.types';
 import { EntityStackWithBadge } from '../EntityStackWithBadge/EntityStackWithBadge';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';

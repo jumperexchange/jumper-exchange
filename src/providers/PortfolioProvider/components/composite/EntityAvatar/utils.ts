@@ -1,4 +1,4 @@
-import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
+import type { AvatarData } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import type { ExtendedChain } from '@lifi/sdk';
 import type { DisplayableEntity } from './types';
 import type { Token } from '@/types/tokens';

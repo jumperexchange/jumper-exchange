@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { EntityStack } from '../EntityStack/EntityStack';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { EntityExplorerLink } from '@/components/composite/EntityChainStack/components/EntityExplorerLink';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { useChains } from '@/hooks/useChains';
 import {
   EntityStackBadgePlacement,
@@ -13,6 +13,7 @@ import {
   EntityStackContainer,
   EntityStackWrapper,
   BadgeStackWrapper,
+  MainStackWrapper,
 } from './EntityStackWithBadge.styles';
 import {
   getEntityName,
@@ -159,7 +160,12 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
       isContentVisible={isContentVisible}
     >
       <EntityStackWrapper>
-        {mainStack}
+        <MainStackWrapper
+          hasOverlayMask={badgeEntities?.length === 1}
+          badgeSize={badgeSize}
+        >
+          {mainStack}
+        </MainStackWrapper>
         {isOverlay && badgeStack && (
           <BadgeStackWrapper>{badgeStack}</BadgeStackWrapper>
         )}

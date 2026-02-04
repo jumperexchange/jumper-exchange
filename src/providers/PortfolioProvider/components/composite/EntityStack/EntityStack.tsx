@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
-import { AvatarStack } from '@/components/core/AvatarStack/AvatarStack';
-import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarStack } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack';
+import type { AvatarData } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
 import type { EntityStackProps } from './types';

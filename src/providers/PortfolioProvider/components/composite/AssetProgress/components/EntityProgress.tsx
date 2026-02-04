@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { EntityAvatar } from '../../EntityAvatar/EntityAvatar';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import { BaseProgress } from './BaseProgress';
 import type { EntityAssetProgressProps } from '../types';
 

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
-import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
+import { AvatarItem } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarItem';
 import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
 import type { EntityAvatarProps } from './types';
@@ -48,7 +48,5 @@ export const EntityAvatar: FC<EntityAvatarProps> = ({
     return getEntityAvatarData(entity);
   }, [entity, getChainById, getToken]);
 
-  return (
-    <AvatarItem avatar={avatarData} size={size} disableBorder={disableBorder} />
-  );
+  return <AvatarItem avatar={avatarData} size={size} />;
 };

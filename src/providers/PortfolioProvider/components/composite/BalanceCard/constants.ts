@@ -1,4 +1,4 @@
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { AvatarSize } from '@/providers/PortfolioProvider/components/core/AvatarStack/AvatarStack.types';
 import type { BalanceCardConfig } from './types';
 import { BalanceCardSize } from './types';
 
