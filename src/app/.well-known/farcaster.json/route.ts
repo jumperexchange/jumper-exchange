@@ -1,8 +1,9 @@
 import { getMiniAppSettings } from '@/app/lib/getMiniAppSettings';
 import { baseMiniApp } from '@/app/lib/metadata';
+import envConfig from '@/config/env-config';
 
 export async function GET() {
-  const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
+  const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 
   const { accountAssociation } = await getMiniAppSettings().catch(() => ({
     accountAssociation: {},
@@ -21,15 +22,15 @@ export async function GET() {
       ).toString(),
       splashBackgroundColor: baseMiniApp.splashBackgroundColor,
       webhookUrl: '',
-      subtitle: 'Find the best route',
-      description: 'A fast way to get any token you want',
+      subtitle: 'Your Smart Money App',
+      description: 'Move, deploy, manage capital across chains, in one place.',
       screenshotUrls: [],
       primaryCategory: 'finance',
       tags: ['jumper', 'finance', 'swap', 'defi'],
       heroImageUrl: 'https://ex.co/og.png',
-      tagline: 'Play instantly',
-      ogTitle: 'Jumper Mini App',
-      ogDescription: 'Find the best route.',
+      tagline: 'Jump Further',
+      ogTitle: 'Jumper - Your Smart Money App',
+      ogDescription: 'Use Swap, Earn, and Portfolio on Jumper',
       ogImageUrl: 'https://ex.co/og.png',
       noindex: true,
     },

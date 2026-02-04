@@ -1,11 +1,12 @@
 import type { ReactNode } from 'react';
 import './global.css';
 import type { Metadata } from 'next';
+import envConfig from '@/config/env-config';
 import { getMiniAppSettings } from './lib/getMiniAppSettings';
 import { baseMiniApp } from './lib/metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
+  const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
   const { appId } = await getMiniAppSettings().catch(() => ({ appId: '' }));
 
   return {

@@ -132,7 +132,7 @@ export const pageTwitter: Record<string, Metadata['twitter']> = {
 
 export const baseMiniApp = {
   splashBackgroundColor: '#653ca2',
-  iconUrl: 'logo-512x512.png',
+  iconUrl: 'preview-default.png',
   splashImageUrl: 'favicon.png',
   miniAppName: 'Jumper Mini App',
 };

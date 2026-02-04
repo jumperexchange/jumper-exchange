@@ -2,6 +2,7 @@ import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
+import envConfig from '@/config/env-config';
 import type { StrapiResponse } from '@/types/strapi';
 
 const BASE_MINI_APP_SETTING_API_ENDPOINT = 'base-mini-app-settings';
@@ -19,7 +20,7 @@ export interface MiniAppSettingAttributes {
 }
 
 export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
-  const publicUrl = new URL(process.env.NEXT_PUBLIC_SITE_URL);
+  const publicUrl = new URL(envConfig.NEXT_PUBLIC_SITE_URL);
 
   const baseUrl = getStrapiBaseUrl();
   const accessToken = getStrapiApiAccessToken();

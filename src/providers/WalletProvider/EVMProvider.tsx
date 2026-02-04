@@ -11,11 +11,12 @@ import { WagmiProvider } from 'wagmi';
 import { baseAccount } from 'wagmi/connectors';
 import { baseMiniApp } from '@/app/lib/metadata';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
+import envConfig from '@/config/env-config';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
 
-const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
+const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 const { config, connectors } = createDefaultWagmiConfig({
   connectors: [
     farcasterMiniApp(),
