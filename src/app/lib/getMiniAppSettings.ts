@@ -33,6 +33,7 @@ export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
+    cache: 'no-store',
   });
 
   if (!res.ok) {
