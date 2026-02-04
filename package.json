@@ -26,8 +26,6 @@
     "@mui/system": "^7.3.7",
     "@mui/utils": "^7.3.7",
     "@mysten/dapp-kit": "^0.20.0",
-    "@mysten/dapp-kit-core": "^1.0.2",
-    "@mysten/dapp-kit-react": "^1.0.1",
     "@mysten/sui": "^1.45.2",
     "@safe-global/safe-apps-sdk": "^9.1.0",
     "@sentry/browser": "^10.38.0",
