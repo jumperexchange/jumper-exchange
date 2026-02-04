@@ -17,7 +17,6 @@ export const EntityStackContainer = styled(Box, {
   gap: 16,
   ...(isContentVisible && {
     minWidth: 0,
-    overflow: 'hidden',
   }),
 }));
 

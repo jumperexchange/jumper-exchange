@@ -75,6 +75,7 @@ export const BalanceCard: FC<BalanceCardProps> = ({
           sx={config.primary.itemSx}
         >
           <EntityStackWithBadge
+            disableBorder
             entities={[primaryBalance.token]}
             badgeEntities={chainEntities}
             placement={
