@@ -72,8 +72,8 @@ export const getEdgeOffset = (
 ): string => {
   const spacingPx = spacingUnits * SPACING_SIZE;
   const avatarRadius = avatarSize / 2;
-  const slope = 1.25;
-  const offset = spacingPx * slope + avatarRadius + borderWidth;
+  const offset = spacingPx + avatarRadius;
+
   return `${offset}px`;
 };
 
