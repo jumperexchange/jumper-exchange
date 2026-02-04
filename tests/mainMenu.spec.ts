@@ -235,9 +235,9 @@ test.describe('Profile and Leaderboard navigation with wallet', () => {
       'Should open the Jumper Profile page and then open the leaderboard page',
     ),
     async ({ page }) => {
-      const leaderboardPageTitle = page
-        .locator('body')
-        .getByText('Leaderboard');
+      const leaderboardPageTitle = page.getByText('Leaderboard', {
+        exact: true,
+      });
       await triggerButtonClick(page, 'Pass');
       await openLeaderboardPage(page);
       await expect(leaderboardPageTitle).toBeVisible();
