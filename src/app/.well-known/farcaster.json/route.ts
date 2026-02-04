@@ -9,7 +9,9 @@ import {
 export async function GET() {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
 
-  const { accountAssociation } = await getMiniAppSettings();
+  const { accountAssociation } = await getMiniAppSettings().catch(() => ({
+    accountAssociation: {},
+  }));
 
   return Response.json({
     ...accountAssociation,

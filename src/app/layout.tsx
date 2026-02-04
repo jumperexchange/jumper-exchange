@@ -10,7 +10,7 @@ import { getMiniAppSettings } from './lib/getMiniAppSettings';
 
 export async function generateMetadata(): Promise<Metadata> {
   const PUBLIC_URL = process.env.NEXT_PUBLIC_SITE_URL as string;
-  const { appId } = await getMiniAppSettings();
+  const { appId } = await getMiniAppSettings().catch(() => ({ appId: '' }));
 
   return {
     other: {
