@@ -10,6 +10,9 @@ import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
+export const SPACING_SIZE = 8;
+export const AVATAR_STACK_BORDER_WIDTH = 2;
+
 export const getFontVariant = (size: AvatarSize, theme: Theme) => {
   switch (size) {
     case AvatarSize['3XS']:
@@ -31,78 +34,56 @@ export const getFontVariant = (size: AvatarSize, theme: Theme) => {
 export const getAvatarSize = (size: AvatarSize) => {
   switch (size) {
     case AvatarSize['3XS']:
-      return {
-        width: 9,
-        height: 9,
-      };
+      return { width: 9, height: 9 };
     case AvatarSize.XXS:
-      return {
-        width: 12,
-        height: 12,
-      };
+      return { width: 12, height: 12 };
     case AvatarSize.XS:
-      return {
-        width: 16,
-        height: 16,
-      };
+      return { width: 16, height: 16 };
     case AvatarSize.SM:
-      return {
-        width: 18,
-        height: 18,
-      };
+      return { width: 18, height: 18 };
     case AvatarSize.MD:
-      return {
-        width: 24,
-        height: 24,
-      };
+      return { width: 24, height: 24 };
     case AvatarSize.LG:
-      return {
-        width: 32,
-        height: 32,
-      };
+      return { width: 32, height: 32 };
     case AvatarSize.XL:
-      return {
-        width: 40,
-        height: 40,
-      };
+      return { width: 40, height: 40 };
     case AvatarSize.XXL:
-      return {
-        width: 48,
-        height: 48,
-      };
+      return { width: 48, height: 48 };
     default:
-      return {
-        width: 24,
-        height: 24,
-      };
+      return { width: 24, height: 24 };
   }
 };
-
-export const AVATAR_STACK_BORDER_WIDTH = 2;
 
 export const getMaskRadius = (
   size: AvatarSize,
   borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
 ) => {
-  const dimensions = getAvatarSize(size);
-  const radius = dimensions.width / 2;
-  return radius + borderWidth;
+  const { width } = getAvatarSize(size);
+  return width / 2 + borderWidth;
 };
 
 const getRadialMask = (circlePosition: string, maskRadius: number): string =>
   `radial-gradient(circle at ${circlePosition}, transparent ${maskRadius}px, black ${maskRadius}px)`;
 
-// @TODO: this needs a bit more work
-const getEdgeOffset = (borderWidth: number, spacingCss: string) =>
-  `calc(${borderWidth}px + abs(calc(${spacingCss || '0px'} / 2)))`;
+export const getEdgeOffset = (
+  spacingUnits: number,
+  avatarSize: number,
+  borderWidth: number,
+): string => {
+  const spacingPx = spacingUnits * SPACING_SIZE;
+  const avatarRadius = avatarSize / 2;
+  const slope = 1.25;
+  const offset = spacingPx * slope + avatarRadius + borderWidth;
+  return `${offset}px`;
+};
 
 export const getOverlapMaskPosition = (
   overlap: AvatarOverlap,
+  spacingUnits: number,
+  avatarSize: number,
   borderWidth: number,
-  spacingCss: string = '0px',
 ): string => {
-  const offset = getEdgeOffset(borderWidth, spacingCss);
-
+  const offset = getEdgeOffset(spacingUnits, avatarSize, borderWidth);
   switch (overlap) {
     case 'right':
       return `calc(100% + ${offset}) 50%`;
@@ -120,49 +101,49 @@ export const getOverlapMaskPosition = (
 export const getOverlapMask = (
   overlap: AvatarOverlap,
   size: AvatarSize,
+  spacingUnits: number = 1,
   borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
-  spacingCss?: string,
 ): string => {
   const maskRadius = getMaskRadius(size, borderWidth);
-  return getRadialMask(
-    getOverlapMaskPosition(overlap, borderWidth, spacingCss),
-    maskRadius,
+  const avatarSizePx = getAvatarSize(size).width;
+  const position = getOverlapMaskPosition(
+    overlap,
+    spacingUnits,
+    avatarSizePx,
+    borderWidth,
   );
+  return getRadialMask(position, maskRadius);
 };
 
 export const getCustomOverlayMask = (
   avatarSize: AvatarSize,
   borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
 ): string => {
-  const avatarWidth = getAvatarSize(avatarSize).width;
+  const { width } = getAvatarSize(avatarSize);
   const maskRadius = getMaskRadius(avatarSize, borderWidth);
-  const circlePosition = `calc(100% - ${borderWidth}px) calc(100% - ${avatarWidth / 2}px + ${borderWidth}px)`;
+  const circlePosition = `calc(100% - ${borderWidth}px) calc(100% - ${width / 2}px + ${borderWidth}px)`;
   return getRadialMask(circlePosition, maskRadius);
 };
 
-export const AvatarStackContainer = styled(Stack)(({ theme }) => ({
+export const AvatarStackContainer = styled(Stack)(() => ({
   width: 'fit-content',
   alignItems: 'center',
-  gap: theme.spacing(0.75),
+  gap: SPACING_SIZE,
   variants: [
     {
       props: ({ direction }) =>
         direction === 'column' || direction === 'column-reverse',
-      style: {
-        flexDirection: 'column',
-      },
+      style: { flexDirection: 'column' },
     },
     {
       props: ({ direction }) =>
         direction === 'row' || direction === 'row-reverse',
-      style: {
-        flexDirection: 'row',
-      },
+      style: { flexDirection: 'row' },
     },
   ],
 }));
 
-export const AvatarStackWrapper = styled(Stack)(({ theme }) => ({
+export const AvatarStackWrapper = styled(Stack)(() => ({
   width: 'fit-content',
 }));
 
@@ -183,9 +164,8 @@ interface AvatarProps extends MuiAvatarProps {
 export const Avatar = styled(BaseAvatar, {
   shouldForwardProp: (prop) =>
     prop !== 'size' && prop !== 'overlap' && prop !== 'spacing',
-})<AvatarProps>(({ theme, size = AvatarSize.MD, spacing }) => {
-  const spacingCss = spacing !== undefined ? theme.spacing(spacing) : '0px';
-
+})<AvatarProps>(({ size = AvatarSize.MD, spacing = 1 }) => {
+  const avatarSizePx = getAvatarSize(size).width;
   return {
     ...getAvatarSize(size),
     variants: [
@@ -196,8 +176,8 @@ export const Avatar = styled(BaseAvatar, {
             mask: getOverlapMask(
               'right',
               size,
+              spacing,
               AVATAR_STACK_BORDER_WIDTH,
-              spacingCss,
             ),
           },
         },
@@ -209,8 +189,8 @@ export const Avatar = styled(BaseAvatar, {
             mask: getOverlapMask(
               'bottom',
               size,
+              spacing,
               AVATAR_STACK_BORDER_WIDTH,
-              spacingCss,
             ),
           },
         },
@@ -222,8 +202,8 @@ export const Avatar = styled(BaseAvatar, {
             mask: getOverlapMask(
               'left',
               size,
+              spacing,
               AVATAR_STACK_BORDER_WIDTH,
-              spacingCss,
             ),
           },
         },
@@ -235,8 +215,8 @@ export const Avatar = styled(BaseAvatar, {
             mask: getOverlapMask(
               'top',
               size,
+              spacing,
               AVATAR_STACK_BORDER_WIDTH,
-              spacingCss,
             ),
           },
         },
@@ -251,7 +231,7 @@ interface AvatarSkeletonProps extends SkeletonProps {
 
 export const AvatarSkeleton = styled(BaseSurfaceSkeleton, {
   shouldForwardProp: (prop) => prop !== 'size',
-})<AvatarSkeletonProps>(({ theme, size = AvatarSize.MD }) => ({
+})<AvatarSkeletonProps>(({ size = AvatarSize.MD }) => ({
   ...getAvatarSize(size),
 }));
 
