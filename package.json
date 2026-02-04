@@ -18,7 +18,7 @@
     "@lifi/sdk": "^3.15.4",
     "@lifi/wallet-management": "^3.22.4",
     "@lifi/widget": "^3.40.4",
-    "@merkl/api": "1.6.31",
+    "@merkl/api": "1.9.16",
     "@mswjs/interceptors": "^0.40.0",
     "@mui/icons-material": "^7.3.7",
     "@mui/material": "^7.3.7",
@@ -180,6 +180,7 @@
     "onlyBuiltDependencies": [
       "@reown/appkit",
       "@sentry/cli",
+      "@swc/core",
       "bigint-buffer",
       "bufferutil",
       "core-js-pure",
@@ -192,5 +193,5 @@
       "utf-8-validate"
     ]
   },
-  "packageManager": "pnpm@10.28.0+sha512.05df71d1421f21399e053fde567cea34d446fa02c76571441bfc1c7956e98e363088982d940465fd34480d4d90a0668bc12362f8aa88000a64e83d0b0e47be48"
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }
