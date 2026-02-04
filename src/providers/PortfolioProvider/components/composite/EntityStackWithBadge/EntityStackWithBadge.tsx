@@ -147,7 +147,6 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
       spacing={spacing.badge}
       direction={badgeDirection}
       limit={badgeLimit}
-      disableBorder={disableBorder}
     />
   ) : null;
 
