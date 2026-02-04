@@ -6,6 +6,7 @@ const SM_CONFIG: BalanceCardConfig = {
   primary: {
     tokenSize: AvatarSize.LG,
     chainsSize: AvatarSize.XXS,
+    inlineChainsSize: AvatarSize.XXS,
     titleVariant: 'bodySmallStrong',
     descriptionVariant: 'bodyXXSmall',
     infoContainerGap: 2,
@@ -33,6 +34,7 @@ const MD_CONFIG: BalanceCardConfig = {
   primary: {
     tokenSize: AvatarSize.XXL,
     chainsSize: AvatarSize.SM,
+    inlineChainsSize: AvatarSize.XS,
     titleVariant: 'titleXSmall',
     descriptionVariant: 'bodyXSmall',
     infoContainerGap: 2,
