@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
+import { baseMiniApp } from '../src/app/lib/metadata';
 
 test.describe('Mini App Settings Integration', () => {
   test(
@@ -18,9 +19,11 @@ test.describe('Mini App Settings Integration', () => {
 
       // Verify required miniApp fields from utils/miniApp.ts
       expect(data.miniapp.name).toBe('Jumper Mini App');
-      expect(data.miniapp.splashBackgroundColor).toBe('#653ca2');
-      expect(data.miniapp.iconUrl).toContain('logo-512x512.png');
-      expect(data.miniapp.splashImageUrl).toContain('favicon.png');
+      expect(data.miniapp.splashBackgroundColor).toBe(
+        baseMiniApp.splashBackgroundColor,
+      );
+      expect(data.miniapp.iconUrl).toContain(baseMiniApp.iconUrl);
+      expect(data.miniapp.splashImageUrl).toContain(baseMiniApp.splashImageUrl);
 
       // Verify other required miniApp manifest fields
       expect(data.miniapp.version).toBe('1');
@@ -49,13 +52,17 @@ test.describe('Mini App Settings Integration', () => {
       // Parse and verify the fc:miniapp JSON content
       const miniappData = JSON.parse(fcMiniappContent ?? '');
       expect(miniappData.version).toBe('next');
-      expect(miniappData.imageUrl).toContain('logo-512x512.png');
+      expect(miniappData.imageUrl).toContain(baseMiniApp.iconUrl);
       expect(miniappData.button).toBeDefined();
       expect(miniappData.button.title).toBe('Launch Jumper');
       expect(miniappData.button.action.type).toBe('launch_miniapp');
       expect(miniappData.button.action.name).toBe('Jumper');
-      expect(miniappData.button.action.splashImageUrl).toContain('favicon.png');
-      expect(miniappData.button.action.splashBackgroundColor).toBe('#653ca2');
+      expect(miniappData.button.action.splashImageUrl).toContain(
+        baseMiniApp.splashImageUrl,
+      );
+      expect(miniappData.button.action.splashBackgroundColor).toBe(
+        baseMiniApp.splashBackgroundColor,
+      );
     },
   );
 

@@ -5,9 +5,13 @@ import envConfig from '@/config/env-config';
 export async function GET() {
   const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 
-  const { accountAssociation } = await getMiniAppSettings().catch(() => ({
-    accountAssociation: {},
-  }));
+  const { accountAssociation } = await getMiniAppSettings().catch((e) => {
+    console.error(
+      'Failed to fetch mini app settings, using default values.',
+      e,
+    );
+    return { accountAssociation: {} };
+  });
 
   return Response.json({
     ...accountAssociation,
