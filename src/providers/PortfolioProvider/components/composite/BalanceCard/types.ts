@@ -34,7 +34,7 @@ export interface BalanceStackConfig {
 }
 
 export interface BalanceCardConfig {
-  primary: BalanceStackConfig;
+  primary: BalanceStackConfig & { inlineChainsSize: AvatarSize };
   expanded: BalanceStackConfig;
   dividerSpacing: number;
   paddingBottom: number;

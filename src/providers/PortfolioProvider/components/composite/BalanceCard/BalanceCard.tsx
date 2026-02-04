@@ -86,7 +86,7 @@ export const BalanceCard: FC<BalanceCardProps> = ({
             size={config.primary.tokenSize}
             badgeSize={
               hasMultipleChains
-                ? config.primary.chainsSize
+                ? config.primary.inlineChainsSize
                 : config.primary.chainsSize
             }
             badgeLimit={resolvedChainsLimit}
