@@ -1,27 +1,27 @@
 import { expect, test } from '@playwright/test';
-import {
-  checkSocialNetworkIcons,
-  checkTheNumberOfMenuItems,
-  openNewTabAndVerifyUrl,
-  openOrCloseMainMenu,
-  openLeaderboardPage,
-  sectionOnTheBlogPage,
-  checkTabsInHeader,
-} from './testData/menuFunctions';
-import { triggerButtonClick } from './testData/commonFunctions';
-import values from './testData/values.json' with { type: 'json' };
-import {
-  closeWelcomeScreen,
-  itemInMenu,
-  itemInNavigation,
-} from './testData/landingPageFunctions';
 import { qase } from 'playwright-qase-reporter';
-import { injectMockWallet } from './utils/mockWallet';
+import { triggerButtonClick } from './testData/commonFunctions';
 import {
   connectButton,
   expectSelectWalletOptionToBeVisible,
   selectWalletOption,
 } from './testData/connectWalletFunctions';
+import {
+  closeWelcomeScreen,
+  itemInMenu,
+  itemInNavigation,
+} from './testData/landingPageFunctions';
+import {
+  checkSocialNetworkIcons,
+  checkTabsInHeader,
+  checkTheNumberOfMenuItems,
+  openLeaderboardPage,
+  openNewTabAndVerifyUrl,
+  openOrCloseMainMenu,
+  sectionOnTheBlogPage,
+} from './testData/menuFunctions';
+import values from './testData/values.json' with { type: 'json' };
+import { injectMockWallet } from './utils/mockWallet';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -235,7 +235,9 @@ test.describe('Profile and Leaderboard navigation with wallet', () => {
       'Should open the Jumper Profile page and then open the leaderboard page',
     ),
     async ({ page }) => {
-      const leaderboardPageTitle = page.getByText('Leaderboard');
+      const leaderboardPageTitle = page.getByText('Leaderboard', {
+        exact: true,
+      });
       await triggerButtonClick(page, 'Pass');
       await openLeaderboardPage(page);
       await expect(leaderboardPageTitle).toBeVisible();

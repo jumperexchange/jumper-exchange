@@ -1,6 +1,6 @@
+import type { Metadata } from 'next';
 import { JUMPER_SITE_NAME } from '@/const/domain';
 import { JUMPER_URL } from '@/const/urls';
-import type { Metadata } from 'next';
 
 export const siteName = JUMPER_SITE_NAME;
 
@@ -130,4 +130,11 @@ export const pageTwitter: Record<string, Metadata['twitter']> = {
     description: pageMetadataFields.profile.description,
     images: `${JUMPER_URL}/preview-profile.png`,
   },
+};
+
+export const baseMiniApp = {
+  splashBackgroundColor: '#653ca2',
+  iconUrl: 'mini-app-icon.png',
+  splashImageUrl: 'favicon.png',
+  miniAppName: 'Jumper Mini App',
 };
