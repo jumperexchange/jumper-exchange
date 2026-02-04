@@ -42,6 +42,7 @@ export const AvatarStack: FC<AvatarStackProps> = ({
             key={avatar.id}
             avatar={avatar}
             size={size}
+            spacing={spacing}
             overlap={getOverlapFromDirection(direction, disableBorder)}
           />
         ))}
