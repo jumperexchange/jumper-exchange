@@ -9,9 +9,9 @@ import {
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { AutoplayOptions, SwiperOptions } from 'swiper/types';
+import type { AutoplayOptions, SwiperOptions } from 'swiper/types';
 import { CarouselContainer } from './Carousel.style';
-import {
+import type {
   CarouselNavigationBase,
   CarouselPaginationBase,
 } from './Carousel.types';

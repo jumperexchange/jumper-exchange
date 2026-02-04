@@ -19,7 +19,7 @@ interface TokenStackItemProps {
   chainsLimit: ResponsiveValue<number>;
   chainsSpacing: number;
   isClickable: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const TokenStackItem: FC<TokenStackItemProps> = ({

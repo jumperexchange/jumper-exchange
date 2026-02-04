@@ -4,6 +4,7 @@ import { EntityCard } from './EntityCard';
 import { Badge } from '../../Badge/Badge';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { QuestData } from 'src/types/strapi';
+import { JUMPER_STRAPI_URL, JUMPER_URL } from '@/const/urls';
 
 const meta: Meta<typeof EntityCard> = {
   title: 'Components/Cards/Mission cards',
@@ -117,8 +118,7 @@ const commonProps = {
   slug: 'example-entity-card',
   title: 'Explore Aerodrome on multiple chains',
   descriptionRichText,
-  imageUrl:
-    'https://strapi.jumper.exchange/uploads/AI_Memecoins_and_Crypto_f98c61b932.png',
+  imageUrl: `${JUMPER_STRAPI_URL}/uploads/AI_Memecoins_and_Crypto_f98c61b932.png`,
   participants,
   rewardGroups: {
     apy: [apyReward],
@@ -126,8 +126,8 @@ const commonProps = {
     coins: coinRewards,
   },
   partnerLink: {
-    url: 'https://jumper.exchange',
-    label: 'Visit Jumper Exchange',
+    url: JUMPER_URL,
+    label: 'Visit Jumper',
   },
   onClick: () => console.log('Entity Card Clicked'),
   badge: <Badge label="Active" variant={BadgeVariant.Secondary} />,

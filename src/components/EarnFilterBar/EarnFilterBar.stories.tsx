@@ -9,6 +9,7 @@ import {
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 
 const meta = {
   component: EarnFilterBar,
@@ -74,25 +75,25 @@ const mockContextValue = () => {
         name: 'Morpho',
         product: 'metamorpho',
         version: '',
-        logo: 'https://strapi.jumper.exchange/uploads/morpho.png',
+        logo: `${JUMPER_STRAPI_URL}/uploads/morpho.png`,
       },
       {
         name: 'Aave',
         product: 'aave-v3',
         version: 'v3',
-        logo: 'https://strapi.jumper.exchange/uploads/aave.png',
+        logo: `${JUMPER_STRAPI_URL}/uploads/aave.png`,
       },
       {
         name: 'Compound',
         product: 'compound-v3',
         version: 'v3',
-        logo: 'https://strapi.jumper.exchange/uploads/compound.png',
+        logo: `${JUMPER_STRAPI_URL}/uploads/compound.png`,
       },
       {
         name: 'Uniswap',
         product: 'uniswap-v3',
         version: 'v3',
-        logo: 'https://strapi.jumper.exchange/uploads/uniswap.png',
+        logo: `${JUMPER_STRAPI_URL}/uploads/uniswap.png`,
       },
     ],
     allAssets: [

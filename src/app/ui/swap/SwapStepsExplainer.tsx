@@ -1,4 +1,5 @@
 'use client';
+import { JUMPER_URL } from '@/const/urls';
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Typography, useColorScheme } from '@mui/material';
 import Link from 'next/link';
@@ -141,9 +142,9 @@ const SwapStepsExplainerSection = ({
             <MuiLink
               color="text.primary"
               component={Link}
-              href="https://jumper.exchange/scan"
+              href={`${JUMPER_URL}/scan`}
             >
-              https://jumper.exchange/scan
+              {`${JUMPER_URL}/scan`}
             </MuiLink>{' '}
             profile to visualize your recent transaction
           </li>

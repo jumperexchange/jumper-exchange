@@ -1,7 +1,8 @@
 import config from '@/config/env-config';
 import type { SitemapPage } from '@/types/sitemap';
 
-export const JUMPER_URL = 'https://jumper.exchange';
+export const JUMPER_URL = 'https://jumper.xyz';
+export const JUMPER_STRAPI_URL = 'https://strapi.jumper.xyz';
 export const DISCORD_URL = 'https://discord.gg/jumperexchange';
 export const DISCORD_URL_INVITE = 'https://discord.com/invite/jumperexchange';
 export const X_URL = 'https://x.com/JumperExchange';
@@ -13,6 +14,7 @@ export const LINK3_URL = 'https://link3.to/jumperexchange';
 export const TELEGRAM_URL = 'https://t.me/officialjumperexchange';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
 export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
+export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
 export const JUMPER_LEARN_PATH = '/learn';

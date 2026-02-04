@@ -1,3 +1,5 @@
+import { JUMPER_STRAPI_URL } from '@/const/urls';
+
 export const commonArgs = {
   data: {
     name: 'Moonwell Flagship USDC on base',
@@ -16,7 +18,7 @@ export const commonArgs = {
       name: 'morpho',
       product: 'metamorpho',
       version: '',
-      logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
+      logo: `${JUMPER_STRAPI_URL}/uploads/morpho_eef0686ee3_2e4b8e06a6.png`,
     },
     url: 'https://app.morpho.org',
     description:

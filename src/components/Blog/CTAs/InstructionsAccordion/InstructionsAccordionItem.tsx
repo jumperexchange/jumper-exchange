@@ -24,6 +24,7 @@ import {
   InstructionsAccordionLinkLabel,
   InstructionsAccordionToggle,
 } from '.';
+import { JUMPER_DOMAIN } from '@/const/domain';
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;
@@ -38,7 +39,7 @@ const parseTitle = (title: string, link: { label: string; url: string }) => {
     if (el !== '') {
       cleanText += `<p>${el}</p>`;
       if (index < rawText.length - 1) {
-        cleanText += `<a href="${link.url}" target="${!link.url.includes('jumper.exchange') || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
+        cleanText += `<a href="${link.url.replace('jumper.exchange', JUMPER_DOMAIN)}" target="${!link.url.includes(JUMPER_DOMAIN) || link.url[0] === '/' ? '_self' : '_blank'}">${link.label}</a>`;
       }
     }
     return undefined;

@@ -20,7 +20,7 @@ interface Resources {
       copiedLink: 'Copied Link';
       faq: 'FAQ';
       goToArticle: 'Go to article';
-      jumperCta: 'Try jumper.exchange';
+      jumperCta: 'Try jumper.xyz';
       minRead: '{{minRead}} min read';
       openApp: 'Open app';
       recentPosts: 'Recent Posts';
@@ -595,6 +595,14 @@ interface Resources {
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
       rewards: 'Rewards Earned';
+      rewardsClaim: {
+        action: {
+          claim: 'Claim';
+          claiming: 'Claiming';
+          retry: 'Retry';
+        };
+        error: 'An unknown error occurred. Please try again.';
+      };
       shareProfile: 'Share profile';
       tooltips: {
         unlockAtLevel: 'Unlocked at Level {{level}}';

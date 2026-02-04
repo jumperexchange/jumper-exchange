@@ -1,3 +1,4 @@
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 import type { AppDefiPosition } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 
@@ -353,7 +354,7 @@ export const gauntletPositions: DefiPosition[] = [
       name: 'morpho',
       product: 'metamorpho',
       version: '',
-      logo: 'https://strapi-staging.jumper.exchange/uploads/protocols_morpho_22aad9e9df.png',
+      logo: `${JUMPER_STRAPI_URL}/uploads/protocols_morpho_22aad9e9df.png`,
       url: 'https://app.morpho.org/',
     },
     supplyTokens: [
