@@ -547,23 +547,6 @@
       "lockupPeriod": "",
       "token": ""
     },
-    "sweepTokensCard": {
-      "button": {
-        "claim": "",
-        "switchChain": "",
-        "waitingForTransaction": "",
-        "transactionInProgress": "",
-        "viewTransaction": ""
-      },
-      "error": {
-        "title": "",
-        "description": ""
-      },
-      "success": {
-        "title": "",
-        "description": ""
-      }
-    },
     "zap": {
       "sendToAddressName": "",
       "sentToAddressName": "",
