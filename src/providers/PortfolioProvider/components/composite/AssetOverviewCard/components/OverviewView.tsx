@@ -36,6 +36,7 @@ export const OverviewView: FC<AssetOverviewCardOverviewProps> = ({
           entities={tokenEntities}
           size={AvatarSize.LG}
           limit={MAX_DISPLAY_ASSETS_COUNT}
+          direction="row-reverse"
         />
       </OverviewColumn>
       <OverviewColumn
@@ -46,6 +47,7 @@ export const OverviewView: FC<AssetOverviewCardOverviewProps> = ({
           entities={protocolEntities}
           size={AvatarSize.LG}
           limit={MAX_DISPLAY_ASSETS_COUNT}
+          direction="row-reverse"
         />
       </OverviewColumn>
     </OverviewContainer>

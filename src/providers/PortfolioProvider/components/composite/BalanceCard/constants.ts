@@ -26,7 +26,7 @@ const SM_CONFIG: BalanceCardConfig = {
   dividerSpacing: 1,
   paddingBottom: 0.5,
   chainsLimit: 8,
-  chainsSpacing: -0.8,
+  chainsSpacing: -0.5,
 };
 
 const MD_CONFIG: BalanceCardConfig = {
@@ -53,7 +53,7 @@ const MD_CONFIG: BalanceCardConfig = {
   dividerSpacing: 1.5,
   paddingBottom: 1.5,
   chainsLimit: { mobile: 2, desktop: 8 },
-  chainsSpacing: -0.8,
+  chainsSpacing: -0.5,
 };
 
 export const BALANCE_CARD_CONFIG: Record<BalanceCardSize, BalanceCardConfig> = {

@@ -16,7 +16,7 @@ import {
 export const EntityStack: FC<EntityStackProps> = ({
   entities,
   size,
-  spacing = -1.5,
+  spacing = -1,
   direction = 'row',
   limit,
   disableBorder = false,

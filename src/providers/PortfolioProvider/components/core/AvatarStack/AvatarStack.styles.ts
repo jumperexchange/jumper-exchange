@@ -78,10 +78,66 @@ export const getAvatarSize = (size: AvatarSize) => {
   }
 };
 
-export const getMaskRadius = (size: AvatarSize, borderWidth: number = 2) => {
+export const AVATAR_STACK_BORDER_WIDTH = 2;
+
+export const getMaskRadius = (
+  size: AvatarSize,
+  borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
+) => {
   const dimensions = getAvatarSize(size);
   const radius = dimensions.width / 2;
   return radius + borderWidth;
+};
+
+const getRadialMask = (circlePosition: string, maskRadius: number): string =>
+  `radial-gradient(circle at ${circlePosition}, transparent ${maskRadius}px, black ${maskRadius}px)`;
+
+// @TODO: this needs a bit more work
+const getEdgeOffset = (borderWidth: number, spacingCss: string) =>
+  `calc(${borderWidth}px + abs(calc(${spacingCss || '0px'} / 2)))`;
+
+export const getOverlapMaskPosition = (
+  overlap: AvatarOverlap,
+  borderWidth: number,
+  spacingCss: string = '0px',
+): string => {
+  const offset = getEdgeOffset(borderWidth, spacingCss);
+
+  switch (overlap) {
+    case 'right':
+      return `calc(100% + ${offset}) 50%`;
+    case 'left':
+      return `calc(0% - ${offset}) 50%`;
+    case 'bottom':
+      return `50% calc(100% + ${offset})`;
+    case 'top':
+      return `50% calc(0% - ${offset})`;
+    default:
+      return '50% 50%';
+  }
+};
+
+export const getOverlapMask = (
+  overlap: AvatarOverlap,
+  size: AvatarSize,
+  borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
+  spacingCss?: string,
+): string => {
+  const maskRadius = getMaskRadius(size, borderWidth);
+  return getRadialMask(
+    getOverlapMaskPosition(overlap, borderWidth, spacingCss),
+    maskRadius,
+  );
+};
+
+export const getCustomOverlayMask = (
+  avatarSize: AvatarSize,
+  borderWidth: number = AVATAR_STACK_BORDER_WIDTH,
+): string => {
+  const avatarWidth = getAvatarSize(avatarSize).width;
+  const maskRadius = getMaskRadius(avatarSize, borderWidth);
+  const circlePosition = `calc(100% - ${borderWidth}px) calc(100% - ${avatarWidth / 2}px + ${borderWidth}px)`;
+  return getRadialMask(circlePosition, maskRadius);
 };
 
 export const AvatarStackContainer = styled(Stack)(({ theme }) => ({
@@ -110,7 +166,6 @@ export const AvatarStackWrapper = styled(Stack)(({ theme }) => ({
   width: 'fit-content',
 }));
 
-// @Note extract this in a separate component
 const BaseAvatar = styled(MuiAvatar)(({ theme }) => ({
   boxSizing: 'content-box',
   backgroundColor: (theme.vars || theme).palette.background.default,
@@ -122,13 +177,15 @@ const BaseAvatar = styled(MuiAvatar)(({ theme }) => ({
 interface AvatarProps extends MuiAvatarProps {
   size?: AvatarSize;
   overlap?: AvatarOverlap;
+  spacing?: number;
 }
 
 export const Avatar = styled(BaseAvatar, {
-  shouldForwardProp: (prop) => prop !== 'size' && prop !== 'overlap',
-})<AvatarProps>(({ size = AvatarSize.MD }) => {
-  const borderWidth = 2;
-  const maskRadius = getMaskRadius(size, borderWidth);
+  shouldForwardProp: (prop) =>
+    prop !== 'size' && prop !== 'overlap' && prop !== 'spacing',
+})<AvatarProps>(({ theme, size = AvatarSize.MD, spacing }) => {
+  const spacingCss = spacing !== undefined ? theme.spacing(spacing) : '0px';
+
   return {
     ...getAvatarSize(size),
     variants: [
@@ -136,7 +193,12 @@ export const Avatar = styled(BaseAvatar, {
         props: ({ overlap }) => overlap === 'right',
         style: {
           ':not(:last-child)': {
-            mask: `radial-gradient(circle at calc(100% + ${borderWidth}px) 50%, transparent ${maskRadius}px, black ${maskRadius}px)`,
+            mask: getOverlapMask(
+              'right',
+              size,
+              AVATAR_STACK_BORDER_WIDTH,
+              spacingCss,
+            ),
           },
         },
       },
@@ -144,23 +206,38 @@ export const Avatar = styled(BaseAvatar, {
         props: ({ overlap }) => overlap === 'bottom',
         style: {
           ':not(:last-child)': {
-            mask: `radial-gradient(circle at 50% calc(100% + ${borderWidth}px), transparent ${maskRadius}px, black ${maskRadius}px)`,
+            mask: getOverlapMask(
+              'bottom',
+              size,
+              AVATAR_STACK_BORDER_WIDTH,
+              spacingCss,
+            ),
           },
         },
       },
       {
         props: ({ overlap }) => overlap === 'left',
         style: {
-          ':not(:first-child)': {
-            mask: `radial-gradient(circle at calc(100% + ${borderWidth}px) 50%, transparent ${maskRadius}px, black ${maskRadius}px)`,
+          ':not(:last-child)': {
+            mask: getOverlapMask(
+              'left',
+              size,
+              AVATAR_STACK_BORDER_WIDTH,
+              spacingCss,
+            ),
           },
         },
       },
       {
         props: ({ overlap }) => overlap === 'top',
         style: {
-          ':not(:first-child)': {
-            mask: `radial-gradient(circle at 50% calc(100% + ${borderWidth}px), transparent ${maskRadius}px, black ${maskRadius}px)`,
+          ':not(:last-child)': {
+            mask: getOverlapMask(
+              'top',
+              size,
+              AVATAR_STACK_BORDER_WIDTH,
+              spacingCss,
+            ),
           },
         },
       },

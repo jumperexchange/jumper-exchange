@@ -13,12 +13,14 @@ import type {
 interface AvatarItemProps {
   avatar: AvatarData;
   size?: AvatarSize;
+  spacing?: number;
   overlap?: AvatarOverlap;
 }
 
 export const AvatarItem: FC<AvatarItemProps> = ({
   avatar,
   size,
+  spacing,
   overlap = 'right',
 }) => {
   const [imageStatus, setImageStatus] = useState<
@@ -34,6 +36,7 @@ export const AvatarItem: FC<AvatarItemProps> = ({
   return (
     <Avatar
       size={size}
+      spacing={spacing}
       src={avatar.src}
       alt={avatar.alt}
       overlap={overlap}
