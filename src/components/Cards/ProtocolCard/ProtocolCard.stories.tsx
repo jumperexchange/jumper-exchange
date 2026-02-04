@@ -3,6 +3,7 @@ import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { commonArgs } from './fixtures';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ProtocolCard } from './ProtocolCard';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 
 const meta = {
   component: ProtocolCard,
@@ -58,7 +59,7 @@ export const TitleContrastColor: Story = {
       ...commonArgs.data,
       protocol: {
         ...commonArgs.data.protocol,
-        logo: 'https://strapi-staging.jumper.exchange/uploads/hyperevm_icon_a7e3d82b3b.png',
+        logo: `${JUMPER_STRAPI_URL}/uploads/protocols_upshift_0bfc05b045.png`,
       },
     },
   },

@@ -445,7 +445,7 @@ export const BaseColors: Story = {
     docs: {
       description: {
         story:
-          'This story showcases the base colors used in the Jumper Exchange application with accessibility checking.',
+          'This story showcases the base colors used in the Jumper application with accessibility checking.',
       },
     },
   },
@@ -457,7 +457,7 @@ export const BrandColors: Story = {
     docs: {
       description: {
         story:
-          'This story showcases only the brand colors used in the Jumper Exchange application.',
+          'This story showcases only the brand colors used in the Jumper application.',
       },
     },
   },

@@ -25,7 +25,7 @@ export async function generateMetadata({
   if (!result.success) {
     return {
       title: 'Learn',
-      description: 'Learn about blockchain and crypto on Jumper Exchange.',
+      description: 'Learn about blockchain and crypto on Jumper.',
       alternates: {
         canonical: `${getSiteUrl()}/learn`,
       },
@@ -39,7 +39,7 @@ export async function generateMetadata({
   if (!article.data || !article.data.data?.[0]) {
     return {
       title: 'Learn',
-      description: 'Learn about blockchain and crypto on Jumper Exchange.',
+      description: 'Learn about blockchain and crypto on Jumper.',
       alternates: {
         canonical: `${getSiteUrl()}/learn`,
       },

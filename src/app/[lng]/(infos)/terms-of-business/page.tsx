@@ -7,11 +7,11 @@ import { TermsOfBusinessPage } from '@/components/TermsOfBusiness/TermsOfBusines
 export const metadata: Metadata = {
   title: `Terms Of Business | ${siteName}`,
   description:
-    'Terms Of Business for Jumper Exchange - Learn about the terms and conditions governing your use of our services.',
+    'Terms Of Business for Jumper - Learn about the terms and conditions governing your use of our services.',
   openGraph: {
     title: `Terms Of Business | ${siteName}`,
     description:
-      'Terms Of Business for Jumper Exchange - Learn about the terms and conditions governing your use of our services.',
+      'Terms Of Business for Jumper - Learn about the terms and conditions governing your use of our services.',
     url: `${getSiteUrl()}/terms-of-business`,
     siteName,
     type: 'website',
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `Terms Of Business | ${siteName}`,
     description:
-      'Terms Of Business for Jumper Exchange - Learn about the terms and conditions governing your use of our services.',
+      'Terms Of Business for Jumper - Learn about the terms and conditions governing your use of our services.',
   },
   alternates: {
     canonical: `${getSiteUrl()}/terms-of-business`,

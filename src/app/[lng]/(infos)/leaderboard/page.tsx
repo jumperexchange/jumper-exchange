@@ -5,7 +5,7 @@ import LeaderboardPage from 'src/app/ui/leaderboard/LeaderboardPage';
 
 export const metadata: Metadata = {
   title: 'Jumper Leaderboard',
-  description: 'Jumper Leaderboard is the profile page of Jumper Exchange.',
+  description: 'Jumper Leaderboard is the profile page of Jumper.',
   alternates: {
     canonical: `${getSiteUrl()}/leaderboard`,
   },

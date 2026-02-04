@@ -10,11 +10,11 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: `Newsletter | ${siteName}`,
   description:
-    'Newsletter for Jumper Exchange - Learn about the latest news and updates.',
+    'Newsletter for Jumper - Learn about the latest news and updates.',
   openGraph: {
     title: `Newsletter | ${siteName}`,
     description:
-      'Newsletter for Jumper Exchange - Learn about the latest news and updates.',
+      'Newsletter for Jumper - Learn about the latest news and updates.',
     url: `${getSiteUrl()}/newsletter`,
     siteName,
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: `Newsletter | ${siteName}`,
     description:
-      'Newsletter for Jumper Exchange - Learn about the latest news and updates.',
+      'Newsletter for Jumper - Learn about the latest news and updates.',
   },
   alternates: {
     canonical: `${getSiteUrl()}/newsletter`,
