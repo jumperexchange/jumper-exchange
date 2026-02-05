@@ -1,7 +1,7 @@
 import { type ContractCall, type TokenAmount } from '@lifi/widget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
-import { ProjectData } from 'src/types/questDetails';
+import type { ProjectData } from 'src/types/questDetails';
 import { WithdrawForm } from './WithdrawForm';
 import { useWithdrawTransaction } from './hooks';
 import { useAccount } from '@lifi/wallet-management';
@@ -85,7 +85,7 @@ export const WithdrawWidget: React.FC<WithdrawWidgetProps> = ({
             : 'Transaction failed'
         }
         description="Check transaction on explorer"
-        link={`${chain?.metamask.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
+        link={`${chain?.metamask?.blockExplorerUrls?.[0] ?? 'https://etherscan.io/'}tx/${txHash}`}
         containerId={containerId}
         isOpen={
           !isTransactionReceiptLoading &&

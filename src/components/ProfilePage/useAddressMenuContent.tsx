@@ -25,7 +25,9 @@ export const useAddressMenuContent = () => {
 
   const blockExplorerUrl = useMemo(() => {
     const chainInfo = getChainById(account?.chainId as ChainId);
-    return chainInfo?.metamask.blockExplorerUrls?.[0] || 'https://etherscan.io';
+    return (
+      chainInfo?.metamask?.blockExplorerUrls?.[0] || 'https://etherscan.io'
+    );
   }, [account?.chainId]);
 
   const handleCopyButton = (textToCopy: string) => {
