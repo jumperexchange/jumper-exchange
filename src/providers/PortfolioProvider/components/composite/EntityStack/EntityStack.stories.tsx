@@ -4,7 +4,7 @@ import { AvatarSize } from '@/providers/PortfolioProvider/components/core/Avatar
 import { mockPortfolioTokens, mockProtocols } from './fixtures';
 
 const meta = {
-  title: 'PortfolioProvider/composite/EntityStack',
+  title: 'components/composite/EntityStack',
   component: EntityStack,
   tags: ['autodocs'],
   argTypes: {

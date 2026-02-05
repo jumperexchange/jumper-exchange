@@ -8,7 +8,7 @@ import {
 } from './fixtures';
 
 const meta: Meta<typeof AssetOverviewCard> = {
-  title: 'PortfolioProvider/Composite/AssetOverviewCard',
+  title: 'components/composite/AssetOverviewCard',
   component: AssetOverviewCard,
   parameters: {
     layout: 'padded',

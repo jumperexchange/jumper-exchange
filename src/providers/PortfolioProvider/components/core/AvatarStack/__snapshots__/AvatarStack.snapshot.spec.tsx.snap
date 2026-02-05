@@ -9,7 +9,7 @@ exports[`AvatarStack snapshot > matches snapshot 1`] = `
       class="MuiStack-root css-k0vgmj-MuiStack-root"
     >
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 1"
@@ -19,7 +19,7 @@ exports[`AvatarStack snapshot > matches snapshot 1`] = `
         />
       </div>
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 2"
@@ -29,7 +29,7 @@ exports[`AvatarStack snapshot > matches snapshot 1`] = `
         />
       </div>
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 3"
@@ -52,7 +52,7 @@ exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
       class="MuiStack-root css-k0vgmj-MuiStack-root"
     >
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 1"
@@ -62,7 +62,7 @@ exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
         />
       </div>
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 2"
@@ -72,7 +72,7 @@ exports[`AvatarStack snapshot > matches snapshot with limit 1`] = `
         />
       </div>
       <div
-        class="MuiAvatar-root MuiAvatar-circular css-q6iisp-MuiAvatar-root"
+        class="MuiAvatar-root MuiAvatar-circular css-u98yz-MuiAvatar-root"
       >
         <img
           alt="Avatar 3"

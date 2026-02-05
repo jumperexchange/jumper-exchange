@@ -4,7 +4,7 @@ import { AvatarSize } from './AvatarStack.types';
 import { baseAvatars, overflowAvatars } from './fixtures';
 
 const meta = {
-  title: 'Components/AvatarStack',
+  title: 'components/core/AvatarStack',
   component: AvatarStack,
   tags: ['autodocs'],
   argTypes: {

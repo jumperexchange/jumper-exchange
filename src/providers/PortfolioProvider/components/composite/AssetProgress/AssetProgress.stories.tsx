@@ -4,7 +4,7 @@ import { AssetProgressVariant } from './types';
 import { mockToken, mockProtocol, mockProgressData } from './fixtures';
 
 const meta: Meta<typeof AssetProgress> = {
-  title: 'PortfolioProvider/Composite/AssetProgress',
+  title: 'components/composite/AssetProgress',
   component: AssetProgress,
   parameters: {
     layout: 'centered',
