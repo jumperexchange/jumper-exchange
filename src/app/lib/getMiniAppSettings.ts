@@ -34,7 +34,10 @@ export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    cache: 'no-store',
+    next: {
+      revalidate: 300,
+      tags: ['base-mini-app-settings'],
+    },
   });
 
   if (!res.ok) {
