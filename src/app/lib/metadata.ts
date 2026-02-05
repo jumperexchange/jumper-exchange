@@ -136,5 +136,5 @@ export const baseMiniApp = {
   splashBackgroundColor: '#653ca2',
   iconUrl: 'mini-app-icon.png',
   splashImageUrl: 'favicon.png',
-  miniAppName: 'Jumper Mini App',
+  miniAppName: 'Jumper Mini App ',
 };
