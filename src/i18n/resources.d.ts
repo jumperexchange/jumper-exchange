@@ -664,23 +664,6 @@ interface Resources {
       earn: {
         depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
       };
-      sweepTokensCard: {
-        button: {
-          claim: 'Claim returned funds';
-          switchChain: 'Switching chain...';
-          transactionInProgress: 'Transaction in progress...';
-          viewTransaction: 'View transaction';
-          waitingForTransaction: 'Waiting for transaction...';
-        };
-        error: {
-          description: 'A previous transaction failed and your funds are now available to be returned to you.';
-          title: 'Claim returned funds';
-        };
-        success: {
-          description: 'Your funds have been returned and are now available to use in your wallet.';
-          title: 'Funds successfully returned';
-        };
-      };
       withdraw: {
         title: 'Withdraw';
       };

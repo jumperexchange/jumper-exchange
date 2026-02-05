@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
 import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
-import type { ZapDataResponse } from '@/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { ZapDataResponse } from '@/types/zaps';
 import envConfig from '@/config/env-config';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import { useMenuStore } from '@/stores/menu';

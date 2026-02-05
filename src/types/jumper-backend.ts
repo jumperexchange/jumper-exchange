@@ -617,211 +617,6 @@ export interface LeaderboardEntity {
   position: number;
 }
 
-export interface GetZapDataDto {
-  /**
-   * Chain name
-   * @example "ethereum"
-   */
-  chain: string;
-  /**
-   * Project name
-   * @example "mellow"
-   */
-  project: string;
-  /**
-   * Market address
-   * @example "0x1234567890"
-   */
-  address: string;
-}
-
-export interface GeneratePayloadDto {
-  /**
-   * Chain name
-   * @example "ethereum"
-   */
-  chain: string;
-  /**
-   * Project name
-   * @example "mellow"
-   */
-  project: string;
-  /**
-   * Product name
-   * @example "ethena_lrt_vault_susde"
-   */
-  product: string;
-  /**
-   * Method name
-   * @example "deposit"
-   */
-  method: string;
-  /**
-   * Method params
-   * @example "params"
-   */
-  params: object;
-}
-
-export type TokenDto = object;
-
-export interface CheckSweepableTokensDto {
-  /**
-   * Wallet address to check for sweepable tokens
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  walletAddress: string;
-  /**
-   * Chain ID to check for tokens (optional, defaults to checking all EVM chains)
-   * @example 1
-   */
-  chainId?: number;
-}
-
-export interface SweepableTokenDto {
-  /**
-   * Token address
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  address: string;
-  /**
-   * Token symbol
-   * @example "USDC"
-   */
-  symbol: string;
-  /**
-   * Token name
-   * @example "USD Coin"
-   */
-  name: string;
-  /**
-   * Token decimals
-   * @example 6
-   */
-  decimals: number;
-  /**
-   * Chain ID where the token is located
-   * @example 1
-   */
-  chainId: number;
-  /**
-   * Chain name where the token is located
-   * @example "Ethereum"
-   */
-  chainName: string;
-  /**
-   * Token amount available for sweeping
-   * @example "1000.50"
-   */
-  amount: string;
-  /**
-   * Token amount in USD
-   * @example "1000.50"
-   */
-  amountUSD: string;
-  /**
-   * Token logo URI
-   * @example "https://example.com/token-logo.png"
-   */
-  logoURI?: string;
-}
-
-export interface CheckSweepableTokensResponseDto {
-  /**
-   * Whether there are tokens available for sweeping
-   * @example true
-   */
-  hasTokensToSweep: boolean;
-  /** List of sweepable tokens */
-  sweepableTokens: SweepableTokenDto[];
-  /**
-   * Smart account address for the given wallet
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  smartAccountAddress: string;
-  /**
-   * Target chain ID with the most tokens to sweep
-   * @example 1
-   */
-  targetChainId: number;
-}
-
-export interface SweepQuoteDto {
-  /**
-   * Wallet address to get sweep quote for
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  walletAddress: string;
-  /**
-   * Chain ID to get quote for (optional, defaults to chain with most tokens)
-   * @example 1
-   */
-  chainId?: number;
-  /** List of specific tokens to create sweep instructions for */
-  tokens?: SweepableTokenDto[];
-}
-
-export interface SweepQuoteResponseDto {
-  /**
-   * Whether there are tokens available for sweeping
-   * @example true
-   */
-  hasTokensToSweep: boolean;
-  /** List of sweepable tokens */
-  sweepableTokens: SweepableTokenDto[];
-  /**
-   * Smart account address for the given wallet
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  smartAccountAddress: string;
-  /**
-   * Target chain ID with the most tokens to sweep
-   * @example 1
-   */
-  targetChainId: number;
-  /**
-   * Generated quote for the frontend to execute
-   * @example {}
-   */
-  quote: object;
-  /**
-   * Transaction raw message for the frontend to execute
-   * @example {}
-   */
-  transactionData: object;
-}
-
-export interface ExecuteSweepQuoteDto {
-  /**
-   * Wallet address to execute sweep quote for
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  walletAddress: string;
-  /**
-   * Chain ID to get quote for (optional, defaults to chain with most tokens)
-   * @example 1
-   */
-  chainId?: number;
-  /**
-   * Signed message to execute sweep quote for
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  signedMessage: string;
-}
-
-export interface ExecuteSweepQuoteResponseDto {
-  /**
-   * Status of the sweep quote execution
-   * @example "PENDING"
-   */
-  status: string;
-  /**
-   * Transaction hash of the sweep quote execution
-   * @example "0x1234567890123456789012345678901234567890"
-   */
-  transactionHash: string;
-}
-
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -1083,6 +878,52 @@ export interface TaskVerificationDto {
    * @example {"customKey1":"value1","customKey2":"value2"}
    */
   additionalFields: object;
+}
+
+export interface GetZapDataDto {
+  /**
+   * Chain name
+   * @example "ethereum"
+   */
+  chain: string;
+  /**
+   * Project name
+   * @example "mellow"
+   */
+  project: string;
+  /**
+   * Market address
+   * @example "0x1234567890"
+   */
+  address: string;
+}
+
+export interface GeneratePayloadDto {
+  /**
+   * Chain name
+   * @example "ethereum"
+   */
+  chain: string;
+  /**
+   * Project name
+   * @example "mellow"
+   */
+  project: string;
+  /**
+   * Product name
+   * @example "ethena_lrt_vault_susde"
+   */
+  product: string;
+  /**
+   * Method name
+   * @example "deposit"
+   */
+  method: string;
+  /**
+   * Method params
+   * @example "params"
+   */
+  params: object;
 }
 
 export interface EarnOpportunityWithScore {
@@ -1536,121 +1377,6 @@ export class JumperBackend<
     /**
      * No description
      *
-     * @tags Zaps, Public
-     * @name ZapsControllerGetZapDataV1
-     * @summary Get Zap data
-     * @request POST:/v1/zaps/get-zap-data
-     */
-    zapsControllerGetZapDataV1: (
-      data: GetZapDataDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<GeneratePayloadDto, any>({
-        path: `/v1/zaps/get-zap-data`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Zaps, Public
-     * @name ZapsControllerGetLpTokensV1
-     * @summary Get all LP tokens
-     * @request GET:/v1/zaps/get-all-lp-tokens
-     */
-    zapsControllerGetLpTokensV1: (params: RequestParams = {}) =>
-      this.request<TokenDto[], any>({
-        path: `/v1/zaps/get-all-lp-tokens`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Zaps, Public
-     * @name ZapsControllerCheckSweepableTokensV1
-     * @summary Check for sweepable tokens for wallet address
-     * @request POST:/v1/zaps/check-sweepable-tokens
-     */
-    zapsControllerCheckSweepableTokensV1: (
-      data: CheckSweepableTokensDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<CheckSweepableTokensResponseDto, any>({
-        path: `/v1/zaps/check-sweepable-tokens`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Zaps, Public
-     * @name ZapsControllerGetSweepQuoteV1
-     * @summary Get sweep quote for wallet address (only if tokens are available)
-     * @request POST:/v1/zaps/sweep-quote
-     */
-    zapsControllerGetSweepQuoteV1: (
-      data: SweepQuoteDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<SweepQuoteResponseDto, any>({
-        path: `/v1/zaps/sweep-quote`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Zaps, Public
-     * @name ZapsControllerExecuteSweepQuoteV1
-     * @summary Execute sweep quote for wallet address
-     * @request POST:/v1/zaps/execute-sweep-quote
-     */
-    zapsControllerExecuteSweepQuoteV1: (
-      data: ExecuteSweepQuoteDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<ExecuteSweepQuoteResponseDto, any>({
-        path: `/v1/zaps/execute-sweep-quote`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Zaps, Public
-     * @name ZapsControllerGetSupportedChainsV1
-     * @summary Get supported chains for zaps
-     * @request GET:/v1/zaps/supported-chains
-     */
-    zapsControllerGetSupportedChainsV1: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/v1/zaps/supported-chains`,
-        method: 'GET',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Earn, Public
      * @name EarnControllerGetTopsV1
      * @summary Get tops for an address
@@ -1922,6 +1648,27 @@ export class JumperBackend<
         path: `/v1/portfolio/positions`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Zaps, Public
+     * @name ZapsControllerGetZapDataV1
+     * @summary Get Zap data
+     * @request POST:/v1/zaps/get-zap-data
+     */
+    zapsControllerGetZapDataV1: (
+      data: GetZapDataDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<GeneratePayloadDto, any>({
+        path: `/v1/zaps/get-zap-data`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),

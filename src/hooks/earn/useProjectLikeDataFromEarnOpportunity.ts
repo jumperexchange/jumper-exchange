@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { ZapDataResponse } from '@/types/zaps';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 
 export const useProjectLikeDataFromEarnOpportunity = (

@@ -17,9 +17,6 @@ importers:
       '@abstract-foundation/agw-react':
         specifier: ^1.9.1
         version: 1.10.0(633625e66331cd1c39cc403b289eadbe)
-      '@biconomy/abstractjs':
-        specifier: 1.1.13
-        version: 1.1.13(@metamask/delegation-toolkit@0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)))(@rhinestone/module-sdk@0.2.7(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)))(typescript@5.9.3)(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))
       '@bigmi/react':
         specifier: ^0.6.5
         version: 0.6.5(@tanstack/query-core@5.90.19)(@tanstack/react-query@5.90.19(react@19.2.3))(@types/react@19.2.8)(bs58@6.0.0)(immer@10.2.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.3))
@@ -1180,14 +1177,6 @@ packages:
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
 
-  '@biconomy/abstractjs@1.1.13':
-    resolution: {integrity: sha512-BSkTUhYVG7GyzMMvckfrA/mOX1oXD8FilV0mbRDYoC97RAAp/sMBTBfB59vWOGTkVibtCJPcj85age+x0OhN7w==}
-    peerDependencies:
-      '@metamask/delegation-toolkit': ^0.11.0
-      '@rhinestone/module-sdk': 0.2.7
-      typescript: ^5.8.2
-      viem: ^2.26.2
-
   '@bigmi/client@0.6.5':
     resolution: {integrity: sha512-LPJmgyoZugLkvbrew3UTk6PU2Zf0Qq5RbJtSkIkSpyEHdofVK42DijOS0XRCemOtxwtS497ET2sepJtksnJsHQ==}
     peerDependencies:
@@ -2024,26 +2013,6 @@ packages:
   '@metamask/abi-utils@1.2.0':
     resolution: {integrity: sha512-Hf7fnBDM9ptCPDtq/wQffWbw859CdVGMwlpWUEsTH6gLXhXONGrRXHA2piyYPRuia8YYTdJvRC/zSK1/nyLvYg==}
     engines: {node: '>=14.0.0'}
-
-  '@metamask/delegation-abis@0.11.0':
-    resolution: {integrity: sha512-tnNGFDLQ5jfgPhHJaT5JwvF759nja1iGAG00REbk1Ufir+TxjxTmF8L9MbJifZmUh4fnyqV4Ik6NAOYVNBPVBg==}
-    engines: {node: ^18.18 || >=20}
-
-  '@metamask/delegation-deployments@0.11.0':
-    resolution: {integrity: sha512-RfeMr1Ct0givG7oOy1unwdb5lGttq9pape4OGz2mk8quG0KDqDi7cw3fzYc7wz9xFDZ2YrFanYRacaLTlqWS8g==}
-    engines: {node: ^18.18 || >=20}
-
-  '@metamask/delegation-toolkit@0.11.0':
-    resolution: {integrity: sha512-KQybftUahuPPjN842ejmVaJWg2rzHpSpvd+b6qtiOBypzJs7cgw1/f8QalHLugS1eyicEYLXwvRxjjufiG4wbg==}
-    engines: {node: ^18.18 || >=20}
-    peerDependencies:
-      viem: '>=2.18.2 <3.0.0'
-
-  '@metamask/delegation-utils@0.11.0':
-    resolution: {integrity: sha512-eg8icyDtbzwER/G3VvaiVUNiNr9GXxJXQMcFRbhm9tTMqWXpphYXk9edSungRF+QqYmXIytRiR2ChSHp0uNtew==}
-    engines: {node: ^18.18 || >=20}
-    peerDependencies:
-      viem: '>=2.18.2 <3.0.0'
 
   '@metamask/eth-json-rpc-provider@1.0.1':
     resolution: {integrity: sha512-whiUMPlAOrVGmX8aKYVPvlKyG4CpQXiNNyt74vE1xb5sPvmx5oA7B/kOi/JdBvhGQq97U1/AVdXEdk2zkP8qyA==}
@@ -3211,11 +3180,6 @@ packages:
 
   '@reown/appkit@1.8.16':
     resolution: {integrity: sha512-EleChIVOXa8qylNCcllByP+AYIoktDmPGfavi3Fn4eWWXoc4wlfL58NEiETbCyi1ZgUtaZUfIUiMvwgjJ4+mwQ==}
-
-  '@rhinestone/module-sdk@0.2.7':
-    resolution: {integrity: sha512-clZVB6erRdkDpaYodFsRVhU+Sj4immytLWK76jL9MsjnBg9vDEEMK3izUpsGax6YLDI0/QTrn0sW0qyhLz8fBQ==}
-    peerDependencies:
-      viem: ^2.0.0
 
   '@rolldown/pluginutils@1.0.0-beta.53':
     resolution: {integrity: sha512-vENRlFU4YbrwVqNDZ7fLvy+JR1CRkyr01jhSiDpE1u6py3OMzQfztQU2jxykW3ALNxO4kSlqIDeYyD0Y9RcQeQ==}
@@ -6767,7 +6731,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -8917,9 +8881,6 @@ packages:
     resolution: {integrity: sha512-bPMmpy/5WWKHea5Y/jYAP6k74A+hvmRCQaJuJB6I/ML5JZq/KfNieUVo/3Mh7SAqn7TyFdIo6wqYHInG1MU1bQ==}
     engines: {node: '>=10.0.0'}
 
-  solady@0.0.235:
-    resolution: {integrity: sha512-JUEXLDG7ag3HmqUnrDG7ilhafH6R9bFPpwV63O2kH4UbnS2+gRGEOqqy4k01O7tHjo3MWkDD0cpG+UY9pjy/fQ==}
-
   sonic-boom@2.8.0:
     resolution: {integrity: sha512-kuonw1YOYYNOve5iHdSahXPOK49GqwA+LZhI6Wz/l0rP57iKyXXIHaRagOBHAPmGwJC6od2Z9zgvZ5loSgMlVg==}
 
@@ -9784,9 +9745,6 @@ packages:
 
   web-vitals@5.1.0:
     resolution: {integrity: sha512-ArI3kx5jI0atlTtmV0fWU3fjpLmq/nD3Zr1iFFlJLaqa5wLBkUSzINwBPySCX/8jRyjlmy1Volw1kz1g9XE4Jg==}
-
-  webauthn-p256@0.0.5:
-    resolution: {integrity: sha512-drMGNWKdaixZNobeORVIqq7k5DsRC9FnG201K2QjeOoQLmtSDaSsVZdkg6n5jUALJKcAG++zBPJXmv6hy0nWFg==}
 
   webextension-polyfill@0.10.0:
     resolution: {integrity: sha512-c5s35LgVa5tFaHhrZDnr3FpQpjj1BB+RXhLTYUxGqBVN460HkbM8TBtEqdXWbpTKfzwCcjAZVF7zXCYSKtcp9g==}
@@ -11138,13 +11096,6 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
-  '@biconomy/abstractjs@1.1.13(@metamask/delegation-toolkit@0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)))(@rhinestone/module-sdk@0.2.7(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)))(typescript@5.9.3)(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))':
-    dependencies:
-      '@metamask/delegation-toolkit': 0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))
-      '@rhinestone/module-sdk': 0.2.7(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))
-      typescript: 5.9.3
-      viem: 2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)
-
   '@bigmi/client@0.6.5(@tanstack/query-core@5.90.19)(@types/react@19.2.8)(bs58@6.0.0)(immer@10.2.0)(react@19.2.3)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.3))':
     dependencies:
       '@bigmi/core': 0.6.5(@types/react@19.2.8)(bs58@6.0.0)(immer@10.2.0)(react@19.2.3)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.3))
@@ -12348,23 +12299,6 @@ snapshots:
       superstruct: 1.0.4
     transitivePeerDependencies:
       - supports-color
-
-  '@metamask/delegation-abis@0.11.0': {}
-
-  '@metamask/delegation-deployments@0.11.0': {}
-
-  '@metamask/delegation-toolkit@0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))':
-    dependencies:
-      '@metamask/delegation-utils': 0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))
-      viem: 2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)
-      webauthn-p256: 0.0.5
-
-  '@metamask/delegation-utils@0.11.0(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))':
-    dependencies:
-      '@metamask/delegation-abis': 0.11.0
-      '@metamask/delegation-deployments': 0.11.0
-      buffer: 6.0.3
-      viem: 2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)
 
   '@metamask/eth-json-rpc-provider@1.0.1':
     dependencies:
@@ -14289,12 +14223,6 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
       - zod
-
-  '@rhinestone/module-sdk@0.2.7(viem@2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5))':
-    dependencies:
-      solady: 0.0.235
-      tslib: 2.8.1
-      viem: 2.44.4(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.5)
 
   '@rolldown/pluginutils@1.0.0-beta.53': {}
 
@@ -22010,8 +21938,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  solady@0.0.235: {}
-
   sonic-boom@2.8.0:
     dependencies:
       atomic-sleep: 1.0.0
@@ -22940,11 +22866,6 @@ snapshots:
       graceful-fs: 4.2.11
 
   web-vitals@5.1.0: {}
-
-  webauthn-p256@0.0.5:
-    dependencies:
-      '@noble/curves': 1.9.7
-      '@noble/hashes': 1.8.0
 
   webextension-polyfill@0.10.0: {}
 

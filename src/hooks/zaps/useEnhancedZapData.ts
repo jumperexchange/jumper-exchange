@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
-import { ProjectData } from 'src/types/questDetails';
-import { useZaps } from '../useZaps';
+import type { ProjectData } from 'src/types/questDetails';
+import { useZapData } from './useZapData';
 import { useAccount } from '@lifi/wallet-management';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 import { useGetZapInPoolBalance } from './useGetZapInPoolBalance';
 
 export const useEnhancedZapData = (projectData: ProjectData) => {
-  const { data, isSuccess } = useZaps(projectData);
+  const { data, isSuccess } = useZapData({ projectData });
   const { account } = useAccount();
 
   const zapData = data?.data;
