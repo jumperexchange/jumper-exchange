@@ -4,7 +4,7 @@ import type { TokenAmountProps } from './types';
 import { mockTokenBalances } from './fixtures';
 
 const meta: Meta<TokenAmountProps> = {
-  title: 'PortfolioProvider/TokenAmount',
+  title: 'components/composite/TokenAmount',
   component: TokenAmount,
   tags: ['autodocs'],
   argTypes: {

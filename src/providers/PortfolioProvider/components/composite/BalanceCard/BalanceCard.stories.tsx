@@ -13,7 +13,7 @@ import {
 } from './fixtures';
 
 const meta: Meta<typeof BalanceCard> = {
-  title: 'PortfolioProvider/Composite/BalanceCard',
+  title: 'components/Composite/BalanceCard',
   component: BalanceCard,
   parameters: {
     layout: 'padded',

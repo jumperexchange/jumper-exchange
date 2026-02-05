@@ -3,7 +3,7 @@ import { PositionCard } from './PositionCard';
 import { mockChainPositions, mockAppPositions } from './fixtures';
 
 const meta: Meta<typeof PositionCard> = {
-  title: 'PortfolioProvider/composite/PositionCard',
+  title: 'components/composite/PositionCard',
   component: PositionCard,
   tags: ['autodocs'],
   argTypes: {

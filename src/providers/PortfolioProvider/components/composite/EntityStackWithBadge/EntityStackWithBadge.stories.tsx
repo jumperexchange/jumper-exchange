@@ -10,7 +10,7 @@ import {
 } from './fixtures';
 
 const meta: Meta<typeof EntityStackWithBadge> = {
-  title: 'PortfolioProvider/composite/EntityStackWithBadge',
+  title: 'components/composite/EntityStackWithBadge',
   component: EntityStackWithBadge,
   tags: ['autodocs'],
   argTypes: {
