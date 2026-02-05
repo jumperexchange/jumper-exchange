@@ -10,7 +10,7 @@ export function buildExplorerLink(
   address: string,
   chainId?: ChainId,
 ) {
-  if (blockExplorerUrls.length === 0) {
+  if (blockExplorerUrls?.length === 0) {
     return address;
   }
 
