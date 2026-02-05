@@ -23,7 +23,6 @@ import {
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
-import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
   baseMiniApp,
   pageMetadataFields,
@@ -104,13 +103,6 @@ export default async function RootLayout({
   const { lng } = await params;
   const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
   const { resources } = await initTranslations(lng || fallbackLng, namespaces);
-  const { appId } = await getMiniAppSettings().catch((e) => {
-    console.error(
-      'Failed to fetch mini app settings, using default values.',
-      e,
-    );
-    return { appId: '' };
-  });
 
   return (
     <html
@@ -120,8 +112,6 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        {/* keeping that here, because base needs to match it in the head */}
-        <meta name="base:app_id" content={appId} />
         <style>
           {`
           // Adding default loading background colors
