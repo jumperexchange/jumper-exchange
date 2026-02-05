@@ -23,7 +23,6 @@ import {
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
-import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
   baseMiniApp,
   pageMetadataFields,
@@ -113,7 +112,6 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        {/* keeping that here, because base needs to match it in the head */}
         <style>
           {`
           // Adding default loading background colors
