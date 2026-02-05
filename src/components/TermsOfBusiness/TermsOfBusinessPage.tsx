@@ -19,7 +19,8 @@ import {
 } from './lists';
 import { de } from 'date-fns/locale';
 import Link from 'next/link';
-import { JUMPER_PRIVACY_POLICY_PATH } from '@/const/urls';
+import { JUMPER_PRIVACY_POLICY_PATH, JUMPER_URL } from '@/const/urls';
+import { JUMPER_DOMAIN } from '@/const/domain';
 
 export const TermsOfBusinessPage = () => {
   const currentDate = format(new Date(), 'MMMM dd, yyyy');
@@ -34,11 +35,11 @@ export const TermsOfBusinessPage = () => {
           (“you”, “your”, or “User”) the ability to access the functionality
           provided by one or more third parties using a native interface
           (collectively “Functionality”). The Functionality shall include, but
-          not limited to, (a) a website available at https://jumper.exchange and
-          (b) the aggregation of access to various third-party tools and
-          services across multiple blockchain networks, such as decentralized
-          exchange (DEX) and/or yield/staking aggregation protocols. The
-          Functionality is provided on a{' '}
+          not limited to, (a) a website available at {JUMPER_URL} and (b) the
+          aggregation of access to various third-party tools and services across
+          multiple blockchain networks, such as decentralized exchange (DEX)
+          and/or yield/staking aggregation protocols. The Functionality is
+          provided on a{' '}
           <strong>
             non-custodial, user-directed basis. We do not custody or control
             your digital assets at any time, do not serve as a counterparty to
@@ -156,7 +157,7 @@ export const TermsOfBusinessPage = () => {
         <>
           If you have any questions about these Terms or the Functionality,
           please contact us at{' '}
-          <a href="mailto:legal@jumper.exchange">legal@jumper.exchange</a>.
+          <a href={`mailto:legal@${JUMPER_DOMAIN}`}>legal@{JUMPER_DOMAIN}</a>.
         </>
       ),
     },

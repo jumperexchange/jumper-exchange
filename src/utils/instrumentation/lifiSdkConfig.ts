@@ -15,7 +15,7 @@ export const lifiSdkConfig = createConfig({
   providers: [EVM(), Solana(), UTXO(), Sui()],
   integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR,
   rpcUrls: {
-    ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? {}),
+    ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
     ...publicRPCList,
   },
   preloadChains: true,

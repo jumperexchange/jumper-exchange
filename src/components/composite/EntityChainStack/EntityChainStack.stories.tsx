@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EntityChainStack } from './EntityChainStack';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { EntityChainStackVariant } from './EntityChainStack.types';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 
 const meta = {
   title: 'Composite/EntityChainStack',
@@ -153,7 +154,7 @@ export const ProtocolDefault: Story = {
     variant: EntityChainStackVariant.Protocol,
     protocol: {
       name: 'Morpho',
-      logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
+      logo: `${JUMPER_STRAPI_URL}/uploads/morpho_eef0686ee3_2e4b8e06a6.png`,
       product: 'Morpho',
       version: '1.0.0',
     },

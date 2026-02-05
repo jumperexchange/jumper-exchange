@@ -97,7 +97,7 @@
     "goToArticle": "Đi tới bài viết",
     "openApp": "Mở ứng dụng",
     "faq": "Hỏi/đáp",
-    "jumperCta": "Trải nghiệm Jumper.exchange",
+    "jumperCta": "Trải nghiệm Jumper.xyz",
     "copiedLink": "Sao chép liên kết",
     "shareLinkedIn": "Chia sẻ bài viết trên LinkedIn",
     "shareFb": "Chia sẻ bài viết trên Facebook",
@@ -546,23 +546,6 @@
       "tvl": "",
       "lockupPeriod": "",
       "token": ""
-    },
-    "sweepTokensCard": {
-      "button": {
-        "claim": "",
-        "switchChain": "",
-        "waitingForTransaction": "",
-        "transactionInProgress": "",
-        "viewTransaction": ""
-      },
-      "error": {
-        "title": "",
-        "description": ""
-      },
-      "success": {
-        "title": "",
-        "description": ""
-      }
     },
     "zap": {
       "sendToAddressName": "",

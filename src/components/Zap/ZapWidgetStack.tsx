@@ -13,7 +13,6 @@ import type { CustomInformation, Quest } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { DepositPoolCard } from '../ZapWidget/DepositPoolCard/DepositPoolCard';
 import { useEnhancedZapData } from 'src/hooks/zaps/useEnhancedZapData';
-import { SweepTokensCard } from '../ZapWidget/SweepTokensCard/SweepTokensCard';
 import { useZapQuestIdStorage } from 'src/providers/hooks';
 import envConfig from 'src/config/env-config';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
@@ -79,7 +78,6 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
           gap: 4,
         }}
       >
-        <SweepTokensCard customInformation={customInformation} />
         <DepositPoolCard
           customInformation={customInformation}
           zapData={zapData}

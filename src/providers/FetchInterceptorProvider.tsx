@@ -7,8 +7,6 @@ import {
   ZAP_EARN_OPPORTUNITY_SLUG_SESSION_STORAGE_KEY,
   ZAP_QUEST_ID_SESSION_STORAGE_KEY,
 } from 'src/const/quests';
-import envConfig from '../config/env-config';
-import { AppPaths } from 'src/const/urls';
 import getApiUrl from '@/utils/getApiUrl';
 
 export function FetchInterceptorProvider() {
@@ -39,14 +37,6 @@ export function FetchInterceptorProvider() {
         if (zapQuestId) {
           request.headers.append('x-zap-quest-id', zapQuestId);
         }
-      }
-      // scan page flow
-      if (
-        request.url.startsWith(apiUrl) &&
-        request.url.includes('status') &&
-        pathname?.includes(AppPaths.Scan)
-      ) {
-        request.headers.append('x-zap-scan-id', 'biconomy-powered-tx');
       }
     });
 

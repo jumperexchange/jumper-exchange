@@ -1,6 +1,3 @@
-// For now this is copied and pasted from the jumper-backend's zap.interface.ts
-// TODO: Eventually share the types.
-
 import type { AbiFunction } from 'viem';
 
 export enum Chain {
@@ -21,7 +18,6 @@ export interface ZapData {
   project: Project;
   address: string;
 }
-
 interface MarketEntry {
   address: `0x${string}`; // Identifier for strapi and default contract address
   contracts?: {
@@ -63,7 +59,6 @@ export interface ProjectMeta {
   name: string;
   logoURI: string;
 }
-
 interface TransactionDetails {
   txHash: `0x${string}`;
   txLink: string;

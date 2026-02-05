@@ -5,10 +5,12 @@ import { getSiteUrl } from 'src/const/urls';
 
 export const metadata: Metadata = {
   title: `Privacy Policy | ${siteName}`,
-  description: 'Privacy Policy for Jumper Exchange - Learn how we collect, use, and protect your personal information.',
+  description:
+    'Privacy Policy for Jumper - Learn how we collect, use, and protect your personal information.',
   openGraph: {
     title: `Privacy Policy | ${siteName}`,
-    description: 'Privacy Policy for Jumper Exchange - Learn how we collect, use, and protect your personal information.',
+    description:
+      'Privacy Policy for Jumper - Learn how we collect, use, and protect your personal information.',
     url: `${getSiteUrl()}/privacy-policy`,
     siteName,
     type: 'website',
@@ -16,7 +18,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: `Privacy Policy | ${siteName}`,
-    description: 'Privacy Policy for Jumper Exchange - Learn how we collect, use, and protect your personal information.',
+    description:
+      'Privacy Policy for Jumper - Learn how we collect, use, and protect your personal information.',
   },
   alternates: {
     canonical: `${getSiteUrl()}/privacy-policy`,

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { BaseStepperProps } from '../ClaimPerkModal.types';
+import type { BaseStepperProps } from '../ClaimPerkModal.types';
 import { buildFormSchema } from '../validation/schemas';
 import { SignMessageErrorType, useSignMessage } from 'src/hooks/useSignMessage';
 import { STEP_ORDER } from './useClaimPerkSteps';
 import { usePerkClaimStatus } from 'src/hooks/perks/usePerkClaimStatus';
+import { JUMPER_DOMAIN } from '@/const/domain';
 
 export enum ErrorType {
   SignatureFailed = 'signatureFailed',
@@ -37,7 +38,7 @@ export interface FormValidation {
   isFormValid: boolean;
 }
 
-const PERK_CLAIM_MESSAGE = 'Claiming perk on jumper.exchange';
+const PERK_CLAIM_MESSAGE = `Claiming perk on ${JUMPER_DOMAIN}`;
 
 export const useClaimPerkForm = ({
   perkId,
@@ -73,7 +74,9 @@ export const useClaimPerkForm = ({
   const currentStepId = steps[activeStep];
 
   const currentStepValidation = useMemo(() => {
-    if (!currentStepId) return null;
+    if (!currentStepId) {
+      return null;
+    }
     const currentStepValue = formValues[currentStepId] ?? '';
     const currentStepSchema = schema.shape[currentStepId];
     return currentStepSchema
@@ -85,7 +88,9 @@ export const useClaimPerkForm = ({
   const isFormValid = schema.safeParse(formValues).success;
 
   const currentStepError = useMemo(() => {
-    if (!currentStepValidation || currentStepValidation.success) return '';
+    if (!currentStepValidation || currentStepValidation.success) {
+      return '';
+    }
     return currentStepValidation.error.issues[0]?.message || 'Invalid input';
   }, [currentStepValidation]);
 
@@ -129,7 +134,9 @@ export const useClaimPerkForm = ({
   }, []);
 
   const handleContinue = useCallback(() => {
-    if (isLastStep) return;
+    if (isLastStep) {
+      return;
+    }
     if (!isCurrentStepValid) {
       setShowStepError(true);
       return;

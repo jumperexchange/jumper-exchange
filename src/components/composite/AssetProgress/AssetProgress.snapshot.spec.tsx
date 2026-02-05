@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render } from '../../../../vitest.setup';
 import { AssetProgress } from './AssetProgress';
 import { AssetProgressVariant } from './AssetProgress.types';
+import { JUMPER_STRAPI_URL } from '@/const/urls';
 
 const mockedTokens = [
   {
@@ -179,7 +180,7 @@ describe('AssetProgress snapshot', () => {
           variant={AssetProgressVariant.Protocol}
           protocol={{
             name: 'Morpho',
-            logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
+            logo: `${JUMPER_STRAPI_URL}/uploads/morpho_eef0686ee3_2e4b8e06a6.png`,
             product: 'Morpho',
             version: '1.0.0',
           }}
@@ -196,7 +197,7 @@ describe('AssetProgress snapshot', () => {
           variant={AssetProgressVariant.Protocol}
           protocol={{
             name: 'Morpho',
-            logo: 'https://strapi.jumper.exchange/uploads/morpho_eef0686ee3_2e4b8e06a6.png',
+            logo: `${JUMPER_STRAPI_URL}/uploads/morpho_eef0686ee3_2e4b8e06a6.png`,
             product: 'Morpho',
             version: '1.0.0',
           }}

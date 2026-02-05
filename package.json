@@ -10,11 +10,12 @@
   "dependencies": {
     "@abstract-foundation/agw-client": "^1.9.1",
     "@abstract-foundation/agw-react": "^1.9.1",
-    "@biconomy/abstractjs": "1.1.13",
     "@bigmi/react": "^0.6.5",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@farcaster/miniapp-sdk": "^0.2.2",
+    "@farcaster/miniapp-wagmi-connector": "^1.1.0",
     "@fingerprintjs/fingerprintjs": "^5.0.1",
     "@intercom/messenger-js-sdk": "^0.0.18",
     "@lifi/explorer": "0.6.3",

@@ -1,7 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
-
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -32,7 +31,7 @@ const qaseReporter = [
       },
     },
   },
-] as const
+] as const;
 
 export default defineConfig({
   timeout: 120 * 1000,
@@ -51,7 +50,10 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
     ? [['list'], ['blob'], qaseReporter]
-    : [['list'], ['html'], qaseReporter],  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+    : [
+        ['list'],
+        ['html'],
+      ] /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */,
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: process.env.BASE_URL || 'http://localhost:3000',

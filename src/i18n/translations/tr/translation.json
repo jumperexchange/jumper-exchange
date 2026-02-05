@@ -97,7 +97,7 @@
     "goToArticle": "Makaleye git",
     "openApp": "Uygulamayı aç",
     "faq": "SSS",
-    "jumperCta": "jumper.exchange'i deneyin",
+    "jumperCta": "jumper.xyz'i deneyin",
     "copiedLink": "Bağlantı kopyalandı",
     "shareLinkedIn": "Makaleyi LinkedIn'de paylaş",
     "shareFb": "Makaleyi Facebook'ta paylaş",
@@ -546,23 +546,6 @@
       "tvl": "",
       "lockupPeriod": "",
       "token": ""
-    },
-    "sweepTokensCard": {
-      "button": {
-        "claim": "",
-        "switchChain": "",
-        "waitingForTransaction": "",
-        "transactionInProgress": "",
-        "viewTransaction": ""
-      },
-      "error": {
-        "title": "",
-        "description": ""
-      },
-      "success": {
-        "title": "",
-        "description": ""
-      }
     },
     "zap": {
       "sendToAddressName": "",

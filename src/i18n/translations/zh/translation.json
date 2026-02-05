@@ -97,7 +97,7 @@
     "goToArticle": "转至文章",
     "openApp": "打开应用",
     "faq": "常见问题解答",
-    "jumperCta": "试试 jumper.exchange",
+    "jumperCta": "试试 jumper.xyz",
     "copiedLink": "复制链接",
     "shareLinkedIn": "",
     "shareFb": "在 Facebook 上分享文章",
@@ -546,23 +546,6 @@
       "tvl": "",
       "lockupPeriod": "",
       "token": ""
-    },
-    "sweepTokensCard": {
-      "button": {
-        "claim": "",
-        "switchChain": "",
-        "waitingForTransaction": "",
-        "transactionInProgress": "",
-        "viewTransaction": ""
-      },
-      "error": {
-        "title": "",
-        "description": ""
-      },
-      "success": {
-        "title": "",
-        "description": ""
-      }
     },
     "zap": {
       "sendToAddressName": "",

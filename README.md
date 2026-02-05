@@ -6,9 +6,9 @@
 
 </div>
 
-# Jumper.Exchange
+# Jumper.XYZ
 
-This is the [jumper.exchange](https://jumper.exchange) repository that gets deployed to `develop.jumper.exchange`, `staging.jumper.exchange` and `jumper.exchange`.
+This is the [jumper.xyz](https://jumper.xyz) repository that gets deployed to `develop.jumper.xyz`, `staging.jumper.xyz` and `jumper.xyz`.
 
 ## Getting Started
 

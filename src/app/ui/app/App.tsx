@@ -1,4 +1,5 @@
 'use client';
+import { sdk } from '@farcaster/miniapp-sdk';
 import { Box } from '@mui/material';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -41,6 +42,10 @@ const App = ({ children }: { children: React.ReactNode }) => {
       setAnnouncementBannerHeight(0);
     };
   }, [welcomeScreenClosed]);
+
+  useEffect(() => {
+    sdk.actions.ready();
+  }, []);
 
   return (
     <WelcomeOverlayLayout

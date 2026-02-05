@@ -23,7 +23,7 @@ import { WidgetSkeleton } from '../WidgetSkeleton';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
-import type { ZapDataResponse } from 'src/providers/ZapInitProvider/ModularZaps/zap.jumper-backend';
+import type { ZapDataResponse } from '@/types/zaps';
 import type { ParseKeys } from 'i18next';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
