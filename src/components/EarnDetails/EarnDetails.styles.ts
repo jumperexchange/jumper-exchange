@@ -113,14 +113,17 @@ export const EarnDetailsColumnFlexContainer = styled(EarnDetailsFlexContainer)(
     flex: '1 0 fit-content',
     flexDirection: 'column',
     justifyContent: 'space-between',
+    minWidth: 0,
   }),
 );
 
-export const EarnDetailsActionsContainer = styled(EarnDetailsSectionContainer)(
-  ({ theme }) => ({
-    gap: theme.spacing(2),
-  }),
-);
+export const EarnYieldColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(1.25),
+}));
 
 export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
   width: '100%',

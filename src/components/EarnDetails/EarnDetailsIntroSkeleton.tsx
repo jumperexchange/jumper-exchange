@@ -3,12 +3,12 @@
 import { ProtocolCardSkeleton } from '../Cards/ProtocolCard/ProtocolCardSkeleton';
 import {
   BaseSkeletonBox,
-  EarnDetailsActionsContainer,
   EarnDetailsColumnFlexContainer,
   EarnDetailsRowFlexContainer,
 } from './EarnDetails.styles';
 import { OverviewEarnSkeleton } from '../Cards/EarnCard/variants/OverviewEarnSkeleton';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { MultiViewCardContainer } from '../composite/cards/MultiViewCard/MultiViewCard.style';
 
 export const EarnDetailsIntroSkeleton = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -17,10 +17,10 @@ export const EarnDetailsIntroSkeleton = () => {
       <ProtocolCardSkeleton fullWidth={isMobile} />
       <EarnDetailsColumnFlexContainer>
         <OverviewEarnSkeleton fullWidth={isMobile} />
-        <EarnDetailsActionsContainer>
+        <MultiViewCardContainer>
           <BaseSkeletonBox variant="rounded" width="100%" height={48} />
           <BaseSkeletonBox variant="rounded" width="100%" height={48} />
-        </EarnDetailsActionsContainer>
+        </MultiViewCardContainer>
       </EarnDetailsColumnFlexContainer>
     </EarnDetailsRowFlexContainer>
   );

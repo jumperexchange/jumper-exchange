@@ -75,6 +75,7 @@ export const SelectCardDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'hideOverflow',
 })<SelectCardDescriptionProps>(({ theme, hideOverflow }) => ({
   color: (theme.vars || theme).palette.text.secondary,
+  minWidth: 0,
   ...(hideOverflow && {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
