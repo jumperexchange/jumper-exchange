@@ -7,13 +7,14 @@ import getApiUrl from '@/utils/getApiUrl';
 import { LiFiExplorer, type LiFiExplorerConfig } from '@lifi/explorer';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
-import { useMemo } from 'react';
-import { fallbackLng } from 'src/i18n';
-import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider';
+import { useMemo, useRef } from 'react';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import { usePathname } from 'next/navigation';
 
 export default function ScanPage({ lng }: { lng: string }) {
   const theme = useTheme();
+  const pathname = usePathname();
+  const basePath = pathname.split(JUMPER_SCAN_PATH)[0];
 
   const defaultSuccessPalette = useMemo(
     () => ({
@@ -28,41 +29,39 @@ export default function ScanPage({ lng }: { lng: string }) {
     }),
     [],
   );
-
-  const explorerConfig = useMemo(
-    () =>
-      ({
-        apiUrl: getApiUrl(),
-        // appearance: 'light' as PaletteMode, // This controls light and dark mode
-        integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
-        base: `${lng !== fallbackLng ? `${lng}` : ''}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
-        theme: {
-          // These colors and values correspond to the figma design
-          shape: {
-            borderRadiusSecondary: (theme.vars || theme).shape
-              .scanBorderRadiusSecondary,
-            borderRadiusTertiary: (theme.vars || theme).shape
-              .scanBorderRadiusTertiary,
-            borderRadius: (theme.vars || theme).shape.scanBorderRadius,
-          },
-          colorSchemes: {
-            light: {
-              palette: {
-                ...theme.colorSchemes.light?.palette,
-                ...defaultSuccessPalette,
-              },
+  const configRef = useRef<LiFiExplorerConfig | null>(null);
+  if (!configRef.current) {
+    configRef.current = {
+      apiUrl: getApiUrl(),
+      // appearance: 'light' as PaletteMode, // This controls light and dark mode
+      integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR, // TODO: change as needed
+      base: `${basePath}${JUMPER_SCAN_PATH}`, // Important for the routing and having everything served under /scan. Do not remove!
+      theme: {
+        // These colors and values correspond to the figma design
+        shape: {
+          borderRadiusSecondary: (theme.vars || theme).shape
+            .scanBorderRadiusSecondary,
+          borderRadiusTertiary: (theme.vars || theme).shape
+            .scanBorderRadiusTertiary,
+          borderRadius: (theme.vars || theme).shape.scanBorderRadius,
+        },
+        colorSchemes: {
+          light: {
+            palette: {
+              ...theme.colorSchemes.light?.palette,
+              ...defaultSuccessPalette,
             },
-            dark: {
-              palette: {
-                ...theme.colorSchemes.dark?.palette,
-                ...defaultSuccessPalette,
-              },
+          },
+          dark: {
+            palette: {
+              ...theme.colorSchemes.dark?.palette,
+              ...defaultSuccessPalette,
             },
           },
         },
-      }) as LiFiExplorerConfig,
-    [lng, theme.colorSchemes, theme.shape, defaultSuccessPalette],
-  );
+      },
+    } as LiFiExplorerConfig;
+  }
 
   return (
     <ClientOnly>
@@ -82,8 +81,7 @@ export default function ScanPage({ lng }: { lng: string }) {
           },
         }}
       >
-        <FetchInterceptorProvider />
-        <LiFiExplorer config={explorerConfig} />
+        <LiFiExplorer config={configRef.current} />
       </Box>
     </ClientOnly>
   );
