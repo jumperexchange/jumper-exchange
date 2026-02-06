@@ -164,3 +164,105 @@ jobs:
             ${{ needs.merge-reports.outputs.summary }}
 
             ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
+
+  notify-slack-on-failure:
+    needs: [create-qase-run, test, merge-reports]
+    if: ${{ failure() && github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Slack payload
+        id: build-payload
+        run: |
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          TEST_SUMMARY="${{ needs.merge-reports.outputs.summary || 'Tests failed - check workflow logs for details' }}"
+          QASE_LINK="${{ needs.create-qase-run.outputs.public_link }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          
+          # Build blocks using jq
+          BLOCKS=$(jq -n \
+            --arg author "$PR_AUTHOR" \
+            --arg summary "$TEST_SUMMARY" \
+            --arg repo_url "$REPO_URL" \
+            --arg repo_name "${{ github.repository }}" \
+            --arg pr_url "$PR_URL" \
+            --arg pr_number "$PR_NUMBER" \
+            --arg pr_title "$PR_TITLE" \
+            --arg workflow_url "$WORKFLOW_URL" \
+            --arg qase_link "$QASE_LINK" \
+            '[
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "❌ UI Tests Failed"
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Repository:*\n<\($repo_url)|\($repo_name)>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Pull Request:*\n<\($pr_url)|#\($pr_number) - \($pr_title)>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Author:*\n<@\($author)>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Workflow Run:*\n<\($workflow_url)|View Run>"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Test Summary:*\n```\($summary)```"
+                }
+              }
+            ] + (if $qase_link != "" and $qase_link != "null" then [{
+              "type": "section",
+              "text": {
+                "type": "mrkdwn",
+                "text": "*Qase Report:* <\($qase_link)|View Detailed Report>"
+              }
+            }] else [] end) + [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@\($author)> Please review the test failures and fix any issues."
+                }
+              },
+              {
+                "type": "divider"
+              }
+            ]')
+          
+          PAYLOAD=$(jq -n \
+            --argjson blocks "$BLOCKS" \
+            '{
+              "channel": "#jumper-ui-tests",
+              "text": "❌ UI Tests Failed",
+              "blocks": $blocks
+            }')
+          
+          echo "payload<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$PAYLOAD" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v2
+        with:
+          webhook-type: incoming-webhook
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL_UI_TESTS }}
+          payload: ${{ steps.build-payload.outputs.payload }}
