@@ -1,14 +1,16 @@
 'use client';
 import { abstractWalletConnector } from '@abstract-foundation/agw-react/connectors';
+import { sdk } from '@farcaster/miniapp-sdk';
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import type { ExtendedChain } from '@lifi/sdk';
 import {
   createDefaultWagmiConfig,
   useSyncWagmiConfig,
 } from '@lifi/wallet-management';
-import type { FC, PropsWithChildren } from 'react';
+import { type FC, type PropsWithChildren, useMemo, useState } from 'react';
 import { WagmiProvider } from 'wagmi';
 import { baseAccount } from 'wagmi/connectors';
+import { fa } from 'zod/v4/locales';
 import { baseMiniApp } from '@/app/lib/metadata';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import envConfig from '@/config/env-config';
@@ -17,15 +19,8 @@ import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
-const { config, connectors } = createDefaultWagmiConfig({
-  connectors: [
-    farcasterMiniApp(),
-    baseAccount({
-      appName: baseMiniApp.miniAppName,
-      appLogoUrl: new URL(baseMiniApp.splashImageUrl, PUBLIC_URL).toString(),
-    }),
-    abstractWalletConnector(),
-  ],
+const { config, connectors: initialConnectors } = createDefaultWagmiConfig({
+  connectors: [abstractWalletConnector()],
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,
@@ -36,10 +31,32 @@ const { config, connectors } = createDefaultWagmiConfig({
 });
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [useBaseMiniApp, setUseBaseMiniApp] = useState(false);
+  sdk.context.then((context) => {
+    if (context) {
+      setUseBaseMiniApp(true);
+    }
+  });
   const { chains } = useChains();
 
-  useSyncWagmiConfig(config, connectors, chains as ExtendedChain[]);
+  const finalConnectors = useMemo(() => {
+    const allConnectors = [...initialConnectors];
+    if (useBaseMiniApp) {
+      allConnectors.unshift(farcasterMiniApp());
+      allConnectors.unshift(
+        baseAccount({
+          appName: baseMiniApp.miniAppName,
+          appLogoUrl: new URL(
+            baseMiniApp.splashImageUrl,
+            PUBLIC_URL,
+          ).toString(),
+        }),
+      );
+    }
+    return allConnectors;
+  }, [useBaseMiniApp]);
 
+  useSyncWagmiConfig(config, finalConnectors, chains as ExtendedChain[]);
   return (
     <WagmiProvider config={config} reconnectOnMount={false}>
       {children}
