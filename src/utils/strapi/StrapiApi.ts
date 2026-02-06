@@ -486,7 +486,7 @@ class ArticleStrapiApi extends StrapiApi {
   }
 
   filterByTag(tags: number | number[]): this {
-    if (typeof tags === 'string') {
+    if (typeof tags === 'number') {
       this.apiUrl.searchParams.set('filters[tags][id][$eq]', tags);
     } else if (Array.isArray(tags)) {
       tags.forEach((tag, index) => {
