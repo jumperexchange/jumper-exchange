@@ -1,3 +1,4 @@
+import { useAccount } from '@lifi/wallet-management';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
@@ -30,9 +31,10 @@ export const EarnDetailsActions = ({
   earnOpportunity,
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
+  const { account } = useAccount();
   const accountAddress = useAccountAddress();
 
-  const isConnected = !!accountAddress;
+  const isConnected = !!account?.address;
 
   const {
     isDisabled: isDepositFeatureDisabled,
