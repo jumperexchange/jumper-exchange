@@ -7,10 +7,15 @@ import {
   createDefaultWagmiConfig,
   useSyncWagmiConfig,
 } from '@lifi/wallet-management';
-import { type FC, type PropsWithChildren, useMemo, useState } from 'react';
+import {
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { WagmiProvider } from 'wagmi';
 import { baseAccount } from 'wagmi/connectors';
-import { fa } from 'zod/v4/locales';
 import { baseMiniApp } from '@/app/lib/metadata';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import envConfig from '@/config/env-config';
@@ -32,11 +37,15 @@ const { config, connectors: initialConnectors } = createDefaultWagmiConfig({
 
 export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const [useBaseMiniApp, setUseBaseMiniApp] = useState(false);
-  sdk.context.then((context) => {
-    if (context) {
-      setUseBaseMiniApp(true);
-    }
-  });
+
+  useEffect(() => {
+    sdk.context.then((context) => {
+      if (context) {
+        setUseBaseMiniApp(true);
+      }
+    });
+  }, []);
+
   const { chains } = useChains();
 
   const finalConnectors = useMemo(() => {
