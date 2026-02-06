@@ -28,7 +28,9 @@ export async function GET() {
       webhookUrl: '',
       subtitle: 'Your Smart Money App',
       description: 'Move, deploy, manage capital across chains, in one place.',
-      screenshotUrls: [],
+      screenshotUrls: baseMiniApp.screenshotIcons.map((icon) =>
+        new URL(icon, PUBLIC_URL).toString(),
+      ),
       primaryCategory: 'finance',
       tags: ['jumper', 'finance', 'swap', 'defi'],
       heroImageUrl: 'https://ex.co/og.png',
