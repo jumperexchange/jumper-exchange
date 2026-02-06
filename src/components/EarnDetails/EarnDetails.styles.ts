@@ -122,7 +122,7 @@ export const EarnYieldColumnsContainer = styled(Box)(({ theme }) => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   gap: theme.spacing(2),
-  marginTop: theme.spacing(1.25),
+  marginTop: theme.spacing(0.25),
 }));
 
 export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({

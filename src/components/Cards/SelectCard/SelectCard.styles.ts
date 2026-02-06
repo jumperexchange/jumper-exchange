@@ -111,8 +111,8 @@ export const SelectCardInputField = styled(InputBase, {
     '& input': {
       ...getTypographyStyles(theme, valueVariant, 'bodyLargeStrong'),
       height: 'auto',
-      paddingTop: 0,
-      paddingBottom: theme.spacing(0.25),
+      paddingTop: theme.spacing(0.1875),
+      paddingBottom: theme.spacing(0.2),
     },
     '& input::placeholder': {
       opacity: 1,

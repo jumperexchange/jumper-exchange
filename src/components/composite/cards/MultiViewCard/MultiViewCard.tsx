@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import type { HorizontalTabsProps } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
 import { mergeSx } from '@/utils/theme/mergeSx';
-import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { MultiViewCardContainer } from './MultiViewCard.style';
 import type { SxProps, Theme } from '@mui/material/styles';
 
@@ -22,6 +21,8 @@ export const MultiViewCard: FC<MultiViewCardProps> = ({
         sx={mergeSx(tabsContainerSx, (theme) => ({
           '&.MuiTabs-root': {
             backgroundColor: 'transparent',
+            minHeight: 'fit-content',
+            padding: 0,
           },
           '& .MuiTabs-indicator': {
             backgroundColor: (theme.vars || theme).palette.buttonAlphaDarkBg,

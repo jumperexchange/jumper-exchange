@@ -1,5 +1,7 @@
+// TokenAmountInput.tsx
 import Box from '@mui/material/Box';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import type { ChangeEvent, FC } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
@@ -15,7 +17,6 @@ import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import type { Balance, ExtendedToken } from '@/types/tokens';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import {
   Variant as IconButtonVariant,
   Size as IconButtonSize,
@@ -28,7 +29,7 @@ interface TokenAmountInputProps {
   mode?: SelectCardMode;
   primaryDisplay?: PositionPrimaryDisplay;
   enableSwapButton?: boolean;
-  onAmountChange?: (amount: bigint) => void;
+  onAmountChange?: (amount: string) => void;
 }
 
 const selectCardStyles = {
@@ -56,11 +57,13 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   onAmountChange,
 }) => {
   const {
+    toAmount,
     toInputAmount,
     toRawAmount,
-    toTokenAmountString,
-    toPriceString,
-    toTokenAmountStringFromPrice,
+    toPrice,
+    toPriceDisplay,
+    toAmountFromPrice,
+    toInputAmountFromPrice,
     usdDecimals,
   } = useTokenAmountInput();
   const { toDisplayAmountUSD, toDisplayAmount } = useTokenFormatters();
@@ -71,62 +74,35 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
 
   const [primaryDisplay, setPrimaryDisplay] =
     useState<PositionPrimaryDisplay>(primaryDisplayProp);
-  const [tokenAmountString, setTokenAmountString] = useState(() =>
-    toTokenAmountString(tokenBalance.amount, token.decimals),
+
+  const [value, setValue] = useState(() =>
+    toAmount(tokenBalance.amount, token.decimals),
   );
   const [formattedPriceInput, setFormattedPriceInput] = useState('');
-  const [displayPriceString, setDisplayPriceString] = useState(() =>
-    token.priceUSD
-      ? toInputAmount(
-          toPriceString(tokenBalance.amount, token.priceUSD, token.decimals),
-          usdDecimals,
-        )
-      : '',
-  );
 
   const handleInitialAmount = useCallback(() => {
-    const nextTokenString = toTokenAmountString(
-      tokenBalance.amount,
-      token.decimals,
-    );
-    setTokenAmountString(nextTokenString);
-    const nextPriceString = token.priceUSD
-      ? toInputAmount(
-          toPriceString(
-            toRawAmount(nextTokenString, token.decimals),
-            token.priceUSD,
-            token.decimals,
-          ),
-          usdDecimals,
-        )
-      : '';
-    setDisplayPriceString(nextPriceString);
-  }, [
-    tokenBalance.amount,
-    token.decimals,
-    token.priceUSD,
-    toTokenAmountString,
-    toRawAmount,
-    toPriceString,
-    toInputAmount,
-    usdDecimals,
-  ]);
+    const nextValue = toAmount(tokenBalance.amount, token.decimals);
+    setValue(nextValue);
+  }, [tokenBalance.amount, token.decimals, toAmount]);
 
   useLayoutEffect(() => {
     handleInitialAmount();
   }, [handleInitialAmount]);
 
-  const rawAmount = toRawAmount(tokenAmountString, token.decimals);
-
+  // Display logic
   let displayValue: string;
   if (isEditingRef.current) {
-    displayValue =
-      primaryDisplay === 'price' ? formattedPriceInput : tokenAmountString;
+    if (primaryDisplay === 'price') {
+      displayValue = formattedPriceInput;
+    } else {
+      displayValue = value;
+    }
   } else {
     if (primaryDisplay === 'price') {
-      displayValue = displayPriceString;
+      const priceValue = toPrice(value, token.priceUSD);
+      displayValue = toPriceDisplay(priceValue);
     } else {
-      displayValue = tokenAmountString;
+      displayValue = value;
     }
   }
 
@@ -137,75 +113,65 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
     isEditingRef.current = true;
 
     if (primaryDisplay === 'price') {
-      const formatted = toInputAmount(inputValue, usdDecimals, true);
-      setFormattedPriceInput(formatted);
-      if (parseFloat(token.priceUSD) > 0) {
-        const nextTokenString = toTokenAmountStringFromPrice(
-          formatted,
-          token.priceUSD,
-          token.decimals,
-        );
-        setTokenAmountString(nextTokenString);
-        if (onAmountChange) {
-          onAmountChange(toRawAmount(nextTokenString, token.decimals));
-        }
+      const formattedValue = toInputAmount(inputValue, usdDecimals, true);
+      const tokenValue = toAmountFromPrice(formattedValue, token.priceUSD);
+      setFormattedPriceInput(formattedValue);
+      setValue(tokenValue);
+
+      if (onAmountChange) {
+        onAmountChange(tokenValue);
       }
     } else {
-      const nextTokenString = toInputAmount(inputValue, token.decimals, true);
-      setTokenAmountString(nextTokenString);
+      const formattedValue = toInputAmount(inputValue, token.decimals, true);
+      setValue(formattedValue);
+
       if (onAmountChange) {
-        onAmountChange(toRawAmount(nextTokenString, token.decimals));
+        onAmountChange(formattedValue);
       }
     }
   };
 
   const handleBlur = () => {
-    const valueToUse =
-      primaryDisplay === 'price' ? formattedPriceInput : tokenAmountString;
     isEditingRef.current = false;
 
     if (primaryDisplay === 'price') {
-      const formatted = toInputAmount(valueToUse, usdDecimals);
-      setDisplayPriceString(formatted);
-      if (parseFloat(token.priceUSD) > 0) {
-        const nextTokenString = toTokenAmountStringFromPrice(
-          formatted,
-          token.priceUSD,
-          token.decimals,
-        );
-        setTokenAmountString(nextTokenString);
-        if (onAmountChange) {
-          onAmountChange(toRawAmount(nextTokenString, token.decimals));
-        }
-      }
-      setFormattedPriceInput('');
-    } else {
-      const nextTokenString = toInputAmount(valueToUse, token.decimals);
-      setTokenAmountString(nextTokenString);
+      const formattedAmount = toInputAmountFromPrice(
+        formattedPriceInput,
+        token.priceUSD,
+        token.decimals,
+      );
+      setValue(formattedAmount);
+
       if (onAmountChange) {
-        onAmountChange(toRawAmount(nextTokenString, token.decimals));
+        onAmountChange(formattedAmount);
+      }
+    } else {
+      const formattedValue = toInputAmount(value, token.decimals);
+      setValue(formattedValue);
+
+      if (onAmountChange) {
+        onAmountChange(formattedValue);
       }
     }
   };
 
   const handleSwap = () => {
-    setPrimaryDisplay((v) => {
-      const next = v === 'amount' ? 'price' : 'amount';
-      if (next === 'price' && token.priceUSD) {
-        setDisplayPriceString(
-          toInputAmount(
-            toPriceString(rawAmount, token.priceUSD, token.decimals),
-            usdDecimals,
-          ),
-        );
-      }
-      return next;
-    });
+    setPrimaryDisplay((prev) => (prev === 'amount' ? 'price' : 'amount'));
   };
 
   const handleResetInitial = () => {
     handleInitialAmount();
+    const initialValue = toAmount(tokenBalance.amount, token.decimals);
+    if (onAmountChange) {
+      onAmountChange(initialValue);
+    }
   };
+
+  const rawAmount = toRawAmount(value, token.decimals);
+  const secondaryValue =
+    primaryDisplay === 'price'
+      ? toDisplayAmount({ token, amount: rawAmount }, token.symbol)
+      : toDisplayAmountUSD({ token, amount: rawAmount });
 
   const displayWithFallback = displayValue || '0';
   const inputValue =
@@ -213,14 +179,10 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
       ? `$${displayWithFallback}`
       : displayWithFallback;
 
-  const secondaryValue =
-    primaryDisplay === 'price'
-      ? toDisplayAmount({ token, amount: rawAmount }, token.symbol)
-      : toDisplayAmountUSD({ token, amount: rawAmount });
-
   const placeholder = primaryDisplay === 'price' ? '$0' : '0';
 
-  const canResetToInitial = isInputMode && tokenBalance.amount !== rawAmount;
+  const initialValue = toAmount(tokenBalance.amount, token.decimals);
+  const canResetToInitial = isInputMode && initialValue !== value;
 
   return (
     <SelectCard
@@ -238,16 +200,16 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
             variant="bodyXSmall"
             sx={{ lineHeight: '100%' }}
           >
-            {enableSwapButton && isInputMode ? (
+            {enableSwapButton && isInputMode && (
               <SwapVertIcon
-                sx={(theme) => ({
+                sx={{
                   height: 12,
                   width: 12,
                   cursor: 'pointer',
-                })}
+                }}
                 onClick={handleSwap}
               />
-            ) : undefined}
+            )}
           </SelectCardDescription>
         </Box>
       }

@@ -146,7 +146,7 @@ export const EarnDetailsPosition = ({
           return (
             <EarnYourYieldView
               depositTokenBalance={depositTokenBalance}
-              apy={earnOpportunity.latest?.apy?.total ?? 0}
+              yieldBoost={earnOpportunity.latest?.apy?.total ?? 0}
             />
           );
         }
