@@ -12,6 +12,7 @@ import {
   THIRTY_DAYS,
   THREE_HUNDRED_SIXTY_FIVE_DAYS,
 } from '@/const/time';
+import { selectCardStyles } from './constants';
 
 interface EarnYourYieldViewProps {
   depositTokenBalance: Balance<ExtendedToken>;
@@ -84,6 +85,7 @@ export const EarnYourYieldView: FC<EarnYourYieldViewProps> = ({
         enableSwapButton
         enableResetButton
         onAmountChange={handleAmountChange}
+        sx={selectCardStyles}
       />
       <EarnYieldColumnsContainer>
         {DURATION_DAY_OPTIONS.map((duration) => (
