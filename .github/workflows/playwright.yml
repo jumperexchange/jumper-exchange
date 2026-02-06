@@ -174,7 +174,6 @@ jobs:
         id: build-payload
         run: |
           PR_AUTHOR="${{ github.event.pull_request.user.login }}"
-          TEST_SUMMARY="${{ needs.merge-reports.outputs.summary || 'Tests failed - check workflow logs for details' }}"
           QASE_LINK="${{ needs.create-qase-run.outputs.public_link }}"
           PR_URL="${{ github.event.pull_request.html_url }}"
           PR_NUMBER="${{ github.event.pull_request.number }}"
@@ -185,7 +184,6 @@ jobs:
           # Build blocks using jq
           BLOCKS=$(jq -n \
             --arg author "$PR_AUTHOR" \
-            --arg summary "$TEST_SUMMARY" \
             --arg repo_url "$REPO_URL" \
             --arg repo_name "${{ github.repository }}" \
             --arg pr_url "$PR_URL" \
@@ -221,7 +219,7 @@ jobs:
                     "text": "*Workflow Run:*\n<\($workflow_url)|View Run>"
                   }
                 ]
-              },
+              }
             ] + (if $qase_link != "" and $qase_link != "null" then [{
               "type": "section",
               "text": {
