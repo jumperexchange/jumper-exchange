@@ -1,7 +1,5 @@
-// TokenAmountInput.tsx
 import Box from '@mui/material/Box';
 import SwapVertIcon from '@mui/icons-material/SwapVert';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import type { ChangeEvent, FC } from 'react';
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 
@@ -10,17 +8,12 @@ import {
   SelectCardDescription,
   SelectCardMode,
 } from '../../Cards/SelectCard/SelectCard.styles';
-import { EntityChainStack } from '../EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from '../EntityChainStack/EntityChainStack.types';
-import { AvatarSize } from '../../core/AvatarStack/AvatarStack.types';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import type { Balance, ExtendedToken } from '@/types/tokens';
-import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
-import {
-  Variant as IconButtonVariant,
-  Size as IconButtonSize,
-} from '@/components/core/buttons/types';
+import { descriptionBoxStyles, selectCardStyles } from './constants';
+import { TokenAmountInputAvatar } from './adornments/TokenAmountInputAvatar';
+import { TokenAmountInputReset } from './adornments/TokenAmountInputReset';
 
 export type PositionPrimaryDisplay = 'amount' | 'price';
 
@@ -29,31 +22,20 @@ interface TokenAmountInputProps {
   mode?: SelectCardMode;
   primaryDisplay?: PositionPrimaryDisplay;
   enableSwapButton?: boolean;
+  enableResetButton?: boolean;
+  endAdornment?: React.ReactNode;
+  hintEndAdornment?: string;
   onAmountChange?: (amount: string) => void;
 }
-
-const selectCardStyles = {
-  padding: 0,
-  borderRadius: 0,
-  boxShadow: 'none',
-  background: 'transparent',
-  '& .MuiInputLabel-root': {
-    color: 'text.secondary',
-  },
-} as const;
-
-const descriptionBoxStyles = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  gap: 0.5,
-} as const;
 
 export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   tokenBalance,
   mode = SelectCardMode.Display,
   primaryDisplay: primaryDisplayProp = 'price',
   enableSwapButton = false,
+  enableResetButton = false,
+  endAdornment,
+  hintEndAdornment,
   onAmountChange,
 }) => {
   const {
@@ -211,6 +193,13 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
               />
             )}
           </SelectCardDescription>
+          {hintEndAdornment && (
+            <Box sx={{ marginLeft: 'auto' }}>
+              <SelectCardDescription variant="bodyXSmall" hideOverflow>
+                {hintEndAdornment}
+              </SelectCardDescription>
+            </Box>
+          )}
         </Box>
       }
       placeholder={placeholder}
@@ -218,33 +207,12 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
       isAmount
       onChange={handleChange}
       onBlur={handleBlur}
-      startAdornment={
-        <EntityChainStack
-          variant={EntityChainStackVariant.Tokens}
-          tokens={[
-            {
-              ...token,
-              chain: {
-                chainId: token.chainId,
-                chainKey: token.chainId.toString(),
-              },
-            },
-          ]}
-          tokensSize={AvatarSize.XL}
-          chainsSize={AvatarSize.XXS}
-          isContentVisible={false}
-        />
-      }
+      startAdornment={<TokenAmountInputAvatar token={token} />}
       endAdornment={
-        canResetToInitial ? (
-          <IconButton
-            variant={IconButtonVariant.Default}
-            size={IconButtonSize.MD}
-            onClick={handleResetInitial}
-          >
-            <RefreshIcon />
-          </IconButton>
-        ) : undefined
+        endAdornment ??
+        (enableResetButton && canResetToInitial ? (
+          <TokenAmountInputReset onReset={handleResetInitial} />
+        ) : undefined)
       }
       sx={
         tokenBalance.amount > 0n || isInputMode

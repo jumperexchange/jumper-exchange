@@ -82,6 +82,7 @@ export const EarnYourYieldView: FC<EarnYourYieldViewProps> = ({
         mode={SelectCardMode.Input}
         tokenBalance={depositTokenBalance}
         enableSwapButton
+        enableResetButton
         onAmountChange={handleAmountChange}
       />
       <EarnYieldColumnsContainer>
