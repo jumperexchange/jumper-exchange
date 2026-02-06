@@ -8,7 +8,7 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { Stack, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import AvatarBadge from 'src/components/AvatarBadge/AvatarBadge';
 import { ButtonTransparent } from 'src/components/Button';
@@ -43,8 +43,7 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const disconnectWallet = useAccountDisconnect();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
-  const { checkMultisigEnvironment } = useMultisig();
-  const [isMultisigEnvironment, setIsMultisigEnvironment] = useState(false);
+  const { isSafe } = useMultisig();
   const router = useRouter();
   const activeChain = useMemo(
     () => chains?.find((chainEl) => chainEl.id === account.chainId),
@@ -64,18 +63,6 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     (state) => state.deleteCacheTokenAddress,
   );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
-
-  const handleMultisigEnvironmentCheck = useCallback(async () => {
-    const response = await checkMultisigEnvironment();
-
-    setIsMultisigEnvironment(response);
-    // Check MultisigEnvironment only on first render
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    handleMultisigEnvironmentCheck();
-  }, [account, handleMultisigEnvironmentCheck]);
 
   const handleExploreButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -118,7 +105,7 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
 
   const handleCopyButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (isMultisigEnvironment) {
+    if (isSafe) {
       return;
     }
     account.address && navigator.clipboard.writeText(account.address);
@@ -186,9 +173,9 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
 
         <ButtonTransparent
           size="small"
-          disabled={isMultisigEnvironment}
+          disabled={isSafe}
           onClick={handleCopyButton}
-          sx={(theme) => ({
+          sx={(_theme) => ({
             background: 'transparent !important',
           })}
         >
