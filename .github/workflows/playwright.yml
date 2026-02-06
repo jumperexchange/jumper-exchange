@@ -222,13 +222,6 @@ jobs:
                   }
                 ]
               },
-              {
-                "type": "section",
-                "text": {
-                  "type": "mrkdwn",
-                  "text": "*Test Summary:*\n```\($summary)```"
-                }
-              }
             ] + (if $qase_link != "" and $qase_link != "null" then [{
               "type": "section",
               "text": {
