@@ -12,6 +12,7 @@ import { BottomSheet } from 'src/components/core/BottomSheet/BottomSheet';
 import { Button } from 'src/components/Button/Button';
 import {
   StatusIconCircle,
+  StyledButtonGroup,
   StyledModalContentContainer,
   StyledTitleContainer,
 } from './StatusBottomSheet.styles';
@@ -23,9 +24,11 @@ interface StatusBottomSheetProps extends PropsWithChildren {
   description?: string;
   callToAction: string;
   callToActionType: 'submit' | 'button';
+  secondaryCallToAction?: string;
   containerId: string;
   isOpen: boolean;
   onClick?: () => void;
+  onSecondaryClick?: () => void;
   onClose?: () => void;
   onHeightChange?: (height: number) => void;
   transitionDuration?: BottomSheetProps['transitionDuration'];
@@ -38,9 +41,11 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   description,
   callToAction,
   callToActionType,
+  secondaryCallToAction,
   containerId,
   isOpen,
   onClick,
+  onSecondaryClick,
   onClose,
   onHeightChange,
   transitionDuration,
@@ -135,16 +140,28 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
 
         {children}
 
-        {callToAction && (
-          <Button
-            fullWidth
-            variant="primary"
-            type={callToActionType}
-            onClick={onClick}
-          >
-            {callToAction}
-          </Button>
-        )}
+        <StyledButtonGroup>
+          {secondaryCallToAction && (
+            <Button
+              fullWidth
+              variant="secondary"
+              type="button"
+              onClick={onSecondaryClick}
+            >
+              {secondaryCallToAction}
+            </Button>
+          )}
+          {callToAction && (
+            <Button
+              fullWidth
+              variant="primary"
+              type={callToActionType}
+              onClick={onClick}
+            >
+              {callToAction}
+            </Button>
+          )}
+        </StyledButtonGroup>
       </StyledModalContentContainer>
     </BottomSheet>
   );

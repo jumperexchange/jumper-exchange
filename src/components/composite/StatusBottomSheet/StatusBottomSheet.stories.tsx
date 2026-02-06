@@ -110,6 +110,10 @@ export const WithChildren: Story = {
     callToAction: 'Done',
     callToActionType: 'button',
     isOpen: true,
+    secondaryCallToAction: 'See details',
+    onSecondaryClick: () => {
+      console.log('Cancel');
+    },
     children: (
       <TokenAmountInput
         label="Requested"

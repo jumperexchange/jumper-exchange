@@ -60,3 +60,13 @@ export const StyledModalContentContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   width: '100%',
 }));
+
+export const StyledButtonGroup = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  width: '100%',
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+  },
+}));
