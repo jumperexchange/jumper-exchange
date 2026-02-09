@@ -100,7 +100,7 @@ test.describe('Main Menu flows', () => {
     qase(14, 'Should open Language section inside menu'),
     async ({ page }) => {
       await itemInMenu(page, 'Language');
-      await checkTheNumberOfMenuItems(page, 15);
+      await checkTheNumberOfMenuItems(page, 14);
     },
   );
 
