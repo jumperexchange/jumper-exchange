@@ -1,8 +1,12 @@
-import { useMemo } from 'react';
+import { useAccount } from '@lifi/wallet-management';
 import type { WidgetConfig } from '@lifi/widget';
-import { HiddenUI } from '@lifi/widget';
-import { TaskType } from 'src/types/strapi';
-import type { MissionWidgetContext, HookDependencies } from './types';
+import { ChainType, HiddenUI } from '@lifi/widget';
+import { useMemo } from 'react';
+
+import { TaskType } from '@/types/strapi';
+
+import { useMultisig } from '../../../../hooks/useMultisig';
+import type { HookDependencies, MissionWidgetContext } from './types';
 
 /**
  * Configuration hook for the mission widget variant
@@ -11,7 +15,12 @@ export function useMissionWidgetConfig(
   context: MissionWidgetContext,
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
+  const { account } = useAccount();
+  const { isSafe } = useMultisig();
   return useMemo(() => {
+    const chainType = account?.chainType;
+    const isEvmWallet = chainType === ChainType.EVM;
+
     const isZapTask =
       (context.taskType === TaskType.Zap ||
         context.taskType === TaskType.Deposit) &&
@@ -29,9 +38,9 @@ export function useMissionWidgetConfig(
         HiddenUI.Language,
         HiddenUI.PoweredBy,
         HiddenUI.WalletMenu,
-        HiddenUI.ToAddress,
         HiddenUI.ReverseTokensButton,
         HiddenUI.History,
+        ...(isEvmWallet && !isSafe ? [HiddenUI.ToAddress] : []),
         ...(isZapTask
           ? [HiddenUI.LowAddressActivityConfirmation, HiddenUI.GasRefuelMessage]
           : []),
