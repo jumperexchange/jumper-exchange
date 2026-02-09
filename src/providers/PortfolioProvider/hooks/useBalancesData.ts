@@ -156,7 +156,8 @@ export const useBalancesData = (): UseTokensDataResult => {
   }, [queries]);
 
   const isLoading = queries.some((q) => q.isLoading);
-  const isFetching = queries.some((q) => q.isFetching);
+  const isFetching =
+    queries.some((q) => q.isFetching) || controlsRef.current.length > 0;
   const isPlaceholderData = queries.some((q) => q.isPlaceholderData);
   const error =
     (queries.find((q) => q.error)?.error as Error | null | undefined) ?? null;
