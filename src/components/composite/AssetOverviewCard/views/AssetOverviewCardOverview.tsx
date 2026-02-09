@@ -35,6 +35,7 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
       <OverviewCardColumn
         hint={t('portfolio.assetOverviewCard.overview.tokens')}
         totalPrice={tokensOverallPriceInUSD}
+        data-testid="portfolio-overview-tokens-value"
       >
         <TokenStack
           tokens={toTokenStackTokens(tokens)}
@@ -45,6 +46,7 @@ export const AssetOverviewCardOverview: FC<AssetOverviewCardOverviewProps> = ({
       <OverviewCardColumn
         hint={t('portfolio.assetOverviewCard.overview.defiPositions')}
         totalPrice={defiPositionsOverallPriceInUSD}
+        data-testid="portfolio-overview-defi-positions-value"
       >
         <ProtocolStack
           protocols={defiPositionsProtocols}

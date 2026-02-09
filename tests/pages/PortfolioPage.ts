@@ -19,6 +19,9 @@ export class PortfolioPage {
   private readonly filterBarSkeleton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
+  private readonly totalValue: Locator;
+  private readonly tokensValue: Locator;
+  private readonly defiProtocolsValue: Locator;
 
   constructor(private readonly page: Page) {
     this.getStartedButton = this.page.locator('#portfolio-get-started-button');
@@ -50,6 +53,12 @@ export class PortfolioPage {
     this.filterBarSkeleton = this.page.getByTestId(
       'portfolio-filter-bar-skeleton',
     );
+    this.totalValue = this.page.getByTestId('portfolio-total-value');
+    this.tokensValue = this.page.getByTestId('portfolio-overview-tokens-value');
+    this.defiProtocolsValue = this.page.getByTestId(
+      'portfolio-overview-defi-positions-value',
+    );
+
     this.tokensFilterLocators = [
       this.walletSelectFilter,
       this.chainSelectFilter,
@@ -165,6 +174,51 @@ export class PortfolioPage {
     if (valueText !== null) {
       throw new Error(
         `Value filter still contains value range after clearing: ${valueText}`,
+      );
+    }
+  }
+
+  private parseDollarValue(value: string | null): number {
+    if (!value) {
+      return 0;
+    }
+    // Remove $ sign, commas, and any whitespace
+    const cleaned = value.replace(/[$,\s]/g, '').trim();
+
+    // Handle compact notation (K, M, B, T)
+    const compactMultipliers: Record<string, number> = {
+      K: 1000,
+      M: 1000000,
+      B: 1000000000,
+      T: 1000000000000,
+    };
+
+    // Check if value ends with a compact notation suffix
+    const suffix = cleaned.slice(-1).toUpperCase();
+    if (compactMultipliers[suffix]) {
+      const numericPart = parseFloat(cleaned.slice(0, -1));
+      return (numericPart || 0) * compactMultipliers[suffix];
+    }
+
+    return parseFloat(cleaned) || 0;
+  }
+
+  async verifyMainTotalValueEqualsSumOfIndividualValues(): Promise<void> {
+    const totalValueText = await this.totalValue.textContent();
+    const tokensValueText = await this.tokensValue.textContent();
+    const defiProtocolsValueText = await this.defiProtocolsValue.textContent();
+
+    const totalValueNum = this.parseDollarValue(totalValueText);
+    const tokensValueNum = this.parseDollarValue(tokensValueText);
+    const defiProtocolsValueNum = this.parseDollarValue(defiProtocolsValueText);
+    const sumOfIndividualValues = tokensValueNum + defiProtocolsValueNum;
+
+    const sum = totalValueNum - sumOfIndividualValues;
+
+    expect(sum).toBeLessThan(0.1);
+    if (sum > 0.1) {
+      throw new Error(
+        `Total value does not equal sum of individual values: ${sum}`,
       );
     }
   }

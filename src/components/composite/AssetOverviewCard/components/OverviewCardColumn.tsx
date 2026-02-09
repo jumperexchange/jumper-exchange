@@ -2,20 +2,20 @@ import type { FC } from 'react';
 import { AssetOverviewCardOverviewColumnContainer } from '../AssetOverviewCard.styles';
 import { TitleWithHint } from '../../TitleWithHint/TitleWithHint';
 import { THRESHOLD_MIN_AMOUNT } from '../constants';
-import { useTranslation } from 'react-i18next';
-import { toCompactValue } from '@/utils/formatNumbers';
 import { formatPortfolioValueInDollar } from '@/utils/numbers/portfolioValueInDollar';
 
 interface OverviewCardColumnProps {
   hint: string;
   totalPrice: number;
   children: React.ReactNode;
+  'data-testid'?: string;
 }
 
 export const OverviewCardColumn: FC<OverviewCardColumnProps> = ({
   hint,
   totalPrice,
   children,
+  'data-testid': dataTestId,
 }) => {
   const isBelowThreshold = totalPrice && totalPrice < THRESHOLD_MIN_AMOUNT;
   const formattedActualAmount = formatPortfolioValueInDollar(totalPrice);
@@ -28,6 +28,7 @@ export const OverviewCardColumn: FC<OverviewCardColumnProps> = ({
         titleVariant="titleMedium"
         title={formattedAmount}
         titleTooltip={isBelowThreshold ? formattedActualAmount : undefined}
+        data-testid={dataTestId}
         hintVariant="bodyXSmall"
         hint={hint}
         sx={{ flexDirection: 'column-reverse', gap: 1 }}
