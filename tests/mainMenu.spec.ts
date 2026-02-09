@@ -22,6 +22,10 @@ import {
 } from './testData/menuFunctions';
 import values from './testData/values.json' with { type: 'json' };
 import { injectMockWallet } from './utils/mockWallet';
+import {
+  clickOnFirstTransaction,
+  expectToBeOnTransactionPage,
+} from './pages/ScanPage';
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
@@ -107,13 +111,11 @@ test.describe('Main Menu flows', () => {
   test(
     qase(21, 'Should be able to navigate to LI.FI Scan'),
     async ({ page }) => {
-      const searchBar = await page.locator(
-        'xpath=//div[@class="MuiBox-root mui-1nhlr6a"]',
-      );
       await itemInMenu(page, 'Scan');
       await expect(page).toHaveURL(values.localJumperScanURL);
       await checkTabsInHeader(page);
-      await expect(searchBar).toBeVisible();
+      await clickOnFirstTransaction(page);
+      await expectToBeOnTransactionPage(page);
     },
   );
 
