@@ -24,7 +24,6 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
 
   // TODO: LF-14853: Opportunity Details
   const [opportunity, relatedMarkets] = await Promise.all([
-<<<<<<< HEAD
     getOpportunityBySlug(slug).catch((error) => {
       return { error, data: undefined };
     }),
@@ -32,16 +31,6 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
       return { error, data: [] };
     }),
   ]);
-=======
-    getOpportunityBySlug(slug),
-    getOpportunityRelatedMarket(slug),
-  ]).catch((error) => {
-    return [
-      { error: true, data: null },
-      { error: true, data: null },
-    ];
-  });
->>>>>>> 0090e330d (various fixes)
 
   console.log('28. EarnPage opportunity', opportunity);
 

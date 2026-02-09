@@ -1,0 +1,4 @@
+export const MODAL_CONTAINER_ID = 'request-redeem-modal';
+export const BOTTOM_SHEET_TOP_OFFSET = 24;
+export const ANIMATION_DURATION_SECONDS = 0.3;
+export const ANIMATION_DURATION_MS = ANIMATION_DURATION_SECONDS * 1_000;

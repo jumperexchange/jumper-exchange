@@ -42,9 +42,9 @@ interface Resources {
     buttons: {
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
-      requestRedeemButtonLabel: 'Request redeem';
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
+      requestRedeemButtonLabel: 'Request redeem';
       withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
@@ -140,6 +140,58 @@ interface Resources {
       };
       relatedMarkets: {
         title: 'Related Markets';
+      };
+      requestRedeemFlow: {
+        confirmation: {
+          cancel: 'Cancel';
+          confirm: 'Confirm';
+          description: 'Please confirm that you want to request a withdrawal. This action will initiate the redemption process.';
+          title: 'Confirm Request';
+        };
+        error: {
+          chainSwitchFailed: {
+            close: 'Close';
+            description: 'Could not switch to the required network. Please switch manually in your wallet.';
+            title: 'Failed to switch network';
+          };
+          fetchCallDataFailed: {
+            description: 'We could not prepare your transaction. Please try again.';
+            title: 'Failed to prepare transaction';
+            tryAgain: 'Try again';
+          };
+          insufficientBalance: {
+            close: 'Close';
+            description: 'You do not have enough balance to complete this transaction.';
+            title: 'Insufficient balance';
+          };
+          transactionFailed: {
+            description: 'The transaction failed to complete. Please try again.';
+            title: 'Transaction failed';
+            tryAgain: 'Try again';
+          };
+          transactionRejected: {
+            description: 'You rejected the transaction in your wallet. Please try again.';
+            title: 'Transaction rejected';
+            tryAgain: 'Try again';
+          };
+          unknown: {
+            description: 'An unexpected error occurred. Please try again.';
+            title: 'Error';
+            tryAgain: 'Try again';
+          };
+        };
+        success: {
+          claim: {
+            done: 'Done';
+            seeDetails: 'See details';
+            title: 'Withdraw complete';
+          };
+          request: {
+            done: 'Done';
+            seeDetails: 'See details';
+            title: 'Withdraw request sent';
+          };
+        };
       };
       riskDescriptions: {
         risk: 'Risk';

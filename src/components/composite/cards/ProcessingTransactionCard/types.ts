@@ -13,4 +13,5 @@ export interface ProcessingTransactionCardProps {
    * If not provided, the timer will not be displayed.
    */
   targetTime?: number;
+  onClick?: () => void;
 }

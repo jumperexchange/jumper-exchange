@@ -20,6 +20,7 @@ import { DepositButtonDisplayMode } from '@/components/composite/DepositButton/D
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
 import type { Balance, ExtendedToken } from '@/types/tokens';
 import { selectCardStyles } from './constants';
+import { RequestRedeemFlowButton } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
 
 interface EarnYourPositionsViewProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -110,13 +111,23 @@ export const EarnYourPositionsView: FC<EarnYourPositionsViewProps> = ({
           data-testid="quick-deposit-button"
           sx={{ flex: 1 }}
         />
-        {hasDeposited && (
+        {hasDeposited && earnOpportunity.isRedeemable && (
           <WithdrawFlowButton
             earnOpportunity={earnOpportunity}
             size="large"
             label={t('buttons.withdrawButtonLabel')}
             refetchCallback={onRefreshBalances}
             data-testid="withdraw-button"
+            sx={{ flex: 1 }}
+          />
+        )}
+        {hasDeposited && !earnOpportunity.isRedeemable && (
+          <RequestRedeemFlowButton
+            earnOpportunity={earnOpportunity}
+            size="large"
+            label={t('buttons.withdrawButtonLabel')}
+            refetchCallback={onRefreshBalances}
+            data-testid="request-redeem-button"
             sx={{ flex: 1 }}
           />
         )}

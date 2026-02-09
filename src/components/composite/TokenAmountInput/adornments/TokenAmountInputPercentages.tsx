@@ -1,7 +1,9 @@
 import Box from '@mui/material/Box';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
-import { PercentagesContainer } from '../TokenAmountInput.styles';
-import { Button } from '@/components/core/buttons/Button/Button';
+import {
+  PercentageButton,
+  PercentagesContainer,
+} from '../TokenAmountInput.styles';
 import { Size, Variant } from '@/components/core/buttons/types';
 
 interface TokenAmountInputPercentagesProps {
@@ -19,52 +21,53 @@ export const TokenAmountInputPercentages = ({
 
   const handlePercentage = (percentage: number) => {
     const percentageAmount = (maxAmount * BigInt(percentage)) / 100n;
-    onAmountChange(toAmount(percentageAmount, decimals));
+    onAmountChange(percentageAmount.toString());
   };
 
   const handleMax = () => {
-    onAmountChange(toAmount(maxAmount, decimals));
+    onAmountChange(maxAmount.toString());
   };
 
   return (
     <Box
       sx={{
         mt: 'auto',
+        display: 'contents',
       }}
     >
       <PercentagesContainer>
-        <Button
-          size={Size.SM}
+        <PercentageButton
+          size={Size.XS}
           variant={Variant.AlphaDark}
           onClick={() => handlePercentage(25)}
           data-delay="0"
         >
           25%
-        </Button>
-        <Button
-          size={Size.SM}
+        </PercentageButton>
+        <PercentageButton
+          size={Size.XS}
           variant={Variant.AlphaDark}
           onClick={() => handlePercentage(50)}
           data-delay="1"
         >
           50%
-        </Button>
-        <Button
-          size={Size.SM}
+        </PercentageButton>
+        <PercentageButton
+          size={Size.XS}
           variant={Variant.AlphaDark}
           onClick={() => handlePercentage(75)}
           data-delay="2"
         >
           75%
-        </Button>
-        <Button
-          size={Size.SM}
+        </PercentageButton>
+        <PercentageButton
+          size={Size.XS}
           variant={Variant.AlphaDark}
           onClick={handleMax}
           data-delay="3"
         >
           max
-        </Button>
+        </PercentageButton>
       </PercentagesContainer>
     </Box>
   );

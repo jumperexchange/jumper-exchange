@@ -12,6 +12,11 @@ import { createExtendedToken, createTokenBalance } from '@/types/tokens';
 import { useToken } from '@/hooks/useToken';
 import { EarnYourPositionsView } from './EarnYourPositionsView';
 import { EarnYourYieldView } from './EarnYourYieldView';
+import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
+import { Variant as IconButtonVariant } from '@/components/core/buttons/types';
+import CheckIcon from '@mui/icons-material/Check';
+import ScheduleIcon from '@mui/icons-material/Schedule';
+import { RequestRedeemFlowIconButton } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
 
 interface EarnDetailsPositionProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -105,6 +110,10 @@ export const EarnDetailsPosition = ({
   );
 
   const hasDeposited = !!depositAmount || !!depositAmountUSD;
+
+  const { data: redeemableClaims, refetch: refetchRedeemableClaims } =
+    useRedeemableClaims(earnOpportunity, hasDeposited);
+
   const isLoading =
     isLoadingPositions ||
     isLoadingDepositTokenData ||
@@ -117,7 +126,19 @@ export const EarnDetailsPosition = ({
   const handleRefreshBalances = () => {
     refetchPositions();
     refetchDepositAmount();
+    refetchRedeemableClaims();
   };
+
+  const { hasAcceptedClaims, hasPendingClaims } = useMemo(() => {
+    return {
+      hasAcceptedClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'accepted',
+      ),
+      hasPendingClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'pending',
+      ),
+    };
+  }, [redeemableClaims]);
 
   return (
     <MultiViewCard
@@ -150,6 +171,35 @@ export const EarnDetailsPosition = ({
             />
           );
         }
+      }}
+      renderHeader={() => {
+        if (hasAcceptedClaims) {
+          return (
+            <RequestRedeemFlowIconButton
+              variant={IconButtonVariant.Success}
+              tooltipContent="Your withdrawal is ready"
+              earnOpportunity={earnOpportunity}
+              refetchCallback={handleRefreshBalances}
+            >
+              <CheckIcon />
+            </RequestRedeemFlowIconButton>
+          );
+        }
+
+        if (hasPendingClaims) {
+          return (
+            <RequestRedeemFlowIconButton
+              variant={IconButtonVariant.AlphaDark}
+              tooltipContent="You have a pending withdraw request"
+              earnOpportunity={earnOpportunity}
+              refetchCallback={handleRefreshBalances}
+            >
+              <ScheduleIcon />
+            </RequestRedeemFlowIconButton>
+          );
+        }
+
+        return null;
       }}
     />
   );

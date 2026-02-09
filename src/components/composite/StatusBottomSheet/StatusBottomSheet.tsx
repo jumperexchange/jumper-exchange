@@ -19,7 +19,7 @@ import {
 import type { SxProps, Theme } from '@mui/material/styles';
 import { mergeSx } from '@/utils/theme/mergeSx';
 
-interface StatusBottomSheetProps extends PropsWithChildren {
+export interface StatusBottomSheetProps extends PropsWithChildren {
   title: string;
   description?: string;
   callToAction: string;

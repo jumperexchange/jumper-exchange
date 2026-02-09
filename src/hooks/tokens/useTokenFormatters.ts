@@ -10,7 +10,8 @@ export interface FormatAmountUSDOptions {
 }
 
 export interface FormatAmountOptions {
-  decimals?: number;
+  maximumFractionDigits?: number;
+  minimumFractionDigits?: number;
 }
 
 export const useTokenFormatters = () => {
@@ -54,10 +55,14 @@ export const useTokenFormatters = () => {
     (
       balance: Balance<PricedToken>,
       symbol: string,
-      _options?: FormatAmountOptions,
+      options?: FormatAmountOptions,
     ): string => {
       const amount = toAmount(balance);
-      const formatted = t('format.decimal', { value: amount });
+      const formatted = t('format.decimal', {
+        value: amount,
+        minimumFractionDigits: options?.minimumFractionDigits,
+        maximumFractionDigits: options?.maximumFractionDigits ?? 3,
+      });
       return `${formatted} ${symbol}`;
     },
     [t, toAmount],

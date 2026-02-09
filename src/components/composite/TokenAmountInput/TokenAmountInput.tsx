@@ -157,7 +157,10 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const rawAmount = toRawAmount(value, token.decimals);
   const secondaryValue =
     primaryDisplay === 'price'
-      ? toDisplayAmount({ token, amount: rawAmount }, token.symbol)
+      ? toDisplayAmount({ token, amount: rawAmount }, token.symbol, {
+          minimumFractionDigits: 6,
+          maximumFractionDigits: 6,
+        })
       : toDisplayAmountUSD({ token, amount: rawAmount });
 
   const displayWithFallback = displayValue || '0';

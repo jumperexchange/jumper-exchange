@@ -8,7 +8,7 @@ interface ProcessingTransactionCardContainerProps extends BoxProps {
 
 export const ProcessingTransactionCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'status',
-})<ProcessingTransactionCardContainerProps>(({ theme }) => ({
+})<ProcessingTransactionCardContainerProps>(({ theme, onClick }) => ({
   backgroundColor: theme.palette.background.paper,
   borderRadius: theme.shape.cardBorderRadiusMedium,
   boxShadow: theme.shadows[2],
@@ -16,6 +16,7 @@ export const ProcessingTransactionCardContainer = styled(Box, {
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
+  cursor: onClick ? 'pointer' : 'default',
   variants: [
     {
       props: ({ status }) => status === 'pending',

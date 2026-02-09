@@ -12,3 +12,12 @@ export const MultiViewCardContainer = styled(Box)(({ theme }) => ({
   border: getSurfaceBorder(theme, 'surface1'),
   gap: theme.spacing(2),
 }));
+
+export const MultiViewCardHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  gap: theme.spacing(2),
+  flexWrap: 'wrap',
+}));
