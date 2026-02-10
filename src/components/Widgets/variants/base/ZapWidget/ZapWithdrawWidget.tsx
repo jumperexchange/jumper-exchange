@@ -1,24 +1,25 @@
-import type { FC } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
-import type { WidgetProps } from '../Widget.types';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import type { ZapDataResponse } from '@/types/zaps';
-import envConfig from '@/config/env-config';
-import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
-import { useMenuStore } from '@/stores/menu';
+import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import {
-  useWidgetEvents,
-  WidgetEvent,
-  LiFiWidget,
+  ChainType,
   DisabledUI,
   HiddenUI,
-  ChainType,
+  LiFiWidget,
+  useWidgetEvents,
+  WidgetEvent,
 } from '@lifi/widget';
-import type { ZapWidgetContext } from '../../widgetConfig/types';
+import type { FC } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+
+import envConfig from '@/config/env-config';
+import { useMenuStore } from '@/stores/menu';
 import { TaskType } from '@/types/strapi';
-import { useAccount } from '@lifi/wallet-management';
-import { useShowZapPlaceholderWidget } from './hooks';
+import type { ZapDataResponse } from '@/types/zaps';
+
+import type { ZapWidgetContext } from '../../widgetConfig/types';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import type { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
 import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
@@ -42,10 +43,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   const { account } = useAccount();
   const chainType = account?.chainType;
   const isEvmWallet = chainType === ChainType.EVM;
-
-  const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
-
-  // const { setSourceChainTokenForTracking } = useWidgetTrackingContext();
 
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -126,23 +123,15 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
-  // if (showZapPlaceholderWidget || !isEvmWallet) {
-  //   return (
-  //     <ZapPlaceholderWidget
-  //       titleKey={
-  //         !isEvmWallet
-  //           ? 'widget.zap.placeholder.non-evm.title'
-  //           : 'widget.zap.placeholder.embedded-multisig.title'
-  //       }
-  //       descriptionKey={
-  //         !isEvmWallet
-  //           ? 'widget.zap.placeholder.non-evm.description'
-  //           : 'widget.zap.placeholder.embedded-multisig.description'
-  //       }
-  //       style={widgetConfig.theme?.container}
-  //     />
-  //   );
-  // }
+  if (!isEvmWallet) {
+    return (
+      <ZapPlaceholderWidget
+        titleKey="widget.zap.placeholder.non-evm.title"
+        descriptionKey="widget.zap.placeholder.non-evm.description"
+        style={widgetConfig.theme?.container}
+      />
+    );
+  }
 
   return fromChain && fromToken ? (
     <LiFiWidget
