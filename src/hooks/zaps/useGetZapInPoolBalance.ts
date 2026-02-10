@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 import { useReadContracts } from 'wagmi';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 
 export const useGetZapInPoolBalance = (
-  walletAddress: Hex,
+  walletAddress: Hex | undefined,
   tokenAddress: Hex,
   chainId: number,
 ) => {

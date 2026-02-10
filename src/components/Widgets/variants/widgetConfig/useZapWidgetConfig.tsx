@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
 import type { WidgetConfig } from '@lifi/widget';
 import { RequiredUI } from '@lifi/widget';
-import type { ZapWidgetContext, HookDependencies } from './types';
+import { useMemo } from 'react';
+
+import type { HookDependencies, ZapWidgetContext } from './types';
 
 /**
  * Configuration hook for the zap widget variant
@@ -18,7 +19,8 @@ export function useZapWidgetConfig(
 
       sdkConfig: {
         routeOptions: {
-          allowSwitchChain: false,
+          // Needs to be enabled to support multisig wallets
+          allowSwitchChain: true,
         },
       },
 

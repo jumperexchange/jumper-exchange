@@ -1,25 +1,25 @@
-import { useMemo } from 'react';
+import { useAccount } from '@lifi/wallet-management';
+import { ChainType, HiddenUI, type WidgetConfig } from '@lifi/widget';
 import merge from 'lodash/merge';
-import { HiddenUI, type WidgetConfig } from '@lifi/widget';
+import { useMemo } from 'react';
+import { AB_TEST_NAME } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
 import type {
-  WidgetType,
   MainWidgetContext,
   MissionWidgetContext,
+  WidgetType,
   ZapWidgetContext,
 } from './types';
-import { useWidgetDependencies } from './useWidgetDependencies';
-import {
-  useSharedRPCConfig,
-  useSharedFormConfig,
-  useLanguageConfig,
-  useSharedBaseConfig,
-} from './useSharedConfigs';
 import { useMainWidgetConfig } from './useMainWidgetConfig';
 import { useMissionWidgetConfig } from './useMissionWidgetConfig';
+import {
+  useLanguageConfig,
+  useSharedBaseConfig,
+  useSharedFormConfig,
+  useSharedRPCConfig,
+} from './useSharedConfigs';
+import { useWidgetDependencies } from './useWidgetDependencies';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
-import { useABTest } from '@/hooks/useABTest';
-import { useAccount } from '@lifi/wallet-management';
-import { AB_TEST_NAME } from '@/const/abtests';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic

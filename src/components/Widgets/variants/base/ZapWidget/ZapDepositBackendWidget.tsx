@@ -1,5 +1,6 @@
 'use client';
 
+import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import {
   ChainType,
@@ -7,24 +8,23 @@ import {
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
+import type { ParseKeys } from 'i18next';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
-import { useWidgetTrackingContext } from 'src/providers/WidgetTrackingProvider';
-import { useMenuStore } from 'src/stores/menu/MenuStore';
-import type { WidgetProps } from '../Widget.types';
-import { useAccount } from '@lifi/wallet-management';
-import { useUrlParams } from 'src/hooks/useUrlParams';
-import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
-import { useShowZapPlaceholderWidget } from './hooks';
-import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
-import type { ZapWidgetContext } from '../../widgetConfig/types';
-import { ZapDepositSettings } from './ZapDepositSettings';
-import { WidgetSkeleton } from '../WidgetSkeleton';
-import { capitalizeString } from 'src/utils/capitalizeString';
 import { useTranslation } from 'react-i18next';
-import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
+
+import { useWidgetTrackingContext } from '@/providers/WidgetTrackingProvider';
+import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { ZapDataResponse } from '@/types/zaps';
-import type { ParseKeys } from 'i18next';
+import { capitalizeString } from '@/utils/capitalizeString';
+
+import type { ZapWidgetContext } from '../../widgetConfig/types';
+import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
+import type { WidgetProps } from '../Widget.types';
+import { WidgetSkeleton } from '../WidgetSkeleton';
+import { ZapDepositSettings } from './ZapDepositSettings';
+import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
+import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -55,8 +55,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   const { account } = useAccount();
   const chainType = account?.chainType;
   const isEvmWallet = chainType === ChainType.EVM;
-
-  const showZapPlaceholderWidget = useShowZapPlaceholderWidget(account);
 
   const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
 
@@ -161,19 +159,11 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
 
-  if (showZapPlaceholderWidget || !isEvmWallet) {
+  if (!isEvmWallet) {
     return (
       <ZapPlaceholderWidget
-        titleKey={
-          !isEvmWallet
-            ? 'widget.zap.placeholder.non-evm.title'
-            : 'widget.zap.placeholder.embedded-multisig.title'
-        }
-        descriptionKey={
-          !isEvmWallet
-            ? 'widget.zap.placeholder.non-evm.description'
-            : 'widget.zap.placeholder.embedded-multisig.description'
-        }
+        titleKey="widget.zap.placeholder.non-evm.title"
+        descriptionKey="widget.zap.placeholder.non-evm.description"
         style={widgetConfig.theme?.container}
       />
     );

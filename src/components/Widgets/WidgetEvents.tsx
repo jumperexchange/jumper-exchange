@@ -33,7 +33,7 @@ export function WidgetEvents() {
   const { setFromChainId, setFromToken, setToChainId, setToToken } =
     useWidgetCacheStore((state) => state);
   const widgetEvents = useWidgetEvents();
-  const { isMultisigSigner, shouldOpenMultisigSignatureModal } = useMultisig();
+  const { isSafe, shouldOpenMultisigSignatureModal } = useMultisig();
   const [setDestinationChain] = useMultisigStore((state) => [
     state.setDestinationChain,
   ]);
@@ -215,7 +215,7 @@ export function WidgetEvents() {
   };
 
   useEffect(() => {
-    setIsMultisigConnectedAlertOpen(isMultisigSigner);
+    setIsMultisigConnectedAlertOpen(isSafe);
     // prevent endless loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);

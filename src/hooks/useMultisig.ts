@@ -2,9 +2,10 @@ import { type Process, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
-import { isIframeEnvironment } from 'src/utils/iframe';
-import { getRouteStatus } from 'src/utils/routes';
 import type { Connector } from 'wagmi';
+
+import { isIframeEnvironment } from '@/utils/iframe';
+import { getRouteStatus } from '@/utils/routes';
 
 const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
   let isSafeConnector = connector?.id === 'safe';
@@ -24,21 +25,34 @@ const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
 
 export const useMultisig = () => {
   const { account } = useAccount();
+  // Wallet is connected via Safe connector or WalletConnect to a Safe wallet
   const [isSafeConnector, setIsSafeConnector] = useState(false);
+  // We are inside a Safe iFrame
+  const [isSafeIFrame, setIsSafeIFrame] = useState(false);
 
-  const checkMultisigEnvironment = async () => {
-    if (!isIframeEnvironment()) {
-      return false;
-    }
+  useEffect(() => {
+    const checkMultisigEnvironment = async () => {
+      const isSafeConnector = await getIsSafeConnector(
+        account.connector as Connector,
+      );
+      setIsSafeConnector(isSafeConnector);
 
-    const sdk = new SafeAppsSDK();
-    const accountInfo = await Promise.race([
-      sdk.safe.getInfo(),
-      new Promise<undefined>((resolve) => setTimeout(resolve, 200)),
-    ]);
+      // Check if running inside Safe iframe environment
+      if (!isIframeEnvironment()) {
+        setIsSafeIFrame(false);
+        return;
+      }
 
-    return !!accountInfo?.safeAddress;
-  };
+      const sdk = new SafeAppsSDK();
+      const accountInfo = await Promise.race([
+        sdk.safe.getInfo(),
+        new Promise<undefined>((resolve) => setTimeout(resolve, 200)),
+      ]);
+
+      setIsSafeIFrame(!!accountInfo?.safeAddress);
+    };
+    checkMultisigEnvironment();
+  }, [account]);
 
   const shouldOpenMultisigSignatureModal = (route: Route) => {
     const routeStatus = getRouteStatus(route);
@@ -67,8 +81,9 @@ export const useMultisig = () => {
   }, [account.connector]);
 
   return {
-    isMultisigSigner: isSafeConnector,
-    checkMultisigEnvironment,
+    isSafeConnector,
+    isSafeIFrame,
+    isSafe: isSafeConnector || isSafeIFrame,
     shouldOpenMultisigSignatureModal,
   };
 };

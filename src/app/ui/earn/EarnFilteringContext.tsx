@@ -1,3 +1,4 @@
+import { useAccount } from '@lifi/wallet-management';
 import { isEqual } from 'lodash';
 import { useQueryStates } from 'nuqs';
 import {
@@ -105,6 +106,7 @@ export const EarnFilteringProvider = ({
     },
   );
 
+  const { account } = useAccount();
   const address: Hex | undefined = useAccountAddress();
   const usedYourAddress = address !== undefined;
 
@@ -349,7 +351,7 @@ export const EarnFilteringProvider = ({
       isLoading,
       error,
       isAllDataLoading: allNoFilter.isLoading,
-      isConnected: !!address,
+      isConnected: !!account?.address,
       page,
       setPage,
       pagination,
@@ -375,6 +377,7 @@ export const EarnFilteringProvider = ({
     stats,
     changeTab,
     data,
+    account,
   ]);
 
   return (
