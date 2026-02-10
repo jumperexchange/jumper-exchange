@@ -1,27 +1,27 @@
 import { useAccount } from '@lifi/wallet-management';
+import Typography from '@mui/material/Typography';
+import { useMemo } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
+import type { Hex } from 'viem';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
+import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
+import { EarnInteractionFeature } from '@/types/earn';
+import { ConnectButton } from '../ConnectButton';
 import { DepositButtonDisplayMode } from '../composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from '../composite/DepositFlow/DepositFlow';
+import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
+import { EmptyComponent } from '../core/EmptyComponent/EmptyComponent';
+import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { ExternalLink } from '../Link/ExternalLink';
 import {
   EarnDetailsActionsButtonsContainer,
   EarnDetailsActionsButtonsFallbackContainer,
   EarnDetailsActionsContainer,
 } from './EarnDetails.styles';
-import { useMemo } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
-import { WithdrawFlowButton } from '../composite/WithdrawFlow/WithdrawFlow';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
-import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
-import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
-import type { Hex } from 'viem';
-import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
-import Typography from '@mui/material/Typography';
-import { ExternalLink } from '../Link/ExternalLink';
-import { EarnInteractionFeature } from '@/types/earn';
-import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
-import { ConnectButton } from '../ConnectButton';
-import { EmptyComponent } from '../core/EmptyComponent/EmptyComponent';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -67,7 +67,7 @@ export const EarnDetailsActions = ({
     refetchDepositToken: refetchDepositAmount,
     isLoadingDepositTokenData: isLoadingDepositTokenData,
   } = useGetZapInPoolBalance(
-    accountAddress as Hex,
+    accountAddress,
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
   );

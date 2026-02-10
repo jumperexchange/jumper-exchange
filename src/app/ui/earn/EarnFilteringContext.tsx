@@ -377,6 +377,7 @@ export const EarnFilteringProvider = ({
     stats,
     changeTab,
     data,
+    account,
   ]);
 
   return (
