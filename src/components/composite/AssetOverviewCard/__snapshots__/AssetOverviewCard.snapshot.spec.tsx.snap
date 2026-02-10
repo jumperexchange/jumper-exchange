@@ -797,7 +797,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 43245.54"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -859,7 +861,9 @@ exports[`AssetOverviewCard Snapshots > FourAssets > should match snapshot with f
           </div>
         </div>
         <div
+          aria-label="Total value: 153.8073101130555"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -1141,7 +1145,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 46457.380000000005"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -1209,7 +1215,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot f
           </div>
         </div>
         <div
+          aria-label="Total value: 0"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -1734,7 +1742,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 46457.380000000005"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -1802,7 +1812,9 @@ exports[`AssetOverviewCard Snapshots > NoDeFiPositions > should match snapshot w
           </div>
         </div>
         <div
+          aria-label="Total value: 0"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2313,7 +2325,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 0"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2338,7 +2352,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot for Toke
           </div>
         </div>
         <div
+          aria-label="Total value: 165.8274491269569"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2456,7 +2472,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 0"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2481,7 +2499,9 @@ exports[`AssetOverviewCard Snapshots > NoTokens > should match snapshot with no 
           </div>
         </div>
         <div
+          aria-label="Total value: 165.8274491269569"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2950,7 +2970,9 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 18562.5"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -2985,7 +3007,9 @@ exports[`AssetOverviewCard Snapshots > OneAsset > should match snapshot with one
           </div>
         </div>
         <div
+          aria-label="Total value: 0.001783185365651363"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -3964,7 +3988,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 46457.380000000005"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -4032,7 +4058,9 @@ exports[`AssetOverviewCard Snapshots > Overflow > should match snapshot with ove
           </div>
         </div>
         <div
+          aria-label="Total value: 165.8274491269569"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -4771,7 +4799,9 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 33398.04"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -4824,7 +4854,9 @@ exports[`AssetOverviewCard Snapshots > ThreeAssets > should match snapshot with 
           </div>
         </div>
         <div
+          aria-label="Total value: 153.77429379425692"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -5752,7 +5784,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 0.001"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -5820,7 +5854,9 @@ exports[`AssetOverviewCard Snapshots > TokensTinyAmounts > should match snapshot
           </div>
         </div>
         <div
+          aria-label="Total value: 165.8274491269569"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -6424,7 +6460,9 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
         class="MuiBox-root css-515ex2"
       >
         <div
+          aria-label="Total value: 27187.8"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-tokens"
         >
           <div
             class="MuiBox-root css-xl0s26"
@@ -6468,7 +6506,9 @@ exports[`AssetOverviewCard Snapshots > TwoAssets > should match snapshot with tw
           </div>
         </div>
         <div
+          aria-label="Total value: 136.62602052661737"
           class="MuiBox-root css-zhco5e"
+          data-testid="asset-overview-card-defi-positions"
         >
           <div
             class="MuiBox-root css-xl0s26"
