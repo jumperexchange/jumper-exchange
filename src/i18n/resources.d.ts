@@ -671,10 +671,6 @@ interface Resources {
         depositSuccess: 'You will be able to see your position in a few seconds or alternatively by clicking on <bold>Manage your position</bold> that redirects to {{partnerName}} UI';
         placeholder: {
           comingSoon: 'Coming soon';
-          'embedded-multisig': {
-            description: 'We are working on adding support for embedded and smart contract wallets (incl. Safe). In the mean time please use an EOA wallet to execute transactions.';
-            title: 'Your wallet is currently not supported';
-          };
           'non-evm': {
             description: 'We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions.';
             title: 'Your wallet is currently not supported';
