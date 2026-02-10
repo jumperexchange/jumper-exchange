@@ -69,5 +69,17 @@ test.describe('Portfolio page', () => {
         });
       },
     );
+
+    test('verify main total value equals sum of individual values', async ({
+      page,
+    }) => {
+      const portfolioPage = new PortfolioPage(page);
+      await portfolioPage.verifyGetStartedButtonIsVisible();
+      await portfolioPage.clickGetStartedButton();
+
+      await test.step('verify main total value equals sum of individual values', async () => {
+        await portfolioPage.verifyMainTotalValueEqualsSumOfIndividualValues();
+      });
+    });
   });
 });

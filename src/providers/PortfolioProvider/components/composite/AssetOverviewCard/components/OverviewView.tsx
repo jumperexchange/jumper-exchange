@@ -31,6 +31,7 @@ export const OverviewView: FC<AssetOverviewCardOverviewProps> = ({
       <OverviewColumn
         hint={t('portfolio.assetOverviewCard.overview.tokens')}
         totalUsd={totalBalancesUsd}
+        dataTestId="asset-overview-card-tokens"
       >
         <EntityStack
           entities={tokenEntities}
@@ -42,6 +43,7 @@ export const OverviewView: FC<AssetOverviewCardOverviewProps> = ({
       <OverviewColumn
         hint={t('portfolio.assetOverviewCard.overview.defiPositions')}
         totalUsd={totalPositionsUsd}
+        dataTestId="asset-overview-card-defi-positions"
       >
         <EntityStack
           entities={protocolEntities}
