@@ -19,6 +19,9 @@ export class PortfolioPage {
   private readonly filterBarSkeleton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
+  private readonly portfolioHeaderOverviewElement: Locator;
+  private readonly tokensOverviewElement: Locator;
+  private readonly defiPositionsOverviewElement: Locator;
 
   constructor(private readonly page: Page) {
     this.getStartedButton = this.page.locator('#portfolio-get-started-button');
@@ -66,6 +69,18 @@ export class PortfolioPage {
       this.valueSelectFilter,
       this.clearFiltersButton,
     ];
+
+    this.portfolioHeaderOverviewElement = this.page.getByTestId(
+      'portfolio-header-overview-value',
+    );
+
+    this.tokensOverviewElement = this.page.getByTestId(
+      'asset-overview-card-tokens',
+    );
+
+    this.defiPositionsOverviewElement = this.page.getByTestId(
+      'asset-overview-card-defi-positions',
+    );
   }
   async clickGetStartedButton(): Promise<void> {
     await this.getStartedButton.click();
@@ -165,6 +180,45 @@ export class PortfolioPage {
     if (valueText !== null) {
       throw new Error(
         `Value filter still contains value range after clearing: ${valueText}`,
+      );
+    }
+  }
+
+  extractNumber(label: string | null): number {
+    expect(label).not.toBeNull();
+
+    return Number(
+      label!.replace('Total value: ', '').replace(/[^0-9.-]+/g, ''),
+    );
+  }
+
+  async verifyMainTotalValueEqualsSumOfIndividualValues(): Promise<void> {
+    const portfolioTotalValueText =
+      await this.portfolioHeaderOverviewElement.getAttribute('aria-label');
+
+    const tokensTotalValueText =
+      await this.tokensOverviewElement.getAttribute('aria-label');
+
+    const defiPositionsTotalValueText =
+      await this.defiPositionsOverviewElement.getAttribute('aria-label');
+
+    const totalValueNum = this.extractNumber(portfolioTotalValueText);
+    const tokensValueNum = this.extractNumber(tokensTotalValueText);
+    const defiProtocolsValueNum = this.extractNumber(
+      defiPositionsTotalValueText,
+    );
+
+    const totalValueComputedNum = tokensValueNum + defiProtocolsValueNum;
+    const difference = Math.abs(totalValueComputedNum - totalValueNum);
+    const isDifferenceZero = difference < Number.EPSILON;
+    expect(
+      isDifferenceZero,
+      `Total value does not equal sum of individual values. Difference: ${difference}`,
+    ).toBe(true);
+
+    if (!isDifferenceZero) {
+      throw new Error(
+        `Total value does not equal sum of individual values. Difference: ${difference}`,
       );
     }
   }
