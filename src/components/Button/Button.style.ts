@@ -24,7 +24,7 @@ export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
   color: (theme.vars || theme).palette.buttonPrimaryAction,
   ':hover': {
-    backgroundColor: `oklch(from ${(theme.vars || theme).palette.primary.main} calc(l - 0.1) c h)`,
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.buttonPrimaryBg} calc(l - 0.1) c h)`,
   },
 }));
 
@@ -32,7 +32,7 @@ export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.buttonSecondaryBg,
   color: (theme.vars || theme).palette.buttonSecondaryAction,
   '&:hover': {
-    backgroundColor: `oklch(from ${(theme.vars || theme).palette.bgQuaternary.main} calc(l - 0.1) c h)`,
+    backgroundColor: `oklch(from ${(theme.vars || theme).palette.buttonSecondaryBg} calc(l - 0.1) c h)`,
   },
 }));
 
