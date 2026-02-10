@@ -85,7 +85,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
       <Card
         backgroundImageUrl={imageUrl?.href}
         onClick={(e) => handleClick(e, 'click_card')}
-        isDarkCard={data?.DisplayConditions.mode === 'dark'}
+        isDarkCard={data?.DisplayConditions?.mode === 'dark'}
         sx={cardStyles}
       >
         <FeatureCardContent>

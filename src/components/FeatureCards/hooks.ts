@@ -22,10 +22,16 @@ import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 export const useFeatureCardTracking = (data: FeatureCardData) => {
   const { trackEvent } = useUserTracking();
-  const impressionFired = useRef(false);
+  const impressionEventFired = useRef(false);
+  const displayEventFired = useRef(false);
 
   // Track Spindl impression on mount
   useEffect(() => {
+    if (impressionEventFired.current) {
+      return;
+    }
+    impressionEventFired.current = true;
+
     if (isSpindlTrackData(data)) {
       trackSpindl(
         'impression',
@@ -36,10 +42,10 @@ export const useFeatureCardTracking = (data: FeatureCardData) => {
   }, [data]);
 
   const trackDisplay = () => {
-    if (impressionFired.current) {
+    if (displayEventFired.current) {
       return;
     }
-    impressionFired.current = true;
+    displayEventFired.current = true;
 
     trackEvent({
       category: TrackingCategory.FeatureCard,
