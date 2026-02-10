@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import type { TypographyProps } from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import { ButtonSecondary } from 'src/components/Button';
 
 export const RankCardContainer = styled(Box)(({ theme }) => ({
@@ -42,10 +43,6 @@ export const RankButton = styled(ButtonSecondary)(({ theme }) => ({
   width: '100%',
   lineHeight: '18px',
   height: 40,
-  color: (theme.vars || theme).palette.text.primary,
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.primary.main,
-  }),
 }));
 
 export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
