@@ -12,6 +12,8 @@ import {
   THIRTY_DAYS,
   THREE_HUNDRED_SIXTY_FIVE_DAYS,
 } from '@/const/time';
+import { displaySelectCardStyles, inputSelectCardStyles } from './constants';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 interface EarnYourYieldViewProps {
   depositTokenBalance: Balance<ExtendedToken>;
@@ -84,6 +86,12 @@ export const EarnYourYieldView: FC<EarnYourYieldViewProps> = ({
         enableSwapButton
         enableResetButton
         onAmountChange={handleAmountChange}
+        sx={mergeSx(inputSelectCardStyles, (theme) => ({
+          backgroundColor: (theme.vars || theme).palette.alpha100.main,
+          ...theme.applyStyles('light', {
+            backgroundColor: (theme.vars || theme).palette.white.main,
+          }),
+        }))}
       />
       <EarnYieldColumnsContainer>
         {DURATION_DAY_OPTIONS.map((duration) => (

@@ -10,5 +10,5 @@ export const MultiViewCardContainer = styled(Box)(({ theme }) => ({
   boxShadow: theme.shadows[2],
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   border: getSurfaceBorder(theme, 'surface1'),
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
 }));

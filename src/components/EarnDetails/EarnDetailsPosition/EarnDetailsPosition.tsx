@@ -99,7 +99,7 @@ export const EarnDetailsPosition = ({
   const tabs = useMemo(
     () => [
       { label: 'Your positions', value: 'your-positions' },
-      { label: 'Your yield', value: 'your-yield' },
+      { label: 'Estimated yield', value: 'your-yield' },
     ],
     [],
   );
@@ -125,7 +125,7 @@ export const EarnDetailsPosition = ({
       size={HorizontalTabSize.SM}
       sx={{
         width: {
-          lg: 408,
+          md: 408,
         },
       }}
       renderContent={(value) => {

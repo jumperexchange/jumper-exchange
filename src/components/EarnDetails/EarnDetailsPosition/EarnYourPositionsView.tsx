@@ -19,6 +19,7 @@ import {
 import { DepositButtonDisplayMode } from '@/components/composite/DepositButton/DepositButton.types';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
 import type { Balance, ExtendedToken } from '@/types/tokens';
+import { displaySelectCardStyles } from './constants';
 
 interface EarnYourPositionsViewProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -140,6 +141,11 @@ export const EarnYourPositionsView: FC<EarnYourPositionsViewProps> = ({
           <TokenAmountInput
             tokenBalance={depositTokenBalance}
             mode={SelectCardMode.Display}
+            sx={
+              depositTokenBalance.amount > 0n
+                ? displaySelectCardStyles
+                : { ...displaySelectCardStyles, cursor: 'not-allowed' }
+            }
           />
         </Box>
       </Tooltip>

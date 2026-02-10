@@ -11,9 +11,10 @@ import {
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import type { Balance, ExtendedToken } from '@/types/tokens';
-import { descriptionBoxStyles, selectCardStyles } from './constants';
+import { descriptionBoxStyles } from './constants';
 import { TokenAmountInputAvatar } from './adornments/TokenAmountInputAvatar';
 import { TokenAmountInputReset } from './adornments/TokenAmountInputReset';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export type PositionPrimaryDisplay = 'amount' | 'price';
 
@@ -26,6 +27,7 @@ interface TokenAmountInputProps {
   endAdornment?: React.ReactNode;
   hintEndAdornment?: string;
   onAmountChange?: (amount: string) => void;
+  sx?: SxProps<Theme>;
 }
 
 export const TokenAmountInput: FC<TokenAmountInputProps> = ({
@@ -37,6 +39,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   endAdornment,
   hintEndAdornment,
   onAmountChange,
+  sx,
 }) => {
   const {
     toAmount,
@@ -164,7 +167,8 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const placeholder = primaryDisplay === 'price' ? '$0' : '0';
 
   const initialValue = toAmount(tokenBalance.amount, token.decimals);
-  const canResetToInitial = isInputMode && initialValue !== value;
+  const canResetToInitial =
+    isInputMode && initialValue !== value && value !== '';
 
   return (
     <SelectCard
@@ -214,11 +218,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
           <TokenAmountInputReset onReset={handleResetInitial} />
         ) : undefined)
       }
-      sx={
-        tokenBalance.amount > 0n || isInputMode
-          ? selectCardStyles
-          : { ...selectCardStyles, cursor: 'not-allowed' }
-      }
+      sx={sx}
     />
   );
 };
