@@ -176,11 +176,16 @@ export const useThemeModesMenuContent = () => {
     [displayablePartnerThemes, activeConfigThemeUid, handleSwitchTheme],
   );
 
+  const selectedPartnerThemeItem = useMemo(
+    () => partnerThemeItems.find((t) => t.checkIcon),
+    [partnerThemeItems],
+  );
+
   return {
     selectedThemeMode,
-    selectedPartnerTheme: partnerThemeItems.find((t) => t.checkIcon)?.label,
+    selectedPartnerTheme: selectedPartnerThemeItem?.label,
     selectedThemeIcon:
-      partnerThemeItems.find((t) => t.checkIcon)?.prefixIcon ??
+      selectedPartnerThemeItem?.prefixIcon ??
       MODE_OPTIONS[selectedThemeMode].icon,
     submenuItems: [...standardModeItems, ...partnerThemeItems],
   };
