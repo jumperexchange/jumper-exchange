@@ -1,21 +1,14 @@
 'use client';
-import type {
-  LinkProps,
-  CardProps as MuiCardProps,
-  TypographyProps,
-} from '@mui/material';
-import {
-  CardActions,
-  CardContent,
-  IconButton,
-  Link,
-  Card as MuiCard,
-  Typography,
-} from '@mui/material';
+
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import MuiCard, { type CardProps as MuiCardProps } from '@mui/material/Card';
+import Typography from '@mui/material/Typography';
 
 import { styled } from '@mui/material/styles';
 import { inter } from 'src/fonts/fonts';
-import type { FeatureCardData } from 'src/types/strapi';
 
 export interface CardProps extends MuiCardProps {
   backgroundImageUrl?: string;
@@ -29,7 +22,7 @@ export const FCard = styled(MuiCard, {
   width: 384,
   height: 160,
   cursor: 'pointer',
-  borderRadius: '12px',
+  borderRadius: theme.shape.cardBorderRadiusSmall,
   position: 'relative',
   marginBottom: theme.spacing(1.5),
   overflow: 'hidden',
@@ -53,15 +46,7 @@ export const FeatureCardCloseButton = styled(IconButton)(() => ({
   top: 1,
 }));
 
-export interface FeatureCardTitleProps extends TypographyProps {
-  data?: FeatureCardData;
-  typographyColor?: string;
-}
-
-export const FeatureCardTitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
-})<FeatureCardTitleProps>(({ typographyColor, data }) => ({
-  color: data?.TitleColor ?? typographyColor,
+export const FeatureCardTitle = styled(Typography)(() => ({
   fontSize: '24px',
   lineHeight: '32px',
   userSelect: 'none',
@@ -70,14 +55,7 @@ export const FeatureCardTitle = styled(Typography, {
   textOverflow: 'ellipsis',
 }));
 
-export interface FeatureCardSubtitleProps extends TypographyProps {
-  typographyColor?: string;
-}
-
-export const FeatureCardSubtitle = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'typographyColor',
-})<FeatureCardSubtitleProps>(({ typographyColor }) => ({
-  color: typographyColor,
+export const FeatureCardSubtitle = styled(Typography)(() => ({
   lineHeight: '24px',
   width: 224,
   userSelect: 'none',
@@ -91,35 +69,13 @@ export const FeatureCardActions = styled(CardActions)(({ theme }) => ({
   marginTop: theme.spacing(1),
 }));
 
-export interface FeatureCardCtaLinkProps extends LinkProps {
-  data: FeatureCardData;
-}
-
-export const FeatureCardCtaLink = styled(Link, {
-  shouldForwardProp: (prop) => prop !== 'data',
-})<FeatureCardCtaLinkProps>(({ theme, data }) => ({
+export const FeatureCardCtaLink = styled(Link)(() => ({
   textDecoration: 'none',
-  color:
-    data?.DisplayConditions.mode === 'dark'
-      ? theme.palette.primary?.main
-      : theme.palette.accent1Alt.main,
-
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.primary.main,
-  }),
 }));
 
-export interface FeatureCardCtaLabelProps extends TypographyProps {
-  data: FeatureCardData;
-  typographyColor?: string;
-}
-
-export const FeatureCardCtaLabel = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'data' && prop !== 'typographyColor',
-})<FeatureCardCtaLabelProps>(({ data, typographyColor }) => ({
+export const FeatureCardCtaLabel = styled(Typography)(() => ({
   maxWidth: 224,
   maxHeight: 20,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  color: (data?.CTAColor || typographyColor) ?? 'inherit',
 }));
