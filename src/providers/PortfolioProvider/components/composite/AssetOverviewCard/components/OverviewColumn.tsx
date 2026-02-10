@@ -8,12 +8,14 @@ interface OverviewColumnProps {
   hint: string;
   totalUsd: number;
   children: ReactNode;
+  dataTestId: string;
 }
 
 export const OverviewColumn: FC<OverviewColumnProps> = ({
   hint,
   totalUsd,
   children,
+  dataTestId,
 }) => {
   const isBelowThreshold = totalUsd > 0 && totalUsd < THRESHOLD_MIN_AMOUNT;
   const formattedActualAmount = formatPortfolioValueInDollar(totalUsd);
@@ -22,7 +24,10 @@ export const OverviewColumn: FC<OverviewColumnProps> = ({
     : formattedActualAmount;
 
   return (
-    <OverviewColumnContainer>
+    <OverviewColumnContainer
+      data-testid={dataTestId}
+      aria-label={`Total value: ${totalUsd}`}
+    >
       <TitleWithHint
         titleVariant="titleMedium"
         title={formattedAmount}

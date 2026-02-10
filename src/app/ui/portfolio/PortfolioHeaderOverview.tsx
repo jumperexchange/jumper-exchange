@@ -81,7 +81,11 @@ export const PortfolioHeaderOverview = () => {
         )}
       </PortfolioHeaderOverviewHeaderContainer>
       <PortfolioHeaderOverviewContentContainer>
-        <PortfolioHeaderOverviewValue as="div">
+        <PortfolioHeaderOverviewValue
+          as="div"
+          data-testid="portfolio-header-overview-value"
+          aria-label={`Total value: ${totalValue}`}
+        >
           <>
             {prefix}
             <AnimatedCounter
