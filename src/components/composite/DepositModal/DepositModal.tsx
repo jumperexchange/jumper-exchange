@@ -37,7 +37,7 @@ export const DepositModal: FC<DepositModalProps> = ({
                 maxHeight: 'calc(100vh - 6rem)',
                 minWidth: '100%',
                 maxWidth: 400,
-                borderRadius: theme.shape.cardBorderRadiusLarge,
+                borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
                 [theme.breakpoints.up('sm')]: {
                   minWidth: 400,
                 },
