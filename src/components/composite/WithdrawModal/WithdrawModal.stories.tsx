@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 
 import { WithdrawModal } from './WithdrawModal';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { useIsDisconnected } from 'src/components/Navbar/hooks';
 import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { ClaimPerkModal } from './ClaimPerkModal';
 import { Button } from 'src/components/Button';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { AvailableSteps } from './ClaimPerkModal.types';
