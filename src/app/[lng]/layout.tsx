@@ -30,6 +30,10 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '../lib/metadata';
+import {
+  THEME_COLOR_SCHEME_STORAGE_KEY,
+  THEME_MODE_STORAGE_KEY,
+} from '@/providers/ThemeProvider/constants';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -181,7 +185,12 @@ export default async function RootLayout({
 
       <body suppressHydrationWarning>
         <NuqsAdapter>
-          <InitColorSchemeScript attribute="class" defaultMode="system" />
+          <InitColorSchemeScript
+            attribute="class"
+            defaultMode="system"
+            modeStorageKey={THEME_MODE_STORAGE_KEY}
+            colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+          />
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ReactQueryProvider>
               <TranslationsProvider
