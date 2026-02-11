@@ -26,6 +26,7 @@ interface TokenAmountInputProps {
   enableResetButton?: boolean;
   endAdornment?: React.ReactNode;
   hintEndAdornment?: string;
+  label?: string;
   onAmountChange?: (amount: string) => void;
   sx?: SxProps<Theme>;
 }
@@ -38,6 +39,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   enableResetButton = false,
   endAdornment,
   hintEndAdornment,
+  label,
   onAmountChange,
   sx,
 }) => {
@@ -182,6 +184,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
       id="token-amount"
       name="token-amount"
       value={inputValue}
+      label={label}
       description={
         <Box sx={descriptionBoxStyles}>
           <SelectCardDescription variant="bodyXSmall" hideOverflow>
