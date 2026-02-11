@@ -1,9 +1,8 @@
-import { ChangeEventHandler, FC, FocusEventHandler } from 'react';
-import { TaskInputErrorMessage, TaskInputField } from './TaskInput.styles';
-import { SxProps, Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
+import type { ChangeEventHandler, FC, FocusEventHandler } from 'react';
+import { FormInputErrorMessage, FormInputField } from './FormInput.styles';
+import type { SxProps, Theme } from '@mui/material/styles';
 
-export interface TaskInputProps {
+export interface FormInputProps {
   id: string;
   name: string;
   label?: string;
@@ -15,9 +14,10 @@ export interface TaskInputProps {
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   sx?: SxProps<Theme>;
+  startAdornment?: React.ReactNode;
 }
 
-export const TaskInput: FC<TaskInputProps> = ({
+export const FormInput: FC<FormInputProps> = ({
   id,
   name,
   value,
@@ -28,10 +28,11 @@ export const TaskInput: FC<TaskInputProps> = ({
   onFocus,
   onBlur,
   sx,
+  startAdornment,
 }) => {
   return (
     <>
-      <TaskInputField
+      <FormInputField
         id={id}
         name={name}
         value={value}
@@ -44,12 +45,13 @@ export const TaskInput: FC<TaskInputProps> = ({
         onChange={onChange}
         onBlur={onBlur}
         onFocus={onFocus}
+        startAdornment={startAdornment}
         sx={sx}
       />
       {errorMessage && (
-        <TaskInputErrorMessage variant="bodyMedium">
+        <FormInputErrorMessage variant="bodyMedium">
           {errorMessage}
-        </TaskInputErrorMessage>
+        </FormInputErrorMessage>
       )}
     </>
   );

@@ -110,7 +110,6 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
       }
     } else {
       const formattedValue = toInputAmount(inputValue, token.decimals, true);
-      console.log(formattedValue);
       setValue(formattedValue);
 
       if (onAmountChange) {
