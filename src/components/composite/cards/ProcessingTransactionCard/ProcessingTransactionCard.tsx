@@ -28,7 +28,7 @@ const WrappedEntityStack: FC<{ token: ExtendedToken; zIndex: number }> = ({
           ...token,
           chain: {
             chainId: token.chainId,
-            chainKey: token.chainId.toString(),
+            chainKey: '',
           },
         },
       ]}
@@ -55,7 +55,7 @@ export const ProcessingTransactionCard: FC<ProcessingTransactionCardProps> = ({
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="title2XSmall">{title}</Typography>
         <Stack direction="row" alignItems="center" spacing={0.75}>
-          {targetTime && <Timer target={targetTime} />}
+          {targetTime !== undefined && <Timer target={targetTime} />}
           {statusConfig.icon}
         </Stack>
       </Stack>

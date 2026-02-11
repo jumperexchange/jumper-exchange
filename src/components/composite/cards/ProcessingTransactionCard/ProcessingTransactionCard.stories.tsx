@@ -9,8 +9,8 @@ const meta = {
   component: ProcessingTransactionCard,
   argTypes: {
     status: {
-      control: 'select',
-      options: [Object.values(ProcessingTransactionCardStatus)],
+      control: { type: 'select' },
+      options: Object.values(ProcessingTransactionCardStatus),
     },
   },
 } satisfies Meta<typeof ProcessingTransactionCard>;

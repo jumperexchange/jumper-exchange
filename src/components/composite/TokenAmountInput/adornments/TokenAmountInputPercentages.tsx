@@ -26,7 +26,6 @@ export const TokenAmountInputPercentages = ({
   return (
     <Box
       sx={{
-        mt: 'auto',
         display: 'contents',
       }}
     >

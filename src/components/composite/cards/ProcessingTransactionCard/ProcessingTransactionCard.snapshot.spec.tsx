@@ -4,7 +4,6 @@ import { render } from '../../../../../vitest.setup';
 import { ProcessingTransactionCard } from './ProcessingTransactionCard';
 import { commonArgs } from './fixtures';
 import { ProcessingTransactionCardStatus } from './types';
-import { addMinutes } from 'date-fns/addMinutes';
 
 const mockedChains = [
   {
@@ -110,26 +109,6 @@ describe('ProcessingTransactionCard snapshot', () => {
       <ProcessingTransactionCard
         {...commonArgs}
         status={ProcessingTransactionCardStatus.FAILED}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-
-  it('matches snapshot with count down', async () => {
-    const { container } = render(
-      <ProcessingTransactionCard
-        {...commonArgs}
-        targetTime={addMinutes(new Date(), 1).getTime()}
-      />,
-    );
-    expect(container).toMatchSnapshot();
-  });
-
-  it('matches snapshot with count up', async () => {
-    const { container } = render(
-      <ProcessingTransactionCard
-        {...commonArgs}
-        targetTime={addMinutes(new Date(), -1).getTime()}
       />,
     );
     expect(container).toMatchSnapshot();

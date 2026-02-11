@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { differenceInSeconds } from 'date-fns';
 import Typography from '@mui/material/Typography';
 
@@ -27,23 +27,29 @@ export function Timer({ target }: TimerProps) {
     return Math.min(Math.abs(diff), MAX_SECONDS);
   });
 
-  useEffect(() => {
-    if (seconds === 0) {
-      return;
-    }
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  if (seconds === 0 && intervalRef.current) {
+    clearInterval(intervalRef.current);
+  }
+
+  useEffect(() => {
     const targetDate = new Date(target);
 
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       const diff = differenceInSeconds(targetDate, new Date());
       const next = Math.min(Math.abs(diff), MAX_SECONDS);
       setSeconds(next);
     }, 1000);
 
-    return () => clearInterval(interval);
-  }, [target, seconds]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [target]);
 
-  if (seconds === 0) {
+  if (seconds === 0 || seconds === MAX_SECONDS) {
     return null;
   }
 

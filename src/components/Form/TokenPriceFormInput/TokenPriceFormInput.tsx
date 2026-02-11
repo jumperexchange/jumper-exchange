@@ -31,11 +31,13 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
     usdDecimals,
   } = useTokenAmountInput();
 
-  const [amount, setAmount] = useState(
+  const [_amount, setAmount] = useState(
     toAmount(tokenBalance.amount, tokenBalance.token.decimals),
   );
   const [displayValue, setDisplayValue] = useState(
-    toAmount(tokenBalance.amount, tokenBalance.token.decimals),
+    toPriceDisplay(
+      toPrice(toAmount(tokenBalance.amount, tokenBalance.token.decimals)),
+    ),
   );
 
   const handleChange = (
@@ -64,7 +66,10 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
     );
     setAmount(formattedTokenAmount);
 
-    const calculatedUsdPrice = toPrice(amount, tokenBalance.token.priceUSD);
+    const calculatedUsdPrice = toPrice(
+      formattedTokenAmount,
+      tokenBalance.token.priceUSD,
+    );
     const formattedUsdPrice = toPriceDisplay(calculatedUsdPrice);
     setDisplayValue(formattedUsdPrice);
 
