@@ -122,6 +122,14 @@ export const EarnDetailsActionsContainer = styled(EarnDetailsSectionContainer)(
   }),
 );
 
+export const EarnDetailsActionsHeaderContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+}));
+
 export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',

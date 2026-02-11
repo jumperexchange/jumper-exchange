@@ -58,6 +58,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const token = tokenBalance.token;
   const isInputMode = mode === SelectCardMode.Input;
   const isEditingRef = useRef(false);
+  const isInitRef = useRef(false);
 
   const [primaryDisplay, setPrimaryDisplay] =
     useState<PositionPrimaryDisplay>(primaryDisplayProp);
@@ -75,7 +76,11 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   }, [tokenBalance.amount, token.decimals, token.priceUSD, toAmount, toPrice]);
 
   useLayoutEffect(() => {
+    if (isInitRef.current) {
+      return;
+    }
     handleInitialAmount();
+    isInitRef.current = true;
   }, [handleInitialAmount]);
 
   // Display logic
@@ -161,7 +166,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
     primaryDisplay === 'price'
       ? toDisplayAmount({ token, amount: rawAmount }, token.symbol, {
           minimumFractionDigits: 0,
-          maximumFractionDigits: token.decimals,
+          maximumFractionDigits: 6,
         })
       : toDisplayAmountUSD({ token, amount: rawAmount });
 

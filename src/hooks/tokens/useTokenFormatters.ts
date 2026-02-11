@@ -55,7 +55,7 @@ export const useTokenFormatters = () => {
   const toDisplayAmount = useCallback(
     (
       balance: Balance<PricedToken>,
-      symbol: string,
+      symbol?: string,
       options?: FormatAmountOptions,
     ): string => {
       const amount = toAmount(balance);
@@ -64,6 +64,9 @@ export const useTokenFormatters = () => {
         minimumFractionDigits: options?.minimumFractionDigits,
         maximumFractionDigits: options?.maximumFractionDigits ?? 3,
       });
+      if (!symbol) {
+        return formatted;
+      }
       return `${formatted} ${symbol}`;
     },
     [t, toAmount],

@@ -1,6 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import Typography from '@mui/material/Typography';
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import type { Hex } from 'viem';
@@ -20,22 +20,17 @@ import {
   EarnDetailsActionsButtonsContainer,
   EarnDetailsActionsButtonsFallbackContainer,
   EarnDetailsActionsContainer,
+  EarnDetailsActionsHeaderContainer,
 } from './EarnDetails.styles';
-import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
-import { RequestRedeemFlowButton } from '../composite/RequestRedeemFlow/RequestRedeemFlow';
-import { useQuery, useMutation } from '@tanstack/react-query';
 import {
-  useSwitchChain,
-  useSendTransaction,
-  useWaitForTransactionReceipt,
-} from 'wagmi';
-import { makeClient } from '@/app/lib/client';
-import { Badge } from '@/components/Badge/Badge';
-import { BadgeVariant, BadgeSize } from '@/components/Badge/Badge.styles';
-import { formatTokenAmount } from '@lifi/widget';
-import { Button } from '@/components/Button/Button';
+  RequestRedeemFlowButton,
+  RequestRedeemFlowIconButton,
+} from '../composite/RequestRedeemFlow/RequestRedeemFlow';
+import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
+import { Variant as IconButtonVariant } from '@/components/core/buttons/types';
+import CheckIcon from '@mui/icons-material/Check';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -47,13 +42,6 @@ export const EarnDetailsActions = ({
   const { t } = useTranslation();
   const { account } = useAccount();
   const accountAddress = useAccountAddress();
-  const theme = useTheme();
-  const { switchChainAsync } = useSwitchChain();
-
-  // Claim state management
-  const [claimingId, setClaimingId] = useState<string | null>(null);
-  const [currentActionIndex, setCurrentActionIndex] = useState(0);
-
   const isConnected = !!account?.address;
 
   const {
@@ -121,204 +109,24 @@ export const EarnDetailsActions = ({
   const areActionsDisabled =
     isDepositFeatureDisabled && isWithdrawFeatureDisabled;
 
-  const {
-    isSuccess,
-    data: claims,
-    refetch: refetchClaims,
-  } = useQuery({
-    queryKey: ['claims', accountAddress],
-    queryFn: async () => {
-      const client = makeClient();
-      // Need to make sure that this refresh only every (1 day via the cache header)
-      const data = await client.v1.earnControllerGetVaultSpecificDataV1(
-        earnOpportunity.slug,
-        { address: accountAddress as Hex },
-      );
-      return data.data;
-    },
-    enabled:
-      !!accountAddress &&
-      !!earnOpportunity.slug &&
-      hasDeposited &&
-      !earnOpportunity.isRedeemable,
-  });
+  const { data: redeemableClaims, refetch: refetchRedeemableClaims } =
+    useRedeemableClaims(earnOpportunity, hasDeposited);
 
-  // Fetch claim call data mutation
-  const fetchClaimCallDataMutation = useMutation({
-    mutationFn: async ({ amount }: { amount: string }) => {
-      const client = makeClient();
-      const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(
-        earnOpportunity.slug,
-        {
-          address: accountAddress as Hex,
-          amount,
-        },
-      );
-      return data.data;
-    },
-  });
-
-  // Send transaction hook for executing claim transactions
-  const {
-    data: txHash,
-    isPending: isWritePending,
-    sendTransaction,
-    reset: resetWrite,
-  } = useSendTransaction();
-
-  // Wait for transaction confirmation
-  const {
-    isLoading: isTxConfirming,
-    isSuccess: isTxConfirmed,
-    isError: isTxError,
-    error: txError,
-  } = useWaitForTransactionReceipt({
-    hash: txHash,
-    confirmations: 1,
-  });
-
-  const executeClaimAction = useCallback(
-    async (action: any) => {
-      try {
-        // Switch chain if needed
-        if (account?.chainId !== action.tx.chainId) {
-          await switchChainAsync({ chainId: action.tx.chainId });
-        }
-
-        // Execute the transaction
-        sendTransaction({
-          to: action.tx.to as Hex,
-          data: action.tx.data as Hex,
-          chainId: action.tx.chainId,
-        });
-      } catch (error) {
-        console.error(`Failed to execute ${action.name}:`, error);
-        setClaimingId(null);
-        throw error;
-      }
-    },
-    [account?.chainId, switchChainAsync, sendTransaction],
-  );
-
-  // Handle transaction errors
-  useEffect(() => {
-    if (!isTxError || !claimingId) {
-      return;
-    }
-
-    // Log the transaction error
-    console.error('Transaction failed:', txError);
-
-    // Reset claiming state to allow retry
-    setClaimingId(null);
-    setCurrentActionIndex(0);
-    resetWrite();
-  }, [isTxError, txError, claimingId, resetWrite]);
-
-  // Auto-execute transactions when confirmed
-  useEffect(() => {
-    if (!isTxConfirmed || !fetchClaimCallDataMutation.data || !claimingId) {
-      return;
-    }
-
-    const callData = fetchClaimCallDataMutation.data;
-    const nextIndex = currentActionIndex + 1;
-
-    if (nextIndex < callData.actions.length) {
-      // Move to next action
-      setCurrentActionIndex(nextIndex);
-      resetWrite();
-
-      // Execute next action with proper error handling
-      (async () => {
-        try {
-          await executeClaimAction(callData.actions[nextIndex]);
-        } catch (error) {
-          console.error('Failed to execute claim action:', error);
-          // Reset state on error
-          setClaimingId(null);
-          setCurrentActionIndex(0);
-          resetWrite();
-        }
-      })();
-    } else {
-      // All actions completed
-      setClaimingId(null);
-      setCurrentActionIndex(0);
-      resetWrite();
-      // Refetch claims data to remove the completed claim from the list
-      refetchClaims();
-    }
-  }, [
-    isTxConfirmed,
-    fetchClaimCallDataMutation.data,
-    claimingId,
-    currentActionIndex,
-    resetWrite,
-    executeClaimAction,
-    refetchClaims,
-  ]);
-
-  const handleClaim = async (claimId: string, amount: string) => {
-    if (claimingId) {
-      return; // Prevent multiple claims at once
-    }
-
-    setClaimingId(claimId);
-
-    try {
-      const callDataResult = await fetchClaimCallDataMutation.mutateAsync({
-        amount,
-      });
-
-      if (!callDataResult?.actions || callDataResult.actions.length === 0) {
-        throw new Error('No actions returned from claim call data');
-      }
-
-      // Reset and start with first action
-      setCurrentActionIndex(0);
-      const firstAction = callDataResult.actions[0];
-
-      // Execute first action
-      await executeClaimAction(firstAction);
-    } catch (error) {
-      console.error('Failed to start claim:', error);
-      setClaimingId(null);
-    }
-  };
+  const { hasAcceptedClaims, hasPendingClaims } = useMemo(() => {
+    return {
+      hasAcceptedClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'accepted',
+      ),
+      hasPendingClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'pending',
+      ),
+    };
+  }, [redeemableClaims]);
 
   const handleRefreshBalances = () => {
     refetchPositions();
     refetchDepositAmount();
-    refetchClaims();
-  };
-
-  const formatDate = (timestamp: string) => {
-    const date = new Date(parseInt(timestamp) * 1000);
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true,
-    }).format(date);
-  };
-
-  const getStatusBadgeVariant = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'ready':
-        return BadgeVariant.Success;
-      case 'pending':
-        return BadgeVariant.Warning;
-      case 'completed':
-        return BadgeVariant.Default;
-      default:
-        return BadgeVariant.Default;
-    }
-  };
-
-  const getStatusLabel = (status: string) => {
-    return status.charAt(0).toUpperCase() + status.slice(1);
+    refetchRedeemableClaims();
   };
 
   const renderFooter = () => {
@@ -364,18 +172,8 @@ export const EarnDetailsActions = ({
         </EarnDetailsActionsButtonsFallbackContainer>
       );
     }
-  };
 
-  return (
-    <>
-      <EarnDetailsActionsContainer>
-        <EarnDetailsActionsPosition
-          token={earnOpportunity.lpToken}
-          amountUSD={depositAmountUSD}
-          amount={depositAmount}
-        />
-        {renderFooter()}
-      </EarnDetailsActionsContainer>
+    return (
       <EarnDetailsActionsButtonsContainer>
         <DepositFlowButton
           earnOpportunity={earnOpportunity}
@@ -396,114 +194,61 @@ export const EarnDetailsActions = ({
             sx={{ flex: 1 }}
           />
         )}
-      </EarnDetailsActionsButtonsContainer>
-      {hasDeposited && !earnOpportunity.isRedeemable && (
-        <>
+        {hasDeposited && !earnOpportunity.isRedeemable && (
           <RequestRedeemFlowButton
             earnOpportunity={earnOpportunity}
             size="large"
-            label={t('buttons.requestRedeemButtonLabel')}
+            label={t('buttons.withdrawButtonLabel')}
             refetchCallback={handleRefreshBalances}
             data-testid="request-redeem-button"
             sx={{ flex: 1 }}
           />
-          {isSuccess &&
-            claims &&
-            claims.data.claimData &&
-            claims.data.claimData.length > 0 && (
-              <Box
-                sx={{
-                  mt: 3,
-                  p: 2,
-                  borderRadius: '12px',
-                  background: theme.vars.palette.surface2.main,
-                  border: `1px solid ${theme.vars.palette.alpha100.main}`,
-                }}
-              >
-                {/* Table Header */}
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr 1fr auto',
-                    gap: 2,
-                    pb: 2,
-                    borderBottom: `1px solid ${theme.vars.palette.alpha100.main}`,
-                  }}
-                >
-                  <Typography variant="bodyXXSmall" color="text.secondary">
-                    {t('earn.claims.amount', 'Amount')}
-                  </Typography>
-                  <Typography variant="bodyXXSmall" color="text.secondary">
-                    {t('earn.claims.date', 'Date')}
-                  </Typography>
-                  <Typography
-                    variant="bodyXXSmall"
-                    color="text.secondary"
-                    sx={{ textAlign: 'right' }}
-                  >
-                    {t('earn.claims.status', 'Status')}
-                  </Typography>
-                  <Box sx={{ width: 80 }} />
-                </Box>
+        )}
+      </EarnDetailsActionsButtonsContainer>
+    );
+  };
 
-                {/* Table Rows */}
-                {claims.data.claimData.map((claim: any) => {
-                  const isClaimable = claim.status.toLowerCase() === 'ready';
-                  const isClaiming = claimingId === claim.id;
+  let claimRedeemButton = null;
 
-                  return (
-                    <Box
-                      key={claim.id}
-                      sx={{
-                        display: 'grid',
-                        gridTemplateColumns: '1fr 1fr 1fr auto',
-                        gap: 2,
-                        py: 2,
-                        alignItems: 'center',
-                      }}
-                    >
-                      <Typography variant="bodySmall" sx={{ fontWeight: 600 }}>
-                        {parseFloat(
-                          formatTokenAmount(
-                            BigInt(claim.assetAmount),
-                            earnOpportunity.lpToken.decimals,
-                          ),
-                        ).toFixed(2)}{' '}
-                        {earnOpportunity.lpToken.symbol}
-                      </Typography>
-                      <Typography variant="bodySmall" color="text.secondary">
-                        {formatDate(claim.timestamp)}
-                      </Typography>
-                      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Badge
-                          variant={getStatusBadgeVariant(claim.status)}
-                          size={BadgeSize.SM}
-                          label={getStatusLabel(claim.status)}
-                        />
-                      </Box>
-                      <Button
-                        variant="primary"
-                        size="small"
-                        onClick={() => handleClaim(claim.id, claim.assetAmount)}
-                        disabled={!isClaimable || isClaiming || !!claimingId}
-                        loading={isClaiming}
-                        styles={{
-                          minWidth: 80,
-                          py: 0.5,
-                          fontSize: '14px',
-                        }}
-                      >
-                        {isClaiming
-                          ? t('earn.claims.claiming', 'Claiming...')
-                          : t('earn.claims.claim', 'Claim')}
-                      </Button>
-                    </Box>
-                  );
-                })}
-              </Box>
-            )}
-        </>
-      )}
-    </>
+  if (hasAcceptedClaims) {
+    claimRedeemButton = (
+      <RequestRedeemFlowIconButton
+        variant={IconButtonVariant.Success}
+        tooltipContent="Your withdrawal is ready"
+        earnOpportunity={earnOpportunity}
+        refetchCallback={handleRefreshBalances}
+      >
+        <CheckIcon />
+      </RequestRedeemFlowIconButton>
+    );
+  } else if (hasPendingClaims) {
+    claimRedeemButton = (
+      <RequestRedeemFlowIconButton
+        variant={IconButtonVariant.AlphaDark}
+        tooltipContent="You have a pending withdraw request"
+        earnOpportunity={earnOpportunity}
+        refetchCallback={handleRefreshBalances}
+      >
+        <ScheduleIcon />
+      </RequestRedeemFlowIconButton>
+    );
+  }
+
+  return (
+    <EarnDetailsActionsContainer>
+      <EarnDetailsActionsHeaderContainer>
+        {/** This is an interim solution until we can replace the section with the MultiViewCard */}
+        <Typography variant="bodyXSmall" color="textSecondary">
+          {t('earn.position.label')}
+        </Typography>
+        {claimRedeemButton}
+      </EarnDetailsActionsHeaderContainer>
+      <EarnDetailsActionsPosition
+        token={earnOpportunity.lpToken}
+        amountUSD={depositAmountUSD}
+        amount={depositAmount}
+      />
+      {renderFooter()}
+    </EarnDetailsActionsContainer>
   );
 };

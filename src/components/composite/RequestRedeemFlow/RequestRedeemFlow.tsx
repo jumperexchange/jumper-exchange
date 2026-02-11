@@ -10,6 +10,9 @@ import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 import type { EarnOpportunityExtended } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
 import { useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
+import type { IconButtonProps } from '@/components/core/buttons/IconButton/IconButton.types';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 
 export const RequestRedeemFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal, refetchCallback } =
@@ -77,5 +80,47 @@ export const RequestRedeemFlowButton: FC<RequestRedeemFlowButtonProps> = ({
       label={t('buttons.withdrawButtonLabel')}
       {...props}
     />
+  );
+};
+
+type RequestRedeemFlowIconButtonProps = Omit<IconButtonProps, 'onClick'> & {
+  earnOpportunity: EarnOpportunityExtended;
+  refetchCallback?: () => void;
+  tooltipContent: React.ReactNode;
+};
+
+export const RequestRedeemFlowIconButton: FC<
+  RequestRedeemFlowIconButtonProps
+> = ({
+  earnOpportunity,
+  refetchCallback,
+  tooltipContent,
+  children,
+  ...props
+}) => {
+  const { trackEarnRequestRedeemClickEvent } = useEarnTracking();
+  const openModal = useRequestRedeemFlowStore((state) => state.openModal);
+  const handleClick = () => {
+    trackEarnRequestRedeemClickEvent(earnOpportunity.slug);
+    openModal(earnOpportunity, refetchCallback);
+  };
+
+  return (
+    <Tooltip title={tooltipContent}>
+      <IconButton
+        onClick={handleClick}
+        {...props}
+        sx={{
+          height: 32,
+          width: 32,
+          '& svg:not(.MuiCircularProgress-svg)': {
+            height: 16,
+            width: 16,
+          },
+        }}
+      >
+        {children}
+      </IconButton>
+    </Tooltip>
   );
 };
