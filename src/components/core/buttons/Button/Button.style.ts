@@ -193,7 +193,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XS, loadingPosition: 'start' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: theme.spacing(0.5 + 0.5),
           right: 'auto',
         },
@@ -202,7 +202,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XS, loadingPosition: 'end' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: 'auto',
           right: theme.spacing(0.5 + 0.5),
         },
@@ -211,7 +211,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XS, loadingPosition: 'center' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: '50%',
           right: 'auto',
           transform: 'translateX(-50%)',
@@ -251,7 +251,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.SM, loadingPosition: 'start' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: theme.spacing(0.5 + 0.5),
           right: 'auto',
         },
@@ -260,7 +260,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.SM, loadingPosition: 'end' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: 'auto',
           right: theme.spacing(0.5 + 0.5),
         },
@@ -269,7 +269,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.SM, loadingPosition: 'center' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: '50%',
           right: 'auto',
           transform: 'translateX(-50%)',
@@ -309,7 +309,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.MD, loadingPosition: 'start' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: theme.spacing(0.75 + 0.5),
           right: 'auto',
         },
@@ -318,7 +318,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.MD, loadingPosition: 'end' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: 'auto',
           right: theme.spacing(0.75 + 0.5),
         },
@@ -327,7 +327,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.MD, loadingPosition: 'center' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: '50%',
           right: 'auto',
           transform: 'translateX(-50%)',
@@ -367,7 +367,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.LG, loadingPosition: 'start' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: theme.spacing(1 + 0.5),
           right: 'auto',
         },
@@ -376,7 +376,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.LG, loadingPosition: 'end' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: 'auto',
           right: theme.spacing(1 + 0.5),
         },
@@ -385,7 +385,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.LG, loadingPosition: 'center' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: '50%',
           right: 'auto',
           transform: 'translateX(-50%)',
@@ -425,7 +425,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XL, loadingPosition: 'start' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: theme.spacing(1.5 + 0.5),
           right: 'auto',
         },
@@ -434,7 +434,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XL, loadingPosition: 'end' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: 'auto',
           right: theme.spacing(1.5 + 0.5),
         },
@@ -443,7 +443,7 @@ export const StyledButton = styled(MuiButton, {
     {
       props: { buttonSize: ButtonSize.XL, loadingPosition: 'center' },
       style: {
-        '& .MuiButton-loadingIndicator': {
+        '&:not(.MuiButton-fullWidth) .MuiButton-loadingIndicator': {
           left: '50%',
           right: 'auto',
           transform: 'translateX(-50%)',
