@@ -23,6 +23,7 @@ import type {
   PositionsMetadata,
 } from './types';
 import type { ExtendedChain } from '@lifi/sdk';
+import { uniqBy } from 'lodash';
 
 type GetPrice = (chainId: number, address: string) => number | undefined;
 
@@ -171,7 +172,10 @@ export const extractBalancesMetadata = (
   );
 
   const chains = uniq(compact(map(allBalances, (b) => b.token.chainId)));
-  const assets = uniq(compact(map(allBalances, (b) => b.token.symbol)));
+  const assets = uniqBy(
+    compact(map(allBalances, (b) => b.token)),
+    (asset) => asset.symbol,
+  );
 
   const minBalance = minBy(allBalances, 'amountUSD');
   const maxBalance = maxBy(allBalances, 'amountUSD');
@@ -198,7 +202,10 @@ export const extractPositionsMetadata = (
     ),
   );
 
-  const protocols = uniq(compact(map(positions, (p) => p.protocol.name)));
+  const protocols = uniqBy(
+    compact(map(positions, (p) => p.protocol)),
+    (protocol) => protocol.name,
+  );
   const types = uniq(compact(map(positions, (p) => p.type)));
 
   const allAssetTokens = flatMap(positions, (p) => [
@@ -206,7 +213,10 @@ export const extractPositionsMetadata = (
     ...p.supplyTokens,
     ...p.collateralTokens,
   ]);
-  const assets = uniq(compact(map(allAssetTokens, (t) => t.token.symbol)));
+  const assets = uniqBy(
+    compact(map(allAssetTokens, (t) => t.token)),
+    (asset) => asset.symbol,
+  );
 
   const minPosition = minBy(positions, 'netUsd');
   const maxPosition = maxBy(positions, 'netUsd');

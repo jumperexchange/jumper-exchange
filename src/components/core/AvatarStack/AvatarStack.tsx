@@ -33,11 +33,14 @@ export const AvatarStack: FC<AvatarStackProps> = ({
   const hasOverflow = limit && avatars.length > limit;
   const overflowCount = hasOverflow ? avatars.length - limit : 0;
   const displayAvatars = hasOverflow ? avatars.slice(0, limit) : avatars;
+  const orderedAvatars = direction.includes('reverse')
+    ? displayAvatars.reverse()
+    : displayAvatars;
 
   return (
     <AvatarStackContainer direction={direction} useFlexGap>
       <AvatarStackWrapper direction={direction} spacing={spacing}>
-        {displayAvatars.map((avatar) => (
+        {orderedAvatars.map((avatar) => (
           <AvatarItem
             key={avatar.id}
             avatar={avatar}

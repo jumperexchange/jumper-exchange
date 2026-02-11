@@ -122,7 +122,7 @@ export const sanitizeBalancesFilter = (
 
   const validWalletAddresses = new Set(stats.allWallets);
   const validChainIds = new Set(stats.allChains);
-  const validAssets = new Set(stats.allAssets);
+  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {
@@ -233,9 +233,11 @@ export const sanitizePositionsFilter = (
   }
 
   const validChainIds = new Set(stats.allChains);
-  const validProtocols = new Set(stats.allProtocols);
+  const validProtocols = new Set(
+    stats.allProtocols.map((protocol) => protocol.name),
+  );
   const validTypes = new Set(stats.allTypes);
-  const validAssets = new Set(stats.allAssets);
+  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {

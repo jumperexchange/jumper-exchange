@@ -77,8 +77,9 @@ export const usePortfolioBalancesFilterBar = () => {
     () =>
       sortSelectOptions(
         allAssets.map((asset) => ({
-          value: asset,
-          label: asset,
+          value: asset.symbol,
+          label: asset.name,
+          icon: <EntityStack entities={[asset]} />,
         })),
       ),
     [allAssets],
@@ -218,8 +219,9 @@ export const usePortfolioPositionsFilterBar = () => {
     () =>
       sortSelectOptions(
         allProtocols.map((protocol) => ({
-          value: protocol,
-          label: capitalizeString(protocol),
+          value: protocol.name,
+          label: capitalizeString(protocol.name),
+          icon: <EntityStack entities={[protocol]} />,
         })),
       ),
     [allProtocols],
@@ -240,8 +242,9 @@ export const usePortfolioPositionsFilterBar = () => {
     () =>
       sortSelectOptions(
         allAssets.map((asset) => ({
-          value: asset,
-          label: asset,
+          value: asset.symbol,
+          label: asset.name,
+          icon: <EntityStack entities={[asset]} />,
         })),
       ),
     [allAssets],
