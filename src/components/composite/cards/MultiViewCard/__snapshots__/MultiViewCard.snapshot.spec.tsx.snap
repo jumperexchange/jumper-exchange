@@ -1,0 +1,249 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MultiViewCard snapshot > matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1b2qb89"
+  >
+    <div
+      class="MuiBox-root css-ud9hur"
+    >
+      <div
+        class="MuiTabs-root css-11p8vot-MuiTabs-root"
+      >
+        <div
+          class="MuiTabs-scroller MuiTabs-fixed css-1626ypp-MuiTabs-scroller"
+          style="overflow: hidden; margin-bottom: 0px;"
+        >
+          <div
+            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            role="tablist"
+          >
+            <button
+              aria-selected="true"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-positions"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Your positions
+            </button>
+            <button
+              aria-selected="false"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-yield"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Your yield
+            </button>
+          </div>
+          <span
+            class="MuiTabs-indicator css-1hdsrhl-MuiTabs-indicator"
+            style="left: 0px; width: 0px;"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MultiViewCard snapshot > matches snapshot with content 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1b2qb89"
+  >
+    <div
+      class="MuiBox-root css-ud9hur"
+    >
+      <div
+        class="MuiTabs-root css-11p8vot-MuiTabs-root"
+      >
+        <div
+          class="MuiTabs-scroller MuiTabs-fixed css-1626ypp-MuiTabs-scroller"
+          style="overflow: hidden; margin-bottom: 0px;"
+        >
+          <div
+            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            role="tablist"
+          >
+            <button
+              aria-selected="true"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-positions"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Your positions
+            </button>
+            <button
+              aria-selected="false"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-yield"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Your yield
+            </button>
+          </div>
+          <span
+            class="MuiTabs-indicator css-1hdsrhl-MuiTabs-indicator"
+            style="left: 0px; width: 0px;"
+          />
+        </div>
+      </div>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+    >
+      This is the positions view
+    </p>
+  </div>
+</div>
+`;
+
+exports[`MultiViewCard snapshot > matches snapshot with header 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1b2qb89"
+  >
+    <div
+      class="MuiBox-root css-ud9hur"
+    >
+      <div
+        class="MuiTabs-root css-11p8vot-MuiTabs-root"
+      >
+        <div
+          class="MuiTabs-scroller MuiTabs-fixed css-1626ypp-MuiTabs-scroller"
+          style="overflow: hidden; margin-bottom: 0px;"
+        >
+          <div
+            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            role="tablist"
+          >
+            <button
+              aria-selected="true"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-positions"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Your positions
+            </button>
+            <button
+              aria-selected="false"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-yield"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Your yield
+            </button>
+          </div>
+          <span
+            class="MuiTabs-indicator css-1hdsrhl-MuiTabs-indicator"
+            style="left: 0px; width: 0px;"
+          />
+        </div>
+      </div>
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-xxr1hy-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+          data-testid="CheckIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MultiViewCard snapshot > matches snapshot with header and content 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1b2qb89"
+  >
+    <div
+      class="MuiBox-root css-ud9hur"
+    >
+      <div
+        class="MuiTabs-root css-11p8vot-MuiTabs-root"
+      >
+        <div
+          class="MuiTabs-scroller MuiTabs-fixed css-1626ypp-MuiTabs-scroller"
+          style="overflow: hidden; margin-bottom: 0px;"
+        >
+          <div
+            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            role="tablist"
+          >
+            <button
+              aria-selected="true"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-positions"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Your positions
+            </button>
+            <button
+              aria-selected="false"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              id="undefined-yield"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Your yield
+            </button>
+          </div>
+          <span
+            class="MuiTabs-indicator css-1hdsrhl-MuiTabs-indicator"
+            style="left: 0px; width: 0px;"
+          />
+        </div>
+      </div>
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-xxr1hy-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+          data-testid="CheckIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+      </button>
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+    >
+      This is the positions view
+    </p>
+  </div>
+</div>
+`;

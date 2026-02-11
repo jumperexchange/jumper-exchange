@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
-import { TaskInput } from 'src/components/Form/TaskInput/TaskInput';
+import { FormInput } from '@/components/Form/FormInput/FormInput';
 
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { Button } from 'src/components/Button/Button';
@@ -43,7 +43,7 @@ export const UsernameStepContent: FC<UsernameStepContentProps> = ({
         })}
       </Typography>
       <FormControl key={id} sx={{ width: '100%' }}>
-        <TaskInput
+        <FormInput
           placeholder={`@username`}
           id={id}
           name={id}

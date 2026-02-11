@@ -6,8 +6,13 @@ export const StyledTitleContainer = styled(Box)(() => ({
   textAlign: 'center',
 }));
 
-export const ErrorIconCircle = styled(Box)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+interface StatusIconCircleProps {
+  status: 'success' | 'error' | 'info';
+}
+
+export const StatusIconCircle = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'status',
+})<StatusIconCircleProps>(({ theme }) => ({
   borderRadius: '50%',
   width: 96,
   height: 96,
@@ -15,9 +20,37 @@ export const ErrorIconCircle = styled(Box)(({ theme }) => ({
   position: 'relative',
   placeItems: 'center',
   '& > svg': {
-    color: (theme.vars || theme).palette.statusErrorFg,
     fontSize: 48,
   },
+  variants: [
+    {
+      props: ({ status }) => status === 'success',
+      style: {
+        backgroundColor: (theme.vars || theme).palette.statusSuccessBg,
+        '& > svg': {
+          color: (theme.vars || theme).palette.statusSuccessFg,
+        },
+      },
+    },
+    {
+      props: ({ status }) => status === 'error',
+      style: {
+        backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+        '& > svg': {
+          color: (theme.vars || theme).palette.statusErrorFg,
+        },
+      },
+    },
+    {
+      props: ({ status }) => status === 'info',
+      style: {
+        backgroundColor: (theme.vars || theme).palette.statusInfoBg,
+        '& > svg': {
+          color: (theme.vars || theme).palette.statusInfoFg,
+        },
+      },
+    },
+  ],
 }));
 
 export const StyledModalContentContainer = styled(Box)(({ theme }) => ({
@@ -26,4 +59,14 @@ export const StyledModalContentContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(3),
   width: '100%',
+}));
+
+export const StyledButtonGroup = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  width: '100%',
+  [theme.breakpoints.up('md')]: {
+    flexDirection: 'row',
+  },
 }));

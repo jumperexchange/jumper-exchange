@@ -5,10 +5,14 @@ import { useTranslation } from 'react-i18next';
 
 export interface FormatAmountUSDOptions {
   compact?: boolean;
+  maximumFractionDigits?: number;
+  minimumFractionDigits?: number;
 }
 
 export interface FormatAmountOptions {
   decimals?: number;
+  maximumFractionDigits?: number;
+  minimumFractionDigits?: number;
 }
 
 export const useTokenFormatters = () => {
@@ -31,13 +35,19 @@ export const useTokenFormatters = () => {
   const toDisplayAmountUSD = useCallback(
     (
       balance: Balance<PricedToken>,
-      options?: FormatAmountUSDOptions,
+      options: FormatAmountUSDOptions = {},
     ): string => {
       const value = toAmountUSD(balance);
-      const formatKey = options?.compact
-        ? 'format.currencyCompact'
-        : 'format.currency';
-      return t(formatKey, { value });
+      if (options.compact) {
+        return t('format.currencyCompact', { value });
+      }
+
+      const { compact, ...rest } = options;
+
+      return t('format.currency', {
+        value,
+        ...rest,
+      });
     },
     [t, toAmountUSD],
   );
@@ -46,10 +56,14 @@ export const useTokenFormatters = () => {
     (
       balance: Balance<PricedToken>,
       symbol: string,
-      _options?: FormatAmountOptions,
+      options?: FormatAmountOptions,
     ): string => {
       const amount = toAmount(balance);
-      const formatted = t('format.decimal', { value: amount });
+      const formatted = t('format.decimal', {
+        value: amount,
+        minimumFractionDigits: options?.minimumFractionDigits,
+        maximumFractionDigits: options?.maximumFractionDigits ?? 3,
+      });
       return `${formatted} ${symbol}`;
     },
     [t, toAmount],
