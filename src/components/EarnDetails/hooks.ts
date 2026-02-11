@@ -104,18 +104,12 @@ export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {
   const isLightTheme = useIsLightTheme();
 
   return {
-    baseLineColor: (theme.vars || theme).palette.accent2.main,
-    baseAreaTopColor: isLightTheme
-      ? `#F2D9F6`
-      : (theme.vars || theme).palette.accent2Alt,
-    baseAreaBottomColor: isLightTheme
-      ? (theme.vars || theme).palette.white.main
-      : (theme.vars || theme).palette.bg.main,
-    rewardLineColor: isLightTheme ? '#7B61FF' : '#9B8AFF',
-    rewardAreaTopColor: isLightTheme ? '#E8E4FF' : '#3D3270',
-    rewardAreaBottomColor: isLightTheme
-      ? (theme.vars || theme).palette.white.main
-      : (theme.vars || theme).palette.bg.main,
+    baseLineColor: (theme.vars || theme).palette.textAccent2,
+    baseAreaTopColor: (theme.vars || theme).palette.surfaceAccent2Bg,
+    baseAreaBottomColor: (theme.vars || theme).palette.surface1.main,
+    rewardLineColor: (theme.vars || theme).palette.textAccent2,
+    rewardAreaTopColor: (theme.vars || theme).palette.surfaceAccent1Bg,
+    rewardAreaBottomColor: (theme.vars || theme).palette.surface1.main,
     pointColor: (theme.vars || theme).palette.accent1.main,
   };
 };
