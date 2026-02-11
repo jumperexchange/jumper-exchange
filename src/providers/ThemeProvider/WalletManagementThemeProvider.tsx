@@ -4,6 +4,10 @@ import { useMemo } from 'react';
 import { createTheme } from '@lifi/widget';
 import { useWidgetTheme } from '@/hooks/theme/useWidgetTheme';
 import { deepmerge } from '@mui/utils';
+import {
+  THEME_COLOR_SCHEME_STORAGE_KEY,
+  THEME_MODE_STORAGE_KEY,
+} from './constants';
 
 export const WalletManagementThemeProvider: React.FC<
   React.PropsWithChildren
@@ -22,9 +26,8 @@ export const WalletManagementThemeProvider: React.FC<
   return (
     <ThemeProvider
       theme={theme}
-      defaultMode={widgetTheme.config.appearance ?? 'system'}
-      modeStorageKey="jumper-wallet-management-mode"
-      colorSchemeStorageKey="jumper-wallet-management-color-scheme"
+      modeStorageKey={THEME_MODE_STORAGE_KEY}
+      colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
       disableTransitionOnChange
     >
       {children}
