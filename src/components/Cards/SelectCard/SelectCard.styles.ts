@@ -75,6 +75,7 @@ export const SelectCardDescription = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'hideOverflow',
 })<SelectCardDescriptionProps>(({ theme, hideOverflow }) => ({
   color: (theme.vars || theme).palette.text.secondary,
+  minWidth: 0,
   ...(hideOverflow && {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -110,8 +111,8 @@ export const SelectCardInputField = styled(InputBase, {
     '& input': {
       ...getTypographyStyles(theme, valueVariant, 'bodyLargeStrong'),
       height: 'auto',
-      paddingTop: 0,
-      paddingBottom: theme.spacing(0.25),
+      paddingTop: theme.spacing(0.1875),
+      paddingBottom: theme.spacing(0.2),
     },
     '& input::placeholder': {
       opacity: 1,
