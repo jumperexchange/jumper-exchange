@@ -7,6 +7,10 @@ import { useRef } from 'react';
 import { createJumperTheme } from 'src/theme/theme';
 import { useThemeStore } from 'src/stores/theme';
 import { useThemeConditionsMet } from 'src/hooks/theme/useThemeConditionsMet';
+import {
+  THEME_COLOR_SCHEME_STORAGE_KEY,
+  THEME_MODE_STORAGE_KEY,
+} from './constants';
 
 /**
  * App's theme provider component.
@@ -30,7 +34,12 @@ export function MUIThemeProvider({ children }: PropsWithChildren) {
     : defaultThemeRef.current;
 
   return (
-    <ThemeProvider modeStorageKey="jumper-mode" theme={theme}>
+    <ThemeProvider
+      theme={theme}
+      modeStorageKey={THEME_MODE_STORAGE_KEY}
+      colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+      disableTransitionOnChange
+    >
       <CssBaseline enableColorScheme />
       {children}
     </ThemeProvider>
