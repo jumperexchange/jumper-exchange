@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import type { TooltipProps } from '@mui/material/Tooltip';
-import { type FC, useMemo } from 'react';
+import React, { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
 
@@ -102,8 +102,6 @@ export const EarnDetailsActionsPosition: FC<
       <Box>
         <SelectCard
           mode={SelectCardMode.Display}
-          label={t('earn.position.label')}
-          labelVariant="bodyXSmall"
           value={priceData.formattedAmountUSD}
           description={priceData.formattedAmount}
           placeholder="0"
