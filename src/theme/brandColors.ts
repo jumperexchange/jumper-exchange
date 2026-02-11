@@ -199,7 +199,7 @@ export const defaultBrandColors: BrandColors = {
     surface2: baseColors.rubyDark[300],
     surface3: baseColors.rubyDark[400],
     surface4: baseColors.rubyDark[500],
-    surfaceActiveAccent: '#341e52',
+    surfaceActiveAccent: baseColors.rubyDark[100],
     surfaceActive: baseColors.alphaLight200,
 
     // Accents

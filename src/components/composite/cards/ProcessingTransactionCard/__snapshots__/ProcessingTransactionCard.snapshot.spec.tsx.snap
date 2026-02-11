@@ -1,0 +1,906 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1su8ios"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-title2XSmall css-4nwfpd-MuiTypography-root"
+      >
+        Processing Transaction
+      </span>
+      <div
+        class="MuiStack-root css-g1o9n2-MuiStack-root"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dduz83-MuiSvgIcon-root"
+          data-testid="WatchLaterIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-kqgb3c-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-1hutx23-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-ep7xq6"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-ETH"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      E
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-exjb9r"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-USDC"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      U
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1s1i0lq-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-16o79sz-MuiStack-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            ETH
+          </p>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1d0ztq2-MuiSvgIcon-root"
+            data-testid="ArrowForwardIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            USDC
+          </p>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-bodyXSmall css-z01s5x-MuiTypography-root"
+        >
+          This is a sample transaction description.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProcessingTransactionCard snapshot > matches snapshot with count down 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1su8ios"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-title2XSmall css-4nwfpd-MuiTypography-root"
+      >
+        Processing Transaction
+      </span>
+      <div
+        class="MuiStack-root css-g1o9n2-MuiStack-root"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+        >
+          00:59
+        </p>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dduz83-MuiSvgIcon-root"
+          data-testid="WatchLaterIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-kqgb3c-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-1hutx23-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-ep7xq6"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-ETH"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      E
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-exjb9r"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-USDC"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      U
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1s1i0lq-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-16o79sz-MuiStack-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            ETH
+          </p>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1d0ztq2-MuiSvgIcon-root"
+            data-testid="ArrowForwardIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            USDC
+          </p>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-bodyXSmall css-z01s5x-MuiTypography-root"
+        >
+          This is a sample transaction description.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProcessingTransactionCard snapshot > matches snapshot with count up 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1su8ios"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-title2XSmall css-4nwfpd-MuiTypography-root"
+      >
+        Processing Transaction
+      </span>
+      <div
+        class="MuiStack-root css-g1o9n2-MuiStack-root"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-bodySmallStrong css-19wdc5t-MuiTypography-root"
+        >
+          01:00
+        </p>
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1dduz83-MuiSvgIcon-root"
+          data-testid="WatchLaterIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m4.2 14.2L11 13V7h1.5v5.2l4.5 2.7z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-kqgb3c-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-1hutx23-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-ep7xq6"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-ETH"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      E
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-exjb9r"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-USDC"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      U
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1s1i0lq-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-16o79sz-MuiStack-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            ETH
+          </p>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1d0ztq2-MuiSvgIcon-root"
+            data-testid="ArrowForwardIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            USDC
+          </p>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-bodyXSmall css-z01s5x-MuiTypography-root"
+        >
+          This is a sample transaction description.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProcessingTransactionCard snapshot > matches snapshot with status failed 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-6r9kf2"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-title2XSmall css-4nwfpd-MuiTypography-root"
+      >
+        Processing Transaction
+      </span>
+      <div
+        class="MuiStack-root css-g1o9n2-MuiStack-root"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-nnapra-MuiSvgIcon-root"
+          data-testid="ErrorIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-2h2zm0-4h-2V7h2z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-kqgb3c-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-1hutx23-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-ep7xq6"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-ETH"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      E
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-exjb9r"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-USDC"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      U
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1s1i0lq-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-16o79sz-MuiStack-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            ETH
+          </p>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1d0ztq2-MuiSvgIcon-root"
+            data-testid="ArrowForwardIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            USDC
+          </p>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-bodyXSmall css-1xsj8gl-MuiTypography-root"
+        >
+          This is a sample transaction description.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProcessingTransactionCard snapshot > matches snapshot with status success 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-xz9m6"
+  >
+    <div
+      class="MuiStack-root css-3y1137-MuiStack-root"
+    >
+      <span
+        class="MuiTypography-root MuiTypography-title2XSmall css-4nwfpd-MuiTypography-root"
+      >
+        Processing Transaction
+      </span>
+      <div
+        class="MuiStack-root css-g1o9n2-MuiStack-root"
+      >
+        <svg
+          aria-hidden="true"
+          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-18ics9w-MuiSvgIcon-root"
+          data-testid="CheckIcon"
+          focusable="false"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+          />
+        </svg>
+      </div>
+    </div>
+    <div
+      class="MuiStack-root css-kqgb3c-MuiStack-root"
+    >
+      <div
+        class="MuiStack-root css-1hutx23-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-ep7xq6"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-ETH"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      E
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-exjb9r"
+        >
+          <div
+            class="MuiBox-root css-h1oaii"
+            data-testid="tokens-USDC"
+          >
+            <div
+              class="MuiBox-root css-wioyy2"
+            >
+              <div
+                class="MuiStack-root css-5s31b2-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1c4ud6y-MuiAvatar-root"
+                  >
+                    <p
+                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                    >
+                      U
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="MuiBox-root css-k8f1u5"
+              >
+                <div
+                  class="MuiStack-root css-1g44ov9-MuiStack-root"
+                >
+                  <div
+                    class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                  >
+                    <div
+                      class="MuiAvatar-root MuiAvatar-circular css-1tqea6q-MuiAvatar-root"
+                    >
+                      <img
+                        alt="Ethereum"
+                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        loading="lazy"
+                        src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiStack-root css-1s1i0lq-MuiStack-root"
+      >
+        <div
+          class="MuiStack-root css-16o79sz-MuiStack-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            ETH
+          </p>
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1d0ztq2-MuiSvgIcon-root"
+            data-testid="ArrowForwardIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+          <p
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+          >
+            USDC
+          </p>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-bodyXSmall css-1uzhjcj-MuiTypography-root"
+        >
+          This is a sample transaction description.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
