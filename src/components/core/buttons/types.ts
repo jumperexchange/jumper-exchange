@@ -17,5 +17,3 @@ export enum Size {
   LG = 'lg',
   XL = 'xl',
 }
-
-export type SizeWithoutXS = Exclude<Size, Size.XS>;
