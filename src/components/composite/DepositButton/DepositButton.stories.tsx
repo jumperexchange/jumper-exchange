@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 
 import { DepositButton } from './DepositButton';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { DepositButtonDisplayMode } from './DepositButton.types';
 
 const meta = {
