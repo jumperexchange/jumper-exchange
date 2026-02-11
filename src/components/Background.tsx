@@ -7,6 +7,7 @@ import {
 } from './BackgroundGradient';
 import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
 import { useGetPartnerThemeImage } from 'src/hooks/theme/useGetPartnerThemeImage';
+import { useThemeConditionsMet } from '@/hooks/theme/useThemeConditionsMet';
 
 export interface BackgroundContainerProps {
   variant?: 'outlined';
@@ -21,6 +22,7 @@ const BackgroundContainer = styled('div', {
 
 function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
+  const { shouldShowForTheme } = useThemeConditionsMet();
 
   const backgroundImageUrl = useGetPartnerThemeImage();
 
@@ -35,7 +37,7 @@ function Background() {
         }}
       />
 
-      {configTheme?.hasBackgroundGradient && (
+      {!shouldShowForTheme && (
         <>
           <BackgroundGradientBottomLeft />
           <BackgroundGradientBottomRight />
