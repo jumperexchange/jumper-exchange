@@ -46,11 +46,12 @@ export const ProcessingTransactionCard: FC<ProcessingTransactionCardProps> = ({
   title,
   description,
   targetTime,
+  onClick,
 }) => {
   const statusConfig = getStatusConfig(status);
 
   return (
-    <ProcessingTransactionCardContainer status={status}>
+    <ProcessingTransactionCardContainer status={status} onClick={onClick}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="title2XSmall">{title}</Typography>
         <Stack direction="row" alignItems="center" spacing={0.75}>

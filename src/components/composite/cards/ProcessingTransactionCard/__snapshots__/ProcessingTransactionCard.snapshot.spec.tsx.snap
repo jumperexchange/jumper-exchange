@@ -3,7 +3,7 @@
 exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1su8ios"
+    class="MuiBox-root css-kqapql"
   >
     <div
       class="MuiStack-root css-3y1137-MuiStack-root"
@@ -182,7 +182,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
 exports[`ProcessingTransactionCard snapshot > matches snapshot with count down 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1su8ios"
+    class="MuiBox-root css-kqapql"
   >
     <div
       class="MuiStack-root css-3y1137-MuiStack-root"
@@ -366,7 +366,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with count down 1
 exports[`ProcessingTransactionCard snapshot > matches snapshot with count up 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1su8ios"
+    class="MuiBox-root css-kqapql"
   >
     <div
       class="MuiStack-root css-3y1137-MuiStack-root"
@@ -550,7 +550,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with count up 1`]
 exports[`ProcessingTransactionCard snapshot > matches snapshot with status failed 1`] = `
 <div>
   <div
-    class="MuiBox-root css-6r9kf2"
+    class="MuiBox-root css-qrck6q"
   >
     <div
       class="MuiStack-root css-3y1137-MuiStack-root"
@@ -729,7 +729,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
 exports[`ProcessingTransactionCard snapshot > matches snapshot with status success 1`] = `
 <div>
   <div
-    class="MuiBox-root css-xz9m6"
+    class="MuiBox-root css-5jsazh"
   >
     <div
       class="MuiStack-root css-3y1137-MuiStack-root"
