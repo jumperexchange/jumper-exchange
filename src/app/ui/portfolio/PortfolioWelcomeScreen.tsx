@@ -37,6 +37,7 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
   const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
   const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
   const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
+
   useEffect(() => {
     if (portfolioWelcomeScreenClosed) {
       trackEvent({

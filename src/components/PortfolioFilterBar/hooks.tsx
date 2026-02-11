@@ -1,25 +1,23 @@
-import { usePortfolioTokensFiltering } from 'src/app/ui/portfolio/PortfolioTokensFilteringContext';
-import { usePortfolioDeFiPositionsFiltering } from 'src/app/ui/portfolio/PortfolioDeFiPositionsFilteringContext';
-import { ChainStack } from '../composite/ChainStack/ChainStack';
-import { TokenStack } from '../composite/TokenStack/TokenStack';
-import { toTokenStackTokens } from '../composite/TokenStack/utils';
+'use client';
+
+import { useBalancesFiltering } from '../../providers/PortfolioProvider/filtering/BalancesFilteringContext';
+import { usePositionsFiltering } from '../../providers/PortfolioProvider/filtering/PositionsFilteringContext';
 import { Avatar } from '@mui/material';
-import { getConnectorIcon } from '@lifi/wallet-management';
-import type { SortByEnum } from 'src/app/ui/portfolio/types';
+import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
+import type { SortByEnum } from '../../providers/PortfolioProvider/filtering/types';
 import {
-  type PortfolioTokensFilterUI,
-  type PortfolioDeFiPositionsFilterUI,
+  type BalancesFilterUI,
+  type PositionsFilterUI,
   SortByOptions,
-} from 'src/app/ui/portfolio/types';
+} from '../../providers/PortfolioProvider/filtering/types';
 import { useMemo } from 'react';
-import { ProtocolStack } from '../composite/ProtocolStack/ProtocolStack';
 import { useTranslation } from 'react-i18next';
 import { capitalizeString } from '@/utils/capitalizeString';
 import { useChains } from '@/hooks/useChains';
-import { getChainName } from '@/utils/chains/getChainName';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
+import { EntityStack } from '../composite/EntityStack/EntityStack';
 
-export const usePortfolioTokensFilterBar = () => {
+export const usePortfolioBalancesFilterBar = () => {
   const { t } = useTranslation();
   const {
     isLoading,
@@ -32,38 +30,45 @@ export const usePortfolioTokensFilterBar = () => {
     clearFilters,
     sortBy,
     setSortBy,
-  } = usePortfolioTokensFiltering();
+  } = useBalancesFiltering();
   const { getChainById } = useChains();
+  const { accounts } = useAccount();
 
   const walletOptions = useMemo(
     () =>
       sortSelectOptions(
-        allWallets.map((wallet) => {
-          const connectorIcon = getConnectorIcon(wallet.connector);
+        allWallets.map((walletAddress) => {
+          const account = accounts.find((a) => a.address === walletAddress);
+          const connectorIcon = account?.connector
+            ? getConnectorIcon(account.connector)
+            : undefined;
           return {
-            value: wallet.address,
-            label: wallet.connector?.name || '',
+            value: walletAddress,
+            label: account?.connector?.name || walletAddress.slice(0, 8),
             icon: connectorIcon ? (
               <Avatar
                 src={connectorIcon}
-                alt={wallet.connector?.name || ''}
+                alt={account?.connector?.name || ''}
                 sx={{ width: 24, height: 24 }}
               />
             ) : undefined,
           };
         }),
       ),
-    [allWallets],
+    [allWallets, accounts],
   );
 
   const chainOptions = useMemo(
     () =>
       sortSelectOptions(
-        allChains.map((chain) => ({
-          value: `${chain.chainId}`,
-          label: getChainName(chain, getChainById),
-          icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-        })),
+        allChains.map((chainId) => {
+          const chain = getChainById(chainId);
+          return {
+            value: `${chainId}`,
+            label: chain?.name || `Chain ${chainId}`,
+            icon: chain ? <EntityStack entities={[chain]} /> : null,
+          };
+        }),
       ),
     [allChains, getChainById],
   );
@@ -72,16 +77,15 @@ export const usePortfolioTokensFilterBar = () => {
     () =>
       sortSelectOptions(
         allAssets.map((asset) => ({
-          value: asset.address,
-          label: asset.name,
-          icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
+          value: asset,
+          label: asset,
         })),
       ),
     [allAssets],
   );
 
-  const valueMin = filter?.tokensMinValue ?? allValueRange.min;
-  const valueMax = filter?.tokensMaxValue ?? allValueRange.max;
+  const valueMin = filter?.minValue ?? allValueRange.min;
+  const valueMax = filter?.maxValue ?? allValueRange.max;
 
   const sortByOptions = useMemo(
     () => [
@@ -95,21 +99,21 @@ export const usePortfolioTokensFilterBar = () => {
   const handleWalletChange = (values: string[]) => {
     updateFilter({
       ...filter,
-      tokensWallets: values.length > 0 ? values : null,
+      wallets: values.length > 0 ? values : null,
     });
   };
 
   const handleChainChange = (values: string[]) => {
     updateFilter({
       ...filter,
-      tokensChains: values.length > 0 ? values.map(Number) : null,
+      chains: values.length > 0 ? values.map(Number) : null,
     });
   };
 
   const handleAssetChange = (values: string[]) => {
     updateFilter({
       ...filter,
-      tokensAssets: values.length > 0 ? values : null,
+      assets: values.length > 0 ? values : null,
     });
   };
 
@@ -117,12 +121,12 @@ export const usePortfolioTokensFilterBar = () => {
     const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      tokensMinValue: hasValues ? values[0] : null,
-      tokensMaxValue: hasValues ? values[1] : null,
+      minValue: hasValues ? values[0] : null,
+      maxValue: hasValues ? values[1] : null,
     });
   };
 
-  const handleApplyAllFilters = (values: Partial<PortfolioTokensFilterUI>) => {
+  const handleApplyAllFilters = (values: Partial<BalancesFilterUI>) => {
     updateFilter({ ...values });
   };
 
@@ -142,9 +146,9 @@ export const usePortfolioTokensFilterBar = () => {
   ].reduce((count, length) => count + (length || 0), 0);
 
   const arrayFiltersCount = [
-    filter?.tokensWallets,
-    filter?.tokensChains,
-    filter?.tokensAssets,
+    filter?.wallets,
+    filter?.chains,
+    filter?.assets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
   const hasValueFilterApplied =
@@ -178,7 +182,7 @@ export const usePortfolioTokensFilterBar = () => {
   };
 };
 
-export const usePortfolioDeFiFilterBar = () => {
+export const usePortfolioPositionsFilterBar = () => {
   const { t } = useTranslation();
   const {
     isLoading,
@@ -192,17 +196,20 @@ export const usePortfolioDeFiFilterBar = () => {
     clearFilters,
     sortBy,
     setSortBy,
-  } = usePortfolioDeFiPositionsFiltering();
+  } = usePositionsFiltering();
   const { getChainById } = useChains();
 
   const chainOptions = useMemo(
     () =>
       sortSelectOptions(
-        allChains.map((chain) => ({
-          value: `${chain.chainId}`,
-          label: getChainName(chain, getChainById),
-          icon: <ChainStack chainIds={[chain.chainId.toString()]} />,
-        })),
+        allChains.map((chainId) => {
+          const chain = getChainById(chainId);
+          return {
+            value: `${chainId}`,
+            label: chain?.name || `Chain ${chainId}`,
+            icon: chain ? <EntityStack entities={[chain]} /> : null,
+          };
+        }),
       ),
     [allChains, getChainById],
   );
@@ -211,9 +218,8 @@ export const usePortfolioDeFiFilterBar = () => {
     () =>
       sortSelectOptions(
         allProtocols.map((protocol) => ({
-          value: protocol.name,
-          label: capitalizeString(protocol.name),
-          icon: <ProtocolStack protocols={[protocol]} />,
+          value: protocol,
+          label: capitalizeString(protocol),
         })),
       ),
     [allProtocols],
@@ -234,16 +240,15 @@ export const usePortfolioDeFiFilterBar = () => {
     () =>
       sortSelectOptions(
         allAssets.map((asset) => ({
-          value: asset.name,
-          label: asset.name,
-          icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
+          value: asset,
+          label: asset,
         })),
       ),
     [allAssets],
   );
 
-  const valueMin = filter?.defiMinValue ?? allValueRange.min;
-  const valueMax = filter?.defiMaxValue ?? allValueRange.max;
+  const valueMin = filter?.minValue ?? allValueRange.min;
+  const valueMax = filter?.maxValue ?? allValueRange.max;
 
   const sortByOptions = useMemo(
     () => [
@@ -257,37 +262,35 @@ export const usePortfolioDeFiFilterBar = () => {
   const handleChainChange = (values: string[]) => {
     updateFilter({
       ...filter,
-      defiChains: values.length > 0 ? values.map(Number) : null,
+      chains: values.length > 0 ? values.map(Number) : null,
     });
   };
 
   const handleProtocolChange = (values: string[]) => {
     updateFilter({
       ...filter,
-      defiProtocols: values.length > 0 ? values : null,
+      protocols: values.length > 0 ? values : null,
     });
   };
 
   const handleTypeChange = (values: string[]) => {
-    updateFilter({ ...filter, defiTypes: values.length > 0 ? values : null });
+    updateFilter({ ...filter, types: values.length > 0 ? values : null });
   };
 
   const handleAssetChange = (values: string[]) => {
-    updateFilter({ ...filter, defiAssets: values.length > 0 ? values : null });
+    updateFilter({ ...filter, assets: values.length > 0 ? values : null });
   };
 
   const handleValueChange = (values: number[]) => {
     const hasValues = values.length > 0;
     updateFilter({
       ...filter,
-      defiMinValue: hasValues ? values[0] : null,
-      defiMaxValue: hasValues ? values[1] : null,
+      minValue: hasValues ? values[0] : null,
+      maxValue: hasValues ? values[1] : null,
     });
   };
 
-  const handleApplyAllFilters = (
-    values: Partial<PortfolioDeFiPositionsFilterUI>,
-  ) => {
+  const handleApplyAllFilters = (values: Partial<PositionsFilterUI>) => {
     updateFilter({ ...values });
   };
 
@@ -308,10 +311,10 @@ export const usePortfolioDeFiFilterBar = () => {
   ].reduce((count, length) => count + (length || 0), 0);
 
   const arrayFiltersCount = [
-    filter?.defiChains,
-    filter?.defiProtocols,
-    filter?.defiTypes,
-    filter?.defiAssets,
+    filter?.chains,
+    filter?.protocols,
+    filter?.types,
+    filter?.assets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
   const hasValueFilterApplied =

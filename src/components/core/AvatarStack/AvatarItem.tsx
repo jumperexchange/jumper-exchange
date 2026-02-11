@@ -4,18 +4,24 @@ import {
   AvatarSkeleton,
   AvatarPlaceholder,
 } from './AvatarStack.styles';
-import type { AvatarData, AvatarSize } from './AvatarStack.types';
+import type {
+  AvatarData,
+  AvatarOverlap,
+  AvatarSize,
+} from './AvatarStack.types';
 
 interface AvatarItemProps {
   avatar: AvatarData;
   size?: AvatarSize;
-  disableBorder: boolean;
+  spacing?: number;
+  overlap?: AvatarOverlap;
 }
 
 export const AvatarItem: FC<AvatarItemProps> = ({
   avatar,
   size,
-  disableBorder,
+  spacing,
+  overlap = 'right',
 }) => {
   const [imageStatus, setImageStatus] = useState<
     'loading' | 'loaded' | 'error'
@@ -30,9 +36,10 @@ export const AvatarItem: FC<AvatarItemProps> = ({
   return (
     <Avatar
       size={size}
+      spacing={spacing}
       src={avatar.src}
       alt={avatar.alt}
-      disableBorder={disableBorder}
+      overlap={overlap}
       variant="circular"
       slotProps={{
         img: {

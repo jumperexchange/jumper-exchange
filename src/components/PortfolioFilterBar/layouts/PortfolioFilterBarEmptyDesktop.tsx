@@ -1,6 +1,8 @@
+'use client';
+
 import type { FC } from 'react';
-import { Select } from '../../core/form/Select/Select';
-import { SelectVariant } from '../../core/form/Select/Select.types';
+import { Select } from '@/components/core/form/Select/Select';
+import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
 import { PortfolioFilterBarContentContainer } from '../PortfolioFilterBar.styles';
 import { useTranslation } from 'react-i18next';

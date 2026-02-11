@@ -1,21 +1,22 @@
-import { FC } from 'react';
-import {
+import type { FC } from 'react';
+import { EntityProgress } from './components/EntityProgress';
+import { TextProgress } from './components/TextProgress';
+import type {
   AssetProgressProps,
-  AssetProgressVariant,
-  ProtocolAssetProgressProps,
+  EntityAssetProgressProps,
   TextAssetProgressProps,
-  TokenAssetProgressProps,
-} from './AssetProgress.types';
-import { TextProgress } from './variants/TextProgress';
-import { ProtocolProgress } from './variants/ProtocolProgress';
-import { TokenProgress } from './variants/TokenProgress';
+} from './types';
+import { AssetProgressVariant } from './types';
 
 export const AssetProgress: FC<AssetProgressProps> = ({ variant, ...rest }) => {
-  if (variant === AssetProgressVariant.Token) {
-    return <TokenProgress {...(rest as TokenAssetProgressProps)} />;
+  if (variant === AssetProgressVariant.Entity) {
+    return (
+      <EntityProgress
+        {...(rest as Omit<EntityAssetProgressProps, 'variant'>)}
+      />
+    );
   }
-  if (variant === AssetProgressVariant.Protocol) {
-    return <ProtocolProgress {...(rest as ProtocolAssetProgressProps)} />;
-  }
-  return <TextProgress {...(rest as TextAssetProgressProps)} />;
+  return (
+    <TextProgress {...(rest as Omit<TextAssetProgressProps, 'variant'>)} />
+  );
 };

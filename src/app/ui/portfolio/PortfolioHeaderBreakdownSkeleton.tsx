@@ -3,9 +3,14 @@ import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/Asse
 export const PortfolioHeaderBreakdownSkeleton = () => {
   return (
     <AssetOverviewCard
-      tokens={[]}
-      defiPositionGroups={[]}
-      isLoading={true}
+      summaryData={{
+        totalBalancesUsd: 0,
+        totalPortfolioUsd: 0,
+        totalPositionsUsd: 0,
+        balancesBySymbol: {},
+        positionsByProtocol: {},
+      }}
+      isLoading
       showNoContent={false}
     />
   );

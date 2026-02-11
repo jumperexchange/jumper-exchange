@@ -1,3 +1,5 @@
+'use client';
+
 import type { IconButtonProps } from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Tooltip from '@mui/material/Tooltip';
@@ -7,20 +9,24 @@ import { useTranslation } from 'react-i18next';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { LightIconButton } from './PortfolioPage.styles';
 import Box from '@mui/material/Box';
+import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
 
-const getProgressValue = (updatedAt: number, timeToUpdate: number) =>
+const getProgressValue = (updatedAt: number | null, timeToUpdate: number) =>
   updatedAt
     ? Math.min(100, ((Date.now() - updatedAt) / timeToUpdate) * 100)
     : 0;
 
-const PortfolioRefreshBalance: FC<
-  {
-    updatedAt: number;
-    timeToUpdate: number;
-    isLoading?: boolean;
-  } & IconButtonProps
-> = ({ updatedAt, timeToUpdate, isLoading, onClick, ...other }) => {
+interface PortfolioRefreshBalanceProps extends IconButtonProps {
+  timeToUpdate?: number;
+}
+
+const PortfolioRefreshBalance: FC<PortfolioRefreshBalanceProps> = ({
+  timeToUpdate = 60000,
+  ...other
+}) => {
   const { t } = useTranslation();
+  const portfolioState = usePortfolioState();
+  const { updatedAt, isRefreshing, refresh } = portfolioState;
 
   const iconSize = 24;
 
@@ -41,13 +47,18 @@ const PortfolioRefreshBalance: FC<
   }, [timeToUpdate, updatedAt]);
 
   useEffect(() => {
-    if (isLoading) {
+    if (isRefreshing) {
       setValue(0);
     }
-  }, [isLoading]);
+  }, [isRefreshing]);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    refresh();
+    other.onClick?.(event);
+  };
 
   return (
-    <LightIconButton onClick={onClick} disabled={isLoading} {...other}>
+    <LightIconButton onClick={handleClick} disabled={isRefreshing} {...other}>
       <Tooltip
         title={t('portfolio.overviewCard.refreshTooltip')}
         placement="top"
@@ -67,7 +78,7 @@ const PortfolioRefreshBalance: FC<
             placeItems: 'center',
           }}
         >
-          {isLoading ? (
+          {isRefreshing ? (
             <>
               <CircularProgress
                 variant="determinate"

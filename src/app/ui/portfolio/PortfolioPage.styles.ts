@@ -66,7 +66,8 @@ export const PortfolioWelcomeScreenButton = styled(ButtonPrimary)(
 
 export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
-    height: 312,
+    minHeight: 312,
+    height: '100%',
     padding: theme.spacing(3),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface1.main,

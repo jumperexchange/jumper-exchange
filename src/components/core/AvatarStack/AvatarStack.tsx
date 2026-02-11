@@ -8,8 +8,10 @@ import type {
   AvatarSize,
   AvatarStackDirection,
   AvatarData,
+  AvatarOverlap,
 } from './AvatarStack.types';
 import { AvatarItem } from './AvatarItem';
+import { getOverlapFromDirection } from './utils';
 
 interface AvatarStackProps {
   avatars: AvatarData[];
@@ -40,7 +42,8 @@ export const AvatarStack: FC<AvatarStackProps> = ({
             key={avatar.id}
             avatar={avatar}
             size={size}
-            disableBorder={disableBorder}
+            spacing={spacing}
+            overlap={getOverlapFromDirection(direction, disableBorder)}
           />
         ))}
       </AvatarStackWrapper>

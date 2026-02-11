@@ -1,6 +1,8 @@
+'use client';
+
 import Stack from '@mui/material/Stack';
 import { PortfolioFilterBarContainer } from './PortfolioFilterBar.styles';
-import { BaseSurfaceSkeleton } from '../core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { PortfolioFilterOptionsSkeleton } from './layouts/PortfolioFilterOptionsSkeleton';
 
 export const PortfolioFilterBarSkeleton = () => {

@@ -15,6 +15,8 @@ export type AvatarStackDirection =
   | 'row-reverse'
   | 'column-reverse';
 
+export type AvatarOverlap = 'left' | 'right' | 'top' | 'bottom' | 'none';
+
 export interface AvatarData {
   id: string;
   src?: string;

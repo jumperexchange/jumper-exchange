@@ -1,8 +1,10 @@
+'use client';
+
 import type { PortfolioFilterViewBaseProps } from '../types';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
-import { PortfolioFilterBarTab } from '@/app/ui/portfolio/types';
+import { PortfolioFilterBarTab } from '../../../app/ui/portfolio/PortfolioAssetsSection';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 
