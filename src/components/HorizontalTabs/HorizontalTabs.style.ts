@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 export enum HorizontalTabSize {
+  SM = 'small',
   MD = 'medium',
   LG = 'large',
 }
@@ -88,6 +89,15 @@ export const HorizontalTabContainer = styled(Tab, {
   },
 
   variants: [
+    {
+      props: ({ size }) => size === HorizontalTabSize.SM,
+      style: {
+        height: 32,
+        minHeight: 32,
+        padding: theme.spacing(1),
+        ...theme.typography.bodyXSmallStrong,
+      },
+    },
     {
       props: ({ size }) => size === HorizontalTabSize.MD,
       style: {
