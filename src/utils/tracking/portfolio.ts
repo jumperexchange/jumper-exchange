@@ -1,15 +1,10 @@
-import {
-  calculateTotalPrice,
-  mapPositionGroupsToProtocolData,
-  sortAssetsByPrice,
-} from '@/components/composite/AssetOverviewCard/utils';
-import type { PortfolioToken } from '@/types/tokens';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 import type { ChainId } from '@lifi/widget';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
-import {
-  isChainDefiPosition,
-  type DefiPosition,
-} from '@/utils/positions/type-guards';
+import type { SummaryData } from '@/providers/PortfolioProvider/types';
+import type { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
+import { flatMap } from 'lodash';
+import { isChainPortfolioPosition } from '@/providers/PortfolioProvider/utils';
 
 const FLEXIBLE_STABLE_COINS_REGEX =
   /^.*(USD|EUR|XAU|YEN|IDR|CHF|CAD|CNH|MXN).*$/;
@@ -19,22 +14,21 @@ const FIXED_STABLE_COINS_REGEX =
 
 export const parsePortfolioDataToTrackingData = (
   portfolioTotalBalanceUSD: number,
-  tokens: PortfolioToken[],
+  balances: Record<string, PortfolioBalance<WalletToken>[]>,
   getNativeTokenAddresses: (chainIds: ChainId[]) => string[],
+  toAggregatedAmountUSD: ReturnType<
+    typeof usePortfolioFormatters
+  >['toAggregatedAmountUSD'],
 ) => {
-  const numberOfTokens = tokens.length;
+  const numberOfTokens = Object.entries(balances).length;
 
   const chainIds = new Set<ChainId>();
   const portfolioNativeTokensAddresses = new Set<string>();
-  let nativeTokensBalanceUSD = 0;
-  let stableTokensBalanceUSD = 0;
-  let otherTokensBalanceUSD = 0;
 
-  for (const token of tokens) {
-    chainIds.add(token.chain.chainId);
-    for (const relatedToken of token.relatedTokens ?? []) {
-      chainIds.add(relatedToken.chain.chainId);
-    }
+  const balancesFlat = flatMap(balances);
+
+  for (const balance of balancesFlat) {
+    chainIds.add(balance.token.chainId);
   }
 
   const nativeTokenAddresses = getNativeTokenAddresses(Array.from(chainIds));
@@ -42,20 +36,26 @@ export const parsePortfolioDataToTrackingData = (
     portfolioNativeTokensAddresses.add(addr),
   );
 
-  for (const token of tokens) {
-    const balance = token.totalPriceUSD ?? 0;
+  const nativeBalances = [];
+  const stableBalances = [];
+  const otherBalances = [];
 
-    if (portfolioNativeTokensAddresses.has(token.address ?? '')) {
-      nativeTokensBalanceUSD += balance;
+  for (const balance of balancesFlat) {
+    if (portfolioNativeTokensAddresses.has(balance.token.address)) {
+      nativeBalances.push(balance);
     } else if (
-      FIXED_STABLE_COINS_REGEX.test(token.symbol) ||
-      FLEXIBLE_STABLE_COINS_REGEX.test(token.symbol)
+      FIXED_STABLE_COINS_REGEX.test(balance.token.symbol) ||
+      FLEXIBLE_STABLE_COINS_REGEX.test(balance.token.symbol)
     ) {
-      stableTokensBalanceUSD += balance;
+      stableBalances.push(balance);
     } else {
-      otherTokensBalanceUSD += balance;
+      otherBalances.push(balance);
     }
   }
+
+  const nativeTokensBalanceUSD = toAggregatedAmountUSD(nativeBalances);
+  const stableTokensBalanceUSD = toAggregatedAmountUSD(stableBalances);
+  const otherTokensBalanceUSD = toAggregatedAmountUSD(otherBalances);
 
   return {
     [TrackingEventParameter.PortfolioTotalBalanceUSD]:
@@ -73,58 +73,52 @@ export const parsePortfolioDataToTrackingData = (
 
 export const parseEarnPortfolioDataToTrackingData = (
   addresses: string[],
-  tokens: PortfolioToken[],
-  defiPositionGroups: DefiPosition[][],
+  summary: SummaryData,
 ) => {
-  const protocolGroups = mapPositionGroupsToProtocolData(defiPositionGroups);
-  const sortedProtocolGroups = sortAssetsByPrice(protocolGroups);
-  const sortedTokens = sortAssetsByPrice(tokens);
+  const balancesSummaries = flatMap(summary.balancesBySymbol);
+  const balances = flatMap(
+    balancesSummaries,
+    (balancesSummary) => balancesSummary.balances,
+  );
 
-  const top3ProtocolGroups = sortedProtocolGroups.slice(0, 3);
-  const top3Tokens = sortedTokens.slice(0, 3);
+  const protocolSummaries = flatMap(summary.positionsByProtocol);
+  const positions = flatMap(
+    protocolSummaries,
+    (protocolSummary) => protocolSummary.positions,
+  );
 
-  const tokensOverallPriceInUSD = calculateTotalPrice(tokens);
-  const positionsOverallPriceInUSD = calculateTotalPrice(protocolGroups);
-
-  const totalBalanceUSD = tokensOverallPriceInUSD + positionsOverallPriceInUSD;
-
+  const top3ProtocolGroups = protocolSummaries.slice(0, 3);
+  const top3Tokens = balancesSummaries.slice(0, 3);
   const chainIds = new Set<ChainId>();
 
-  for (const token of tokens) {
-    chainIds.add(token.chain.chainId);
-    for (const relatedToken of token.relatedTokens ?? []) {
-      chainIds.add(relatedToken.chain.chainId);
+  for (const balance of balances) {
+    chainIds.add(balance.token.chainId);
+  }
+  for (const position of positions) {
+    if (isChainPortfolioPosition(position)) {
+      chainIds.add(position.chain.chainId);
     }
   }
-
-  for (const positionGroup of defiPositionGroups) {
-    for (const position of positionGroup) {
-      if (isChainDefiPosition(position)) {
-        chainIds.add(position.chain.chainId);
-      }
-    }
-  }
-
   return {
     [TrackingEventParameter.PortfolioTotalBalanceUSD]:
-      totalBalanceUSD.toFixed(2),
+      summary.totalPortfolioUsd.toFixed(2),
     [TrackingEventParameter.PortfolioTokenAmountUSD]:
-      tokensOverallPriceInUSD.toFixed(2),
+      summary.totalBalancesUsd.toFixed(2),
     [TrackingEventParameter.PortfolioPositionsAmountUSD]:
-      positionsOverallPriceInUSD.toFixed(2),
+      summary.totalPositionsUsd.toFixed(2),
     [TrackingEventParameter.PortfolioNumberOfChains]: chainIds.size,
     [TrackingEventParameter.PortfolioTop3Tokens]: JSON.stringify(
       top3Tokens.map((token) => ({
-        [TrackingEventParameter.TokenName]: token.symbol,
-        [TrackingEventParameter.TokenTotalPriceUSD]:
-          token.totalPriceUSD.toFixed(2),
+        [TrackingEventParameter.TokenName]: token.balances[0]?.token.symbol,
+        [TrackingEventParameter.TokenTotalPriceUSD]: token.totalUsd.toFixed(2),
       })),
     ),
     [TrackingEventParameter.PortfolioTop3Protocols]: JSON.stringify(
       top3ProtocolGroups.map((group) => ({
-        [TrackingEventParameter.ProtocolName]: group.protocol.name,
+        [TrackingEventParameter.ProtocolName]:
+          group.positions[0]?.protocol.name,
         [TrackingEventParameter.ProtocolTotalPriceUSD]:
-          group.totalPriceUSD.toFixed(2),
+          group.totalUsd.toFixed(2),
       })),
     ),
     [TrackingEventParameter.WalletAddresses]: addresses.join(','),
