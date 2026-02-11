@@ -29,22 +29,27 @@ export function Timer({ target }: TimerProps) {
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  if (seconds === 0 && intervalRef.current) {
-    clearInterval(intervalRef.current);
-  }
-
   useEffect(() => {
     const targetDate = new Date(target);
 
-    intervalRef.current = setInterval(() => {
+    const tick = () => {
       const diff = differenceInSeconds(targetDate, new Date());
       const next = Math.min(Math.abs(diff), MAX_SECONDS);
+
       setSeconds(next);
-    }, 1000);
+
+      if (next === 0 || next === MAX_SECONDS) {
+        clearInterval(intervalRef.current!);
+        intervalRef.current = null;
+      }
+    };
+
+    intervalRef.current = setInterval(tick, 1000);
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
   }, [target]);
