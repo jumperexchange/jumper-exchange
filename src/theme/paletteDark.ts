@@ -57,8 +57,8 @@ export const createPaletteDark = (
 
   textTertiary: baseColors.alphaLight400.main,
 
-  textAccent1: brandColors.dark.accent1,
-  textAccent2: brandColors.dark.accent2,
+  textAccent1: brandColors.dark.accent2,
+  textAccent2: brandColors.dark.accent1,
 
   textHint: baseColors.alphaLight600.main,
 

@@ -243,10 +243,10 @@ export const defaultBrandColors: BrandColors = {
 
     // Surface Accent
     surfaceAccent1: baseColors.rubyLight[0],
-    surfaceAccent1Bg: '#341e52',
+    surfaceAccent1Bg: baseColors.rubyDark[0],
     surfaceAccent1Fg: baseColors.rubyLight[0],
     surfaceAccent2: baseColors.rubyLight[100],
-    surfaceAccent2Bg: baseColors.rubyLight[100],
+    surfaceAccent2Bg: baseColors.rubyLight[400],
     surfaceAccent2Fg: baseColors.rubyLight[100],
 
     // Background
