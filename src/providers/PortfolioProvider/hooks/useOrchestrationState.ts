@@ -16,16 +16,34 @@ export const useOrchestrationState = (
       isLoading: balances.isLoading,
       isRefreshing: balances.isFetching && !balances.isEmpty,
       isStale: balances.isPlaceholderData,
+      isSuccess: balances.isSuccess,
       updatedAt: balances.updatedAt,
     }),
     [
       balances.isEmpty,
       balances.isLoading,
       balances.isFetching,
+      balances.isSuccess,
       balances.isPlaceholderData,
       balances.updatedAt,
     ],
   );
+
+  const balancesByAddressSource: Record<string, SourceState> = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(balances.stateByAddress).map(([address, state]) => [
+        address,
+        {
+          isEmpty: balances.isEmpty,
+          isLoading: state.isLoading,
+          isRefreshing: state.isFetching && !balances.isEmpty,
+          isStale: state.isPlaceholderData,
+          isSuccess: state.isSuccess,
+          updatedAt: state.updatedAt,
+        },
+      ]),
+    );
+  }, [balances.isEmpty, balances.stateByAddress]);
 
   const positionsSource: SourceState = useMemo(
     () => ({
@@ -33,12 +51,14 @@ export const useOrchestrationState = (
       isLoading: positions.isLoading,
       isRefreshing: positions.isFetching && !positions.isEmpty,
       isStale: positions.isPlaceholderData,
+      isSuccess: positions.isSuccess,
       updatedAt: positions.updatedAt,
     }),
     [
       positions.isEmpty,
       positions.isLoading,
       positions.isFetching,
+      positions.isSuccess,
       positions.isPlaceholderData,
       positions.updatedAt,
     ],
@@ -50,6 +70,7 @@ export const useOrchestrationState = (
       isLoading: pricesData.isLoading,
       isRefreshing: false, // Prices don't have background refresh pattern
       isStale: !pricesData.hasFreshPrices,
+      isSuccess: pricesData.hasFreshPrices && !pricesData.isLoading,
       updatedAt: pricesData.updatedAt ?? null,
     }),
     [pricesData.hasFreshPrices, pricesData.isLoading, pricesData.updatedAt],
@@ -69,6 +90,11 @@ export const useOrchestrationState = (
   const isStale =
     balancesSource.isStale || positionsSource.isStale || pricesSource.isStale;
 
+  const isSuccess =
+    balancesSource.isSuccess ||
+    positionsSource.isSuccess ||
+    pricesSource.isSuccess;
+
   const updatedAt = useMemo(() => {
     const timestamps = [
       balances.updatedAt,
@@ -86,32 +112,45 @@ export const useOrchestrationState = (
     positions.refetch();
   }, [balances.refetch, positions.refetch]);
 
+  const refreshByAddress = useCallback(
+    (address: string) => {
+      balances.refetchForAddress(address);
+    },
+    [balances.refetchForAddress],
+  );
+
   return useMemo(
     () => ({
       isEmpty,
       isInitialLoading,
       isRefreshing,
       isStale,
+      isSuccess,
       updatedAt,
       error,
       sources: {
         balances: balancesSource,
+        balancesByAddress: balancesByAddressSource,
         positions: positionsSource,
         prices: pricesSource,
       },
       refresh,
+      refreshByAddress,
     }),
     [
       isEmpty,
       isInitialLoading,
       isRefreshing,
       isStale,
+      isSuccess,
       updatedAt,
       error,
       balancesSource,
+      balancesByAddressSource,
       positionsSource,
       pricesSource,
       refresh,
+      refreshByAddress,
     ],
   );
 };

@@ -1,10 +1,11 @@
-import type { PortfolioToken } from 'src/types/tokens';
+import type { PortfolioBalance, WalletToken } from 'src/types/tokens';
 
 export interface WalletBalanceCardProps {
   walletAddress: string;
   refetch: () => void;
   isFetching: boolean;
   isSuccess: boolean;
-  data: PortfolioToken[];
+  updatedAt: number;
+  data: Record<string, PortfolioBalance<WalletToken>[]>;
   ['data-testid']?: string;
 }

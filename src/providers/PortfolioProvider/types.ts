@@ -3,7 +3,7 @@ import type {
   PositionToken,
   WalletToken,
 } from '@/types/tokens';
-import type { App, Chain } from '@/types/jumper-backend';
+import type { App, Chain, Protocol } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 
 /**
@@ -67,15 +67,15 @@ export interface SummaryData {
 export interface BalancesMetadata {
   wallets: string[];
   chains: number[];
-  assets: string[];
+  assets: WalletToken[];
   valueRange: { min: number; max: number };
 }
 
 export interface PositionsMetadata {
   chains: number[];
-  protocols: string[];
+  protocols: Protocol[];
   types: string[];
-  assets: string[];
+  assets: PositionToken[];
   valueRange: { min: number; max: number };
 }
 
@@ -87,6 +87,7 @@ export interface SourceState {
   isLoading: boolean;
   isRefreshing: boolean;
   isStale: boolean;
+  isSuccess: boolean;
   updatedAt: number | null;
 }
 
@@ -103,6 +104,8 @@ export interface OrchestrationState {
   isRefreshing: boolean;
   /** Showing cached/placeholder data */
   isStale: boolean;
+  /** Query has been executed successfully */
+  isSuccess: boolean;
   /** Oldest timestamp across sources */
   updatedAt: number | null;
   /** First error encountered from any source */
@@ -110,9 +113,13 @@ export interface OrchestrationState {
   /** Granular per-source states */
   sources: {
     balances: SourceState;
+    balancesByAddress: Record<string, SourceState>;
     positions: SourceState;
     prices: SourceState;
   };
   /** Refresh all data sources */
   refresh: () => void;
+
+  /** Refresh data source by address */
+  refreshByAddress: (address: string) => void;
 }
