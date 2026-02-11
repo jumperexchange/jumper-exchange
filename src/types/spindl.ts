@@ -75,11 +75,6 @@ export interface SpindlFetchData {
   debug: DebugInfo;
 }
 
-interface Advertiser {
-  name: string;
-  imageUrl: string;
-}
-
 export interface SpindlInfos {
   impressionId: string;
   advertiserId: string;
