@@ -83,8 +83,8 @@ export const isWithinValueRange = (
   minValue?: number,
   maxValue?: number,
 ): boolean => {
-  const meetsMin = minValue === undefined || value >= minValue;
-  const meetsMax = maxValue === undefined || value <= maxValue;
+  const meetsMin = minValue === undefined || value >= sanitizeValue(minValue);
+  const meetsMax = maxValue === undefined || value <= sanitizeValue(maxValue);
   return meetsMin && meetsMax;
 };
 
