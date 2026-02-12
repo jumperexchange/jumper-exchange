@@ -66,6 +66,8 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
           await switchChainAsync({ chainId: action.tx.chainId });
         }
 
+        setIsExecuting(true);
+
         setCurrentStep(
           action.name.toLowerCase().includes('approve')
             ? 'approving'
@@ -88,17 +90,19 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
   );
 
   useEffect(() => {
-    if ((isWriteError || isTxError) && isExecuting) {
-      const e = txError || writeError;
-      if (!e) {
-        return;
-      }
-
-      options.onError?.(e, 'transaction');
-      setIsExecuting(false);
-      setError(e);
-      resetWrite();
+    if (!isWriteError && !isTxError) {
+      return;
     }
+
+    const e = txError || writeError;
+    if (!e) {
+      return;
+    }
+
+    options.onError?.(e, 'transaction');
+    setIsExecuting(false);
+    setError(e);
+    resetWrite();
   }, [
     isWriteError,
     isTxError,
@@ -125,7 +129,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       setCurrentActionIndex(0);
       setCurrentStep('success');
       setCallData(null);
-      resetWrite();
       options.onSuccess?.();
     }
   }, [
@@ -147,7 +150,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       }
 
       setCallData(data);
-      setIsExecuting(true);
       setCurrentActionIndex(0);
       setError(null);
       await executeAction(data.actions[0]);

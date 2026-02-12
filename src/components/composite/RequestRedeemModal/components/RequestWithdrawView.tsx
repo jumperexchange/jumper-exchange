@@ -5,6 +5,9 @@ import { useMemo } from 'react';
 import {
   RequestRedeemModalContentContainer,
   RequestRedeemModalFieldsContainer,
+  RequestRedeemModalFormContainer,
+  RequestRedeemModalHeaderContainer,
+  RequestRedeemModalWrapperContainer,
 } from '../RequestRedeemModal.styles';
 import Typography from '@mui/material/Typography';
 import { ProcessingTransactionCard } from '../../cards/ProcessingTransactionCard/ProcessingTransactionCard';
@@ -25,6 +28,8 @@ import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useChains } from '@/hooks/useChains';
 import type { useRedeemTransactionForm } from '../hooks/useRedeemTransactionForm';
+import { useTranslation } from 'react-i18next';
+import Box from '@mui/material/Box';
 
 interface RequestWithdrawViewProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -39,6 +44,7 @@ export const RequestWithdrawView: FC<RequestWithdrawViewProps> = ({
   onClaimClick,
   formState,
 }) => {
+  const { t } = useTranslation();
   const accountAddress = useAccountAddress();
   const { toDisplayAmount } = useTokenFormatters();
   const { toRawAmount } = useTokenAmountInput();
@@ -97,71 +103,76 @@ export const RequestWithdrawView: FC<RequestWithdrawViewProps> = ({
     depositTokenBalance.amount > maxDepositTokenBalance.amount;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <RequestRedeemModalContentContainer>
-        <Typography variant="titleSmall">Request withdraw</Typography>
+    <RequestRedeemModalFormContainer as="form" onSubmit={handleSubmit}>
+      <RequestRedeemModalWrapperContainer>
+        <RequestRedeemModalHeaderContainer>
+          <Typography variant="titleSmall">
+            {t('earn.requestRedeemFlow.title.request')}
+          </Typography>
+        </RequestRedeemModalHeaderContainer>
+        <RequestRedeemModalContentContainer>
+          {claims.map((formattedClaim) => (
+            <ProcessingTransactionCard
+              key={formattedClaim.id}
+              status={formattedClaim.status as ProcessingTransactionCardStatus}
+              fromToken={depositTokenBalance.token}
+              toToken={withdrawToken}
+              title={formattedClaim.title}
+              description={formattedClaim.description}
+              onClick={
+                formattedClaim.status === 'success'
+                  ? () => onClaimClick(formattedClaim.id)
+                  : undefined
+              }
+            />
+          ))}
 
-        {claims.map((formattedClaim) => (
-          <ProcessingTransactionCard
-            key={formattedClaim.id}
-            status={formattedClaim.status as ProcessingTransactionCardStatus}
-            fromToken={depositTokenBalance.token}
-            toToken={withdrawToken}
-            title={formattedClaim.title}
-            description={formattedClaim.description}
-            onClick={
-              formattedClaim.status === 'success'
-                ? () => onClaimClick(formattedClaim.id)
-                : undefined
-            }
-          />
-        ))}
+          <RequestRedeemModalFieldsContainer>
+            <TokenAmountInput
+              mode={SelectCardMode.Input}
+              tokenBalance={depositTokenBalance}
+              enableSwapButton
+              label={t('form.labels.amount')}
+              onAmountChange={handleFormattedAmountChange}
+              hintEndAdornment={`/ ${toDisplayAmount(maxDepositTokenBalance, undefined, { maximumFractionDigits: 6 })}`}
+              endAdornment={
+                <TokenAmountInputPercentages
+                  maxAmount={maxDepositTokenBalance.amount}
+                  onAmountChange={handleAmountChange}
+                />
+              }
+              sx={(theme) => ({
+                background: (theme.vars || theme).palette.surface1.main,
+                '& .MuiFormLabel-root': {
+                  ...theme.typography.bodySmallStrong,
+                },
+              })}
+            />
+            <SelectCard
+              mode={SelectCardMode.Display}
+              label={t('form.labels.withdrawTo')}
+              value={withdrawToken.symbol}
+              placeholder={withdrawToken.symbol}
+              description={withdrawTokenChain?.name}
+              isClickable={false}
+              startAdornment={<TokenAmountInputAvatar token={withdrawToken} />}
+              sx={(theme) => ({
+                background: (theme.vars || theme).palette.surface1.main,
+              })}
+            />
+          </RequestRedeemModalFieldsContainer>
 
-        <RequestRedeemModalFieldsContainer>
-          <TokenAmountInput
-            mode={SelectCardMode.Input}
-            tokenBalance={depositTokenBalance}
-            enableSwapButton
-            label="Send"
-            onAmountChange={handleFormattedAmountChange}
-            hintEndAdornment={`/ ${toDisplayAmount(maxDepositTokenBalance, undefined, { maximumFractionDigits: 6 })}`}
-            endAdornment={
-              <TokenAmountInputPercentages
-                maxAmount={maxDepositTokenBalance.amount}
-                onAmountChange={handleAmountChange}
-              />
-            }
-            sx={(theme) => ({
-              background: (theme.vars || theme).palette.surface1.main,
-              '& .MuiFormLabel-root': {
-                ...theme.typography.bodySmallStrong,
-              },
-            })}
-          />
-          <SelectCard
-            mode={SelectCardMode.Display}
-            label="Withdraw to"
-            value={withdrawToken.symbol}
-            placeholder={withdrawToken.symbol}
-            description={withdrawTokenChain?.name}
-            isClickable={false}
-            startAdornment={<TokenAmountInputAvatar token={withdrawToken} />}
-            sx={(theme) => ({
-              background: (theme.vars || theme).palette.surface1.main,
-            })}
-          />
-        </RequestRedeemModalFieldsContainer>
-
-        <Button
-          variant={Variant.Primary}
-          fullWidth
-          type="submit"
-          disabled={isSubmitDisabled}
-          loading={isSubmitting}
-        >
-          Request withdraw
-        </Button>
-      </RequestRedeemModalContentContainer>
-    </form>
+          <Button
+            variant={Variant.Primary}
+            fullWidth
+            type="submit"
+            disabled={isSubmitDisabled}
+            loading={isSubmitting}
+          >
+            {t('buttons.requestWithdraw')}
+          </Button>
+        </RequestRedeemModalContentContainer>
+      </RequestRedeemModalWrapperContainer>
+    </RequestRedeemModalFormContainer>
   );
 };

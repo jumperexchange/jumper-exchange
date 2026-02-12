@@ -45,6 +45,8 @@ interface Resources {
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
       requestRedeemButtonLabel: 'Request redeem';
+      requestWithdraw: 'Request withdraw';
+      withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
@@ -180,6 +182,20 @@ interface Resources {
             tryAgain: 'Try again';
           };
         };
+        requests: {
+          approved: {
+            description: 'Click to complete your withdrawal';
+            title: 'Accepted request';
+          };
+          failed: {
+            description: 'Request failed';
+            title: 'Failed request';
+          };
+          pending: {
+            description: 'Waiting for request to be approved';
+            title: 'Pending request';
+          };
+        };
         success: {
           claim: {
             done: 'Done';
@@ -191,6 +207,10 @@ interface Resources {
             seeDetails: 'See details';
             title: 'Withdraw request sent';
           };
+        };
+        title: {
+          claim: 'Withdraw position';
+          request: 'Request withdraw';
         };
       };
       riskDescriptions: {
@@ -237,6 +257,15 @@ interface Resources {
     };
     featureCard: {
       learnMore: 'Learn more';
+    };
+    form: {
+      labels: {
+        amount: 'Amount';
+        received: 'Received';
+        requested: 'Requested';
+        swap: 'Swap';
+        withdrawTo: 'Withdraw to';
+      };
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';

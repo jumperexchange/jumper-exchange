@@ -148,7 +148,6 @@ export const useRedeemTransactionForm = ({
       onSuccess?.();
     },
     onError: (error, step) => {
-      console.error('Transaction flow error:', error, step);
       const errorType = detectErrorType(error, step);
       dispatch({ type: 'SHOW_ERROR', payload: errorType });
       dispatch({ type: 'SET_STEP', payload: 'idle' });
@@ -227,7 +226,7 @@ export const useRedeemTransactionForm = ({
   }, []);
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
+    (event: React.SubmitEvent) => {
       event.preventDefault();
       if (!accountAddress || state.currentStep !== 'idle') {
         return;

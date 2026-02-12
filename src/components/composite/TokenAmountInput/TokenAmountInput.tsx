@@ -58,7 +58,6 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const token = tokenBalance.token;
   const isInputMode = mode === SelectCardMode.Input;
   const isEditingRef = useRef(false);
-  const isInitRef = useRef(false);
 
   const [primaryDisplay, setPrimaryDisplay] =
     useState<PositionPrimaryDisplay>(primaryDisplayProp);
@@ -71,16 +70,10 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const handleInitialAmount = useCallback(() => {
     const nextValue = toAmount(tokenBalance.amount, token.decimals);
     setValue(nextValue);
-    const nextPriceValue = toPrice(nextValue, token.priceUSD).toString();
-    setFormattedPriceInput(nextPriceValue);
-  }, [tokenBalance.amount, token.decimals, token.priceUSD, toAmount, toPrice]);
+  }, [tokenBalance.amount, token.decimals, toAmount]);
 
   useLayoutEffect(() => {
-    if (isInitRef.current) {
-      return;
-    }
     handleInitialAmount();
-    isInitRef.current = true;
   }, [handleInitialAmount]);
 
   // Display logic

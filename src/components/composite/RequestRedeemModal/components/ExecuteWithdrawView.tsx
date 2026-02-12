@@ -15,8 +15,16 @@ import { Size } from '@/components/core/buttons/types';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Button } from '@/components/core/buttons/Button/Button';
 import Stack from '@mui/material/Stack';
-import { RequestRedeemModalFieldsContainer } from '../RequestRedeemModal.styles';
+import {
+  RequestRedeemModalContentContainer,
+  RequestRedeemModalFieldsContainer,
+  RequestRedeemModalFormContainer,
+  RequestRedeemModalHeaderContainer,
+  RequestRedeemModalWrapperContainer,
+} from '../RequestRedeemModal.styles';
 import type { useRedeemTransactionForm } from '../hooks/useRedeemTransactionForm';
+import { useTranslation } from 'react-i18next';
+import { claimTokenAmountStyle } from '../constants';
 
 interface ExecuteWithdrawViewProps {
   claim: ReturnType<typeof useFormatRedeemClaimData>[number];
@@ -31,6 +39,7 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
   onBack,
   formState,
 }) => {
+  const { t } = useTranslation();
   const { getChainById } = useChains();
 
   const { token: extendedFromToken } = useToken(
@@ -74,7 +83,7 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
   }, [earnOpportunity.asset, claim.assetAmount, extendedToToken?.priceUSD]);
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.SubmitEvent) => {
       event.preventDefault();
       formState.handleSubmit(event);
     },
@@ -82,68 +91,68 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
   );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <RequestRedeemModalFieldsContainer>
-        <Box
-          sx={{
-            position: 'relative',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <IconButton
-            variant={Variant.Borderless}
-            size={Size.SM}
-            onClick={onBack}
-            sx={{ position: 'absolute', left: 0 }}
+    <RequestRedeemModalFormContainer as="form" onSubmit={handleSubmit}>
+      <RequestRedeemModalWrapperContainer>
+        <RequestRedeemModalHeaderContainer>
+          <Box
+            sx={{
+              position: 'relative',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="titleXSmall" sx={{ textAlign: 'center' }}>
-            Withdraw request
-          </Typography>
-        </Box>
-        <Stack
-          spacing={2}
-          sx={(theme) => ({
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
-            boxShadow: theme.shadows[2],
-            borderRadius: `${theme.shape.cardBorderRadiusMedium}px`,
-            padding: theme.spacing(2),
-          })}
-        >
-          <Typography variant="title2XSmall">Swap</Typography>
-          <TokenAmountInput
-            mode={SelectCardMode.Display}
-            tokenBalance={fromTokenBalance}
-            sx={{
-              background: 'transparent',
-              boxShadow: 'none',
-              padding: 0,
-            }}
-          />
-          <TokenAmountInput
-            mode={SelectCardMode.Display}
-            tokenBalance={toTokenBalance}
-            sx={{
-              background: 'transparent',
-              boxShadow: 'none',
-              padding: 0,
-            }}
-          />
-        </Stack>
-        <Button
-          type="submit"
-          variant={Variant.Primary}
-          fullWidth
-          loading={formState.isSubmitting}
-          disabled={formState.isSubmitting}
-        >
-          Withdraw
-        </Button>
-      </RequestRedeemModalFieldsContainer>
-    </form>
+            <IconButton
+              variant={Variant.Borderless}
+              size={Size.SM}
+              onClick={onBack}
+              sx={{ position: 'absolute', left: 0 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="titleXSmall" sx={{ textAlign: 'center' }}>
+              {t('earn.requestRedeemFlow.title.claim')}
+            </Typography>
+          </Box>
+        </RequestRedeemModalHeaderContainer>
+        <RequestRedeemModalContentContainer>
+          <RequestRedeemModalFieldsContainer>
+            <Stack
+              spacing={2}
+              sx={(theme) => ({
+                backgroundColor: (theme.vars || theme).palette.surface1.main,
+                boxShadow: theme.shadows[2],
+                borderRadius: `${theme.shape.cardBorderRadiusMedium}px`,
+                padding: theme.spacing(2),
+              })}
+            >
+              <Typography variant="title2XSmall">
+                {t('form.labels.swap')}
+              </Typography>
+              <TokenAmountInput
+                mode={SelectCardMode.Display}
+                tokenBalance={fromTokenBalance}
+                sx={claimTokenAmountStyle}
+              />
+              <TokenAmountInput
+                mode={SelectCardMode.Display}
+                tokenBalance={toTokenBalance}
+                sx={claimTokenAmountStyle}
+              />
+            </Stack>
+            <Button
+              type="submit"
+              variant={Variant.Primary}
+              fullWidth
+              loading={formState.isSubmitting}
+              disabled={formState.isSubmitting}
+            >
+              {t('buttons.withdraw')}
+            </Button>
+          </RequestRedeemModalFieldsContainer>
+        </RequestRedeemModalContentContainer>
+      </RequestRedeemModalWrapperContainer>
+    </RequestRedeemModalFormContainer>
   );
 };

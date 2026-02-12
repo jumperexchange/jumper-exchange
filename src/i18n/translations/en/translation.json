@@ -447,6 +447,10 @@
       }
     },
     "requestRedeemFlow": {
+      "title": {
+        "request": "Request withdraw",
+        "claim": "Withdraw position"
+      },
       "confirmation": {
         "title": "Confirm Request",
         "description": "Please confirm that you want to request a withdrawal. This action will initiate the redemption process.",
@@ -495,6 +499,20 @@
           "title": "Withdraw complete",
           "done": "Done",
           "seeDetails": "See details"
+        }
+      },
+      "requests": {
+        "pending": {
+          "title": "Pending request",
+          "description": "Waiting for request to be approved"
+        },
+        "approved": {
+          "title": "Accepted request",
+          "description": "Click to complete your withdrawal"
+        },
+        "failed": {
+          "title": "Failed request",
+          "description": "Request failed"
         }
       }
     }
@@ -666,7 +684,18 @@
     "withdrawButtonLabel": "Withdraw",
     "managePositionsButtonLabel": "Manage positions",
     "deposit": "Deposit",
-    "depositNow": "Deposit now"
+    "depositNow": "Deposit now",
+    "requestWithdraw": "Request withdraw",
+    "withdraw": "Withdraw"
+  },
+  "form": {
+    "labels": {
+      "amount": "Amount",
+      "withdrawTo": "Withdraw to",
+      "swap": "Swap",
+      "requested": "Requested",
+      "received": "Received"
+    }
   },
   "modal": {
     "perks": {
