@@ -1,9 +1,11 @@
 import type { RedeemableClaimData } from '@/hooks/earn/useRedeemableClaims';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const useFormatRedeemClaimData = (
   claimData: RedeemableClaimData | undefined,
 ) => {
+  const { t } = useTranslation();
   return useMemo(
     () =>
       claimData?.claimData?.map((claim) => {
@@ -18,20 +20,20 @@ export const useFormatRedeemClaimData = (
           timestamp: claim.timestamp,
           title:
             claim.status === 'pending'
-              ? 'Pending request'
+              ? t('earn.requestRedeemFlow.requests.pending.title')
               : claim.status === 'approved'
-                ? 'Accepted request'
-                : 'Failed request',
+                ? t('earn.requestRedeemFlow.requests.approved.title')
+                : t('earn.requestRedeemFlow.requests.failed.title'),
           description:
             claim.status === 'pending'
-              ? 'Waiting for request to be approved'
+              ? t('earn.requestRedeemFlow.requests.pending.description')
               : claim.status === 'approved'
-                ? 'Click to complete your withdrawal'
-                : 'Request failed',
+                ? t('earn.requestRedeemFlow.requests.approved.description')
+                : t('earn.requestRedeemFlow.requests.failed.description'),
           assetAmount: claim.assetAmount,
           lpTokenAmount: claim.lpTokenAmount,
         };
       }) ?? [],
-    [claimData],
+    [claimData, t],
   );
 };

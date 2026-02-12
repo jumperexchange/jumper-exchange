@@ -24,6 +24,7 @@ import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles'
 import { createExtendedToken, createTokenBalance } from '@/types/tokens';
 import { useToken } from '@/hooks/useToken';
 import type { Address } from 'viem';
+import { useTranslation } from 'react-i18next';
 
 interface RequestRedeemModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -36,6 +37,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   earnOpportunity,
   refetchCallback,
 }) => {
+  const { t } = useTranslation();
   const [currentView, setCurrentView] =
     useState<RequestRedeemModalView>('requestWithdraw');
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
@@ -158,13 +160,16 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         id={MODAL_CONTAINER_ID}
         sx={(theme) => ({
           maxHeight: 'calc(100vh - 6rem)',
-          minWidth: '100%',
+          width: 'calc(100vw - 2rem)',
           maxWidth: 400,
           position: 'relative',
           overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'column',
           borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
+          padding: 0,
           [theme.breakpoints.up('sm')]: {
-            minWidth: 400,
+            width: 400,
           },
         })}
       >
@@ -172,6 +177,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
           isOpen={isAnySheetOpen}
           offsetHeight={BOTTOM_SHEET_TOP_OFFSET}
           animationDuration={ANIMATION_DURATION_SECONDS}
+          defaultHeight="100%"
         >
           {({ onHeightChange, motionProps }) => (
             <motion.div {...motionProps}>
@@ -234,11 +240,9 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
               >
                 {successSheetTokenBalance && (
                   <TokenAmountInput
-                    label={
-                      currentView === 'requestWithdraw'
-                        ? 'Requested'
-                        : 'Withdrawn'
-                    }
+                    label={t(
+                      `form.labels.${currentView === 'requestWithdraw' ? 'requested' : 'received'}`,
+                    )}
                     tokenBalance={successSheetTokenBalance}
                     mode={SelectCardMode.Display}
                     sx={(theme) => ({
