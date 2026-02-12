@@ -7,11 +7,24 @@ import { PortfolioEmptyList } from './PortfolioEmptyList';
 import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
 import { AnimatePresence } from 'motion/react';
 import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
+import { useMemo } from 'react';
+import { hasPositionDataToDisplay } from '@/components/composite/PositionCard/utils';
+import { mapValues, pickBy } from 'lodash';
 
 export const PortfolioPositionsList = () => {
   const { data, isEmpty, isLoading, clearFilters } = usePositionsFiltering();
 
-  const positionGroups = Object.entries(data);
+  // @NOTE: maybe this needs to be in the portfolio provider
+  const positionGroups = useMemo(() => {
+    const filtered = pickBy(
+      mapValues(data, (positions) =>
+        positions.filter(hasPositionDataToDisplay),
+      ),
+      (positions) => positions.length > 0,
+    );
+
+    return Object.entries(filtered);
+  }, [data]);
 
   const renderContent = () => {
     if (isLoading) {
