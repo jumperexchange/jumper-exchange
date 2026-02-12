@@ -215,7 +215,7 @@ export const extractPositionsMetadata = (
   ]);
   const assets = uniqBy(
     compact(map(allAssetTokens, (t) => t.token)),
-    (asset) => asset.symbol,
+    (asset) => asset.name,
   );
 
   const minPosition = minBy(positions, 'netUsd');
