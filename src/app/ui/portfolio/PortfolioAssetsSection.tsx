@@ -30,8 +30,9 @@ const PortfolioAssetsSectionInner = () => {
     usePositionsFiltering();
   const { account } = useAccount();
   const isDisconnected = !account.isConnected;
+  const isLoading = isTokensLoading || isPositionsLoading;
   const isEmpty = isTokensEmpty && isPositionsEmpty;
-  const isDisabled = isDisconnected || isEmpty;
+  const isDisabled = isDisconnected || (isEmpty && !isLoading);
 
   return (
     <SectionCard>

@@ -79,13 +79,13 @@ export const useOrchestrationState = (
   const isEmpty = balances.isEmpty && positions.isEmpty;
 
   const isInitialLoading =
-    isEmpty && (balances.isLoading || positions.isLoading);
+    (balances.isEmpty && balances.isLoading) ||
+    (positions.isEmpty && positions.isLoading);
 
   const isRefreshing =
-    !isEmpty &&
-    (balancesSource.isRefreshing ||
-      positionsSource.isRefreshing ||
-      pricesData.isLoading);
+    balancesSource.isRefreshing ||
+    positionsSource.isRefreshing ||
+    pricesData.isLoading;
 
   const isStale =
     balancesSource.isStale || positionsSource.isStale || pricesSource.isStale;

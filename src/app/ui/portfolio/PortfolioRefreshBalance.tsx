@@ -26,7 +26,9 @@ const PortfolioRefreshBalance: FC<PortfolioRefreshBalanceProps> = ({
 }) => {
   const { t } = useTranslation();
   const portfolioState = usePortfolioState();
-  const { updatedAt, isRefreshing, refresh } = portfolioState;
+  const { updatedAt, isInitialLoading, isRefreshing, refresh } = portfolioState;
+
+  const isLoading = isInitialLoading || isRefreshing;
 
   const iconSize = 24;
 
@@ -47,10 +49,10 @@ const PortfolioRefreshBalance: FC<PortfolioRefreshBalanceProps> = ({
   }, [timeToUpdate, updatedAt]);
 
   useEffect(() => {
-    if (isRefreshing) {
+    if (isLoading) {
       setValue(0);
     }
-  }, [isRefreshing]);
+  }, [isLoading]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     refresh();
@@ -58,7 +60,7 @@ const PortfolioRefreshBalance: FC<PortfolioRefreshBalanceProps> = ({
   };
 
   return (
-    <LightIconButton onClick={handleClick} disabled={isRefreshing} {...other}>
+    <LightIconButton onClick={handleClick} disabled={isLoading} {...other}>
       <Tooltip
         title={t('portfolio.overviewCard.refreshTooltip')}
         placement="top"
@@ -78,7 +80,7 @@ const PortfolioRefreshBalance: FC<PortfolioRefreshBalanceProps> = ({
             placeItems: 'center',
           }}
         >
-          {isRefreshing ? (
+          {isLoading ? (
             <>
               <CircularProgress
                 variant="determinate"

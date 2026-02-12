@@ -198,6 +198,10 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     [setSortBy, setSearchParamsState],
   );
 
+  const isLoading =
+    (balancesSourceState.isLoading && balancesSourceState.isEmpty) ||
+    balancesSourceState.isRefreshing;
+
   const context: BalancesFilteringContextType = {
     order,
     sortBy,
@@ -206,7 +210,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     updateFilter,
     clearFilters,
     data: sortedData,
-    isLoading: balancesSourceState.isLoading,
+    isLoading,
     isEmpty,
     ...stats,
   };

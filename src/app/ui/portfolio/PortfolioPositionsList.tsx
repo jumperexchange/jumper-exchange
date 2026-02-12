@@ -50,7 +50,7 @@ export const PortfolioPositionsList = () => {
     );
   };
 
-  if (isEmpty) {
+  if (isEmpty && !isLoading) {
     return null;
   }
 

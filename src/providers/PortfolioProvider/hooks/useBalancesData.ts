@@ -195,7 +195,7 @@ export const useBalancesData = (): UseTokensDataResult => {
             : false;
           acc[address] = {
             isFetching: (query?.isFetching ?? false) || hasActiveControl,
-            isLoading: query?.isLoading ?? false,
+            isLoading: (query?.isLoading ?? false) || hasActiveControl,
             isSuccess:
               !query?.isLoading && !query?.error && query?.data !== undefined,
             isPlaceholderData: query?.isPlaceholderData ?? false,
@@ -209,7 +209,9 @@ export const useBalancesData = (): UseTokensDataResult => {
     );
   }, [queries, connectedAccounts]);
 
-  const isLoading = queries.some((q) => q.isLoading);
+  const isLoading =
+    queries.some((q) => q.isLoading) ||
+    Object.keys(controlsRef.current).length !== 0;
   const isFetching =
     queries.some((q) => q.isFetching) ||
     Object.keys(controlsRef.current).length !== 0;

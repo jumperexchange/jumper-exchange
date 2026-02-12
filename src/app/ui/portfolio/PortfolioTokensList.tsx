@@ -14,7 +14,7 @@ export const PortfolioTokensList = () => {
 
   const balanceGroups = Object.entries(data);
 
-  if (isEmpty) {
+  if (isEmpty && !isLoading) {
     return null;
   }
 

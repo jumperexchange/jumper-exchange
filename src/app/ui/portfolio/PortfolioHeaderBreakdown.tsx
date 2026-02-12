@@ -19,7 +19,7 @@ export const PortfolioHeaderBreakdown = () => {
   const summary = usePortfolioSummary();
   const state = usePortfolioState();
 
-  const isLoading = state.isInitialLoading;
+  const isLoading = state.isInitialLoading || state.isRefreshing;
 
   useEffect(() => {
     if (
