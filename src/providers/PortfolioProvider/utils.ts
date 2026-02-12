@@ -196,10 +196,7 @@ export const extractPositionsMetadata = (
 ): PositionsMetadata => {
   const chainPositions = positions.filter(isChainPortfolioPosition);
 
-  const chains = uniqBy(
-    chainPositions.map((position) => position.chain.chainId),
-    'chainId',
-  );
+  const chains = uniq(chainPositions.map((position) => position.chain.chainId));
 
   const protocols = uniqBy(
     compact(map(positions, (p) => p.protocol)),
