@@ -94,6 +94,10 @@ export const PortfolioHeaderOverviewValue = styled(Typography)(({ theme }) => ({
   ...theme.typography.title2XLarge,
   textOverflow: 'ellipsis',
   userSelect: 'none',
+  '& .ticker-view > :not(.ticker-column-container)': {
+    marginLeft: `${theme.spacing(-0.5)} !important`,
+    marginRight: `${theme.spacing(-0.5)} !important`,
+  },
 }));
 
 export const LightIconButton = styled(BaseIconButton)(({ theme }) => ({
