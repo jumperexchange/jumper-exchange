@@ -208,6 +208,10 @@ export const StackedAreaChart = ({
     );
   };
 
+  if (isLoading || !data || !data.length) {
+    return <LineChartSkeleton />;
+  }
+
   return (
     <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
       <StyledResponsiveContainer

@@ -88,14 +88,10 @@ export const useBaseChartTheme = (): LineChartProps['theme'] => {
   const isLightTheme = useIsLightTheme();
 
   return {
-    areaTopColor: isLightTheme
-      ? `#F2D9F6`
-      : (theme.vars || theme).palette.accent2Alt,
-    areaBottomColor: isLightTheme
-      ? (theme.vars || theme).palette.white.main
-      : (theme.vars || theme).palette.bg.main,
+    areaTopColor: (theme.vars || theme).palette.surfaceAccent2Bg,
+    areaBottomColor: (theme.vars || theme).palette.surface1.main,
     pointColor: (theme.vars || theme).palette.accent1.main,
-    lineColor: (theme.vars || theme).palette.accent2.main,
+    lineColor: (theme.vars || theme).palette.textAccent2,
   };
 };
 
