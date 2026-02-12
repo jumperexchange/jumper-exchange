@@ -194,12 +194,11 @@ export const extractBalancesMetadata = (
 export const extractPositionsMetadata = (
   positions: PortfolioPosition[],
 ): PositionsMetadata => {
-  const chains = uniq(
-    compact(
-      map(positions, (p) =>
-        isChainPortfolioPosition(p) ? p.chain.chainId : undefined,
-      ),
-    ),
+  const chainPositions = positions.filter(isChainPortfolioPosition);
+
+  const chains = uniqBy(
+    chainPositions.map((position) => position.chain.chainId),
+    'chainId',
   );
 
   const protocols = uniqBy(
