@@ -37,8 +37,8 @@ export const WalletTotalBalanceValue = styled(Typography)(({ theme }) => ({
   textOverflow: 'ellipsis',
   userSelect: 'none',
   '& .ticker-view > :not(.ticker-column-container)': {
-    marginLeft: `${theme.spacing(-0.5)} !important`,
-    marginRight: `${theme.spacing(-0.5)} !important`,
+    marginLeft: `${theme.spacing(-0.25)} !important`,
+    marginRight: `${theme.spacing(-0.25)} !important`,
   },
 }));
 
