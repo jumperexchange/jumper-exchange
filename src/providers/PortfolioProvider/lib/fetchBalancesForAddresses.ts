@@ -100,6 +100,5 @@ export const fetchBalancesForAddress = async ({
   );
 
   await results;
-  console.log(balances);
   return { balances, address };
 };
