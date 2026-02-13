@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
@@ -6,7 +6,6 @@ import type { ChainType } from '@lifi/sdk';
 import { compact, max } from 'lodash';
 import { fetchBalancesForAddress } from '../lib/fetchBalancesForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
-import type { BatchFetcherControl } from '@/utils/batches/fetcher';
 import type { TokenBalance } from '@/types/tokens';
 
 export interface ResultState {
@@ -41,26 +40,32 @@ export const useBalancesData = (): UseTokensDataResult => {
   const getBalancesFromCache = usePortfolioCacheStore((s) => s.getBalances);
   const setBalancesInCache = usePortfolioCacheStore((s) => s.setBalances);
   const setNeedsRefresh = usePortfolioCacheStore((s) => s.setNeedsRefresh);
-  const controlsRef = useRef<Record<string, BatchFetcherControl>>({});
 
   const connectedAccounts = useMemo(
     () => accounts.filter((acc) => acc.isConnected && acc.address),
     [accounts],
   );
 
+  const addresses = useMemo(
+    () => connectedAccounts.map((acc) => acc.address),
+    [connectedAccounts],
+  );
+
   const queries = useQueries({
     queries: connectedAccounts.map((account) => ({
       queryKey: ['portfolio-tokens', account.address],
-      queryFn: async (): Promise<TokenQueryData> => {
+      queryFn: async ({ signal }): Promise<TokenQueryData> => {
         let lastRound = 0;
-        let controlRef: BatchFetcherControl | null = null;
 
         const result = await fetchBalancesForAddress({
           address: account.address!,
           chainType: account.chainType as ChainType,
-          onProgress: (round, _totalBatches, fetchedTokens) => {
-            lastRound = round;
+          signal,
+          onProgress: (completedBatches, _totalBatches, fetchedTokens) => {
+            lastRound = completedBatches;
             const updatedAt = Date.now();
+
+            // Update cache during progress
             queryClient.setQueryData<TokenQueryData>(
               ['portfolio-tokens', account.address],
               {
@@ -71,46 +76,24 @@ export const useBalancesData = (): UseTokensDataResult => {
             );
           },
           onComplete: (fetchedTokens) => {
-            const updatedAt = Date.now();
-
             if (fetchedTokens.length) {
-              queryClient.setQueryData<TokenQueryData>(
-                ['portfolio-tokens', account.address],
-                {
-                  balances: fetchedTokens,
-                  round: lastRound,
-                  updatedAt,
-                },
-              );
               setBalancesInCache(account.address!, fetchedTokens);
-            } else {
-              const cached = getBalancesFromCache(account.address!);
-              queryClient.setQueryData<TokenQueryData>(
-                ['portfolio-tokens', account.address],
-                {
-                  balances: cached,
-                  round: lastRound,
-                  updatedAt,
-                },
-              );
             }
 
             setNeedsRefresh(account.address!, false);
-            if (controlRef) {
-              delete controlsRef.current[account.address!];
-            }
           },
         });
 
-        controlRef = result.control;
-        if (controlRef) {
-          controlsRef.current[account.address!] = controlRef;
-        }
+        const updatedAt = Date.now();
+
+        const finalBalances = result.balances.length
+          ? result.balances
+          : getBalancesFromCache(account.address!);
 
         return {
-          balances: result.balances,
+          balances: finalBalances,
           round: lastRound,
-          updatedAt: Date.now(),
+          updatedAt: updatedAt,
         };
       },
       staleTime: 0,
@@ -132,33 +115,35 @@ export const useBalancesData = (): UseTokensDataResult => {
   });
 
   const refetch = useCallback(() => {
-    Object.values(controlsRef.current).forEach((ctrl) => ctrl.cancel());
-    controlsRef.current = {};
+    queryClient.cancelQueries({ queryKey: ['portfolio-tokens'] });
     queries.forEach((q) => q.refetch());
-  }, [queries]);
+  }, [queries, queryClient]);
 
   const cancel = useCallback(() => {
-    Object.values(controlsRef.current).forEach((ctrl) => ctrl.cancel());
-    controlsRef.current = {};
     queryClient.cancelQueries({ queryKey: ['portfolio-tokens'] });
   }, [queryClient]);
 
   const refetchForAddress = useCallback(
     (address: string) => {
-      const queryIndex = connectedAccounts.findIndex(
-        (acc) => acc.address?.toLowerCase() === address.toLowerCase(),
+      const queryIndex = addresses.findIndex(
+        (addr) => addr?.toLowerCase() === address.toLowerCase(),
       );
+
+      queryClient.cancelQueries({
+        queryKey: ['portfolio-tokens', address],
+      });
+
       if (queryIndex !== -1) {
         queries[queryIndex]?.refetch();
       }
     },
-    [queries, connectedAccounts],
+    [queries, addresses, queryClient],
   );
 
   const balancesByAddress = useMemo(() => {
     return queries.reduce(
       (acc, query, index) => {
-        const address = connectedAccounts[index]?.address;
+        const address = addresses[index];
         const data = query.data;
         if (address && data?.balances) {
           acc[address] = data.balances;
@@ -167,7 +152,7 @@ export const useBalancesData = (): UseTokensDataResult => {
       },
       {} as Record<string, TokenBalance[]>,
     );
-  }, [queries, connectedAccounts]);
+  }, [queries, addresses]);
 
   const balances = useMemo(
     () => Object.values(balancesByAddress).flat(),
@@ -187,19 +172,15 @@ export const useBalancesData = (): UseTokensDataResult => {
   const stateByAddress = useMemo(() => {
     return queries.reduce(
       (acc, query, index) => {
-        const address = connectedAccounts[index]?.address;
+        const address = addresses[index];
 
         if (address) {
-          const hasActiveControl = address
-            ? !!controlsRef.current[address]
-            : false;
           acc[address] = {
-            isFetching: (query?.isFetching ?? false) || hasActiveControl,
-            isLoading: (query?.isLoading ?? false) || hasActiveControl,
-            isSuccess:
-              !query?.isLoading && !query?.error && query?.data !== undefined,
-            isPlaceholderData: query?.isPlaceholderData ?? false,
-            updatedAt: query?.data?.updatedAt ?? null,
+            isFetching: query.isFetching,
+            isLoading: query.isLoading,
+            isSuccess: query.isSuccess,
+            isPlaceholderData: query.isPlaceholderData,
+            updatedAt: query.data?.updatedAt ?? null,
           };
         }
 
@@ -207,18 +188,13 @@ export const useBalancesData = (): UseTokensDataResult => {
       },
       {} as Record<string, ResultState>,
     );
-  }, [queries, connectedAccounts]);
+  }, [queries, addresses]);
 
-  const isLoading =
-    queries.some((q) => q.isLoading) ||
-    Object.keys(controlsRef.current).length !== 0;
-  const isFetching =
-    queries.some((q) => q.isFetching) ||
-    Object.keys(controlsRef.current).length !== 0;
+  const isLoading = queries.some((q) => q.isLoading);
+  const isFetching = queries.some((q) => q.isFetching);
   const isPlaceholderData = queries.some((q) => q.isPlaceholderData);
   const isSuccess = queries.every((q) => q.isSuccess);
-  const error =
-    (queries.find((q) => q.error)?.error as Error | null | undefined) ?? null;
+  const error = (queries.find((q) => q.error)?.error as Error | null) ?? null;
 
   return {
     balances,

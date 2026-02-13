@@ -12,7 +12,7 @@ export const useOrchestrationState = (
 
   const balancesSource: SourceState = useMemo(
     () => ({
-      isEmpty: balances.isEmpty,
+      isEmpty: balances.isEmpty || balances.accounts.length === 0,
       isLoading: balances.isLoading,
       isRefreshing: balances.isFetching && !balances.isEmpty,
       isStale: balances.isPlaceholderData,
@@ -20,6 +20,7 @@ export const useOrchestrationState = (
       updatedAt: balances.updatedAt,
     }),
     [
+      balances.accounts,
       balances.isEmpty,
       balances.isLoading,
       balances.isFetching,
@@ -34,7 +35,7 @@ export const useOrchestrationState = (
       Object.entries(balances.stateByAddress).map(([address, state]) => [
         address,
         {
-          isEmpty: balances.isEmpty,
+          isEmpty: balances.isEmpty || balances.accounts.length === 0,
           isLoading: state.isLoading,
           isRefreshing: state.isFetching && !balances.isEmpty,
           isStale: state.isPlaceholderData,
@@ -43,11 +44,11 @@ export const useOrchestrationState = (
         },
       ]),
     );
-  }, [balances.isEmpty, balances.stateByAddress]);
+  }, [balances.accounts, balances.isEmpty, balances.stateByAddress]);
 
   const positionsSource: SourceState = useMemo(
     () => ({
-      isEmpty: positions.isEmpty,
+      isEmpty: positions.isEmpty || positions.accounts.length === 0,
       isLoading: positions.isLoading,
       isRefreshing: positions.isFetching && !positions.isEmpty,
       isStale: positions.isPlaceholderData,
@@ -55,6 +56,7 @@ export const useOrchestrationState = (
       updatedAt: positions.updatedAt,
     }),
     [
+      positions.accounts,
       positions.isEmpty,
       positions.isLoading,
       positions.isFetching,
@@ -87,6 +89,7 @@ export const useOrchestrationState = (
     positionsSource.isRefreshing ||
     pricesData.isLoading;
 
+  // @NOTE maybe rename to isPlaceholderData
   const isStale =
     balancesSource.isStale || positionsSource.isStale || pricesSource.isStale;
 

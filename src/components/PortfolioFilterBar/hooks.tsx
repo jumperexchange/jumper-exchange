@@ -16,11 +16,11 @@ import { capitalizeString } from '@/utils/capitalizeString';
 import { useChains } from '@/hooks/useChains';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
 import { EntityStack } from '../composite/EntityStack/EntityStack';
-import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 
 export const usePortfolioBalancesFilterBar = () => {
   const { t } = useTranslation();
   const {
+    isEmpty,
     isLoading,
     allWallets,
     allChains,
@@ -161,7 +161,7 @@ export const usePortfolioBalancesFilterBar = () => {
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
   return {
-    isLoading,
+    isLoading: isLoading || isEmpty,
     walletOptions,
     chainOptions,
     assetOptions,
@@ -186,9 +186,9 @@ export const usePortfolioBalancesFilterBar = () => {
 
 export const usePortfolioPositionsFilterBar = () => {
   const { t } = useTranslation();
-  const connectedAddresses = useConnectedEvmAddresses();
   const {
     isLoading,
+    isEmpty,
     allChains,
     allProtocols,
     allTypes,
@@ -330,8 +330,7 @@ export const usePortfolioPositionsFilterBar = () => {
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
   return {
-    // Note: the connected addresses check is kept only to ensure the same behavior
-    isLoading: isLoading || connectedAddresses.length === 0,
+    isLoading: isLoading || isEmpty,
     chainOptions,
     protocolOptions,
     typeOptions,
