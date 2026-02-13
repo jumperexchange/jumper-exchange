@@ -17,6 +17,7 @@ import {
   ErrorMessage,
   SupportMessage,
 } from './ErrorPage.style';
+import { HeaderHeight } from '@/const/headerHeight';
 
 interface FallbackErrorProps {
   reset: () => void;
@@ -27,7 +28,15 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
   const theme = useTheme();
   const { t } = useTranslation();
   return (
-    <CenteredContainer>
+    <CenteredContainer
+      sx={{
+        height: {
+          xs: `calc(100vh - ${HeaderHeight.XS}px)`,
+          sm: `calc(100vh - ${HeaderHeight.SM}px)`,
+          md: `calc(100vh - ${HeaderHeight.MD}px)`,
+        },
+      }}
+    >
       <ErrorMessage variant={'bodyLarge'}>{t('error.message')}</ErrorMessage>
       <Button
         variant="primary"
