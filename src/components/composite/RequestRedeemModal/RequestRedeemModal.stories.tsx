@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { fn } from 'storybook/test';
 import { useState } from 'react';
 
 import { RequestRedeemModal } from './RequestRedeemModal';
-import { fn } from '@storybook/test';
 import { ConnectButton } from 'src/components/ConnectButton';
 import { useIsDisconnected } from 'src/components/Navbar/hooks';
 import { WalletMenuToggle } from 'src/components/Navbar/components/Buttons/WalletMenuToggle';

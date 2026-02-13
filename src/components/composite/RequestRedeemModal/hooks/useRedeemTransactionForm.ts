@@ -225,24 +225,6 @@ export const useRedeemTransactionForm = ({
     dispatch({ type: 'SET_AMOUNT', payload: newAmount });
   }, []);
 
-  const handleSubmit = useCallback(
-    (event: React.SubmitEvent) => {
-      event.preventDefault();
-      if (!accountAddress || state.currentStep !== 'idle') {
-        return;
-      }
-
-      // For request type, show confirmation sheet
-      if (config.type === 'request') {
-        dispatch({ type: 'SHOW_CONFIRMATION' });
-      } else {
-        // For claim type, execute immediately
-        handleExecute();
-      }
-    },
-    [accountAddress, state.currentStep, config.type],
-  );
-
   const handleExecute = useCallback(async () => {
     if (!accountAddress) {
       return;
@@ -280,6 +262,24 @@ export const useRedeemTransactionForm = ({
     fetchCallDataMutation,
     transactionFlow,
   ]);
+
+  const handleSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      if (!accountAddress || state.currentStep !== 'idle') {
+        return;
+      }
+
+      // For request type, show confirmation sheet
+      if (config.type === 'request') {
+        dispatch({ type: 'SHOW_CONFIRMATION' });
+      } else {
+        // For claim type, execute immediately
+        handleExecute();
+      }
+    },
+    [accountAddress, state.currentStep, config.type, handleExecute],
+  );
 
   const handleConfirm = useCallback(async () => {
     await handleExecute();
