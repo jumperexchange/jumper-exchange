@@ -23,7 +23,6 @@ interface FallbackErrorProps {
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
-  const { mode } = useColorScheme();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
@@ -53,26 +52,10 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           gap: '8px',
           borderRadius: '24px',
           padding: theme.spacing(1),
-          '> button:hover': {
-            backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-            ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-            }),
-          },
-          '> button:hover svg': {
-            fill:
-              mode === 'light'
-                ? theme.palette.grey[700]
-                : alpha(theme.palette.white.main, 0.88),
-          },
         }}
         fullWidth={true}
       >
-        <Discord
-          sx={{
-            color: theme.palette.common.white,
-          }}
-        />
+        <Discord />
         <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>

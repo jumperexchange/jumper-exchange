@@ -127,25 +127,25 @@ export default async function RootLayout({
         <meta name="base:app_id" content={appId} />
         <style>
           {`
-          // Adding default loading background colors
+          /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
           /* Light mode */
           body.light {
-            background-color: #FCFAFF;
+            background-color: var(--jumper-palette-bg-main, #FCFAFF);
           }
           @media (prefers-color-scheme: light) {
             body {
-              background-color: #FCFAFF;
+              background-color: var(--jumper-palette-bg-main, #FCFAFF);
             }
           }
 
           /* Dark mode */
           @media (prefers-color-scheme: dark) {
             body {
-              background-color: #1A0B47;
+              background-color: var(--jumper-palette-bg-main, #120b1e);
             }
           }
           body.dark {
-            background-color: #1A0B47;
+            background-color: var(--jumper-palette-bg-main, #120b1e);
           }
 `}
         </style>
