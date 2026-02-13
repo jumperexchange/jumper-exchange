@@ -83,7 +83,7 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
   }, [earnOpportunity.asset, claim.assetAmount, extendedToToken?.priceUSD]);
 
   const handleSubmit = useCallback(
-    (event: React.SubmitEvent) => {
+    (event: React.FormEvent) => {
       event.preventDefault();
       formState.handleSubmit(event);
     },
