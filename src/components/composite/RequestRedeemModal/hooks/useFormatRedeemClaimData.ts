@@ -14,20 +14,20 @@ export const useFormatRedeemClaimData = (
           status:
             claim.status === 'pending'
               ? 'pending'
-              : claim.status === 'approved'
+              : claim.status === 'ready'
                 ? 'success'
                 : 'failed',
           timestamp: claim.timestamp,
           title:
             claim.status === 'pending'
               ? t('earn.requestRedeemFlow.requests.pending.title')
-              : claim.status === 'approved'
+              : claim.status === 'ready'
                 ? t('earn.requestRedeemFlow.requests.approved.title')
                 : t('earn.requestRedeemFlow.requests.failed.title'),
           description:
             claim.status === 'pending'
               ? t('earn.requestRedeemFlow.requests.pending.description')
-              : claim.status === 'approved'
+              : claim.status === 'ready'
                 ? t('earn.requestRedeemFlow.requests.approved.description')
                 : t('earn.requestRedeemFlow.requests.failed.description'),
           assetAmount: claim.assetAmount,

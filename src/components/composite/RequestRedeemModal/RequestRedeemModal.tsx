@@ -62,9 +62,6 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     onSuccess: () => {
       refetchClaims();
       refetchCallback?.();
-      if (currentView === 'claimRedeem') {
-        handleBackToRequest();
-      }
     },
     config:
       currentView === 'claimRedeem' && selectedClaim
@@ -180,7 +177,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
           defaultHeight="100%"
         >
           {({ onHeightChange, motionProps }) => (
-            <motion.div {...motionProps}>
+            <motion.div {...motionProps} style={{ x: 0, y: 0 }}>
               {currentView === 'requestWithdraw' && (
                 <RequestWithdrawView
                   earnOpportunity={earnOpportunity}

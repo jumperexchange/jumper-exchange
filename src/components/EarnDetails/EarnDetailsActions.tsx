@@ -114,7 +114,7 @@ export const EarnDetailsActions = ({
   const { hasAcceptedClaims, hasPendingClaims } = useMemo(() => {
     return {
       hasAcceptedClaims: redeemableClaims?.claimData?.some(
-        (claim) => claim.status === 'accepted',
+        (claim) => claim.status === 'ready',
       ),
       hasPendingClaims: redeemableClaims?.claimData?.some(
         (claim) => claim.status === 'pending',

@@ -264,7 +264,7 @@ export const useRedeemTransactionForm = ({
   ]);
 
   const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
+    (event: React.SubmitEvent) => {
       event.preventDefault();
       if (!accountAddress || state.currentStep !== 'idle') {
         return;
