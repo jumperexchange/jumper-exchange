@@ -1,4 +1,5 @@
 'use client';
+
 import { PortfolioAssetsSectionSkeleton } from './PortfolioAssetsSectionSkeleton';
 import { PortfolioHeaderSectionSkeleton } from './PortfolioHeaderSectionSkeleton';
 

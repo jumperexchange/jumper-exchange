@@ -6,9 +6,13 @@ import type { MouseEventHandler } from 'react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WalletButton, CustomDrawer } from './WalletMenu.style';
-import { usePortfolioTokens } from 'src/utils/getTokens/usePortfolioTokens';
 import { WalletBalanceCard } from 'src/components/composite/WalletBalanceCard/WalletBalanceCard';
 import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
+import {
+  usePortfolioBalances,
+  usePortfolioState,
+  usePortfolioSummary,
+} from '@/providers/PortfolioProvider/PortfolioContext';
 
 export const WalletMenu = () => {
   const { t } = useTranslation();
@@ -20,19 +24,28 @@ export const WalletMenu = () => {
     setWalletMenuState,
     setSnackbarState,
   } = useMenuStore((state) => state);
-  const { queriesByAddress, queriesJustCompleted, totalValue, data } =
-    usePortfolioTokens();
+  const { balances, balancesByAddress } = usePortfolioBalances();
+  const { totalBalancesUsd } = usePortfolioSummary();
+  const { isInitialLoading, isRefreshing, isStale, refreshByAddress, sources } =
+    usePortfolioState();
   const { trackPortfolioMenuOverviewEvent } = usePortfolioTracking();
   const hasTrackedPortfolioOverview = useRef(false);
 
+  const shouldTrackOverview = !isInitialLoading && !isRefreshing && !isStale;
+
   useEffect(() => {
-    if (hasTrackedPortfolioOverview.current || !queriesJustCompleted) {
+    if (hasTrackedPortfolioOverview.current || !shouldTrackOverview) {
       return;
     }
 
     hasTrackedPortfolioOverview.current = true;
-    trackPortfolioMenuOverviewEvent(totalValue, data);
-  }, [queriesJustCompleted, data, totalValue, trackPortfolioMenuOverviewEvent]);
+    trackPortfolioMenuOverviewEvent(totalBalancesUsd, balances);
+  }, [
+    shouldTrackOverview,
+    balances,
+    totalBalancesUsd,
+    trackPortfolioMenuOverviewEvent,
+  ]);
 
   useEffect(() => {
     hasTrackedPortfolioOverview.current = false;
@@ -97,18 +110,27 @@ export const WalletMenu = () => {
           </Typography>
         </WalletButton>
       </Stack>
-      {Array.from(queriesByAddress.entries()).map(
-        ([walletAddress, account]) => (
-          <WalletBalanceCard
-            key={walletAddress}
-            data-testid="wallet-balance-card"
-            walletAddress={walletAddress}
-            refetch={account.refetch}
-            isFetching={account.isFetching}
-            isSuccess={account.isSuccess}
-            data={account.data ?? []}
-          />
-        ),
+      {Object.entries(balancesByAddress).map(
+        ([walletAddress, balanceByAddress]) => {
+          const balanceStateByAddress =
+            sources.balancesByAddress[walletAddress] ?? {};
+
+          return (
+            <WalletBalanceCard
+              key={walletAddress}
+              data-testid="wallet-balance-card"
+              walletAddress={walletAddress}
+              refetch={() => refreshByAddress(walletAddress)}
+              isFetching={
+                balanceStateByAddress.isLoading ||
+                balanceStateByAddress.isRefreshing
+              }
+              isSuccess={balanceStateByAddress.isSuccess}
+              updatedAt={balanceStateByAddress.updatedAt ?? Date.now()}
+              data={balanceByAddress ?? {}}
+            />
+          );
+        },
       )}
     </CustomDrawer>
   );

@@ -1,8 +1,10 @@
+'use client';
+
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 
-export const PortfolioSortEmptyDesktop = ({}) => {
+export const PortfolioSortEmptyDesktop = () => {
   const { t } = useTranslation();
   return (
     <Select

@@ -75,6 +75,7 @@ const defaultSummaryState: SummaryData = {
 const defaultSourceState: SourceState = {
   isEmpty: true,
   isLoading: false,
+  isSuccess: true,
   isRefreshing: false,
   isStale: false,
   updatedAt: null,
@@ -85,14 +86,17 @@ const defaultOrchestrationState: OrchestrationState = {
   isInitialLoading: false,
   isRefreshing: false,
   isStale: false,
+  isSuccess: true,
   updatedAt: null,
   error: null,
   sources: {
     balances: defaultSourceState,
+    balancesByAddress: {},
     positions: defaultSourceState,
     prices: defaultSourceState,
   },
   refresh: () => {},
+  refreshByAddress: () => {},
 };
 
 export const PortfolioContext = createContext<PortfolioContextValue>({

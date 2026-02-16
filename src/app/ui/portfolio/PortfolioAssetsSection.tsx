@@ -1,32 +1,39 @@
 'use client';
+
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
-import {
-  PortfolioTokensFilteringProvider,
-  usePortfolioTokensFiltering,
-} from './PortfolioTokensFilteringContext';
-import { PortfolioFilterBar } from 'src/components/PortfolioFilterBar/PortfolioFilterBar';
+import { PortfolioFilterBar } from '@/components/PortfolioFilterBar/PortfolioFilterBar';
 import { useState } from 'react';
-import { PortfolioFilterBarTab } from './types';
-import { PortfolioDeFiProtocolsList } from './PortfolioDeFiProtocolsList';
+import { PortfolioPositionsList } from './PortfolioPositionsList';
 import { PortfolioTokensList } from './PortfolioTokensList';
 import {
-  PortfolioDeFiPositionsFilteringProvider,
-  usePortfolioDeFiPositionsFiltering,
-} from './PortfolioDeFiPositionsFilteringContext';
+  BalancesFilteringProvider,
+  useBalancesFiltering,
+} from '@/providers/PortfolioProvider/filtering/BalancesFilteringContext';
+import {
+  PositionsFilteringProvider,
+  usePositionsFiltering,
+} from '@/providers/PortfolioProvider/filtering/PositionsFilteringContext';
 import { useAccount } from '@lifi/wallet-management';
+
+export enum PortfolioFilterBarTab {
+  TOKENS = 'tokens',
+  DEFI_PROTOCOLS = 'defi-protocols',
+}
 
 const PortfolioAssetsSectionInner = () => {
   const [tab, setTab] = useState<PortfolioFilterBarTab>(
     PortfolioFilterBarTab.TOKENS,
   );
   const { isEmpty: isTokensEmpty, isLoading: isTokensLoading } =
-    usePortfolioTokensFiltering();
-  const { isAllDataEmpty: isDeFiEmpty, isLoading: isDeFiLoading } =
-    usePortfolioDeFiPositionsFiltering();
+    useBalancesFiltering();
+  const { isEmpty: isPositionsEmpty, isLoading: isPositionsLoading } =
+    usePositionsFiltering();
   const { account } = useAccount();
   const isDisconnected = !account.isConnected;
-  const isEmpty = isTokensEmpty && isDeFiEmpty;
-  const isDisabled = isDisconnected || isEmpty;
+  const isLoading = isTokensLoading || isPositionsLoading;
+  const isEmpty = isTokensEmpty && isPositionsEmpty;
+  const isDisabled = isDisconnected || (isEmpty && !isLoading);
+
   return (
     <SectionCard>
       <PortfolioFilterBar
@@ -35,10 +42,10 @@ const PortfolioAssetsSectionInner = () => {
         onChange={setTab}
       />
       {!isDisabled &&
-        (tab === 'tokens' ? (
+        (tab === PortfolioFilterBarTab.TOKENS ? (
           <PortfolioTokensList />
         ) : (
-          <PortfolioDeFiProtocolsList />
+          <PortfolioPositionsList />
         ))}
     </SectionCard>
   );
@@ -46,10 +53,10 @@ const PortfolioAssetsSectionInner = () => {
 
 export const PortfolioAssetsSection = () => {
   return (
-    <PortfolioTokensFilteringProvider>
-      <PortfolioDeFiPositionsFilteringProvider>
+    <BalancesFilteringProvider>
+      <PositionsFilteringProvider>
         <PortfolioAssetsSectionInner />
-      </PortfolioDeFiPositionsFilteringProvider>
-    </PortfolioTokensFilteringProvider>
+      </PositionsFilteringProvider>
+    </BalancesFilteringProvider>
   );
 };

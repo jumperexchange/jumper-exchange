@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest';
 import { render } from '../../../../../vitest.setup';
 
 import { Select } from './Select';
-import { SelectOption, SelectVariant } from './Select.types';
+import type { SelectOption } from './Select.types';
+import { SelectVariant } from './Select.types';
 import { Avatar } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSkeleton } from '../../AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '../../AvatarStack/AvatarStack.types';
@@ -14,7 +15,6 @@ const AvatarRenderer = ({ src }: { src: string }) => {
       size={AvatarSize.MD}
       src={src}
       alt={'Avatar for chain'}
-      disableBorder={true}
       variant="circular"
     >
       <AvatarSkeleton size={AvatarSize.MD} variant="circular" />

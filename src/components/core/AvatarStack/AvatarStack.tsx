@@ -8,8 +8,10 @@ import type {
   AvatarSize,
   AvatarStackDirection,
   AvatarData,
+  AvatarOverlap,
 } from './AvatarStack.types';
 import { AvatarItem } from './AvatarItem';
+import { getOverlapFromDirection } from './utils';
 
 interface AvatarStackProps {
   avatars: AvatarData[];
@@ -31,16 +33,20 @@ export const AvatarStack: FC<AvatarStackProps> = ({
   const hasOverflow = limit && avatars.length > limit;
   const overflowCount = hasOverflow ? avatars.length - limit : 0;
   const displayAvatars = hasOverflow ? avatars.slice(0, limit) : avatars;
+  const orderedAvatars = direction.includes('reverse')
+    ? displayAvatars.reverse()
+    : displayAvatars;
 
   return (
     <AvatarStackContainer direction={direction} useFlexGap>
       <AvatarStackWrapper direction={direction} spacing={spacing}>
-        {displayAvatars.map((avatar) => (
+        {orderedAvatars.map((avatar) => (
           <AvatarItem
             key={avatar.id}
             avatar={avatar}
             size={size}
-            disableBorder={disableBorder}
+            spacing={spacing}
+            overlap={getOverlapFromDirection(direction, disableBorder)}
           />
         ))}
       </AvatarStackWrapper>

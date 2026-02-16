@@ -1,24 +1,26 @@
-import type { PortfolioFilterBarTab } from 'src/app/ui/portfolio/types';
+'use client';
+
+import { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioAssetsSection';
 import { Fragment, type FC } from 'react';
 import {
   PortfolioFilterBarContainer,
   PortfolioFilterBarHeaderContainer,
 } from './PortfolioFilterBar.styles';
-import { PortfolioFilterBarDeFiDesktop } from './layouts/PortfolioFilterBarDeFiDesktop';
-import { PortfolioFilterBarDeFiTablet } from './layouts/PortfolioFilterBarDeFiTablet';
-import { PortfolioFilterBarTokensDesktop } from './layouts/PortfolioFilterBarTokensDesktop';
-import { PortfolioFilterBarTokensTablet } from './layouts/PortfolioFilterBarTokensTablet';
+import { PortfolioFilterBarPositionsDesktop } from './layouts/PortfolioFilterBarPositionsDesktop';
+import { PortfolioFilterBarPositionsTablet } from './layouts/PortfolioFilterBarPositionsTablet';
+import { PortfolioFilterBarBalancesDesktop } from './layouts/PortfolioFilterBarBalancesDesktop';
+import { PortfolioFilterBarBalancesTablet } from './layouts/PortfolioFilterBarBalancesTablet';
 import { PortfolioFilterBarEmptyDesktop } from './layouts/PortfolioFilterBarEmptyDesktop';
 import { PortfolioFilterBarEmptyTablet } from './layouts/PortfolioFilterBarEmptyTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AnimatePresence } from 'motion/react';
-import { PortfolioSortTokensDesktop } from './layouts/PortfolioSortTokensDesktop';
+import { PortfolioSortBalancesDesktop } from './layouts/PortfolioSortBalancesDesktop';
 import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
-import { PortfolioSortDeFiDesktop } from './layouts/PortfolioSortDeFiDesktop';
+import { PortfolioSortPositionsDesktop } from './layouts/PortfolioSortPositionsDesktop';
 import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
 import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
-import { PortfolioFilterBarTokensLastUpdatedBadge } from './layouts/PortfolioFilterBarTokensLastUpdatedBadge';
-import { PortfolioFilterBarDeFiLastUpdatedBadge } from './layouts/PortfolioFilterBarDeFiLastUpdatedBadge';
+import { PortfolioFilterBarBalancesLastUpdatedBadge } from './layouts/PortfolioFilterBarBalancesLastUpdatedBadge';
+import { PortfolioFilterBarPositionsLastUpdatedBadge } from './layouts/PortfolioFilterBarPositionsLastUpdatedBadge';
 
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
@@ -35,21 +37,21 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
 
   const PortfolioFilterBarContentDesktop = isDisabled
     ? PortfolioFilterBarEmptyDesktop
-    : value === 'tokens'
-      ? PortfolioFilterBarTokensDesktop
-      : PortfolioFilterBarDeFiDesktop;
+    : value === PortfolioFilterBarTab.TOKENS
+      ? PortfolioFilterBarBalancesDesktop
+      : PortfolioFilterBarPositionsDesktop;
 
   const PortfolioFilterBarContentTablet = isDisabled
     ? PortfolioFilterBarEmptyTablet
-    : value === 'tokens'
-      ? PortfolioFilterBarTokensTablet
-      : PortfolioFilterBarDeFiTablet;
+    : value === PortfolioFilterBarTab.TOKENS
+      ? PortfolioFilterBarBalancesTablet
+      : PortfolioFilterBarPositionsTablet;
 
   const PortfolioSortDesktop = isDisabled
     ? PortfolioSortEmptyDesktop
-    : value === 'tokens'
-      ? PortfolioSortTokensDesktop
-      : PortfolioSortDeFiDesktop;
+    : value === PortfolioFilterBarTab.TOKENS
+      ? PortfolioSortBalancesDesktop
+      : PortfolioSortPositionsDesktop;
 
   const PortfolioFilterView = isTablet
     ? PortfolioFilterViewTablet
@@ -57,9 +59,9 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
 
   const PortfolioFilterBarLastUpdatedBadge = isDisabled
     ? Fragment
-    : value === 'tokens'
-      ? PortfolioFilterBarTokensLastUpdatedBadge
-      : PortfolioFilterBarDeFiLastUpdatedBadge;
+    : value === PortfolioFilterBarTab.TOKENS
+      ? PortfolioFilterBarBalancesLastUpdatedBadge
+      : PortfolioFilterBarPositionsLastUpdatedBadge;
 
   return (
     <PortfolioFilterBarContainer>

@@ -6,6 +6,7 @@ import type { Hex } from 'viem';
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
 import type { DefiPosition } from '@/utils/positions/type-guards';
+import type { EVMAccount } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 
@@ -16,6 +17,7 @@ export interface UsePositionsDataProps {
 export interface UsePositionsDataResult {
   positions: DefiPosition[];
   positionsByAddress: Record<string, DefiPosition[]>;
+  accounts: EVMAccount[];
   isLoading: boolean;
   isFetching: boolean;
   isPlaceholderData: boolean;
@@ -49,9 +51,18 @@ export const usePositionsData = ({
   filter,
 }: UsePositionsDataProps): UsePositionsDataResult => {
   const { accounts } = useAccount();
-  const addresses = accounts
-    .filter((acc) => acc.isConnected && acc.chainType === 'EVM' && acc.address)
-    .map((acc) => acc.address as Hex);
+  const connectedAccounts = useMemo(
+    () =>
+      accounts.filter(
+        (acc) => acc.isConnected && acc.chainType === 'EVM' && acc.address,
+      ) as EVMAccount[],
+    [accounts],
+  );
+
+  const addresses = useMemo(
+    () => connectedAccounts.map((acc) => acc.address as Hex),
+    [connectedAccounts],
+  );
 
   const getPositions = usePortfolioCacheStore((s) => s.getPositions);
   const setPositionsCache = usePortfolioCacheStore((s) => s.setPositions);
@@ -192,6 +203,7 @@ export const usePositionsData = ({
   return {
     positions,
     positionsByAddress,
+    accounts: connectedAccounts,
     isLoading,
     isFetching,
     isPlaceholderData,

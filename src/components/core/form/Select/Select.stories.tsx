@@ -29,7 +29,6 @@ const AvatarRenderer = ({ src }: { src: string }) => {
       size={AvatarSize.MD}
       src={src}
       alt={'Avatar for chain'}
-      disableBorder={true}
       variant="circular"
     >
       <AvatarSkeleton size={AvatarSize.MD} variant="circular" />

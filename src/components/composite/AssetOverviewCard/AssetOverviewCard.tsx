@@ -1,24 +1,23 @@
-import type { AssetOverviewCardProps } from './AssetOverviewCard.types';
-import { AssetOverviewCardView } from './AssetOverviewCard.types';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
-import {
-  AssetOverviewCardContentContainer,
-  AssetOverviewCardContainer,
-  AssetOverviewNavigationButton,
-  AssetOverviewNavigationContainer,
-} from './AssetOverviewCard.styles';
 import { useTranslation } from 'react-i18next';
-import { AssetOverviewCardOverview } from './views/AssetOverviewCardOverview';
-import { AssetOverviewCardTokens } from './views/AssetOverviewCardTokens';
-import { AssetOverviewCardDeFiPositions } from './views/AssetOverviewCardDeFiPositions';
-import { AssetOverviewNoContent } from './views/AssetOverviewNoContent';
-import { AssetOverviewLoading } from './views/AssetOverviewLoading';
-import { mapPositionGroupsToProtocolData, sortAssetsByPrice } from './utils';
+import {
+  CardContainer,
+  ContentContainer,
+  NavigationButton,
+  NavigationContainer,
+} from './AssetOverviewCard.styles';
+import { OverviewView } from './components/OverviewView';
+import { TokensView } from './components/TokensView';
+import { PositionsView } from './components/PositionsView';
+import { LoadingView } from './components/LoadingView';
+import { NoContentView } from './components/NoContentView';
+import type { AssetOverviewCardProps } from './types';
+import { AssetOverviewCardView } from './types';
+import { getSortedTokenSummaries, getSortedProtocolSummaries } from './utils';
 
 export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
-  tokens,
-  defiPositionGroups,
+  summaryData,
   isLoading,
   showNoContent = true,
 }) => {
@@ -27,87 +26,77 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
     AssetOverviewCardView.Overview,
   );
 
-  const protocolGroups = useMemo(
-    () => mapPositionGroupsToProtocolData(defiPositionGroups),
-    [defiPositionGroups],
+  const tokenSummaries = useMemo(
+    () => getSortedTokenSummaries(summaryData),
+    [summaryData],
   );
 
-  const sortedProtocolGroups = useMemo(
-    () => sortAssetsByPrice(protocolGroups),
-    [protocolGroups],
+  const protocolSummaries = useMemo(
+    () => getSortedProtocolSummaries(summaryData),
+    [summaryData],
   );
-
-  const sortedTokens = useMemo(() => sortAssetsByPrice(tokens), [tokens]);
 
   if (isLoading) {
     return (
-      <AssetOverviewCardContainer>
-        <AssetOverviewLoading />
-      </AssetOverviewCardContainer>
+      <CardContainer>
+        <LoadingView />
+      </CardContainer>
     );
   }
 
-  const isNoContent =
-    showNoContent && tokens.length === 0 && defiPositionGroups.length === 0;
+  const isEmpty =
+    showNoContent &&
+    tokenSummaries.length === 0 &&
+    protocolSummaries.length === 0;
 
-  if (isNoContent) {
+  if (isEmpty) {
     return (
-      <AssetOverviewCardContainer>
-        <AssetOverviewCardContentContainer>
-          <AssetOverviewNoContent />
-        </AssetOverviewCardContentContainer>
-      </AssetOverviewCardContainer>
+      <CardContainer>
+        <ContentContainer>
+          <NoContentView />
+        </ContentContainer>
+      </CardContainer>
     );
   }
-
-  const renderView = () => {
-    switch (view) {
-      case AssetOverviewCardView.Overview: {
-        return (
-          <AssetOverviewCardOverview
-            tokens={sortedTokens}
-            protocolGroups={sortedProtocolGroups}
-          />
-        );
-      }
-      case AssetOverviewCardView.Tokens: {
-        return <AssetOverviewCardTokens tokens={sortedTokens} />;
-      }
-      case AssetOverviewCardView.DeFiPositions: {
-        return (
-          <AssetOverviewCardDeFiPositions
-            protocolGroups={sortedProtocolGroups}
-          />
-        );
-      }
-      default: {
-        return null;
-      }
-    }
-  };
 
   const isNavigationButtonDisabled = (_view: AssetOverviewCardView) => {
     switch (_view) {
-      case AssetOverviewCardView.Overview: {
+      case AssetOverviewCardView.Overview:
         return false;
-      }
-      case AssetOverviewCardView.Tokens: {
-        return tokens.length === 0;
-      }
-      case AssetOverviewCardView.DeFiPositions: {
-        return defiPositionGroups.length === 0;
-      }
-      default: {
+      case AssetOverviewCardView.Tokens:
+        return tokenSummaries.length === 0;
+      case AssetOverviewCardView.DeFiPositions:
+        return protocolSummaries.length === 0;
+      default:
         return false;
-      }
+    }
+  };
+
+  const renderView = () => {
+    switch (view) {
+      case AssetOverviewCardView.Overview:
+        return (
+          <OverviewView
+            tokenSummaries={tokenSummaries}
+            protocolSummaries={protocolSummaries}
+            totalBalancesUsd={summaryData.totalBalancesUsd}
+            totalPositionsUsd={summaryData.totalPositionsUsd}
+          />
+        );
+      case AssetOverviewCardView.Tokens:
+        return <TokensView tokenSummaries={tokenSummaries} />;
+      case AssetOverviewCardView.DeFiPositions:
+        return <PositionsView protocolSummaries={protocolSummaries} />;
+      default:
+        return null;
     }
   };
 
   return (
-    <AssetOverviewCardContainer>
-      <AssetOverviewNavigationContainer>
+    <CardContainer>
+      <NavigationContainer>
         {Object.values(AssetOverviewCardView).map((_view) => (
-          <AssetOverviewNavigationButton
+          <NavigationButton
             key={_view}
             data-testid={`asset-overview-nav-${_view}`}
             onClick={() => setView(_view)}
@@ -115,12 +104,10 @@ export const AssetOverviewCard: FC<AssetOverviewCardProps> = ({
             disabled={isNavigationButtonDisabled(_view)}
           >
             {t(`portfolio.assetOverviewCard.navigation.${_view}`)}
-          </AssetOverviewNavigationButton>
+          </NavigationButton>
         ))}
-      </AssetOverviewNavigationContainer>
-      <AssetOverviewCardContentContainer>
-        {renderView()}
-      </AssetOverviewCardContentContainer>
-    </AssetOverviewCardContainer>
+      </NavigationContainer>
+      <ContentContainer>{renderView()}</ContentContainer>
+    </CardContainer>
   );
 };

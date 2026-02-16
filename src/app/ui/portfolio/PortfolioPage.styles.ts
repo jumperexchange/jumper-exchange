@@ -66,7 +66,8 @@ export const PortfolioWelcomeScreenButton = styled(ButtonPrimary)(
 
 export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
   ({ theme }) => ({
-    height: 312,
+    minHeight: 312,
+    height: '100%',
     padding: theme.spacing(3),
     boxShadow: theme.shadows[2],
     backgroundColor: (theme.vars || theme).palette.surface1.main,
@@ -93,6 +94,10 @@ export const PortfolioHeaderOverviewValue = styled(Typography)(({ theme }) => ({
   ...theme.typography.title2XLarge,
   textOverflow: 'ellipsis',
   userSelect: 'none',
+  '& .ticker-view > :not(.ticker-column-container)': {
+    marginLeft: `${theme.spacing(-0.5)} !important`,
+    marginRight: `${theme.spacing(-0.5)} !important`,
+  },
 }));
 
 export const LightIconButton = styled(BaseIconButton)(({ theme }) => ({
