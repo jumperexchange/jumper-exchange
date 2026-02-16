@@ -43,7 +43,6 @@ const MODE_OPTIONS = {
 } as const;
 
 const STANDARD_MODES: Appearance[] = ['light', 'dark', 'system'];
-
 export const useThemeModesMenuContent = () => {
   const { mode, setMode } = useColorScheme();
   const { t } = useTranslation();
@@ -59,43 +58,44 @@ export const useThemeModesMenuContent = () => {
   const defaultMode = isMainPaths ? 'system' : 'light';
   const selectedThemeMode = mode ?? defaultMode;
 
-  const activeConfigThemeUid = useMemo(() => {
-    const entry = Object.entries(configThemeStates).find(
-      ([_, state]) => state.isSelected,
-    );
-    return entry?.[0];
-  }, [configThemeStates]);
-
-  const displayablePartnerThemes = useMemo(() => {
-    return availablePartnerThemes.filter(
-      (theme) => theme.SelectableInMenu && theme.PartnerName,
-    );
-  }, [availablePartnerThemes]);
-
-  const activeConfigTheme = useMemo(() => {
-    return displayablePartnerThemes.find(
-      (theme) => theme.uid === activeConfigThemeUid,
-    );
-  }, [displayablePartnerThemes, activeConfigThemeUid]);
+  const { activeConfigThemeUid, activeConfigTheme } = useMemo(() => {
+    for (const [uid, state] of Object.entries(configThemeStates)) {
+      if (state.isSelected) {
+        const theme = availablePartnerThemes.find((t) => t.uid === uid);
+        return { activeConfigThemeUid: uid, activeConfigTheme: theme };
+      }
+    }
+    return { activeConfigThemeUid: undefined, activeConfigTheme: undefined };
+  }, [configThemeStates, availablePartnerThemes]);
 
   useEffect(() => {
     if (!activeConfigTheme) {
+      if (activeConfigThemeUid) {
+        setMode('system');
+        console.debug('Changed theme mode to: system');
+        setConfigThemeState(activeConfigThemeUid, { isSelected: false });
+      }
       return;
     }
-    const themeMode = isDarkOrLightThemeMode(activeConfigTheme);
 
+    const themeMode = isDarkOrLightThemeMode(activeConfigTheme);
     if (themeMode !== mode) {
       setMode(themeMode);
+      console.debug(`Changed theme mode to: ${themeMode}`);
     }
-  }, [activeConfigTheme, mode, setMode]);
+  }, [
+    activeConfigThemeUid,
+    activeConfigTheme,
+    mode,
+    setMode,
+    setConfigThemeState,
+  ]);
 
-  // Reset mode when the selected partner theme no longer exists (removed from CMS)
-  useEffect(() => {
-    if (activeConfigThemeUid && !activeConfigTheme) {
-      setMode('system');
+  const clearPartnerTheme = useCallback(() => {
+    if (activeConfigThemeUid) {
       setConfigThemeState(activeConfigThemeUid, { isSelected: false });
     }
-  }, [activeConfigThemeUid, activeConfigTheme, setMode, setConfigThemeState]);
+  }, [activeConfigThemeUid, setConfigThemeState]);
 
   const handleSwitchMode = useCallback(
     (newMode: Appearance) => {
@@ -103,18 +103,14 @@ export const useThemeModesMenuContent = () => {
         category: TrackingCategory.ThemeSection,
         action: TrackingAction.SwitchTheme,
         label: `theme_${newMode}`,
-        data: {
-          [TrackingEventParameter.SwitchedTheme]: newMode,
-        },
+        data: { [TrackingEventParameter.SwitchedTheme]: newMode },
       });
-
-      setMode(newMode ?? 'system');
-
-      if (activeConfigThemeUid) {
-        setConfigThemeState(activeConfigThemeUid, { isSelected: false });
-      }
+      clearPartnerTheme();
+      const newModeWithFallback = newMode ?? 'system';
+      setMode(newModeWithFallback);
+      console.debug(`Changing theme mode to: ${newModeWithFallback}`);
     },
-    [trackEvent, setMode, activeConfigThemeUid, setConfigThemeState],
+    [trackEvent, setMode, clearPartnerTheme],
   );
 
   const handleSwitchTheme = useCallback(
@@ -123,21 +119,21 @@ export const useThemeModesMenuContent = () => {
         category: TrackingCategory.ThemeSection,
         action: TrackingAction.SwitchThemeTemplate,
         label: `theme_${theme.uid}`,
-        data: {
-          [TrackingEventParameter.SwitchedTemplate]: theme.uid,
-        },
+        data: { [TrackingEventParameter.SwitchedTemplate]: theme.uid },
       });
-
-      if (activeConfigThemeUid && activeConfigThemeUid !== theme.uid) {
-        setConfigThemeState(activeConfigThemeUid, { isSelected: false });
-      }
-
+      clearPartnerTheme();
       setConfigThemeState(theme.uid, { isSelected: true });
-
-      const themeMode = isDarkOrLightThemeMode(theme);
-      setMode(themeMode);
+      const newMode = isDarkOrLightThemeMode(theme);
+      setMode(newMode);
+      console.debug(`Changing theme mode to: ${newMode}`);
     },
-    [trackEvent, setConfigThemeState, setMode, activeConfigThemeUid],
+    [trackEvent, setConfigThemeState, setMode, clearPartnerTheme],
+  );
+
+  const displayablePartnerThemes = useMemo(
+    () =>
+      availablePartnerThemes.filter((t) => t.SelectableInMenu && t.PartnerName),
+    [availablePartnerThemes],
   );
 
   const standardModeItems = useMemo<SubmenuItem[]>(
@@ -180,21 +176,17 @@ export const useThemeModesMenuContent = () => {
     [displayablePartnerThemes, activeConfigThemeUid, handleSwitchTheme],
   );
 
-  // Note: using partnerThemeItems as we might change the label or prefix icon
-  const selectedPartnerTheme = useMemo(() => {
-    return partnerThemeItems.find((theme) => theme.checkIcon);
-  }, [partnerThemeItems]);
-
-  const submenuItems = useMemo(
-    () => [...standardModeItems, ...partnerThemeItems],
-    [standardModeItems, partnerThemeItems],
+  const selectedPartnerThemeItem = useMemo(
+    () => partnerThemeItems.find((t) => t.checkIcon),
+    [partnerThemeItems],
   );
 
   return {
-    selectedThemeMode: selectedThemeMode,
-    selectedPartnerTheme: selectedPartnerTheme?.label,
+    selectedThemeMode,
+    selectedPartnerTheme: selectedPartnerThemeItem?.label,
     selectedThemeIcon:
-      selectedPartnerTheme?.prefixIcon ?? MODE_OPTIONS[selectedThemeMode].icon,
-    submenuItems,
+      selectedPartnerThemeItem?.prefixIcon ??
+      MODE_OPTIONS[selectedThemeMode].icon,
+    submenuItems: [...standardModeItems, ...partnerThemeItems],
   };
 };

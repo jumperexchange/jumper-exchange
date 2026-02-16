@@ -1,6 +1,8 @@
-import type { FC } from 'react';
-import { useEffect, useRef } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import ErrorRounded from '@mui/icons-material/ErrorRounded';
+import CheckIcon from '@mui/icons-material/Check';
+import InfoIcon from '@mui/icons-material/Info';
 import Typography from '@mui/material/Typography';
 import type {
   BottomSheetBase,
@@ -9,22 +11,29 @@ import type {
 import { BottomSheet } from 'src/components/core/BottomSheet/BottomSheet';
 import { Button } from 'src/components/Button/Button';
 import {
-  ErrorIconCircle,
+  StatusIconCircle,
+  StyledButtonGroup,
   StyledModalContentContainer,
   StyledTitleContainer,
 } from './StatusBottomSheet.styles';
+import type { SxProps, Theme } from '@mui/material/styles';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
-interface StatusBottomSheetProps {
+export interface StatusBottomSheetProps extends PropsWithChildren {
   title: string;
-  description: string;
+  description?: string;
   callToAction: string;
   callToActionType: 'submit' | 'button';
+  secondaryCallToAction?: string;
   containerId: string;
   isOpen: boolean;
   onClick?: () => void;
+  onSecondaryClick?: () => void;
   onClose?: () => void;
   onHeightChange?: (height: number) => void;
   transitionDuration?: BottomSheetProps['transitionDuration'];
+  status?: 'success' | 'error' | 'info';
+  sx?: SxProps<Theme>;
 }
 
 export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
@@ -32,12 +41,17 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
   description,
   callToAction,
   callToActionType,
+  secondaryCallToAction,
   containerId,
   isOpen,
   onClick,
+  onSecondaryClick,
   onClose,
   onHeightChange,
   transitionDuration,
+  status = 'error',
+  sx,
+  children,
 }) => {
   const bottomSheetRef = useRef<BottomSheetBase>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -89,6 +103,17 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
     };
   }, [isOpen, onHeightChange]);
 
+  const statusIcon = useMemo(() => {
+    switch (status) {
+      case 'success':
+        return <CheckIcon />;
+      case 'error':
+        return <ErrorRounded />;
+      case 'info':
+        return <InfoIcon />;
+    }
+  }, [status]);
+
   return (
     <BottomSheet
       containerId={containerId}
@@ -99,30 +124,44 @@ export const StatusBottomSheet: FC<StatusBottomSheetProps> = ({
     >
       <StyledModalContentContainer
         ref={containerRef}
-        sx={(theme) => ({
+        sx={mergeSx(sx, (theme) => ({
           padding: theme.spacing(3),
-        })}
+        }))}
       >
-        <ErrorIconCircle>
-          <ErrorRounded />
-        </ErrorIconCircle>
+        <StatusIconCircle status={status}>{statusIcon}</StatusIconCircle>
 
         <StyledTitleContainer>
           <Typography variant="titleXSmall">{title}</Typography>
         </StyledTitleContainer>
 
-        <Typography variant="bodyMedium">{description}</Typography>
-
-        {callToAction && (
-          <Button
-            fullWidth
-            variant="primary"
-            type={callToActionType}
-            onClick={onClick}
-          >
-            {callToAction}
-          </Button>
+        {description && (
+          <Typography variant="bodyMedium">{description}</Typography>
         )}
+
+        {children}
+
+        <StyledButtonGroup>
+          {secondaryCallToAction && (
+            <Button
+              fullWidth
+              variant="secondary"
+              type="button"
+              onClick={onSecondaryClick}
+            >
+              {secondaryCallToAction}
+            </Button>
+          )}
+          {callToAction && (
+            <Button
+              fullWidth
+              variant="primary"
+              type={callToActionType}
+              onClick={onClick}
+            >
+              {callToAction}
+            </Button>
+          )}
+        </StyledButtonGroup>
       </StyledModalContentContainer>
     </BottomSheet>
   );

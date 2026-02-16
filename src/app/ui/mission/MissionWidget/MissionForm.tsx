@@ -1,14 +1,15 @@
-import { useState, useMemo, useCallback, FormEvent, useEffect } from 'react';
+import type { FormEvent } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import z from 'zod';
 import FormControl from '@mui/material/FormControl';
 
 import { Button } from 'src/components/Button/Button';
 import { useMissionStore } from 'src/stores/mission';
-import { TaskWidgetInformationInputData } from 'src/types/strapi';
+import type { TaskWidgetInformationInputData } from 'src/types/strapi';
 import { MissionInstructionFormContainer } from './MissionWidget.styles';
 import { useVerifyTaskWithSharedState } from 'src/hooks/tasksVerification/useVerifyTaskWithSharedState';
 import { useTranslation } from 'react-i18next';
-import { TaskInput } from 'src/components/Form/TaskInput/TaskInput';
+import { FormInput } from '@/components/Form/FormInput/FormInput';
 
 const buildDynamicSchema = (taskInputs: TaskWidgetInformationInputData[]) => {
   const shape = taskInputs.reduce(
@@ -103,7 +104,7 @@ export const MissionForm = () => {
     <MissionInstructionFormContainer as="form" onSubmit={handleSubmit}>
       {taskInputs?.map((taskInput) => (
         <FormControl key={taskInput.inputId} sx={{ width: '100%' }}>
-          <TaskInput
+          <FormInput
             id={taskInput.inputId}
             name={taskInput.inputId}
             placeholder={taskInput.inputPlaceholder}

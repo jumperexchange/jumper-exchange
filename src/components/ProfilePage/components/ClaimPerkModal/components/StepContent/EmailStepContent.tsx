@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
-import { TaskInput } from 'src/components/Form/TaskInput/TaskInput';
+import { FormInput } from '@/components/Form/FormInput/FormInput';
 
 import { Button } from 'src/components/Button/Button';
 import { useTranslation } from 'react-i18next';
@@ -39,7 +39,7 @@ export const EmailStepContent: FC<EmailStepContentProps> = ({
         })}
       </Typography>
       <FormControl key={id} sx={{ width: '100%' }}>
-        <TaskInput
+        <FormInput
           placeholder={`email@example.com`}
           id={id}
           name={id}
