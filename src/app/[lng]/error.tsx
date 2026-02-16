@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import * as Sentry from '@sentry/nextjs';
 
 import { isProduction } from '@/utils/isProduction';
-import { HttpError } from '@/types/http-error';
 
 const ErrorPage = dynamic(() => import('../ui/error/ErrorPage'), {
   ssr: false,
