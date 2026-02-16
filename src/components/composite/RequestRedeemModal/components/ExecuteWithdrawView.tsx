@@ -65,11 +65,13 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
         earnOpportunity.lpToken,
         extendedFromToken?.priceUSD ?? '0',
       ),
-      claim.lpTokenAmount ?? '0',
+      // @Note: for ethena seems we only get back the assetAmount so using that as fallback ftm
+      claim.lpTokenAmount ?? claim.assetAmount ?? '0',
     );
   }, [
     earnOpportunity.lpToken,
     claim.lpTokenAmount,
+    claim.assetAmount,
     extendedFromToken?.priceUSD,
   ]);
 
