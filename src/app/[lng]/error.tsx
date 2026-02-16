@@ -24,5 +24,8 @@ export default function Error({
     console.error(error);
   }, [error]);
 
+  // TODO: need to integrate the statusCode once we have designs for different error pages
+  // const _statusCode = error instanceof HttpError ? error.statusCode : 500;
+
   return <ErrorPage reset={reset} />;
 }

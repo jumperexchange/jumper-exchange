@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button/Button';
-import { alpha, useColorScheme, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
@@ -17,18 +17,26 @@ import {
   ErrorMessage,
   SupportMessage,
 } from './ErrorPage.style';
+import { HeaderHeight } from '@/const/headerHeight';
 
 interface FallbackErrorProps {
   reset: () => void;
 }
 
 const ErrorPage = ({ reset }: FallbackErrorProps) => {
-  const { mode } = useColorScheme();
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const { t } = useTranslation();
   return (
-    <CenteredContainer>
+    <CenteredContainer
+      sx={{
+        height: {
+          xs: `calc(100vh - ${HeaderHeight.XS}px)`,
+          sm: `calc(100vh - ${HeaderHeight.SM}px)`,
+          md: `calc(100vh - ${HeaderHeight.MD}px)`,
+        },
+      }}
+    >
       <ErrorMessage variant={'bodyLarge'}>{t('error.message')}</ErrorMessage>
       <Button
         variant="primary"
@@ -53,26 +61,10 @@ const ErrorPage = ({ reset }: FallbackErrorProps) => {
           gap: '8px',
           borderRadius: '24px',
           padding: theme.spacing(1),
-          '> button:hover': {
-            backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-            ...theme.applyStyles('light', {
-              backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
-            }),
-          },
-          '> button:hover svg': {
-            fill:
-              mode === 'light'
-                ? theme.palette.grey[700]
-                : alpha(theme.palette.white.main, 0.88),
-          },
         }}
         fullWidth={true}
       >
-        <Discord
-          sx={{
-            color: theme.palette.common.white,
-          }}
-        />
+        <Discord />
         <SupportMessage variant="bodyMediumStrong" component="span">
           {t('navbar.navbarMenu.support')}
         </SupportMessage>
