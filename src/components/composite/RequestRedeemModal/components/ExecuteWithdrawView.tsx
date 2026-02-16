@@ -1,7 +1,7 @@
 import { useChains } from '@/hooks/useChains';
 import { useToken } from '@/hooks/useToken';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
-import { type FC, useCallback, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 import type { Address } from 'viem';
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
@@ -41,6 +41,7 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
 }) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
+  const { isSubmitting, handleSubmit } = formState;
 
   const { token: extendedFromToken } = useToken(
     earnOpportunity.lpToken.chain.chainId,
@@ -81,14 +82,6 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
       claim.assetAmount ?? '0',
     );
   }, [earnOpportunity.asset, claim.assetAmount, extendedToToken?.priceUSD]);
-
-  const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
-      formState.handleSubmit(event);
-    },
-    [formState],
-  );
 
   return (
     <RequestRedeemModalFormContainer as="form" onSubmit={handleSubmit}>
@@ -145,8 +138,8 @@ export const ExecuteWithdrawView: FC<ExecuteWithdrawViewProps> = ({
               type="submit"
               variant={Variant.Primary}
               fullWidth
-              loading={formState.isSubmitting}
-              disabled={formState.isSubmitting}
+              loading={isSubmitting}
+              disabled={isSubmitting}
             >
               {t('buttons.withdraw')}
             </Button>
