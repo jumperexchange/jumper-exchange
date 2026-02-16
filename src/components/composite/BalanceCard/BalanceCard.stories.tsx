@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { BalanceCard } from './BalanceCard';
 import { BalanceCardSkeleton } from './components/BalanceCardSkeleton';
 import { BalanceCardSize } from './types';
