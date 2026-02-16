@@ -111,6 +111,7 @@ export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
 export const sanitizeBalancesFilter = (
   filter: BalancesFilter,
   stats: BalancesFilteringParams,
+  shouldClampRangeFilter?: boolean,
 ): Nullable<BalancesFilter> => {
   if (
     !stats.allWallets.length ||
@@ -132,11 +133,15 @@ export const sanitizeBalancesFilter = (
     assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
     minValue:
       filter.minValue !== undefined
-        ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+        ? shouldClampRangeFilter
+          ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+          : filter.minValue
         : null,
     maxValue:
       filter.maxValue !== undefined
-        ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
+        ? shouldClampRangeFilter
+          ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
+          : filter.maxValue
         : null,
   };
 };
