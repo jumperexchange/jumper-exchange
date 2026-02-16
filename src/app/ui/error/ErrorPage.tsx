@@ -1,5 +1,5 @@
 import { Button } from '@/components/Button/Button';
-import { alpha, useColorScheme, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 
 import { Discord } from '@/components/illustrations/Discord';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
