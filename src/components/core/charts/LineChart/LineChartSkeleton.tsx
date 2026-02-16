@@ -6,10 +6,6 @@ import { AreaChart, Area, ResponsiveContainer } from 'recharts';
 
 export const LineChartSkeleton = () => {
   const muiTheme = useTheme();
-  const { mode } = useColorScheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const resolvedMode =
-    mode === 'system' || !mode ? (prefersDarkMode ? 'dark' : 'light') : mode;
 
   // Mock data for skeleton
   const mockData = [
@@ -39,11 +35,7 @@ export const LineChartSkeleton = () => {
                 dataKey="value"
                 baseValue={-1}
                 fillOpacity={1}
-                fill={
-                  resolvedMode === 'dark'
-                    ? (muiTheme.vars || muiTheme).palette.surface1.main
-                    : (muiTheme.vars || muiTheme).palette.surface2.main
-                }
+                fill={(muiTheme.vars || muiTheme).palette.surface2.main}
               />
             </mask>
           </defs>

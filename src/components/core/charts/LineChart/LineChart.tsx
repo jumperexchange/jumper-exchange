@@ -147,7 +147,7 @@ export const LineChart = <
     setActiveDot(null);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || !data || !data.length) {
     return <LineChartSkeleton />;
   }
 
