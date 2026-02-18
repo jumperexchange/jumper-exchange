@@ -15,7 +15,7 @@ import { qase } from 'playwright-qase-reporter';
   { name: 'Mobile', size: { width: 375, height: 812 } },
   { name: 'Desktop', size: { width: 1920, height: 1080 } },
 ].forEach(({ name, size }) => {
-  test.describe.skip(`On chain swaps [Viewport: ${name}]`, () => {
+  test.describe(`On chain swaps [Viewport: ${name}]`, () => {
     test.use({ viewport: { width: size.width, height: size.height } });
 
     test.beforeEach(async ({ page }) => {
@@ -62,7 +62,7 @@ import { qase } from 'playwright-qase-reporter';
       },
     );
 
-    test.skip(
+    test(
       qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'),
       async ({ page }) => {
         await test.step(`Check ${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} to ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol} swap pair`, async () => {

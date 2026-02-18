@@ -17,7 +17,7 @@ test.describe('Switch between dark and light theme and check the background colo
   });
 
   test.use({ colorScheme: 'dark' });
-  test.skip(
+  test(
     qase(30, 'Should able to change the theme color to Dark'),
     async ({ page }) => {
       await closeWelcomeScreen(page);
@@ -28,7 +28,7 @@ test.describe('Switch between dark and light theme and check the background colo
   );
 
   test.use({ colorScheme: 'light' });
-  test.skip(
+  test(
     qase(31, 'Should able to change the theme color to Light'),
     async ({ page }) => {
       await closeWelcomeScreen(page);
