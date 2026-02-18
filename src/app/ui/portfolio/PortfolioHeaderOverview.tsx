@@ -14,10 +14,7 @@ import Typography from '@mui/material/Typography';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { useMemo } from 'react';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
-import {
-  usePortfolioSummary,
-  usePortfolioState,
-} from '@/providers/PortfolioProvider/PortfolioContext';
+import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
 
 export const PortfolioHeaderOverview = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
@@ -25,9 +22,6 @@ export const PortfolioHeaderOverview = () => {
   const theme = useTheme();
 
   const summary = usePortfolioSummary();
-  const state = usePortfolioState();
-
-  const isLoading = state.isInitialLoading;
 
   const totalValue = useMemo(() => {
     if (!portfolioWelcomeScreenClosed) {
