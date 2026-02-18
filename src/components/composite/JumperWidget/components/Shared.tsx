@@ -1,0 +1,85 @@
+import type { FC } from 'react';
+import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
+import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import CheckIcon from '@mui/icons-material/Check';
+import {
+  ContentContainer,
+  MenuItemLabel,
+  MenuItemWrapper,
+} from '../JumperWidget.style';
+import { GoBackHeader } from './Headers';
+
+export interface OptionIconProps {
+  logoURI?: string;
+  name: string;
+  id: string;
+}
+
+export const OptionIcon: FC<OptionIconProps> = ({ logoURI, name, id }) =>
+  logoURI ? (
+    <AvatarItem
+      size={AvatarSize.XL}
+      avatar={{ src: logoURI, alt: name, id }}
+      disableBorder
+    />
+  ) : (
+    <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
+  );
+
+export interface SelectSideOption {
+  key: string;
+  logoURI?: string;
+  name: string;
+}
+
+export interface SelectSidePanelProps {
+  isActive: boolean;
+  options: SelectSideOption[];
+  isSelected: (key: string) => boolean;
+  onSelect: (key: string) => void;
+  onClose: () => void;
+  header?: string;
+}
+
+export const SelectSidePanel: FC<SelectSidePanelProps> = ({
+  isActive,
+  options,
+  isSelected,
+  onSelect,
+  onClose,
+  header,
+}) => {
+  if (!isActive) {
+    return null;
+  }
+
+  return (
+    <>
+      {header && <GoBackHeader header={header} onBack={onClose} />}
+      <ContentContainer sx={{ gap: 0 }}>
+        {options.map((option) => {
+          const selected = isSelected(option.key);
+          return (
+            <MenuItemWrapper
+              key={option.key}
+              disableRipple
+              onClick={() => onSelect(option.key)}
+              selected={selected}
+            >
+              <OptionIcon
+                logoURI={option.logoURI}
+                name={option.name}
+                id={option.key}
+              />
+              <MenuItemLabel>{option.name}</MenuItemLabel>
+              {selected && (
+                <CheckIcon sx={{ marginLeft: 'auto', height: 24, width: 24 }} />
+              )}
+            </MenuItemWrapper>
+          );
+        })}
+      </ContentContainer>
+    </>
+  );
+};
