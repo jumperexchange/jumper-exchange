@@ -23,7 +23,7 @@ export const TokensView: FC<AssetOverviewCardTokensProps> = ({
     <AssetsContainer ref={containerRef} sx={{ opacity: isReady ? 1 : 0 }}>
       {tokenSummaries.map((summary, index) => (
         <Box
-          key={summary.token.symbol}
+          key={`${summary.token.symbol}-${summary.token.chainId}`}
           ref={getItemRef(index)}
           sx={getItemSx(index)}
         >
