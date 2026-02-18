@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { RequestRedeemErrorType } from '../types';
-import type { StatusBottomSheetProps } from '../../StatusBottomSheet/StatusBottomSheet';
+import type { StatusBottomSheetProps } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 import type { ParseKeys } from 'i18next';
 
 export type StatusSheetContent = Pick<

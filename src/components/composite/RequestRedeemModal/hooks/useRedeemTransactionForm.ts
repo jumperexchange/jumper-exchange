@@ -11,7 +11,9 @@ import {
 } from '../types';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 import { openInNewTab } from '@/utils/openInNewTab';
-import { useTransactionFlow } from './useTransactionFlow';
+import { useTransactionFlow } from '@/hooks/transactions/useTransactionFlow';
+import type { ViewSubmitContext } from '@/components/composite/JumperWidget/types';
+import type { AmountValue } from '@/components/composite/JumperWidget/components/Amount';
 
 // Discriminated union for transaction types
 type RequestTransactionConfig = {
@@ -264,21 +266,28 @@ export const useRedeemTransactionForm = ({
   ]);
 
   const handleSubmit = useCallback(
-    (event: React.SubmitEvent) => {
-      event.preventDefault();
+    async (props: ViewSubmitContext) => {
       if (!accountAddress || state.currentStep !== 'idle') {
         return;
       }
 
       // For request type, show confirmation sheet
       if (config.type === 'request') {
+        const amountValue = (props.values.requestAmount as AmountValue).amount;
+        handleAmountChange(amountValue);
         dispatch({ type: 'SHOW_CONFIRMATION' });
       } else {
         // For claim type, execute immediately
         handleExecute();
       }
     },
-    [accountAddress, state.currentStep, config.type, handleExecute],
+    [
+      accountAddress,
+      state.currentStep,
+      config.type,
+      handleAmountChange,
+      handleExecute,
+    ],
   );
 
   const handleConfirm = useCallback(async () => {
