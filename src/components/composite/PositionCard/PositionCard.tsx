@@ -175,14 +175,22 @@ export const PositionCard: FC<PositionCardProps> = ({
                       <PositionOverview
                         icon={<CalendarMonthRoundedIcon sx={ICON_STYLES} />}
                         header={t('portfolio.defiPositionCard.overview.opened')}
-                        description={formatTimeDifference(openedAt, t)}
+                        description={formatTimeDifference(
+                          openedAt,
+                          t,
+                          'openedPeriod',
+                        )}
                       />
                     )}
                     {!!unlockAt && (
                       <PositionOverview
                         icon={<LockOutlineRoundedIcon sx={ICON_STYLES} />}
                         header={t('portfolio.defiPositionCard.overview.lockup')}
-                        description={formatTimeDifference(unlockAt, t)}
+                        description={formatTimeDifference(
+                          unlockAt,
+                          t,
+                          'lockupPeriod',
+                        )}
                       />
                     )}
                     {!!description && (

@@ -517,6 +517,20 @@ interface Resources {
           details: 'Details';
           lockup: 'Lockup';
           lockupPeriod: {
+            days_one: '{{count}} day remaining';
+            days_other: '{{count}} days remaining';
+            hours_one: '{{count}} hour remaining';
+            hours_other: '{{count}} hours remaining';
+            lessThanOneMinute: '<1 minute remaining';
+            minutes_one: '{{count}} minute remaining';
+            minutes_other: '{{count}} minutes remaining';
+            months_one: '{{count}} month remaining';
+            months_other: '{{count}} months remaining';
+            years_one: '{{count}} year remaining';
+            years_other: '{{count}} years remaining';
+          };
+          opened: 'Opened';
+          openedPeriod: {
             days_one: '{{count}} day ago';
             days_other: '{{count}} days ago';
             hours_one: '{{count}} hour ago';
@@ -529,7 +543,6 @@ interface Resources {
             years_one: '{{count}} year ago';
             years_other: '{{count}} years ago';
           };
-          opened: 'Opened';
           tooltip: {
             address: 'View contract';
             info: 'View earn detail';

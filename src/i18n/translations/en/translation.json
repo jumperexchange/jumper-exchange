@@ -486,7 +486,7 @@
         "opened": "Opened",
         "lockup": "Lockup",
         "details": "Details",
-        "lockupPeriod": {
+        "openedPeriod": {
           "lessThanOneMinute": "<1 minute ago",
           "minutes_one": "{{count}} minute ago",
           "minutes_other": "{{count}} minutes ago",
@@ -498,6 +498,19 @@
           "months_other": "{{count}} months ago",
           "years_one": "{{count}} year ago",
           "years_other": "{{count}} years ago"
+        },
+        "lockupPeriod": {
+          "lessThanOneMinute": "<1 minute remaining",
+          "minutes_one": "{{count}} minute remaining",
+          "minutes_other": "{{count}} minutes remaining",
+          "hours_one": "{{count}} hour remaining",
+          "hours_other": "{{count}} hours remaining",
+          "days_one": "{{count}} day remaining",
+          "days_other": "{{count}} days remaining",
+          "months_one": "{{count}} month remaining",
+          "months_other": "{{count}} months remaining",
+          "years_one": "{{count}} year remaining",
+          "years_other": "{{count}} years remaining"
         },
         "tooltip": {
           "address": "View contract",

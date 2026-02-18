@@ -21,47 +21,49 @@ import type { PortfolioPosition } from '@/providers/PortfolioProvider/types';
 import type { DisplayableEntity } from '../EntityAvatar/types';
 import type { PortfolioBalance, PositionToken } from '@/types/tokens';
 
-export const formatTimeDifference = (date: string, t: TFunction) => {
+export const formatTimeDifference = (
+  date: string,
+  t: TFunction,
+  key: 'openedPeriod' | 'lockupPeriod',
+) => {
   const now = new Date();
 
-  const years = differenceInYears(now, date);
+  const years = Math.abs(differenceInYears(now, date));
   if (years > 0) {
-    return t('portfolio.defiPositionCard.overview.lockupPeriod.years', {
+    return t(`portfolio.defiPositionCard.overview.${key}.years`, {
       count: years,
     });
   }
 
-  const months = differenceInMonths(now, date);
+  const months = Math.abs(differenceInMonths(now, date));
   if (months > 0) {
-    return t('portfolio.defiPositionCard.overview.lockupPeriod.months', {
+    return t(`portfolio.defiPositionCard.overview.${key}.months`, {
       count: months,
     });
   }
 
-  const days = differenceInDays(now, date);
+  const days = Math.abs(differenceInDays(now, date));
   if (days > 0) {
-    return t('portfolio.defiPositionCard.overview.lockupPeriod.days', {
+    return t(`portfolio.defiPositionCard.overview.${key}.days`, {
       count: days,
     });
   }
 
-  const hours = differenceInHours(now, date);
+  const hours = Math.abs(differenceInHours(now, date));
   if (hours > 0) {
-    return t('portfolio.defiPositionCard.overview.lockupPeriod.hours', {
+    return t(`portfolio.defiPositionCard.overview.${key}.hours`, {
       count: hours,
     });
   }
 
-  const minutes = differenceInMinutes(now, date);
+  const minutes = Math.abs(differenceInMinutes(now, date));
   if (minutes > 0) {
-    return t('portfolio.defiPositionCard.overview.lockupPeriod.minutes', {
+    return t(`portfolio.defiPositionCard.overview.${key}.minutes`, {
       count: minutes,
     });
   }
 
-  return t(
-    'portfolio.defiPositionCard.overview.lockupPeriod.lessThanOneMinute',
-  );
+  return t(`portfolio.defiPositionCard.overview.${key}.lessThanOneMinute`);
 };
 
 export const createEnhancedBalance = (
