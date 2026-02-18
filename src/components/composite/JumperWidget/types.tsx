@@ -23,6 +23,9 @@ export interface JumperWidgetStatusSheetProp {
 
 export interface BaseFieldProps {
   fieldKey: string;
+  label?: string;
+  placeholder?: string;
+  header?: string;
 }
 
 export interface AnyFieldDefinition {

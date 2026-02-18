@@ -20,7 +20,6 @@ export type AmountValue = z.infer<typeof amountSchema>;
 
 interface AmountProps extends BaseFieldProps {
   token: ExtendedToken;
-  label?: string;
 }
 
 export const Amount: FC<AmountProps> = ({ fieldKey, label, token }) => {

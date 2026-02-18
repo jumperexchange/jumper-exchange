@@ -3,11 +3,12 @@ import { z } from 'zod';
 import { useField } from '../store';
 import type { BaseFieldProps } from '../types';
 import type { ExtendedChain } from '@lifi/sdk';
-import { FieldWrapper, Label, Placeholder, Value } from '../JumperWidget.style';
-import Box from '@mui/material/Box';
+import { fieldSx } from '../JumperWidget.style';
 import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { OptionIcon, SelectSidePanel } from './Shared';
+import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
+import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 
 export const chainSingleSelectSchema = z.object({
   selectedChain: z.number().min(1),
@@ -35,33 +36,27 @@ export const ChainSingleSelectField: FC<ChainSingleSelectFieldProps> = ({
   );
 
   return (
-    <FieldWrapper onClick={field.openSidePanel} sx={{ cursor: 'pointer' }}>
-      {!!label && <Label>{label}</Label>}
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 2,
-        }}
-      >
-        {selectedChain ? (
-          <>
-            <OptionIcon
-              logoURI={selectedChain.logoURI}
-              name={selectedChain.name}
-              id={selectedChain.id.toString()}
-            />
-            <Value>{selectedChain.name}</Value>
-          </>
+    <SelectCard
+      label={label}
+      value={selectedChain?.name}
+      valueVariant="bodyLargeStrong"
+      mode={SelectCardMode.Display}
+      placeholder={placeholder}
+      placeholderVariant="bodyLarge"
+      startAdornment={
+        selectedChain ? (
+          <OptionIcon
+            logoURI={selectedChain.logoURI}
+            name={selectedChain.name}
+            id={selectedChain.id.toString()}
+          />
         ) : (
-          <>
-            <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
-            <Placeholder>{placeholder}</Placeholder>
-          </>
-        )}
-      </Box>
-    </FieldWrapper>
+          <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
+        )
+      }
+      onClick={field.openSidePanel}
+      sx={fieldSx}
+    />
   );
 };
 

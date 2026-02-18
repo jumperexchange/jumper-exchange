@@ -59,7 +59,7 @@ export const DisplayTokensAmount: FC<DisplayTokensAmountProps> = ({
       }
       isClickable={false}
       sx={sx}
-      // This needs to be replaced with a variant of EntityStackWithBadge
+      // This needs to be replaced with a variant of EntityStackWithBadge once the PR is merged
       startAdornment={
         <EntityChainStackWrapper>
           <Box

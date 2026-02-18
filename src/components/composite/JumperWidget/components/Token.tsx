@@ -3,12 +3,13 @@ import { z } from 'zod';
 import { useField } from '../store';
 import type { BaseFieldProps } from '../types';
 import type { PricedToken } from '@/types/tokens';
-import { FieldWrapper, Label, Placeholder, Value } from '../JumperWidget.style';
-import Box from '@mui/material/Box';
+import { fieldSx } from '../JumperWidget.style';
 import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { TokenStack } from '../../TokenStack/TokenStack';
 import { OptionIcon, SelectSidePanel } from './Shared';
+import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
+import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 
 export const tokenSingleSelectSchema = z.object({
   selectedToken: z.string().min(1),
@@ -22,9 +23,6 @@ export type TokenSingleSelectValue = z.infer<typeof tokenSingleSelectSchema>;
 export type TokenMultiSelectValue = z.infer<typeof tokenMultiSelectSchema>;
 
 interface TokenFieldBaseProps extends BaseFieldProps {
-  label?: string;
-  placeholder?: string;
-  header?: string;
   availableTokens: PricedToken[];
 }
 
@@ -44,33 +42,27 @@ export const TokenSingleSelectField: FC<TokenSingleSelectFieldProps> = ({
   );
 
   return (
-    <FieldWrapper onClick={field.openSidePanel} sx={{ cursor: 'pointer' }}>
-      {!!label && <Label>{label}</Label>}
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 2,
-        }}
-      >
-        {selectedToken ? (
-          <>
-            <OptionIcon
-              logoURI={selectedToken.logoURI}
-              name={selectedToken.name}
-              id={selectedToken.address}
-            />
-            <Value>{selectedToken.name}</Value>
-          </>
+    <SelectCard
+      label={label}
+      value={selectedToken?.name}
+      valueVariant="bodyLargeStrong"
+      mode={SelectCardMode.Display}
+      placeholder={placeholder}
+      placeholderVariant="bodyLarge"
+      startAdornment={
+        selectedToken ? (
+          <OptionIcon
+            logoURI={selectedToken.logoURI}
+            name={selectedToken.name}
+            id={selectedToken.address}
+          />
         ) : (
-          <>
-            <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
-            <Placeholder>{placeholder}</Placeholder>
-          </>
-        )}
-      </Box>
-    </FieldWrapper>
+          <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
+        )
+      }
+      onClick={field.openSidePanel}
+      sx={fieldSx}
+    />
   );
 };
 
@@ -115,28 +107,23 @@ export const TokenMultiSelectField: FC<TokenMultiSelectFieldProps> = ({
       ...t,
       chain: { chainId: t.chainId, chainKey: t.chainId.toString() },
     }));
-
   return (
-    <FieldWrapper onClick={field.openSidePanel} sx={{ cursor: 'pointer' }}>
-      {!!label && <Label>{label}</Label>}
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 2,
-        }}
-      >
-        {selectedTokens.length ? (
+    <SelectCard
+      label={label}
+      valueVariant="bodyLargeStrong"
+      mode={SelectCardMode.Display}
+      placeholder={placeholder}
+      placeholderVariant="bodyLarge"
+      startAdornment={
+        selectedTokens.length ? (
           <TokenStack tokens={selectedTokens} size={AvatarSize.XL} />
         ) : (
-          <>
-            <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
-            <Placeholder>{placeholder}</Placeholder>
-          </>
-        )}
-      </Box>
-    </FieldWrapper>
+          <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
+        )
+      }
+      onClick={field.openSidePanel}
+      sx={fieldSx}
+    />
   );
 };
 

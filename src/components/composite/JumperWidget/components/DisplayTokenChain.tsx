@@ -26,9 +26,7 @@ export const displayTokenChainSchema = z.object({
 
 export type DisplayTokenChainValue = z.infer<typeof displayTokenChainSchema>;
 
-interface DisplayTokenChainProps extends BaseFieldProps {
-  label?: string;
-}
+interface DisplayTokenChainProps extends BaseFieldProps {}
 
 export const DisplayTokenChain: FC<DisplayTokenChainProps> = ({
   label,

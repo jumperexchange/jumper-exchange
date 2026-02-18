@@ -15,7 +15,6 @@ export type AmountThresholdValue = z.infer<typeof amountThresholdSchema>;
 
 export interface AmountThresholdFieldProps extends BaseFieldProps {
   thresholds: number[];
-  label?: string;
   formatValue?: (value: number) => string;
 }
 

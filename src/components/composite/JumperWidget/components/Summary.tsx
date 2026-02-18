@@ -1,16 +1,9 @@
-import Stack from '@mui/material/Stack';
 import type { FC } from 'react';
 import { FieldWrapper, Label } from '../JumperWidget.style';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
-import {
-  SelectCardDescription,
-  SelectCardMode,
-} from '@/components/Cards/SelectCard/SelectCard.styles';
+import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 import type { Balance, ExtendedToken } from '@/types/tokens';
-import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
-import Box from '@mui/material/Box';
-import { descriptionBoxStyles } from '../../TokenAmountInput/constants';
 import { DisplayTokensAmount } from './DisplayTokensAmount';
 
 interface BaseProps {

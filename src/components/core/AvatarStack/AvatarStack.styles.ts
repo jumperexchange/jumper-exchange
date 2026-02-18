@@ -233,6 +233,7 @@ export const AvatarSkeleton = styled(BaseSurfaceSkeleton, {
   shouldForwardProp: (prop) => prop !== 'size',
 })<AvatarSkeletonProps>(({ size = AvatarSize.MD }) => ({
   ...getAvatarSize(size),
+  flexShrink: 0,
 }));
 
 interface BaseTypographyProps extends TypographyProps {

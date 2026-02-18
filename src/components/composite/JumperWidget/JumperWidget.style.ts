@@ -1,6 +1,7 @@
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
+import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -17,15 +18,19 @@ export const Value = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyLargeStrong,
 }));
 
+export const fieldSx = (theme: Theme) => ({
+  background: (theme.vars || theme).palette.surface1.main,
+  border: getSurfaceBorder(theme, 'surface1'),
+  borderRadius: `${theme.shape.cardBorderRadiusMedium}px`,
+  boxShadow: theme.shadows[2],
+});
+
 export const FieldWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
   padding: theme.spacing(2),
-  background: (theme.vars || theme).palette.surface1.main,
-  border: getSurfaceBorder(theme, 'surface1'),
-  borderRadius: theme.shape.cardBorderRadiusMedium,
-  boxShadow: theme.shadows[2],
+  ...fieldSx(theme),
 }));
 
 export const MenuItemWrapper = styled(MenuItem)(({ theme }) => ({
