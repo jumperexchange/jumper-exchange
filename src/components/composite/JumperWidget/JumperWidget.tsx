@@ -170,6 +170,7 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
         gap: 3,
         zIndex: 1,
         position: 'relative',
+        overflow: showSidePanel ? 'initial' : 'hidden',
       })}
       id={JUMPER_WIDGET_CONTAINER_ID}
     >

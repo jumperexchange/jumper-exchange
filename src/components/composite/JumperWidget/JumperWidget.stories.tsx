@@ -1,31 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState, useCallback, useMemo, useRef } from 'react';
 import { JumperWidget } from './JumperWidget';
-import { defineField, type StatusSheetContent } from './types';
-import { useFormValidation, useWidgetStore, useWidgetSubmit } from './store';
-import {
-  ChainSingleSelectField,
-  ChainSingleSelectSidePanel,
-  chainSingleSelectSchema,
-  type ChainSingleSelectValue,
-} from './components/Chain';
-import {
-  TokenSingleSelectField,
-  TokenSingleSelectSidePanel,
-  tokenSingleSelectSchema,
-  type TokenSingleSelectValue,
-} from './components/Token';
-import {
-  AmountThresholdField,
-  amountThresholdSchema,
-  type AmountThresholdValue,
-} from './components/AmountThreshold';
-import {
-  BalancesMultiSelectField,
-  BalancesMultiSelectSidePanel,
-  balancesMultiSelectSchema,
-  type BalancesMultiSelectValue,
-} from './components/Balances';
+import { type StatusSheetContent } from './types';
+import { useWidgetStore, useWidgetSubmit } from './store';
+import { type ChainSingleSelectValue } from './components/Chain';
+import { type TokenSingleSelectValue } from './components/Token';
+import { type NumericSelectValue } from './components/NumericSelect';
+import { type BalancesMultiSelectValue } from './components/Balances';
 import {
   createExtendedToken,
   createTokenBalance,
@@ -36,8 +17,14 @@ import { chains, tokens, balances } from './fixtures';
 import { Button } from '@/components/core/buttons/Button/Button';
 import { Variant } from '@/components/core/buttons/types';
 import { Summary } from './components/Summary';
-import { Amount, amountSchema } from './components/Amount';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
+import {
+  defineAmountField,
+  defineBalancesMultiSelectField,
+  defineChainSingleSelectField,
+  defineNumericSelectField,
+  defineTokenSingleSelectField,
+} from './utils';
 
 const meta = {
   title: 'components/composite/JumperWidget',
@@ -169,7 +156,7 @@ const BalancesSummary = () => {
     | BalancesMultiSelectValue
     | undefined;
   const amountThreshold = values.amountThreshold as
-    | AmountThresholdValue
+    | NumericSelectValue
     | undefined;
 
   const selectedChain = useMemo(
@@ -192,14 +179,14 @@ const BalancesSummary = () => {
     );
   }, [selectedChain]);
 
-  if (!fromBalances.length || !toBalance || !amountThreshold?.amount)
+  if (!fromBalances.length || !toBalance || !amountThreshold?.value)
     return null;
 
   return (
     <Summary
       label="Convert"
       from={fromBalances}
-      amountUSD={amountThreshold.amount}
+      amountUSD={amountThreshold.value}
       to={toBalance}
       fieldSx={summaryFieldSx}
     />
@@ -214,38 +201,27 @@ export const Default: Story = {
     );
     const nextStepRef = useRef<((id: string) => void) | null>(null);
 
-    const fromChain = defineField({
+    const fromChain = defineChainSingleSelectField({
       fieldKey: 'fromChain',
-      schema: chainSingleSelectSchema,
-      FieldComponent: ChainSingleSelectField,
-      SidePanelComponent: ChainSingleSelectSidePanel,
       fieldProps: { availableChains: chains, label: 'From chain' },
       sidePanelProps: { availableChains: chains, header: 'Chains' },
     });
 
-    const toChain = defineField({
+    const toChain = defineChainSingleSelectField({
       fieldKey: 'toChain',
-      schema: chainSingleSelectSchema,
-      FieldComponent: ChainSingleSelectField,
-      SidePanelComponent: ChainSingleSelectSidePanel,
       fieldProps: { availableChains: chains, label: 'To chain' },
       sidePanelProps: { availableChains: chains, header: 'Chains' },
     });
 
-    const tokenField = defineField({
+    const tokenField = defineTokenSingleSelectField({
       fieldKey: 'token',
-      schema: tokenSingleSelectSchema,
-      FieldComponent: TokenSingleSelectField,
-      SidePanelComponent: TokenSingleSelectSidePanel,
       fieldProps: { availableTokens: tokens, label: 'Token' },
       sidePanelProps: { availableTokens: tokens, header: 'Tokens' },
     });
 
-    const amountField = defineField({
+    const amountField = defineAmountField({
       fieldKey: 'amount',
-      schema: amountSchema,
       defaultValue: { amount: '0', maxAmount: '100000' },
-      FieldComponent: Amount,
       fieldProps: { label: 'Amount', token: tokens[0] },
     });
 
@@ -261,9 +237,9 @@ export const Default: Story = {
       title: 'Confirm bridge',
       description: 'Please confirm you want to proceed with this bridge.',
       callToAction: 'Confirm',
-      callToActionType: 'button',
+      callToActionType: 'submit',
       status: 'info',
-      onClick: undefined,
+      onClick: handleConfirmationConfirm,
     };
 
     const successSheetContent: StatusSheetContent = {
@@ -272,7 +248,7 @@ export const Default: Story = {
       callToAction: 'Done',
       callToActionType: 'button',
       status: 'success',
-      onClick: undefined,
+      onClick: handleCloseSheet,
     };
 
     const statusSheet = {
@@ -281,10 +257,6 @@ export const Default: Story = {
         ...(sheetMode === 'confirmation'
           ? confirmationSheetContent
           : successSheetContent),
-        onClick:
-          sheetMode === 'confirmation'
-            ? handleConfirmationConfirm
-            : handleCloseSheet,
       },
       onClose: handleCloseSheet,
     };
@@ -353,28 +325,23 @@ export const Balances: Story = {
       );
     };
 
-    const dustAmountThreshold = defineField({
+    const dustAmountThreshold = defineNumericSelectField({
       fieldKey: 'amountThreshold',
-      schema: amountThresholdSchema,
-      defaultValue: { amount: 5 },
-      FieldComponent: AmountThresholdField,
-      fieldProps: { thresholds: [5, 10, 20, 30], label: 'Dust threshold' },
+      defaultValue: { value: 5 },
+      fieldProps: { values: [5, 10, 20, 30], label: 'Dust threshold' },
     });
 
-    const chainField = defineField({
+    const chainField = defineChainSingleSelectField({
       fieldKey: 'chain',
-      schema: chainSingleSelectSchema,
-      FieldComponent: ChainSingleSelectField,
-      SidePanelComponent: ChainSingleSelectSidePanel,
       fieldProps: { availableChains: chains, label: 'Chain' },
       sidePanelProps: { availableChains: chains, header: 'Chains' },
       deriveProps: (getValue) => {
         const threshold = getValue('amountThreshold') as
-          | AmountThresholdValue
+          | NumericSelectValue
           | undefined;
-        if (!threshold?.amount) return {};
+        if (!threshold?.value) return {};
         const filtered = chains.filter((c) =>
-          checkChainBalancesAboveThreshold(c.id, threshold.amount),
+          checkChainBalancesAboveThreshold(c.id, threshold.value),
         );
         return {
           fieldProps: { availableChains: filtered },
@@ -383,21 +350,18 @@ export const Balances: Story = {
       },
     });
 
-    const balancesField = defineField({
+    const balancesField = defineBalancesMultiSelectField({
       fieldKey: 'balances',
-      schema: balancesMultiSelectSchema,
-      FieldComponent: BalancesMultiSelectField,
-      SidePanelComponent: BalancesMultiSelectSidePanel,
       fieldProps: { availableBalances: balances, label: 'Convert' },
       sidePanelProps: { availableBalances: balances, header: 'Tokens' },
       deriveProps: (getValue) => {
         const threshold = getValue('amountThreshold') as
-          | AmountThresholdValue
+          | NumericSelectValue
           | undefined;
 
         const chain = getValue('chain') as ChainSingleSelectValue | undefined;
 
-        if (!chain?.selectedChain || !threshold?.amount)
+        if (!chain?.selectedChain || !threshold?.value)
           return {
             fieldProps: { availableBalances: [] },
             sidePanelProps: { availableBalances: [] },
@@ -405,7 +369,7 @@ export const Balances: Story = {
 
         const filtered = balances
           .filter((b) => b.token.chainId === chain.selectedChain)
-          .filter((b) => checkBalanceAboveThreshold(b, threshold.amount));
+          .filter((b) => checkBalanceAboveThreshold(b, threshold.value));
         return {
           fieldProps: { availableBalances: filtered },
           sidePanelProps: { availableBalances: filtered },
