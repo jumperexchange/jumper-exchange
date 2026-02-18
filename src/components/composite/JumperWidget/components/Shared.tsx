@@ -5,6 +5,7 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import CheckIcon from '@mui/icons-material/Check';
 import {
   ContentContainer,
+  Label,
   MenuItemLabel,
   MenuItemWrapper,
 } from '../JumperWidget.style';
@@ -58,27 +59,35 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
     <>
       {header && <GoBackHeader header={header} onBack={onClose} />}
       <ContentContainer sx={{ gap: 0 }}>
-        {options.map((option) => {
-          const selected = isSelected(option.key);
-          return (
-            <MenuItemWrapper
-              key={option.key}
-              disableRipple
-              onClick={() => onSelect(option.key)}
-              selected={selected}
-            >
-              <OptionIcon
-                logoURI={option.logoURI}
-                name={option.name}
-                id={option.key}
-              />
-              <MenuItemLabel>{option.name}</MenuItemLabel>
-              {selected && (
-                <CheckIcon sx={{ marginLeft: 'auto', height: 24, width: 24 }} />
-              )}
-            </MenuItemWrapper>
-          );
-        })}
+        {options.length ? (
+          options.map((option) => {
+            const selected = isSelected(option.key);
+            return (
+              <MenuItemWrapper
+                key={option.key}
+                disableRipple
+                onClick={() => onSelect(option.key)}
+                selected={selected}
+              >
+                <OptionIcon
+                  logoURI={option.logoURI}
+                  name={option.name}
+                  id={option.key}
+                />
+                <MenuItemLabel>{option.name}</MenuItemLabel>
+                {selected && (
+                  <CheckIcon
+                    sx={{ marginLeft: 'auto', height: 24, width: 24 }}
+                  />
+                )}
+              </MenuItemWrapper>
+            );
+          })
+        ) : (
+          <Label>
+            No {header?.toLowerCase() || 'items'} available for selection
+          </Label>
+        )}
       </ContentContainer>
     </>
   );

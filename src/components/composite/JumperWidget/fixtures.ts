@@ -1,4 +1,4 @@
-import type { Balance, PricedToken } from '@/types/tokens';
+import type { Balance, ExtendedToken } from '@/types/tokens';
 import type { ExtendedChain } from '@lifi/sdk';
 import { ChainKey, ChainType, CoinKey } from '@lifi/sdk';
 import { zeroAddress } from 'viem';
@@ -81,7 +81,7 @@ export const chains: ExtendedChain[] = [
   },
 ];
 
-export const tokens: PricedToken[] = [
+export const tokens: ExtendedToken[] = [
   {
     address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     name: 'USD Coin',
@@ -141,7 +141,7 @@ export const tokens: PricedToken[] = [
 
 export const balances: Balance[] = [
   {
-    amount: 1_500_000n, // ~$1.50
+    amount: 5_500_000n, // ~$5.50
     token: {
       address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       name: 'USD Coin',

@@ -26,16 +26,7 @@ export interface BalancesMultiSelectFieldProps<
   placeholder?: string;
   header?: string;
   availableBalances: Balance<T>[];
-  formatAmount?: (amount: bigint, decimals: number) => string;
 }
-
-const defaultFormatAmount = (amount: bigint, decimals: number): string => {
-  const divisor = BigInt(10 ** decimals);
-  const whole = amount / divisor;
-  const remainder = amount % divisor;
-  const fractional = remainder.toString().padStart(decimals, '0').slice(0, 4);
-  return `${whole}.${fractional}`;
-};
 
 export const BalancesMultiSelectField = <T extends PricedToken = PricedToken>({
   label,
@@ -64,7 +55,7 @@ export const BalancesMultiSelectField = <T extends PricedToken = PricedToken>({
       label={label}
       valueVariant="bodyLargeStrong"
       mode={SelectCardMode.Display}
-      placeholder={placeholder}
+      placeholder={selectedTokens.length ? '' : placeholder}
       placeholderVariant="bodyLarge"
       startAdornment={
         selectedTokens.length ? (
@@ -84,7 +75,6 @@ export const BalancesMultiSelectSidePanel = <
 >({
   fieldKey,
   availableBalances,
-  formatAmount = defaultFormatAmount,
   header,
 }: BalancesMultiSelectFieldProps<T>) => {
   const field = useField<BalancesMultiSelectValue>(fieldKey);
