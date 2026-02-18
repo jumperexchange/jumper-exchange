@@ -22,6 +22,7 @@ import {
   isChain,
 } from '../EntityAvatar/utils';
 import { capitalizeString } from '@/utils/capitalizeString';
+import { EntityStackWithBadgeSkeleton } from './EntityStackWithBadgeSkeleton';
 
 export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
   entities,
@@ -127,7 +128,13 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
 
   // Loading state
   if (isLoading) {
-    return null;
+    return (
+      <EntityStackWithBadgeSkeleton
+        size={size}
+        gap={spacing.containerGap}
+        isContentVisible={isContentVisible}
+      />
+    );
   }
 
   const mainStack = (
