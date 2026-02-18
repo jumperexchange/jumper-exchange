@@ -6,7 +6,6 @@ import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
 import { useFormatRedeemClaimData } from './hooks/useFormatRedeemClaimData';
 import { useRedeemTransactionForm } from './hooks/useRedeemTransactionForm';
 import { useRedeemTransactionStatusContent } from './hooks/useRedeemTransactionStatusContent';
-import { defineField } from '@/components/composite/JumperWidget/types';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
 import type { JumperWidgetStatusSheetProp } from '@/components/composite/JumperWidget/types';
 import { TokenAmountInput } from '@/components/composite/TokenAmountInput/TokenAmountInput';
@@ -17,17 +16,13 @@ import { RequestViewSubmitButton } from './components/RequestViewSubmitButton';
 import { ClaimList } from './components/ClaimList';
 import { RequestRedeemModalView } from './types';
 import { useEarnOpportunityTokens } from './hooks/useEarnOpportunityTokens';
-import {
-  DisplayTokenChain,
-  displayTokenChainSchema,
-} from '@/components/composite/JumperWidget/components/DisplayTokenChain';
-import {
-  Amount,
-  amountSchema,
-} from '@/components/composite/JumperWidget/components/Amount';
 import { Summary } from '@/components/composite/JumperWidget/components/Summary';
 import { claimTokenAmountStyle, widgetStyle } from './constants';
 import { ExecuteClaimSubmitButton } from './components/ExecuteClaimSubmitButton';
+import {
+  defineAmountField,
+  defineDisplayTokenChainField,
+} from '@/components/composite/JumperWidget/utils';
 
 interface RequestRedeemModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -167,36 +162,32 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     transactionForm.showConfirmationSheet,
     transactionForm.showErrorBottomSheet,
     transactionForm.showSuccessSheet,
+    transactionForm.transactionType,
     transactionForm.handleCloseSheet,
     statusContent.confirmationSheetContent,
     statusContent.errorSheetContent,
     statusContent.successSheetContent,
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
-    selectedClaim,
     t,
   ]);
 
   const requestWithdrawFields = useMemo(
     () => [
-      defineField({
+      defineAmountField({
         fieldKey: 'requestAmount',
-        schema: amountSchema,
         defaultValue: {
           amount: '0',
           maxAmount: lpTokenAmount?.toString(),
         },
-        FieldComponent: Amount,
         fieldProps: {
           token: lpToken,
           label: t('form.labels.amount'),
         },
       }),
-      defineField({
+      defineDisplayTokenChainField({
         fieldKey: 'withdrawTo',
-        schema: displayTokenChainSchema,
         defaultValue: assetToken,
-        FieldComponent: DisplayTokenChain,
         fieldProps: {
           label: t('form.labels.withdrawTo'),
         },
