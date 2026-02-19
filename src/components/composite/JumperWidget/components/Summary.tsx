@@ -3,7 +3,7 @@ import { FieldWrapper, Label } from '../JumperWidget.style';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
-import type { Balance, ExtendedToken, PricedToken } from '@/types/tokens';
+import type { Balance, PricedToken } from '@/types/tokens';
 import { DisplayTokensAmount } from './DisplayTokensAmount';
 
 interface BaseProps {

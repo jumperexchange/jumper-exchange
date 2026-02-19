@@ -1,0 +1,62 @@
+import { useMemo } from 'react';
+import { useChains } from '@/hooks/useChains';
+import { useTokens } from '@/hooks/useTokens';
+import { usePortfolioBalances } from '@/providers/PortfolioProvider/PortfolioContext';
+import { createExtendedToken } from '@/types/tokens';
+
+export const useDustBalances = () => {
+  const { balances: portfolioBalances } = usePortfolioBalances();
+  const { chains: allChains } = useChains();
+  const { tokens: allTokens } = useTokens();
+
+  const flatBalances = useMemo(
+    () => Object.values(portfolioBalances ?? {}).flat(),
+    [portfolioBalances],
+  );
+
+  const nonNativeBalances = useMemo(() => {
+    if (!allTokens?.tokens) {
+      return [];
+    }
+
+    const nativeAddressByChainId = new Map(
+      allChains.map((chain) => [
+        chain.id,
+        chain.nativeToken.address.toLowerCase(),
+      ]),
+    );
+
+    return flatBalances.filter(
+      (balance) =>
+        nativeAddressByChainId.get(balance.token.chainId) !==
+          balance.token.address.toLowerCase() && balance.amountUSD,
+    );
+  }, [flatBalances, allChains, allTokens]);
+
+  const chains = useMemo(
+    () =>
+      allChains.filter((chain) =>
+        nonNativeBalances.some((b) => b.token.chainId === chain.id),
+      ),
+    [allChains, nonNativeBalances],
+  );
+
+  const nativeExtendedTokens = useMemo(() => {
+    if (!allTokens?.tokens) {
+      return [];
+    }
+
+    return chains
+      .flatMap((chain) => {
+        const nativeToken = allTokens.tokens[chain.id]?.find(
+          (token) =>
+            token.address.toLowerCase() ===
+            chain.nativeToken.address.toLowerCase(),
+        );
+        return nativeToken ? [nativeToken] : [];
+      })
+      .map((token) => createExtendedToken(token));
+  }, [chains, allTokens]);
+
+  return { flatBalances, nonNativeBalances, chains, nativeExtendedTokens };
+};
