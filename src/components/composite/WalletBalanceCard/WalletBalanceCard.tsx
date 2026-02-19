@@ -24,6 +24,10 @@ import { BalanceCardSize } from '../BalanceCard/types';
 import { BalanceCardSkeleton } from '../BalanceCard/components/BalanceCardSkeleton';
 import { BalanceCard } from '../BalanceCard/BalanceCard';
 import { flatMap } from 'lodash';
+import {
+  balanceGroupSortAccessors,
+  sortPortfolioItems,
+} from '@/providers/PortfolioProvider/filtering/utils';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -50,8 +54,14 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const { setWalletMenuState } = useMenuStore((state) => state);
 
   const balanceGroups = useMemo(() => {
-    return Object.entries(data);
+    return sortPortfolioItems(
+      Object.entries(data),
+      'value',
+      'desc',
+      balanceGroupSortAccessors,
+    );
   }, [data]);
+
   const balances = useMemo(() => {
     return flatMap(data);
   }, [data]);
