@@ -1,59 +1,25 @@
 'use client';
 
 import { AssetOverviewCard } from '@/components/composite/AssetOverviewCard/AssetOverviewCard';
-import { useFormatDisplayDeFiPositions } from '@/hooks/portfolio/useFormatDisplayDeFiPositions';
-import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
-import { useEffect, useMemo, useRef } from 'react';
-import type { PortfolioToken } from 'src/types/tokens';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
-import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
+import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
+import {
+  usePortfolioSummary,
+  usePortfolioState,
+} from '@/providers/PortfolioProvider/PortfolioContext';
+import { useEffect, useRef } from 'react';
 
 export const PortfolioHeaderBreakdown = () => {
+  const connectedAddresses = useConnectedEvmAddresses();
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { trackPortfolioPageOverviewEvent } = usePortfolioTracking();
   const portfolioHasBeenTracked = useRef(false);
-  const connectedAddresses = useConnectedEvmAddresses();
-  const { data: allPositions, isLoading: isLoadingPositions } =
-    usePortfolioDeFiPositions({
-      addresses: connectedAddresses,
-    });
-  const { formattedData: formattedTokens, isFetching: isFetchingTokens } =
-    usePortfolioDisplayTokens();
 
-  const isLoading = isLoadingPositions || isFetchingTokens;
+  const summary = usePortfolioSummary();
+  const state = usePortfolioState();
 
-  const tokens = useMemo<PortfolioToken[]>(() => {
-    if (
-      !formattedTokens ||
-      formattedTokens.length === 0 ||
-      !portfolioWelcomeScreenClosed ||
-      isFetchingTokens
-    ) {
-      return [];
-    }
-
-    return formattedTokens;
-  }, [isFetchingTokens, formattedTokens, portfolioWelcomeScreenClosed]);
-
-  const formattedPositions = useFormatDisplayDeFiPositions(
-    allPositions?.data,
-    (position) => position.protocol.name,
-  );
-
-  const defiPositionGroups = useMemo(() => {
-    if (
-      formattedPositions.length === 0 ||
-      !portfolioWelcomeScreenClosed ||
-      isLoadingPositions
-    ) {
-      return [];
-    }
-
-    return formattedPositions;
-  }, [isLoadingPositions, formattedPositions, portfolioWelcomeScreenClosed]);
+  const isLoading = state.isInitialLoading || state.isRefreshing;
 
   useEffect(() => {
     if (
@@ -64,18 +30,13 @@ export const PortfolioHeaderBreakdown = () => {
     ) {
       return;
     }
-    trackPortfolioPageOverviewEvent(
-      connectedAddresses,
-      tokens,
-      defiPositionGroups,
-    );
+    trackPortfolioPageOverviewEvent(connectedAddresses, summary);
     portfolioHasBeenTracked.current = true;
   });
 
   return (
     <AssetOverviewCard
-      tokens={tokens}
-      defiPositionGroups={defiPositionGroups}
+      summaryData={summary}
       isLoading={portfolioWelcomeScreenClosed && isLoading}
       showNoContent={portfolioWelcomeScreenClosed}
     />

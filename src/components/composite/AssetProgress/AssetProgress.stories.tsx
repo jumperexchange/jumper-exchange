@@ -1,66 +1,85 @@
-import { Meta, StoryObj } from '@storybook/nextjs-vite';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { AssetProgress } from './AssetProgress';
-import { AssetProgressVariant } from './AssetProgress.types';
-import { JUMPER_STRAPI_URL } from '@/const/urls';
+import { AssetProgressVariant } from './types';
+import { mockToken, mockProtocol, mockProgressData } from './fixtures';
 
-const meta = {
-  title: 'Composite/AssetProgress',
+const meta: Meta<typeof AssetProgress> = {
+  title: 'components/composite/AssetProgress',
   component: AssetProgress,
-  argTypes: {
-    variant: {
-      control: { type: 'select' },
-      options: Object.values(AssetProgressVariant),
-    },
+  parameters: {
+    layout: 'centered',
   },
-} satisfies Meta<typeof AssetProgress>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof AssetProgress>;
 
-export const Default: Story = {
+export const TokenHighProgress: Story = {
   args: {
-    progress: 32,
+    variant: AssetProgressVariant.Entity,
+    entity: mockToken,
+    ...mockProgressData.highProgress,
+  },
+};
+
+export const TokenMediumProgress: Story = {
+  args: {
+    variant: AssetProgressVariant.Entity,
+    entity: mockToken,
+    ...mockProgressData.mediumProgress,
+  },
+};
+
+export const TokenLowProgress: Story = {
+  args: {
+    variant: AssetProgressVariant.Entity,
+    entity: mockToken,
+    ...mockProgressData.lowProgress,
+  },
+};
+
+export const ProtocolProgress: Story = {
+  args: {
+    variant: AssetProgressVariant.Entity,
+    entity: mockProtocol,
+    ...mockProgressData.highProgress,
+  },
+};
+
+export const TextOverflow: Story = {
+  args: {
     variant: AssetProgressVariant.Text,
-    text: '+3',
-    amount: 100,
+    text: '+5',
+    ...mockProgressData.lowProgress,
   },
 };
 
-export const TextSmallAmount: Story = {
+export const TinyAmount: Story = {
   args: {
-    progress: 32,
-    variant: AssetProgressVariant.Text,
-    text: '+3',
-    amount: 0.00000000123,
+    variant: AssetProgressVariant.Entity,
+    entity: mockToken,
+    ...mockProgressData.tinyAmount,
   },
 };
 
-export const Token: Story = {
-  args: {
-    progress: 32,
-    variant: AssetProgressVariant.Token,
-    token: {
-      address: '0x0000000000000000000000000000000000000000',
-      name: 'ETH',
-      symbol: 'ETH',
-      decimals: 6,
-      logo: '',
-      chain: { chainId: 1, chainKey: 'Ethereum' },
-    },
-    amount: 100,
-  },
-};
-
-export const Protocol: Story = {
-  args: {
-    progress: 32,
-    variant: AssetProgressVariant.Protocol,
-    protocol: {
-      name: 'Morpho',
-      logo: `${JUMPER_STRAPI_URL}/uploads/morpho_eef0686ee3_2e4b8e06a6.png`,
-      product: 'Morpho',
-      version: '1.0.0',
-    },
-    amount: 100,
-  },
+export const MultipleProgress: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 24 }}>
+      <AssetProgress
+        variant={AssetProgressVariant.Entity}
+        entity={mockToken}
+        {...mockProgressData.highProgress}
+      />
+      <AssetProgress
+        variant={AssetProgressVariant.Entity}
+        entity={mockProtocol}
+        {...mockProgressData.mediumProgress}
+      />
+      <AssetProgress
+        variant={AssetProgressVariant.Text}
+        text="+3"
+        {...mockProgressData.lowProgress}
+      />
+    </div>
+  ),
 };

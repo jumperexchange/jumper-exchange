@@ -101,12 +101,27 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
   const prevStatsRef = useRef<BalancesFilteringParams>(
     EMPTY_BALANCES_FILTERING_PARAMS,
   );
+  /**
+   * If an initial filter range is provided, preserve those values
+   * and clamp them to the available data once loading completes.
+   *
+   * If no initial range exists, dynamically update the minimum
+   * filter value based on the currently loaded statistics.
+   */
+  const hasInitialFilterRangeRef = useRef<boolean | null>(null);
+  if (hasInitialFilterRangeRef.current === null) {
+    hasInitialFilterRangeRef.current =
+      balancesMinValue != null || balancesMaxValue !== null;
+  }
 
   const balancesState = usePortfolioBalances();
   const orchestrationState = usePortfolioState();
   const balancesSourceState = orchestrationState.sources.balances;
 
   const isEmpty = balancesSourceState.isEmpty;
+
+  const isAllDataLoading =
+    balancesSourceState.isLoading || balancesSourceState.isRefreshing;
 
   const stats = useMemo((): BalancesFilteringParams => {
     if (isEmpty) {
@@ -126,14 +141,25 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
       return;
     }
 
-    prevStatsRef.current = stats;
+    if (!isAllDataLoading) {
+      prevStatsRef.current = stats;
+    }
 
-    const sanitized = sanitizeBalancesFilter(filter, stats);
+    const shouldClampRangeFilter =
+      !!hasInitialFilterRangeRef.current && !isAllDataLoading;
+
+    const sanitized = sanitizeBalancesFilter(
+      filter,
+      stats,
+      shouldClampRangeFilter,
+    );
     const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
 
     const withDefaults = {
       ...sanitized,
-      minValue: sanitized.minValue ?? effectiveValueRange.min,
+      minValue: hasInitialFilterRangeRef.current
+        ? sanitized.minValue
+        : effectiveValueRange.min,
     };
 
     if (!isEqual(withDefaults, filter)) {
@@ -146,7 +172,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
         balancesMaxValue: withDefaults.maxValue,
       });
     }
-  }, [stats, setSearchParamsState, setFilter, filter]);
+  }, [stats, setSearchParamsState, setFilter, isAllDataLoading, filter]);
 
   const sortedData = useMemo(() => {
     return filterSortBalancesData(
@@ -198,6 +224,10 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     [setSortBy, setSearchParamsState],
   );
 
+  const isLoading =
+    (balancesSourceState.isLoading && balancesSourceState.isEmpty) ||
+    balancesSourceState.isRefreshing;
+
   const context: BalancesFilteringContextType = {
     order,
     sortBy,
@@ -206,7 +236,7 @@ export const BalancesFilteringProvider = ({ children }: PropsWithChildren) => {
     updateFilter,
     clearFilters,
     data: sortedData,
-    isLoading: balancesSourceState.isLoading,
+    isLoading,
     isEmpty,
     ...stats,
   };

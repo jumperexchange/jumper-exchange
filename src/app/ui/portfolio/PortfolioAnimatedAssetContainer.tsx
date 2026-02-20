@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'motion/react';
 import type { FC, PropsWithChildren } from 'react';
 import { PortfolioAssetContainer } from './PortfolioPage.styles';

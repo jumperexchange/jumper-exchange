@@ -23,6 +23,7 @@ import {
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider';
+import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
 import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
   baseMiniApp,
@@ -205,9 +206,11 @@ export default async function RootLayout({
                   <WalletProvider>
                     <MUIThemeProvider>
                       <SettingsStoreProvider>
-                        <NavbarWrapper />
-                        <IntercomProvider />
-                        {children}
+                        <PortfolioProvider>
+                          <NavbarWrapper />
+                          <IntercomProvider />
+                          {children}
+                        </PortfolioProvider>
                       </SettingsStoreProvider>
                     </MUIThemeProvider>
                   </WalletProvider>

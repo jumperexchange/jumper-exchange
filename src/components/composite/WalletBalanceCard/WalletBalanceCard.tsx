@@ -15,22 +15,26 @@ import {
   WalletBalanceCardContentContainer,
 } from './WalletBalanceCard.styles';
 import Stack from '@mui/material/Stack';
-import generateKey from 'src/app/lib/generateKey';
-import { TokenListCardSkeleton } from '../TokenListCard/TokenListCardSkeleton';
-import { TokenListCard } from '../TokenListCard/TokenListCard';
-import type { PortfolioToken } from 'src/types/tokens';
+import type { PortfolioBalance, WalletToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
 import { WalletWithActions } from './components/WalletWithActions';
-import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
-import { useTokensWithoutLpPositions } from '@/hooks/portfolio/useTokensWithoutLpPositions';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { useSettingsStore } from '@/stores/settings';
+import { BalanceCardSize } from '../BalanceCard/types';
+import { BalanceCardSkeleton } from '../BalanceCard/components/BalanceCardSkeleton';
+import { BalanceCard } from '../BalanceCard/BalanceCard';
+import { flatMap } from 'lodash';
+import {
+  balanceGroupSortAccessors,
+  sortPortfolioItems,
+} from '@/providers/PortfolioProvider/filtering/utils';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
   refetch,
   isFetching,
   isSuccess,
+  updatedAt,
   data,
   'data-testid': dataTestId,
 }) => {
@@ -49,8 +53,18 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const setFrom = useWidgetCacheStore((state) => state.setFrom);
   const { setWalletMenuState } = useMenuStore((state) => state);
 
-  const formattedTokens = useFormatDisplayWalletTokens(data);
-  const tokens = useTokensWithoutLpPositions(formattedTokens);
+  const balanceGroups = useMemo(() => {
+    return sortPortfolioItems(
+      Object.entries(data),
+      'value',
+      'desc',
+      balanceGroupSortAccessors,
+    );
+  }, [data]);
+
+  const balances = useMemo(() => {
+    return flatMap(data);
+  }, [data]);
 
   useEffect(() => {
     if (hasMultipleAccountsConnected) {
@@ -70,8 +84,8 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
     setIsExpanded((prev) => !prev);
   };
 
-  const handleSelectToken = (token: PortfolioToken) => {
-    setFrom(token.address, token.chain.chainId);
+  const handleSelectToken = (balance: PortfolioBalance<WalletToken>) => {
+    setFrom(balance.token.address, balance.token.chainId);
     setWalletMenuState(false);
     setWelcomeScreenClosed(true);
 
@@ -92,7 +106,8 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
               refetch={refetch}
               isFetching={isFetching}
               isComplete={isSuccess}
-              account={account}
+              balances={balances}
+              updatedAt={updatedAt}
             >
               {hasMultipleAccountsConnected && (
                 <LightIconButton
@@ -118,16 +133,19 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
             />
             <Stack>
               {!isSuccess &&
-                tokens.length == 0 &&
+                balanceGroups.length == 0 &&
                 Array.from({ length: 8 }).map(() => (
-                  <TokenListCardSkeleton key={generateKey('token')} />
+                  <BalanceCardSkeleton size={BalanceCardSize.SM} />
                 ))}
-              {tokens.map((token, index) => (
-                <TokenListCard
-                  token={token}
-                  key={`${token.chain.chainId}-${token.address}`}
+              {balanceGroups.map(([symbol, balances], index) => (
+                <BalanceCard
+                  balances={balances}
+                  size={BalanceCardSize.SM}
+                  key={symbol}
                   onSelect={handleSelectToken}
-                  shouldShowExpandedEndDivider={index !== tokens.length - 1}
+                  shouldShowExpandedEndDivider={
+                    index !== balanceGroups.length - 1
+                  }
                 />
               ))}
             </Stack>

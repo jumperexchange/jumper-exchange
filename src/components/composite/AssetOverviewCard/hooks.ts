@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { Theme, SxProps } from '@mui/material/styles';
 import { useOverflowItems } from 'src/hooks/useOverflowItems';
-import { calculateTotalPrice, calculateAssetPercentage } from './utils';
+import { calcPercentage } from '@/providers/PortfolioProvider/utils';
 import {
   MAX_DISPLAY_ASSETS_COUNT,
   MAX_DISPLAY_ASSETS_COUNT_MOBILE,
@@ -14,7 +14,9 @@ interface OverflowInfo {
   percentage: number;
 }
 
-interface UseAssetOverflowOptions<T extends { totalPriceUSD: number }> {
+interface UseAssetOverflowOptions<
+  T extends { amountUSD?: number; totalUsd?: number },
+> {
   items: T[];
   gap?: number;
 }
@@ -30,7 +32,13 @@ interface UseAssetOverflowReturn {
   getItemSx: (index: number) => SxProps<Theme>;
 }
 
-export const useAssetOverflow = <T extends { totalPriceUSD: number }>({
+const getItemUsd = <T extends { amountUSD?: number; totalUsd?: number }>(
+  item: T,
+): number => item.amountUSD ?? item.totalUsd ?? 0;
+
+export const useAssetOverflow = <
+  T extends { amountUSD?: number; totalUsd?: number },
+>({
   items,
   gap = 8,
 }: UseAssetOverflowOptions<T>): UseAssetOverflowReturn => {
@@ -41,7 +49,10 @@ export const useAssetOverflow = <T extends { totalPriceUSD: number }>({
     ? MAX_DISPLAY_ASSETS_COUNT_MOBILE
     : MAX_DISPLAY_ASSETS_COUNT;
 
-  const totalPrice = useMemo(() => calculateTotalPrice(items), [items]);
+  const totalPrice = useMemo(
+    () => items.reduce((sum, item) => sum + getItemUsd(item), 0),
+    [items],
+  );
 
   const {
     containerRef,
@@ -70,11 +81,14 @@ export const useAssetOverflow = <T extends { totalPriceUSD: number }>({
       return null;
     }
     const hiddenItems = items.slice(effectiveVisibleCount);
-    const overflowPrice = calculateTotalPrice(hiddenItems);
+    const overflowPrice = hiddenItems.reduce(
+      (sum, item) => sum + getItemUsd(item),
+      0,
+    );
     return {
       count: effectiveHiddenCount,
       price: overflowPrice,
-      percentage: calculateAssetPercentage(overflowPrice, totalPrice),
+      percentage: calcPercentage(overflowPrice, totalPrice),
     };
   }, [items, effectiveVisibleCount, totalPrice]);
 

@@ -1,3 +1,6 @@
+import type { Protocol } from '@/types/jumper-backend';
+import type { PositionToken, WalletToken } from '@/types/tokens';
+
 export type SortByType = 'value' | 'chain' | 'asset';
 
 export const SortByOptions = {
@@ -19,7 +22,7 @@ export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
 export interface BalancesFilteringParams {
   allWallets: string[];
   allChains: number[];
-  allAssets: string[];
+  allAssets: WalletToken[];
   allValueRange: { min: number; max: number };
 }
 
@@ -35,9 +38,9 @@ export interface BalancesFilterUI extends BalancesFilter {}
 
 export interface PositionsFilteringParams {
   allChains: number[];
-  allProtocols: string[];
+  allProtocols: Protocol[];
   allTypes: string[];
-  allAssets: string[];
+  allAssets: PositionToken[];
   allValueRange: { min: number; max: number };
 }
 

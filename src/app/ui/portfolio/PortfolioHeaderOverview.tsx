@@ -1,8 +1,6 @@
 'use client';
 
-import { useConnectedEvmAddresses } from '@/hooks/useConnectedEvmAddresses';
 import { useTheme } from '@mui/material/styles';
-import { sumBy } from 'lodash';
 import { AnimatedCounter } from 'react-animated-counter';
 import {
   PortfolioHeaderOverviewContainer,
@@ -11,59 +9,29 @@ import {
   PortfolioHeaderOverviewValue,
 } from './PortfolioPage.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
-import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
-import { usePortfolioDisplayTokens } from '@/hooks/portfolio/usePortfolioDisplayTokens';
 import { useMemo } from 'react';
-import { getNumberParts } from '@/utils/numbers/getNumberParts';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
+import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
 
 export const PortfolioHeaderOverview = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const theme = useTheme();
-  const connectedAddresses = useConnectedEvmAddresses();
-  const {
-    formattedData: formattedTokens,
-    isFetching: isFetchingPortfolioDisplayTokens,
-    refetch: refetchPortfolioDisplayTokens,
-  } = usePortfolioDisplayTokens();
-  const {
-    data: allDeFiPositions,
-    refetch: refetchPortfolioDeFiPositions,
-    isLoading: isLoadingDeFiPositions,
-  } = usePortfolioDeFiPositions({
-    addresses: connectedAddresses,
-  });
 
-  const isLoading = isLoadingDeFiPositions || isFetchingPortfolioDisplayTokens;
+  const summary = usePortfolioSummary();
 
   const totalValue = useMemo(() => {
     if (!portfolioWelcomeScreenClosed) {
       return 0;
     }
-    const totalFilteredTokensValue = sumBy(
-      formattedTokens,
-      (token) => token.totalPriceUSD ?? 0,
-    );
-    const totalDeFiPositionsValue = sumBy(
-      allDeFiPositions?.data ?? [],
-      (position) => position.netUsd ?? 0,
-    );
-
-    return totalFilteredTokensValue + totalDeFiPositionsValue;
-  }, [portfolioWelcomeScreenClosed, formattedTokens, allDeFiPositions?.data]);
+    return summary.totalPortfolioUsd;
+  }, [portfolioWelcomeScreenClosed, summary.totalPortfolioUsd]);
 
   const { prefix, suffix, numericValue } =
     getPortfolioValueInDollarParts(totalValue);
-
-  const handleRefresh = () => {
-    refetchPortfolioDisplayTokens();
-    refetchPortfolioDeFiPositions();
-  };
 
   return (
     <PortfolioHeaderOverviewContainer>
@@ -71,17 +39,14 @@ export const PortfolioHeaderOverview = () => {
         <Typography variant="bodyMediumStrong" color="text.secondary">
           {t('portfolio.overviewCard.title')}
         </Typography>
-        {portfolioWelcomeScreenClosed && (
-          <PortfolioRefreshBalance
-            updatedAt={0}
-            timeToUpdate={0}
-            onClick={handleRefresh}
-            isLoading={isLoading && portfolioWelcomeScreenClosed}
-          />
-        )}
+        {portfolioWelcomeScreenClosed && <PortfolioRefreshBalance />}
       </PortfolioHeaderOverviewHeaderContainer>
       <PortfolioHeaderOverviewContentContainer>
-        <PortfolioHeaderOverviewValue as="div">
+        <PortfolioHeaderOverviewValue
+          as="div"
+          data-testid="portfolio-header-overview-value"
+          aria-label={`Total value: ${totalValue}`}
+        >
           <>
             {prefix}
             <AnimatedCounter

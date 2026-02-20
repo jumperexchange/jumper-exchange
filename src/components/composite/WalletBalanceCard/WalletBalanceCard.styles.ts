@@ -32,13 +32,14 @@ export const WalletBalanceSharedContainer = styled(Container)(({ theme }) => ({
 }));
 
 export const WalletTotalBalanceValue = styled(Typography)(({ theme }) => ({
+  ...theme.typography.headerLarge,
   color: (theme.vars || theme).palette.text.primary,
   textOverflow: 'ellipsis',
-  fontWeight: '700',
-  fontSize: '48px',
-  lineHeight: '64px',
-  fontFamily: 'var(--font-inter)',
   userSelect: 'none',
+  '& .ticker-view > :not(.ticker-column-container)': {
+    marginLeft: `${theme.spacing(-0.25)} !important`,
+    marginRight: `${theme.spacing(-0.25)} !important`,
+  },
 }));
 
 export const BaseSkeleton = styled(Skeleton)(({ theme }) => ({

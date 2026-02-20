@@ -1,4 +1,6 @@
-import { PortfolioFilterBarTab } from '@/app/ui/portfolio/types';
+'use client';
+
+import { PortfolioFilterBarTab } from '../../../app/ui/portfolio/PortfolioAssetsSection';
 import type { HorizontalTabItem } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.style';

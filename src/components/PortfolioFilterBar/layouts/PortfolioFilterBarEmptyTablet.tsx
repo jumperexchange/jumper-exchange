@@ -1,3 +1,5 @@
+'use client';
+
 import type { FC } from 'react';
 import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';

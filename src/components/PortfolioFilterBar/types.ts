@@ -1,4 +1,4 @@
-import type { PortfolioFilterBarTab } from '@/app/ui/portfolio/types';
+import type { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioAssetsSection';
 
 export interface PortfolioFilterViewBaseProps {
   isDisabled: boolean;

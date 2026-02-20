@@ -19,7 +19,8 @@ export interface BatchFetcherCallbacks<TResult> {
   onComplete?: (results: TResult[]) => void;
 }
 
-export interface BatchFetcherControl {
+export interface BatchFetcherControl<TResult> {
+  results: Promise<TResult[]>;
   cancel: () => void;
 }
 
@@ -37,7 +38,8 @@ export const createBatchFetcher = <TItem, TResult>(
   fetchBatch: (batchKey: string, items: TItem[]) => Promise<TResult[]>,
   callbacks: BatchFetcherCallbacks<TResult> = {},
   config: BatchFetcherConfig = {},
-): BatchFetcherControl => {
+  signal?: AbortSignal,
+): BatchFetcherControl<TResult> => {
   const { maxPerBatch, concurrency } = {
     ...DEFAULT_CONFIG,
     ...config,
@@ -48,7 +50,20 @@ export const createBatchFetcher = <TItem, TResult>(
   let completedBatches = 0;
   let isCancelled = false;
 
-  // Split items into chunks and create all fetch tasks
+  // Check if already aborted
+  if (signal?.aborted) {
+    return {
+      results: Promise.reject(new Error('Aborted')),
+      cancel: () => {},
+    };
+  }
+
+  // Listen to abort signal
+  signal?.addEventListener('abort', () => {
+    isCancelled = true;
+    limit.clearQueue();
+  });
+
   const fetchTasks: Array<() => Promise<TResult[]>> = [];
 
   for (const [batchKey, items] of Object.entries(batches)) {
@@ -59,16 +74,15 @@ export const createBatchFetcher = <TItem, TResult>(
 
   const totalBatches = fetchTasks.length;
 
-  // Wrap each task with the limiter and progress tracking
-  const limitedPromises = fetchTasks.map((task, index) =>
+  const limitedPromises = fetchTasks.map((task) =>
     limit(async () => {
-      if (isCancelled) {
+      if (isCancelled || signal?.aborted) {
         return [];
       }
 
       const results = await task();
 
-      if (!isCancelled) {
+      if (!isCancelled && !signal?.aborted) {
         allResults.push(...results);
         completedBatches++;
         callbacks.onProgress?.(completedBatches, totalBatches, [...allResults]);
@@ -78,21 +92,24 @@ export const createBatchFetcher = <TItem, TResult>(
     }),
   );
 
-  // Execute all and handle completion
-  Promise.allSettled(limitedPromises).then((settledResults) => {
-    if (isCancelled) {
-      return;
-    }
+  const resultsPromise = Promise.allSettled(limitedPromises).then(
+    (settledResults) => {
+      if (isCancelled || signal?.aborted) {
+        throw new Error('Aborted');
+      }
 
-    const failures = settledResults.filter((r) => r.status === 'rejected');
-    if (failures.length > 0) {
-      console.warn('Batch fetch failures:', failures);
-    }
+      const failures = settledResults.filter((r) => r.status === 'rejected');
+      if (failures.length > 0) {
+        console.warn('Batch fetch failures:', failures);
+      }
 
-    callbacks.onComplete?.(allResults);
-  });
+      callbacks.onComplete?.(allResults);
+      return allResults;
+    },
+  );
 
   return {
+    results: resultsPromise,
     cancel: () => {
       isCancelled = true;
       limit.clearQueue();

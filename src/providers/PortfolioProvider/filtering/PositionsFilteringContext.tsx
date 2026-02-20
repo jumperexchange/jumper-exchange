@@ -226,7 +226,7 @@ export const PositionsFilteringProvider = ({ children }: PropsWithChildren) => {
     updateFilter,
     clearFilters,
     data: filteredSortedData,
-    isLoading: positionsSourceState.isLoading,
+    isLoading: filteredPositions.isLoading || positionsSourceState.isLoading,
     isEmpty,
     ...stats,
   };

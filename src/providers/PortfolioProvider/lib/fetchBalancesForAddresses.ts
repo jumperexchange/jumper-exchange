@@ -36,6 +36,7 @@ const createTokenBalancesFromPlainArray = <
 export interface FetchBalancesParams {
   address: string;
   chainType: ChainType;
+  signal?: AbortSignal;
   onProgress?: (
     completedBatches: number,
     totalBatches: number,
@@ -54,25 +55,33 @@ export const fetchBalancesForEVMAddress = async (address: string) => {
 export const fetchBalancesForAddress = async ({
   address,
   chainType,
+  signal,
   onProgress,
   onComplete,
 }: FetchBalancesParams) => {
-  // EVM: use getWalletBalances (no batching needed)
+  // Check if cancelled before starting
+  if (signal?.aborted) {
+    throw new Error('Aborted');
+  }
+
   if (chainType === ChainType.EVM) {
     const balances = await fetchBalancesForEVMAddress(address);
     onProgress?.(1, 1, balances);
     onComplete?.(balances);
-    return { balances, address, control: null };
+    return { balances, address };
   }
 
-  // Non-EVM: use batched fetching with getTokenBalances
   const tokensResponse = await getTokens({ chainTypes: [chainType] });
 
   let balances: TokenBalance[] = [];
 
-  const batchFetcherControl = createBatchFetcher<Token, TokenAmount>(
+  const { results } = createBatchFetcher<Token, TokenAmount>(
     tokensResponse.tokens,
     async (_chainId, tokenBatch) => {
+      // Check signal before each batch
+      if (signal?.aborted) {
+        throw new Error('Aborted');
+      }
       const balances = await getTokenBalances(address, tokenBatch);
       return balances.filter((t) => t.amount && t.amount > BigInt(0));
     },
@@ -86,14 +95,10 @@ export const fetchBalancesForAddress = async ({
         onComplete?.(balances);
       },
     },
+    {},
+    signal,
   );
 
-  return { balances, address, control: batchFetcherControl };
-};
-
-/** Fetch balances for multiple addresses */
-export const fetchBalancesForAddresses = async (
-  params: FetchBalancesParams[],
-) => {
-  return Promise.all(params.map(fetchBalancesForAddress));
+  await results;
+  return { balances, address };
 };

@@ -1,54 +1,36 @@
-import { TokenListCard } from 'src/components/composite/TokenListCard/TokenListCard';
-import { usePortfolioTokensFiltering } from './PortfolioTokensFilteringContext';
-import { TokenListCardTokenSize } from 'src/components/composite/TokenListCard/TokenListCard.types';
+'use client';
+
+import { BalanceCard } from '@/components/composite/BalanceCard/BalanceCard';
+import { BalanceCardSkeleton } from '@/components/composite/BalanceCard/components/BalanceCardSkeleton';
+import { useBalancesFiltering } from '@/providers/PortfolioProvider/filtering/BalancesFilteringContext';
 import { PortfolioAssetsListContainer } from './PortfolioPage.styles';
-import { useFormatDisplayWalletTokens } from '@/hooks/portfolio/useFormatDisplayWalletTokens';
 import { PortfolioEmptyList } from './PortfolioEmptyList';
 import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContainer';
-import { TokenListCardSkeleton } from '@/components/composite/TokenListCard/TokenListCardSkeleton';
 import { AnimatePresence } from 'motion/react';
-import { useWidgetCacheStore } from '@/stores/widgetCache';
-import type { PortfolioToken } from '@/types/tokens';
-import { useRouter } from 'next/navigation';
+import { BalanceCardSize } from '@/components/composite/BalanceCard/types';
 
 export const PortfolioTokensList = () => {
-  const { data, isLoading, isEmpty, clearFilters } =
-    usePortfolioTokensFiltering();
+  const { data, isLoading, isEmpty, clearFilters } = useBalancesFiltering();
 
-  const tokens = useFormatDisplayWalletTokens(data);
+  const balanceGroups = Object.entries(data);
 
-  const router = useRouter();
-
-  const setFrom = useWidgetCacheStore((state) => state.setFrom);
-
-  const handleSelectToken = (token: PortfolioToken) => {
-    setFrom(token.address, token.chain.chainId);
-    router.push('/');
-  };
-
-  if (isEmpty) {
+  if (isEmpty && !isLoading) {
     return null;
   }
 
   const renderContent = () => {
-    if (isLoading && tokens.length === 0) {
+    if (isLoading && balanceGroups.length === 0) {
       return Array.from({ length: 3 }).map((_, index) => (
         <PortfolioAnimatedAssetContainer key={index}>
-          <TokenListCardSkeleton size={TokenListCardTokenSize.MD} />
+          <BalanceCardSkeleton size={BalanceCardSize.MD} />
         </PortfolioAnimatedAssetContainer>
       ));
     }
 
-    if (tokens.length > 0) {
-      return tokens.map((token, index) => (
-        <PortfolioAnimatedAssetContainer
-          key={`${token.address}-${token.chain.chainId}-${index}`}
-        >
-          <TokenListCard
-            size={TokenListCardTokenSize.MD}
-            token={token}
-            onSelect={handleSelectToken}
-          />
+    if (balanceGroups.length > 0) {
+      return balanceGroups.map(([symbol, balances]) => (
+        <PortfolioAnimatedAssetContainer key={symbol}>
+          <BalanceCard balances={balances} size={BalanceCardSize.MD} />
         </PortfolioAnimatedAssetContainer>
       ));
     }

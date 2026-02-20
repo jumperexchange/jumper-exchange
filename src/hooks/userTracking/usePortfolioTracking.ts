@@ -8,27 +8,24 @@ import {
   TrackingAction,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { DefiPosition } from '@/utils/positions/type-guards';
-import type { PortfolioToken } from '@/types/tokens';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 import { zeroAddress } from 'viem';
 import type { ChainId } from '@lifi/sdk';
 import { useChains } from '../useChains';
 import { useCallback } from 'react';
+import { usePortfolioFormatters } from '../tokens/usePortfolioFormatters';
+import type { SummaryData } from '@/providers/PortfolioProvider/types';
 
 export const usePortfolioTracking = () => {
   const { trackEvent } = useUserTracking();
   const { getChainById } = useChains();
+  const { toAggregatedAmountUSD } = usePortfolioFormatters();
 
   const trackPortfolioPageOverviewEvent = useCallback(
-    (
-      addresses: string[],
-      tokens: PortfolioToken[],
-      defiPositionGroups: DefiPosition[][],
-    ) => {
+    (addresses: string[], summary: SummaryData) => {
       const trackingData = parseEarnPortfolioDataToTrackingData(
         addresses,
-        tokens,
-        defiPositionGroups,
+        summary,
       );
       trackEvent({
         category: TrackingCategory.Portfolio,
@@ -53,7 +50,10 @@ export const usePortfolioTracking = () => {
   }, [trackEvent]);
 
   const trackPortfolioMenuOverviewEvent = useCallback(
-    (totalValue: number, data: PortfolioToken[]) => {
+    (
+      totalValue: number,
+      data: Record<string, PortfolioBalance<WalletToken>[]>,
+    ) => {
       const returnNativeTokenAddresses = (chainsIds: ChainId[]) =>
         chainsIds.map(
           (chainId) =>
@@ -64,6 +64,7 @@ export const usePortfolioTracking = () => {
         totalValue,
         data,
         returnNativeTokenAddresses,
+        toAggregatedAmountUSD,
       );
 
       trackEvent({
@@ -74,7 +75,7 @@ export const usePortfolioTracking = () => {
         data: trackingData,
       });
     },
-    [trackEvent, getChainById],
+    [trackEvent, getChainById, toAggregatedAmountUSD],
   );
 
   return {

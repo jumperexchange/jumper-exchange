@@ -1,3 +1,5 @@
+'use client';
+
 import { styled } from '@mui/material';
 import Stack from '@mui/system/Stack';
 import { motion } from 'motion/react';

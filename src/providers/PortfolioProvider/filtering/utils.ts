@@ -83,8 +83,8 @@ export const isWithinValueRange = (
   minValue?: number,
   maxValue?: number,
 ): boolean => {
-  const meetsMin = minValue === undefined || value >= minValue;
-  const meetsMax = maxValue === undefined || value <= maxValue;
+  const meetsMin = minValue === undefined || value >= sanitizeValue(minValue);
+  const meetsMax = maxValue === undefined || value <= sanitizeValue(maxValue);
   return meetsMin && meetsMax;
 };
 
@@ -111,6 +111,7 @@ export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
 export const sanitizeBalancesFilter = (
   filter: BalancesFilter,
   stats: BalancesFilteringParams,
+  shouldClampRangeFilter?: boolean,
 ): Nullable<BalancesFilter> => {
   if (
     !stats.allWallets.length ||
@@ -122,7 +123,7 @@ export const sanitizeBalancesFilter = (
 
   const validWalletAddresses = new Set(stats.allWallets);
   const validChainIds = new Set(stats.allChains);
-  const validAssets = new Set(stats.allAssets);
+  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {
@@ -132,11 +133,15 @@ export const sanitizeBalancesFilter = (
     assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
     minValue:
       filter.minValue !== undefined
-        ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+        ? shouldClampRangeFilter
+          ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+          : filter.minValue
         : null,
     maxValue:
       filter.maxValue !== undefined
-        ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
+        ? shouldClampRangeFilter
+          ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
+          : filter.maxValue
         : null,
   };
 };
@@ -233,9 +238,11 @@ export const sanitizePositionsFilter = (
   }
 
   const validChainIds = new Set(stats.allChains);
-  const validProtocols = new Set(stats.allProtocols);
+  const validProtocols = new Set(
+    stats.allProtocols.map((protocol) => protocol.name),
+  );
   const validTypes = new Set(stats.allTypes);
-  const validAssets = new Set(stats.allAssets);
+  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
   return {
