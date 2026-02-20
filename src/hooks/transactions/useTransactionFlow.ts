@@ -16,7 +16,7 @@ interface TransactionAction {
   };
 }
 
-interface CallDataResponse {
+export interface CallDataResponse {
   actions: TransactionAction[];
 }
 

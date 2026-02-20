@@ -1,15 +1,11 @@
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { ModalContainerProps } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
-import { useMemo, useState, type FC } from 'react';
+import { useMemo, useState, useCallback, type FC } from 'react';
 import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
 import { useFormatRedeemClaimData } from './hooks/useFormatRedeemClaimData';
-import { useRedeemTransactionForm } from './hooks/useRedeemTransactionForm';
-import { useRedeemTransactionStatusContent } from './hooks/useRedeemTransactionStatusContent';
+import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
-import type { JumperWidgetStatusSheetProp } from '@/components/composite/JumperWidget/types';
-import { TokenAmountInput } from '@/components/composite/TokenAmountInput/TokenAmountInput';
-import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 import { createTokenBalance } from '@/types/tokens';
 import { useTranslation } from 'react-i18next';
 import { RequestViewSubmitButton } from './components/RequestViewSubmitButton';
@@ -23,6 +19,12 @@ import {
   defineAmountField,
   defineDisplayTokenChainField,
 } from '@/components/composite/JumperWidget/utils';
+import { makeClient } from '@/app/lib/client';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import type { Hex } from 'viem';
+import type { AmountValue } from '@/components/composite/JumperWidget/components/Amount';
+import type { ViewSubmitContext } from '@/components/composite/JumperWidget/types';
+import { useRequestRedeemStatusSheet } from './hooks/useRequestRedeemStatusSheet';
 
 interface RequestRedeemModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -36,7 +38,10 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   refetchCallback,
 }) => {
   const { t } = useTranslation();
+  const accountAddress = useAccountAddress();
+
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [amount, setAmount] = useState('0');
 
   const { data: redeemableClaims, refetch: refetchClaims } =
     useRedeemableClaims(earnOpportunity, true);
@@ -55,131 +60,91 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   const { lpToken, lpTokenAmount, assetToken } =
     useEarnOpportunityTokens(earnOpportunity);
 
-  const transactionForm = useRedeemTransactionForm({
-    earnOpportunity,
+  const isClaimFlow = selectedClaim != null;
+
+  const fetchCallData = useCallback(async () => {
+    const client = makeClient();
+    if (isClaimFlow) {
+      const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(
+        earnOpportunity.slug,
+        {
+          address: accountAddress as Hex,
+          amount: selectedClaim.assetAmount ?? '0',
+        },
+      );
+      return data.data;
+    }
+    const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
+      earnOpportunity.slug,
+      { address: accountAddress as Hex, amount },
+    );
+    return data.data;
+  }, [
+    isClaimFlow,
+    earnOpportunity.slug,
+    accountAddress,
+    selectedClaim,
+    amount,
+  ]);
+
+  const transactionForm = useTransactionForm({
+    chainId: earnOpportunity.lpToken.chain.chainId,
+    requiresConfirmation: !isClaimFlow,
+    fetchCallData,
     onSuccess: () => {
       refetchClaims();
       refetchCallback?.();
     },
-    config:
-      selectedClaim != null
-        ? {
-            type: 'claim',
-            claimId: selectedClaim.id,
-            claimAmount: selectedClaim.assetAmount ?? '0',
-          }
-        : {
-            type: 'request',
-            initialAmount: '0',
-          },
   });
 
-  const selectedClaimFromTokenBalance = useMemo(() => {
-    return createTokenBalance(
-      lpToken,
-      // @Note: for ethena seems we only get back the assetAmount so using that as fallback ftm
-      selectedClaim?.lpTokenAmount ?? selectedClaim?.assetAmount ?? '0',
-    );
-  }, [lpToken, selectedClaim]);
+  const selectedClaimFromTokenBalance = useMemo(
+    () =>
+      createTokenBalance(
+        lpToken,
+        selectedClaim?.lpTokenAmount ?? selectedClaim?.assetAmount ?? '0',
+      ),
+    [lpToken, selectedClaim],
+  );
 
-  const selectedClaimToTokenBalance = useMemo(() => {
-    return createTokenBalance(assetToken, selectedClaim?.assetAmount ?? '0');
-  }, [assetToken, selectedClaim]);
+  const selectedClaimToTokenBalance = useMemo(
+    () => createTokenBalance(assetToken, selectedClaim?.assetAmount ?? '0'),
+    [assetToken, selectedClaim],
+  );
 
-  const statusContent = useRedeemTransactionStatusContent({
-    transactionType: transactionForm.transactionType,
-    errorType: transactionForm.errorType,
-    handlers: {
-      onCloseError: transactionForm.handleCloseError,
-      onCloseSuccess: transactionForm.handleCloseSuccess,
-      onRetry: transactionForm.handleRetry,
-      onViewTransaction: transactionForm.handleViewTransaction,
-      onConfirm: transactionForm.handleConfirm,
+  const requestWithdrawToTokenBalance = useMemo(
+    () => createTokenBalance(lpToken, BigInt(amount ?? 0)),
+    [lpToken, amount],
+  );
+
+  const handleSubmit = useCallback(
+    async (props: ViewSubmitContext) => {
+      if (!isClaimFlow) {
+        setAmount((props.values.requestAmount as AmountValue).amount);
+      }
+      transactionForm.handleSubmit();
     },
-  });
+    [isClaimFlow, transactionForm],
+  );
 
   const handleModalClose = () => {
     setSelectedClaimId(null);
+    setAmount('0');
     transactionForm.resetForm();
     onClose?.();
   };
 
-  const requestWithdrawToTokenBalance = useMemo(() => {
-    return createTokenBalance(lpToken, BigInt(transactionForm.amount ?? 0));
-  }, [lpToken, transactionForm.amount]);
-
-  const statusSheet = useMemo((): JumperWidgetStatusSheetProp => {
-    if (transactionForm.showConfirmationSheet) {
-      return {
-        isOpen: true,
-        content: statusContent.confirmationSheetContent,
-        onClose: transactionForm.handleCloseSheet,
-      };
-    }
-    if (transactionForm.showErrorBottomSheet) {
-      return {
-        isOpen: true,
-        content: statusContent.errorSheetContent,
-        onClose: transactionForm.handleCloseSheet,
-      };
-    }
-    if (transactionForm.showSuccessSheet) {
-      const isRequestFlow = transactionForm.transactionType === 'request';
-      return {
-        isOpen: true,
-        content: statusContent.successSheetContent,
-        onClose: transactionForm.handleCloseSheet,
-        children: (
-          <TokenAmountInput
-            label={t(`form.labels.${isRequestFlow ? 'requested' : 'received'}`)}
-            tokenBalance={
-              isRequestFlow
-                ? requestWithdrawToTokenBalance
-                : selectedClaimToTokenBalance
-            }
-            mode={SelectCardMode.Display}
-            sx={(theme) => ({
-              backgroundColor: (theme.vars || theme).palette.surface1.main,
-              boxShadow: theme.shadows[2],
-              '& .MuiInputLabel-root': {
-                ...theme.typography.title2XSmall,
-              },
-            })}
-          />
-        ),
-      };
-    }
-    return {
-      isOpen: false,
-      content: {
-        title: '',
-        callToAction: '',
-        callToActionType: 'button',
-      },
-      onClose: transactionForm.handleCloseSheet,
-    };
-  }, [
-    transactionForm.showConfirmationSheet,
-    transactionForm.showErrorBottomSheet,
-    transactionForm.showSuccessSheet,
-    transactionForm.transactionType,
-    transactionForm.handleCloseSheet,
-    statusContent.confirmationSheetContent,
-    statusContent.errorSheetContent,
-    statusContent.successSheetContent,
+  const statusSheet = useRequestRedeemStatusSheet({
+    transactionForm,
+    isClaimFlow,
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
-    t,
-  ]);
+  });
 
   const requestWithdrawFields = useMemo(
     () => [
       defineAmountField({
         fieldKey: 'requestAmount',
-        defaultValue: {
-          amount: '0',
-          maxAmount: lpTokenAmount?.toString(),
-        },
+        defaultValue: { amount: '0', maxAmount: lpTokenAmount?.toString() },
         fieldProps: {
           token: lpToken,
           label: t('form.labels.amount'),
@@ -188,9 +153,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       defineDisplayTokenChainField({
         fieldKey: 'withdrawTo',
         defaultValue: assetToken,
-        fieldProps: {
-          label: t('form.labels.withdrawTo'),
-        },
+        fieldProps: { label: t('form.labels.withdrawTo') },
       }),
     ],
     [assetToken, lpToken, lpTokenAmount, t],
@@ -216,7 +179,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
             isFormSubmitting={transactionForm.isSubmitting}
           />
         ),
-        onSubmit: transactionForm.handleSubmit,
+        onSubmit: handleSubmit,
       },
       {
         id: RequestRedeemModalView.CLAIM_REDEEM,
@@ -236,12 +199,12 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
             isFormSubmitting={transactionForm.isSubmitting}
           />
         ),
-        onSubmit: transactionForm.handleSubmit,
+        onSubmit: handleSubmit,
       },
     ],
     [
       requestWithdrawFields,
-      transactionForm.handleSubmit,
+      handleSubmit,
       transactionForm.isSubmitting,
       formattedRedeemableClaims,
       lpToken,
