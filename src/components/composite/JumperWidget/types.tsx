@@ -29,6 +29,7 @@ export interface SanitizeListener<TValue> {
 export interface FieldConfig<TValue, TFieldProps, TSidePanelProps> {
   fieldKey: string;
   schema: z.ZodType<TValue>;
+  schemaOptions?: { min?: number; max?: number };
   defaultValue?: TValue;
   fieldProps: Partial<TFieldProps>;
   sidePanelProps?: Partial<TSidePanelProps>;

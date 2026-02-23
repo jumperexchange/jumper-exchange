@@ -6,11 +6,13 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { useDustBalances } from './hooks/useDustBalances';
 import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { type FC, useMemo } from 'react';
-import { uniqBy } from 'lodash';
+import { orderBy, uniqBy } from 'lodash';
 import {
   DustBannerContainer,
   DustBannerContentContainer,
 } from './DustFlow.styles';
+import { INITIAL_MAX_THRESHOLD_USD } from './constants';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 interface DustBannerProps {
   forceDisplay?: boolean;
@@ -22,17 +24,30 @@ export const DustBanner: FC<DustBannerProps> = ({
   onClick,
 }) => {
   const { t } = useTranslation();
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { nonNativeBalances } = useDustBalances();
   const { toDisplayAggregatedAmountUSD } = usePortfolioFormatters();
 
+  const filteredBalances = useMemo(
+    () =>
+      orderBy(
+        nonNativeBalances.filter(
+          (balance) => balance.amountUSD <= INITIAL_MAX_THRESHOLD_USD,
+        ),
+        'amountUSD',
+        'desc',
+      ),
+    [nonNativeBalances],
+  );
+
   const tokens = useMemo(() => {
     return uniqBy(
-      nonNativeBalances.map((balance) => balance.token),
+      filteredBalances.map((balance) => balance.token),
       'symbol',
     );
-  }, [nonNativeBalances]);
+  }, [filteredBalances]);
 
-  const totalUSD = toDisplayAggregatedAmountUSD(nonNativeBalances);
+  const totalUSD = toDisplayAggregatedAmountUSD(filteredBalances);
 
   if (!tokens.length && !forceDisplay) {
     return null;
@@ -43,7 +58,10 @@ export const DustBanner: FC<DustBannerProps> = ({
       <DustBannerContentContainer>
         <EntityStack
           entities={tokens}
+          direction="row-reverse"
           size={AvatarSize.MD}
+          limit={3}
+          useAvatarOverflow
           disableBorder
           avatarSx={(theme) => ({
             border: `2px solid ${(theme.vars || theme).palette.surface1.main}`,
@@ -56,7 +74,9 @@ export const DustBanner: FC<DustBannerProps> = ({
           />
         </Typography>
       </DustBannerContentContainer>
-      <Button onClick={onClick}>{t('buttons.convertDust')}</Button>
+      <Button onClick={onClick} fullWidth={isMobile}>
+        {t('buttons.convertDust')}
+      </Button>
     </DustBannerContainer>
   );
 };

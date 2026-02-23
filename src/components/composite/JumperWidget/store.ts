@@ -11,6 +11,7 @@ import type { InferFieldValues, TypedFieldDefinition } from './types';
 export interface WidgetUIStore {
   activeField: string | null;
   setActiveField: (key: string | null) => void;
+  setTouchedField: (key: string) => void;
 }
 
 export const WidgetStoreContext = createContext<StoreApi<WidgetUIStore> | null>(
@@ -29,6 +30,8 @@ export function createWidgetStore(): StoreApi<WidgetUIStore> {
   return createStore<WidgetUIStore>((set) => ({
     activeField: null,
     setActiveField: (key) => set({ activeField: key }),
+    setTouchedField: (key) =>
+      set((s) => ({ touchedFields: { ...s.touchedFields, [key]: true } })),
   }));
 }
 

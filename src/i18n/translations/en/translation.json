@@ -829,7 +829,7 @@
       "swap": "Swap",
       "requested": "Requested",
       "received": "Received",
-      "dustThreshold": "Dust threshold",
+      "dustThreshold": "Tokens less than",
       "chain": "Chain",
       "convert": "Convert"
     }

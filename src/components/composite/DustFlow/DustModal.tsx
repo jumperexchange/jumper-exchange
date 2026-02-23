@@ -7,8 +7,6 @@ import { useDustBalances } from './hooks/useDustBalances';
 import { useFallbackNativeToken } from './hooks/useFallbackNativeToken';
 import type { DustSummaryValue } from './hooks/useDustFormFields';
 import { useDustFormFields } from './hooks/useDustFormFields';
-import { Button } from '@/components/core/buttons/Button/Button';
-import { Variant } from '@/components/core/buttons/types';
 import type { ViewSubmitContext } from '../JumperWidget/types';
 import { RouteOverview } from './components/RouteOverview';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
@@ -18,6 +16,8 @@ import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContex
 import type { Hex } from 'viem';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useTranslation } from 'react-i18next';
+import { ConvertDustSubmitButton } from './components/ConvertDustSubmitButton';
+import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButton';
 
 interface DustModalProps {
   isOpen: boolean;
@@ -103,9 +103,9 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           }
         },
         actions: (
-          <Button variant={Variant.Primary} type="submit">
-            {t('buttons.reviewConversion')}
-          </Button>
+          <ConvertDustSubmitButton
+            isFormSubmitting={transactionForm.isSubmitting}
+          />
         ),
       },
       {
@@ -117,9 +117,9 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           transactionForm.handleSubmit();
         },
         actions: (
-          <Button variant={Variant.Primary} type="submit">
-            {t('buttons.convertDust')}
-          </Button>
+          <RouteOverviewSubmitButton
+            isFormSubmitting={transactionForm.isSubmitting}
+          />
         ),
       },
     ],

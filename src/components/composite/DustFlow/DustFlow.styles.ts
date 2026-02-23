@@ -5,10 +5,14 @@ export const DustBannerContainer = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.accent1.main,
   color: (theme.vars || theme).palette.textPrimaryInverted,
   padding: theme.spacing(1, 1.5),
-  borderRadius: theme.shape.radius32,
+  borderRadius: theme.shape.radius8,
   display: 'flex',
-  flexDirection: 'row',
+  flexDirection: 'column',
   alignItems: 'center',
+  [theme.breakpoints.up('sm')]: {
+    flexDirection: 'row',
+    borderRadius: theme.shape.radius32,
+  },
 }));
 
 export const DustBannerContentContainer = styled(Box)(({ theme }) => ({

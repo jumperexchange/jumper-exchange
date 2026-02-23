@@ -2,6 +2,8 @@ import { TransactionErrorType } from '@/hooks/transactions/types';
 import type { TransactionStatusKeys } from '@/hooks/transactions/useTransactionStatusContent';
 import type { Theme } from '@mui/material/styles';
 
+export const INITIAL_MAX_THRESHOLD_USD = 10;
+
 export const widgetStyle = {
   container: (theme: Theme) => ({
     maxHeight: 'calc(100vh - 6rem)',

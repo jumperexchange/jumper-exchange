@@ -321,7 +321,7 @@ interface Resources {
         amount: 'Amount';
         chain: 'Chain';
         convert: 'Convert';
-        dustThreshold: 'Dust threshold';
+        dustThreshold: 'Tokens less than';
         received: 'Received';
         requested: 'Requested';
         swap: 'Swap';

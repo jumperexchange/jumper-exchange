@@ -15,15 +15,23 @@ import type {
   ExtendedToken,
 } from '@/types/tokens';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
-import type { ExtendedChain } from '@lifi/sdk';
+import { ChainId, type ExtendedChain } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
+import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
+import { INITIAL_MAX_THRESHOLD_USD } from '../constants';
 
-const INITIAL_THRESHOLD_USD = 0.5;
+const getChainMinUsdThreshold = (chainId: number) => {
+  if (chainId === ChainId.ETH) {
+    return 0.5;
+  }
+  return 0.05;
+};
 
-const checkBalanceAboveThreshold = (
+const checkBalanceWithinRange = (
   balance: PortfolioBalance<WalletToken>,
+  maxUsd: number,
   minUsd: number,
-): boolean => balance.amountUSD - minUsd > Number.EPSILON;
+): boolean => maxUsd >= balance.amountUSD && balance.amountUSD > minUsd;
 
 export interface DustSummaryValue {
   selectedBalances: PortfolioBalance<WalletToken>[];
@@ -69,20 +77,25 @@ export const useDustFormFields = ({
   const { t } = useTranslation();
   const { toInputAmount, toAmountFromPrice, toRawAmount, usdDecimals } =
     useTokenAmountInput();
+  const { toAggregatedAmountUSD } = usePortfolioFormatters();
 
-  const checkChainHasBalancesAboveThreshold = useCallback(
-    (chainId: number, minUsd: number): boolean =>
+  const checkChainHasBalancesBelowThreshold = useCallback(
+    (chainId: number, maxUsd: number): boolean =>
       nonNativeBalances
         .filter((b) => b.token.chainId === chainId)
-        .some((b) => checkBalanceAboveThreshold(b, minUsd)),
+        .some((b) =>
+          checkBalanceWithinRange(b, maxUsd, getChainMinUsdThreshold(chainId)),
+        ),
     [nonNativeBalances],
   );
 
   const getFilteredBalances = useCallback(
-    (chainId: number, minUsd: number) =>
+    (chainId: number, maxUsd: number) =>
       nonNativeBalances
         .filter((b) => b.token.chainId === chainId)
-        .filter((b) => checkBalanceAboveThreshold(b, minUsd)),
+        .filter((b) =>
+          checkBalanceWithinRange(b, maxUsd, getChainMinUsdThreshold(chainId)),
+        ),
     [nonNativeBalances],
   );
 
@@ -94,17 +107,16 @@ export const useDustFormFields = ({
     ) => {
       const toTokenStr = (usd: number) =>
         toAmountFromPrice(
-          toInputAmount(usd.toString(), usdDecimals),
+          toInputAmount(usd.toLocaleString('fullwide'), usdDecimals),
           token.priceUSD,
         );
 
-      const maxAmountUSD = filteredBalances.reduce(
-        (acc, b) => acc + b.amountUSD,
-        0,
+      const maxAmountUSD = toAggregatedAmountUSD(filteredBalances);
+      const amountUSD = toAggregatedAmountUSD(
+        filteredBalances.filter((b) =>
+          selectedAddresses.includes(b.token.address),
+        ),
       );
-      const amountUSD = filteredBalances
-        .filter((b) => selectedAddresses.includes(b.token.address))
-        .reduce((acc, b) => acc + b.amountUSD, 0);
 
       return {
         amount: toRawAmount(toTokenStr(amountUSD), token.decimals).toString(),
@@ -114,7 +126,13 @@ export const useDustFormFields = ({
         ).toString(),
       };
     },
-    [toAmountFromPrice, toInputAmount, toRawAmount, usdDecimals],
+    [
+      toAmountFromPrice,
+      toInputAmount,
+      toRawAmount,
+      toAggregatedAmountUSD,
+      usdDecimals,
+    ],
   );
 
   const dustDerive = useMemo(() => createDustFieldDerive(), []);
@@ -192,7 +210,7 @@ export const useDustFormFields = ({
     () => [
       defineNumericSelectField({
         fieldKey: 'amountThreshold',
-        defaultValue: { value: INITIAL_THRESHOLD_USD },
+        defaultValue: { value: INITIAL_MAX_THRESHOLD_USD },
         fieldProps: {
           values: [5, 10, 20, 30],
           label: t('form.labels.dustThreshold'),
@@ -212,7 +230,7 @@ export const useDustFormFields = ({
             return {};
           }
           const filteredChains = chains.filter((c) =>
-            checkChainHasBalancesAboveThreshold(c.id, threshold),
+            checkChainHasBalancesBelowThreshold(c.id, threshold),
           );
           return {
             fieldProps: { availableChains: filteredChains },
@@ -231,17 +249,18 @@ export const useDustFormFields = ({
           availableBalances: nonNativeBalances,
           header: t('headers.tokens'),
         },
+        schemaOptions: {
+          max: 10,
+        },
         deriveProps: (getValue) => {
-          const { chainId, isValid } = dustDerive(getValue);
-          if (!isValid || chainId == null) {
+          const { threshold, chainId, isValid } = dustDerive(getValue);
+          if (!isValid || threshold == null || chainId == null) {
             return {
               fieldProps: { availableBalances: [] },
               sidePanelProps: { availableBalances: [] },
             };
           }
-          const filteredBalances = nonNativeBalances.filter(
-            (b) => b.token.chainId === chainId,
-          );
+          const filteredBalances = getFilteredBalances(chainId, threshold);
           return {
             fieldProps: { availableBalances: filteredBalances },
             sidePanelProps: { availableBalances: filteredBalances },
@@ -273,6 +292,7 @@ export const useDustFormFields = ({
           const balances = getValue('balances') as
             | BalancesMultiSelectValue
             | undefined;
+
           const { amount, maxAmount } = computeAmounts(
             filteredBalances,
             balances?.selectedAddresses ?? [],
@@ -295,7 +315,7 @@ export const useDustFormFields = ({
       nativeExtendedTokens,
       fallbackNativeToken,
       dustDerive,
-      checkChainHasBalancesAboveThreshold,
+      checkChainHasBalancesBelowThreshold,
       getFilteredBalances,
       computeAmounts,
       computeDustSummary,
