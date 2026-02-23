@@ -30,3 +30,12 @@ export const RewardsSectionContentContainer = styled(Box)(({ theme }) => ({
     flexDirection: 'row',
   },
 }));
+
+export const RewardsSectionHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexShrink: 0,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+}));

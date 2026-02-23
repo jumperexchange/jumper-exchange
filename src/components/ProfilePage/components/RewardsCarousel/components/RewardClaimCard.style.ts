@@ -27,13 +27,17 @@ export const RewardCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadiusLarge,
   flexDirection: 'row',
   padding: theme.spacing(2),
-  width: theme.spacing(40),
-  maxWidth: theme.spacing(40),
+  width: '-webkit-fill-available',
   boxShadow: theme.shadows[2],
 
   ...theme.applyStyles('light', {
     backgroundColor: (theme.vars || theme).palette.white.main,
   }),
+
+  [theme.breakpoints.up('sm')]: {
+    width: theme.spacing(40),
+    maxWidth: theme.spacing(40),
+  },
 }));
 
 export const RewardCardActionsContainer = styled(Box)(({ theme }) => ({

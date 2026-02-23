@@ -18,6 +18,11 @@ const blurEdge = (direction: 'left' | 'right', color: string) => ({
 export const RewardsCarouselContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   position: 'relative',
+  overflow: 'hidden',
+  marginBottom: theme.spacing(-2),
+  [theme.breakpoints.up('sm')]: {
+    margin: theme.spacing(0, -2, -2, -2),
+  },
 }));
 
 export const RewardsCarouselNavigationContainer = styled(Box)(({ theme }) => ({
