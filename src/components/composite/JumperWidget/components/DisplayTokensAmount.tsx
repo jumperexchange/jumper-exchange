@@ -93,7 +93,6 @@ export const DisplayTokensAmount: FC<DisplayTokensAmountProps> = ({
                   id: chain.id.toString(),
                 }}
                 size={AvatarSize.XXS}
-                disableBorder={false}
               />
             </ChainStackWrapper>
           )}

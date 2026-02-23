@@ -17,16 +17,9 @@ export interface OptionIconProps {
   id: string;
 }
 
-export const OptionIcon: FC<OptionIconProps> = ({ logoURI, name, id }) =>
-  logoURI ? (
-    <AvatarItem
-      size={AvatarSize.XL}
-      avatar={{ src: logoURI, alt: name, id }}
-      disableBorder
-    />
-  ) : (
-    <AvatarSkeleton size={AvatarSize.XL} variant="circular" />
-  );
+export const OptionIcon: FC<OptionIconProps> = ({ logoURI, name, id }) => (
+  <AvatarItem size={AvatarSize.XL} avatar={{ src: logoURI, alt: name, id }} />
+);
 
 export interface SelectSideOption {
   key: string;
