@@ -1,5 +1,5 @@
 import { useTransactionStatusContent } from '@/hooks/transactions/useTransactionStatusContent';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { type JumperWidgetStatusSheetProp } from '@/components/composite/JumperWidget/types';
 import { CLAIM_STATUS_KEYS, WITHDRAW_STATUS_KEYS } from '../constants';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
@@ -13,21 +13,28 @@ export const useRequestRedeemStatusSheet = ({
   isClaimFlow,
   selectedClaimToTokenBalance,
   requestWithdrawToTokenBalance,
+  resetAmount,
 }: {
   transactionForm: ReturnType<typeof useTransactionForm>;
   isClaimFlow: boolean;
   selectedClaimToTokenBalance: Balance<ExtendedToken>;
   requestWithdrawToTokenBalance: Balance<ExtendedToken>;
+  resetAmount: () => void;
 }) => {
   const lastOpenSheetRef = useRef<JumperWidgetStatusSheetProp | null>(null);
   const { t } = useTranslation();
+
+  const handleCloseSuccess = useCallback(() => {
+    transactionForm.handleCloseSuccess();
+    resetAmount();
+  }, [transactionForm.handleCloseSuccess, resetAmount]);
 
   const statusContent = useTransactionStatusContent({
     keys: isClaimFlow ? CLAIM_STATUS_KEYS : WITHDRAW_STATUS_KEYS,
     errorType: transactionForm.errorType,
     handlers: {
       onCloseError: transactionForm.handleCloseError,
-      onCloseSuccess: transactionForm.handleCloseSuccess,
+      onCloseSuccess: handleCloseSuccess,
       onRetry: transactionForm.handleRetry,
       onViewTransaction: transactionForm.handleViewTransaction,
       onConfirm: transactionForm.handleConfirm,
@@ -56,7 +63,7 @@ export const useRequestRedeemStatusSheet = ({
       return {
         isOpen: true,
         content: statusContent.successSheetContent,
-        onClose: transactionForm.handleCloseSheet,
+        onClose: handleCloseSuccess,
         children: (
           <TokenAmountInput
             label={t(`form.labels.${isClaimFlow ? 'received' : 'requested'}`)}
@@ -83,6 +90,7 @@ export const useRequestRedeemStatusSheet = ({
     transactionForm.showErrorBottomSheet,
     transactionForm.showSuccessSheet,
     transactionForm.handleCloseSheet,
+    handleCloseSuccess,
     statusContent.confirmationSheetContent,
     statusContent.errorSheetContent,
     statusContent.successSheetContent,

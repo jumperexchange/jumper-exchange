@@ -184,9 +184,11 @@ export const useTransactionForm = ({
     if (state.currentStep !== 'idle') {
       return;
     }
-    requiresConfirmation
-      ? dispatch({ type: 'SHOW_CONFIRMATION' })
-      : await execute();
+    if (requiresConfirmation) {
+      dispatch({ type: 'SHOW_CONFIRMATION' });
+    } else {
+      await execute();
+    }
   }, [state.currentStep, requiresConfirmation, execute]);
 
   const handleConfirm = useCallback(() => execute(), [execute]);

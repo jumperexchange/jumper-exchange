@@ -116,6 +116,10 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     [lpToken, amount],
   );
 
+  const handleResetAmount = useCallback(() => {
+    setAmount('0');
+  }, [setAmount]);
+
   const handleSubmit = useCallback(
     async (props: ViewSubmitContext) => {
       if (!isClaimFlow) {
@@ -128,7 +132,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
 
   const handleModalClose = () => {
     setSelectedClaimId(null);
-    setAmount('0');
+    handleResetAmount();
     transactionForm.resetForm();
     onClose?.();
   };
@@ -138,6 +142,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     isClaimFlow,
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
+    resetAmount: handleResetAmount,
   });
 
   const requestWithdrawFields = useMemo(
