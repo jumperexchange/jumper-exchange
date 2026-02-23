@@ -12,10 +12,12 @@ import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/components/RewardClaimCardSkeleton';
 import type { MerklRewardsData } from 'src/types/strapi';
+import type { RewardItem } from '@/types/rewards';
 import { MerklRewardClaim } from '../components/RewardsCarousel/components/MerklRewardClaim';
 import { DefiReacherRewardClaim } from '../components/RewardsCarousel/components/DefiReacherRewardClaim';
 import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
 import { fromMerklRewardsData } from '@/utils/rewards/rewardFilterAdapters';
+import { orderBy } from 'lodash';
 
 export const RewardsSection = ({
   merklRewards,
@@ -46,17 +48,27 @@ export const RewardsSection = ({
     isLoading: isDeFiReacherLoading,
   } = useDeFiReacherRewards({ userAddress: address, filterCriteria });
 
-  const merklRewardsWithAmount = merklAvailableRewards.filter(
-    (reward) => reward.amountToClaim > 0,
-  );
+  const rewards = useMemo((): RewardItem[] => {
+    const _merkl: RewardItem[] = merklAvailableRewards.map((reward) => ({
+      type: 'merkl',
+      reward,
+    }));
 
-  const deFiReacherRewardsWithAmount = deFiReacherAvailableRewards.filter(
-    (reward) => reward.amountToClaim > 0,
-  );
+    const _defiReacher: RewardItem[] = deFiReacherAvailableRewards.map(
+      (reward) => ({
+        type: 'defi-reacher',
+        reward,
+      }),
+    );
+
+    const combined: RewardItem[] = [..._merkl, ..._defiReacher];
+    return orderBy(combined, 'reward.amountToClaim', 'desc').filter(
+      (r) => r.reward.amountToClaim > 0,
+    );
+  }, [merklAvailableRewards, deFiReacherAvailableRewards]);
 
   const isLoading = isMerklLoading || isDeFiReacherLoading;
-  const hasNoRewards =
-    !merklRewardsWithAmount.length && !deFiReacherRewardsWithAmount.length;
+  const hasNoRewards = !rewards.length;
   const isSuccess = isMerklSuccess || isDeFiReacherSuccess;
 
   if (hasNoRewards || !isSuccess) {
@@ -75,19 +87,19 @@ export const RewardsSection = ({
               <RewardClaimCardSkeleton key={index} />
             ))}
           {!isLoading &&
-            merklRewardsWithAmount.map((reward, i) => (
-              <MerklRewardClaim
-                key={`merkl-${i}-${reward.address}`}
-                availableReward={reward}
-              />
-            ))}
-          {!isLoading &&
-            deFiReacherRewardsWithAmount.map((reward, i) => (
-              <DefiReacherRewardClaim
-                key={`defireacher-${i}-${reward.address}`}
-                availableReward={reward}
-              />
-            ))}
+            rewards.map((r, i) =>
+              r.type === 'merkl' ? (
+                <MerklRewardClaim
+                  key={`merkl-${i}-${r.reward.address}`}
+                  availableReward={r.reward}
+                />
+              ) : (
+                <DefiReacherRewardClaim
+                  key={`defireacher-${i}-${r.reward.address}`}
+                  availableReward={r.reward}
+                />
+              ),
+            )}
         </RewardsCarousel>
       </RewardsSectionContentContainer>
     </RewardsSectionContainer>

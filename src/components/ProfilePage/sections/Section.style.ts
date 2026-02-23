@@ -23,7 +23,10 @@ export const RewardsSectionContainer = styled(SectionCardContainer)(
 
 export const RewardsSectionContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
+  flexDirection: 'column',
   gap: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 }));

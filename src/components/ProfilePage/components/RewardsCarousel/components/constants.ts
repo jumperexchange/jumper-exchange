@@ -8,6 +8,7 @@ export const REWARD_CLAIM_CARD_CONFIG = {
   infoContainerGap: 0,
   itemSx: {
     borderRadius: 0,
+    alignSelf: 'stretch',
     '&:not(:has([data-hint-hover-active]))': {
       '&:hover, &:focus-visible, &:focus': {
         backgroundColor: 'transparent',

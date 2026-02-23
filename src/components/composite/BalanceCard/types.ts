@@ -20,7 +20,7 @@ export interface BalanceStackItemProps {
   balance: PortfolioBalance<WalletToken>;
   config: BalanceStackConfig;
   isClickable: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   compact?: boolean;
 }
 
