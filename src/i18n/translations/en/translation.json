@@ -701,6 +701,7 @@
       "defiProtocols": "DeFi Protocols"
     },
     "dustConversion": {
+      "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",
       "title": "Convert dust",
       "error": {
         "transactionRejected": {

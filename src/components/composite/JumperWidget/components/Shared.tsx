@@ -1,6 +1,5 @@
 import type { FC, PropsWithChildren } from 'react';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
-import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import CheckIcon from '@mui/icons-material/Check';
 import {

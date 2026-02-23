@@ -755,6 +755,7 @@ interface Resources {
         };
       };
       dustConversion: {
+        banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
         error: {
           chainSwitchFailed: {
             close: 'Close';
