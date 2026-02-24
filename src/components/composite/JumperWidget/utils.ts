@@ -307,32 +307,22 @@ export const defineComputedField = <TValue = unknown>(
   };
 };
 
-/**
- * Converts a field's `sanitizeOn` config into TanStack Form listener props.
- *
- * Each listener in `sanitizeOn` contributes a watch key. When any watched key
- * changes (or on mount when `runOnMount` is true), all sanitizers run in order.
- * Only calls `fieldApi.setValue` when the result actually differs from the
- * current value, preventing unnecessary renders and loop convergence in ≤2 calls.
- */
-export const buildFieldListeners = (
-  sanitizeOn: SanitizeListener<unknown>[] | undefined,
-  runOnMount?: boolean,
-) => {
-  if (!sanitizeOn?.length) {
-    return undefined;
-  }
+const SETVALUE_NO_REENTRY = {
+  dontRunListeners: true,
+  dontValidate: true,
+} as const;
 
-  const handler = ({
-    value,
-    fieldApi,
-  }: {
-    value: unknown;
-    fieldApi: {
-      form: { getFieldValue: (key: string) => unknown };
-      setValue: (v: unknown) => void;
-    };
-  }) => {
+export type FieldApiLike = {
+  form: { getFieldValue: (key: string) => unknown };
+  setValue: (v: unknown, options?: typeof SETVALUE_NO_REENTRY) => void;
+};
+
+const createSanitizeHandler =
+  (
+    sanitizeOn: SanitizeListener<unknown>[],
+    setValueOptions?: typeof SETVALUE_NO_REENTRY,
+  ) =>
+  ({ value, fieldApi }: { value: unknown; fieldApi: FieldApiLike }) => {
     let current = value;
     for (const listener of sanitizeOn) {
       const next = listener.sanitize({
@@ -344,13 +334,33 @@ export const buildFieldListeners = (
       }
     }
     if (current !== value) {
-      fieldApi.setValue(current);
+      fieldApi.setValue(current, setValueOptions);
     }
+    return undefined;
   };
 
+const buildFieldHandlers = (
+  sanitizeOn: SanitizeListener<unknown>[] | undefined,
+  runOnMount?: boolean,
+  setValueOptions?: typeof SETVALUE_NO_REENTRY,
+) => {
+  if (!sanitizeOn?.length) {
+    return undefined;
+  }
+  const handler = createSanitizeHandler(sanitizeOn, setValueOptions);
   return {
     onChangeListenTo: sanitizeOn.map((s) => s.watchKey),
     onChange: handler,
     ...(runOnMount ? { onMount: handler } : {}),
   };
 };
+
+export const buildFieldValidators = (
+  sanitizeOn: SanitizeListener<unknown>[] | undefined,
+  runOnMount?: boolean,
+) => buildFieldHandlers(sanitizeOn, runOnMount, SETVALUE_NO_REENTRY);
+
+export const buildFieldListeners = (
+  sanitizeOn: SanitizeListener<unknown>[] | undefined,
+  runOnMount?: boolean,
+) => buildFieldHandlers(sanitizeOn, runOnMount);

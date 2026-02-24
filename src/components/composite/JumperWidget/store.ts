@@ -11,7 +11,6 @@ import type { InferFieldValues, TypedFieldDefinition } from './types';
 export interface WidgetUIStore {
   activeField: string | null;
   setActiveField: (key: string | null) => void;
-  setTouchedField: (key: string) => void;
 }
 
 export const WidgetStoreContext = createContext<StoreApi<WidgetUIStore> | null>(
@@ -30,8 +29,6 @@ export function createWidgetStore(): StoreApi<WidgetUIStore> {
   return createStore<WidgetUIStore>((set) => ({
     activeField: null,
     setActiveField: (key) => set({ activeField: key }),
-    setTouchedField: (key) =>
-      set((s) => ({ touchedFields: { ...s.touchedFields, [key]: true } })),
   }));
 }
 
@@ -67,6 +64,7 @@ export function useField<T>(fieldKey: string) {
     (s) => (s.fieldMeta[fieldKey]?.errors ?? []) as unknown[],
   );
   const errors = normalizeFieldErrors(rawErrors);
+
   const isTouched = useStore(
     form.store,
     (s) => s.fieldMeta[fieldKey]?.isTouched ?? false,
@@ -75,12 +73,6 @@ export function useField<T>(fieldKey: string) {
 
   return {
     value: value as T,
-    /**
-     * Validation error strings. Previously `field.error` (ZodError);
-     * now `field.errors` (string[]) — update call sites accordingly:
-     *   Before: `field.error.issues[0].message`
-     *   After:  `field.errors[0]`
-     */
     errors,
     isValid: errors.length === 0,
     isActive: activeField === fieldKey,
@@ -95,8 +87,6 @@ export function useField<T>(fieldKey: string) {
   };
 }
 
-// ─── Form-level validation ────────────────────────────────────────────────────
-
 export function useFormValidation() {
   const form = useFormContext();
   const canSubmit = useStore(form.store, (s) => s.canSubmit);
@@ -107,8 +97,6 @@ export function useFormValidation() {
   );
   return { isValid: canSubmit, isTouched };
 }
-
-// ─── Submission ───────────────────────────────────────────────────────────────
 
 export function useWidgetSubmit() {
   const { submit, isSubmitting, error, clearError } = useWidgetNavigation();

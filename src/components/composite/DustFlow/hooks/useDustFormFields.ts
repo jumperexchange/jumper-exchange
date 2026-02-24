@@ -46,18 +46,18 @@ interface DustFieldDeriveResult {
   isValid: boolean;
 }
 
-const createDustFieldDerive = () => {
-  return (getValue: (key: string) => unknown): DustFieldDeriveResult => {
-    const threshold = getValue('amountThreshold') as
-      | NumericSelectValue
-      | undefined;
-    const chain = getValue('chain') as ChainSingleSelectValue | undefined;
+const createDustFieldDerive = (
+  getValue: (key: string) => unknown,
+): DustFieldDeriveResult => {
+  const threshold = getValue('amountThreshold') as
+    | NumericSelectValue
+    | undefined;
+  const chain = getValue('chain') as ChainSingleSelectValue | undefined;
 
-    return {
-      threshold: threshold?.value,
-      chainId: chain?.selectedChain,
-      isValid: !!(threshold?.value != null && chain?.selectedChain != null),
-    };
+  return {
+    threshold: threshold?.value,
+    chainId: chain?.selectedChain,
+    isValid: !!(threshold?.value != null && chain?.selectedChain != null),
   };
 };
 
@@ -135,11 +135,9 @@ export const useDustFormFields = ({
     ],
   );
 
-  const dustDerive = useMemo(() => createDustFieldDerive(), []);
-
   const computeDustSummary = useCallback(
     (getValue: (key: string) => unknown): DustSummaryValue | undefined => {
-      const { threshold, chainId, isValid } = dustDerive(getValue);
+      const { threshold, chainId, isValid } = createDustFieldDerive(getValue);
       if (!isValid || threshold == null || chainId == null) {
         return undefined;
       }
@@ -195,7 +193,6 @@ export const useDustFormFields = ({
       return next;
     },
     [
-      dustDerive,
       nativeExtendedTokens,
       fallbackNativeToken,
       getFilteredBalances,
@@ -225,7 +222,7 @@ export const useDustFormFields = ({
           header: t('headers.chains'),
         },
         deriveProps: (getValue) => {
-          const { threshold } = dustDerive(getValue);
+          const { threshold } = createDustFieldDerive(getValue);
           if (threshold == null) {
             return {};
           }
@@ -253,7 +250,8 @@ export const useDustFormFields = ({
           max: 10,
         },
         deriveProps: (getValue) => {
-          const { threshold, chainId, isValid } = dustDerive(getValue);
+          const { threshold, chainId, isValid } =
+            createDustFieldDerive(getValue);
           if (!isValid || threshold == null || chainId == null) {
             return {
               fieldProps: { availableBalances: [] },
@@ -279,7 +277,8 @@ export const useDustFormFields = ({
           primaryDisplay: 'amount',
         },
         deriveProps: (getValue) => {
-          const { threshold, chainId, isValid } = dustDerive(getValue);
+          const { threshold, chainId, isValid } =
+            createDustFieldDerive(getValue);
           if (!isValid || threshold == null || chainId == null) {
             return {};
           }
@@ -314,7 +313,6 @@ export const useDustFormFields = ({
       nonNativeBalances,
       nativeExtendedTokens,
       fallbackNativeToken,
-      dustDerive,
       checkChainHasBalancesBelowThreshold,
       getFilteredBalances,
       computeAmounts,

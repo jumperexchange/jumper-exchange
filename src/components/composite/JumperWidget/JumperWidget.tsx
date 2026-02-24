@@ -37,7 +37,9 @@ import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/Stat
 import { GoBackHeader, MainHeader } from './components/Headers';
 import { ContentContainer } from './JumperWidget.style';
 import { mergeSx } from '@/utils/theme/mergeSx';
-import { buildFieldListeners } from './utils';
+import type { FieldApiLike } from './utils';
+import { buildFieldListeners, buildFieldValidators } from './utils';
+import z from 'zod';
 
 const JUMPER_WIDGET_CONTAINER_ID = 'jumper-widget-container-id';
 const JUMPER_WIDGET_SIDE_CONTAINER_ID = 'jumper-widget-side-container-id';
@@ -51,20 +53,43 @@ interface JumperFormViewProps {
 
 const JumperFormView: FC<JumperFormViewProps> = ({ fields }) => {
   const form = useFormContext();
-
   const values = useStore(form.store, (s) => s.values);
 
   return (
     <>
       {fields.map((field) => {
         const derived = field.deriveProps?.((key) => values[key]);
+        const sanitizeValidators = buildFieldValidators(
+          field.sanitizeOn,
+          field.sanitizeOnMount,
+        );
+
+        const validators = {
+          ...sanitizeValidators,
+          onChange: ({
+            value,
+            fieldApi,
+          }: {
+            value: unknown;
+            fieldApi: FieldApiLike;
+          }) => {
+            sanitizeValidators?.onChange?.({ value, fieldApi });
+            const result = field.schema?.safeParse(value);
+
+            return result?.success
+              ? undefined
+              : (Object.values(
+                  z.flattenError(result?.error).fieldErrors,
+                ).flat() ?? undefined);
+          },
+        };
 
         return (
           <form.Field
             key={field.fieldKey}
             name={field.fieldKey}
             defaultValue={field.defaultValue}
-            validators={{ onChange: field.schema }}
+            validators={validators}
             listeners={buildFieldListeners(
               field.sanitizeOn,
               field.sanitizeOnMount,
@@ -81,7 +106,6 @@ const JumperFormView: FC<JumperFormViewProps> = ({ fields }) => {
     </>
   );
 };
-
 interface JumperWidgetInnerProps extends JumperWidgetProps {}
 
 const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
