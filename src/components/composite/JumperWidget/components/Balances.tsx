@@ -1,22 +1,37 @@
+import z from 'zod';
 import { useMemo } from 'react';
-import { z } from 'zod';
-import { useField } from '../store';
-import type { BaseFieldProps } from '../types';
-import type { Balance, PricedToken } from '@/types/tokens';
-import { fieldSx } from '../JumperWidget.style';
+import type { PricedToken } from '@/types/tokens';
+import type { Balance } from '@/types/tokens';
+import { fieldSx, Label } from '../JumperWidget.style';
 import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { TokenStack } from '../../TokenStack/TokenStack';
 import { SelectSidePanel } from './Shared';
 import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
+import Typography from '@mui/material/Typography';
+import { useField } from '../store';
+import type { BaseFieldProps } from '../types';
 
-export const balancesMultiSelectSchema = z.object({
-  selectedAddresses: z.array(z.string()).min(1),
-});
+export const createBalancesMultiSelectSchema = (options?: {
+  min?: number;
+  max?: number;
+}) => {
+  let selectedAddressesSchema = z.array(z.string()).min(options?.min ?? 1);
+
+  if (options?.max !== undefined) {
+    selectedAddressesSchema = selectedAddressesSchema.max(
+      options.max,
+      `You can select ${options.max} items maximum`,
+    );
+  }
+  return z.object({
+    selectedAddresses: selectedAddressesSchema,
+  });
+};
 
 export type BalancesMultiSelectValue = z.infer<
-  typeof balancesMultiSelectSchema
+  ReturnType<typeof createBalancesMultiSelectSchema>
 >;
 
 export interface BalancesMultiSelectFieldProps<
@@ -99,6 +114,12 @@ export const BalancesMultiSelectSidePanel = <
         );
       }}
       onClose={field.closeSidePanel}
-    />
+    >
+      {field.isTouched && field.errors.length > 0 ? (
+        <Typography variant="bodyXXSmallStrong" color="error" mt={0.5}>
+          {field.errors[0]}
+        </Typography>
+      ) : null}
+    </SelectSidePanel>
   );
 };

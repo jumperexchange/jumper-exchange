@@ -1,6 +1,6 @@
 import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { ExtendedChain } from '@lifi/sdk';
-import type { DisplayableEntity } from './types';
+import type { CountEntity, DisplayableEntity } from './types';
 import type { Token } from '@/types/tokens';
 import { isExtendedToken, isPositionToken } from '@/types/tokens';
 import type {
@@ -9,6 +9,9 @@ import type {
   Protocol,
   Token as BackendToken,
 } from '@/types/jumper-backend';
+
+export const isCountType = (e: DisplayableEntity): e is CountEntity =>
+  'count' in e && typeof e.count === 'number';
 
 // Type guards
 export const isTokensType = (e: DisplayableEntity): e is Token =>
@@ -51,6 +54,12 @@ export const getTokenChainId = (token: Token): number | undefined => {
  * Note: For Chain (no logo), use resolveChainAvatarData with useChains hook.
  */
 export const getEntityAvatarData = (entity: DisplayableEntity): AvatarData => {
+  if (isCountType(entity)) {
+    return {
+      count: entity.count,
+    };
+  }
+
   // Token
   if (isTokensType(entity)) {
     const chainId = getTokenChainId(entity);
@@ -139,6 +148,9 @@ export const getEntityAddress = (
  * Get display name from any displayable entity type.
  */
 export const getEntityName = (entity: DisplayableEntity): string => {
+  if (isCountType(entity)) {
+    return '';
+  }
   if (isTokensType(entity)) {
     return entity.name || entity.symbol || entity.address;
   }

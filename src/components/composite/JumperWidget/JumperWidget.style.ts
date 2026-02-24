@@ -1,4 +1,5 @@
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import type { Theme } from '@mui/material/styles';
@@ -35,8 +36,12 @@ export const FieldWrapper = styled(Box)(({ theme }) => ({
 
 export const MenuItemWrapper = styled(MenuItem)(({ theme }) => ({
   padding: theme.spacing(1),
+  margin: theme.spacing(0, -1),
   borderRadius: theme.shape.radius8,
   gap: theme.spacing(2),
+  ':last-child': {
+    marginBottom: theme.spacing(-1),
+  },
   '&:hover, &.Mui-selected:hover': {
     backgroundColor: (theme.vars || theme).palette.alpha100.main,
   },
@@ -47,6 +52,8 @@ export const MenuItemWrapper = styled(MenuItem)(({ theme }) => ({
 
 export const MenuItemLabel = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodyMedium,
+  minWidth: 0,
+  ...getTextEllipsisStyles(1),
 }));
 
 export const HeaderContainer = styled(Box)(({ theme }) => ({

@@ -1,3 +1,6 @@
+import type { SxProps, Theme } from '@mui/material/styles';
+import type { TypographyProps } from '@mui/material/Typography';
+
 export enum AvatarSize {
   '3XS' = '3xs',
   XXS = 'xxs',
@@ -17,8 +20,33 @@ export type AvatarStackDirection =
 
 export type AvatarOverlap = 'left' | 'right' | 'top' | 'bottom' | 'none';
 
-export interface AvatarData {
+export interface AvatarImageProps {
   id: string;
   src?: string;
   alt: string;
 }
+
+export interface AvatarCountProps {
+  count: number;
+  variant?: TypographyProps['variant'];
+  startAdornment?: number | string;
+  endAdornment?: number | string;
+}
+
+export type AvatarData = AvatarImageProps | AvatarCountProps;
+
+export interface AvatarItemProps {
+  avatar: AvatarData;
+  size?: AvatarSize;
+  spacing?: number;
+  overlap?: AvatarOverlap;
+  sx?: SxProps<Theme>;
+}
+
+export type AvatarImageItemProps = Omit<AvatarItemProps, 'avatar'> & {
+  avatar: AvatarImageProps;
+};
+
+export type AvatarCountItemProps = Omit<AvatarItemProps, 'avatar'> & {
+  avatar: AvatarCountProps;
+};

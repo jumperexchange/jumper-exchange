@@ -8,6 +8,10 @@ import type {
   Token as BackendToken,
 } from '@/types/jumper-backend';
 
+export interface CountEntity {
+  count: number;
+}
+
 /**
  * Union of all entity types that can be displayed as avatars.
  *
@@ -22,7 +26,8 @@ export type DisplayableEntity =
   | Chain
   | ExtendedChain
   | App
-  | Protocol;
+  | Protocol
+  | CountEntity;
 
 export interface EntityAvatarProps {
   entity: DisplayableEntity;

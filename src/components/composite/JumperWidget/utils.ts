@@ -1,54 +1,123 @@
-import type { AmountValue } from './components/Amount';
-import { Amount, amountSchema } from './components/Amount';
+import z from 'zod';
+import type { AmountValue, AmountSchemaOptions } from './components/Amount';
+import { Amount, createAmountSchema } from './components/Amount';
 import type { BalancesMultiSelectValue } from './components/Balances';
 import {
   BalancesMultiSelectField,
-  balancesMultiSelectSchema,
   BalancesMultiSelectSidePanel,
+  createBalancesMultiSelectSchema,
 } from './components/Balances';
-import type { ChainSingleSelectValue } from './components/Chain';
+import type {
+  ChainSingleSelectValue,
+  ChainSingleSelectSchemaOptions,
+} from './components/Chain';
 import {
   ChainSingleSelectField,
-  chainSingleSelectSchema,
+  createChainSingleSelectSchema,
   ChainSingleSelectSidePanel,
 } from './components/Chain';
-import type { DisplayTokenChainValue } from './components/DisplayTokenChain';
+import type {
+  DisplayTokenChainValue,
+  DisplayTokenChainSchemaOptions,
+} from './components/DisplayTokenChain';
 import {
   DisplayTokenChain,
-  displayTokenChainSchema,
+  createDisplayTokenChainSchema,
 } from './components/DisplayTokenChain';
-import type { NumericSelectValue } from './components/NumericSelect';
+import type {
+  NumericSelectValue,
+  NumericSelectSchemaOptions,
+} from './components/NumericSelect';
 import {
   NumericSelectField,
-  numericSelectSchema,
+  createNumericSelectSchema,
 } from './components/NumericSelect';
 import type {
   TokenMultiSelectValue,
   TokenSingleSelectValue,
+  TokenSingleSelectSchemaOptions,
+  TokenMultiSelectSchemaOptions,
 } from './components/Token';
 import {
   TokenMultiSelectField,
-  tokenMultiSelectSchema,
+  createTokenMultiSelectSchema,
   TokenMultiSelectSidePanel,
   TokenSingleSelectField,
-  tokenSingleSelectSchema,
+  createTokenSingleSelectSchema,
   TokenSingleSelectSidePanel,
 } from './components/Token';
-import type { FieldConfig } from './types';
-import { defineField } from './types';
+import type {
+  AnyFieldDefinition,
+  BaseFieldProps,
+  FieldConfig,
+  SanitizeListener,
+  TypedFieldDefinition,
+} from './types';
+import { DisplayAmount } from './components/DisplayAmount';
+import { createElement } from 'react';
+
+/**
+ * Creates a typed field definition from a config object.
+ * Returns `TypedFieldDefinition<TValue>` so the value type is preserved for
+ * use with `createTypedHooks` and `InferFieldValues`.
+ */
+export function defineField<
+  TValue,
+  TFieldProps extends BaseFieldProps,
+  TSidePanelProps extends BaseFieldProps,
+>(
+  config: FieldConfig<TValue, TFieldProps, TSidePanelProps>,
+): TypedFieldDefinition<TValue> {
+  const {
+    fieldKey,
+    schema,
+    defaultValue,
+    fieldProps,
+    sidePanelProps,
+    deriveProps,
+    sanitizeOn,
+    sanitizeOnMount,
+    FieldComponent,
+    SidePanelComponent,
+  } = config;
+
+  return {
+    fieldKey,
+    schema,
+    defaultValue,
+    sanitizeOn: sanitizeOn as SanitizeListener<unknown>[] | undefined,
+    sanitizeOnMount,
+    deriveProps,
+    renderField: (derivedProps) =>
+      createElement(FieldComponent, {
+        ...(fieldProps as TFieldProps),
+        ...(derivedProps as Partial<TFieldProps>),
+        fieldKey,
+      }),
+    renderSidePanel: SidePanelComponent
+      ? (derivedProps) =>
+          createElement(SidePanelComponent, {
+            ...(sidePanelProps as TSidePanelProps),
+            ...(derivedProps as Partial<TSidePanelProps>),
+            fieldKey,
+          })
+      : undefined,
+  } as TypedFieldDefinition<TValue>;
+}
 
 export const defineAmountField = (
   config: Omit<
     FieldConfig<AmountValue, React.ComponentProps<typeof Amount>, never>,
-    'schema' | 'FieldComponent'
+    'schema' | 'FieldComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: AmountSchemaOptions;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'amount',
-    schema: amountSchema,
+    schema: createAmountSchema(config.schemaOptions),
     FieldComponent: Amount,
   });
 
@@ -59,15 +128,16 @@ export const defineBalancesMultiSelectField = (
       React.ComponentProps<typeof BalancesMultiSelectField>,
       React.ComponentProps<typeof BalancesMultiSelectSidePanel>
     >,
-    'schema' | 'FieldComponent' | 'SidePanelComponent'
+    'schema' | 'FieldComponent' | 'SidePanelComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: Parameters<typeof createBalancesMultiSelectSchema>[0];
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'balances',
-    schema: balancesMultiSelectSchema,
+    schema: createBalancesMultiSelectSchema(config.schemaOptions),
     FieldComponent: BalancesMultiSelectField,
     SidePanelComponent: BalancesMultiSelectSidePanel,
   });
@@ -79,15 +149,16 @@ export const defineChainSingleSelectField = (
       React.ComponentProps<typeof ChainSingleSelectField>,
       React.ComponentProps<typeof ChainSingleSelectSidePanel>
     >,
-    'schema' | 'FieldComponent' | 'SidePanelComponent'
+    'schema' | 'FieldComponent' | 'SidePanelComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: ChainSingleSelectSchemaOptions;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'chain',
-    schema: chainSingleSelectSchema,
+    schema: createChainSingleSelectSchema(config.schemaOptions),
     FieldComponent: ChainSingleSelectField,
     SidePanelComponent: ChainSingleSelectSidePanel,
   });
@@ -99,15 +170,16 @@ export const defineTokenSingleSelectField = (
       React.ComponentProps<typeof TokenSingleSelectField>,
       React.ComponentProps<typeof TokenSingleSelectSidePanel>
     >,
-    'schema' | 'FieldComponent' | 'SidePanelComponent'
+    'schema' | 'FieldComponent' | 'SidePanelComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: TokenSingleSelectSchemaOptions;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'token',
-    schema: tokenSingleSelectSchema,
+    schema: createTokenSingleSelectSchema(config.schemaOptions),
     FieldComponent: TokenSingleSelectField,
     SidePanelComponent: TokenSingleSelectSidePanel,
   });
@@ -119,15 +191,16 @@ export const defineTokenMultiSelectField = (
       React.ComponentProps<typeof TokenMultiSelectField>,
       React.ComponentProps<typeof TokenMultiSelectSidePanel>
     >,
-    'schema' | 'FieldComponent' | 'SidePanelComponent'
+    'schema' | 'FieldComponent' | 'SidePanelComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: TokenMultiSelectSchemaOptions;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'tokens',
-    schema: tokenMultiSelectSchema,
+    schema: createTokenMultiSelectSchema(config.schemaOptions),
     FieldComponent: TokenMultiSelectField,
     SidePanelComponent: TokenMultiSelectSidePanel,
   });
@@ -139,15 +212,16 @@ export const defineDisplayTokenChainField = (
       React.ComponentProps<typeof DisplayTokenChain>,
       never
     >,
-    'schema' | 'FieldComponent'
+    'schema' | 'FieldComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
+    schemaOptions?: DisplayTokenChainSchemaOptions;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'token-chain',
-    schema: displayTokenChainSchema,
+    schema: createDisplayTokenChainSchema(config.schemaOptions),
     FieldComponent: DisplayTokenChain,
   });
 
@@ -158,14 +232,114 @@ export const defineNumericSelectField = (
       React.ComponentProps<typeof NumericSelectField>,
       never
     >,
-    'schema' | 'FieldComponent'
+    'schema' | 'FieldComponent' | 'fieldKey'
+  > & {
+    fieldKey?: string;
+    schemaOptions?: NumericSelectSchemaOptions;
+  },
+) =>
+  defineField({
+    ...config,
+    fieldKey: config.fieldKey ?? 'numeric-select',
+    schema: createNumericSelectSchema(config.schemaOptions),
+    FieldComponent: NumericSelectField,
+  });
+
+export const defineDisplayAmountField = (
+  config: Omit<
+    FieldConfig<undefined, React.ComponentProps<typeof DisplayAmount>, never>,
+    'schema' | 'FieldComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
   },
 ) =>
   defineField({
     ...config,
-    fieldKey: config.fieldKey ?? 'numeric-select',
-    schema: numericSelectSchema,
-    FieldComponent: NumericSelectField,
+    schema: z.undefined(),
+    fieldKey: config.fieldKey ?? 'display-amount',
+    FieldComponent: DisplayAmount,
   });
+
+export interface ComputedFieldConfig<TValue = unknown> {
+  fieldKey: string;
+  /**
+   * Field keys this computation depends on.
+   * The field will recompute whenever any dependency changes, and once on
+   * mount to establish the initial value.
+   */
+  dependencies?: string[];
+  compute: (getValue: (key: string) => unknown) => TValue;
+  schema?: z.ZodType<TValue>;
+}
+
+/**
+ * Defines a field whose value is entirely derived from other fields.
+ * Renders nothing; consumers read the value via `useWidgetStore(s => s.values.key)`.
+ */
+export const defineComputedField = <TValue = unknown>(
+  config: ComputedFieldConfig<TValue>,
+): AnyFieldDefinition => {
+  const { fieldKey, compute, schema = z.any(), dependencies = [] } = config;
+
+  return {
+    fieldKey,
+    schema,
+    defaultValue: undefined,
+    deriveProps: undefined,
+    sanitizeOn: dependencies.map((watchKey) => ({
+      watchKey,
+      sanitize: ({ getValue }) => compute(getValue) as unknown,
+    })),
+    sanitizeOnMount: true,
+    renderField: () => null,
+    renderSidePanel: undefined,
+  };
+};
+
+/**
+ * Converts a field's `sanitizeOn` config into TanStack Form listener props.
+ *
+ * Each listener in `sanitizeOn` contributes a watch key. When any watched key
+ * changes (or on mount when `runOnMount` is true), all sanitizers run in order.
+ * Only calls `fieldApi.setValue` when the result actually differs from the
+ * current value, preventing unnecessary renders and loop convergence in ≤2 calls.
+ */
+export const buildFieldListeners = (
+  sanitizeOn: SanitizeListener<unknown>[] | undefined,
+  runOnMount?: boolean,
+) => {
+  if (!sanitizeOn?.length) {
+    return undefined;
+  }
+
+  const handler = ({
+    value,
+    fieldApi,
+  }: {
+    value: unknown;
+    fieldApi: {
+      form: { getFieldValue: (key: string) => unknown };
+      setValue: (v: unknown) => void;
+    };
+  }) => {
+    let current = value;
+    for (const listener of sanitizeOn) {
+      const next = listener.sanitize({
+        currentValue: current,
+        getValue: (key) => fieldApi.form.getFieldValue(key),
+      });
+      if (next !== current) {
+        current = next;
+      }
+    }
+    if (current !== value) {
+      fieldApi.setValue(current);
+    }
+  };
+
+  return {
+    onChangeListenTo: sanitizeOn.map((s) => s.watchKey),
+    onChange: handler,
+    ...(runOnMount ? { onMount: handler } : {}),
+  };
+};

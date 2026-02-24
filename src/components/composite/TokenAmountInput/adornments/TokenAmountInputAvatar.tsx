@@ -1,29 +1,25 @@
-import { EntityChainStack } from '@/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from '@/components/composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import type { ExtendedToken } from '@/types/tokens';
+import type { PricedToken } from '@/types/tokens';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 
 interface TokenAmountInputAvatarProps {
-  token: ExtendedToken;
+  token: PricedToken;
 }
 
 export const TokenAmountInputAvatar = ({
   token,
 }: TokenAmountInputAvatarProps) => {
   return (
-    <EntityChainStack
-      variant={EntityChainStackVariant.Tokens}
-      tokens={[
+    <EntityStackWithBadge
+      entities={[token]}
+      badgeEntities={[
         {
-          ...token,
-          chain: {
-            chainId: token.chainId,
-            chainKey: token.chainId.toString(),
-          },
+          chainId: token.chainId,
+          chainKey: token.chainId.toString(),
         },
       ]}
-      tokensSize={AvatarSize.XL}
-      chainsSize={AvatarSize.XXS}
+      size={AvatarSize.XL}
+      badgeSize={AvatarSize.XXS}
       isContentVisible={false}
     />
   );

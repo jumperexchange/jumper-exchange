@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { JumperWidget } from './JumperWidget';
 import { type StatusSheetContent } from './types';
-import { useWidgetStore, useWidgetSubmit } from './store';
-import { type ChainSingleSelectValue } from './components/Chain';
-import { type TokenSingleSelectValue } from './components/Token';
+import {
+  useWidgetStore,
+  useWidgetSubmit,
+  useFormValidation,
+  createTypedHooks,
+} from './store';
 import { type NumericSelectValue } from './components/NumericSelect';
-import { type BalancesMultiSelectValue } from './components/Balances';
 import {
   createExtendedToken,
   createTokenBalance,
@@ -25,6 +27,7 @@ import {
   defineNumericSelectField,
   defineTokenSingleSelectField,
 } from './utils';
+import { ChainSingleSelectValue } from './components/Chain';
 
 const meta = {
   title: 'components/composite/JumperWidget',
@@ -71,19 +74,14 @@ const summaryFieldSx = {
   padding: 0,
 } as const;
 
-const SubmitButton = ({
-  label,
-  disabled,
-}: {
-  label: string;
-  disabled?: boolean;
-}) => {
+const SubmitButton = ({ label }: { label: string }) => {
   const { submit, isSubmitting } = useWidgetSubmit();
+  const { isValid, isTouched } = useFormValidation();
   return (
     <Button
       variant={Variant.Primary}
       onClick={submit}
-      disabled={disabled || isSubmitting}
+      disabled={isSubmitting || (isTouched && !isValid)}
       loading={isSubmitting}
     >
       {label}
@@ -91,12 +89,71 @@ const SubmitButton = ({
   );
 };
 
+const fromChainField = defineChainSingleSelectField({
+  fieldKey: 'fromChain',
+  fieldProps: { availableChains: chains, label: 'From chain' },
+  sidePanelProps: { availableChains: chains, header: 'Chains' },
+});
+
+const toChainField = defineChainSingleSelectField({
+  fieldKey: 'toChain',
+  fieldProps: { availableChains: chains, label: 'To chain' },
+  sidePanelProps: { availableChains: chains, header: 'Chains' },
+});
+
+const tokenField = defineTokenSingleSelectField({
+  fieldKey: 'token',
+  fieldProps: { availableTokens: tokens, label: 'Token' },
+  sidePanelProps: { availableTokens: tokens, header: 'Tokens' },
+  deriveProps: (getValue) => {
+    const fromChain = getValue('fromChain') as
+      | ChainSingleSelectValue
+      | undefined;
+    if (!fromChain?.selectedChain) return {};
+    const filtered = tokens.filter(
+      (t) => t.chainId === fromChain.selectedChain,
+    );
+    return {
+      fieldProps: { availableTokens: filtered },
+      sidePanelProps: { availableTokens: filtered },
+    };
+  },
+  sanitizeOn: [
+    {
+      watchKey: 'fromChain',
+      sanitize: ({ currentValue, getValue }) => {
+        if (!currentValue?.selectedToken) return currentValue;
+        const fromChain = getValue('fromChain') as
+          | ChainSingleSelectValue
+          | undefined;
+        if (!fromChain?.selectedChain) return undefined;
+        const isStillValid = tokens.some(
+          (t) =>
+            t.address === currentValue.selectedToken &&
+            t.chainId === fromChain.selectedChain,
+        );
+        return isStillValid ? currentValue : undefined;
+      },
+    },
+  ],
+});
+
+const amountField = defineAmountField({
+  fieldKey: 'amount',
+  defaultValue: { amount: '0', maxAmount: '100000' },
+  fieldProps: { label: 'Amount', token: tokens[0] },
+});
+
+const bridgeFields = {
+  fromChain: fromChainField,
+  toChain: toChainField,
+  token: tokenField,
+  amount: amountField,
+} as const;
+const { useValues: useBridgeValues } = createTypedHooks(bridgeFields);
+
 const BridgeSummary = () => {
-  const values = useWidgetStore((s) => s.values);
-  const fromChain = values.fromChain as ChainSingleSelectValue | undefined;
-  const toChain = values.toChain as ChainSingleSelectValue | undefined;
-  const token = values.token as TokenSingleSelectValue | undefined;
-  const amount = values.amount as { amount: string } | undefined;
+  const { fromChain, toChain, token, amount } = useBridgeValues();
 
   const selectedToken = useMemo(
     () => tokens.find((t) => t.address === token?.selectedToken),
@@ -149,15 +206,130 @@ const BridgeSummary = () => {
   );
 };
 
+export const Default: Story = {
+  render: () => {
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [sheetMode, setSheetMode] = useState<'confirmation' | 'success'>(
+      'confirmation',
+    );
+
+    const handleCloseSheet = useCallback(() => setSheetOpen(false), []);
+
+    const confirmationSheetContent: StatusSheetContent = useMemo(
+      () => ({
+        title: 'Confirm bridge',
+        description: 'Please confirm you want to proceed with this bridge.',
+        callToAction: 'Confirm',
+        callToActionType: 'submit',
+        status: 'info',
+        onClick: handleCloseSheet,
+      }),
+      [handleCloseSheet],
+    );
+
+    const successSheetContent: StatusSheetContent = useMemo(
+      () => ({
+        title: 'Transaction complete',
+        description: 'Your request was submitted successfully.',
+        callToAction: 'Done',
+        callToActionType: 'button',
+        status: 'success',
+        onClick: handleCloseSheet,
+      }),
+      [handleCloseSheet],
+    );
+
+    const statusSheet = useMemo(
+      () => ({
+        isOpen: sheetOpen,
+        content:
+          sheetMode === 'confirmation'
+            ? confirmationSheetContent
+            : successSheetContent,
+        onClose: handleCloseSheet,
+      }),
+      [
+        sheetOpen,
+        sheetMode,
+        confirmationSheetContent,
+        successSheetContent,
+        handleCloseSheet,
+      ],
+    );
+
+    const views = useMemo(
+      () => [
+        {
+          type: 'form' as const,
+          id: 'form',
+          title: 'Bridge',
+          fields: [fromChainField, toChainField, tokenField, amountField],
+          actions: <SubmitButton label="Get Quote" />,
+          onSubmit: async ({
+            goToView,
+          }: {
+            goToView: (id: string) => void;
+          }) => {
+            await new Promise((r) => setTimeout(r, 400));
+            // Navigate first — sheet opens on top of the destination view.
+            goToView('summary');
+            setSheetMode('confirmation');
+            setSheetOpen(true);
+          },
+        },
+        {
+          type: 'custom' as const,
+          id: 'summary',
+          title: 'Review Bridge',
+          content: <BridgeSummary />,
+          actions: <SubmitButton label="Confirm" />,
+          onSubmit: async () => {
+            await new Promise((r) => setTimeout(r, 800));
+            setSheetMode('success');
+            setSheetOpen(true);
+          },
+        },
+      ],
+      [],
+    );
+
+    return (
+      <JumperWidget
+        views={views}
+        statusSheet={statusSheet}
+        style={widgetStyle}
+      />
+    );
+  },
+  args: {
+    views: [],
+  },
+};
+
+const dustAmountThreshold = defineNumericSelectField({
+  fieldKey: 'amountThreshold',
+  defaultValue: { value: 5 },
+  fieldProps: { values: [5, 10, 20, 30], label: 'Dust threshold' },
+});
+
+const { useValues: useDustValues } = createTypedHooks({
+  amountThreshold: dustAmountThreshold,
+});
+
 const BalancesSummary = () => {
-  const values = useWidgetStore((s) => s.values);
-  const chain = values.chain as ChainSingleSelectValue | undefined;
-  const selectedBalances = values.balances as
-    | BalancesMultiSelectValue
-    | undefined;
-  const amountThreshold = values.amountThreshold as
-    | NumericSelectValue
-    | undefined;
+  const { amountThreshold } = useDustValues();
+  const chain = useWidgetStore(
+    (s) =>
+      s.values.chain as
+        | import('./components/Chain').ChainSingleSelectValue
+        | undefined,
+  );
+  const selectedBalances = useWidgetStore(
+    (s) =>
+      s.values.balances as
+        | import('./components/Balances').BalancesMultiSelectValue
+        | undefined,
+  );
 
   const selectedChain = useMemo(
     () => chains.find((c) => c.id === chain?.selectedChain),
@@ -193,214 +365,177 @@ const BalancesSummary = () => {
   );
 };
 
-export const Default: Story = {
-  render: () => {
-    const [sheetOpen, setSheetOpen] = useState(false);
-    const [sheetMode, setSheetMode] = useState<'confirmation' | 'success'>(
-      'confirmation',
-    );
-    const nextStepRef = useRef<((id: string) => void) | null>(null);
-
-    const fromChain = defineChainSingleSelectField({
-      fieldKey: 'fromChain',
-      fieldProps: { availableChains: chains, label: 'From chain' },
-      sidePanelProps: { availableChains: chains, header: 'Chains' },
-    });
-
-    const toChain = defineChainSingleSelectField({
-      fieldKey: 'toChain',
-      fieldProps: { availableChains: chains, label: 'To chain' },
-      sidePanelProps: { availableChains: chains, header: 'Chains' },
-    });
-
-    const tokenField = defineTokenSingleSelectField({
-      fieldKey: 'token',
-      fieldProps: { availableTokens: tokens, label: 'Token' },
-      sidePanelProps: { availableTokens: tokens, header: 'Tokens' },
-    });
-
-    const amountField = defineAmountField({
-      fieldKey: 'amount',
-      defaultValue: { amount: '0', maxAmount: '100000' },
-      fieldProps: { label: 'Amount', token: tokens[0] },
-    });
-
-    const handleCloseSheet = useCallback(() => setSheetOpen(false), []);
-
-    const handleConfirmationConfirm = useCallback(() => {
-      setSheetOpen(false);
-      nextStepRef.current?.('summary');
-      nextStepRef.current = null;
-    }, []);
-
-    const confirmationSheetContent: StatusSheetContent = {
-      title: 'Confirm bridge',
-      description: 'Please confirm you want to proceed with this bridge.',
-      callToAction: 'Confirm',
-      callToActionType: 'submit',
-      status: 'info',
-      onClick: handleConfirmationConfirm,
-    };
-
-    const successSheetContent: StatusSheetContent = {
-      title: 'Transaction complete',
-      description: 'Your request was submitted successfully.',
-      callToAction: 'Done',
-      callToActionType: 'button',
-      status: 'success',
-      onClick: handleCloseSheet,
-    };
-
-    const statusSheet = {
-      isOpen: sheetOpen,
-      content: {
-        ...(sheetMode === 'confirmation'
-          ? confirmationSheetContent
-          : successSheetContent),
-      },
-      onClose: handleCloseSheet,
-    };
-
-    const views = [
-      {
-        type: 'form' as const,
-        id: 'form',
-        title: 'Bridge',
-        fields: [fromChain, toChain, tokenField, amountField],
-        actions: <SubmitButton label="Get Quote" />,
-        onSubmit: async ({ goToView }: { goToView: (id: string) => void }) => {
-          await new Promise((r) => setTimeout(r, 400));
-          nextStepRef.current = goToView;
-          setSheetMode('confirmation');
-          setSheetOpen(true);
-        },
-      },
-      {
-        type: 'custom' as const,
-        id: 'summary',
-        title: 'Review Bridge',
-        content: <BridgeSummary />,
-        actions: <SubmitButton label="Confirm" />,
-        onSubmit: async () => {
-          await new Promise((r) => setTimeout(r, 800));
-          setSheetMode('success');
-          setSheetOpen(true);
-        },
-      },
-    ];
-
-    return (
-      <JumperWidget
-        views={views}
-        statusSheet={statusSheet}
-        style={widgetStyle}
-      />
-    );
-  },
-  args: {
-    views: [],
-  },
-};
-
 export const Balances: Story = {
   render: () => {
     const { toAmountUSD } = useTokenFormatters();
 
-    const checkBalanceAboveThreshold = (
-      balance: Balance<ExtendedToken>,
-      minUsd: number,
-    ) => {
-      return Number(toAmountUSD(balance)) - minUsd > Number.EPSILON;
-    };
+    const checkBalanceAboveThreshold = useCallback(
+      (balance: Balance<ExtendedToken>, minUsd: number) =>
+        Number(toAmountUSD(balance)) - minUsd > Number.EPSILON,
+      [toAmountUSD],
+    );
 
-    const checkChainBalancesAboveThreshold = (
-      chainId: number,
-      minUsd: number,
-    ) => {
-      const chainBalances = balances.filter((b) => b.token.chainId === chainId);
-
-      return (
-        chainBalances.length &&
-        chainBalances.some((b) => checkBalanceAboveThreshold(b, minUsd))
-      );
-    };
-
-    const dustAmountThreshold = defineNumericSelectField({
-      fieldKey: 'amountThreshold',
-      defaultValue: { value: 5 },
-      fieldProps: { values: [5, 10, 20, 30], label: 'Dust threshold' },
-    });
-
-    const chainField = defineChainSingleSelectField({
-      fieldKey: 'chain',
-      fieldProps: { availableChains: chains, label: 'Chain' },
-      sidePanelProps: { availableChains: chains, header: 'Chains' },
-      deriveProps: (getValue) => {
-        const threshold = getValue('amountThreshold') as
-          | NumericSelectValue
-          | undefined;
-        if (!threshold?.value) return {};
-        const filtered = chains.filter((c) =>
-          checkChainBalancesAboveThreshold(c.id, threshold.value),
+    const checkChainBalancesAboveThreshold = useCallback(
+      (chainId: number, minUsd: number) => {
+        const chainBalances = balances.filter(
+          (b) => b.token.chainId === chainId,
         );
-        return {
-          fieldProps: { availableChains: filtered },
-          sidePanelProps: { availableChains: filtered },
-        };
+        return (
+          chainBalances.length > 0 &&
+          chainBalances.some((b) => checkBalanceAboveThreshold(b, minUsd))
+        );
       },
-    });
+      [checkBalanceAboveThreshold],
+    );
 
-    const balancesField = defineBalancesMultiSelectField({
-      fieldKey: 'balances',
-      fieldProps: { availableBalances: balances, label: 'Convert' },
-      sidePanelProps: { availableBalances: balances, header: 'Tokens' },
-      deriveProps: (getValue) => {
-        const threshold = getValue('amountThreshold') as
-          | NumericSelectValue
-          | undefined;
+    const chainField = useMemo(
+      () =>
+        defineChainSingleSelectField({
+          fieldKey: 'chain',
+          fieldProps: { availableChains: chains, label: 'Chain' },
+          sidePanelProps: { availableChains: chains, header: 'Chains' },
+          deriveProps: (getValue) => {
+            const threshold = getValue('amountThreshold') as
+              | NumericSelectValue
+              | undefined;
+            if (!threshold?.value) return {};
+            const filtered = chains.filter((c) =>
+              checkChainBalancesAboveThreshold(c.id, threshold.value),
+            );
+            return {
+              fieldProps: { availableChains: filtered },
+              sidePanelProps: { availableChains: filtered },
+            };
+          },
+        }),
+      [checkChainBalancesAboveThreshold],
+    );
 
-        const chain = getValue('chain') as ChainSingleSelectValue | undefined;
+    const balancesField = useMemo(
+      () =>
+        defineBalancesMultiSelectField({
+          fieldKey: 'balances',
+          schemaOptions: { min: 1, max: 10 },
+          fieldProps: { availableBalances: balances, label: 'Convert' },
+          sidePanelProps: { availableBalances: balances, header: 'Tokens' },
+          deriveProps: (getValue) => {
+            const threshold = getValue('amountThreshold') as
+              | NumericSelectValue
+              | undefined;
+            const chain = getValue('chain') as
+              | ChainSingleSelectValue
+              | undefined;
+            if (!chain?.selectedChain || !threshold?.value) {
+              return {
+                fieldProps: { availableBalances: [] },
+                sidePanelProps: { availableBalances: [] },
+              };
+            }
+            const filtered = balances
+              .filter((b) => b.token.chainId === chain.selectedChain)
+              .filter((b) => checkBalanceAboveThreshold(b, threshold.value));
+            return {
+              fieldProps: { availableBalances: filtered },
+              sidePanelProps: { availableBalances: filtered },
+            };
+          },
+          sanitizeOn: [
+            {
+              watchKey: 'chain',
+              sanitize: ({ currentValue, getValue }) => {
+                if (!currentValue?.selectedAddresses?.length)
+                  return currentValue;
+                const chain = getValue('chain') as
+                  | ChainSingleSelectValue
+                  | undefined;
+                const threshold = getValue('amountThreshold') as
+                  | NumericSelectValue
+                  | undefined;
+                if (!chain?.selectedChain) return undefined;
+                const validAddresses = balances
+                  .filter((b) => b.token.chainId === chain.selectedChain)
+                  .filter((b) =>
+                    threshold?.value
+                      ? checkBalanceAboveThreshold(b, threshold.value)
+                      : true,
+                  )
+                  .map((b) => b.token.address);
+                const stillValid = currentValue.selectedAddresses.filter((a) =>
+                  validAddresses.includes(a),
+                );
+                return stillValid.length > 0
+                  ? { selectedAddresses: stillValid }
+                  : undefined;
+              },
+            },
+            {
+              watchKey: 'amountThreshold',
+              sanitize: ({ currentValue, getValue }) => {
+                if (!currentValue?.selectedAddresses?.length)
+                  return currentValue;
+                const chain = getValue('chain') as
+                  | ChainSingleSelectValue
+                  | undefined;
+                const threshold = getValue('amountThreshold') as
+                  | NumericSelectValue
+                  | undefined;
+                if (!threshold?.value) return currentValue;
+                const validAddresses = balances
+                  .filter((b) =>
+                    chain?.selectedChain
+                      ? b.token.chainId === chain.selectedChain
+                      : true,
+                  )
+                  .filter((b) => checkBalanceAboveThreshold(b, threshold.value))
+                  .map((b) => b.token.address);
+                const stillValid = currentValue.selectedAddresses.filter((a) =>
+                  validAddresses.includes(a),
+                );
+                return stillValid.length > 0
+                  ? { selectedAddresses: stillValid }
+                  : undefined;
+              },
+            },
+          ],
+        }),
+      [checkBalanceAboveThreshold],
+    );
 
-        if (!chain?.selectedChain || !threshold?.value)
-          return {
-            fieldProps: { availableBalances: [] },
-            sidePanelProps: { availableBalances: [] },
-          };
-
-        const filtered = balances
-          .filter((b) => b.token.chainId === chain.selectedChain)
-          .filter((b) => checkBalanceAboveThreshold(b, threshold.value));
-        return {
-          fieldProps: { availableBalances: filtered },
-          sidePanelProps: { availableBalances: filtered },
-        };
-      },
-    });
-
-    const views = [
-      {
-        type: 'form' as const,
-        id: 'form',
-        title: 'Convert dust',
-        fields: [dustAmountThreshold, chainField, balancesField],
-        actions: <SubmitButton label="Review" />,
-        onSubmit: async ({ goToView }: { goToView: (id: string) => void }) => {
-          await new Promise((r) => setTimeout(r, 600));
-          goToView('summary');
+    const views = useMemo(
+      () => [
+        {
+          type: 'form' as const,
+          id: 'form',
+          title: 'Convert dust',
+          fields: [dustAmountThreshold, chainField, balancesField],
+          actions: <SubmitButton label="Review" />,
+          onSubmit: async ({
+            goToView,
+          }: {
+            goToView: (id: string) => void;
+          }) => {
+            await new Promise((r) => setTimeout(r, 600));
+            goToView('summary');
+          },
         },
-      },
-      {
-        type: 'custom' as const,
-        id: 'summary',
-        title: 'Review Selection',
-        content: <BalancesSummary />,
-        actions: <SubmitButton label="Confirm" />,
-        onSubmit: async ({ goToView }: { goToView: (id: string) => void }) => {
-          await new Promise((r) => setTimeout(r, 600));
-          goToView('form');
+        {
+          type: 'custom' as const,
+          id: 'summary',
+          title: 'Review Selection',
+          content: <BalancesSummary />,
+          actions: <SubmitButton label="Confirm" />,
+          onSubmit: async ({
+            goToView,
+          }: {
+            goToView: (id: string) => void;
+          }) => {
+            await new Promise((r) => setTimeout(r, 600));
+            goToView('form');
+          },
         },
-      },
-    ];
+      ],
+      [chainField, balancesField],
+    );
 
     return <JumperWidget views={views} style={widgetStyle} />;
   },

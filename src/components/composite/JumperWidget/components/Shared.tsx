@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
 import { AvatarSkeleton } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
@@ -27,7 +27,7 @@ export interface SelectSideOption {
   name: string;
 }
 
-export interface SelectSidePanelProps {
+export interface SelectSidePanelProps extends PropsWithChildren {
   isActive: boolean;
   options: SelectSideOption[];
   isSelected: (key: string) => boolean;
@@ -43,6 +43,7 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
   onSelect,
   onClose,
   header,
+  children,
 }) => {
   if (!isActive) {
     return null;
@@ -81,6 +82,7 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
             No {header?.toLowerCase() || 'items'} available for selection
           </Label>
         )}
+        {children}
       </ContentContainer>
     </>
   );

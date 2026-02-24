@@ -1,37 +1,37 @@
 import { createContext, useContext } from 'react';
-import type { z } from 'zod';
+import type {
+  ReactFormExtendedApi,
+  FormValidateOrFn,
+  FormAsyncValidateOrFn,
+} from '@tanstack/react-form';
+import { useForm } from '@tanstack/react-form';
 
-export interface FieldMeta {
-  schema: z.ZodType;
-  defaultValue: unknown;
-}
+export type WidgetFormValues = Record<string, unknown>;
 
-export type FieldMetaMap = Record<string, FieldMeta>;
+export type WidgetFormApi<T extends WidgetFormValues = WidgetFormValues> =
+  ReactFormExtendedApi<
+    T,
+    FormValidateOrFn<T> | undefined,
+    FormValidateOrFn<T> | undefined,
+    FormAsyncValidateOrFn<T> | undefined,
+    FormValidateOrFn<T> | undefined,
+    FormAsyncValidateOrFn<T> | undefined,
+    FormValidateOrFn<T> | undefined,
+    FormAsyncValidateOrFn<T> | undefined,
+    FormValidateOrFn<T> | undefined,
+    FormAsyncValidateOrFn<T> | undefined,
+    FormAsyncValidateOrFn<T> | undefined,
+    unknown
+  >;
 
-export const FieldMetaContext = createContext<FieldMetaMap | null>(null);
+export const FormContext = createContext<WidgetFormApi | null>(null);
 
-export function useFieldMeta(fieldKey: string): FieldMeta {
-  const map = useContext(FieldMetaContext);
-  if (!map) {
-    throw new Error('useField must be used inside a JumperWidget');
+export function useFormContext(): WidgetFormApi {
+  const form = useContext(FormContext);
+  if (!form) {
+    throw new Error('useFormContext must be used inside a JumperWidget');
   }
-  const meta = map[fieldKey];
-  if (!meta) {
-    throw new Error(`No field registered for key "${fieldKey}"`);
-  }
-  return meta;
-}
-
-export type FormSchema = z.ZodObject<Record<string, z.ZodTypeAny>>;
-
-export const FormSchemaContext = createContext<FormSchema | null>(null);
-
-export function useFormSchema(): FormSchema {
-  const schema = useContext(FormSchemaContext);
-  if (!schema) {
-    throw new Error('useFormValidation must be used inside a JumperWidget');
-  }
-  return schema;
+  return form;
 }
 
 export interface NavigationContextValue {

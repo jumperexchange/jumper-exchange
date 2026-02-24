@@ -9,20 +9,52 @@ import { useChains } from '@/hooks/useChains';
 import z from 'zod';
 import type { CoinKey, TokenTag } from '@lifi/sdk';
 
-export const displayTokenChainSchema = z.object({
-  address: z.string(),
-  name: z.string(),
-  symbol: z.string(),
-  decimals: z.number(),
-  logoURI: z.string().optional(),
-  chainId: z.number(),
-  coinKey: z.custom<CoinKey>((val) => typeof val === 'string').optional(),
-  tags: z
-    .array(z.custom<TokenTag>((val) => typeof val === 'string'))
-    .optional(),
-  priceUSD: z.string(),
-  type: z.literal('extended'),
-});
+// ─── Schema ───────────────────────────────────────────────────────────────────
+
+export interface DisplayTokenChainSchemaOptions {
+  /**
+   * Restrict the valid token type literal.
+   * Defaults to `'extended'` — change only if the field is used with a
+   * different token shape in an unusual context.
+   */
+  tokenType?: string;
+  /**
+   * When provided, only tokens on these chain IDs will pass validation.
+   * Useful when the display field is populated by a computed field that
+   * must resolve to a specific network.
+   */
+  allowedChainIds?: number[];
+}
+
+export const createDisplayTokenChainSchema = (
+  options: DisplayTokenChainSchemaOptions = {},
+) => {
+  const { tokenType = 'extended', allowedChainIds } = options;
+
+  let chainIdSchema = z.number();
+  if (allowedChainIds?.length) {
+    chainIdSchema = chainIdSchema.refine((id) => allowedChainIds.includes(id), {
+      message: 'Token is not on a supported chain',
+    }) as typeof chainIdSchema;
+  }
+
+  return z.object({
+    address: z.string(),
+    name: z.string(),
+    symbol: z.string(),
+    decimals: z.number(),
+    logoURI: z.string().optional(),
+    chainId: chainIdSchema,
+    coinKey: z.custom<CoinKey>((val) => typeof val === 'string').optional(),
+    tags: z
+      .array(z.custom<TokenTag>((val) => typeof val === 'string'))
+      .optional(),
+    priceUSD: z.string(),
+    type: z.literal(tokenType as 'extended'),
+  });
+};
+
+export const displayTokenChainSchema = createDisplayTokenChainSchema();
 
 export type DisplayTokenChainValue = z.infer<typeof displayTokenChainSchema>;
 
@@ -36,13 +68,11 @@ export const DisplayTokenChain: FC<DisplayTokenChainProps> = ({
   const token = field.value;
   const { getChainById } = useChains();
 
-  const description = useMemo(() => {
+  const chainName = useMemo(() => {
     if (!token) {
       return '';
     }
-    const _chain = getChainById(token.chainId);
-
-    return _chain?.name;
+    return getChainById(token.chainId)?.name;
   }, [token, getChainById]);
 
   if (!token) {
@@ -55,7 +85,7 @@ export const DisplayTokenChain: FC<DisplayTokenChainProps> = ({
       label={label}
       value={token.symbol}
       placeholder={token.symbol}
-      description={description}
+      description={chainName}
       isClickable={false}
       startAdornment={<TokenAmountInputAvatar token={token} />}
       sx={(theme) => ({

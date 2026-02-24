@@ -11,14 +11,62 @@ import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { useField } from '../store';
 import { TokenAmountInputPercentages } from '@/components/composite/TokenAmountInput/adornments/TokenAmountInputPercentages';
 
-export const amountSchema = z.object({
-  amount: z.string(),
-  maxAmount: z.string().optional(),
-});
+export interface AmountSchemaOptions {
+  /**
+   * Minimum raw token amount as a bigint-compatible string.
+   * Defaults to no minimum (any non-negative value accepted).
+   */
+  min?: string;
+  /**
+   * Maximum raw token amount as a bigint-compatible string.
+   * When provided, the entered amount must be ≤ this value.
+   * Useful for capping at the user's available balance.
+   */
+  max?: string;
+  /**
+   * When `true`, an amount of "0" is treated as invalid.
+   * Defaults to `false` so the field can be rendered with an empty/zero state.
+   */
+  requireNonZero?: boolean;
+}
+
+export const createAmountSchema = (options: AmountSchemaOptions = {}) => {
+  const { min, max, requireNonZero = false } = options;
+
+  let amountSchema = z.string();
+
+  if (requireNonZero) {
+    amountSchema = amountSchema.refine((v) => BigInt(v || '0') > 0n, {
+      message: 'Amount must be greater than zero',
+    });
+  }
+
+  if (min !== undefined) {
+    amountSchema = amountSchema.refine((v) => BigInt(v || '0') >= BigInt(min), {
+      message: `Amount must be at least ${min}`,
+    });
+  }
+
+  if (max !== undefined) {
+    amountSchema = amountSchema.refine((v) => BigInt(v || '0') <= BigInt(max), {
+      message: 'Amount exceeds maximum',
+    });
+  }
+
+  return z.object({
+    amount: amountSchema,
+    maxAmount: z.string().optional(),
+  });
+};
+
+/** Default schema — no constraints. Used when no `schemaOptions` are provided. */
+export const amountSchema = createAmountSchema();
 
 export type AmountValue = z.infer<typeof amountSchema>;
 
-interface AmountProps extends BaseFieldProps {
+// ─── Component ────────────────────────────────────────────────────────────────
+
+export interface AmountProps extends BaseFieldProps {
   token: ExtendedToken;
 }
 
@@ -37,34 +85,28 @@ export const Amount: FC<AmountProps> = ({ fieldKey, label, token }) => {
 
   const handleAmountChange = useCallback(
     (newAmount: string) => {
-      field.setValue({
-        amount: newAmount,
-        maxAmount,
-      });
+      field.setValue({ amount: newAmount, maxAmount });
     },
     [field, maxAmount],
   );
 
   const handleFormattedAmountChange = useCallback(
     (formattedAmount: string) => {
-      console.log(formattedAmount, token.decimals);
       const rawAmount = toRawAmount(formattedAmount, token.decimals);
-      console.log(rawAmount);
-      field.setValue({
-        amount: rawAmount.toString(),
-        maxAmount,
-      });
+      field.setValue({ amount: rawAmount.toString(), maxAmount });
     },
-    [toRawAmount, token, field, maxAmount],
+    [toRawAmount, token.decimals, maxAmount, field],
   );
 
-  const tokenBalance = useMemo(() => {
-    return createTokenBalance(amount);
-  }, [createTokenBalance, amount]);
+  const tokenBalance = useMemo(
+    () => createTokenBalance(amount),
+    [createTokenBalance, amount],
+  );
 
-  const maxTokenBalance = useMemo(() => {
-    return createTokenBalance(maxAmount);
-  }, [createTokenBalance, maxAmount]);
+  const maxTokenBalance = useMemo(
+    () => createTokenBalance(maxAmount),
+    [createTokenBalance, maxAmount],
+  );
 
   return (
     <TokenAmountInput

@@ -9,10 +9,35 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { OptionIcon, SelectSidePanel } from './Shared';
 import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
+import Typography from '@mui/material/Typography';
 
-export const chainSingleSelectSchema = z.object({
-  selectedChain: z.number().min(1),
-});
+export interface ChainSingleSelectSchemaOptions {
+  /**
+   * Whitelist of chain IDs that are valid selections.
+   * When provided, selecting a chain outside this set will fail validation.
+   * Useful for restricting chains to those supported by a specific operation.
+   */
+  allowedChainIds?: number[];
+}
+
+export const createChainSingleSelectSchema = (
+  options: ChainSingleSelectSchemaOptions = {},
+) => {
+  const { allowedChainIds } = options;
+
+  let selectedChainSchema = z.number().int().positive();
+
+  if (allowedChainIds?.length) {
+    selectedChainSchema = selectedChainSchema.refine(
+      (id) => allowedChainIds.includes(id),
+      { message: 'Selected chain is not supported for this operation' },
+    ) as typeof selectedChainSchema;
+  }
+
+  return z.object({ selectedChain: selectedChainSchema });
+};
+
+export const chainSingleSelectSchema = createChainSingleSelectSchema();
 
 export type ChainSingleSelectValue = z.infer<typeof chainSingleSelectSchema>;
 
@@ -77,8 +102,17 @@ export const ChainSingleSelectSidePanel: FC<ChainSingleSelectFieldProps> = ({
         name: c.name,
       }))}
       isSelected={(key) => field.value?.selectedChain === Number(key)}
-      onSelect={(key) => field.setValue({ selectedChain: Number(key) })}
+      onSelect={(key) => {
+        field.setValue({ selectedChain: Number(key) });
+        field.closeSidePanel();
+      }}
       onClose={field.closeSidePanel}
-    />
+    >
+      {field.isTouched && field.errors.length > 0 ? (
+        <Typography variant="bodyXXSmallStrong" color="error" mt={0.5}>
+          {field.errors[0]}
+        </Typography>
+      ) : null}
+    </SelectSidePanel>
   );
 };
