@@ -1,4 +1,3 @@
-// RewardsCarousel.context.tsx
 'use client';
 import {
   createContext,
@@ -41,6 +40,7 @@ export const RewardsCarouselRoot = ({ children }: { children: ReactNode }) => {
     swiper.on('update', update);
     swiper.on('slideChange', update);
     swiper.on('resize', update);
+    update();
   }, []);
 
   return (

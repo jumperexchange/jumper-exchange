@@ -27,7 +27,7 @@ export const RewardCardContainer = styled(Box)(({ theme }) => ({
   borderRadius: theme.shape.cardBorderRadiusLarge,
   flexDirection: 'row',
   padding: theme.spacing(2),
-  width: '-webkit-fill-available',
+  width: 'stretch',
   boxShadow: theme.shadows[2],
 
   ...theme.applyStyles('light', {

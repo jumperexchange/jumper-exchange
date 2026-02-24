@@ -89,11 +89,12 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
 
     const amount = availableReward.amountToClaim;
     const amountUSD = amount * Number(priceUSD);
+    const amountStr = amount.toFixed(availableReward.tokenDecimals);
 
     return {
       token: _walletToken,
       amountUSD,
-      amount: toRawAmount(amount.toString(), availableReward.tokenDecimals),
+      amount: toRawAmount(amountStr, availableReward.tokenDecimals),
     };
   }, [availableReward, getToken, toRawAmount]);
 
