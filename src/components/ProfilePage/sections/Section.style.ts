@@ -23,7 +23,19 @@ export const RewardsSectionContainer = styled(SectionCardContainer)(
 
 export const RewardsSectionContentContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+}));
+
+export const RewardsSectionHeaderContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexShrink: 0,
   flexDirection: 'row',
   alignItems: 'center',
+  justifyContent: 'space-between',
   gap: theme.spacing(2),
 }));

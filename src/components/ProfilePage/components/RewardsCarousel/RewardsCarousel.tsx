@@ -1,45 +1,77 @@
 'use client';
 import { useTheme } from '@mui/material/styles';
-import { Children, type FC, type PropsWithChildren } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Children, useEffect, type FC, type PropsWithChildren } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { FreeMode } from 'swiper/modules';
+import { FreeMode, Navigation } from 'swiper/modules';
 import 'swiper/css';
-import { RewardsCarouselContainer } from './RewardsCarousel.style';
+import {
+  RewardsCarouselContainer,
+  RewardsCarouselNavigationContainer,
+} from './RewardsCarousel.style';
+import { useRewardsCarouselContext } from './RewardsCarouselContext';
+import { RewardsCarouselNavButtons } from './components/RewardsCarouselNavButtons';
 
-interface RewardsCarouselProps extends PropsWithChildren {}
-
-export const RewardsCarousel: FC<RewardsCarouselProps> = ({ children }) => {
+export const RewardsCarousel: FC<PropsWithChildren> = ({ children }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { navState, classNames, swiperInstance, handleSwiper } =
+    useRewardsCarouselContext();
 
   const slides = Children.toArray(children);
 
+  useEffect(() => {
+    if (!swiperInstance) {
+      return;
+    }
+
+    const raf = requestAnimationFrame(() => {
+      swiperInstance.navigation.destroy();
+      swiperInstance.navigation.init();
+      swiperInstance.navigation.update();
+    });
+
+    return () => cancelAnimationFrame(raf);
+  }, [isMobile, swiperInstance]);
+
   return (
-    <RewardsCarouselContainer
-      sx={{
-        overflow: 'hidden',
-        margin: theme.spacing(2, -2, -2, -2),
-        [theme.breakpoints.up('md')]: {
-          marginTop: 0,
-        },
-      }}
-    >
+    <RewardsCarouselContainer>
       <Swiper
-        modules={[FreeMode]}
-        slidesPerView="auto"
+        key={isMobile ? 'mobile' : 'desktop'}
+        onSwiper={handleSwiper}
+        modules={[FreeMode, Navigation]}
+        slidesPerView={isMobile ? 1 : 'auto'}
         spaceBetween={16}
-        freeMode={{
-          enabled: true,
-          sticky: true,
-          momentumRatio: 0.5,
-        }}
+        centeredSlides={isMobile}
+        centeredSlidesBounds={isMobile}
+        freeMode={{ enabled: true, sticky: true, momentumRatio: 0.5 }}
+        className="carousel-swiper"
         grabCursor
-        style={{ overflow: 'visible', padding: theme.spacing(0, 2, 2, 2) }}
+        style={{
+          paddingRight: isMobile ? 0 : theme.spacing(1),
+          paddingLeft: isMobile ? 0 : theme.spacing(1),
+          paddingBottom: theme.spacing(2),
+          marginRight: isMobile ? 0 : theme.spacing(1),
+          marginLeft: isMobile ? 0 : theme.spacing(1),
+        }}
+        navigation={{
+          prevEl: `.${classNames.navigationPrev}`,
+          nextEl: `.${classNames.navigationNext}`,
+        }}
       >
         {slides.map((child, index) => (
           <SwiperSlide key={index} style={{ width: 'auto' }}>
             {child}
           </SwiperSlide>
         ))}
+        {!isMobile && (
+          <RewardsCarouselNavigationContainer
+            data-show-left={!navState.isBeginning}
+            data-show-right={!navState.isEnd}
+          >
+            <RewardsCarouselNavButtons />
+          </RewardsCarouselNavigationContainer>
+        )}
       </Swiper>
     </RewardsCarouselContainer>
   );

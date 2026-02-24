@@ -9,12 +9,14 @@ import {
   ExplorerLinkButton,
   RewardCardActionsContainer,
 } from './RewardClaimCard.style';
-import { TokenStackItem } from '@/components/composite/TokenListCard/TokenStackItem';
 import { useTokens } from '@/hooks/useTokens';
 import type { Address } from 'viem';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 import { REWARD_CLAIM_CARD_CONFIG } from './constants';
 import { useTranslation } from 'react-i18next';
+import { BalanceStackItem } from '@/components/composite/BalanceCard/components/BalanceStackItem';
+import { createWalletToken } from '@/types/tokens';
+import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 
 interface RewardClaimCardProps {
   availableReward: BaseReward;
@@ -40,6 +42,7 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
   isPendingValidation = false,
 }) => {
   const { t } = useTranslation();
+  const { toRawAmount } = useTokenAmountInput();
   const theme = useTheme();
   const { getToken } = useTokens();
   const explorerLink = useBlockchainExplorerURL(
@@ -65,36 +68,41 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
     return t('profile_page.rewardsClaim.action.claim');
   }, [isLoading, isError, t]);
 
-  const token = useMemo(() => {
+  const balance = useMemo(() => {
     const _token = getToken(
       availableReward.chainId,
       availableReward.address as Address,
     );
-    const totalPriceUSD = _token?.priceUSD
-      ? Number(_token.priceUSD) * availableReward.amountToClaim
-      : 0;
-    return {
+
+    const priceUSD = _token?.priceUSD ?? '0';
+
+    const _walletToken = createWalletToken({
       address: availableReward.address,
-      logo: availableReward.logoURI,
+      logoURI: availableReward.logoURI,
       name: availableReward.symbol,
       symbol: availableReward.symbol,
       decimals: availableReward.tokenDecimals,
-      chain: {
-        chainId: availableReward.chainId,
-        chainKey: availableReward.chainId.toString(),
-      },
-      balance: availableReward.amountToClaim,
-      totalPriceUSD,
+      chainId: availableReward.chainId,
+      chainKey: availableReward.chainId.toString(),
+      priceUSD: priceUSD,
+    });
+
+    const amount = availableReward.amountToClaim;
+    const amountUSD = amount * Number(priceUSD);
+    const amountStr = amount.toFixed(availableReward.tokenDecimals);
+
+    return {
+      token: _walletToken,
+      amountUSD,
+      amount: toRawAmount(amountStr, availableReward.tokenDecimals),
     };
-  }, [availableReward, getToken]);
+  }, [availableReward, getToken, toRawAmount]);
 
   return (
     <RewardCardContainer gap={2}>
-      <TokenStackItem
-        token={token}
+      <BalanceStackItem
+        balance={balance}
         config={REWARD_CLAIM_CARD_CONFIG}
-        chainsLimit={1}
-        chainsSpacing={0}
         isClickable={false}
       />
 
