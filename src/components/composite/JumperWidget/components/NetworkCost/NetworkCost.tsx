@@ -13,13 +13,13 @@ import {
   useMinReceivedAmount,
   usePriceImpact,
   useSlippage,
-} from './hooks.js';
-import { FieldWrapper } from '../../JumperWidget.style.js';
-import { Tooltip } from '@/components/core/Tooltip/Tooltip.js';
-import { IconButton } from '@/components/core/buttons/IconButton/IconButton.js';
-import { Size } from '@/components/core/buttons/types.js';
-import { TokenRate } from './TokenRate.js';
-import { FeeBreakdownTooltip } from './FeeBreakdownTooltip.js';
+} from './hooks';
+import { FieldWrapper } from '../../JumperWidget.style';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
+import { Size } from '@/components/core/buttons/types';
+import { TokenRate } from './TokenRate';
+import { FeeBreakdownTooltip } from './FeeBreakdownTooltip';
 
 interface NetworkCostProps extends CardProps {
   steps: LiFiStep[];

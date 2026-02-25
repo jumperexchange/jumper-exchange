@@ -1,7 +1,7 @@
 import type { LiFiStep, RouteExtended } from '@lifi/sdk';
 import { type TypographyProps } from '@mui/material/Typography';
 import { useState, type MouseEventHandler } from 'react';
-import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters.js';
+import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { createExtendedToken } from '@/types/tokens';
 import { TokenRateTypography } from '../../JumperWidget.style';
 
