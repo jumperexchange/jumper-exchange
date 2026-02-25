@@ -10,6 +10,8 @@ import { OptionIcon, SelectSidePanel } from './Shared';
 import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 import Typography from '@mui/material/Typography';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface ChainSingleSelectSchemaOptions {
   /**
@@ -21,6 +23,7 @@ export interface ChainSingleSelectSchemaOptions {
 }
 
 export const createChainSingleSelectSchema = (
+  t: TFunction,
   options: ChainSingleSelectSchemaOptions = {},
 ) => {
   const { allowedChainIds } = options;
@@ -30,16 +33,16 @@ export const createChainSingleSelectSchema = (
   if (allowedChainIds?.length) {
     selectedChainSchema = selectedChainSchema.refine(
       (id) => allowedChainIds.includes(id),
-      { message: 'Selected chain is not supported for this operation' },
+      { message: t('jumperWidget.fieldErrors.chainSingleSelect.notSupported') },
     ) as typeof selectedChainSchema;
   }
 
   return z.object({ selectedChain: selectedChainSchema });
 };
 
-export const chainSingleSelectSchema = createChainSingleSelectSchema();
-
-export type ChainSingleSelectValue = z.infer<typeof chainSingleSelectSchema>;
+export type ChainSingleSelectValue = z.infer<
+  ReturnType<typeof createChainSingleSelectSchema>
+>;
 
 export interface ChainSingleSelectFieldProps extends BaseFieldProps {
   label?: string;
@@ -50,10 +53,11 @@ export interface ChainSingleSelectFieldProps extends BaseFieldProps {
 
 export const ChainSingleSelectField: FC<ChainSingleSelectFieldProps> = ({
   label,
-  placeholder = 'Select chain',
+  placeholder,
   fieldKey,
   availableChains,
 }) => {
+  const { t } = useTranslation();
   const field = useField<ChainSingleSelectValue>(fieldKey);
 
   const selectedChain = availableChains.find(
@@ -66,7 +70,9 @@ export const ChainSingleSelectField: FC<ChainSingleSelectFieldProps> = ({
       value={selectedChain?.name}
       valueVariant="bodyLargeStrong"
       mode={SelectCardMode.Display}
-      placeholder={placeholder}
+      placeholder={
+        placeholder ?? t('jumperWidget.placeholder.chainSingleSelect')
+      }
       placeholderVariant="bodyLarge"
       startAdornment={
         selectedChain ? (

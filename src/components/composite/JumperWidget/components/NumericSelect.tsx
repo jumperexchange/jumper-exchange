@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FieldWrapper, Label } from '../JumperWidget.style';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
+import type { TFunction } from 'i18next';
 
 export interface NumericSelectSchemaOptions {
   /**
@@ -29,14 +30,20 @@ export interface NumericSelectSchemaOptions {
 }
 
 export const createNumericSelectSchema = (
+  t: TFunction,
   options: NumericSelectSchemaOptions = {},
 ) => {
   const { min = 0, max, required = false } = options;
 
-  let valueSchema = z.number().min(min, `Value must be at least ${min}`);
+  let valueSchema = z
+    .number()
+    .min(min, t('jumperWidget.fieldErrors.numericSelect.min', { min }));
 
   if (max !== undefined) {
-    valueSchema = valueSchema.max(max, `Value must be at most ${max}`);
+    valueSchema = valueSchema.max(
+      max,
+      t('jumperWidget.fieldErrors.numericSelect.max', { max }),
+    );
   }
 
   const objectSchema = z.object({ value: valueSchema });
@@ -44,9 +51,9 @@ export const createNumericSelectSchema = (
   return required ? objectSchema : objectSchema;
 };
 
-export const numericSelectSchema = createNumericSelectSchema();
-
-export type NumericSelectValue = z.infer<typeof numericSelectSchema>;
+export type NumericSelectValue = z.infer<
+  ReturnType<typeof createNumericSelectSchema>
+>;
 
 export interface NumericSelectFieldProps extends BaseFieldProps {
   values: number[];

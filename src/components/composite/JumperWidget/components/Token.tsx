@@ -11,6 +11,8 @@ import { OptionIcon, SelectSidePanel } from './Shared';
 import { SelectCard } from '@/components/Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 import Typography from '@mui/material/Typography';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 export interface TokenSingleSelectSchemaOptions {
   /**
@@ -21,16 +23,19 @@ export interface TokenSingleSelectSchemaOptions {
 }
 
 export const createTokenSingleSelectSchema = (
+  t: TFunction,
   options: TokenSingleSelectSchemaOptions = {},
 ) => {
   const { allowedAddresses } = options;
 
-  let selectedTokenSchema = z.string().min(1, 'Please select a token');
+  let selectedTokenSchema = z
+    .string()
+    .min(1, t('jumperWidget.fieldErrors.tokenSingleSelect.min'));
 
   if (allowedAddresses?.length) {
     selectedTokenSchema = selectedTokenSchema.refine(
       (addr) => allowedAddresses.includes(addr),
-      { message: 'Selected token is not supported for this operation' },
+      { message: t('jumperWidget.fieldErrors.tokenSingleSelect.notSupported') },
     );
   }
 
@@ -54,37 +59,43 @@ export interface TokenMultiSelectSchemaOptions {
 }
 
 export const createTokenMultiSelectSchema = (
+  t: TFunction,
   options: TokenMultiSelectSchemaOptions = {},
 ) => {
   const { min = 1, max, allowedAddresses } = options;
 
   let selectedTokensSchema = z
     .array(z.string())
-    .min(min, `Please select at least ${min} token${min === 1 ? '' : 's'}`);
+    .min(
+      min,
+      t('jumperWidget.fieldErrors.tokenMultiSelect.min', { count: min }),
+    );
 
   if (max !== undefined) {
     selectedTokensSchema = selectedTokensSchema.max(
       max,
-      `You can select up to ${max} token${max === 1 ? '' : 's'}`,
+      t('jumperWidget.fieldErrors.tokenMultiSelect.max', { count: max }),
     );
   }
 
   if (allowedAddresses?.length) {
     selectedTokensSchema = selectedTokensSchema.refine(
       (addrs) => addrs.every((a) => allowedAddresses.includes(a)),
-      { message: 'One or more selected tokens are not supported' },
+      {
+        message: t('jumperWidget.fieldErrors.tokenMultiSelect.notSupported'),
+      },
     ) as typeof selectedTokensSchema;
   }
 
   return z.object({ selectedTokens: selectedTokensSchema });
 };
 
-/** Default schemas — no constraints beyond requiring at least one selection. */
-export const tokenSingleSelectSchema = createTokenSingleSelectSchema();
-export const tokenMultiSelectSchema = createTokenMultiSelectSchema();
-
-export type TokenSingleSelectValue = z.infer<typeof tokenSingleSelectSchema>;
-export type TokenMultiSelectValue = z.infer<typeof tokenMultiSelectSchema>;
+export type TokenSingleSelectValue = z.infer<
+  ReturnType<typeof createTokenSingleSelectSchema>
+>;
+export type TokenMultiSelectValue = z.infer<
+  ReturnType<typeof createTokenMultiSelectSchema>
+>;
 
 // ─── Props ────────────────────────────────────────────────────────────────────
 
@@ -100,10 +111,11 @@ export type TokenMultiSelectFieldProps = TokenFieldBaseProps;
 
 export const TokenSingleSelectField: FC<TokenSingleSelectFieldProps> = ({
   label,
-  placeholder = 'Select token',
+  placeholder,
   fieldKey,
   availableTokens,
 }) => {
+  const { t } = useTranslation();
   const field = useField<TokenSingleSelectValue>(fieldKey);
 
   const selectedToken = availableTokens.find(
@@ -116,7 +128,9 @@ export const TokenSingleSelectField: FC<TokenSingleSelectFieldProps> = ({
       value={selectedToken?.name}
       valueVariant="bodyLargeStrong"
       mode={SelectCardMode.Display}
-      placeholder={placeholder}
+      placeholder={
+        placeholder ?? t('jumperWidget.placeholder.tokenSingleSelect')
+      }
       placeholderVariant="bodyLarge"
       startAdornment={
         selectedToken ? (
@@ -169,10 +183,11 @@ export const TokenSingleSelectSidePanel: FC<TokenSingleSelectFieldProps> = ({
 
 export const TokenMultiSelectField: FC<TokenMultiSelectFieldProps> = ({
   label,
-  placeholder = 'Select tokens',
+  placeholder,
   fieldKey,
   availableTokens,
 }) => {
+  const { t } = useTranslation();
   const field = useField<TokenMultiSelectValue>(fieldKey);
 
   const selectedAddresses = field.value?.selectedTokens ?? [];
@@ -188,7 +203,9 @@ export const TokenMultiSelectField: FC<TokenMultiSelectFieldProps> = ({
       label={label}
       valueVariant="bodyLargeStrong"
       mode={SelectCardMode.Display}
-      placeholder={placeholder}
+      placeholder={
+        placeholder ?? t('jumperWidget.placeholder.tokenMultiSelect')
+      }
       placeholderVariant="bodyLarge"
       startAdornment={
         selectedTokens.length ? (

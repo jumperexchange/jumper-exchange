@@ -10,6 +10,7 @@ import {
   MenuItemWrapper,
 } from '../JumperWidget.style';
 import { GoBackHeader } from './Headers';
+import { useTranslation } from 'react-i18next';
 
 export interface OptionIconProps {
   logoURI?: string;
@@ -45,6 +46,7 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
   header,
   children,
 }) => {
+  const { t } = useTranslation();
   if (!isActive) {
     return null;
   }
@@ -79,7 +81,9 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
           })
         ) : (
           <Label>
-            No {header?.toLowerCase() || 'items'} available for selection
+            {t('jumperWidget.emptyList', {
+              itemsName: header?.toLowerCase() || t('jumperWidget.items'),
+            })}
           </Label>
         )}
         {children}

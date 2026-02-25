@@ -28,6 +28,7 @@ import {
   defineTokenSingleSelectField,
 } from './utils';
 import { ChainSingleSelectValue } from './components/Chain';
+import { TFunction } from 'i18next';
 
 const meta = {
   title: 'components/composite/JumperWidget',
@@ -36,6 +37,8 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const t = ((key: string) => key) as unknown as TFunction;
 
 const widgetStyle: Story['args']['style'] = {
   container: (theme) => ({
@@ -93,18 +96,21 @@ const fromChainField = defineChainSingleSelectField({
   fieldKey: 'fromChain',
   fieldProps: { availableChains: chains, label: 'From chain' },
   sidePanelProps: { availableChains: chains, header: 'Chains' },
+  t,
 });
 
 const toChainField = defineChainSingleSelectField({
   fieldKey: 'toChain',
   fieldProps: { availableChains: chains, label: 'To chain' },
   sidePanelProps: { availableChains: chains, header: 'Chains' },
+  t,
 });
 
 const tokenField = defineTokenSingleSelectField({
   fieldKey: 'token',
   fieldProps: { availableTokens: tokens, label: 'Token' },
   sidePanelProps: { availableTokens: tokens, header: 'Tokens' },
+  t,
   deriveProps: (getValue) => {
     const fromChain = getValue('fromChain') as
       | ChainSingleSelectValue
@@ -142,6 +148,7 @@ const amountField = defineAmountField({
   fieldKey: 'amount',
   defaultValue: { amount: '0', maxAmount: '100000' },
   fieldProps: { label: 'Amount', token: tokens[0] },
+  t,
 });
 
 const bridgeFields = {
@@ -310,6 +317,7 @@ const dustAmountThreshold = defineNumericSelectField({
   fieldKey: 'amountThreshold',
   defaultValue: { value: 5 },
   fieldProps: { values: [5, 10, 20, 30], label: 'Dust threshold' },
+  t,
 });
 
 const { useValues: useDustValues } = createTypedHooks({
@@ -394,6 +402,7 @@ export const Balances: Story = {
           fieldKey: 'chain',
           fieldProps: { availableChains: chains, label: 'Chain' },
           sidePanelProps: { availableChains: chains, header: 'Chains' },
+          t,
           deriveProps: (getValue) => {
             const threshold = getValue('amountThreshold') as
               | NumericSelectValue
@@ -418,6 +427,7 @@ export const Balances: Story = {
           schemaOptions: { min: 1, max: 10 },
           fieldProps: { availableBalances: balances, label: 'Convert' },
           sidePanelProps: { availableBalances: balances, header: 'Tokens' },
+          t,
           deriveProps: (getValue) => {
             const threshold = getValue('amountThreshold') as
               | NumericSelectValue

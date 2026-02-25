@@ -10,6 +10,7 @@ import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { useField } from '../store';
 import { TokenAmountInputPercentages } from '@/components/composite/TokenAmountInput/adornments/TokenAmountInputPercentages';
+import type { TFunction } from 'i18next';
 
 export interface AmountSchemaOptions {
   /**
@@ -30,26 +31,29 @@ export interface AmountSchemaOptions {
   requireNonZero?: boolean;
 }
 
-export const createAmountSchema = (options: AmountSchemaOptions = {}) => {
+export const createAmountSchema = (
+  t: TFunction,
+  options: AmountSchemaOptions = {},
+) => {
   const { min, max, requireNonZero = false } = options;
 
   let amountSchema = z.string();
 
   if (requireNonZero) {
     amountSchema = amountSchema.refine((v) => BigInt(v || '0') > 0n, {
-      message: 'Amount must be greater than zero',
+      message: t('jumperWidget.fieldErrors.amount.overZero'),
     });
   }
 
   if (min !== undefined) {
     amountSchema = amountSchema.refine((v) => BigInt(v || '0') >= BigInt(min), {
-      message: `Amount must be at least ${min}`,
+      message: t('jumperWidget.fieldErrors.amount.min', { min }),
     });
   }
 
   if (max !== undefined) {
     amountSchema = amountSchema.refine((v) => BigInt(v || '0') <= BigInt(max), {
-      message: 'Amount exceeds maximum',
+      message: t('jumperWidget.fieldErrors.amount.max', { max }),
     });
   }
 
@@ -59,10 +63,7 @@ export const createAmountSchema = (options: AmountSchemaOptions = {}) => {
   });
 };
 
-/** Default schema — no constraints. Used when no `schemaOptions` are provided. */
-export const amountSchema = createAmountSchema();
-
-export type AmountValue = z.infer<typeof amountSchema>;
+export type AmountValue = z.infer<ReturnType<typeof createAmountSchema>>;
 
 // ─── Component ────────────────────────────────────────────────────────────────
 

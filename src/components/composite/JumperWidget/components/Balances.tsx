@@ -12,17 +12,26 @@ import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles'
 import Typography from '@mui/material/Typography';
 import { useField } from '../store';
 import type { BaseFieldProps } from '../types';
+import type { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
-export const createBalancesMultiSelectSchema = (options?: {
+export interface BalancesMultiSelectSchemaOptions {
   min?: number;
   max?: number;
-}) => {
+}
+
+export const createBalancesMultiSelectSchema = (
+  t: TFunction,
+  options?: BalancesMultiSelectSchemaOptions,
+) => {
   let selectedAddressesSchema = z.array(z.string()).min(options?.min ?? 1);
 
   if (options?.max !== undefined) {
     selectedAddressesSchema = selectedAddressesSchema.max(
       options.max,
-      `You can select ${options.max} items maximum`,
+      t('jumperWidget.fieldErrors.balancesMultiSelect.max', {
+        count: options.max,
+      }),
     );
   }
   return z.object({
@@ -45,10 +54,11 @@ export interface BalancesMultiSelectFieldProps<
 
 export const BalancesMultiSelectField = <T extends PricedToken = PricedToken>({
   label,
-  placeholder = 'Select tokens',
+  placeholder,
   fieldKey,
   availableBalances,
 }: BalancesMultiSelectFieldProps<T>) => {
+  const { t } = useTranslation();
   const field = useField<BalancesMultiSelectValue>(fieldKey);
 
   const selectedTokens = useMemo(() => {
@@ -70,7 +80,11 @@ export const BalancesMultiSelectField = <T extends PricedToken = PricedToken>({
       label={label}
       valueVariant="bodyLargeStrong"
       mode={SelectCardMode.Display}
-      placeholder={selectedTokens.length ? '' : placeholder}
+      placeholder={
+        selectedTokens.length
+          ? ''
+          : (placeholder ?? t('jumperWidget.placeholder.balancesMultiSelect'))
+      }
       placeholderVariant="bodyLarge"
       startAdornment={
         selectedTokens.length ? (

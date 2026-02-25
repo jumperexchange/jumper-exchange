@@ -771,5 +771,47 @@
     "requestAccess": "Request access",
     "connecting": "Connecting...",
     "error": "An unknown error occurred. Please try again or request access."
+  },
+  "jumperWidget": {
+    "items": "items",
+    "emptyList": "No {{itemsName}} available for selection",
+    "fieldErrors": {
+      "numericSelect": {
+        "min": "Value must be at least {{min}}",
+        "max": "Value must be at most {{max}}"
+      },
+      "tokenChain": {
+        "notSupported": "Token is not on a supported chain"
+      },
+      "chainSingleSelect": {
+        "notSupported": "Selected chain is not supported for this operation"
+      },
+      "balancesMultiSelect": {
+        "max_one": "You can select {{count}} items maximum",
+        "max_other": "You can select {{count}} items maximum"
+      },
+      "amount": {
+        "overZero": "Amount must be greater than zero",
+        "min": "Amount must be at least {{min}}",
+        "max": "Amount must be at most {{max}}"
+      },
+      "tokenSingleSelect": {
+        "min": "Please select a token",
+        "notSupported": "Selected token is not supported for this operation"
+      },
+      "tokenMultiSelect": {
+        "min_one": "Please select at least {{count}} token",
+        "min_other": "Please select at least {{count}} tokens",
+        "max_one": "You can select up to {{count}} token",
+        "max_other": "You can select up to {{count}} tokens",
+        "notSupported": "One or more selected tokens are not supported"
+      }
+    },
+    "placeholder": {
+      "chainSingleSelect": "Select chain",
+      "balancesMultiSelect": "Select tokens",
+      "tokenSingleSelect": "Select token",
+      "tokenMultiSelect": "Select tokens"
+    }
   }
 }

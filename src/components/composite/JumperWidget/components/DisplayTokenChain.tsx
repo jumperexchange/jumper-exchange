@@ -8,6 +8,7 @@ import { useField } from '../store';
 import { useChains } from '@/hooks/useChains';
 import z from 'zod';
 import type { CoinKey, TokenTag } from '@lifi/sdk';
+import type { TFunction } from 'i18next';
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
@@ -27,6 +28,7 @@ export interface DisplayTokenChainSchemaOptions {
 }
 
 export const createDisplayTokenChainSchema = (
+  t: TFunction,
   options: DisplayTokenChainSchemaOptions = {},
 ) => {
   const { tokenType = 'extended', allowedChainIds } = options;
@@ -34,7 +36,7 @@ export const createDisplayTokenChainSchema = (
   let chainIdSchema = z.number();
   if (allowedChainIds?.length) {
     chainIdSchema = chainIdSchema.refine((id) => allowedChainIds.includes(id), {
-      message: 'Token is not on a supported chain',
+      message: t('jumperWidget.fieldErrors.tokenChain.notSupported'),
     }) as typeof chainIdSchema;
   }
 
@@ -54,9 +56,9 @@ export const createDisplayTokenChainSchema = (
   });
 };
 
-export const displayTokenChainSchema = createDisplayTokenChainSchema();
-
-export type DisplayTokenChainValue = z.infer<typeof displayTokenChainSchema>;
+export type DisplayTokenChainValue = z.infer<
+  ReturnType<typeof createDisplayTokenChainSchema>
+>;
 
 interface DisplayTokenChainProps extends BaseFieldProps {}
 

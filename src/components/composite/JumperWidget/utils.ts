@@ -1,7 +1,10 @@
 import z from 'zod';
 import type { AmountValue, AmountSchemaOptions } from './components/Amount';
 import { Amount, createAmountSchema } from './components/Amount';
-import type { BalancesMultiSelectValue } from './components/Balances';
+import type {
+  BalancesMultiSelectSchemaOptions,
+  BalancesMultiSelectValue,
+} from './components/Balances';
 import {
   BalancesMultiSelectField,
   BalancesMultiSelectSidePanel,
@@ -55,6 +58,7 @@ import type {
 } from './types';
 import { DisplayAmount } from './components/DisplayAmount';
 import { createElement } from 'react';
+import type { TFunction } from 'i18next';
 
 /**
  * Creates a typed field definition from a config object.
@@ -112,12 +116,13 @@ export const defineAmountField = (
   > & {
     fieldKey?: string;
     schemaOptions?: AmountSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'amount',
-    schema: createAmountSchema(config.schemaOptions),
+    schema: createAmountSchema(config.t, config.schemaOptions),
     FieldComponent: Amount,
   });
 
@@ -131,13 +136,14 @@ export const defineBalancesMultiSelectField = (
     'schema' | 'FieldComponent' | 'SidePanelComponent' | 'fieldKey'
   > & {
     fieldKey?: string;
-    schemaOptions?: Parameters<typeof createBalancesMultiSelectSchema>[0];
+    schemaOptions?: BalancesMultiSelectSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'balances',
-    schema: createBalancesMultiSelectSchema(config.schemaOptions),
+    schema: createBalancesMultiSelectSchema(config.t, config.schemaOptions),
     FieldComponent: BalancesMultiSelectField,
     SidePanelComponent: BalancesMultiSelectSidePanel,
   });
@@ -153,12 +159,13 @@ export const defineChainSingleSelectField = (
   > & {
     fieldKey?: string;
     schemaOptions?: ChainSingleSelectSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'chain',
-    schema: createChainSingleSelectSchema(config.schemaOptions),
+    schema: createChainSingleSelectSchema(config.t, config.schemaOptions),
     FieldComponent: ChainSingleSelectField,
     SidePanelComponent: ChainSingleSelectSidePanel,
   });
@@ -174,12 +181,13 @@ export const defineTokenSingleSelectField = (
   > & {
     fieldKey?: string;
     schemaOptions?: TokenSingleSelectSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'token',
-    schema: createTokenSingleSelectSchema(config.schemaOptions),
+    schema: createTokenSingleSelectSchema(config.t, config.schemaOptions),
     FieldComponent: TokenSingleSelectField,
     SidePanelComponent: TokenSingleSelectSidePanel,
   });
@@ -195,12 +203,13 @@ export const defineTokenMultiSelectField = (
   > & {
     fieldKey?: string;
     schemaOptions?: TokenMultiSelectSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'tokens',
-    schema: createTokenMultiSelectSchema(config.schemaOptions),
+    schema: createTokenMultiSelectSchema(config.t, config.schemaOptions),
     FieldComponent: TokenMultiSelectField,
     SidePanelComponent: TokenMultiSelectSidePanel,
   });
@@ -216,12 +225,13 @@ export const defineDisplayTokenChainField = (
   > & {
     fieldKey?: string;
     schemaOptions?: DisplayTokenChainSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'token-chain',
-    schema: createDisplayTokenChainSchema(config.schemaOptions),
+    schema: createDisplayTokenChainSchema(config.t, config.schemaOptions),
     FieldComponent: DisplayTokenChain,
   });
 
@@ -236,12 +246,13 @@ export const defineNumericSelectField = (
   > & {
     fieldKey?: string;
     schemaOptions?: NumericSelectSchemaOptions;
+    t: TFunction;
   },
 ) =>
   defineField({
     ...config,
     fieldKey: config.fieldKey ?? 'numeric-select',
-    schema: createNumericSelectSchema(config.schemaOptions),
+    schema: createNumericSelectSchema(config.t, config.schemaOptions),
     FieldComponent: NumericSelectField,
   });
 

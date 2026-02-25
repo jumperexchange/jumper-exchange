@@ -291,6 +291,48 @@ interface Resources {
       };
       title: 'Welcome to {{pageTitle}}!';
     };
+    jumperWidget: {
+      emptyList: 'No {{itemsName}} available for selection';
+      fieldErrors: {
+        amount: {
+          max: 'Amount must be at most {{max}}';
+          min: 'Amount must be at least {{min}}';
+          overZero: 'Amount must be greater than zero';
+        };
+        balancesMultiSelect: {
+          max_one: 'You can select {{count}} items maximum';
+          max_other: 'You can select {{count}} items maximum';
+        };
+        chainSingleSelect: {
+          notSupported: 'Selected chain is not supported for this operation';
+        };
+        numericSelect: {
+          max: 'Value must be at most {{max}}';
+          min: 'Value must be at least {{min}}';
+        };
+        tokenChain: {
+          notSupported: 'Token is not on a supported chain';
+        };
+        tokenMultiSelect: {
+          max_one: 'You can select up to {{count}} token';
+          max_other: 'You can select up to {{count}} tokens';
+          min_one: 'Please select at least {{count}} token';
+          min_other: 'Please select at least {{count}} tokens';
+          notSupported: 'One or more selected tokens are not supported';
+        };
+        tokenSingleSelect: {
+          min: 'Please select a token';
+          notSupported: 'Selected token is not supported for this operation';
+        };
+      };
+      items: 'items';
+      placeholder: {
+        balancesMultiSelect: 'Select tokens';
+        chainSingleSelect: 'Select chain';
+        tokenMultiSelect: 'Select tokens';
+        tokenSingleSelect: 'Select token';
+      };
+    };
     labels: {
       apy: 'APY';
       assets_one: 'Asset';
