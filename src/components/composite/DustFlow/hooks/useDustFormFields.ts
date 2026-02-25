@@ -20,19 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { INITIAL_MAX_THRESHOLD_USD } from '../constants';
 import { useAccount } from '@lifi/wallet-management';
-
-const getChainMinUsdThreshold = (chainId: number) => {
-  if (chainId === ChainId.ETH) {
-    return 0.5;
-  }
-  return 0.05;
-};
-
-const checkBalanceWithinRange = (
-  balance: PortfolioBalance<WalletToken>,
-  maxUsd: number,
-  minUsd: number,
-): boolean => maxUsd >= balance.amountUSD && balance.amountUSD > minUsd;
+import { checkBalanceWithinRange, getChainMinUsdThreshold } from '../utils';
 
 export interface DustSummaryValue {
   selectedBalances: PortfolioBalance<WalletToken>[];

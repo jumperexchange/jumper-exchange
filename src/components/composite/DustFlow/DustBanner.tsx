@@ -13,6 +13,7 @@ import {
 } from './DustFlow.styles';
 import { INITIAL_MAX_THRESHOLD_USD } from './constants';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { checkBalanceWithinRange, getChainMinUsdThreshold } from './utils';
 
 interface DustBannerProps {
   forceDisplay?: boolean;
@@ -31,8 +32,12 @@ export const DustBanner: FC<DustBannerProps> = ({
   const filteredBalances = useMemo(
     () =>
       orderBy(
-        nonNativeBalances.filter(
-          (balance) => balance.amountUSD <= INITIAL_MAX_THRESHOLD_USD,
+        nonNativeBalances.filter((balance) =>
+          checkBalanceWithinRange(
+            balance,
+            INITIAL_MAX_THRESHOLD_USD,
+            getChainMinUsdThreshold(balance.token.chainId),
+          ),
         ),
         'amountUSD',
         'desc',
