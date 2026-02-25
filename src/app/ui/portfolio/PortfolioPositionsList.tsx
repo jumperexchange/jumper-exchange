@@ -10,6 +10,8 @@ import { PortfolioAnimatedAssetContainer } from './PortfolioAnimatedAssetContain
 import { useMemo } from 'react';
 import { hasPositionDataToDisplay } from '@/components/composite/PositionCard/utils';
 import { mapValues, pickBy } from 'lodash';
+import { DepositFlowModal } from '@/components/composite/DepositFlow/DepositFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
 
 export const PortfolioPositionsList = () => {
   const { data, isEmpty, isLoading, clearFilters } = usePositionsFiltering();
@@ -55,8 +57,12 @@ export const PortfolioPositionsList = () => {
   }
 
   return (
-    <PortfolioAssetsListContainer useFlexGap direction="column">
-      <AnimatePresence mode="popLayout">{renderContent()}</AnimatePresence>
-    </PortfolioAssetsListContainer>
+    <>
+      <PortfolioAssetsListContainer useFlexGap direction="column">
+        <AnimatePresence mode="popLayout">{renderContent()}</AnimatePresence>
+      </PortfolioAssetsListContainer>
+      <DepositFlowModal />
+      <WithdrawFlowModal />
+    </>
   );
 };
