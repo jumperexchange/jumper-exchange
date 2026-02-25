@@ -154,11 +154,13 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
           token: lpToken,
           label: t('form.labels.amount'),
         },
+        t,
       }),
       defineDisplayTokenChainField({
         fieldKey: 'withdrawTo',
         defaultValue: assetToken,
         fieldProps: { label: t('form.labels.withdrawTo') },
+        t,
       }),
     ],
     [assetToken, lpToken, lpTokenAmount, t],
