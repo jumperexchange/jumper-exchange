@@ -103,7 +103,12 @@ export const PositionCard: FC<PositionCardProps> = ({
     : [];
 
   return (
-    <StyledAccordion expanded={isExpanded} disableGutters>
+    <StyledAccordion
+      data-testId="position-card"
+      aria-label={`Position card for ${firstPosition.protocol.name} protocol`}
+      expanded={isExpanded}
+      disableGutters
+    >
       <StyledAccordionSummary>
         <StyledSummaryContent onClick={() => handleMainPositionClick()}>
           <EntityStackWithBadge
@@ -233,7 +238,7 @@ export const PositionCard: FC<PositionCardProps> = ({
                     </StyledOverviewActions>
                   </StyledOverviewColumn>
 
-                  <StyledTablesColumn>
+                  <StyledTablesColumn data-testId="position-card-entry">
                     {positionGroup.sections.map((section) => (
                       <ColumnTable
                         key={section.id}

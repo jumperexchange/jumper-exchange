@@ -178,6 +178,7 @@ export const renderPositionActions = ({
         protocolUrl={item.protocol.url}
         protocolName={item.protocol.name}
         disabled={!item.earn}
+        data-testId="portfolio-withdraw-button"
       />
       <DepositFlowOnDemandButton
         displayMode={DepositButtonDisplayMode.LabelOnly}
@@ -188,6 +189,7 @@ export const renderPositionActions = ({
         protocolUrl={item.protocol.url}
         protocolName={item.protocol.name}
         disabled={!item.earn}
+        data-testId="portfolio-deposit-button"
       />
     </StyledPositionActions>
   );
