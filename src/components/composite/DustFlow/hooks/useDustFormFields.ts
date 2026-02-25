@@ -221,6 +221,7 @@ export const useDustFormFields = ({
   return useMemo(
     () => [
       defineNumericSelectField({
+        t,
         fieldKey: 'amountThreshold',
         defaultValue: { value: INITIAL_MAX_THRESHOLD_USD },
         fieldProps: {
@@ -230,6 +231,7 @@ export const useDustFormFields = ({
       }),
 
       defineChainSingleSelectField({
+        t,
         fieldKey: 'chain',
         fieldProps: { availableChains: chains, label: t('form.labels.chain') },
         sidePanelProps: {
@@ -252,6 +254,7 @@ export const useDustFormFields = ({
       }),
 
       defineBalancesMultiSelectField({
+        t,
         fieldKey: 'balances',
         fieldProps: {
           availableBalances: nonNativeBalances,

@@ -85,7 +85,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
                 }}
               >
                 {!combinedFeesUSD
-                  ? t('networkCosts.fees.free')
+                  ? t('jumperWidget.networkCosts.fees.free')
                   : t('format.currency', { value: combinedFeesUSD })}
               </Typography>
             </Box>
@@ -109,7 +109,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
             }}
           >
             <Typography variant="body2">
-              {t('networkCosts.fees.network')}
+              {t('jumperWidget.networkCosts.fees.network')}
             </Typography>
             <FeeBreakdownTooltip gasCosts={gasCosts}>
               <Typography
@@ -117,7 +117,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
                 sx={{ fontWeight: 600, cursor: 'help' }}
               >
                 {!gasCostUSD
-                  ? t('networkCosts.fees.free')
+                  ? t('jumperWidget.networkCosts.fees.free')
                   : t('format.currency', { value: gasCostUSD })}
               </Typography>
             </FeeBreakdownTooltip>
@@ -131,7 +131,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
               }}
             >
               <Typography variant="body2">
-                {t('networkCosts.fees.provider')}
+                {t('jumperWidget.networkCosts.fees.provider')}
               </Typography>
               <FeeBreakdownTooltip feeCosts={feeCosts}>
                 <Typography
@@ -151,7 +151,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
             }}
           >
             <Typography variant="body2">
-              {t('networkCosts.priceImpact')}
+              {t('jumperWidget.networkCosts.priceImpact')}
             </Typography>
             <Tooltip title={t('tooltips.priceImpact')}>
               <Typography
@@ -173,7 +173,7 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
             }}
           >
             <Typography variant="body2">
-              {t('networkCosts.maxSlippage')}
+              {t('jumperWidget.networkCosts.maxSlippage')}
             </Typography>
             <Tooltip title={t('tooltips.slippage')}>
               <Typography
@@ -182,13 +182,13 @@ export const NetworkCost: React.FC<NetworkCostProps> = ({ steps }) => {
               >
                 {slippage
                   ? t('format.percent', { value: slippage })
-                  : t('networkCosts.auto')}
+                  : t('jumperWidget.networkCosts.auto')}
               </Typography>
             </Tooltip>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="body2">
-              {t('networkCosts.minReceived')}
+              {t('jumperWidget.networkCosts.minReceived')}
             </Typography>
             <Tooltip title={t('tooltips.minReceived')}>
               <Typography

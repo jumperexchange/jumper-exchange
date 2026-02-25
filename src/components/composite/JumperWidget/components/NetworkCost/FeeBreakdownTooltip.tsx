@@ -33,7 +33,7 @@ export const FeeBreakdownTooltip: React.FC<FeeBreakdownTooltipProps> = ({
           {gasless ? <Box>{t('tooltips.gasless')}</Box> : null}
           {gasCosts?.length && !gasless ? (
             <Box>
-              {t('networkCosts.fees.network')}
+              {t('jumperWidget.networkCosts.fees.network')}
               {getFeeBreakdownTypography(gasCosts, t)}
             </Box>
           ) : null}
@@ -43,7 +43,7 @@ export const FeeBreakdownTooltip: React.FC<FeeBreakdownTooltipProps> = ({
                 mt: 0.5,
               }}
             >
-              {t('networkCosts.fees.provider')}
+              {t('jumperWidget.networkCosts.fees.provider')}
               {getFeeBreakdownTypography(feeCosts, t)}
             </Box>
           ) : null}

@@ -926,17 +926,6 @@
     "connecting": "Connecting...",
     "error": "An unknown error occurred. Please try again or request access."
   },
-  "networkCosts": {
-    "fees": {
-      "free": "Free",
-      "network": "Network cost",
-      "provider": "Provider fee"
-    },
-    "priceImpact": "Price impact",
-    "maxSlippage": "Max. slippage",
-    "minReceived": "Min. received",
-    "auto": "Auto"
-  },
   "jumperWidget": {
     "items": "items",
     "emptyList": "No {{itemsName}} available for selection",
@@ -981,6 +970,17 @@
     "label": {
       "tokenCount_one": "{{count}} token on {{chainName}}",
       "tokenCount_other": "{{count}} tokens on {{chainName}}"
+    },
+    "networkCosts": {
+      "fees": {
+        "free": "Free",
+        "network": "Network cost",
+        "provider": "Provider fee"
+      },
+      "priceImpact": "Price impact",
+      "maxSlippage": "Max. slippage",
+      "minReceived": "Min. received",
+      "auto": "Auto"
     }
   },
   "notifications": {

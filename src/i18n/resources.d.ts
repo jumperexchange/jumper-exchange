@@ -395,6 +395,17 @@ interface Resources {
         tokenCount_one: '{{count}} token on {{chainName}}';
         tokenCount_other: '{{count}} tokens on {{chainName}}';
       };
+      networkCosts: {
+        auto: 'Auto';
+        fees: {
+          free: 'Free';
+          network: 'Network cost';
+          provider: 'Provider fee';
+        };
+        maxSlippage: 'Max. slippage';
+        minReceived: 'Min. received';
+        priceImpact: 'Price impact';
+      };
       placeholder: {
         balancesMultiSelect: 'Select tokens';
         chainSingleSelect: 'Select chain';
@@ -664,17 +675,6 @@ interface Resources {
         subtitle: '<0>4x audited</0> multi-chain liquidity aggregator';
         title: 'Find the best route';
       };
-    };
-    networkCosts: {
-      auto: 'Auto';
-      fees: {
-        free: 'Free';
-        network: 'Network cost';
-        provider: 'Provider fee';
-      };
-      maxSlippage: 'Max. slippage';
-      minReceived: 'Min. received';
-      priceImpact: 'Price impact';
     };
     newsletter: {
       welcome: {
