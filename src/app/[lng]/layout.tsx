@@ -12,7 +12,7 @@ import { IntercomProvider } from 'src/providers/IntercomProvider';
 import { SettingsStoreProvider } from 'src/stores/settings';
 import initTranslations from '@/app/i18n';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import config from '@/config/env-config';
+import config, { getPublicEnvVars } from '@/config/env-config';
 import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
@@ -150,8 +150,9 @@ export default async function RootLayout({
           }
 `}
         </style>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script type="text/javascript" src="/api/env-config.js" />
+        <script type="text/javascript">
+          {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
+        </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
           async
