@@ -24,7 +24,7 @@ export const Default: Story = {
 
     return (
       <PortfolioProvider>
-        <Stack gap={2}>
+        <Stack sx={{ gap: 2 }}>
           {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
           <DustFlow />
         </Stack>
@@ -40,7 +40,7 @@ export const OnlyBanner: Story = {
 
     return (
       <PortfolioProvider>
-        <Stack gap={2}>
+        <Stack sx={{ gap: 2 }}>
           {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
           <DustBanner forceDisplay onClick={action('click-dust-banner-btn')} />
         </Stack>
@@ -57,7 +57,7 @@ export const OnlyModal: Story = {
 
     return (
       <PortfolioProvider>
-        <Stack gap={2}>
+        <Stack sx={{ gap: 2 }}>
           {isDisconnected ? <ConnectButton /> : <WalletMenuToggle />}
           <DustModal
             isOpen={isModalOpen}

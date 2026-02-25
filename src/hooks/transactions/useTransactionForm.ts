@@ -7,7 +7,7 @@ import { openInNewTab } from '@/utils/openInNewTab';
 import { TransactionErrorType, TransactionError } from './types';
 
 export interface TransactionFormConfig {
-  fetchCallData: () => Promise<CallDataResponse>;
+  fetchCallData: () => Promise<CallDataResponse | undefined>;
   requiresConfirmation?: boolean;
   chainId: number;
   onSuccess?: () => void;
@@ -177,6 +177,7 @@ export const useTransactionForm = ({
       await transactionFlow.executeFlow(callData);
     } catch {
       // errors handled by mutation/transactionFlow callbacks
+      dispatch({ type: 'SET_STEP', payload: 'idle' });
     }
   }, [fetchCallDataMutation, transactionFlow]);
 

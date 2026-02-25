@@ -85,3 +85,34 @@ export const DUST_CONVERSION_STATUS_KEYS: TransactionStatusKeys = {
     action: 'portfolio.dustConversion.error.unknown.tryAgain',
   },
 };
+
+export const multicallAbi = [
+  {
+    name: 'aggregate3',
+    type: 'function',
+    stateMutability: 'payable',
+    inputs: [
+      {
+        name: 'calls',
+        type: 'tuple[]',
+        components: [
+          { name: 'target', type: 'address' },
+          { name: 'allowFailure', type: 'bool' },
+          { name: 'callData', type: 'bytes' },
+        ],
+      },
+    ],
+    outputs: [
+      {
+        name: 'returnData',
+        type: 'tuple[]',
+        components: [
+          { name: 'success', type: 'bool' },
+          { name: 'returnData', type: 'bytes' },
+        ],
+      },
+    ],
+  },
+] as const;
+
+export const MULTICALL3_ADDRESS = '0xca11bde05977b3631167028862be2a173976ca11';

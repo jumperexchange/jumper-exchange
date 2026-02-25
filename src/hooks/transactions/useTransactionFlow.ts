@@ -13,6 +13,9 @@ interface TransactionAction {
     to: string;
     data: string;
     chainId: number;
+    gasPrice?: bigint;
+    maxFeePerGas?: bigint;
+    maxPriorityFeePerGas?: bigint;
   };
 }
 
@@ -79,6 +82,9 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
           to: action.tx.to as Hex,
           data: action.tx.data as Hex,
           chainId: action.tx.chainId,
+          gasPrice: action.tx.gasPrice,
+          maxFeePerGas: action.tx.maxFeePerGas,
+          maxPriorityFeePerGas: action.tx.maxPriorityFeePerGas,
         });
       } catch (e: any) {
         flowLockedRef.current = false;

@@ -19,6 +19,7 @@ import { ChainId, type ExtendedChain } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { INITIAL_MAX_THRESHOLD_USD } from '../constants';
+import { useAccount } from '@lifi/wallet-management';
 
 const getChainMinUsdThreshold = (chainId: number) => {
   if (chainId === ChainId.ETH) {
@@ -38,6 +39,7 @@ export interface DustSummaryValue {
   nativeToken: ExtendedToken;
   amount: string;
   amountUSD: number;
+  address: string;
 }
 
 interface DustFieldDeriveResult {
@@ -75,6 +77,7 @@ export const useDustFormFields = ({
   fallbackNativeToken,
 }: UseDustFormFieldsParams) => {
   const { t } = useTranslation();
+  const { accounts } = useAccount();
   const { toInputAmount, toAmountFromPrice, toRawAmount, usdDecimals } =
     useTokenAmountInput();
   const { toAggregatedAmountUSD } = usePortfolioFormatters();
@@ -135,10 +138,32 @@ export const useDustFormFields = ({
     ],
   );
 
+  const computeAccountAddress = useCallback(
+    (chainId: number) => {
+      const selectedChain = chains.find((c) => c.id === chainId);
+      if (!selectedChain) {
+        return undefined;
+      }
+      const account = accounts.find(
+        (a) => a.chainType === selectedChain.chainType,
+      );
+
+      return account?.address;
+    },
+    [chains, accounts],
+  );
+
   const computeDustSummary = useCallback(
     (getValue: (key: string) => unknown): DustSummaryValue | undefined => {
       const { threshold, chainId, isValid } = createDustFieldDerive(getValue);
+
       if (!isValid || threshold == null || chainId == null) {
+        return undefined;
+      }
+
+      const address = computeAccountAddress(chainId);
+
+      if (!address) {
         return undefined;
       }
 
@@ -175,6 +200,7 @@ export const useDustFormFields = ({
         nativeToken: token,
         amount,
         amountUSD,
+        address,
       };
 
       const prev = getValue('dustSummary') as DustSummaryValue | undefined;
@@ -196,6 +222,7 @@ export const useDustFormFields = ({
       nativeExtendedTokens,
       fallbackNativeToken,
       getFilteredBalances,
+      computeAccountAddress,
       toAmountFromPrice,
       toInputAmount,
       toRawAmount,

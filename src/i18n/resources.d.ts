@@ -665,6 +665,17 @@ interface Resources {
         title: 'Find the best route';
       };
     };
+    networkCosts: {
+      auto: 'Auto';
+      fees: {
+        free: 'Free';
+        network: 'Network cost';
+        provider: 'Provider fee';
+      };
+      maxSlippage: 'Max. slippage';
+      minReceived: 'Min. received';
+      priceImpact: 'Price impact';
+    };
     newsletter: {
       welcome: {
         emailPlaceholder: 'Enter your email';
@@ -918,11 +929,15 @@ interface Resources {
       deposited: 'The token you have deposited into this market.';
       exitFullscreen: 'Exit fullscreen';
       fullscreen: 'Fullscreen';
+      gasless: 'We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
+      minReceived: 'The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.';
       noPositionsToManage: 'You do not have any positions to manage';
+      priceImpact: 'The estimated value difference between the source and destination tokens.';
       protocol: 'The protocol you will earn from';
       rewardsApy: 'Expected yearly return rate distributed in reward token.';
+      slippage: 'The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.';
       tvl: 'Total value of crypto assets deposited in this market.';
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       zoomIn: 'Zoom in';

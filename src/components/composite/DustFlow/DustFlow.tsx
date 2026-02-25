@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { DustBanner } from './DustBanner';
 import { DustModal } from './DustModal';

@@ -385,7 +385,11 @@
     "zoomIn": "Zoom in",
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit fullscreen",
-    "close": "Close"
+    "close": "Close",
+    "priceImpact": "The estimated value difference between the source and destination tokens.",
+    "slippage": "The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.",
+    "minReceived": "The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.",
+    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer."
   },
   "labels": {
     "apy": "APY",
@@ -921,6 +925,17 @@
     "requestAccess": "Request access",
     "connecting": "Connecting...",
     "error": "An unknown error occurred. Please try again or request access."
+  },
+  "networkCosts": {
+    "fees": {
+      "free": "Free",
+      "network": "Network cost",
+      "provider": "Provider fee"
+    },
+    "priceImpact": "Price impact",
+    "maxSlippage": "Max. slippage",
+    "minReceived": "Min. received",
+    "auto": "Auto"
   },
   "jumperWidget": {
     "items": "items",
