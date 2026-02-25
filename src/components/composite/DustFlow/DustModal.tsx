@@ -20,7 +20,7 @@ import { ConvertDustSubmitButton } from './components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButton';
 import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
 import type { NavigationContextValue } from '../JumperWidget/context';
-import { maxBy, sumBy } from 'lodash';
+import { maxBy } from 'lodash';
 
 interface DustModalProps {
   isOpen: boolean;
@@ -78,13 +78,20 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           actions: [],
         };
       }
-      const args = quotes.map((quote) => {
-        return {
-          target: quote.action.toAddress as any,
-          allowFailure: true,
-          callData: (quote.transactionRequest?.data || '0x') as any,
-        };
-      });
+      const args = quotes
+        .filter(
+          (quote) =>
+            !!quote.transactionRequest &&
+            !!quote.transactionRequest.data &&
+            !!quote.transactionRequest.to,
+        )
+        .map((quote) => {
+          return {
+            target: quote.transactionRequest!.to! as Hex,
+            allowFailure: true,
+            callData: quote.transactionRequest!.data! as Hex,
+          };
+        });
       const gasPriceQuote = maxBy(quotes, (quote) =>
         BigInt(quote.transactionRequest?.gasPrice ?? '0'),
       );
