@@ -138,6 +138,11 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     toTokenBalance: nativeTokenBalance,
   });
 
+  const handleModalClose = () => {
+    onClose();
+    transactionForm.resetForm();
+  };
+
   const views = useMemo(
     () => [
       {
@@ -181,7 +186,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   );
 
   return (
-    <ModalContainer isOpen={isOpen} onClose={onClose}>
+    <ModalContainer isOpen={isOpen} onClose={handleModalClose}>
       {isOpen ? (
         <JumperWidget
           views={views}
