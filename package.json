@@ -44,7 +44,6 @@
     "@tanstack/react-query": "^5.90.20",
     "@turtledev/api": "1.4.5",
     "@wagmi/core": "^2.21.2",
-    "@widgetbot/react-embed": "^1.10.0",
     "accept-language": "^3.0.20",
     "blo": "^2.0.0",
     "date-fns": "^4.1.0",
