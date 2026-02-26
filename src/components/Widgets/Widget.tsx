@@ -5,7 +5,6 @@ import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
-import { WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
@@ -18,7 +17,7 @@ import { WidgetWrapper } from './Widget.style';
 import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
-import { MainWidgetContext } from './variants/widgetConfig/types';
+import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import { useFormParameters } from './hooks';
@@ -118,8 +117,6 @@ export function Widget({
     ],
   );
 
-  const widgetConfig = useWidgetConfig('main', context);
-
   return (
     <WidgetWrapper
       ref={wrapperRef}
@@ -128,16 +125,14 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <ClientOnly fallback={<LifiWidgetSkeleton config={widgetConfig} />}>
-        <BaseWidget
-          type="main"
-          ctx={context}
-          formRef={formRef}
-          feeConfig={{
-            _vcComponent: () => <FeeContribution translationFn={t} />,
-          }}
-        />
-      </ClientOnly>
+      <BaseWidget
+        type="main"
+        ctx={context}
+        formRef={formRef}
+        feeConfig={{
+          _vcComponent: () => <FeeContribution translationFn={t} />,
+        }}
+      />
     </WidgetWrapper>
   );
 }

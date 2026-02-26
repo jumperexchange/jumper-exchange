@@ -1,5 +1,4 @@
 'use client';
-import { CssBaseline } from '@mui/material';
 import type { Theme } from '@mui/material/styles';
 import { ThemeProvider } from '@mui/material/styles';
 import type { PropsWithChildren } from 'react';
@@ -11,6 +10,7 @@ import {
   THEME_COLOR_SCHEME_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
 } from './constants';
+import CssBaseline from '@mui/material/CssBaseline';
 
 /**
  * App's theme provider component.

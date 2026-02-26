@@ -107,15 +107,18 @@ export default async function RootLayout({
   params: Params;
 }) {
   const { lng } = await params;
-  const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
-  const { resources } = await initTranslations(lng || fallbackLng, namespaces);
-  const { appId } = await getMiniAppSettings().catch((e) => {
-    console.error(
-      'Failed to fetch mini app settings, using default values.',
-      e,
-    );
-    return { appId: '' };
-  });
+
+  const [partnerThemes, { appId }, { resources }] = await Promise.all([
+    getPartnerThemes().catch(() => ({ data: [] })),
+    getMiniAppSettings().catch((e) => {
+      console.error(
+        'Failed to fetch mini app settings, using default values.',
+        e,
+      );
+      return { appId: '' };
+    }),
+    initTranslations(lng || fallbackLng, namespaces),
+  ]);
 
   return (
     <html
@@ -186,40 +189,40 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <NuqsAdapter>
-          <InitColorSchemeScript
-            attribute="class"
-            defaultMode="system"
-            modeStorageKey={THEME_MODE_STORAGE_KEY}
-            colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-          />
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ReactQueryProvider>
-              <TranslationsProvider
-                namespaces={[defaultNS]}
-                locale={lng}
-                resources={resources}
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode="system"
+          modeStorageKey={THEME_MODE_STORAGE_KEY}
+          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        />
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ReactQueryProvider>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={lng}
+              resources={resources}
+            >
+              <DefaultThemeProvider
+                themes={partnerThemes.data ?? []}
+                activeTheme={'default'}
               >
-                <DefaultThemeProvider
-                  themes={partnerThemes.data ?? []}
-                  activeTheme={'default'}
-                >
-                  <WalletProvider>
-                    <MUIThemeProvider>
-                      <SettingsStoreProvider>
+                <WalletProvider>
+                  <MUIThemeProvider>
+                    <SettingsStoreProvider>
+                      <NuqsAdapter>
                         <PortfolioProvider>
                           <NavbarWrapper />
                           <IntercomProvider />
                           {children}
                         </PortfolioProvider>
-                      </SettingsStoreProvider>
-                    </MUIThemeProvider>
-                  </WalletProvider>
-                </DefaultThemeProvider>
-              </TranslationsProvider>
-            </ReactQueryProvider>
-          </AppRouterCacheProvider>
-        </NuqsAdapter>
+                      </NuqsAdapter>
+                    </SettingsStoreProvider>
+                  </MUIThemeProvider>
+                </WalletProvider>
+              </DefaultThemeProvider>
+            </TranslationsProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

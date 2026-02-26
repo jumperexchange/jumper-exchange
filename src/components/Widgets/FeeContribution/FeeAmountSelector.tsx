@@ -1,9 +1,9 @@
-import { Grid } from '@mui/system';
 import { CustomInput } from './CustomInput';
 import { PredefinedOptions } from './PredefinedOptions';
 import { useContributionAmountContext } from 'src/providers/ContributionAmountProvider';
-import { FC } from 'react';
-import { TFunction } from 'i18next';
+import type { FC } from 'react';
+import type { TFunction } from 'i18next';
+import Grid from '@mui/material/Grid';
 
 interface FeeAmountSelectorProps {
   isDisabled: boolean;

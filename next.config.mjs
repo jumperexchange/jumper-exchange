@@ -10,7 +10,12 @@ const nextConfig = {
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
-    optimizePackageImports: ['recharts'],
+    optimizePackageImports: [
+      'recharts',
+      '@mui/material',
+      '@mui/material-nextjs',
+      '@mui/icons-material',
+    ],
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
