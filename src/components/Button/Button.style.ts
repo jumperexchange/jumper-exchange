@@ -26,6 +26,11 @@ export const ButtonPrimary = styled(ButtonBase)(({ theme }) => ({
   ':hover': {
     backgroundColor: `oklch(from ${(theme.vars || theme).palette.buttonPrimaryBg} calc(l - 0.1) c h)`,
   },
+  [`&.${buttonClasses.disabled}`]: {
+    backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
+    color: (theme.vars || theme).palette.buttonPrimaryAction,
+    opacity: 0.5,
+  },
 }));
 
 export const ButtonSecondary = styled(ButtonBase)(({ theme }) => ({

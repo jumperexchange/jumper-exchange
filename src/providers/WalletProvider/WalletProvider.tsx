@@ -24,8 +24,55 @@ import { EVMProvider } from './EVMProvider';
 import { SuiProvider } from './SuiProvider';
 import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
+import {
+  JumperWalletStoreProvider,
+  useJumperWalletStore,
+} from '@/stores/jumperWallet/JumperWalletStore';
+import { JumperWalletModal } from '@/components/JumperWallet/JumperWalletModal';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
+
+export const JumperWalletModalWrapper: FC = () => (
+  <ClientOnly>
+    <JumperWalletModal />
+    {process.env.NODE_ENV === 'development' && <JumperWalletDevReset />}
+  </ClientOnly>
+);
+
+const JumperWalletDevReset: FC = () => {
+  const hasStoredWallet = useJumperWalletStore((s) => s.hasStoredWallet);
+  const destroy = useJumperWalletStore((s) => s.destroy);
+
+  if (!hasStoredWallet) {
+    return null;
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        destroy();
+        window.location.reload();
+      }}
+      style={{
+        position: 'fixed',
+        bottom: 8,
+        left: 8,
+        zIndex: 9999,
+        padding: '4px 8px',
+        fontSize: 11,
+        background: '#ef4444',
+        color: '#fff',
+        border: 'none',
+        borderRadius: 4,
+        cursor: 'pointer',
+        opacity: 0.7,
+      }}
+    >
+      DEV: Reset Jumper Wallet
+    </button>
+  );
+};
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -33,11 +80,13 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
-            <WalletManagementThemeProvider>
-              <WalletMenuProvider>
-                <WalletTrackingProvider>{children}</WalletTrackingProvider>
-              </WalletMenuProvider>
-            </WalletManagementThemeProvider>
+            <JumperWalletStoreProvider>
+              <WalletManagementThemeProvider>
+                <WalletMenuProvider>
+                  <WalletTrackingProvider>{children}</WalletTrackingProvider>
+                </WalletMenuProvider>
+              </WalletManagementThemeProvider>
+            </JumperWalletStoreProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>

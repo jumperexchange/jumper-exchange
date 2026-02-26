@@ -22,7 +22,10 @@ import {
   MUIThemeProvider,
 } from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
-import { WalletProvider } from '@/providers/WalletProvider';
+import {
+  JumperWalletModalWrapper,
+  WalletProvider,
+} from '@/providers/WalletProvider';
 import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
   baseMiniApp,
@@ -164,6 +167,10 @@ export default async function RootLayout({
               gtag('config', '${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
         </Script>
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="lazyOnload"
+        />
         <Script id="addressable-tracker">
           {`
             !function(w, d){
@@ -204,6 +211,7 @@ export default async function RootLayout({
                 >
                   <WalletProvider>
                     <MUIThemeProvider>
+                      <JumperWalletModalWrapper />
                       <SettingsStoreProvider>
                         <NavbarWrapper />
                         <IntercomProvider />

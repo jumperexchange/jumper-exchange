@@ -22,10 +22,11 @@ import envConfig from '@/config/env-config';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { useChains } from '@/hooks/useChains';
+import { jumperWalletConnector } from '@/internal-wallet/connector/jumperWalletConnector';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 const { config, connectors: initialConnectors } = createDefaultWagmiConfig({
-  connectors: [abstractWalletConnector()],
+  connectors: [abstractWalletConnector(), jumperWalletConnector()],
   coinbase: defaultCoinbaseConfig,
   metaMask: defaultMetaMaskConfig,
   walletConnect: defaultWalletConnectConfig,

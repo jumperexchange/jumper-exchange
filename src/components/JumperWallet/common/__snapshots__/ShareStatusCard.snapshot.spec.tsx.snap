@@ -1,0 +1,361 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ShareStatusCard snapshot > statuses > renders failed status with retry button 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-fgk9nn"
+      >
+        Failed
+      </div>
+    </div>
+    <button
+      aria-label="Retry"
+      class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-1ygkqce-MuiButtonBase-root-MuiIconButton-root"
+      tabindex="0"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="RefreshIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > statuses > renders failed status without retry button when onRetry is not provided 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-fgk9nn"
+      >
+        Failed
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > statuses > renders pending status 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-12o60hc"
+      >
+        Pending
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > statuses > renders stored status with green indicator 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-1yh30ii"
+      >
+        Stored
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > statuses > renders storing status 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-809cw3"
+      >
+        Storing...
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > storage type icons > renders localStorage icon 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="KeyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M21 10h-8.35C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H13l2 2 2-2 2 2 4-4.04zM7 15c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Device Keychain
+      </p>
+      <div
+        class="MuiBox-root css-1yh30ii"
+      >
+        Stored
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > storage type icons > renders email icon 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="EmailIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4-8 5-8-5V6l8 5 8-5z"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Email Backup
+      </p>
+      <div
+        class="MuiBox-root css-1yh30ii"
+      >
+        Stored
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > storage type icons > renders googleDrive icon 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="CloudIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Google Drive
+      </p>
+      <div
+        class="MuiBox-root css-1yh30ii"
+      >
+        Stored
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ShareStatusCard snapshot > storage type icons > renders recoveryCode icon 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1cfodzn"
+  >
+    <div
+      class="MuiBox-root css-nxb2mu"
+    >
+      <svg
+        aria-hidden="true"
+        class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall css-1ud1u39-MuiSvgIcon-root"
+        data-testid="ContentCopyIcon"
+        focusable="false"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2m0 16H8V7h11z"
+        />
+      </svg>
+    </div>
+    <div
+      class="MuiBox-root css-ls2gok"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1xupram-MuiTypography-root"
+      >
+        Recovery Code
+      </p>
+      <div
+        class="MuiBox-root css-1yh30ii"
+      >
+        Stored
+      </div>
+    </div>
+  </div>
+</div>
+`;
