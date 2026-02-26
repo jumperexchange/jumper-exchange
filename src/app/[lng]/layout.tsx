@@ -211,7 +211,7 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
-                          {/* <NavbarWrapper /> */}
+                          <NavbarWrapper />
                           <IntercomProvider />
                           {children}
                         </PortfolioProvider>
