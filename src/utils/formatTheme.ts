@@ -90,7 +90,7 @@ export function formatConfig(
       ?.appearance as 'light' | 'dark',
     hasThemeModeSwitch:
       (theme.lightConfig || theme.darkConfig)?.customization
-        ?.hasThemeModeSwitch || false,
+        ?.hasThemeModeSwitch ?? true,
     hasBlurredNavigation:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.hasBlurredNavigation ?? false,
