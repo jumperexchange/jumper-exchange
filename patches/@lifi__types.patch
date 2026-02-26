@@ -1,0 +1,33 @@
+diff --git a/src/_types/step.d.ts b/src/_types/step.d.ts
+index 50ed67c2594bea37f1f502d8c8d14e89c86a444c..c0aabe59bdfe0a539cc0107ab8983192f28e6c63 100644
+--- a/src/_types/step.d.ts
++++ b/src/_types/step.d.ts
+@@ -88,6 +88,11 @@ export interface StepBase {
+      * @link https://eips.ethereum.org/EIPS/eip-712
+      */
+     typedData?: TypedData[];
++    /* Custom Frontend steps only */
++    frontendAction?: {
++        toolDetails: StepToolDetails;
++        data?: Record<string, unknown>;
++    };
+ }
+ export interface DestinationCallInfo {
+     toContractAddress: string;
+diff --git a/src/step.ts b/src/step.ts
+index 7fa05e3126028381f664b04400abeb2ba884973f..f67d935010b4dabb6453e9f527f1febebef23909 100644
+--- a/src/step.ts
++++ b/src/step.ts
+@@ -112,6 +112,12 @@ export interface StepBase {
+    * @link https://eips.ethereum.org/EIPS/eip-712
+    */
+   typedData?: TypedData[]
++
++  /* Custom Frontend steps only */
++  frontendAction?: {
++    toolDetails: StepToolDetails
++    data?: Record<string, unknown>
++  }
+ }
+ 
+ export interface DestinationCallInfo {

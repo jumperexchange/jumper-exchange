@@ -45,6 +45,7 @@
     "@turtledev/api": "1.4.5",
     "@wagmi/core": "^2.21.2",
     "@widgetbot/react-embed": "^1.10.0",
+    "@zkp2p/sdk": "0.0.14-rc.4",
     "accept-language": "^3.0.20",
     "blo": "^2.0.0",
     "date-fns": "^4.1.0",
@@ -193,7 +194,12 @@
       "sleep",
       "unrs-resolver",
       "utf-8-validate"
-    ]
+    ],
+    "patchedDependencies": {
+      "@lifi/widget": "patches/@lifi__widget.patch",
+      "@lifi/types": "patches/@lifi__types.patch",
+      "@lifi/sdk": "patches/@lifi__sdk.patch"
+    }
   },
   "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }

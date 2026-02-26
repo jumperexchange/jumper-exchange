@@ -1,0 +1,285 @@
+diff --git a/src/_esm/core/EVM/EVMStepExecutor.js b/src/_esm/core/EVM/EVMStepExecutor.js
+index 879476497b5cb5ca591b7eb8db680a2c588cd50f..ec32b0a692c086e6c7044c4032a26b71632062c4 100644
+--- a/src/_esm/core/EVM/EVMStepExecutor.js
++++ b/src/_esm/core/EVM/EVMStepExecutor.js
+@@ -219,9 +219,37 @@ export class EVMStepExecutor extends BaseStepExecutor {
+             execution: step.execution,
+             typedData: updatedStep.typedData ?? step.typedData,
+         });
+-        if (!step.transactionRequest && !step.typedData?.length) {
++        if (!step.transactionRequest && !step.typedData?.length && !step.frontendAction) {
+             throw new TransactionError(LiFiErrorCode.TransactionUnprepared, 'Unable to prepare transaction.');
+         }
++        let isRelayerTransaction = isRelayerStep(updatedStep);
++        if (step.frontendAction) {
++            if (!this.executionOptions?.executeFrontendActionHook) {
++                throw new TransactionError(LiFiErrorCode.TransactionUnprepared, 'Unable to prepare transaction. No frontend action hook is registered.');
++            }
++            const hookResult = await this.executionOptions.executeFrontendActionHook(step.frontendAction);
++            if (!hookResult) {
++                return {
++                    transactionRequest: undefined,
++                    isRelayerTransaction: false,
++                    frontendActionDone: true,
++                };
++            }
++            if (hookResult.transactionRequest) {
++                step.transactionRequest = hookResult.transactionRequest;
++            }
++            if (hookResult.typedData?.length) {
++                step.typedData = hookResult.typedData;
++                isRelayerTransaction = true;
++            }
++            if (!step.transactionRequest && !step.typedData?.length) {
++                return {
++                    transactionRequest: undefined,
++                    isRelayerTransaction: false,
++                    frontendActionDone: true,
++                };
++            }
++        }
+         let transactionRequest;
+         if (step.transactionRequest) {
+             // Only call checkClient for local accounts when we need to get maxPriorityFeePerGas
+@@ -273,7 +301,7 @@ export class EVMStepExecutor extends BaseStepExecutor {
+             transactionRequest,
+             // We should always check against the updated step,
+             // because the step may be updated with typed data from the previously signed typed data
+-            isRelayerTransaction: isRelayerStep(updatedStep),
++            isRelayerTransaction,
+         };
+     };
+     estimateTransactionRequest = async (client, transactionRequest) => {
+@@ -351,9 +379,11 @@ export class EVMStepExecutor extends BaseStepExecutor {
+             !!step.estimate.approvalAddress &&
+             !step.estimate.skipApproval &&
+             !step.estimate.skipPermit;
+-        const checkForAllowance = 
+-        // No existing swap/bridge transaction is pending
+-        !existingProcess?.txHash &&
++        const checkForAllowance =
++        // Frontend action steps don't need token approval
++        !step.frontendAction &&
++            // No existing swap/bridge transaction is pending
++            !existingProcess?.txHash &&
+             // No existing swap/bridge batch/order is pending
+             !existingProcess?.taskId &&
+             // Token is not native (address is not zero)
+@@ -425,6 +455,11 @@ export class EVMStepExecutor extends BaseStepExecutor {
+             if (!preparedStep) {
+                 return step;
+             }
++            if (preparedStep.frontendActionDone) {
++                this.statusManager.updateProcess(step, process.type, 'DONE');
++                this.statusManager.updateExecution(step, 'DONE');
++                return step;
++            }
+             let { transactionRequest, isRelayerTransaction } = preparedStep;
+             process = this.statusManager.updateProcess(step, process.type, 'ACTION_REQUIRED');
+             if (!this.allowUserInteraction) {
+diff --git a/src/_types/core/types.d.ts b/src/_types/core/types.d.ts
+index 693ec957a1e1f1af849936c2853a7197a63d4a8a..fc07277bb0bdd1561a57d604a183c6ab37a3ba23 100644
+--- a/src/_types/core/types.d.ts
++++ b/src/_types/core/types.d.ts
+@@ -1,4 +1,4 @@
+-import type { ChainId, ChainType, CoinKey, ContractCall, FeeCost, GasCost, LiFiStep, Route, Step, Substatus, Token, TokenAmount } from '@lifi/types';
++import type { ChainId, ChainType, CoinKey, ContractCall, FeeCost, GasCost, LiFiStep, Route, Step, Substatus, Token, TokenAmount, TypedData } from '@lifi/types';
+ import type { Client } from 'viem';
+ export interface SDKProvider {
+     readonly type: ChainType;
+@@ -91,12 +91,26 @@ export interface GetContractCallsResult {
+     contractTool?: ContractTool;
+ }
+ export type GetContractCallsHook = (params: ContractCallParams) => Promise<GetContractCallsResult>;
++export interface FrontendAction {
++    toolDetails: {
++        key: string;
++        name: string;
++        logoURI: string;
++    };
++    data?: Record<string, any>;
++}
++export type FrontendActionHookResult = {
++    transactionRequest?: TransactionParameters;
++    typedData?: TypedData[];
++} | null | undefined;
++export type FrontendActionHook = (params: FrontendAction) => Promise<FrontendActionHookResult>;
+ export interface ExecutionOptions {
+     acceptExchangeRateUpdateHook?: AcceptExchangeRateUpdateHook;
+     switchChainHook?: SwitchChainHook;
+     updateRouteHook?: UpdateRouteHook;
+     updateTransactionRequestHook?: TransactionRequestUpdateHook;
+     getContractCalls?: GetContractCallsHook;
++    executeFrontendActionHook?: FrontendActionHook;
+     adjustZeroOutputFromPreviousStep?: boolean;
+     executeInBackground?: boolean;
+     disableMessageSigning?: boolean;
+diff --git a/src/_types/index.d.ts b/src/_types/index.d.ts
+index 224341dfda072c0c9bd1f429162304ab57a947b4..6466d316acc629c48e0dec1a03f3f3b1f25a1ba8 100644
+--- a/src/_types/index.d.ts
++++ b/src/_types/index.d.ts
+@@ -21,7 +21,7 @@ export { StatusManager } from './core/StatusManager.js';
+ export { Sui } from './core/Sui/Sui.js';
+ export type { SuiProvider, SuiProviderOptions } from './core/Sui/types.js';
+ export { isSui } from './core/Sui/types.js';
+-export type { AcceptExchangeRateUpdateHook, AcceptSlippageUpdateHook, AcceptSlippageUpdateHookParams, ContractCallParams, ContractTool, ExchangeRateUpdateParams, Execution, ExecutionOptions, ExecutionStatus, GetContractCallsHook, GetContractCallsResult, InteractionSettings, LiFiStepExtended, Process, ProcessStatus, ProcessType, RouteExecutionData, RouteExecutionDataDictionary, RouteExecutionDictionary, RouteExtended, SDKProvider, StepExecutor, StepExecutorOptions, StepExtended, SwitchChainHook, TransactionParameters, TransactionRequestParameters, TransactionRequestUpdateHook, UpdateRouteHook, } from './core/types.js';
++export type { AcceptExchangeRateUpdateHook, AcceptSlippageUpdateHook, AcceptSlippageUpdateHookParams, ContractCallParams, ContractTool, ExchangeRateUpdateParams, Execution, ExecutionOptions, ExecutionStatus, FrontendAction, GetContractCallsHook, GetContractCallsResult, InteractionSettings, LiFiStepExtended, Process, ProcessStatus, ProcessType, RouteExecutionData, RouteExecutionDataDictionary, RouteExecutionDictionary, RouteExtended, SDKProvider, StepExecutor, StepExecutorOptions, StepExtended, SwitchChainHook, TransactionParameters, TransactionRequestParameters, TransactionRequestUpdateHook, UpdateRouteHook, } from './core/types.js';
+ export type { UTXOProvider, UTXOProviderOptions } from './core/UTXO/types.js';
+ export { isUTXO } from './core/UTXO/types.js';
+ export { UTXO } from './core/UTXO/UTXO.js';
+diff --git a/src/core/EVM/EVMStepExecutor.ts b/src/core/EVM/EVMStepExecutor.ts
+index b151614a51596c497c447bba3c6f3c2d2da88151..5e2eb5cbaee557c43a30f3c514d784297e51850a 100644
+--- a/src/core/EVM/EVMStepExecutor.ts
++++ b/src/core/EVM/EVMStepExecutor.ts
+@@ -33,6 +33,7 @@ import { BaseStepExecutor } from '../BaseStepExecutor.js'
+ import { checkBalance } from '../checkBalance.js'
+ import { stepComparison } from '../stepComparison.js'
+ import type {
++  FrontendActionHookResult,
+   LiFiStepExtended,
+   Process,
+   StepExecutorOptions,
+@@ -366,7 +367,11 @@ export class EVMStepExecutor extends BaseStepExecutor {
+       typedData: updatedStep.typedData ?? step.typedData,
+     })
+ 
+-    if (!step.transactionRequest && !step.typedData?.length) {
++    if (
++      !step.transactionRequest &&
++      !step.typedData?.length &&
++      !step.frontendAction
++    ) {
+       throw new TransactionError(
+         LiFiErrorCode.TransactionUnprepared,
+         'Unable to prepare transaction.'
+@@ -425,11 +430,46 @@ export class EVMStepExecutor extends BaseStepExecutor {
+       }
+     }
+ 
++    let isRelayerTransaction = isRelayerStep(updatedStep)
++    if (step.frontendAction) {
++      if (!this.executionOptions?.executeFrontendActionHook) {
++        throw new TransactionError(
++          LiFiErrorCode.TransactionUnprepared,
++          'Unable to prepare transaction. No frontend action hook is registered.'
++        )
++      }
++      const hookResult: FrontendActionHookResult =
++        await this.executionOptions.executeFrontendActionHook(
++          step.frontendAction
++        )
++      if (!hookResult) {
++        return {
++          transactionRequest: undefined,
++          isRelayerTransaction: false,
++          frontendActionDone: true,
++        }
++      }
++      if (hookResult.transactionRequest) {
++        step.transactionRequest = hookResult.transactionRequest
++      }
++      if (hookResult.typedData?.length) {
++        step.typedData = hookResult.typedData
++        isRelayerTransaction = true
++      }
++      if (!step.transactionRequest && !step.typedData?.length) {
++        return {
++          transactionRequest: undefined,
++          isRelayerTransaction: false,
++          frontendActionDone: true,
++        }
++      }
++    }
++
+     return {
+       transactionRequest,
+       // We should always check against the updated step,
+       // because the step may be updated with typed data from the previously signed typed data
+-      isRelayerTransaction: isRelayerStep(updatedStep),
++      isRelayerTransaction,
+     }
+   }
+ 
+@@ -547,6 +587,8 @@ export class EVMStepExecutor extends BaseStepExecutor {
+       !step.estimate.skipPermit
+ 
+     const checkForAllowance =
++      // Frontend action steps don't need token approval
++      !step.frontendAction &&
+       // No existing swap/bridge transaction is pending
+       !existingProcess?.txHash &&
+       // No existing swap/bridge batch/order is pending
+@@ -640,6 +682,11 @@ export class EVMStepExecutor extends BaseStepExecutor {
+       if (!preparedStep) {
+         return step
+       }
++      if (preparedStep.frontendActionDone) {
++        this.statusManager.updateProcess(step, process.type, 'DONE')
++        this.statusManager.updateExecution(step, 'DONE')
++        return step
++      }
+       let { transactionRequest, isRelayerTransaction } = preparedStep
+ 
+       process = this.statusManager.updateProcess(
+diff --git a/src/core/types.ts b/src/core/types.ts
+index 3cd929910e59ad99ef3ec6479ad150d92236fa80..44132c7919f867f6746503fb853dda623019e2d4 100644
+--- a/src/core/types.ts
++++ b/src/core/types.ts
+@@ -11,6 +11,7 @@ import type {
+   Substatus,
+   Token,
+   TokenAmount,
++  TypedData,
+ } from '@lifi/types'
+ import type { Client } from 'viem'
+ 
+@@ -48,6 +49,11 @@ export interface RouteExtended extends Omit<Route, 'steps'> {
+   steps: LiFiStepExtended[]
+ }
+ 
++export interface FrontendAction {
++  toolDetails: { key: string; name: string; logoURI: string }
++  data?: Record<string, unknown>
++}
++
+ export interface LiFiStepExtended extends LiFiStep {
+   execution?: Execution
+ }
+@@ -142,12 +148,25 @@ export type GetContractCallsHook = (
+   params: ContractCallParams
+ ) => Promise<GetContractCallsResult>
+ 
++export type FrontendActionHookResult =
++  | {
++      transactionRequest?: TransactionParameters
++      typedData?: TypedData[]
++    }
++  | null
++  | undefined
++
++export type FrontendActionHook = (
++  params: FrontendAction
++) => Promise<FrontendActionHookResult>
++
+ export interface ExecutionOptions {
+   acceptExchangeRateUpdateHook?: AcceptExchangeRateUpdateHook
+   switchChainHook?: SwitchChainHook
+   updateRouteHook?: UpdateRouteHook
+   updateTransactionRequestHook?: TransactionRequestUpdateHook
+   getContractCalls?: GetContractCallsHook
++  executeFrontendActionHook?: FrontendActionHook
+   adjustZeroOutputFromPreviousStep?: boolean
+   executeInBackground?: boolean
+   disableMessageSigning?: boolean
+diff --git a/src/index.ts b/src/index.ts
+index a298c7017617dfdc1fc952fe0133436f804f1783..6b47a0f66c6860ccc941d289bd8060e2e5375b55 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -64,6 +64,7 @@ export type {
+   Execution,
+   ExecutionOptions,
+   ExecutionStatus,
++  FrontendAction,
+   GetContractCallsHook,
+   GetContractCallsResult,
+   InteractionSettings,

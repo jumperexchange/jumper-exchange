@@ -1,0 +1,25 @@
+diff --git a/dist/esm/types/widget.d.ts b/dist/esm/types/widget.d.ts
+index 2a82b0ffbc9b7b1eccd0d8ad9ff982bd78b1773a..7a516b480f2ca1f2a331ea72fbaa31834883e157 100644
+--- a/dist/esm/types/widget.d.ts
++++ b/dist/esm/types/widget.d.ts
+@@ -122,7 +122,7 @@ export interface WidgetWalletConfig {
+ }
+ export interface WidgetSDKConfig extends Omit<SDKConfig, 'apiKey' | 'disableVersionCheck' | 'integrator' | 'routeOptions' | 'widgetVersion'> {
+     routeOptions?: Omit<RouteOptions, 'bridges' | 'exchanges'>;
+-    executionOptions?: Pick<ExecutionOptions, 'disableMessageSigning' | 'updateTransactionRequestHook' | 'getContractCalls'>;
++    executionOptions?: Pick<ExecutionOptions, 'disableMessageSigning' | 'updateTransactionRequestHook' | 'getContractCalls' | 'executeFrontendActionHook'>;
+ }
+ export interface WidgetContractTool {
+     name: string;
+diff --git a/src/types/widget.ts b/src/types/widget.ts
+index 682aa05e76a9638c08ee2a5176e5dac893571120..e3f09d86aa9787d4b97817d2565a1fa38d1d41af 100644
+--- a/src/types/widget.ts
++++ b/src/types/widget.ts
+@@ -186,6 +186,7 @@ export interface WidgetSDKConfig
+     | 'disableMessageSigning'
+     | 'updateTransactionRequestHook'
+     | 'getContractCalls'
++    | 'executeFrontendActionHook'
+   >
+ }
+ 
