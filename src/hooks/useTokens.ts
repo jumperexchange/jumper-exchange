@@ -1,17 +1,13 @@
-import type { ChainId, Token } from '@lifi/sdk';
+import type { ChainId, TokensResponse } from '@lifi/sdk';
 import { ChainType, getTokens } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import assign from 'lodash/assign';
 import { useCallback } from 'react';
 import type { Address } from 'viem';
 
 import { ExtendedToken } from '../utils/Token';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { createBatchFetcher } from '@/utils/batches/fetcher';
-
-// NOTE: We are using the StaticToken type here as USD prices from the /tokens
-// endpoint tend to be incorrect. Use useToken() instead
-// TODO: This needs to be StaticToken
-export type AllTokens = { tokens: { [chainId: number]: Token[] } };
 
 const TOKEN_CHAIN_TYPES: ChainType[] = [
   ChainType.EVM,
@@ -27,8 +23,8 @@ const tokensBatchesByChainType: Record<string, ChainType[]> =
 
 export const getTokensQuery = async (
   signal?: AbortSignal,
-): Promise<AllTokens> => {
-  const { results } = createBatchFetcher<ChainType, AllTokens>(
+): Promise<TokensResponse['tokens']> => {
+  const { results } = createBatchFetcher<ChainType, TokensResponse>(
     tokensBatchesByChainType,
     async (_batchKey, chainTypes) => {
       const data = await getTokens({ chainTypes: [...chainTypes] });
@@ -41,7 +37,10 @@ export const getTokensQuery = async (
 
   const resultsList = await results;
 
-  return Object.assign({}, ...resultsList.map((r) => r.tokens));
+  return assign(
+    {} as TokensResponse['tokens'],
+    ...resultsList.map((r) => r.tokens),
+  );
 };
 
 export const useTokens = () => {
@@ -59,16 +58,18 @@ export const useTokens = () => {
       if (!data) {
         return;
       }
-      if (!data.tokens[chainId]) {
+      if (!data[chainId]) {
         return;
       }
-      const tokenData = data.tokens[chainId].find(
+      const tokenData = data[chainId].find(
         (token) => token.address.toLowerCase() === address.toLowerCase(),
       );
       if (!tokenData) {
         return;
       }
-      // TODO: This needs to be SimpleToken
+      // NOTE: We are using the StaticToken type here as USD prices from the /tokens
+      // endpoint tend to be incorrect. Use useToken() instead
+      // TODO: This needs to be StaticToken
       return new ExtendedToken(tokenData);
     },
     [data],
