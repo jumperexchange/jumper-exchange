@@ -1,4 +1,4 @@
-import { FeatureCards } from '@/components/FeatureCards';
+import { FeatureCards } from '@/components/FeatureCards/FeatureCards';
 import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
@@ -16,9 +16,7 @@ export default async function MainLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Layout>
-        <App>
-          {children}
-        </App>
+        <App>{children}</App>
       </Layout>
       <FeatureCards />
     </>

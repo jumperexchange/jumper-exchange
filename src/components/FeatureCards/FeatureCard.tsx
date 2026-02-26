@@ -14,7 +14,7 @@ import {
   FeatureCardCtaLink,
   FeatureCardSubtitle,
   FeatureCardTitle,
-} from '.';
+} from './FeatureCard.style';
 import {
   useFeatureCardTracking,
   useFeatureCardColors,
