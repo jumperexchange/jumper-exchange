@@ -1,12 +1,10 @@
 'use client';
 
-import type { AppBarProps } from '@mui/material';
-import { AppBar } from '@mui/material';
+import AppBar, { type AppBarProps } from '@mui/material/AppBar';
 
 import { HeaderHeight } from '@/const/headerHeight';
 import { Link } from '@/components/Link';
-import type { Breakpoint } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
+import { styled, type Breakpoint } from '@mui/material/styles';
 
 interface NavbarContainerProps extends AppBarProps {
   hasBlurredNavigation?: boolean;
