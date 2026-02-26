@@ -5,6 +5,7 @@ import { useCallback } from 'react';
 import type { Address } from 'viem';
 
 import { ExtendedToken } from '../utils/Token';
+import { getQueryKey } from '@/utils/queries/getQueryKey';
 
 // NOTE: We are using the StaticToken type here as USD prices from the /tokens
 // endpoint tend to be incorrect. Use useToken() instead
@@ -22,7 +23,7 @@ export const getTokensQuery = async (): Promise<AllTokens> => {
 export const useTokens = () => {
   const { data, isLoading, isSuccess, isError, error, dataUpdatedAt } =
     useQuery({
-      queryKey: ['tokens'],
+      queryKey: [getQueryKey('tokens', 'jumper-default')],
       queryFn: getTokensQuery,
       refetchInterval: 1000 * 60 * 60,
       refetchOnMount: false,
