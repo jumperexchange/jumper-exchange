@@ -169,7 +169,7 @@ export default async function RootLayout({
               gtag('config', '${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
         </Script>
-        <Script id="addressable-tracker">
+        <Script strategy="lazyOnload" id="addressable-tracker">
           {`
             !function(w, d){
               w.__adrsbl = {
