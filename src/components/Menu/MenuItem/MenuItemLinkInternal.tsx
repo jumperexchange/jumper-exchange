@@ -13,7 +13,7 @@ export const MenuItemLinkInternal = ({
   MenuItemProps,
   'label' | 'prefixIcon' | 'suffixIcon' | 'showMoreIcon' | 'link'
 >) => (
-  <MenuItemLink as={RouterLink} href={link?.url || '#'}>
+  <MenuItemLink as={RouterLink} prefetch={false} href={link?.url || '#'}>
     <MenuItemLabel
       label={label}
       showMoreIcon={showMoreIcon}

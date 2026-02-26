@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   NavbarButton,
   NavbarButtonContentContainer,
@@ -31,7 +31,12 @@ export const LabelButton: FC<LabelButtonProps> = ({
   'data-testid': dataTestId,
 }) => {
   const button = (
-    <NavbarButton isActive={isActive} id={id} onClick={onClick} data-testid={dataTestId}>
+    <NavbarButton
+      isActive={isActive}
+      id={id}
+      onClick={onClick}
+      data-testid={dataTestId}
+    >
       <NavbarButtonContentContainer>
         {icon}
         {isLoading ? (
@@ -49,7 +54,7 @@ export const LabelButton: FC<LabelButtonProps> = ({
 
   if (href) {
     return (
-      <Link href={href} style={{ textDecoration: 'none' }}>
+      <Link href={href} prefetch={false} style={{ textDecoration: 'none' }}>
         {button}
       </Link>
     );
