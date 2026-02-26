@@ -1,7 +1,8 @@
 'use client';
-import type { BoxProps, Breakpoint } from '@mui/material';
-import { Box, Typography, styled } from '@mui/material';
 import { ButtonPrimary } from '../Button';
+import Box, { type BoxProps } from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 /**
  * more welcome-screen styles to be found in Widget.style.tsx + Widgets.style.tsx
@@ -41,7 +42,7 @@ export const ContentWrapper = styled(Box)<ContentWrapperProps>(({ theme }) => ({
 export const WelcomeContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0, 3),
   minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.xs,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
   },
 }));
@@ -54,7 +55,7 @@ export const WelcomeScreenSubtitle = styled(Typography)(({ theme }) => ({
     color: 'inherit',
     textDecoration: 'none',
   },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     fontSize: '24px',
     fontWeight: 400,
     lineHeight: '32px',
@@ -68,7 +69,7 @@ export const WelcomeScreenButton = styled(ButtonPrimary)(({ theme }) => ({
   height: 48,
   width: 192,
   margin: theme.spacing(4, 'auto'),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     margin: theme.spacing(6, 'auto'),
     height: 56,
     width: 247,
@@ -79,7 +80,7 @@ export const WelcomeScreenButtonLabel = styled(Typography)(({ theme }) => ({
   maxHeight: 40,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     fontSize: '18px',
     maxHeight: 48,
     lineHeight: '24px',

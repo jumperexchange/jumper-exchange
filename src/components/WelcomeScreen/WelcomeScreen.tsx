@@ -6,7 +6,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { MouseEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Trans } from 'react-i18next/TransWithoutContext';
+import { Trans } from 'react-i18next';
 import { JUMPER_URL } from 'src/const/urls';
 import { ToolCards } from './ToolCard/ToolCards';
 import {
@@ -16,6 +16,7 @@ import {
   WelcomeScreenButtonLabel,
   WelcomeScreenSubtitle,
 } from './WelcomeScreen.style';
+import { Link } from '../Link/Link';
 
 interface WelcomeScreenProps {
   activeTheme?: string;
@@ -63,29 +64,17 @@ export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
   return (
     <ContentWrapper>
       <WelcomeContent>
-        <CustomColor as="h1" variant={'headerMedium'}>
-          {t('navbar.welcome.title')}
-        </CustomColor>
+        <CustomColor variant="h1">{t('navbar.welcome.title')}</CustomColor>
         <WelcomeScreenSubtitle variant={'bodyLarge'}>
           <Trans
-            i18nKey={'navbar.welcome.subtitle' as string & never[]}
+            i18nKey={'navbar.welcome.subtitle'}
             components={[
-              // fix: allow component with "no content"
-              // eslint-disable-next-line jsx-a11y/anchor-has-content
-              <a
-                className={'link-jumper'}
+              <Link
                 href={JUMPER_URL}
-                target={'_blank'}
-                rel="noreferrer"
-                // onClick={handleAuditClick}
-              />,
-              // eslint-disable-next-line jsx-a11y/anchor-has-content
-              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ fontWeight: 'bold' }}
                 className={'link-jumper'}
-                href={JUMPER_URL}
-                // onClick={handleLIFIClick}
-                target={'_blank'}
-                rel="noreferrer"
               />,
             ]}
           />
