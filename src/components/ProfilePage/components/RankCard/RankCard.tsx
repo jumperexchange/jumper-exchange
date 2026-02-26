@@ -78,6 +78,7 @@ export const RankCard: FC<RankCardProps> = () => {
           <RankButtonContainer>
             <RankButton
               href={AppPaths.Leaderboard}
+              component={Link}
               data-testid="leaderboard-button"
             >
               {t('leaderboard.title')}
