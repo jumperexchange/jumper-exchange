@@ -1,11 +1,11 @@
 // ESLint Flat Config for Next.js 16
 // See: https://nextjs.org/docs/app/api-reference/config/eslint
 import nextPlugin from '@next/eslint-plugin-next';
-import prettierConfig from 'eslint-config-prettier';
-import tseslint from 'typescript-eslint';
-import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import prettierConfig from 'eslint-config-prettier';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import reactHooks from 'eslint-plugin-react-hooks';
+import tseslint from 'typescript-eslint';
 
 const eslintConfig = defineConfig([
   // Global ignores
@@ -74,7 +74,7 @@ const eslintConfig = defineConfig([
       'class-methods-use-this': 'off',
       'comma-dangle': ['warn', 'always-multiline'],
       curly: 1,
-      'jsx-quotes': ['error', 'prefer-double'],
+      'jsx-quotes': ['error', 'prefer-single'],
       'linebreak-style': 'off',
       'max-len': 'off',
       'newline-per-chained-call': 'off',

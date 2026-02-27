@@ -676,5 +676,120 @@
     "requestAccess": "Request access",
     "connecting": "Connecting...",
     "error": "An unknown error occurred. Please try again or request access."
+  },
+  "jumperWallet": {
+    "name": "Jumper Account",
+    "signup": {
+      "title": "Create your Jumper Account",
+      "subtitle": "Your keys, your crypto. No third parties.",
+      "createPassword": "Create a password",
+      "confirmPassword": "Confirm password",
+      "passwordMismatch": "Passwords do not match",
+      "passwordRequirements": "At least 12 characters with a mix of letters, numbers, and symbols",
+      "showMnemonic": "Your recovery phrase",
+      "mnemonicWarning": "Write down these 24 words in order. Never share them with anyone. This is the only way to recover your account if all other methods fail.",
+      "mnemonicConfirmed": "I have saved my recovery phrase",
+      "confirmMnemonic": "Verify your recovery phrase",
+      "confirmMnemonicDesc": "Select the correct word for each highlighted position",
+      "recoverySetup": "Set up recovery",
+      "recoveryDesc": "Choose where to securely store your recovery shares. You will need to store at least {{total}} shares in different locations. {{threshold}} of these shares are required to recover your account.",
+      "distributing": "Storing recovery shares...",
+      "distributionComplete": "Recovery setup complete!",
+      "continue": "Continue",
+      "back": "Back",
+      "createAccount": "Create Account",
+      "biometricSetup": "Enable biometrics",
+      "biometricSetupTitle": "Log in faster with biometrics",
+      "biometricSetupSubtitle": "Use Face ID, Touch ID, or fingerprint to unlock your Jumper Account without a password.",
+      "biometricSetupEnable": "Enable biometrics",
+      "biometricSetupSkip": "Skip for now",
+      "biometricSetupSuccess": "Biometrics enabled!",
+      "biometricSetupError": "Failed to enable biometrics. You can always enable it later.",
+      "biometricSetupNotSupported": "Biometrics are not supported on this device.",
+      "loginInstead": "Already have an account? Login instead"
+    },
+    "login": {
+      "title": "Unlock Jumper Account",
+      "enterPassword": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "wrongPassword": "Incorrect password. Please try again.",
+      "forgotPassword": "Forgot password?",
+      "biometric": "Use biometrics",
+      "biometricUnlock": "Unlock with biometrics",
+      "biometricFailed": "Biometric authentication failed. Please try again.",
+      "orUsePassword": "or use your password",
+      "unlock": "Unlock"
+    },
+    "recovery": {
+      "title": "Recover your account",
+      "subtitle": "Collect your recovery shares to restore access",
+      "selectMethods": "Select recovery sources",
+      "collectShares": "Provide your recovery shares",
+      "setNewPassword": "Set a new password",
+      "sharesNeeded": "{{needed}} of {{total}} shares required",
+      "sharesCollected": "{{count}} of {{needed}} shares collected",
+      "reconstructing": "Reconstructing your wallet...",
+      "success": "Account recovered successfully!",
+      "failed": "Recovery failed. Please check your shares and try again.",
+      "finishRecovery": "Recover",
+      "manualEntry": "Or paste shares manually",
+      "shareFromEmail": "Share from email",
+      "shareFromCode": "Recovery code",
+      "invalidShare": "Invalid share — paste the exact code you received",
+      "recoveryCodePlaceholder": "Paste your recovery code",
+      "emailCodePlaceholder": "Paste the code from your recovery email",
+      "googleDrive": {
+        "title": "Google Drive",
+        "retrieve": "Retrieve from Google Drive",
+        "retrieving": "Connecting to Google Drive...",
+        "retrieved": "Share retrieved from Google Drive",
+        "attemptsRemaining": "{{remaining}} attempt(s) remaining",
+        "manualFallbackInfo": "Automatic retrieval didn't work. You can try a different Google account or paste the share manually.",
+        "pasteShare": "Paste Google Drive share",
+        "pastePlaceholder": "Paste the share content here..."
+      },
+      "selectWallet": {
+        "title": "Which account do you want to recover?",
+        "subtitle": "We found {{count}} wallet(s) on this device.",
+        "selectButton": "Select",
+        "noWalletsFound": "No local recovery shares found on this device.",
+        "recoverWithoutDevice": "My wallet isn't listed here"
+      }
+    },
+    "passwordPrompt": {
+      "title": "Confirm action",
+      "description": "Enter your password to authorize this transaction",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    },
+    "shares": {
+      "localStorage": "Local Storage",
+      "email": "Email",
+      "googleDrive": "Google Drive",
+      "recoveryCode": "Recovery Code",
+      "localStorageConnectFailed": "Failed to access local storage. Please try again.",
+      "emailConnectFailed": "Failed to connect email. Please try again.",
+      "googleDriveConnectFailed": "Failed to connect Google Drive. Please try again.",
+      "recoveryCodeConnectFailed": "Failed to generate recovery code. Please try again."
+    },
+    "shareStatus": {
+      "pending": "Pending",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "retrieving": "Retrieving...",
+      "retrieved": "Retrieved",
+      "failed": "Failed",
+      "retry": "Retry",
+      "copy": "Copy",
+      "copied": "Copied!"
+    },
+    "passwordStrength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong",
+      "veryStrong": "Very strong"
+    }
   }
 }

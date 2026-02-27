@@ -209,6 +209,121 @@ interface Resources {
       };
       title: 'Welcome to {{pageTitle}}!';
     };
+    jumperWallet: {
+      login: {
+        biometric: 'Use biometrics';
+        biometricFailed: 'Biometric authentication failed. Please try again.';
+        biometricUnlock: 'Unlock with biometrics';
+        enterPassword: 'Enter your password';
+        forgotPassword: 'Forgot password?';
+        hidePassword: 'Hide password';
+        orUsePassword: 'or use your password';
+        showPassword: 'Show password';
+        title: 'Unlock Jumper Account';
+        unlock: 'Unlock';
+        wrongPassword: 'Incorrect password. Please try again.';
+      };
+      name: 'Jumper Account';
+      passwordPrompt: {
+        cancel: 'Cancel';
+        confirm: 'Confirm';
+        description: 'Enter your password to authorize this transaction';
+        title: 'Confirm action';
+      };
+      passwordStrength: {
+        fair: 'Fair';
+        good: 'Good';
+        strong: 'Strong';
+        veryStrong: 'Very strong';
+        weak: 'Weak';
+      };
+      recovery: {
+        collectShares: 'Provide your recovery shares';
+        emailCodePlaceholder: 'Paste the code from your recovery email';
+        failed: 'Recovery failed. Please check your shares and try again.';
+        finishRecovery: 'Recover';
+        googleDrive: {
+          attemptsRemaining: '{{remaining}} attempt(s) remaining';
+          manualFallbackInfo: "Automatic retrieval didn't work. You can try a different Google account or paste the share manually.";
+          pastePlaceholder: 'Paste the share content here...';
+          pasteShare: 'Paste Google Drive share';
+          retrieve: 'Retrieve from Google Drive';
+          retrieved: 'Share retrieved from Google Drive';
+          retrieving: 'Connecting to Google Drive...';
+          title: 'Google Drive';
+        };
+        invalidShare: 'Invalid share — paste the exact code you received';
+        manualEntry: 'Or paste shares manually';
+        reconstructing: 'Reconstructing your wallet...';
+        recoveryCodePlaceholder: 'Paste your recovery code';
+        selectMethods: 'Select recovery sources';
+        selectWallet: {
+          noWalletsFound: 'No local recovery shares found on this device.';
+          recoverWithoutDevice: "My wallet isn't listed here";
+          selectButton: 'Select';
+          subtitle: 'We found {{count}} wallet(s) on this device.';
+          title: 'Which account do you want to recover?';
+        };
+        setNewPassword: 'Set a new password';
+        shareFromCode: 'Recovery code';
+        shareFromEmail: 'Share from email';
+        sharesCollected: '{{count}} of {{needed}} shares collected';
+        sharesNeeded: '{{needed}} of {{total}} shares required';
+        subtitle: 'Collect your recovery shares to restore access';
+        success: 'Account recovered successfully!';
+        title: 'Recover your account';
+      };
+      shareStatus: {
+        copied: 'Copied!';
+        copy: 'Copy';
+        failed: 'Failed';
+        pending: 'Pending';
+        retrieved: 'Retrieved';
+        retrieving: 'Retrieving...';
+        retry: 'Retry';
+        saved: 'Saved';
+        saving: 'Saving...';
+      };
+      shares: {
+        email: 'Email';
+        googleDrive: 'Google Drive';
+        emailConnectFailed: 'Failed to connect email. Please try again.';
+        googleDriveConnectFailed: 'Failed to connect Google Drive. Please try again.';
+        localStorageConnectFailed: 'Failed to access local storage. Please try again.';
+        recoveryCodeConnectFailed: 'Failed to generate recovery code. Please try again.';
+        localStorage: 'Local Storage';
+        recoveryCode: 'Recovery Code';
+      };
+      signup: {
+        back: 'Back';
+        biometricSetup: 'Enable biometrics';
+        biometricSetupEnable: 'Enable biometrics';
+        biometricSetupError: 'Failed to enable biometrics. You can always enable it later.';
+        biometricSetupNotSupported: 'Biometrics are not supported on this device.';
+        biometricSetupSkip: 'Skip for now';
+        biometricSetupSubtitle: 'Use Face ID, Touch ID, or fingerprint to unlock your Jumper Account without a password.';
+        biometricSetupSuccess: 'Biometrics enabled!';
+        biometricSetupTitle: 'Log in faster with biometrics';
+        confirmMnemonic: 'Verify your recovery phrase';
+        confirmMnemonicDesc: 'Select the correct word for each highlighted position';
+        confirmPassword: 'Confirm password';
+        continue: 'Continue';
+        createAccount: 'Create Account';
+        createPassword: 'Create a password';
+        distributing: 'Storing recovery shares...';
+        distributionComplete: 'Recovery setup complete!';
+        loginInstead: 'Already have an account? Login instead';
+        mnemonicConfirmed: 'I have saved my recovery phrase';
+        mnemonicWarning: 'Write down these 24 words in order. Never share them with anyone. This is the only way to recover your account if all other methods fail.';
+        passwordMismatch: 'Passwords do not match';
+        passwordRequirements: 'At least 12 characters with a mix of letters, numbers, and symbols';
+        recoveryDesc: 'Choose where to securely store your recovery shares. You will need to store at least {{total}} shares in different locations. {{threshold}} of these shares are required to recover your account.';
+        recoverySetup: 'Set up recovery';
+        showMnemonic: 'Your recovery phrase';
+        subtitle: 'Your keys, your crypto. No third parties.';
+        title: 'Create your Jumper Account';
+      };
+    };
     labels: {
       apy: 'APY';
       assets_one: 'Asset';
