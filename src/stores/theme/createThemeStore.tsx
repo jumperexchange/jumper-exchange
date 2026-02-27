@@ -82,7 +82,9 @@ const initializeConfigThemeStates = (
     ...persistedStates,
     [currentThemeUid]: {
       expirationDate,
-      isSelected: true,
+      // We select it by default only if there is a partner name
+      // This will make sure the default fallback config will not trigger any changes in the UI
+      isSelected: !!configTheme.partnerName,
     },
   };
 };
