@@ -16,7 +16,6 @@ import type {
 } from '@lifi/widget';
 import { useWidgetEvents } from '@lifi/widget';
 import { useEffect, useState } from 'react';
-import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteModal';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { getRouteStatus } from 'src/utils/routes';
@@ -24,6 +23,13 @@ import type { WidgetEventsConfig } from './WidgetEventsManager';
 import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
+import dynamic from 'next/dynamic';
+
+const GoldenRouteModal = dynamic(() =>
+  import('src/components/GoldenRouteModal/GoldenRouteModal').then(
+    (mod) => mod.GoldenRouteModal,
+  ),
+);
 
 export function WidgetEvents() {
   useContactSupportEvent();
@@ -220,6 +226,10 @@ export function WidgetEvents() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);
 
+  const isGoldenRouteModalOpen =
+    Boolean(route.winner) ||
+    Boolean(!route.winner && route.position && route.position > 1);
+
   return (
     <>
       <MultisigConnectedAlert
@@ -230,14 +240,13 @@ export function WidgetEvents() {
         open={isMultiSigConfirmationModalOpen}
         onClose={onMultiSigConfirmationModalClose}
       />
-      <GoldenRouteModal
-        isOpen={
-          Boolean(route.winner) ||
-          Boolean(!route.winner && route.position && route.position > 1)
-        }
-        route={route}
-        onClose={() => setRoute({ winner: false, position: null })}
-      />
+      {isGoldenRouteModalOpen && (
+        <GoldenRouteModal
+          isOpen={isGoldenRouteModalOpen}
+          route={route}
+          onClose={() => setRoute({ winner: false, position: null })}
+        />
+      )}
     </>
   );
 }
