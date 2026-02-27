@@ -1,6 +1,6 @@
-import { Box, Modal, alpha } from '@mui/material';
-import type { Breakpoint } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import Image from 'next/image';
 
 export const PreviewImage = styled(Image)(({ theme }) => ({
@@ -15,7 +15,7 @@ export const LightboxModal = styled(Modal)(({ theme }) => ({
 }));
 
 export const LightboxContainer = styled(Box)(({ theme }) => ({
-  background: alpha(theme.palette.black.main, 0.72),
+  background: `color-mix(in srgb, ${theme.palette.black.main} 72%, transparent)`,
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
@@ -39,11 +39,11 @@ export const LightboxImage = styled('img')(({ theme }) => ({
   maxHeight: '90%',
   objectFit: 'contain',
   borderRadius: 8,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     maxWidth: 'calc( 100% - 32px)',
     margin: theme.spacing(2),
   },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
+  [theme.breakpoints.up('xl')]: {
     maxWidth: theme.breakpoints.values.lg,
   },
 }));
