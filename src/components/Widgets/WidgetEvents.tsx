@@ -6,7 +6,6 @@ import { useMultisig } from '@/hooks/useMultisig';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMultisigStore } from '@/stores/multisig';
-import { usePortfolioStore } from '@/stores/portfolio';
 import type { RouteExtended } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
@@ -24,6 +23,7 @@ import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
 import dynamic from 'next/dynamic';
+import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
 
 const GoldenRouteModal = dynamic(() =>
   import('src/components/GoldenRouteModal/GoldenRouteModal').then(
@@ -52,7 +52,7 @@ export function WidgetEvents() {
 
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
-  const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
+  const { refreshByAddress } = usePortfolioState();
   const [route, setRoute] = useState<{
     winner: boolean;
     position: number | null;
@@ -87,9 +87,9 @@ export function WidgetEvents() {
       const toAddress = route.toAddress;
 
       // Refresh portfolio value
-      setForceRefresh(fromAddress ?? '', true);
+      refreshByAddress(fromAddress ?? '');
       if (fromAddress !== toAddress) {
-        setForceRefresh(toAddress ?? '', true);
+        refreshByAddress(toAddress ?? '');
       }
 
       const routeStatus = getRouteStatus(route);
@@ -210,6 +210,7 @@ export function WidgetEvents() {
     setToChainId,
     setFromToken,
     setToToken,
+    refreshByAddress,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
