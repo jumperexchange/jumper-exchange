@@ -12,7 +12,6 @@ on:
 
 defaults:
   run:
-    # change this if your nextjs app does not live at the root of the repo
     working-directory: ./
 
 permissions:
@@ -20,46 +19,40 @@ permissions:
   actions: read # for fetching base branch bundle stats
   pull-requests: write # for comments
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+          cache: "pnpm"
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
-
-      # If pnpm is used, you need to switch the previous step with the following one. pnpm does not create a package-lock.json
-      # so the step above will fail to pull dependencies
-      # - uses: pnpm/action-setup@v2
-      #   name: Install pnpm
-      #   id: pnpm-install
-      #   with:
-      #     version: 7
-      #     run_install: true
+        run: pnpm install
 
       - name: Restore next build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: restore-build-cache
         env:
           cache-name: cache-next-build
         with:
-          # if you use a custom build directory, replace all instances of `.next` in this file with your build directory
-          # ex: if your app builds to `dist`, replace `.next` with `dist`
           path: .next/cache
-          # change this if you prefer a more strict cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: Build next.js app
-        # change this if your site requires a custom build command
-        run: ./node_modules/.bin/next build
+        run: pnpm build
 
-      # Here's the first place where next-bundle-analysis' own script is used
       # This step pulls the raw bundle stats for the current bundle
       - name: Analyze bundle
         run: npx -p nextjs-bundle-analysis report
@@ -78,19 +71,9 @@ jobs:
           branch: ${{ github.event.pull_request.base.ref }}
           path: .next/analyze/base
 
-      # And here's the second place - this runs after we have both the current and
-      # base branch bundle stats, and will compare them to determine what changed.
-      # There are two configurable arguments that come from package.json:
-      #
-      # - budget: optional, set a budget (bytes) against which size changes are measured
-      #           it's set to 350kb here by default, as informed by the following piece:
-      #           https://infrequently.org/2021/03/the-performance-inequality-gap/
-      #
-      # - red-status-percentage: sets the percent size increase where you get a red
-      #                          status indicator, defaults to 20%
-      #
-      # Either of these arguments can be changed or removed by editing the `nextBundleAnalysis`
-      # entry in your package.json file.
+      # Compares current and base branch bundle stats. Configurable via nextBundleAnalysis in package.json:
+      # - budget: optional size budget (bytes), default 350kb
+      # - red-status-percentage: percent size increase for red status, default 20%
       - name: Compare with base branch bundle
         if: success() && github.event.number
         run: ls -laR .next/analyze/base && npx -p nextjs-bundle-analysis compare
@@ -98,7 +81,6 @@ jobs:
       - name: Get Comment Body
         id: get-comment-body
         if: success() && github.event.number
-        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
         run: |
           echo "body<<EOF" >> $GITHUB_OUTPUT
           echo "$(cat .next/analyze/__bundle_analysis_comment.txt)" >> $GITHUB_OUTPUT
