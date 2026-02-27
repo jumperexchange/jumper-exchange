@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { WalletButtons } from '../components/Buttons/WalletButtons';
-import { CookiesProvider } from 'react-cookie';
 import dynamic from 'next/dynamic';
 
 const WalletMenu = dynamic(
@@ -32,13 +31,13 @@ export const Layout = () => {
   );
 
   return (
-    <CookiesProvider>
+    <>
       {isDesktop ? (
         <DesktopLayout secondaryButtons={secondaryButtons} />
       ) : (
         <MobileLayout secondaryButtons={secondaryButtons} />
       )}
       <WalletMenu />
-    </CookiesProvider>
+    </>
   );
 };

@@ -15,6 +15,7 @@ import { MenuItemContentFooterLink } from '@/components/Menu/MenuItemContent/Men
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { MenuItemContentWrapper } from '@/components/Menu/MenuItemContent/MenuItemContentWrapper';
 import type { Theme } from '@mui/material/styles';
+import { CookiesProvider } from 'react-cookie';
 
 interface MainMenuProps {
   anchorEl?: HTMLAnchorElement;
@@ -145,7 +146,9 @@ export const MainMenu = ({ anchorEl }: MainMenuProps) => {
         {isMainMenuVisible && renderedMainMenuItems}
       </Stack>
 
-      <LanguagesSubmenu />
+      <CookiesProvider>
+        <LanguagesSubmenu />
+      </CookiesProvider>
       <DevelopersSubmenu />
       <ThemeModesSubmenu />
       <ThemeSubmenu />
