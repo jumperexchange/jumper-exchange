@@ -6,7 +6,9 @@ export const JumperLearnLogo = () => (
     viewBox="0 0 348 49"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby="learn-title"
   >
+    <title id="learn-title">Jumper Learn</title>
     <JumperLogoBase />
     {/* LEARN */}
     <path d="M250 36V12H252.88V33.12H263.629V36H250Z" className="sub-color" />

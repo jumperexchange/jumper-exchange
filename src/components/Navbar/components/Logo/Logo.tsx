@@ -15,24 +15,18 @@ type LogoProps = {
 };
 
 const logoMap: Record<LogoVariant, React.ComponentType> = {
-  default: dynamic(
-    () =>
-      import('@/components/illustrations/JumperLogo').then((m) => m.JumperLogo),
-    { ssr: false },
+  default: dynamic(() =>
+    import('@/components/illustrations/JumperLogo').then((m) => m.JumperLogo),
   ),
-  learn: dynamic(
-    () =>
-      import('@/components/illustrations/JumperLearnLogo').then(
-        (m) => m.JumperLearnLogo,
-      ),
-    { ssr: false },
+  learn: dynamic(() =>
+    import('@/components/illustrations/JumperLearnLogo').then(
+      (m) => m.JumperLearnLogo,
+    ),
   ),
-  scan: dynamic(
-    () =>
-      import('@/components/illustrations/JumperScanLogo').then(
-        (m) => m.JumperScanLogo,
-      ),
-    { ssr: false },
+  scan: dynamic(() =>
+    import('@/components/illustrations/JumperScanLogo').then(
+      (m) => m.JumperScanLogo,
+    ),
   ),
 };
 

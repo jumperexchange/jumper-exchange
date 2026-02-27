@@ -6,7 +6,9 @@ export const JumperScanLogo = () => (
     viewBox="0 0 338 49"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    aria-labelledby="scan-title"
   >
+    <title id="scan-title">Jumper Scan</title>
     <JumperLogoBase />
     {/* SCAN */}
     <path
