@@ -9,7 +9,7 @@ overrides:
 
 patchedDependencies:
   '@lifi/sdk':
-    hash: 0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd
+    hash: 56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba
     path: patches/@lifi__sdk.patch
   '@lifi/types':
     hash: b536696950b66348068a397d4f1c38cb7959195a7c65ff65845be1c843fea6c7
@@ -57,7 +57,7 @@ importers:
         version: 0.6.3(16c6a87e85702c1d0728cebb10af4d15)
       '@lifi/sdk':
         specifier: ^3.15.5
-        version: 3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+        version: 3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       '@lifi/wallet-management':
         specifier: ^3.22.5
         version: 3.22.5(c2ed9f66bc9de7207936f049553af00f)
@@ -134,8 +134,8 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
       '@zkp2p/sdk':
-        specifier: 0.0.14-rc.4
-        version: 0.0.14-rc.4(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+        specifier: 0.0.14
+        version: 0.0.14(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       accept-language:
         specifier: ^3.0.20
         version: 3.0.20
@@ -5116,13 +5116,13 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
-  '@zkp2p/contracts-v2@0.1.11-rc.2':
-    resolution: {integrity: sha512-jrsSlfR9lKtIf6BQZHMMp1kdVJnQbJ0fpGajgXWcZHxOd2lfGIArVjJQ1uGq/mCgOHZttv5RmjbBoN2m30buWg==}
+  '@zkp2p/contracts-v2@0.0.11':
+    resolution: {integrity: sha512-5BaRTPshJd5Kq8fBoAVc3o9N3CtZkTCTbYjVDXWu0k5C8KvfXmfmFHgoE75//74l4JscyNS4JUIXFkmHW55pOA==}
     peerDependencies:
       ethers: ^5.0.0 || ^6.0.0
 
-  '@zkp2p/sdk@0.0.14-rc.4':
-    resolution: {integrity: sha512-mi7jEf+yKlZMJIJVfKc293Q/tbrSXWHIsH99yCDcYXLyVczSOzMbCstbXogbJR5L5t59I+tviwxTtAtEaLJriA==}
+  '@zkp2p/sdk@0.0.14':
+    resolution: {integrity: sha512-OeAR+WfcB8zef6govNYzIazeY86Hk0V9g5QfhqMry01zx9Kb5Ki/G/FWfz2VZjQM0hrtoueklI3PC2mC9mq42A==}
     engines: {node: '>=22'}
     peerDependencies:
       react: '>=16.8.0'
@@ -12260,7 +12260,7 @@ snapshots:
       '@bigmi/core': 0.6.5(@types/react@19.2.13)(bs58@6.0.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))
       '@emotion/react': 11.14.0(@types/react@19.2.13)(react@19.2.4)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
-      '@lifi/sdk': 3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+      '@lifi/sdk': 3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       '@lifi/wallet-management': 3.22.5(c2ed9f66bc9de7207936f049553af00f)
       '@mui/icons-material': 7.3.7(@mui/material@7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
       '@mui/lab': 7.0.1-beta.21(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@mui/material@7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -12324,7 +12324,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/sdk@3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
+  '@lifi/sdk@3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
     dependencies:
       '@bigmi/core': 0.6.5(@types/react@19.2.13)(bs58@6.0.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))
       '@bitcoinerlab/secp256k1': 1.2.0
@@ -12350,7 +12350,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/sdk@3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
+  '@lifi/sdk@3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
     dependencies:
       '@bigmi/core': 0.6.5(@types/react@19.2.13)(bs58@6.0.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))
       '@bitcoinerlab/secp256k1': 1.2.0
@@ -12392,7 +12392,7 @@ snapshots:
       '@bigmi/react': 0.6.5(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.20(react@19.2.4))(@types/react@19.2.13)(bs58@6.0.0)(immer@11.1.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))
       '@emotion/react': 11.14.0(@types/react@19.2.13)(react@19.2.4)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
-      '@lifi/sdk': 3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+      '@lifi/sdk': 3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.6.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       '@mui/icons-material': 7.3.7(@mui/material@7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
       '@mui/material': 7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@mui/system': 7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
@@ -12434,7 +12434,7 @@ snapshots:
       '@bigmi/react': 0.6.5(@tanstack/query-core@5.90.20)(@tanstack/react-query@5.90.20(react@19.2.4))(@types/react@19.2.13)(bs58@6.0.0)(immer@11.1.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))
       '@emotion/react': 11.14.0(@types/react@19.2.13)(react@19.2.4)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
-      '@lifi/sdk': 3.15.6(patch_hash=0c1a04f719b2ceb3549bbc2609d0f13b0b9aaa8e07b14288d9e2c73ac4b87abd)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+      '@lifi/sdk': 3.15.6(patch_hash=56cc255617493137d090c394cb699d96a3e374287613bedf175ff97b00d934ba)(@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@5.0.10))(@types/react@19.2.13)(bufferutil@4.1.0)(immer@11.1.3)(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       '@lifi/wallet-management': 3.22.5(c2ed9f66bc9de7207936f049553af00f)
       '@mui/icons-material': 7.3.7(@mui/material@7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(@types/react@19.2.13)(react@19.2.4)
       '@mui/material': 7.3.7(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react@19.2.4))(@types/react@19.2.13)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -17603,7 +17603,7 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
-  '@zkp2p/contracts-v2@0.1.11-rc.2(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(typescript@5.9.3)(zod@4.3.6)':
+  '@zkp2p/contracts-v2@0.0.11(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(typescript@5.9.3)(zod@4.3.6)':
     dependencies:
       abitype: 1.2.3(typescript@5.9.3)(zod@4.3.6)
       ethers: 6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
@@ -17611,9 +17611,9 @@ snapshots:
       - typescript
       - zod
 
-  '@zkp2p/sdk@0.0.14-rc.4(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
+  '@zkp2p/sdk@0.0.14(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
     dependencies:
-      '@zkp2p/contracts-v2': 0.1.11-rc.2(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(typescript@5.9.3)(zod@4.3.6)
+      '@zkp2p/contracts-v2': 0.0.11(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(typescript@5.9.3)(zod@4.3.6)
       ethers: 6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
       ox: 0.11.3(typescript@5.9.3)(zod@4.3.6)
       viem: 2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6)

@@ -45,7 +45,7 @@
     "@turtledev/api": "1.4.5",
     "@wagmi/core": "^2.21.2",
     "@widgetbot/react-embed": "^1.10.0",
-    "@zkp2p/sdk": "0.0.14-rc.4",
+    "@zkp2p/sdk": "0.0.14",
     "accept-language": "^3.0.20",
     "blo": "^2.0.0",
     "date-fns": "^4.1.0",
