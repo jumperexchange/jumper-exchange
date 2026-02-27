@@ -224,7 +224,10 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
   bundlePagesRouterDependencies: true,
-  reactComponentAnnotation: {
-    enabled: true,
+
+  webpack: {
+    reactComponentAnnotation: {
+      enabled: true,
+    },
   },
 });
