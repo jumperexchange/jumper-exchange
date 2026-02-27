@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen/WelcomeScreen.style';
 
 const GLOW_EFFECT_TOP_POSITIONS = {
   xs: '40%',

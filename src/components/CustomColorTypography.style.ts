@@ -7,8 +7,6 @@ export const CustomColor = styled(Typography)(({ theme }) => ({
   margin: 0,
   textFillColor: 'transparent',
   userSelect: 'none',
-  WebkitBackgroundClip: 'text',
-  WebkitTextFillColor: 'transparent',
   ...theme.applyStyles('light', {
     backgroundImage: `linear-gradient(90deg, ${(theme.vars || theme).palette.primary.main} 10%, ${(theme.vars || theme).palette.violet[500]} 100%)`,
   }),

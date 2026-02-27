@@ -1,7 +1,8 @@
 'use client';
 import { Widget } from '@/components/Widgets/Widget';
+import { WidgetContainer } from '@/components/Widgets/Widgets.style';
 import { Container } from '@mui/material';
-import { WidgetContainer, Widgets } from 'src/components/Widgets';
+import { Widgets } from 'src/components/Widgets/Widgets';
 
 // custom widget-config setting via partner-theme
 

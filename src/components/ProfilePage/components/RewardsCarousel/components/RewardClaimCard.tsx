@@ -2,7 +2,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { useTheme } from '@mui/material';
 import type { BaseReward } from 'src/types/rewards';
 import { useMemo, type FC } from 'react';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import {
   RewardCardContainer,
   ClaimActionButton,

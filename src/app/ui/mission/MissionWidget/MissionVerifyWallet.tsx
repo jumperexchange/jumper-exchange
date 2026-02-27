@@ -28,7 +28,7 @@ import {
   MissionWidgetDescription,
   MissionWidgetTitle,
 } from './MissionWidget.styles';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import { DISCORD_URL } from 'src/const/urls';
 import type { ParseKeys } from 'i18next';
 

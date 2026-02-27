@@ -132,6 +132,7 @@
   },
   "scripts": {
     "prepare": "husky",
+    "analyze:bundle:experimental": "pnpm next experimental-analyze",
     "analyze:bundle": "ANALYZE=true pnpm build",
     "dev": "next dev --turbopack",
     "dev:local": "dotenv -e .env.localhost next dev",

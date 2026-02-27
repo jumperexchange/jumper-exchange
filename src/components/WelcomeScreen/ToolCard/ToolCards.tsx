@@ -1,4 +1,3 @@
-import { ToolModal } from '@/components/WelcomeScreen';
 import {
   TrackingAction,
   TrackingCategory,
@@ -8,139 +7,86 @@ import { useChains } from '@/hooks/useChains';
 import { useDexsAndBridges } from '@/hooks/useDexsAndBridges';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { DataItem } from '@/types/internal';
-import type { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ToolCardsContainer as Container, ToolCard } from '.';
-interface StatsDataProps {
+import { ToolCardsContainer as Container } from './ToolCards.style';
+import { ToolCard } from './ToolCard';
+
+import dynamic from 'next/dynamic';
+
+const ToolModal = dynamic(
+  () => import('../ToolModal/ToolModal').then((m) => m.ToolModal),
+  { loading: () => null },
+);
+
+interface ToolConfig {
+  id: string;
   title: string;
-  number: string;
+  trackingLabel: string;
   data: DataItem[];
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  handleOnClick: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-interface ToolCardsProps {
-  openChainsToolModal: boolean;
-  setOpenChainsToolModal: Dispatch<SetStateAction<boolean>>;
-  openBridgesToolModal: boolean;
-  setOpenBridgesToolModal: Dispatch<SetStateAction<boolean>>;
-  openDexsToolModal: boolean;
-  setOpenDexsToolModal: Dispatch<SetStateAction<boolean>>;
-}
+export const ToolCards = () => {
+  const [openModalId, setOpenModalId] = useState<string | null>(null);
 
-const CHAINS_INDEX = 0;
-const BRIDGES_INDEX = 1;
-const DEXS_INDEX = 2;
-
-export const ToolCards = ({
-  openChainsToolModal,
-  setOpenChainsToolModal,
-  openBridgesToolModal,
-  setOpenBridgesToolModal,
-  openDexsToolModal,
-  setOpenDexsToolModal,
-}: ToolCardsProps) => {
   const { exchanges, bridges } = useDexsAndBridges();
   const { chains } = useChains();
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
 
-  const statsData: StatsDataProps[] = [
+  const tools: ToolConfig[] = [
     {
+      id: 'chains',
       title: t('navbar.statsCards.chains'),
-      number: chains?.length.toString() || '0',
-      data: chains,
-      open: openChainsToolModal,
-      setOpen: setOpenChainsToolModal,
-      handleOnClick: (e) => {
-        e.stopPropagation();
-
-        trackEvent({
-          category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenToolModal,
-          label: 'chains_stats',
-          data: { [TrackingEventParameter.ToolModal]: 'chains_stats' },
-        });
-        setOpenChainsToolModal(!openChainsToolModal);
-      },
+      trackingLabel: 'chains_stats',
+      data: chains ?? [],
     },
     {
+      id: 'bridges',
       title: t('navbar.statsCards.bridges'),
-      number: bridges?.length || 0,
-      data: bridges,
-      open: openBridgesToolModal,
-      setOpen: setOpenBridgesToolModal,
-      handleOnClick: (e) => {
-        e.stopPropagation();
-
-        trackEvent({
-          category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenToolModal,
-          label: 'bridges_stats',
-          data: { [TrackingEventParameter.ToolModal]: 'bridges_stats' },
-        });
-        setOpenBridgesToolModal(!openBridgesToolModal);
-      },
+      trackingLabel: 'bridges_stats',
+      data: bridges ?? [],
     },
     {
+      id: 'dexs',
       title: t('navbar.statsCards.dexs'),
-      number: exchanges?.length || 0,
-      data: exchanges,
-      open: openDexsToolModal,
-      setOpen: setOpenDexsToolModal,
-      handleOnClick: (e) => {
-        e.stopPropagation();
-
-        trackEvent({
-          category: TrackingCategory.WelcomeScreen,
-          action: TrackingAction.OpenToolModal,
-          label: 'dexes_stats',
-          data: { [TrackingEventParameter.ToolModal]: 'dexes_stats' },
-        });
-        setOpenDexsToolModal(!openDexsToolModal);
-      },
+      trackingLabel: 'dexes_stats',
+      data: exchanges ?? [],
     },
   ];
 
+  const handleCardClick =
+    (tool: ToolConfig) => (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      trackEvent({
+        category: TrackingCategory.WelcomeScreen,
+        action: TrackingAction.OpenToolModal,
+        label: tool.trackingLabel,
+        data: { [TrackingEventParameter.ToolModal]: tool.trackingLabel },
+      });
+      setOpenModalId((current) => (current === tool.id ? null : tool.id));
+    };
+
+  const activeTool = tools.find((tool) => tool.id === openModalId) ?? null;
+
   return (
     <Container>
-      {/* Chains */}
-      <ToolCard
-        title={statsData[CHAINS_INDEX].title}
-        number={statsData[CHAINS_INDEX].number}
-        handleClick={statsData[CHAINS_INDEX].handleOnClick}
-      />
-      <ToolModal
-        title={statsData[CHAINS_INDEX].title}
-        open={statsData[CHAINS_INDEX].open}
-        setOpen={statsData[CHAINS_INDEX].setOpen}
-        data={statsData[CHAINS_INDEX].data}
-      />
-      {/* Bridges */}
-      <ToolCard
-        title={statsData[BRIDGES_INDEX].title}
-        number={statsData[BRIDGES_INDEX].number}
-        handleClick={statsData[BRIDGES_INDEX].handleOnClick}
-      />
-      <ToolModal
-        title={statsData[BRIDGES_INDEX].title}
-        open={statsData[BRIDGES_INDEX].open}
-        setOpen={statsData[BRIDGES_INDEX].setOpen}
-        data={statsData[BRIDGES_INDEX].data}
-      />
-      {/* DEXs */}
-      <ToolCard
-        title={statsData[DEXS_INDEX].title}
-        number={statsData[DEXS_INDEX].number}
-        handleClick={statsData[DEXS_INDEX].handleOnClick}
-      />
-      <ToolModal
-        title={statsData[DEXS_INDEX].title}
-        open={statsData[DEXS_INDEX].open}
-        setOpen={statsData[DEXS_INDEX].setOpen}
-        data={statsData[DEXS_INDEX].data}
-      />
+      {tools.map((tool) => (
+        <ToolCard
+          key={tool.id}
+          title={tool.title}
+          number={tool.data.length.toString()}
+          handleClick={handleCardClick(tool)}
+        />
+      ))}
+      {activeTool && (
+        <ToolModal
+          title={activeTool.title}
+          open={true}
+          setOpen={(open) => setOpenModalId(open ? openModalId : null)}
+          data={activeTool.data}
+        />
+      )}
     </Container>
   );
 };

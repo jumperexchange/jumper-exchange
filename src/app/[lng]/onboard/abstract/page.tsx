@@ -1,7 +1,8 @@
 'use client';
 import { Widget } from '@/components/Widgets/Widget';
 import { Container, Stack, Typography } from '@mui/material';
-import { WidgetContainer, Widgets } from 'src/components/Widgets';
+import { Widgets } from 'src/components/Widgets/Widgets';
+import { WidgetContainer } from '@/components/Widgets/Widgets.style';
 
 export default function Page() {
   return (

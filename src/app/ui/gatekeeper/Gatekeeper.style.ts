@@ -1,7 +1,7 @@
 import { ButtonPrimary } from '@/components/Button/Button.style';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 
 export const GatekeeperIllustrationWrapper = styled(Box)(({}) => ({
   display: 'flex',

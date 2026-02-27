@@ -18,7 +18,6 @@ import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
 import type { MainWidgetContext } from './variants/widgetConfig/types';
-import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import { useFormParameters } from './hooks';
 

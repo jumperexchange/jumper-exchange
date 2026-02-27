@@ -12,7 +12,7 @@ import {
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestData, StrapiResponseData } from 'src/types/strapi';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 

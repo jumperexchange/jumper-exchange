@@ -4,7 +4,7 @@ import {
   NavbarButtonContentContainer,
   NavbarButtonLabel,
 } from './Buttons.style';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import Skeleton from '@mui/material/Skeleton';
 
 interface LabelButtonProps {

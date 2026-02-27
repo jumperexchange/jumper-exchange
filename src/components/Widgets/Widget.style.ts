@@ -3,7 +3,7 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { HeaderHeight } from 'src/const/headerHeight';
-import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen/WelcomeScreen.style';
 
 const DEFAULT_WIDGET_HEIGHT = 686;
 // used on welcome-screen to prepare hover-animation

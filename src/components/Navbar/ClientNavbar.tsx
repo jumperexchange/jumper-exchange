@@ -7,10 +7,14 @@ import { AppPaths } from '@/const/urls';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from 'src/stores/theme';
-import { LogoLinkWrapper, NavbarContainer } from '.';
+import { LogoLinkWrapper, NavbarContainer } from './Navbar.style';
 import { Logo } from './components/Logo/Logo';
 import { Layout } from './layout/Layout';
-import { checkIsLearnPage, checkIsScanPage, checkIsPrivacyPolicyPage } from './utils';
+import {
+  checkIsLearnPage,
+  checkIsScanPage,
+  checkIsPrivacyPolicyPage,
+} from './utils';
 
 export const ClientNavbar = () => {
   const pathname = usePathname();
@@ -46,7 +50,15 @@ export const ClientNavbar = () => {
     >
       <LogoLinkWrapper href={logoHref} id="jumper-logo" onClick={handleClick}>
         <Logo
-          variant={isScanPage ? 'scan' : isLearnPage ? 'learn' : isPrivacyPolicyPage ? 'default' : 'default'}
+          variant={
+            isScanPage
+              ? 'scan'
+              : isLearnPage
+                ? 'learn'
+                : isPrivacyPolicyPage
+                  ? 'default'
+                  : 'default'
+          }
         />
       </LogoLinkWrapper>
       <Layout />

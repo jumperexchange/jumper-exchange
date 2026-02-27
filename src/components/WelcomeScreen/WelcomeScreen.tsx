@@ -4,7 +4,7 @@ import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { MouseEventHandler } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next';
 import { JUMPER_URL } from 'src/const/urls';
@@ -27,9 +27,7 @@ export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
 
   const { t } = useTranslation();
   const { trackEvent } = useUserTracking();
-  const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
-  const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
-  const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
+
   useEffect(() => {
     if (welcomeScreenClosed) {
       trackEvent({
@@ -79,14 +77,7 @@ export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
             ]}
           />
         </WelcomeScreenSubtitle>
-        <ToolCards
-          openChainsToolModal={openChainsToolModal}
-          setOpenChainsToolModal={setOpenChainsToolModal}
-          openBridgesToolModal={openBridgesToolModal}
-          setOpenBridgesToolModal={setOpenBridgesToolModal}
-          openDexsToolModal={openDexsToolModal}
-          setOpenDexsToolModal={setOpenDexsToolModal}
-        />
+        <ToolCards />
         <WelcomeScreenButton
           aria-label="Open welcome screen"
           onClick={handleGetStarted}

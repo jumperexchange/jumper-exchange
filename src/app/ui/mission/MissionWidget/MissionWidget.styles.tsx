@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import CheckIcon from '@mui/icons-material/Check';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 
 export const MissionWidgetContainer = styled(Box)(({ theme }) => ({
   display: 'flex',

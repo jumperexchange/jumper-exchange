@@ -3,7 +3,7 @@
 import AppBar, { type AppBarProps } from '@mui/material/AppBar';
 
 import { HeaderHeight } from '@/const/headerHeight';
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 import { styled, type Breakpoint } from '@mui/material/styles';
 
 interface NavbarContainerProps extends AppBarProps {

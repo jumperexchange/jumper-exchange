@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import type { Breakpoint } from '@mui/material/styles';
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 
 /**
  * Base styled component for MenuItem that applies common styles and disables interaction.
