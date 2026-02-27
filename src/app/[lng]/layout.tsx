@@ -74,17 +74,14 @@ export const metadata: Metadata = {
   other: {
     'fc:miniapp': JSON.stringify({
       version: 'next',
-      imageUrl: new URL(baseMiniApp.iconUrl, PUBLIC_URL).toString(),
+      imageUrl: baseMiniApp.iconUrl,
       button: {
         title: `Launch Jumper`,
         action: {
           type: 'launch_miniapp',
           name: 'Jumper',
           url: PUBLIC_URL,
-          splashImageUrl: new URL(
-            baseMiniApp.splashImageUrl,
-            PUBLIC_URL,
-          ).toString(),
+          splashImageUrl: baseMiniApp.splashImageUrl,
           splashBackgroundColor: baseMiniApp.splashBackgroundColor,
         },
       },

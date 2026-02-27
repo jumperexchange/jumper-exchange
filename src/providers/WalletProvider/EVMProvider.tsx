@@ -55,10 +55,7 @@ export const EVMProvider: FC<PropsWithChildren> = ({ children }) => {
       allConnectors.unshift(
         baseAccount({
           appName: baseMiniApp.miniAppName,
-          appLogoUrl: new URL(
-            baseMiniApp.splashImageUrl,
-            PUBLIC_URL,
-          ).toString(),
+          appLogoUrl: baseMiniApp.splashImageUrl,
         }),
       );
     }
