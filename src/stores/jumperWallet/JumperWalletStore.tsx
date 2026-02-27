@@ -168,6 +168,7 @@ export const JumperWalletStoreProvider: React.FC<PropsWithChildren> = ({
   useEffect(() => {
     setJumperWalletCallbacks({
       onConnectRequest: () => store.getState().handleConnectRequest(),
+      onUnlockRequest: () => store.getState().requestUnlock(),
     });
   }, [store]);
 

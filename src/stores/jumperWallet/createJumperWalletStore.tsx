@@ -44,6 +44,8 @@ import {
   JUMPER_WALLET_ADDRESS_KEY,
   DEFAULT_SHAMIR_CONFIG,
 } from '@/config/jumperWallet';
+import { mnemonicToAccount } from 'viem/accounts';
+import type { LocalAccount } from 'viem/accounts';
 
 export interface JumperWalletState {
   // --- Transient State (in-memory only) ---
@@ -106,6 +108,13 @@ export interface JumperWalletState {
 
   /** Resolve a pending password request (called by the UI) */
   resolvePasswordRequest: (password: string | null) => void;
+
+  /**
+   * Prompt the user for their password, decrypt the mnemonic, set the account
+   * on the provider, and return the LocalAccount — or null if cancelled/wrong password.
+   * Used by the provider to unblock a signing request on-the-fly.
+   */
+  requestUnlock: () => Promise<LocalAccount | null>;
 
   /**
    * Called when the wagmi connector wants to connect.
@@ -296,6 +305,36 @@ export const createJumperWalletStore = () =>
         if (pendingPasswordResolve) {
           pendingPasswordResolve(password);
           set({ flow: 'idle', pendingPasswordResolve: null });
+        }
+      },
+
+      requestUnlock: async () => {
+        const { address, requestPassword } = get();
+        if (!address) {
+          return null;
+        }
+
+        const password = await requestPassword();
+        if (!password) {
+          return null;
+        }
+
+        const storedWallet = await getWallet(address);
+        if (!storedWallet) {
+          return null;
+        }
+
+        try {
+          const mnemonic = await decryptMnemonic(
+            storedWallet.encryptedMnemonic,
+            password,
+          );
+          const localAccount = mnemonicToAccount(mnemonic);
+          getJumperWalletProvider()?.setAccount(localAccount);
+          set({ status: 'unlocked' });
+          return localAccount;
+        } catch {
+          return null;
         }
       },
 

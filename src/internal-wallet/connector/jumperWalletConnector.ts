@@ -21,6 +21,7 @@ import {
   createJumperWalletProvider,
   type JumperWalletEIP1193Provider,
 } from './jumperWalletProvider';
+import type { LocalAccount } from 'viem/accounts';
 
 export interface JumperWalletConnectorCallbacks {
   /**
@@ -29,6 +30,13 @@ export interface JumperWalletConnectorCallbacks {
    * or null if the user cancelled.
    */
   onConnectRequest: () => Promise<`0x${string}` | null>;
+
+  /**
+   * Called when a signing request arrives while the wallet is locked.
+   * Should prompt the user for their password and resolve with the decrypted
+   * LocalAccount, or null if cancelled / wrong password.
+   */
+  onUnlockRequest: () => Promise<LocalAccount | null>;
 }
 
 let callbacks: JumperWalletConnectorCallbacks | null = null;
@@ -93,6 +101,8 @@ export function jumperWalletConnector(): CreateConnectorFn {
             address: currentAddress,
             chainId: chain.id,
             rpcUrl: chain.rpcUrls.default.http[0],
+            onUnlockRequest: () =>
+              callbacks?.onUnlockRequest() ?? Promise.resolve(null),
           });
         }
 
@@ -173,6 +183,8 @@ export function jumperWalletConnector(): CreateConnectorFn {
               currentAddress ?? '0x0000000000000000000000000000000000000000',
             chainId: chain.id,
             rpcUrl: chain.rpcUrls.default.http[0],
+            onUnlockRequest: () =>
+              callbacks?.onUnlockRequest() ?? Promise.resolve(null),
           });
         }
         return providerInstance;

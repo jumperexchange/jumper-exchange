@@ -15,6 +15,7 @@ export interface JumperWalletProviderOptions {
   address: `0x${string}`;
   chainId: number;
   rpcUrl: string;
+  onUnlockRequest?: () => Promise<LocalAccount | null>;
 }
 
 export interface JumperWalletEIP1193Provider {
@@ -53,7 +54,9 @@ export function createJumperWalletProvider(
         return [options.address];
 
       case 'personal_sign': {
-        if (!account) {
+        const signingAccount =
+          account ?? (await options.onUnlockRequest?.()) ?? null;
+        if (!signingAccount) {
           throw new Error('Wallet locked. Please enter your password.');
         }
         const [message] = params as [string, string];
@@ -61,17 +64,19 @@ export function createJumperWalletProvider(
           typeof message === 'string' && message.startsWith('0x')
             ? { raw: message as `0x${string}` }
             : message;
-        return account.signMessage({ message: messageBytes });
+        return signingAccount.signMessage({ message: messageBytes });
       }
 
       case 'eth_signTypedData_v4': {
-        if (!account) {
+        const signingAccount =
+          account ?? (await options.onUnlockRequest?.()) ?? null;
+        if (!signingAccount) {
           throw new Error('Wallet locked. Please enter your password.');
         }
         const [, typedDataJson] = params as [string, string];
         const typedData = JSON.parse(typedDataJson);
         const { EIP712Domain: _, ...types } = typedData.types;
-        return account.signTypedData({
+        return signingAccount.signTypedData({
           domain: typedData.domain,
           types,
           primaryType: typedData.primaryType,
@@ -80,14 +85,16 @@ export function createJumperWalletProvider(
       }
 
       case 'eth_sendTransaction': {
-        if (!account) {
+        const signingAccount =
+          account ?? (await options.onUnlockRequest?.()) ?? null;
+        if (!signingAccount) {
           throw new Error('Wallet locked. Please enter your password.');
         }
         // For sending transactions, we need to sign and broadcast via RPC
         const [txParams] = params as [Record<string, unknown>];
 
         // Sign the transaction
-        const serializedTx = await account.signTransaction({
+        const serializedTx = await signingAccount.signTransaction({
           ...txParams,
           chainId: currentChainId,
           type: txParams.type as 'legacy' | 'eip1559' | 'eip2930' | undefined,
