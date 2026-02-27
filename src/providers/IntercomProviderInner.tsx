@@ -23,12 +23,6 @@ const commonIntercomConfig = {
   hide_notifications: false,
 };
 
-if (envConfig.NEXT_PUBLIC_INTERCOM_APP_ID) {
-  Intercom({
-    ...commonIntercomConfig,
-  });
-}
-
 export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
   const activeAccount = useActiveAccountByChainType();
   const previousActiveAccount = usePrevious(activeAccount);
@@ -39,6 +33,16 @@ export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
       state.setSupportModalUnreadCount,
     ]);
   const { mutateAsync: getUserHash } = useIntercomUserHash();
+
+  useEffect(() => {
+    if (!envConfig.NEXT_PUBLIC_INTERCOM_APP_ID) {
+      return;
+    }
+
+    Intercom({
+      ...commonIntercomConfig,
+    });
+  }, []);
 
   useEffect(() => {
     if (!envConfig.NEXT_PUBLIC_INTERCOM_APP_ID) {

@@ -2,6 +2,7 @@
 import type { FC, PropsWithChildren } from 'react';
 import { useHydrated } from 'src/hooks/useHydrated';
 import dynamic from 'next/dynamic';
+import { useWebMetricComplete } from '@/hooks/useWebMetricComplete';
 
 const IntercomProviderInner = dynamic(
   () =>
@@ -13,10 +14,11 @@ const IntercomProviderInner = dynamic(
 
 export const IntercomProvider: FC<PropsWithChildren> = ({ children }) => {
   const hydrated = useHydrated();
+  const fcpDone = useWebMetricComplete('LCP');
 
   return (
     <>
-      {hydrated && <IntercomProviderInner />}
+      {hydrated && fcpDone && <IntercomProviderInner />}
       {children}
     </>
   );
