@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/nextjs';
+import { withScope, captureException } from '@sentry/nextjs';
 import { merklApi } from 'src/utils/merkl/merklApi';
 
 // Infer types from the API
@@ -41,9 +41,9 @@ async function fetchOpportunities(
     const paramString = Object.entries(params)
       .map(([key, value]) => `${key}: ${value}`)
       .join(', ');
-    Sentry.withScope((scope) => {
+    withScope((scope) => {
       scope.setExtra('params', paramString);
-      Sentry.captureException(error);
+      captureException(error);
     });
     console.error(`Error fetching opportunities for ${paramString}:`, error);
     return [];

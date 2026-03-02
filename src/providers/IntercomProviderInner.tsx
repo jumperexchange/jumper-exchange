@@ -7,7 +7,7 @@ import Intercom, {
   onUnreadCountChange,
   hide,
 } from '@intercom/messenger-js-sdk';
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect } from 'react';
 import envConfig from 'src/config/env-config';
@@ -68,7 +68,7 @@ export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
           });
         }
       } catch (error) {
-        Sentry.captureException(error);
+        captureException(error);
         console.error('Error updating Intercom session', error);
       }
     };

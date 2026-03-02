@@ -1,6 +1,6 @@
 'use client';
 
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 
 import {
   JUMPER_ANALYTICS_EVENT,
@@ -44,7 +44,7 @@ const track = async (data: object, path: string) => {
     }
   } catch (error) {
     console.error(error);
-    Sentry.captureException(error);
+    captureException(error);
   }
 };
 

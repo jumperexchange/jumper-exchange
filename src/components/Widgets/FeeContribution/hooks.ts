@@ -1,5 +1,5 @@
 import { useAccount } from '@lifi/wallet-management';
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { TrackingAction, TrackingCategory } from 'src/const/trackingKeys';
 import { DEFAULT_WALLET_ADDRESS } from 'src/const/urls';
@@ -13,7 +13,8 @@ import {
   createNativeTransactionConfig,
   createTokenTransactionConfig,
 } from 'src/utils/transaction';
-import { Hex, parseUnits } from 'viem';
+import type { Hex } from 'viem';
+import { parseUnits } from 'viem';
 import {
   useSendTransaction,
   useSwitchChain,
@@ -150,8 +151,9 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
       !completedRoute ||
       !contributionDisplayed ||
       hasTrackedImpressionRef.current
-    )
+    ) {
       return;
+    }
 
     trackEvent({
       action: TrackingAction.ContributeImpression,
@@ -176,8 +178,9 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
       !completedRoute ||
       !(isTxConfirmed || isNativeTxSuccess) ||
       hasTrackedConfirmationRef.current
-    )
+    ) {
       return;
+    }
 
     trackEvent({
       action: TrackingAction.ContributeSuccess,
@@ -238,7 +241,7 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
 
       if (!tokenPriceUSD || tokenPriceUSD <= 0) {
         const error = new Error(`Invalid token price`);
-        Sentry.captureException(error, sentryHint);
+        captureException(error, sentryHint);
         throw error;
       }
       const usdAmount = Number(amount);
@@ -253,7 +256,7 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         const error = new Error(
           `The contribution amount is too small for this token. Please try a larger amount.`,
         );
-        Sentry.captureException(error, sentryHint);
+        captureException(error, sentryHint);
         throw error;
       }
 
@@ -263,7 +266,7 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
         const error = new Error(
           `No contribution fee address configured for this chain.`,
         );
-        Sentry.captureException(error, sentryHint);
+        captureException(error, sentryHint);
         throw error;
       }
 
@@ -316,17 +319,14 @@ export const useSendContribution = (closeContributionDrawer: () => void) => {
       if (error instanceof Error) {
         const errorMessage = error.message;
         console.error(errorMessage);
-        Sentry.captureException(
-          `Error sending contribution:: ${errorMessage}`,
-          {
-            ...sentryHint,
-            extra: {
-              tokenAddress: completedRoute?.toToken?.address,
-              chainId: completedRoute?.toChainId,
-              amount,
-            },
+        captureException(`Error sending contribution:: ${errorMessage}`, {
+          ...sentryHint,
+          extra: {
+            tokenAddress: completedRoute?.toToken?.address,
+            chainId: completedRoute?.toChainId,
+            amount,
           },
-        );
+        });
       }
     } finally {
       setIsSending(false);

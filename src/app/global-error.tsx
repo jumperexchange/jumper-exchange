@@ -1,7 +1,7 @@
 'use client';
 
 import { isProduction } from '@/utils/isProduction';
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 import { useEffect } from 'react';
 
 export default function GlobalError({
@@ -12,7 +12,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     if (isProduction) {
-      Sentry.captureException(error);
+      captureException(error);
     }
   }, [error]);
 

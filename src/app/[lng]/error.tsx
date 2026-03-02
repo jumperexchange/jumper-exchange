@@ -1,7 +1,7 @@
 'use client'; // Error components must be Client Components
 import dynamic from 'next/dynamic';
 import { useEffect } from 'react';
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 
 import { isProduction } from '@/utils/isProduction';
 
@@ -18,7 +18,7 @@ export default function Error({
 }) {
   useEffect(() => {
     if (isProduction) {
-      Sentry.captureException(error);
+      captureException(error);
     }
     // Log the error to an error reporting service
     console.error(error);

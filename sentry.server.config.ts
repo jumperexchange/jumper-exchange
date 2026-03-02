@@ -2,10 +2,10 @@
 // The config you add here will be used whenever the server handles a request.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { init, getClient } from '@sentry/nextjs';
 import { isProduction } from './src/utils/isProduction';
-import * as Sentry from '@sentry/nextjs';
 
-Sentry.init({
+init({
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
@@ -22,7 +22,7 @@ Sentry.init({
 });
 
 // Log Sentry initialization status
-const client = Sentry.getClient();
+const client = getClient();
 console.log('[Sentry Server] Initialized:', {
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN
