@@ -34,8 +34,9 @@ import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { CustomRichBlocks, ShareArticleIcons } from '..';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
+import { ShareArticleIcons } from './ShareArticleIcons';
+import { CustomRichBlocks } from '../CustomRichBlocks';
 
 interface BlogArticleProps {
   article: BlogArticleData;

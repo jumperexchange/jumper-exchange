@@ -1,9 +1,6 @@
 import generateKey from '@/app/lib/generateKey';
 import { BlogCTA } from '@/components/Blog/CTAs/BlogCTA/BlogCTA';
-import {
-  InstructionsAccordion,
-  type InstructionItemProps,
-} from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
+import { InstructionsAccordion } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 import { Lightbox } from '@/components/Lightbox/Lightbox';
 import type { StrapiMediaAttributes } from '@/types/strapi';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
@@ -24,6 +21,7 @@ import {
   BlogLink,
   BlogParagraph,
 } from './CustomRichBlocks.style';
+import { type InstructionItemProps } from './CTAs/InstructionsAccordion/InstructionsAccordionItem';
 
 interface CustomRichBlocksProps {
   baseUrl?: string;
@@ -37,8 +35,10 @@ interface ImageData {
 }
 
 // TODO: Fix dynamic typing line 102
-interface WidgetRouteSettings
-  extends Omit<BlogWidgetProps, 'fromChain' | 'toChain'> {
+interface WidgetRouteSettings extends Omit<
+  BlogWidgetProps,
+  'fromChain' | 'toChain'
+> {
   fromChain?: string;
   toChain?: string;
 }

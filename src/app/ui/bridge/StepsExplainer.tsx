@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
-import { Divider } from 'src/components/Blog';
+import { Divider } from 'src/components/Blog/BlogArticle/BlogArticle.style';
 import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 import StepDetail from 'src/components/StepDetail/StepDetail';
 import { getWidgetImageProps } from 'src/utils/image-generation/getWidgetImage';

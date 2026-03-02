@@ -7,7 +7,7 @@ import {
   BlogArticleCardMetaSkeleton,
   BlogArticleCardTagSkeleton,
   BlogArticleCardTitleSkeleton,
-} from '.';
+} from './BlogArticleCard.style';
 
 export const BlogArticleCardSkeleton = () => {
   return (

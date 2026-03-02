@@ -22,10 +22,10 @@ import {
   FeaturedArticleLink,
   FeaturedArticleMetaContainer,
   FeaturedArticleMetaDate,
-  FeaturedArticleSkeleton,
   FeaturedArticleSubtitle,
   FeaturedArticleTitle,
-} from '.';
+} from './FeaturedArticle.style';
+import { FeaturedArticleSkeleton } from './FeaturedArticleSkeleton';
 
 interface FeaturedArticleProps {
   featuredArticle: BlogArticleData;

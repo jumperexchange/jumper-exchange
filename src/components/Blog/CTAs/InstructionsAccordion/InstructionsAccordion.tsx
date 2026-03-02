@@ -1,19 +1,8 @@
-import { InstructionsAccordionContainer, InstructionsAccordionItem } from '.';
-
-interface InstructionsItemLink {
-  label: string;
-  url: string;
-}
-
-export interface InstructionItemProps {
-  title: string;
-  step?: string;
-  link?: InstructionsItemLink;
-  url?: string;
-  buttonTitles?: string[];
-  buttonLinks?: string[];
-  variant?: string;
-}
+import { InstructionsAccordionContainer } from './InstructionsAccordion.style';
+import {
+  InstructionsAccordionItem,
+  type InstructionItemProps,
+} from './InstructionsAccordionItem';
 
 interface InstructionsAccordionProps {
   data: InstructionItemProps[];

@@ -11,7 +11,7 @@ import {
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
-import type { InstructionItemProps } from '.';
+
 import {
   InstructionsAccordionButtonMainBox,
   InstructionsAccordionItemContainer,
@@ -23,8 +23,23 @@ import {
   InstructionsAccordionLink,
   InstructionsAccordionLinkLabel,
   InstructionsAccordionToggle,
-} from '.';
+} from './InstructionsAccordionItem.style';
 import { JUMPER_DOMAIN } from '@/const/domain';
+
+interface InstructionsItemLink {
+  label: string;
+  url: string;
+}
+
+export interface InstructionItemProps {
+  title: string;
+  step?: string;
+  link?: InstructionsItemLink;
+  url?: string;
+  buttonTitles?: string[];
+  buttonLinks?: string[];
+  variant?: string;
+}
 
 interface InstructionsAccordionItemProps extends InstructionItemProps {
   index: number;

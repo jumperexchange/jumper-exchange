@@ -4,7 +4,7 @@ import { Carousel } from 'src/components/Carousel/Carousel';
 import { DotsPagination } from 'src/components/Carousel/DotsPagination';
 import { CarouselNavigation } from 'src/components/Carousel/Navigation';
 import { TrackingCategory } from 'src/const/trackingKeys';
-import { BlogArticleCard } from '../BlogArticleCard';
+import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import { BlogArticleCardSkeleton } from '../BlogArticleCard/BlogArticleCardSkeleton';
 import { BlogCarouselContainer } from './BlogCarousel.style';
 import useMediaQuery from '@mui/material/useMediaQuery';
