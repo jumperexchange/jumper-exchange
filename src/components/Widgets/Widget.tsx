@@ -5,7 +5,7 @@ import { useThemeStore } from '@/stores/theme';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
@@ -18,6 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useFormParameters } from './hooks';
 import dynamic from 'next/dynamic';
+import { AppPaths } from '@/const/urls';
 
 const BaseWidget = dynamic(
   () => import('./variants/base/Widget').then((m) => m.Widget),
@@ -59,6 +60,7 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
@@ -70,9 +72,18 @@ export function Widget({
   );
 
   useEffect(() => {
-    router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas', { kind: PrefetchKind.FULL });
-  }, [router]);
+    const routes = [AppPaths.Main, AppPaths.Gas].filter(
+      (route) => route !== pathname,
+    );
+
+    const id = requestIdleCallback(() => {
+      routes.forEach((route) =>
+        router.prefetch(route, { kind: PrefetchKind.AUTO }),
+      );
+    });
+
+    return () => cancelIdleCallback(id);
+  }, [router, pathname]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
