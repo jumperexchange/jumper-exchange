@@ -16,6 +16,7 @@ export class RecoveryCodeAdapter implements ShareStorageAdapter {
   readonly retrieval = RecoveryCodeAdapter.retrieval;
   readonly type = 'recoveryCode' as const;
   readonly label = 'Recovery Code';
+  readonly provider = 'manual' as const;
 
   async store(_share: string, _metadata: ShareMetadata): Promise<boolean> {
     // The share is presented directly in the UI for the user to save.

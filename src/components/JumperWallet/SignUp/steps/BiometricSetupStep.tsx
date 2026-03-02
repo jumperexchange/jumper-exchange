@@ -53,7 +53,7 @@ export function BiometricSetupStep({
     onComplete(false);
   }, [onComplete]);
 
-  const iconColor = success ? 'success.main' : 'primary.main';
+  const iconColor = success ? 'success.main' : 'text.primary';
 
   return (
     <StepContent>
@@ -67,15 +67,18 @@ export function BiometricSetupStep({
         }}
       >
         <Box
-          sx={{
+          sx={(theme) => ({
             width: 72,
             height: 72,
             borderRadius: '50%',
-            bgcolor: 'action.hover',
+            backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+            ...theme.applyStyles('light', {
+              backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+            }),
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-          }}
+          })}
         >
           <FingerprintIcon sx={{ fontSize: 40, color: iconColor }} />
         </Box>

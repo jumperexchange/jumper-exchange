@@ -73,6 +73,7 @@ export interface JumperWalletState {
   setFlow: (flow: JumperWalletFlow) => void;
   setSignupStep: (step: number) => void;
   setRecoveryStep: (step: number) => void;
+  setShamirConfig: (config: ShamirConfig) => void;
 
   /**
    * Create a new wallet: generate mnemonic, encrypt, store, split for recovery.
@@ -180,6 +181,7 @@ export const createJumperWalletStore = () =>
       setFlow: (flow) => set({ flow }),
       setSignupStep: (step) => set({ signupStep: step }),
       setRecoveryStep: (step) => set({ recoveryStep: step }),
+      setShamirConfig: (config) => set({ shamirConfig: config }),
 
       initialize: async () => {
         const storedAddress = localStorage.getItem(JUMPER_WALLET_ADDRESS_KEY);
@@ -315,6 +317,16 @@ export const createJumperWalletStore = () =>
         }
 
         const password = await requestPassword();
+
+        // Biometric path: account already set on provider by loginWithBiometric()
+        if (password === '__biometric__') {
+          const acct = getJumperWalletProvider()?.getAccount() ?? null;
+          if (acct) {
+            set({ status: 'unlocked' });
+          }
+          return acct;
+        }
+
         if (!password) {
           return null;
         }
@@ -474,11 +486,13 @@ export const createJumperWalletStore = () =>
           const prfSalt = await computePRFSalt(address);
           const prfKey = await authenticateWithPRF(credentialId, prfSalt);
 
-          // Verify the PRF key can decrypt the biometric blob (throws on mismatch)
-          await decryptWithPRFKey(
+          // Decrypt the biometric blob and set the account on the provider
+          const mnemonic = await decryptWithPRFKey(
             storedWallet.biometricEncryptedMnemonic,
             prfKey,
           );
+          const localAccount = mnemonicToAccount(mnemonic);
+          getJumperWalletProvider()?.setAccount(localAccount);
 
           set({ status: 'unlocked', flow: 'idle' });
           return true;

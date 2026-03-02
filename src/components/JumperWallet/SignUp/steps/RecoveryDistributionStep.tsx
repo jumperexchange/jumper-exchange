@@ -158,7 +158,20 @@ export function RecoveryDistributionStep({
                   variant="outlined"
                   startIcon={<ContentCopyIcon />}
                   onClick={handleCopy}
-                  sx={{ mt: 1 }}
+                  sx={(theme) => ({
+                    mt: 1,
+                    color: (theme.vars || theme).palette.text.primary,
+                    borderColor: (theme.vars || theme).palette.divider,
+                    '&:hover': {
+                      borderColor: (theme.vars || theme).palette.text.secondary,
+                      backgroundColor: (theme.vars || theme).palette
+                        .alphaLight200.main,
+                      ...theme.applyStyles('light', {
+                        backgroundColor: (theme.vars || theme).palette
+                          .alphaDark200.main,
+                      }),
+                    },
+                  })}
                 >
                   {copied
                     ? t('jumperWallet.shareStatus.copied')

@@ -1,18 +1,15 @@
 import type { FrontendAction } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { ChainId, HiddenUI, RequiredUI } from '@lifi/widget';
-import { AttachmentSharp } from '@mui/icons-material';
-import { OfframpClient, peerExtensionSdk } from '@zkp2p/sdk';
+import { peerExtensionSdk } from '@zkp2p/sdk';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
-import { createWalletClient, http, type WalletClient } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
-import { base } from 'viem/chains';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
+import getApiUrl from '@/utils/getApiUrl';
 
 /**
  * Configuration hook for the main widget variant
@@ -112,7 +109,7 @@ export function useMainWidgetConfig(
       ],
       sdkConfig: {
         executionOptions: {
-          executeFrontendActionHook: ({
+          executeFrontendActionHook: async ({
             toolDetails,
             data,
           }: FrontendAction) => {
@@ -122,58 +119,42 @@ export function useMainWidgetConfig(
                   'Missing intent hash for zkP2P frontend action',
                 );
               }
-              peerExtensionSdk.onramp({
-                intentHash: data.intentHash,
-              });
+
+              // Check the status of the intent, is it done ?
+              const apiUrl = getApiUrl();
+              const intentResponse = await fetch(
+                `${apiUrl}/intent/status?intentHash=${data.intentHash}`,
+                {
+                  method: 'GET',
+                },
+              );
+              if (intentResponse.ok) {
+                const intentStatus = await intentResponse.json();
+                if (intentStatus.status === 'FULFILLED') {
+                  return null;
+                }
+              }
+
+              // Peer extension handling
+              const extensionState = await peerExtensionSdk.getState();
+              if (extensionState === 'needs_install') {
+                peerExtensionSdk.openInstallPage();
+                throw new Error('Peer extension not installed');
+              } else if (extensionState === 'needs_connection') {
+                await peerExtensionSdk.requestConnection();
+              } else {
+                peerExtensionSdk.onramp({
+                  intentHash: data.intentHash,
+                });
+              }
 
               return new Promise((resolve, reject) => {
                 const unsubscribe = peerExtensionSdk.onProofComplete(
                   (result) => {
                     switch (result.status) {
                       case 'success': {
-                        if (!result.proof) {
-                          reject(
-                            new Error(
-                              'Proof result is missing from Peer transcript',
-                            ),
-                          );
-                          break;
-                        }
-                        console.log('Proof completed!', result.proof);
-                        const READONLY_PRIVATE_KEY =
-                          '0x0000000000000000000000000000000000000000000000000000000000000001';
-                        const account =
-                          privateKeyToAccount(READONLY_PRIVATE_KEY);
-                        const rpcUrl = base.rpcUrls.default.http[0];
-
-                        const walletClient: WalletClient = createWalletClient({
-                          account,
-                          chain: base,
-                          transport: http(rpcUrl),
-                        });
-                        const client = new OfframpClient({
-                          walletClient,
-                          chainId: data.chainId,
-                          rpcUrl,
-                          baseApiUrl: 'https://api.zkp2p.xyz',
-                          runtimeEnv: 'production',
-                          apiKey: process.env.NEXT_PUBLIC_ZKP2P_API_KEY,
-                        });
-                        client.fulfillIntent
-                          .prepare({
-                            intentHash: data.intentHash,
-                            proof: result.proof,
-                          })
-                          .then((intentTransaction) => {
-                            resolve({
-                              transactionRequest: {
-                                to: intentTransaction.to,
-                                data: intentTransaction.data,
-                                value: intentTransaction.value,
-                              },
-                            });
-                          });
-                        break;
+                        // Peer handles the on-chain execution themselves
+                        return null;
                       }
                       case 'failure':
                         reject(
@@ -182,25 +163,13 @@ export function useMainWidgetConfig(
                           ),
                         );
                         break;
-
                       case 'cancelled':
-                        // reject(new Error(`User cancelled`));
-                        console.log('cancelled');
-                        resolve({
-                          transactionRequest: {
-                            from: '0x5BdEDCC02d09033C56a9d4bbAba6d23cc2ABEdDf',
-                            to: '0x5BdEDCC02d09033C56a9d4bbAba6d23cc2ABEdDf',
-                            data: '0x1',
-                            value: BigInt('0'),
-                            chainId: base.id,
-                          },
-                        });
+                        reject(new Error(`User cancelled`));
                         break;
                       case 'timeout':
                         reject(new Error('Proof timed out'));
                         break;
                     }
-
                     unsubscribe();
                   },
                 );

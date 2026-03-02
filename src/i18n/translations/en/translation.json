@@ -693,6 +693,13 @@
       "confirmMnemonicDesc": "Select the correct word for each highlighted position",
       "recoverySetup": "Set up recovery",
       "recoveryDesc": "Choose where to securely store your recovery shares. You will need to store at least {{total}} shares in different locations. {{threshold}} of these shares are required to recover your account.",
+      "recoverySetupDesc": "Your wallet key is split across {{total}} locations. You'll need {{threshold}} of them to recover your account.",
+      "advancedSetup": "Advanced Setup",
+      "advancedSetupDesc": "Customize which locations store your recovery shares. At least 3 are required.",
+      "connect": "Connect",
+      "thresholdLabel": "Recovery threshold",
+      "thresholdDesc": "How many shares are needed to recover your account.",
+      "sharesMin": "Minimum {{min}} shares required.",
       "distributing": "Storing recovery shares...",
       "distributionComplete": "Recovery setup complete!",
       "continue": "Continue",
@@ -706,7 +713,12 @@
       "biometricSetupSuccess": "Biometrics enabled!",
       "biometricSetupError": "Failed to enable biometrics. You can always enable it later.",
       "biometricSetupNotSupported": "Biometrics are not supported on this device.",
-      "loginInstead": "Already have an account? Login instead"
+      "loginInstead": "Already have an account? Login instead",
+      "disclaimer": "Important notice",
+      "disclaimerTitle": "Your funds are your responsibility",
+      "disclaimerBody": "If you lose your password and retrieve fewer than {{threshold}} of your recovery shares, you will permanently lose access to your funds. There is no way to recover them.",
+      "disclaimerAcknowledge": "I understand",
+      "disclaimerAcknowledgeCountdown": "I understand ({{seconds}}s)"
     },
     "login": {
       "title": "Unlock Jumper Account",
@@ -771,7 +783,11 @@
       "localStorageConnectFailed": "Failed to access local storage. Please try again.",
       "emailConnectFailed": "Failed to connect email. Please try again.",
       "googleDriveConnectFailed": "Failed to connect Google Drive. Please try again.",
-      "recoveryCodeConnectFailed": "Failed to generate recovery code. Please try again."
+      "recoveryCodeConnectFailed": "Failed to generate recovery code. Please try again.",
+      "localStorageDesc": "Stored on this device",
+      "emailDesc": "Sent to your email address",
+      "googleDriveDesc": "Saved to your Google Drive",
+      "recoveryCodeDesc": "A code you copy and keep safe"
     },
     "shareStatus": {
       "pending": "Pending",

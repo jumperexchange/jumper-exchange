@@ -23,15 +23,20 @@ import { type ShareStatus } from '@/components/JumperWallet/common/ShareStatusCa
 // Evaluated once at module load — stable for the lifetime of the page.
 const webAuthnAvailable = isWebAuthnAvailable();
 
+export const MIN_SHARES = 3;
+export const MIN_THRESHOLD = 2;
+
 /**
  * Translation key suffixes for each wizard step (prefixed with `jumperWallet.` in the UI).
- * Step 1 (biometric) is always present; it is skipped automatically when WebAuthn is unavailable.
+ * Recovery setup now comes before biometric so shares can be configured before wallet creation.
+ * Step 2 (biometric) is skipped automatically when WebAuthn/PRF is unavailable.
  */
 export const SIGNUP_STEPS = [
   'signup.createPassword',
-  'signup.biometricSetup',
   'signup.recoverySetup',
+  'signup.biometricSetup',
   'signup.distributing',
+  'signup.disclaimer',
 ] as const;
 
 export type ShareDistributionStatus = ShareStatus;
@@ -53,14 +58,16 @@ export interface SetupState {
   enabledAdapters: Record<ShareStorageType, boolean>;
   /** User-provided field values for adapters that require them */
   adapterFields: Partial<AdapterFields>;
-  /** Live distribution status per adapter (populated during step 2) */
+  /** Live distribution status per adapter (populated during step 3) */
   distribution: ShareDistributionEntry[];
+  /** Number of shares required to recover (must be >= MIN_THRESHOLD and < totalEnabled) */
+  threshold: number;
 }
 
 const DEFAULT_ENABLED_ADAPTERS: Record<ShareStorageType, boolean> = {
   localStorage: true,
-  email: false,
-  googleDrive: false,
+  email: true,
+  googleDrive: true,
   recoveryCode: true,
 };
 
@@ -74,11 +81,13 @@ const initialState: SetupState = {
   enabledAdapters: { ...DEFAULT_ENABLED_ADAPTERS },
   adapterFields: {},
   distribution: [],
+  threshold: MIN_THRESHOLD,
 };
 
 export function useWalletSetup() {
   const [state, setState] = useState<SetupState>(initialState);
   const [prfAvailable, setPrfAvailable] = useState(false);
+  const [isDisclaimerReady, setIsDisclaimerReady] = useState(false);
 
   useEffect(() => {
     if (webAuthnAvailable) {
@@ -90,6 +99,7 @@ export function useWalletSetup() {
   const signupStep = useJumperWalletStore((s) => s.signupStep);
   const setSignupStep = useJumperWalletStore((s) => s.setSignupStep);
   const createWallet = useJumperWalletStore((s) => s.createWallet);
+  const setShamirConfig = useJumperWalletStore((s) => s.setShamirConfig);
   const resolveConnectRequest = useJumperWalletStore(
     (s) => s.resolveConnectRequest,
   );
@@ -118,12 +128,36 @@ export function useWalletSetup() {
 
   const toggleAdapter = useCallback(
     (type: ShareStorageType, enabled: boolean) => {
-      setState((prev) => ({
-        ...prev,
-        enabledAdapters: { ...prev.enabledAdapters, [type]: enabled },
-      }));
+      setState((prev) => {
+        const newAdapters = { ...prev.enabledAdapters, [type]: enabled };
+        const newCount = Object.values(newAdapters).filter(Boolean).length;
+        // Auto-clamp threshold if reducing adapter count makes it invalid
+        const clampedThreshold = Math.max(
+          MIN_THRESHOLD,
+          Math.min(prev.threshold, newCount - 1),
+        );
+        return {
+          ...prev,
+          enabledAdapters: newAdapters,
+          threshold: clampedThreshold,
+        };
+      });
     },
     [],
+  );
+
+  const setThreshold = useCallback(
+    (threshold: number) => {
+      const enabledCount = Object.values(state.enabledAdapters).filter(
+        Boolean,
+      ).length;
+      const clamped = Math.max(
+        MIN_THRESHOLD,
+        Math.min(threshold, enabledCount - 1),
+      );
+      setState((prev) => ({ ...prev, threshold: clamped }));
+    },
+    [state.enabledAdapters],
   );
 
   const updateDistributionStatus = useCallback(
@@ -143,29 +177,39 @@ export function useWalletSetup() {
   );
 
   /**
-   * Step 0 → Step 1: Create the wallet with the password.
+   * Step 1 → Step 2: Create the wallet with the user-configured shamir settings.
    * Generates mnemonic, encrypts, splits into shares.
+   * Also initialises the distribution entries so they're ready for step 3.
    */
   const handleCreateWallet = useCallback(async () => {
-    if (state.password !== state.confirmPassword) {
-      setState((prev) => ({
-        ...prev,
-        error: 'Passwords do not match',
-      }));
-      return false;
-    }
-
     setState((prev) => ({ ...prev, isCreating: true, error: null }));
 
     try {
+      const totalShares = Object.values(state.enabledAdapters).filter(
+        Boolean,
+      ).length;
+
+      // Push the user-configured shamir settings into the store before creating
+      setShamirConfig({ totalShares, threshold: state.threshold });
+
       const result = await createWallet(state.password);
+
+      // Build distribution entries from enabled adapters
+      const distribution = (
+        Object.entries(state.enabledAdapters) as [ShareStorageType, boolean][]
+      )
+        .filter(([, v]) => v)
+        .map(([type]): ShareDistributionEntry => ({ type, status: 'idle' }));
+
       setState((prev) => ({
         ...prev,
         shares: result.shares,
         address: result.address,
+        distribution,
         isCreating: false,
       }));
-      setSignupStep(biometricAvailable ? 1 : 2);
+
+      setSignupStep(biometricAvailable ? 2 : 3);
       return true;
     } catch (err) {
       setState((prev) => ({
@@ -176,33 +220,20 @@ export function useWalletSetup() {
       return false;
     }
   }, [
+    state.enabledAdapters,
+    state.threshold,
     state.password,
-    state.confirmPassword,
     biometricAvailable,
+    setShamirConfig,
     createWallet,
     setSignupStep,
   ]);
-
-  /**
-   * Initialize the distribution entries based on enabled adapters.
-   * Called when moving from step 1 (setup) to step 2 (distribution).
-   */
-  const initDistribution = useCallback(() => {
-    const enabled = (
-      Object.entries(state.enabledAdapters) as [ShareStorageType, boolean][]
-    )
-      .filter(([, v]) => v)
-      .map(([type]): ShareDistributionEntry => ({ type, status: 'idle' }));
-
-    setState((prev) => ({ ...prev, distribution: enabled }));
-  }, [state.enabledAdapters]);
 
   /**
    * Complete the sign-up flow.
    * Resolves the pending connect request so the wagmi connector connects.
    */
   const completeSetup = useCallback(async () => {
-    // Persist which share types were successfully stored
     const storedTypes = state.distribution
       .filter((d) => d.status === 'done')
       .map((d) => d.type);
@@ -234,51 +265,67 @@ export function useWalletSetup() {
 
   /**
    * Advance to the next wizard step.
-   * Handles per-step side-effects (wallet creation, distribution init, completion).
+   *
+   * Step 0 (createPassword) → validates password, advances to step 1.
+   * Step 1 (recoverySetup)  → creates wallet with configured shamir settings, advances to step 2 or 3.
+   * Step 3 (distributing)   → advances to step 4 (disclaimer).
+   * Step 4 (disclaimer)     → completes setup.
+   *
+   * Step 2 (biometricSetup) advances via its own onComplete callback.
    */
   const advance = useCallback(async () => {
     switch (signupStep) {
       case 0:
+        setSignupStep(1);
+        break;
+      case 1:
         await handleCreateWallet();
         break;
-      case 2:
-        initDistribution();
-        setSignupStep(3);
-        break;
       case 3:
+        setSignupStep(4);
+        break;
+      case 4:
         await completeSetup();
         break;
     }
-  }, [
-    signupStep,
-    handleCreateWallet,
-    initDistribution,
-    completeSetup,
-    setSignupStep,
-  ]);
+  }, [signupStep, handleCreateWallet, completeSetup, setSignupStep]);
 
   /**
    * Go back one wizard step.
-   * When WebAuthn is unavailable step 1 was never shown, so back from step 2 returns to step 0.
+   * Step 0 → cancel, Step 1 → step 0. Steps 2+ are handled by their own components.
    */
   const handleBack = useCallback(() => {
     if (signupStep === 0) {
       cancelSetup();
-    } else if (signupStep === 2 && !biometricAvailable) {
+    } else if (signupStep === 1) {
       setSignupStep(0);
-    } else {
-      setSignupStep(signupStep - 1);
     }
-  }, [signupStep, biometricAvailable, cancelSetup, setSignupStep]);
+  }, [signupStep, cancelSetup, setSignupStep]);
+
+  const enabledCount = Object.values(state.enabledAdapters).filter(
+    Boolean,
+  ).length;
+  const emailValid =
+    !state.enabledAdapters.email ||
+    (!!state.adapterFields.email && state.adapterFields.email.includes('@'));
 
   /** Whether the wizard's primary Next button should be disabled. */
   const isNextDisabled =
-    signupStep === 0 &&
-    (!state.password ||
-      !state.confirmPassword ||
-      state.password !== state.confirmPassword ||
-      state.password.length < 12 ||
-      state.isCreating);
+    signupStep === 0
+      ? !state.password ||
+        !state.confirmPassword ||
+        state.password !== state.confirmPassword ||
+        state.password.length < 12 ||
+        state.isCreating
+      : signupStep === 1
+        ? enabledCount < MIN_SHARES || !emailValid || state.isCreating
+        : signupStep === 4
+          ? !isDisclaimerReady
+          : false;
+
+  const setDisclaimerReady = useCallback(() => {
+    setIsDisclaimerReady(true);
+  }, []);
 
   return {
     ...state,
@@ -289,13 +336,14 @@ export function useWalletSetup() {
     setConfirmPassword,
     setAdapterField,
     toggleAdapter,
+    setThreshold,
     updateDistributionStatus,
-    initDistribution,
     handleCreateWallet,
     completeSetup,
     cancelSetup,
     advance,
     handleBack,
     isNextDisabled,
+    setDisclaimerReady,
   };
 }

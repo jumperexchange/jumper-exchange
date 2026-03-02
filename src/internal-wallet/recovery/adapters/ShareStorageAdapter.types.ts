@@ -1,4 +1,8 @@
-import type { ShareRetrievalType, ShareStorageType } from '../../crypto/types';
+import type {
+  ShareRetrievalType,
+  ShareStorageProvider,
+  ShareStorageType,
+} from '../../crypto/types';
 
 export interface ShareMetadata {
   walletAddress: string;
@@ -10,6 +14,8 @@ export interface RetrieveShareParams extends Omit<ShareMetadata, 'createdAt'> {}
 export interface ShareStorageAdapter {
   readonly type: ShareStorageType;
   readonly label: string;
+  /** Identifies the service/company that owns this storage (e.g. 'google', 'device'). Reserved for future redundancy warnings. */
+  readonly provider: ShareStorageProvider;
   /** Whether this adapter auto-retrieves on mount or requires the user to paste the share. */
   readonly retrieval: ShareRetrievalType;
   store(share: string, metadata: ShareMetadata): Promise<boolean>;
@@ -24,6 +30,7 @@ export interface ShareStorageAdapter {
 /** Metadata describing a single user-provided field for an adapter. */
 export interface AdapterFieldConfig {
   inputType: 'email' | 'text' | 'password';
+  autoComplete: string;
   placeholder: string;
 }
 
@@ -33,7 +40,11 @@ export interface AdapterFieldConfig {
  * a field — TypeScript will surface compile errors at every consumption site.
  */
 export const ADAPTER_FIELD_CONFIGS = {
-  email: { inputType: 'email', placeholder: 'your@email.com' },
+  email: {
+    inputType: 'email',
+    autoComplete: 'email',
+    placeholder: 'your@email.com',
+  },
 } as const satisfies Partial<Record<ShareStorageType, AdapterFieldConfig>>;
 
 /** The subset of ShareStorageType values that have a required field. Currently: 'email'. */

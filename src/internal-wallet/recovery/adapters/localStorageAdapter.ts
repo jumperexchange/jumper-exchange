@@ -37,6 +37,7 @@ export class LocalStorageAdapter implements ShareStorageAdapter {
   readonly retrieval = LocalStorageAdapter.retrieval;
   readonly type = 'localStorage' as const;
   readonly label = 'Local Storage';
+  readonly provider = 'browser' as const;
 
   async store(share: string, metadata: ShareMetadata): Promise<boolean> {
     try {

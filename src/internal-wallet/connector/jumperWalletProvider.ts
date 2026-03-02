@@ -9,7 +9,12 @@
  * - Nulled after signing or session expiry
  */
 import { type LocalAccount } from 'viem/accounts';
-import { type EIP1193RequestFn, hexToNumber, numberToHex } from 'viem';
+import {
+  type EIP1193RequestFn,
+  hexToNumber,
+  numberToHex,
+  UserRejectedRequestError,
+} from 'viem';
 
 export interface JumperWalletProviderOptions {
   address: `0x${string}`;
@@ -20,6 +25,7 @@ export interface JumperWalletProviderOptions {
 
 export interface JumperWalletEIP1193Provider {
   request: EIP1193RequestFn;
+  getAccount: () => LocalAccount | null;
   setAccount: (account: LocalAccount | null) => void;
   setChain: (chainId: number, rpcUrl: string) => void;
   on: (event: string, listener: (...args: unknown[]) => void) => void;
@@ -57,7 +63,9 @@ export function createJumperWalletProvider(
         const signingAccount =
           account ?? (await options.onUnlockRequest?.()) ?? null;
         if (!signingAccount) {
-          throw new Error('Wallet locked. Please enter your password.');
+          throw new UserRejectedRequestError(
+            new Error('User cancelled the request.'),
+          );
         }
         const [message] = params as [string, string];
         const messageBytes =
@@ -71,7 +79,9 @@ export function createJumperWalletProvider(
         const signingAccount =
           account ?? (await options.onUnlockRequest?.()) ?? null;
         if (!signingAccount) {
-          throw new Error('Wallet locked. Please enter your password.');
+          throw new UserRejectedRequestError(
+            new Error('User cancelled the request.'),
+          );
         }
         const [, typedDataJson] = params as [string, string];
         const typedData = JSON.parse(typedDataJson);
@@ -88,7 +98,9 @@ export function createJumperWalletProvider(
         const signingAccount =
           account ?? (await options.onUnlockRequest?.()) ?? null;
         if (!signingAccount) {
-          throw new Error('Wallet locked. Please enter your password.');
+          throw new UserRejectedRequestError(
+            new Error('User cancelled the request.'),
+          );
         }
         // For sending transactions, we need to sign and broadcast via RPC
         const [txParams] = params as [Record<string, unknown>];
@@ -139,6 +151,10 @@ export function createJumperWalletProvider(
 
   return {
     request: request as EIP1193RequestFn,
+
+    getAccount() {
+      return account;
+    },
 
     setAccount(newAccount: LocalAccount | null) {
       account = newAccount;

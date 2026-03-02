@@ -15,6 +15,7 @@ import { BiometricSetupStep } from './steps/BiometricSetupStep';
 import { CreatePasswordStep } from './steps/CreatePasswordStep';
 import { RecoverySetupStep } from './steps/RecoverySetupStep';
 import { RecoveryDistributionStep } from './steps/RecoveryDistributionStep';
+import { RecoveryDisclaimerStep } from './steps/RecoveryDisclaimerStep';
 import {
   ButtonRow,
   WizardContainer,
@@ -41,18 +42,20 @@ export function SignUpWizard() {
         );
       case 1:
         return (
-          <BiometricSetupStep
-            password={setup.password}
-            onComplete={() => setup.setSignupStep(2)}
+          <RecoverySetupStep
+            enabledAdapters={setup.enabledAdapters}
+            adapterFields={setup.adapterFields}
+            threshold={setup.threshold}
+            onToggleAdapter={setup.toggleAdapter}
+            onAdapterFieldChange={setup.setAdapterField}
+            onThresholdChange={setup.setThreshold}
           />
         );
       case 2:
         return (
-          <RecoverySetupStep
-            enabledAdapters={setup.enabledAdapters}
-            adapterFields={setup.adapterFields}
-            onToggleAdapter={setup.toggleAdapter}
-            onAdapterFieldChange={setup.setAdapterField}
+          <BiometricSetupStep
+            password={setup.password}
+            onComplete={() => setup.setSignupStep(3)}
           />
         );
       case 3:
@@ -63,6 +66,13 @@ export function SignUpWizard() {
             distribution={setup.distribution}
             adapterFields={setup.adapterFields}
             onStatusChange={setup.updateDistributionStatus}
+          />
+        );
+      case 4:
+        return (
+          <RecoveryDisclaimerStep
+            threshold={setup.threshold}
+            onReady={setup.setDisclaimerReady}
           />
         );
       default:
@@ -87,20 +97,22 @@ export function SignUpWizard() {
 
       {renderStep()}
 
-      {/* BiometricSetupStep (step 1) provides its own Enable / Skip buttons */}
-      {setup.signupStep !== 1 && (
+      {/* BiometricSetupStep (step 2) provides its own Enable / Skip buttons */}
+      {setup.signupStep !== 2 && (
         <ButtonRow>
-          <ButtonTransparent
-            onClick={
-              setup.signupStep === 0
-                ? () => setFlow('recovery')
-                : setup.handleBack
-            }
-          >
-            {setup.signupStep === 0
-              ? t('jumperWallet.signup.loginInstead')
-              : t('jumperWallet.signup.back')}
-          </ButtonTransparent>
+          {setup.signupStep < 3 && (
+            <ButtonTransparent
+              onClick={
+                setup.signupStep === 0
+                  ? () => setFlow('recovery')
+                  : setup.handleBack
+              }
+            >
+              {setup.signupStep === 0
+                ? t('jumperWallet.signup.loginInstead')
+                : t('jumperWallet.signup.back')}
+            </ButtonTransparent>
+          )}
           <ButtonPrimary
             onClick={setup.advance}
             disabled={setup.isNextDisabled}
@@ -108,8 +120,8 @@ export function SignUpWizard() {
               setup.isCreating ? <CircularProgress size={16} /> : undefined
             }
           >
-            {setup.signupStep === 3
-              ? t('jumperWallet.signup.createAccount')
+            {setup.signupStep === 4
+              ? t('jumperWallet.signup.disclaimerAcknowledge')
               : t('jumperWallet.signup.continue')}
           </ButtonPrimary>
         </ButtonRow>

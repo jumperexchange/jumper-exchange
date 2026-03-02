@@ -293,6 +293,10 @@ interface Resources {
         recoveryCodeConnectFailed: 'Failed to generate recovery code. Please try again.';
         localStorage: 'Local Storage';
         recoveryCode: 'Recovery Code';
+        localStorageDesc: 'Stored on this device';
+        emailDesc: 'Sent to your email address';
+        googleDriveDesc: 'Saved to your Google Drive';
+        recoveryCodeDesc: 'A code you copy and keep safe';
       };
       signup: {
         back: 'Back';
@@ -313,12 +317,24 @@ interface Resources {
         distributing: 'Storing recovery shares...';
         distributionComplete: 'Recovery setup complete!';
         loginInstead: 'Already have an account? Login instead';
+        disclaimer: 'Important notice';
+        disclaimerTitle: 'Your funds are your responsibility';
+        disclaimerBody: 'If you lose your password and retrieve fewer than {{threshold}} of your recovery shares, you will permanently lose access to your funds. There is no way to recover them.';
+        disclaimerAcknowledge: 'I understand';
+        disclaimerAcknowledgeCountdown: 'I understand ({{seconds}}s)';
         mnemonicConfirmed: 'I have saved my recovery phrase';
         mnemonicWarning: 'Write down these 24 words in order. Never share them with anyone. This is the only way to recover your account if all other methods fail.';
         passwordMismatch: 'Passwords do not match';
         passwordRequirements: 'At least 12 characters with a mix of letters, numbers, and symbols';
+        advancedSetup: 'Advanced Setup';
+        advancedSetupDesc: 'Customize which locations store your recovery shares. At least 3 are required.';
+        connect: 'Connect';
         recoveryDesc: 'Choose where to securely store your recovery shares. You will need to store at least {{total}} shares in different locations. {{threshold}} of these shares are required to recover your account.';
         recoverySetup: 'Set up recovery';
+        recoverySetupDesc: "Your wallet key is split across {{total}} locations. You'll need {{threshold}} of them to recover your account.";
+        sharesMin: 'Minimum {{min}} shares required.';
+        thresholdDesc: 'How many shares are needed to recover your account.';
+        thresholdLabel: 'Recovery threshold';
         showMnemonic: 'Your recovery phrase';
         subtitle: 'Your keys, your crypto. No third parties.';
         title: 'Create your Jumper Account';

@@ -1,27 +1,28 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
-import envConfig from '@/config/env-config';
-import { TabsMap } from '@/const/tabsMap';
-import { useThemeStore } from '@/stores/theme';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import { WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
+import { useTheme } from '@mui/material/styles';
+import { OfframpClient, peerExtensionSdk } from '@zkp2p/sdk';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
-import { WidgetWrapper } from './Widget.style';
+import { ClientOnly } from '@/components/ClientOnly';
+import envConfig from '@/config/env-config';
+import { TabsMap } from '@/const/tabsMap';
+import { useThemeStore } from '@/stores/theme';
 import FeeContribution from './FeeContribution/FeeContribution';
-import type { WidgetProps } from './Widget.types';
-import { useTheme } from '@mui/material/styles';
-import { MainWidgetContext } from './variants/widgetConfig/types';
-import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
-import { Widget as BaseWidget } from './variants/base/Widget';
 import { useFormParameters } from './hooks';
+import { Widget as BaseWidget } from './variants/base/Widget';
+import type { MainWidgetContext } from './variants/widgetConfig/types';
+import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
+import { WidgetWrapper } from './Widget.style';
+import type { WidgetProps } from './Widget.types';
 
 export function Widget({
   starterVariant,

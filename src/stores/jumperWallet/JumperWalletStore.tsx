@@ -152,6 +152,15 @@ export const JumperWalletStoreProvider: React.FC<PropsWithChildren> = ({
 
   if (!storeRef.current) {
     storeRef.current = createJumperWalletStore();
+    // Register callbacks synchronously so they're available before any child
+    // effects run. React runs effects children-before-parents, so a useEffect
+    // here would fire AFTER WalletManagementProvider's effects, which can
+    // trigger connect() before callbacks are set.
+    setJumperWalletCallbacks({
+      onConnectRequest: () =>
+        storeRef.current!.getState().handleConnectRequest(),
+      onUnlockRequest: () => storeRef.current!.getState().requestUnlock(),
+    });
   }
 
   const store = storeRef.current;
@@ -162,14 +171,6 @@ export const JumperWalletStoreProvider: React.FC<PropsWithChildren> = ({
   // Initialize: check IndexedDB for existing wallets
   useEffect(() => {
     store.getState().initialize();
-  }, [store]);
-
-  // Wire up the connector callbacks so the wagmi connector can trigger UI flows
-  useEffect(() => {
-    setJumperWalletCallbacks({
-      onConnectRequest: () => store.getState().handleConnectRequest(),
-      onUnlockRequest: () => store.getState().requestUnlock(),
-    });
   }, [store]);
 
   return (

@@ -140,6 +140,7 @@ function RecoveryRoundtripDemo() {
     },
     [],
   );
+  const [threshold, setThreshold] = useState<number>(RECOVERY_CONFIG.threshold);
 
   // Step 1: Distribution
   const [distribution, setDistribution] = useState<ShareDistributionEntry[]>(
@@ -276,8 +277,10 @@ function RecoveryRoundtripDemo() {
     <RecoverySetupStep
       enabledAdapters={enabledAdapters}
       adapterFields={adapterFields}
+      threshold={threshold}
       onToggleAdapter={toggleAdapter}
       onAdapterFieldChange={setAdapterField}
+      onThresholdChange={setThreshold}
     />
   );
 

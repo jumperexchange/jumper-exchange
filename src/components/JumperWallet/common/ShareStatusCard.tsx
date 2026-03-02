@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
 import KeyIcon from '@mui/icons-material/Key';
 import EmailIcon from '@mui/icons-material/Email';
@@ -98,11 +99,18 @@ export function ShareStatusCard({
   return (
     <ShareCardContainer>
       <ShareCardIcon>
-        <ShareIcon type={type} />
+        {status === 'working' ? (
+          <CircularProgress size={22} thickness={4} />
+        ) : (
+          <ShareIcon type={type} />
+        )}
       </ShareCardIcon>
       <ShareCardInfo>
         <ShareCardLabel>{label}</ShareCardLabel>
-        <ShareCardStatus statusColor={statusColor}>
+        <ShareCardStatus
+          statusColor={statusColor}
+          isWorking={status === 'working'}
+        >
           {statusLabel}
         </ShareCardStatus>
       </ShareCardInfo>

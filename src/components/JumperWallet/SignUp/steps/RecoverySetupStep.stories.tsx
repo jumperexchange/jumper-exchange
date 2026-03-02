@@ -26,6 +26,7 @@ const meta = {
   args: {
     onToggleAdapter: action('toggle-adapter'),
     onAdapterFieldChange: action('adapter-field-change'),
+    onThresholdChange: action('threshold-change'),
   },
 } satisfies Meta<typeof RecoverySetupStep>;
 
@@ -41,6 +42,7 @@ export const Default: Story = {
       recoveryCode: true,
     },
     adapterFields: {},
+    threshold: 2,
   },
 };
 
@@ -53,6 +55,7 @@ export const WithEmailEnabled: Story = {
       recoveryCode: true,
     },
     adapterFields: { email: 'user@example.com' },
+    threshold: 2,
   },
 };
 
@@ -65,6 +68,42 @@ export const AllEnabled: Story = {
       recoveryCode: true,
     },
     adapterFields: { email: 'user@example.com' },
+    threshold: 2,
+  },
+};
+
+/** Advanced Setup panel open — threshold stepper and per-adapter toggles visible. */
+export const AdvancedSetupOpen: Story = {
+  args: {
+    enabledAdapters: {
+      localStorage: true,
+      email: true,
+      googleDrive: false,
+      recoveryCode: true,
+    },
+    adapterFields: { email: 'user@example.com' },
+    threshold: 2,
+  },
+  play: async ({ canvasElement }) => {
+    // Open panel via the Advanced Setup button
+    const advancedBtn = Array.from(
+      canvasElement.querySelectorAll('button'),
+    ).find((el) => el.textContent?.includes('Advanced'));
+    advancedBtn?.click();
+  },
+};
+
+/** High threshold — threshold is set close to the total number of enabled shares. */
+export const HighThreshold: Story = {
+  args: {
+    enabledAdapters: {
+      localStorage: true,
+      email: true,
+      googleDrive: true,
+      recoveryCode: true,
+    },
+    adapterFields: { email: 'user@example.com' },
+    threshold: 3,
   },
 };
 
@@ -77,6 +116,7 @@ export const Interactive: Story = {
       recoveryCode: true,
     },
     adapterFields: {},
+    threshold: 2,
   },
   render: () => {
     const [enabledAdapters, setEnabledAdapters] = useState<
@@ -90,6 +130,7 @@ export const Interactive: Story = {
     const [adapterFields, setAdapterFields] = useState<Partial<AdapterFields>>(
       {},
     );
+    const [threshold, setThreshold] = useState(2);
 
     const setAdapterField = <K extends AdaptersWithFields>(
       type: K,
@@ -100,10 +141,12 @@ export const Interactive: Story = {
       <RecoverySetupStep
         enabledAdapters={enabledAdapters}
         adapterFields={adapterFields}
+        threshold={threshold}
         onToggleAdapter={(type, enabled) =>
           setEnabledAdapters((prev) => ({ ...prev, [type]: enabled }))
         }
         onAdapterFieldChange={setAdapterField}
+        onThresholdChange={setThreshold}
       />
     );
   },

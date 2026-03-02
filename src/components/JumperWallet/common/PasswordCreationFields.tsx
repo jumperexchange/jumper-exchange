@@ -86,6 +86,8 @@ export function PasswordCreationFields({
         onChange={handlePasswordChange}
         fullWidth
         helperText={t('jumperWallet.signup.passwordRequirements')}
+        name="new-password"
+        autoComplete="new-password"
       />
 
       {password && (
@@ -102,6 +104,8 @@ export function PasswordCreationFields({
         helperText={
           mismatch ? t('jumperWallet.signup.passwordMismatch') : undefined
         }
+        name="confirm-password"
+        autoComplete="new-password"
       />
     </PasswordFieldsContainer>
   );

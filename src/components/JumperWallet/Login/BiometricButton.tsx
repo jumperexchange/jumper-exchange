@@ -25,6 +25,7 @@ export function BiometricButton({
   return (
     <Tooltip
       title={t('jumperWallet.login.biometricUnlock')}
+      placement="right"
       arrow
       enterTouchDelay={0}
       leaveTouchDelay={1500}
@@ -39,10 +40,17 @@ export function BiometricButton({
             height: 48,
             border: `1px solid ${theme.palette.divider}`,
             borderRadius: 1,
-            color: theme.palette.primary.main,
+            color: (theme.vars || theme).palette.text.primary,
+            backgroundColor: (theme.vars || theme).palette.alphaLight200.main,
+            ...theme.applyStyles('light', {
+              backgroundColor: (theme.vars || theme).palette.alphaDark200.main,
+            }),
             '&:hover': {
-              backgroundColor: theme.palette.action.hover,
-              borderColor: theme.palette.primary.main,
+              backgroundColor: (theme.vars || theme).palette.alphaLight400.main,
+              ...theme.applyStyles('light', {
+                backgroundColor: (theme.vars || theme).palette.alphaDark400
+                  .main,
+              }),
             },
             '&.Mui-disabled': {
               color: theme.palette.action.disabled,

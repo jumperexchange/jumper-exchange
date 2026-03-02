@@ -85,6 +85,14 @@ export function LoginModal() {
     }
   }, [hasBiometric, handleBiometricLogin]);
 
+  const handleFormSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      handleLogin();
+    },
+    [handleLogin],
+  );
+
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === 'Enter') {
@@ -136,26 +144,30 @@ export function LoginModal() {
         </Divider>
       )}
 
-      <TextField
-        {...passwordField}
-        label={t('jumperWallet.login.enterPassword')}
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        onKeyDown={handleKeyDown}
-        fullWidth
-        error={!!error}
-      />
+      <form onSubmit={handleFormSubmit} style={{ display: 'contents' }}>
+        <TextField
+          {...passwordField}
+          label={t('jumperWallet.login.enterPassword')}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
+          fullWidth
+          error={!!error}
+          name="password"
+          autoComplete="current-password"
+        />
 
-      {error && <Alert severity="error">{error}</Alert>}
+        {error && <Alert severity="error">{error}</Alert>}
 
-      <ButtonPrimary
-        onClick={handleLogin}
-        disabled={!password || isAnyLoading}
-        fullWidth
-        startIcon={isLoading ? <CircularProgress size={16} /> : undefined}
-      >
-        {t('jumperWallet.login.unlock')}
-      </ButtonPrimary>
+        <ButtonPrimary
+          type="submit"
+          disabled={!password || isAnyLoading}
+          fullWidth
+          startIcon={isLoading ? <CircularProgress size={16} /> : undefined}
+        >
+          {t('jumperWallet.login.unlock')}
+        </ButtonPrimary>
+      </form>
 
       <ForgotPasswordLink onClick={handleForgotPassword}>
         {t('jumperWallet.login.forgotPassword')}

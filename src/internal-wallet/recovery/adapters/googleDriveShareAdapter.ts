@@ -290,6 +290,7 @@ export class GoogleDriveShareAdapter implements ShareStorageAdapter {
   readonly retrieval = GoogleDriveShareAdapter.retrieval;
   readonly type = 'googleDrive' as const;
   readonly label = 'Google Drive';
+  readonly provider = 'google';
 
   async store(share: string, metadata: ShareMetadata): Promise<boolean> {
     try {

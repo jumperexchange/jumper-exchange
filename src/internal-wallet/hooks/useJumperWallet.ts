@@ -34,6 +34,18 @@ export function useJumperWallet() {
   );
 
   /**
+   * Unlock the wallet for signing using biometrics (PRF path).
+   * Sets the account on the provider then resolves the pending signing request.
+   */
+  const unlockWithBiometric = useCallback(async (): Promise<boolean> => {
+    const success = await loginWithBiometric();
+    if (success) {
+      resolvePasswordRequest('__biometric__');
+    }
+    return success;
+  }, [loginWithBiometric, resolvePasswordRequest]);
+
+  /**
    * Unlock the wallet for signing by providing the password.
    * Sets the account on the EIP-1193 provider so transactions can be signed.
    */
@@ -82,6 +94,7 @@ export function useJumperWallet() {
     // Actions
     login,
     loginWithBiometric,
+    unlockWithBiometric,
     registerBiometric,
     lock,
     destroy,

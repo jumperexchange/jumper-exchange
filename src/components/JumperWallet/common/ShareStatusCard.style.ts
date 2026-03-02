@@ -1,5 +1,10 @@
 import type { BoxProps } from '@mui/material';
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Typography, keyframes, styled } from '@mui/material';
+
+const pulse = keyframes`
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+`;
 
 export const ShareCardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -41,11 +46,12 @@ export const ShareCardLabel = styled(Typography)(({ theme }) => ({
 
 interface ShareCardStatusProps extends BoxProps {
   statusColor?: string;
+  isWorking?: boolean;
 }
 
 export const ShareCardStatus = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'statusColor',
-})<ShareCardStatusProps>(({ theme, statusColor }) => ({
+  shouldForwardProp: (prop) => prop !== 'statusColor' && prop !== 'isWorking',
+})<ShareCardStatusProps>(({ theme, statusColor, isWorking }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(0.75),
@@ -60,5 +66,8 @@ export const ShareCardStatus = styled(Box, {
     backgroundColor:
       statusColor ?? (theme.vars || theme).palette.text.secondary,
     flexShrink: 0,
+    ...(isWorking && {
+      animation: `${pulse} 1.2s ease-in-out infinite`,
+    }),
   },
 }));

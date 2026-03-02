@@ -11,10 +11,11 @@ import type {
 } from './ShareStorageAdapter.types';
 
 export class EmailShareAdapter implements ShareStorageAdapter {
-  static readonly retrieval = 'manual' as const;
+  static readonly retrieval = 'manual';
   readonly retrieval = EmailShareAdapter.retrieval;
   readonly type = 'email' as const;
   readonly label = 'Email';
+  readonly provider = 'email';
 
   constructor(private readonly email: string) {}
 

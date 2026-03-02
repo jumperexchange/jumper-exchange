@@ -94,4 +94,7 @@ export type ShareStorageType =
   | 'googleDrive'
   | 'recoveryCode';
 
+/** Share storage target identifier */
+export type ShareStorageProvider = 'browser' | 'email' | 'google' | 'manual';
+
 export type ShareRetrievalType = 'auto' | 'manual';
