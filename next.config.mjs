@@ -16,6 +16,8 @@ const nextConfig = {
       '@mui/material-nextjs',
       '@mui/icons-material',
       '@lifi/sdk',
+      '@lifi/widget',
+      '@sentry/nextjs',
     ],
   },
   webpack: (config) => {
@@ -224,7 +226,6 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
-  bundlePagesRouterDependencies: true,
 
   webpack: {
     reactComponentAnnotation: {
