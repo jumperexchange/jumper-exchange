@@ -14,7 +14,6 @@ import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
-import { useTheme } from '@mui/material/styles';
 import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useFormParameters } from './hooks';
 import dynamic from 'next/dynamic';
@@ -47,11 +46,7 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const theme = useTheme();
-  const [configTheme, widgetTheme] = useThemeStore((state) => [
-    state.configTheme,
-    state.widgetTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const bridgeConditions = useBridgeConditions({
@@ -133,9 +128,9 @@ export function Widget({
       formParametersCtx,
       allowFromChains,
       allowToChains,
-      configTheme,
       bridgeConditions,
       isConnectedAGW,
+      integratorStringByType,
     ],
   );
 
