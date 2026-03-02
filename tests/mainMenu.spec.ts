@@ -24,7 +24,9 @@ import values from './testData/values.json' with { type: 'json' };
 import { injectMockWallet } from './utils/mockWallet';
 import {
   clickOnFirstTransaction,
+  clickOnWalletEntry,
   expectToBeOnTransactionPage,
+  expectToBeOnWalletPage,
 } from './pages/ScanPage';
 
 test.describe('Main Menu flows', () => {
@@ -114,8 +116,14 @@ test.describe('Main Menu flows', () => {
       await itemInMenu(page, 'Scan');
       await expect(page).toHaveURL(values.localJumperScanURL);
       await checkTabsInHeader(page);
+
+      // Click on the first transaction
       await clickOnFirstTransaction(page);
       await expectToBeOnTransactionPage(page);
+
+      // Click on the wallet entry
+      await clickOnWalletEntry(page, 0);
+      await expectToBeOnWalletPage(page);
     },
   );
 

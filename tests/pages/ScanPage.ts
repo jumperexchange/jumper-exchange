@@ -24,3 +24,19 @@ export async function expectToBeOnTransactionPage(page: Page) {
   await expect(page).toHaveURL(/\/tx\//);
   await expect(page.getByRole('heading', { name: 'Transfer' })).toBeVisible();
 }
+
+export async function clickOnWalletEntry(page: Page, index: number) {
+  await expect(
+    page.getByRole('heading', { name: 'Source Wallet' }),
+  ).toBeVisible();
+
+  await expect(page.locator('a[href^="/scan/wallet/"]').first()).toBeVisible();
+
+  await page.locator('a[href^="/scan/wallet/"]').nth(index).click();
+}
+
+export async function expectToBeOnWalletPage(page: Page) {
+  await page.waitForURL(/\/wallet\//);
+  await expect(page).toHaveURL(/\/wallet\//);
+  await expect(page.getByRole('heading', { name: 'Wallet' })).toBeVisible();
+}
