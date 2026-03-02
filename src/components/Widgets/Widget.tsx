@@ -1,5 +1,4 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
 import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
@@ -14,12 +13,25 @@ import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { WidgetWrapper } from './Widget.style';
-import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
 import { useTheme } from '@mui/material/styles';
 import type { MainWidgetContext } from './variants/widgetConfig/types';
-import { Widget as BaseWidget } from './variants/base/Widget';
 import { useFormParameters } from './hooks';
+import dynamic from 'next/dynamic';
+
+const BaseWidget = dynamic(
+  () => import('./variants/base/Widget').then((m) => m.Widget),
+  {
+    ssr: false,
+  },
+);
+
+const FeeContribution = dynamic(
+  () => import('./FeeContribution/FeeContribution'),
+  {
+    ssr: false,
+  },
+);
 
 export function Widget({
   starterVariant,
