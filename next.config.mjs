@@ -12,9 +12,7 @@ const nextConfig = {
     serverSourceMaps: false,
     optimizePackageImports: [
       'recharts',
-      '@mui/material',
       '@mui/material-nextjs',
-      '@mui/icons-material',
       '@sentry/nextjs',
     ],
   },
