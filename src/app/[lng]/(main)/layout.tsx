@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import App from '../../ui/app/App';
+import { ClientOnly } from '@/components/ClientOnly';
 
 export const fetchCache = 'default-cache';
 
@@ -16,7 +17,9 @@ export default async function MainLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Layout>
-        <App>{children}</App>
+        <ClientOnly>
+          <App>{children}</App>
+        </ClientOnly>
       </Layout>
       <FeatureCards />
     </>
