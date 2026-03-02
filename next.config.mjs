@@ -15,8 +15,6 @@ const nextConfig = {
       '@mui/material',
       '@mui/material-nextjs',
       '@mui/icons-material',
-      '@lifi/sdk',
-      '@lifi/widget',
       '@sentry/nextjs',
     ],
   },
