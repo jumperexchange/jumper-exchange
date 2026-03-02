@@ -54,7 +54,7 @@ export const LabelButton: FC<LabelButtonProps> = ({
 
   if (href) {
     return (
-      <Link href={href} prefetch={false} style={{ textDecoration: 'none' }}>
+      <Link href={href} style={{ textDecoration: 'none' }}>
         {button}
       </Link>
     );
