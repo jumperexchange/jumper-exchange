@@ -93,15 +93,17 @@ export type InferFieldValues<
     : never;
 };
 
+export interface ViewSubmitContext {
+  goToView: (id: string) => void;
+  values: Record<string, unknown>;
+}
+
 interface BaseView {
   id: string;
   title?: string;
   content?: ReactNode;
   actions?: ReactNode;
-  onSubmit?: (args: {
-    goToView: (id: string) => void;
-    values: Record<string, unknown>;
-  }) => Promise<void>;
+  onSubmit?: (args: ViewSubmitContext) => Promise<void>;
 }
 
 export interface FormView extends BaseView {

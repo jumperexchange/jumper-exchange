@@ -1,30 +1,30 @@
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { ModalContainerProps } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
-import { useMemo, useState, type FC } from 'react';
-import { motion } from 'motion/react';
-import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { useMemo, useState, useCallback, type FC } from 'react';
 import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
 import { useFormatRedeemClaimData } from './hooks/useFormatRedeemClaimData';
-import type { RequestRedeemModalView } from './types';
-import { RequestWithdrawView } from './components/RequestWithdrawView';
-import { ExecuteWithdrawView } from './components/ExecuteWithdrawView';
-import {
-  ANIMATION_DURATION_MS,
-  ANIMATION_DURATION_SECONDS,
-  BOTTOM_SHEET_TOP_OFFSET,
-  MODAL_CONTAINER_ID,
-} from './constants';
-import { HeightAnimatedContainer } from '@/components/core/HeightAnimatedContainer/HeightAnimatedContainer';
-import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
-import { useRedeemTransactionForm } from './hooks/useRedeemTransactionForm';
-import { useRedeemTransactionStatusContent } from './hooks/useRedeemTransactionStatusContent';
-import { TokenAmountInput } from '@/components/composite/TokenAmountInput/TokenAmountInput';
-import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
-import { createExtendedToken, createTokenBalance } from '@/types/tokens';
-import { useToken } from '@/hooks/useToken';
-import type { Address } from 'viem';
+import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
+import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
+import { createTokenBalance } from '@/types/tokens';
 import { useTranslation } from 'react-i18next';
+import { RequestViewSubmitButton } from './components/RequestViewSubmitButton';
+import { ClaimList } from './components/ClaimList';
+import { RequestRedeemModalView } from './types';
+import { useEarnOpportunityTokens } from './hooks/useEarnOpportunityTokens';
+import { Summary } from '@/components/composite/JumperWidget/components/Summary';
+import { claimTokenAmountStyle, widgetStyle } from './constants';
+import { ExecuteClaimSubmitButton } from './components/ExecuteClaimSubmitButton';
+import {
+  defineAmountField,
+  defineDisplayTokenChainField,
+} from '@/components/composite/JumperWidget/utils';
+import { makeClient } from '@/app/lib/client';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import type { Hex } from 'viem';
+import type { AmountValue } from '@/components/composite/JumperWidget/components/Amount';
+import type { ViewSubmitContext } from '@/components/composite/JumperWidget/types';
+import { useRequestRedeemStatusSheet } from './hooks/useRequestRedeemStatusSheet';
 
 interface RequestRedeemModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -38,9 +38,10 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   refetchCallback,
 }) => {
   const { t } = useTranslation();
-  const [currentView, setCurrentView] =
-    useState<RequestRedeemModalView>('requestWithdraw');
+  const accountAddress = useAccountAddress();
+
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [amount, setAmount] = useState('0');
 
   const { data: redeemableClaims, refetch: refetchClaims } =
     useRedeemableClaims(earnOpportunity, true);
@@ -56,207 +57,180 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     [formattedRedeemableClaims, selectedClaimId],
   );
 
-  // Initialize the unified form hook based on current view
-  const transactionForm = useRedeemTransactionForm({
-    earnOpportunity,
+  const { lpToken, lpTokenAmount, assetToken } =
+    useEarnOpportunityTokens(earnOpportunity);
+
+  const isClaimFlow = selectedClaim != null;
+
+  const fetchCallData = useCallback(async () => {
+    const client = makeClient();
+    if (isClaimFlow) {
+      const { data } = await client.v1.earnControllerGetClaimRedeemCalldataV1(
+        earnOpportunity.slug,
+        {
+          address: accountAddress as Hex,
+          amount: selectedClaim.assetAmount ?? '0',
+        },
+      );
+      return data.data;
+    }
+    const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
+      earnOpportunity.slug,
+      { address: accountAddress as Hex, amount },
+    );
+    return data.data;
+  }, [
+    isClaimFlow,
+    earnOpportunity.slug,
+    accountAddress,
+    selectedClaim,
+    amount,
+  ]);
+
+  const transactionForm = useTransactionForm({
+    chainId: earnOpportunity.lpToken.chain.chainId,
+    requiresConfirmation: !isClaimFlow,
+    fetchCallData,
     onSuccess: () => {
       refetchClaims();
       refetchCallback?.();
     },
-    config:
-      currentView === 'claimRedeem' && selectedClaim
-        ? {
-            type: 'claim',
-            claimId: selectedClaim.id,
-            claimAmount: selectedClaim.assetAmount ?? '0',
-          }
-        : {
-            type: 'request',
-            initialAmount: '0',
-          },
   });
 
-  // Get tokens for success sheet content
-  const { token: extendedFromToken } = useToken(
-    earnOpportunity.lpToken.chain.chainId,
-    earnOpportunity.lpToken.address as Address,
-    { extended: true },
-  );
-  const { token: extendedToToken } = useToken(
-    earnOpportunity.asset.chain.chainId,
-    earnOpportunity.asset.address as Address,
-    { extended: true },
+  const selectedClaimFromTokenBalance = useMemo(
+    () =>
+      createTokenBalance(
+        lpToken,
+        selectedClaim?.lpTokenAmount ?? selectedClaim?.assetAmount ?? '0',
+      ),
+    [lpToken, selectedClaim],
   );
 
-  // Generate status content based on transaction type
-  const statusContent = useRedeemTransactionStatusContent({
-    transactionType: transactionForm.transactionType,
-    errorType: transactionForm.errorType,
-    handlers: {
-      onCloseError: transactionForm.handleCloseError,
-      onCloseSuccess: transactionForm.handleCloseSuccess,
-      onRetry: transactionForm.handleRetry,
-      onViewTransaction: transactionForm.handleViewTransaction,
-      onConfirm: transactionForm.handleConfirm,
+  const selectedClaimToTokenBalance = useMemo(
+    () => createTokenBalance(assetToken, selectedClaim?.assetAmount ?? '0'),
+    [assetToken, selectedClaim],
+  );
+
+  const requestWithdrawToTokenBalance = useMemo(
+    () => createTokenBalance(lpToken, BigInt(amount ?? 0)),
+    [lpToken, amount],
+  );
+
+  const handleResetAmount = useCallback(() => {
+    setAmount('0');
+  }, [setAmount]);
+
+  const handleSubmit = useCallback(
+    async (props: ViewSubmitContext) => {
+      if (!isClaimFlow) {
+        setAmount((props.values.requestAmount as AmountValue).amount);
+      }
+      transactionForm.handleSubmit();
     },
-  });
-
-  const handleClaimClick = (claimId: string) => {
-    setSelectedClaimId(claimId);
-    setCurrentView('claimRedeem');
-  };
-
-  const handleBackToRequest = () => {
-    setCurrentView('requestWithdraw');
-    setSelectedClaimId(null);
-    transactionForm.resetForm();
-  };
+    [isClaimFlow, transactionForm],
+  );
 
   const handleModalClose = () => {
-    setCurrentView('requestWithdraw');
     setSelectedClaimId(null);
+    handleResetAmount();
     transactionForm.resetForm();
     onClose?.();
   };
 
-  // Track if any status sheet is open
-  const isAnySheetOpen =
-    transactionForm.showConfirmationSheet ||
-    transactionForm.showErrorBottomSheet ||
-    transactionForm.showSuccessSheet;
+  const statusSheet = useRequestRedeemStatusSheet({
+    transactionForm,
+    isClaimFlow,
+    selectedClaimToTokenBalance,
+    requestWithdrawToTokenBalance,
+    resetAmount: handleResetAmount,
+  });
 
-  // Create token balances for success sheet
-  const successSheetTokenBalance = useMemo(() => {
-    if (currentView === 'requestWithdraw') {
-      // Request flow: show LP token amount
-      const priceUSD = extendedFromToken?.priceUSD ?? '0';
-      const lpToken = createExtendedToken(earnOpportunity.lpToken, priceUSD);
-      return createTokenBalance(lpToken, BigInt(transactionForm.amount ?? 0));
-    } else if (selectedClaim) {
-      // Claim flow: show asset token amount
-      const priceUSD = extendedToToken?.priceUSD ?? '0';
-      const assetToken = createExtendedToken(earnOpportunity.asset, priceUSD);
-      return createTokenBalance(
-        assetToken,
-        BigInt(selectedClaim.assetAmount ?? 0),
-      );
-    }
-    return null;
-  }, [
-    currentView,
-    earnOpportunity,
-    extendedFromToken,
-    extendedToToken,
-    transactionForm.amount,
-    selectedClaim,
-  ]);
+  const requestWithdrawFields = useMemo(
+    () => [
+      defineAmountField({
+        fieldKey: 'requestAmount',
+        defaultValue: { amount: '0', maxAmount: lpTokenAmount?.toString() },
+        fieldProps: {
+          token: lpToken,
+          label: t('form.labels.amount'),
+        },
+        t,
+      }),
+      defineDisplayTokenChainField({
+        fieldKey: 'withdrawTo',
+        defaultValue: assetToken,
+        fieldProps: { label: t('form.labels.withdrawTo') },
+        t,
+      }),
+    ],
+    [assetToken, lpToken, lpTokenAmount, t],
+  );
+
+  const views = useMemo(
+    () => [
+      {
+        id: RequestRedeemModalView.REQUEST_WITHDRAW,
+        type: 'form' as const,
+        title: t('earn.requestRedeemFlow.title.request'),
+        fields: requestWithdrawFields,
+        content: (
+          <ClaimList
+            claims={formattedRedeemableClaims}
+            setSelectedClaimId={setSelectedClaimId}
+            fromToken={lpToken}
+            toToken={assetToken}
+          />
+        ),
+        actions: (
+          <RequestViewSubmitButton
+            isFormSubmitting={transactionForm.isSubmitting}
+          />
+        ),
+        onSubmit: handleSubmit,
+      },
+      {
+        id: RequestRedeemModalView.CLAIM_REDEEM,
+        type: 'custom' as const,
+        title: t('earn.requestRedeemFlow.title.claim'),
+        content:
+          !!selectedClaimFromTokenBalance && !!selectedClaimToTokenBalance ? (
+            <Summary
+              from={selectedClaimFromTokenBalance}
+              to={selectedClaimToTokenBalance}
+              label={t('form.labels.swap')}
+              fieldSx={claimTokenAmountStyle}
+            />
+          ) : null,
+        actions: (
+          <ExecuteClaimSubmitButton
+            isFormSubmitting={transactionForm.isSubmitting}
+          />
+        ),
+        onSubmit: handleSubmit,
+      },
+    ],
+    [
+      requestWithdrawFields,
+      handleSubmit,
+      transactionForm.isSubmitting,
+      formattedRedeemableClaims,
+      lpToken,
+      assetToken,
+      selectedClaimFromTokenBalance,
+      selectedClaimToTokenBalance,
+      t,
+    ],
+  );
 
   return (
     <ModalContainer isOpen={isOpen} onClose={handleModalClose}>
-      <SectionCard
-        id={MODAL_CONTAINER_ID}
-        sx={(theme) => ({
-          maxHeight: 'calc(100vh - 6rem)',
-          width: 'calc(100vw - 2rem)',
-          maxWidth: 400,
-          position: 'relative',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
-          borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
-          padding: 0,
-          [theme.breakpoints.up('sm')]: {
-            width: 400,
-          },
-        })}
-      >
-        <HeightAnimatedContainer
-          isOpen={isAnySheetOpen}
-          offsetHeight={BOTTOM_SHEET_TOP_OFFSET}
-          animationDuration={ANIMATION_DURATION_SECONDS}
-          defaultHeight="100%"
-        >
-          {({ onHeightChange, motionProps }) => (
-            <motion.div {...motionProps} style={{ x: 0, y: 0 }}>
-              {currentView === 'requestWithdraw' && (
-                <RequestWithdrawView
-                  earnOpportunity={earnOpportunity}
-                  claims={formattedRedeemableClaims}
-                  onClaimClick={handleClaimClick}
-                  formState={transactionForm}
-                />
-              )}
-              {currentView === 'claimRedeem' && selectedClaim && (
-                <ExecuteWithdrawView
-                  claim={selectedClaim}
-                  earnOpportunity={earnOpportunity}
-                  onBack={handleBackToRequest}
-                  formState={transactionForm}
-                />
-              )}
-
-              {/* Single Confirmation Sheet - Only for request flow */}
-              {transactionForm.transactionType === 'request' && (
-                <StatusBottomSheet
-                  {...statusContent.confirmationSheetContent}
-                  containerId={MODAL_CONTAINER_ID}
-                  isOpen={transactionForm.showConfirmationSheet}
-                  onClose={transactionForm.handleCloseSheet}
-                  onHeightChange={onHeightChange}
-                  transitionDuration={{
-                    enter: ANIMATION_DURATION_MS,
-                  }}
-                />
-              )}
-
-              {/* Single Error Sheet - Shared by both flows */}
-              <StatusBottomSheet
-                {...statusContent.errorSheetContent}
-                containerId={MODAL_CONTAINER_ID}
-                isOpen={transactionForm.showErrorBottomSheet}
-                onClose={transactionForm.handleCloseSheet}
-                onHeightChange={onHeightChange}
-                transitionDuration={{
-                  enter: ANIMATION_DURATION_MS,
-                }}
-              />
-
-              {/* Single Success Sheet - Shared by both flows with dynamic content */}
-              <StatusBottomSheet
-                {...statusContent.successSheetContent}
-                containerId={MODAL_CONTAINER_ID}
-                isOpen={transactionForm.showSuccessSheet}
-                onClose={transactionForm.handleCloseSheet}
-                onHeightChange={onHeightChange}
-                sx={(theme) => ({
-                  gap: theme.spacing(2),
-                })}
-                transitionDuration={{
-                  enter: ANIMATION_DURATION_MS,
-                }}
-              >
-                {successSheetTokenBalance && (
-                  <TokenAmountInput
-                    label={t(
-                      `form.labels.${currentView === 'requestWithdraw' ? 'requested' : 'received'}`,
-                    )}
-                    tokenBalance={successSheetTokenBalance}
-                    mode={SelectCardMode.Display}
-                    sx={(theme) => ({
-                      backgroundColor: (theme.vars || theme).palette.surface1
-                        .main,
-                      boxShadow: theme.shadows[2],
-                      '& .MuiInputLabel-root': {
-                        ...theme.typography.title2XSmall,
-                      },
-                    })}
-                  />
-                )}
-              </StatusBottomSheet>
-            </motion.div>
-          )}
-        </HeightAnimatedContainer>
-      </SectionCard>
+      {isOpen ? (
+        <JumperWidget
+          views={views}
+          statusSheet={statusSheet}
+          style={widgetStyle}
+        />
+      ) : null}
     </ModalContainer>
   );
 };

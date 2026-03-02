@@ -44,4 +44,7 @@ export interface RequestRedeemFormState {
   currentActionIndex: number;
 }
 
-export type RequestRedeemModalView = 'requestWithdraw' | 'claimRedeem';
+export enum RequestRedeemModalView {
+  REQUEST_WITHDRAW = 'requestWithdraw',
+  CLAIM_REDEEM = 'claimRedeem',
+}
