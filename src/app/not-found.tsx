@@ -1,7 +1,7 @@
 import initTranslations from '@/app/i18n';
 import Background from '@/components/Background';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
-import config from '@/config/env-config';
+import config, { getPublicEnvVars } from '@/config/env-config';
 import { fonts } from '@/fonts/fonts';
 import {
   MUIThemeProvider,
@@ -30,8 +30,10 @@ export default async function NotFound() {
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script type="text/javascript" src="/api/env-config.js" />
+        {}
+        <script type="text/javascript">
+          {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
+        </script>
         <Script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
