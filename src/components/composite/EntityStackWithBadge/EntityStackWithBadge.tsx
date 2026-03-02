@@ -174,7 +174,9 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
           {mainStack}
         </MainStackWrapper>
         {isOverlay && badgeStack && (
-          <BadgeStackWrapper>{badgeStack}</BadgeStackWrapper>
+          <BadgeStackWrapper badgeSize={badgeSize}>
+            {badgeStack}
+          </BadgeStackWrapper>
         )}
       </EntityStackWrapper>
 

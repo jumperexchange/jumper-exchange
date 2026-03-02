@@ -10,7 +10,7 @@ import {
 } from '../../Cards/SelectCard/SelectCard.styles';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
-import type { Balance, ExtendedToken } from '@/types/tokens';
+import type { Balance, PricedToken } from '@/types/tokens';
 import { descriptionBoxStyles } from './constants';
 import { TokenAmountInputAvatar } from './adornments/TokenAmountInputAvatar';
 import { TokenAmountInputReset } from './adornments/TokenAmountInputReset';
@@ -19,7 +19,7 @@ import type { SxProps, Theme } from '@mui/material/styles';
 export type PositionPrimaryDisplay = 'amount' | 'price';
 
 interface TokenAmountInputProps {
-  tokenBalance: Balance<ExtendedToken>;
+  tokenBalance: Balance<PricedToken>;
   mode?: SelectCardMode;
   primaryDisplay?: PositionPrimaryDisplay;
   enableSwapButton?: boolean;

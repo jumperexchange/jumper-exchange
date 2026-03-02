@@ -20,6 +20,8 @@ export const EntityStack: FC<EntityStackProps> = ({
   direction = 'row',
   limit,
   disableBorder = false,
+  useAvatarOverflow = false,
+  avatarSx,
 }) => {
   const { getChainById } = useChains();
   const { getToken } = useTokens();
@@ -62,6 +64,8 @@ export const EntityStack: FC<EntityStackProps> = ({
       direction={direction}
       limit={limit}
       disableBorder={disableBorder}
+      avatarSx={avatarSx}
+      useAvatarOverflow={useAvatarOverflow}
     />
   );
 };
