@@ -155,10 +155,10 @@ export default async function RootLayout({
         </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
-          async
+          strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
-        <Script id="google-analytics">
+        <Script strategy="lazyOnload" id="google-analytics">
           {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
