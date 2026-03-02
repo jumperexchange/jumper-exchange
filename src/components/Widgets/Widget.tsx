@@ -18,8 +18,20 @@ import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useFormParameters } from './hooks';
 import dynamic from 'next/dynamic';
 import { AppPaths } from '@/const/urls';
-import { Widget as BaseWidget } from './variants/base/Widget';
-import FeeContribution from './FeeContribution/FeeContribution';
+
+const BaseWidget = dynamic(
+  () => import('./variants/base/Widget').then((m) => m.Widget),
+  {
+    ssr: false,
+  },
+);
+
+const FeeContribution = dynamic(
+  () => import('./FeeContribution/FeeContribution'),
+  {
+    ssr: false,
+  },
+);
 
 export function Widget({
   starterVariant,
