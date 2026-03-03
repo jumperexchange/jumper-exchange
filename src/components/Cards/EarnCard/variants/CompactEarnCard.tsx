@@ -19,6 +19,7 @@ import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { CompactEarnCardMissingPosition } from './CompactEarnCardMissingPosition';
+import { useEarnByChainId } from '@/hooks/earn/useEarnByChainId';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -29,6 +30,8 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = !data || isLoading;
+
+  const earnDataByChainId = useEarnByChainId(data?.lpToken?.chain.chainId);
 
   const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(
     data,
@@ -66,7 +69,10 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   return (
     <ConditionalLink href={href}>
-      <CompactEarnCardContainer hasLink={!!href}>
+      <CompactEarnCardContainer
+        hasLink={!!href}
+        isConnected={!!earnDataByChainId?.account}
+      >
         <CompactEarnCardBody hasHintHoverActive>
           <CompactEarnCardHeaderContainer direction="row">
             <CompactEarnCardTagContainer direction="row">

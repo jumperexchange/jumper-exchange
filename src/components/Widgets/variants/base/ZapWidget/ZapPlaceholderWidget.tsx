@@ -1,7 +1,6 @@
-import type { CSSProperties, FC, MouseEvent } from 'react';
+import type { CSSProperties, FC, MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletMenu } from '@lifi/wallet-management';
-import type { ParseKeys } from 'i18next';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -13,16 +12,18 @@ import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 
 interface ZapPlaceholderWidgetProps {
-  titleKey: ParseKeys<'translation'>;
-  descriptionKey: ParseKeys<'translation'>;
+  label?: string;
+  title: ReactNode;
+  description: ReactNode;
   style?: CSSProperties;
 }
 
-export const ZapPlaceholderWidget: FC<ZapPlaceholderWidgetProps> = ({
-  titleKey,
-  descriptionKey,
+export const ZapPlaceholderWidget = ({
+  label,
+  title,
+  description,
   style,
-}) => {
+}: ZapPlaceholderWidgetProps) => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
 
@@ -30,17 +31,18 @@ export const ZapPlaceholderWidget: FC<ZapPlaceholderWidgetProps> = ({
     event?.stopPropagation();
     openWalletMenu();
   };
+
   return (
     <SectionCard sx={style}>
       <Stack sx={{ gap: 3 }}>
         <Badge
           startIcon={<AccessTimeIcon />}
-          label={t('widget.zap.placeholder.comingSoon')}
+          label={label ?? t('widget.zap.placeholder.comingSoon')}
           variant={BadgeVariant.Secondary}
         />
         <Stack sx={{ gap: 0.5 }}>
-          <Typography variant="bodyLargeStrong">{t(titleKey)}</Typography>
-          <Typography>{t(descriptionKey)}</Typography>
+          <Typography variant="bodyLargeStrong">{title}</Typography>
+          <Typography>{description}</Typography>
         </Stack>
         <Button fullWidth size="medium" onClick={handleOpenWalletMenu}>
           {t('button.connectAnotherWallet')}

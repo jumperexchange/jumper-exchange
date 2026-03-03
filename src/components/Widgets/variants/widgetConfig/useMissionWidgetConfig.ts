@@ -20,6 +20,7 @@ export function useMissionWidgetConfig(
   return useMemo(() => {
     const chainType = account?.chainType;
     const isEvmWallet = chainType === ChainType.EVM;
+    const isSVMWallet = chainType === ChainType.SVM;
 
     const isZapTask =
       (context.taskType === TaskType.Zap ||
@@ -40,7 +41,9 @@ export function useMissionWidgetConfig(
         HiddenUI.WalletMenu,
         HiddenUI.ReverseTokensButton,
         HiddenUI.History,
-        ...(isEvmWallet && !isSafe ? [HiddenUI.ToAddress] : []),
+        ...((isEvmWallet || isSVMWallet) && !isSafe
+          ? [HiddenUI.ToAddress]
+          : []),
         ...(isZapTask
           ? [HiddenUI.LowAddressActivityConfirmation, HiddenUI.GasRefuelMessage]
           : []),

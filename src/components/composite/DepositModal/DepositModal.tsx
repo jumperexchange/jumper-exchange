@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { useMemo, type FC } from 'react';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { ZapDepositBackendWidget } from 'src/components/Widgets/variants/base/ZapWidget/ZapDepositBackendWidget';
 import { TaskType } from 'src/types/strapi';
@@ -11,6 +11,9 @@ import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { useTheme } from '@mui/material/styles';
 
 import envConfig from 'src/config/env-config';
+import { useEarnByChainId } from '@/hooks/earn/useEarnByChainId';
+import { ZapPlaceholderWidget } from '@/components/Widgets/variants/base/ZapWidget/ZapPlaceholderWidget';
+import { Trans, useTranslation } from 'react-i18next';
 interface DepositModalProps extends ModalContainerProps {
   earnOpportunity: EarnOpportunityExtended;
 }
@@ -21,39 +24,66 @@ export const DepositModal: FC<DepositModalProps> = ({
   earnOpportunity,
 }) => {
   useZapEarnOpportunitySlugStorage(earnOpportunity.slug);
+  const { t } = useTranslation();
   const theme = useTheme();
   const { projectData, zapData } =
     useProjectLikeDataFromEarnOpportunity(earnOpportunity);
 
   const refetchCallback = useDepositFlowStore((state) => state.refetchCallback);
 
+  const earnDataByChainId = useEarnByChainId(
+    earnOpportunity?.lpToken?.chain?.chainId,
+  );
+
+  const isConnected = earnDataByChainId?.account?.address;
+
+  const ctx = useMemo(() => {
+    return {
+      theme: {
+        container: {
+          maxHeight: 'calc(100vh - 6rem)',
+          minWidth: '100%',
+          maxWidth: 400,
+          borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
+          [theme.breakpoints.up('sm')]: {
+            minWidth: 400,
+          },
+        },
+      },
+      taskType: TaskType.Zap as const,
+      overrideHeader: t('widget.deposit.title'),
+      allowChains: earnDataByChainId?.chains.map((chain) => chain.id),
+    };
+  }, [t, theme, earnDataByChainId]);
+
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
-      <ClientOnly>
-        <ZapDepositBackendWidget
-          ctx={{
-            theme: {
-              container: {
-                maxHeight: 'calc(100vh - 6rem)',
-                minWidth: '100%',
-                maxWidth: 400,
-                borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
-                [theme.breakpoints.up('sm')]: {
-                  minWidth: 400,
-                },
-              },
-            },
-            taskType: TaskType.Zap,
-            overrideHeader: 'Quick deposit',
-          }}
-          customInformation={{ projectData }}
-          zapData={zapData}
-          isZapDataSuccess={true}
-          refetchDepositToken={refetchCallback}
-          depositSuccessMessageKey="widget.earn.depositSuccess"
-          integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN}
+      {isConnected ? (
+        <ClientOnly>
+          <ZapDepositBackendWidget
+            ctx={ctx}
+            customInformation={{ projectData }}
+            zapData={zapData}
+            isZapDataSuccess={true}
+            refetchDepositToken={refetchCallback}
+            depositSuccessMessageKey="widget.earn.depositSuccess"
+            integrator={envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN}
+          />
+        </ClientOnly>
+      ) : (
+        <ZapPlaceholderWidget
+          title={t('widget.zap.placeholder.not-supported.title')}
+          description={
+            <Trans
+              i18nKey="widget.zap.placeholder.not-supported.description"
+              values={{
+                type: earnDataByChainId?.chainType,
+              }}
+            />
+          }
+          style={ctx.theme.container}
         />
-      </ClientOnly>
+      )}
     </ModalContainer>
   );
 };

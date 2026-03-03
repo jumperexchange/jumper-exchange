@@ -677,6 +677,9 @@ interface Resources {
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
     };
     widget: {
+      deposit: {
+        title: 'Quick deposit';
+      };
       depositCard: {
         apy: 'Base APR';
         boostedApy: 'Boosted APR';
@@ -696,6 +699,10 @@ interface Resources {
           comingSoon: 'Coming soon';
           'non-evm': {
             description: 'We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions.';
+            title: 'Your wallet is currently not supported';
+          };
+          'not-supported': {
+            description: 'Please use an <strong>{{type}} wallet<strong> to execute transactions for this opportunity.';
             title: 'Your wallet is currently not supported';
           };
         };
