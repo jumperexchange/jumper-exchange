@@ -27,7 +27,12 @@ export const FeatureCardsInner = () => {
   return (
     <FeatureCardsContainer>
       {cards?.map((cardData, index) => {
-        return <FeatureCard data={cardData} key={`feature-card-${index}`} />;
+        return (
+          <FeatureCard
+            data={cardData}
+            key={`feature-card-${cardData.id ?? index}`}
+          />
+        );
       })}
     </FeatureCardsContainer>
   );
