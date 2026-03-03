@@ -22,6 +22,12 @@ export class PortfolioPage {
   private readonly portfolioHeaderOverviewElement: Locator;
   private readonly tokensOverviewElement: Locator;
   private readonly defiPositionsOverviewElement: Locator;
+  public readonly depositButton: Locator;
+  public readonly withdrawButton: Locator;
+  private readonly gearBoxPositionCard: Locator;
+  private readonly depositModalTitle: Locator;
+  private readonly withdrawModalTitle: Locator;
+  public readonly closeModalButton: Locator;
 
   constructor(private readonly page: Page) {
     this.getStartedButton = this.page.locator('#portfolio-get-started-button');
@@ -53,6 +59,14 @@ export class PortfolioPage {
     this.filterBarSkeleton = this.page.getByTestId(
       'portfolio-filter-bar-skeleton',
     );
+    this.depositModalTitle = this.page.locator(
+      'xpath=//p[normalize-space(text())="Quick deposit"]',
+    );
+    this.closeModalButton = this.page.getByTestId('CloseIcon');
+    this.withdrawModalTitle = this.page.locator(
+      'xpath=//p[normalize-space(text())="Withdraw"]',
+    );
+
     this.tokensFilterLocators = [
       this.walletSelectFilter,
       this.chainSelectFilter,
@@ -81,7 +95,17 @@ export class PortfolioPage {
     this.defiPositionsOverviewElement = this.page.getByTestId(
       'asset-overview-card-defi-positions',
     );
+    this.depositButton = this.page
+      .getByTestId('portfolio-deposit-button')
+      .first();
+    this.withdrawButton = this.page
+      .getByTestId('portfolio-withdraw-button')
+      .first();
+    this.gearBoxPositionCard = this.page.locator(
+      'xpath=//div[@aria-label="Position card for gearbox protocol"]',
+    );
   }
+
   async clickGetStartedButton(): Promise<void> {
     await this.getStartedButton.click();
   }
@@ -221,5 +245,26 @@ export class PortfolioPage {
         `Total value does not equal sum of individual values. Difference: ${difference}`,
       );
     }
+  }
+
+  async expandSparkPositionCard(): Promise<void> {
+    await this.gearBoxPositionCard.click();
+  }
+
+  async verifyDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.depositButton).toBeVisible({ timeout: 30000 });
+  }
+
+  async verifyDepositModalIsVisible(): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.depositModalTitle).toBeVisible();
+  }
+
+  async verifyWithdrawButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+    await expect(this.withdrawButton).toBeVisible();
+  }
+  async verifyWithdrawModalIsVisible(): Promise<void> {
+    await expect(this.withdrawModalTitle).toBeVisible();
   }
 }
