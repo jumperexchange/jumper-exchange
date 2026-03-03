@@ -95,6 +95,12 @@ vi.mock('src/hooks/useTokens', () => ({
   }),
 }));
 
+vi.mock('@lifi/wallet-management', () => ({
+  useAccount: () => ({
+    accounts: [],
+  }),
+}));
+
 describe('EarnCard snapshot', () => {
   it('compact card matches snapshot', async () => {
     const { container } = render(
