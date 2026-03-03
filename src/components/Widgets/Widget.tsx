@@ -58,13 +58,26 @@ export function Widget({
       (route) => route !== pathname,
     );
 
-    const id = requestIdleCallback(() => {
+    const runPrefetch = () => {
       routes.forEach((route) =>
         router.prefetch(route, { kind: PrefetchKind.AUTO }),
       );
-    });
+    };
 
-    return () => cancelIdleCallback(id);
+    const hasRIC =
+      typeof window !== 'undefined' && 'requestIdleCallback' in window;
+
+    const id = hasRIC
+      ? window.requestIdleCallback(runPrefetch)
+      : window.setTimeout(runPrefetch, 0);
+
+    return () => {
+      if (hasRIC) {
+        window.cancelIdleCallback(id);
+      } else {
+        window.clearTimeout(id);
+      }
+    };
   }, [router, pathname]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
