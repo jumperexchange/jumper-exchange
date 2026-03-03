@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { useSendCalls } from 'wagmi';
-import type { Hex } from 'viem';
+import { useCallback, useMemo } from 'react';
+import { useCallsStatus, useSendCalls } from 'wagmi';
+import { type Hex } from 'viem';
 import type { TransactionAction, TransactionExecutor } from './types';
 
 /**
@@ -8,8 +8,30 @@ import type { TransactionAction, TransactionExecutor } from './types';
  * into a single wallet approval. Use when the wallet supports batch transactions.
  */
 export const useSendCallsExecutor = (): TransactionExecutor => {
-  const { sendCalls, isPending, isSuccess, isError, error, reset } =
-    useSendCalls();
+  const {
+    sendCalls,
+    data: sendCallsData,
+    isPending,
+    isError: isSendCallsError,
+    error: sendCallsError,
+    reset,
+  } = useSendCalls();
+
+  const sendCallsDataId = sendCallsData?.id ?? '';
+
+  const {
+    data: callsStatusData,
+    isSuccess,
+    isLoading: isConfirming,
+    isError: isCallsStatusError,
+    error: callsStatusError,
+    refetch,
+  } = useCallsStatus({
+    id: sendCallsDataId,
+    query: {
+      enabled: !!sendCallsDataId,
+    },
+  });
 
   const execute = useCallback(
     (action: TransactionAction, allActions?: TransactionAction[]) => {
@@ -29,14 +51,23 @@ export const useSendCallsExecutor = (): TransactionExecutor => {
     [sendCalls],
   );
 
+  const txHash = useMemo(() => {
+    if (!callsStatusData?.receipts?.length) {
+      return undefined;
+    }
+    // @TODO maybe here we need some checks for the receipt status
+    const transactionReceipt = callsStatusData.receipts.at(-1)!;
+    return transactionReceipt.transactionHash;
+  }, [callsStatusData]);
+
   return {
     execute,
     reset,
-    txHash: undefined,
+    txHash,
     isPending,
-    isConfirming: false,
-    isSuccess,
-    isError,
-    error: error ?? null,
+    isConfirming,
+    isSuccess: isSuccess && !!txHash,
+    isError: isSendCallsError || isCallsStatusError,
+    error: sendCallsError ?? callsStatusError ?? null,
   };
 };
