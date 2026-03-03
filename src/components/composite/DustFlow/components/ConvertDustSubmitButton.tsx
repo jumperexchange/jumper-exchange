@@ -18,7 +18,12 @@ export const ConvertDustSubmitButton = ({
   const isDisabled =
     isFormSubmitting || isSubmitting || (!isValid && isTouched);
   return (
-    <Button variant={Variant.Primary} disabled={isDisabled} type="submit">
+    <Button
+      variant={Variant.Primary}
+      disabled={isDisabled}
+      loading={isDisabled}
+      type="submit"
+    >
       {t('buttons.reviewConversion')}
     </Button>
   );

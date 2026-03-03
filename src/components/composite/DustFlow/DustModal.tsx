@@ -10,6 +10,8 @@ import { useDustFormFields } from './hooks/useDustFormFields';
 import type { ViewSubmitContext } from '../JumperWidget/types';
 import { RouteOverview } from './components/RouteOverview';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
+import { useWalletCapabilities } from '@/hooks/transactions/useWalletCapabilities';
+import { TransactionErrorType } from '@/hooks/transactions/types';
 import { useDustConversionStatusSheet } from './hooks/useDustConversionStatusSheet';
 import { createTokenBalance } from '@/types/tokens';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
@@ -61,6 +63,9 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     [dustSummary?.nativeToken.chainId],
   );
 
+  const { supportsBatchTransactions } =
+    useWalletCapabilities(nativeTokenChainId);
+
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
       if (!dustSummary) {
@@ -78,20 +83,20 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           actions: [],
         };
       }
-      const args = quotes
-        .filter(
-          (quote) =>
-            !!quote.transactionRequest &&
-            !!quote.transactionRequest.data &&
-            !!quote.transactionRequest.to,
-        )
-        .map((quote) => {
-          return {
-            target: quote.transactionRequest!.to! as Hex,
-            allowFailure: true,
-            callData: quote.transactionRequest!.data! as Hex,
-          };
-        });
+      // const args = quotes
+      //   .filter(
+      //     (quote) =>
+      //       !!quote.transactionRequest &&
+      //       !!quote.transactionRequest.data &&
+      //       !!quote.transactionRequest.to,
+      //   )
+      //   .map((quote) => {
+      //     return {
+      //       target: quote.transactionRequest!.to! as Hex,
+      //       allowFailure: true,
+      //       callData: quote.transactionRequest!.data! as Hex,
+      //     };
+      //   });
       const gasPriceQuote = maxBy(quotes, (quote) =>
         BigInt(quote.transactionRequest?.gasPrice ?? '0'),
       );
@@ -101,25 +106,49 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
       const gasLimit = quotes.reduce((acc, quote) => {
         return acc + BigInt(quote.transactionRequest?.gasLimit ?? '0');
       }, 0n);
-      const encodedFnData = encodeFunctionData({
-        abi: multicallAbi,
-        functionName: 'aggregate3',
-        args: [args],
-      });
+      // const encodedFnData = encodeFunctionData({
+      //   abi: multicallAbi,
+      //   functionName: 'aggregate3',
+      //   args: [args],
+      // });
+
+      // return {
+      //   actions: [
+      //     {
+      //       name: 'multicall',
+      //       tx: {
+      //         data: encodedFnData,
+      //         chainId: nativeTokenChainId,
+      //         to: MULTICALL3_ADDRESS,
+      //         gasPrice,
+      //         maxFeePerGas: gasLimit,
+      //       },
+      //     },
+      //   ],
+      // };
+      const actions = quotes
+        .filter(
+          (quote) =>
+            !!quote.transactionRequest &&
+            !!quote.transactionRequest.data &&
+            !!quote.transactionRequest.to,
+        )
+        .map((quote) => {
+          return {
+            name: 'batch',
+            tx: {
+              chainId: nativeTokenChainId,
+              to: quote.transactionRequest!.to! as Hex,
+              // gasPrice: BigInt(quote.transactionRequest?.gasPrice ?? '0'),
+              // maxFeePerGas: BigInt(quote.transactionRequest?.gasLimit ?? '0'),
+              data: quote.transactionRequest!.data! as Hex,
+              value: quote.transactionRequest!.value,
+            },
+          };
+        });
 
       return {
-        actions: [
-          {
-            name: 'multicall',
-            tx: {
-              data: encodedFnData,
-              chainId: nativeTokenChainId,
-              to: MULTICALL3_ADDRESS,
-              gasPrice,
-              maxFeePerGas: gasLimit,
-            },
-          },
-        ],
+        actions,
       };
     }
   }, [
@@ -134,11 +163,18 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const transactionForm = useTransactionForm({
     chainId: nativeTokenChainId,
     requiresConfirmation: false,
+    executorType: 'batch',
+    validateBeforeExecute: () =>
+      !supportsBatchTransactions
+        ? TransactionErrorType.WalletDoesNotSupportBatchTransactions
+        : null,
     fetchCallData,
     onSuccess: () => {
       refreshPortfolio();
     },
   });
+
+  console.log(transactionForm);
 
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,

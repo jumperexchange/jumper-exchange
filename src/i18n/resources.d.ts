@@ -798,6 +798,11 @@ interface Resources {
             title: 'Error';
             tryAgain: 'Try again';
           };
+          walletDoesNotSupportBatch: {
+            close: 'Close';
+            description: 'Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.';
+            title: 'Wallet does not support batch transactions';
+          };
         };
         success: {
           done: 'Done';

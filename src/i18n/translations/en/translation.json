@@ -733,6 +733,11 @@
           "description": "Could not switch to the required network. Please switch manually in your wallet.",
           "close": "Close"
         },
+        "walletDoesNotSupportBatch": {
+          "title": "Wallet does not support batch transactions",
+          "description": "Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.",
+          "close": "Close"
+        },
         "unknown": {
           "title": "Error",
           "description": "An unexpected error occurred. Please try again.",

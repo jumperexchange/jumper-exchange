@@ -78,6 +78,13 @@ export const DUST_CONVERSION_STATUS_KEYS: TransactionStatusKeys = {
       action: 'portfolio.dustConversion.error.chainSwitchFailed.close',
       isClose: true,
     },
+    [TransactionErrorType.WalletDoesNotSupportBatchTransactions]: {
+      title: 'portfolio.dustConversion.error.walletDoesNotSupportBatch.title',
+      description:
+        'portfolio.dustConversion.error.walletDoesNotSupportBatch.description',
+      action: 'portfolio.dustConversion.error.walletDoesNotSupportBatch.close',
+      isClose: true,
+    },
   },
   defaultError: {
     title: 'portfolio.dustConversion.error.unknown.title',

@@ -5,6 +5,7 @@ export enum TransactionErrorType {
   NetworkError = 'NetworkError',
   FetchCallDataFailed = 'FetchCallDataFailed',
   ChainSwitchFailed = 'ChainSwitchFailed',
+  WalletDoesNotSupportBatchTransactions = 'WalletDoesNotSupportBatchTransactions',
   Unknown = 'Unknown',
 }
 
