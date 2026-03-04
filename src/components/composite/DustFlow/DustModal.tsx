@@ -92,6 +92,8 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         address: balance.token.address as Hex,
         amount: balance.amount,
       })),
+      dustSummary.nativeToken.chainId,
+      dustSummary.address as Address,
       odosRouter.address as Address,
     );
 
