@@ -1,16 +1,11 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getElementByText } from './commonFunctions';
-
-export const LANDING_PAGE = {
-  GET_STARTED_BUTTON: '#get-started-button',
-};
-
 export async function closeWelcomeScreen(page: Page) {
-  const getStartedButton = page.locator(LANDING_PAGE.GET_STARTED_BUTTON);
-  await getStartedButton.waitFor({ state: 'visible' });
+  const getStartedButton = page.getByTestId('get-started-button');
+  await expect(getStartedButton).toBeVisible();
   await getStartedButton.click();
-  await getStartedButton.waitFor({ state: 'detached' });
+  await expect(getStartedButton).not.toBeVisible();
 }
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();

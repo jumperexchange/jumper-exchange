@@ -6,7 +6,7 @@ import {
 } from './testData/landingPageFunctions';
 import { connectButton } from './testData/connectWalletFunctions';
 import { qase } from 'playwright-qase-reporter';
-import values from './testData/values.json' assert { type: 'json' };
+import values from './testData/values.json' with { type: 'json' };
 
 test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
@@ -19,7 +19,6 @@ test.describe('Landing page and navigation', () => {
     qase(2, 'Should navigate to the homepage and change tabs'),
     async ({ page }) => {
       await page.waitForLoadState('domcontentloaded');
-      await page.getByTestId('tabs-container').waitFor({ state: 'visible' });
       await navigateToTab(page, 1, 'Gas');
       await navigateToTab(page, 0, 'Exchange');
     },

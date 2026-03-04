@@ -81,7 +81,7 @@ export const WelcomeScreen = ({ activeTheme }: WelcomeScreenProps) => {
         <WelcomeScreenButton
           aria-label="Open welcome screen"
           onClick={handleGetStarted}
-          id="get-started-button"
+          data-testid="get-started-button"
         >
           <WelcomeScreenButtonLabel
             aria-label="Close welcome screen"
