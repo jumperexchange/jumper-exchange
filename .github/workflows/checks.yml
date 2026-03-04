@@ -100,6 +100,9 @@ jobs:
           else
             echo "summary=❌ Some snapshot tests failed. Check the logs for details." >> "$GITHUB_OUTPUT"
           fi
+      - name: Fail if snapshot tests failed
+        if: steps.test.outcome == 'failure'
+        run: exit 1
 
   post-snapshot-comment:
     needs: [test-snapshots]
