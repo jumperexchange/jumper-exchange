@@ -21,8 +21,9 @@ export const useWelcomeScreen = (): useWelcomeScreenResult => {
       state.setWelcomeScreenClosed,
     ]);
 
-  const [welcomeScreenClosed, setWelcomeScreenClosedLocal] =
-    useState<boolean>(false);
+  const [welcomeScreenClosed, setWelcomeScreenClosedLocal] = useState<boolean>(
+    welcomeScreenClosedFromStore,
+  );
 
   useEffect(() => {
     if (hydrated) {
