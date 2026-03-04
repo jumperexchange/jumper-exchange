@@ -51,7 +51,7 @@ export async function checkRoutesVisibility(
 }
 
 export async function navigateToTab(page, tabKey, expectedText) {
-  await page.locator(`#tab-key-${tabKey}`).click();
+  await page.getByTestId(`tab-key-${tabKey}`).click();
   await expect(
     page.locator(`xpath=//p[text()="${expectedText}"]`),
   ).toBeVisible();

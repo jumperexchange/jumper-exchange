@@ -28,7 +28,7 @@ export const VerticalTabs = () => {
               el.onClick(event, el.value);
             }}
             icon={el.icon}
-            id={`tab-key-${el.value}`}
+            data-testid={`tab-key-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
           />
         );
