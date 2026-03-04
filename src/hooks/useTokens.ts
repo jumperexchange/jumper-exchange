@@ -9,12 +9,7 @@ import { ExtendedToken } from '../utils/Token';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { createBatchFetcher } from '@/utils/batches/fetcher';
 
-const TOKEN_CHAIN_TYPES: ChainType[] = [
-  ChainType.EVM,
-  ChainType.SVM,
-  ChainType.UTXO,
-  ChainType.MVM,
-];
+const TOKEN_CHAIN_TYPES: ChainType[] = Object.values(ChainType);
 
 const tokensBatchesByChainType: Record<string, ChainType[]> =
   Object.fromEntries(

@@ -31,16 +31,28 @@ export const ClientNavbar = () => {
     setWelcomeScreenClosed(false);
   };
 
-  const logoHref = useMemo(() => {
+  const { href, variant } = useMemo(() => {
     if (isLearnPage) {
-      return AppPaths.Learn;
+      return {
+        href: AppPaths.Learn,
+        variant: 'learn' as const,
+      };
     } else if (isScanPage) {
-      return AppPaths.Scan;
+      return {
+        href: AppPaths.Scan,
+        variant: 'scan' as const,
+      };
     } else if (isPrivacyPolicyPage) {
-      return AppPaths.PrivacyPolicy;
-    } else {
-      return AppPaths.Main;
+      return {
+        href: AppPaths.PrivacyPolicy,
+        variant: 'default' as const,
+      };
     }
+
+    return {
+      href: AppPaths.Main,
+      variant: 'default' as const,
+    };
   }, [isLearnPage, isScanPage, isPrivacyPolicyPage]);
 
   return (
@@ -48,18 +60,8 @@ export const ClientNavbar = () => {
       enableColorOnDark
       hasBlurredNavigation={configTheme?.hasBlurredNavigation}
     >
-      <LogoLinkWrapper href={logoHref} id="jumper-logo" onClick={handleClick}>
-        <Logo
-          variant={
-            isScanPage
-              ? 'scan'
-              : isLearnPage
-                ? 'learn'
-                : isPrivacyPolicyPage
-                  ? 'default'
-                  : 'default'
-          }
-        />
+      <LogoLinkWrapper href={href} id="jumper-logo" onClick={handleClick}>
+        <Logo variant={variant} />
       </LogoLinkWrapper>
       <Layout />
     </NavbarContainer>
