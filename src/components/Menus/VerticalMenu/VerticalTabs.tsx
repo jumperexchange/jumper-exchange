@@ -19,6 +19,7 @@ export const VerticalTabs = () => {
       orientation="vertical"
       onChange={handleChange}
       aria-label="vertical-tabs"
+      data-testid="tabs-container"
     >
       {verticalTabs.map((el: any, index) => {
         const tab = (
