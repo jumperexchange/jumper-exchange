@@ -1,11 +1,17 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getElementByText } from './commonFunctions';
+/** Time for MUI Slide exit animation in WelcomeOverlayLayout (slideTimeout) */
+const WELCOME_SLIDE_TIMEOUT_MS = 500;
+
 export async function closeWelcomeScreen(page: Page) {
   const getStartedButton = page.getByTestId('get-started-button');
   await expect(getStartedButton).toBeVisible();
+  await getStartedButton.scrollIntoViewIfNeeded();
   await getStartedButton.click();
-  await expect(getStartedButton).not.toBeVisible();
+  await expect(getStartedButton).not.toBeVisible({
+    timeout: WELCOME_SLIDE_TIMEOUT_MS + 5000,
+  });
 }
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();
