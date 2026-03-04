@@ -356,7 +356,15 @@ export class GoogleDriveShareAdapter implements ShareStorageAdapter {
   }
 
   async isAvailable(): Promise<boolean> {
+    return getCachedToken() !== null;
+  }
+
+  async connect(): Promise<boolean> {
     const token = await getOrRequestAccessToken();
     return token !== null;
+  }
+
+  async isValid(metadata: ShareMetadata): Promise<boolean> {
+    return getCachedToken() !== null;
   }
 }

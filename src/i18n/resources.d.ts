@@ -297,6 +297,15 @@ interface Resources {
         emailDesc: 'Sent to your email address';
         googleDriveDesc: 'Saved to your Google Drive';
         recoveryCodeDesc: 'A code you copy and keep safe';
+        instagram: 'Instagram';
+        instagramDesc: 'Sent via Instagram DM (coming soon)';
+        instagramConnectFailed: 'Failed to connect Instagram. Please try again.';
+        telegram: 'Telegram';
+        telegramDesc: 'Sent via Telegram message (coming soon)';
+        telegramConnectFailed: 'Failed to connect Telegram. Please try again.';
+        whatsapp: 'WhatsApp';
+        whatsappDesc: 'Sent via WhatsApp message (coming soon)';
+        whatsappConnectFailed: 'Failed to connect WhatsApp. Please try again.';
       };
       signup: {
         back: 'Back';
@@ -322,6 +331,8 @@ interface Resources {
         disclaimerBody: 'If you lose your password and retrieve fewer than {{threshold}} of your recovery shares, you will permanently lose access to your funds. There is no way to recover them.';
         disclaimerAcknowledge: 'I understand';
         disclaimerAcknowledgeCountdown: 'I understand ({{seconds}}s)';
+        additionalConnectors: 'Additional Connectors';
+        enableAdapter: 'Enable';
         mnemonicConfirmed: 'I have saved my recovery phrase';
         mnemonicWarning: 'Write down these 24 words in order. Never share them with anyone. This is the only way to recover your account if all other methods fail.';
         passwordMismatch: 'Passwords do not match';

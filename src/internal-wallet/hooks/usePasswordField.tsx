@@ -25,6 +25,7 @@ export function usePasswordField() {
             <IconButton
               onClick={toggleShowPassword}
               edge="end"
+              tabIndex={-1}
               aria-label={
                 showPassword
                   ? t('jumperWallet.login.hidePassword')

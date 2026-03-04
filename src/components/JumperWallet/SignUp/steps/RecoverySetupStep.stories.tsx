@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 import { action } from 'storybook/actions';
-import { RecoverySetupStep } from './RecoverySetupStep';
-import {
-  withMockJumperWalletStore,
-  withMockModalContainer,
-} from '../../__stories__/decorators';
 import type { ShareStorageType } from '@/internal-wallet/crypto/types';
 import type {
   AdapterFields,
   AdaptersWithFields,
 } from '@/internal-wallet/recovery/adapters/ShareStorageAdapter.types';
+import {
+  withMockJumperWalletStore,
+  withMockModalContainer,
+} from '../../__stories__/decorators';
+import { RecoverySetupStep } from './RecoverySetupStep';
 
 const meta = {
   title: 'JumperWallet/SignUp/RecoverySetupStep',
@@ -40,6 +40,9 @@ export const Default: Story = {
       email: false,
       googleDrive: false,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     },
     adapterFields: {},
     threshold: 2,
@@ -53,6 +56,9 @@ export const WithEmailEnabled: Story = {
       email: true,
       googleDrive: false,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     },
     adapterFields: { email: 'user@example.com' },
     threshold: 2,
@@ -66,6 +72,9 @@ export const AllEnabled: Story = {
       email: true,
       googleDrive: true,
       recoveryCode: true,
+      instagram: true,
+      whatsapp: true,
+      telegram: true,
     },
     adapterFields: { email: 'user@example.com' },
     threshold: 2,
@@ -80,6 +89,9 @@ export const AdvancedSetupOpen: Story = {
       email: true,
       googleDrive: false,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     },
     adapterFields: { email: 'user@example.com' },
     threshold: 2,
@@ -101,6 +113,9 @@ export const HighThreshold: Story = {
       email: true,
       googleDrive: true,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     },
     adapterFields: { email: 'user@example.com' },
     threshold: 3,
@@ -114,6 +129,9 @@ export const Interactive: Story = {
       email: false,
       googleDrive: false,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     },
     adapterFields: {},
     threshold: 2,
@@ -126,6 +144,9 @@ export const Interactive: Story = {
       email: false,
       googleDrive: false,
       recoveryCode: true,
+      instagram: false,
+      whatsapp: false,
+      telegram: false,
     });
     const [adapterFields, setAdapterFields] = useState<Partial<AdapterFields>>(
       {},

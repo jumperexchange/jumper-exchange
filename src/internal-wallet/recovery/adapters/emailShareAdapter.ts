@@ -54,8 +54,14 @@ export class EmailShareAdapter implements ShareStorageAdapter {
   }
 
   async isAvailable(): Promise<boolean> {
-    // Email delivery is always reachable; the address itself is validated
-    // at distribution time, not here.
+    return !!this.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+  }
+
+  async connect(): Promise<boolean> {
     return true;
+  }
+
+  async isValid(_metadata: ShareMetadata): Promise<boolean> {
+    return !!this.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
   }
 }

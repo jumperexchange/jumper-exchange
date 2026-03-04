@@ -92,9 +92,18 @@ export type ShareStorageType =
   | 'localStorage'
   | 'email'
   | 'googleDrive'
-  | 'recoveryCode';
+  | 'recoveryCode'
+  | 'instagram'
+  | 'telegram'
+  | 'whatsapp';
 
 /** Share storage target identifier */
-export type ShareStorageProvider = 'browser' | 'email' | 'google' | 'manual';
+export type ShareStorageProvider =
+  | 'browser'
+  | 'email'
+  | 'google'
+  | 'manual'
+  | 'meta'
+  | 'telegram';
 
 export type ShareRetrievalType = 'auto' | 'manual';

@@ -69,6 +69,9 @@ const DEFAULT_ENABLED_ADAPTERS: Record<ShareStorageType, boolean> = {
   email: true,
   googleDrive: true,
   recoveryCode: true,
+  instagram: false,
+  telegram: false,
+  whatsapp: false,
 };
 
 const initialState: SetupState = {

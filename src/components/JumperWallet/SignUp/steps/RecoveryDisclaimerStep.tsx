@@ -1,7 +1,7 @@
 'use client';
 
-import { Typography, Box } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isProduction } from '@/utils/isProduction';
@@ -33,7 +33,6 @@ export function RecoveryDisclaimerStep({
       setSecondsLeft((prev) => {
         if (prev <= 1) {
           clearInterval(interval);
-          onReady();
           return 0;
         }
         return prev - 1;
@@ -45,6 +44,16 @@ export function RecoveryDisclaimerStep({
     // want this effect to run once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // onReady is intentionally omitted — stable callback, secondsLeft drives this.
+  // biome-ignore lint: lint/correctness/useExhaustiveDependencies
+  useEffect(() => {
+    if (isProduction && secondsLeft === 0) {
+      onReady();
+    }
+    // onReady is intentionally omitted — stable callback, secondsLeft drives this.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [secondsLeft]);
 
   return (
     <StepContent>

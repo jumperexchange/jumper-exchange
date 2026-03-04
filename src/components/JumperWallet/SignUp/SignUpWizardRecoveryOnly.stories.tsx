@@ -9,23 +9,29 @@
  * 4. Verifies the recovered first-6 words match the original (color-coded
  *    against the banner above).
  */
-import { useState, useCallback, useEffect, useRef } from 'react';
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+
 import {
-  Stepper,
+  Alert,
+  Box,
+  Chip,
+  CircularProgress,
   Step,
   StepLabel,
-  Box,
+  Stepper,
   Typography,
-  Alert,
-  CircularProgress,
-  Chip,
 } from '@mui/material';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonPrimary,
   ButtonTransparent,
 } from '@/components/Button/Button.style';
+import {
+  entropyToMnemonicPhrase,
+  generateWallet,
+} from '@/internal-wallet/crypto/mnemonic';
+import { combineShares, splitEntropy } from '@/internal-wallet/crypto/shamir';
 import type {
   ShamirShare,
   ShareStorageType,
@@ -39,29 +45,24 @@ import type {
   AdaptersWithFields,
 } from '@/internal-wallet/recovery/adapters/ShareStorageAdapter.types';
 import {
-  generateWallet,
-  entropyToMnemonicPhrase,
-} from '@/internal-wallet/crypto/mnemonic';
-import { splitEntropy, combineShares } from '@/internal-wallet/crypto/shamir';
-import { RecoverySetupStep } from './steps/RecoverySetupStep';
-import { RecoveryDistributionStep } from './steps/RecoveryDistributionStep';
+  withMockJumperWalletStore,
+  withMockModalContainer,
+} from '../__stories__/decorators';
 import {
-  RecoveryCollectionStep,
   parseRawShare,
   type RecoveryCollectionEntry,
+  RecoveryCollectionStep,
   type ShareCollectionStatus,
 } from '../Recovery/RecoveryCollectionStep';
 import {
   ButtonRow,
-  WizardContainer,
-  WizardTitle,
-  WizardSubtitle,
   StepContent,
+  WizardContainer,
+  WizardSubtitle,
+  WizardTitle,
 } from './SignUpWizard.style';
-import {
-  withMockJumperWalletStore,
-  withMockModalContainer,
-} from '../__stories__/decorators';
+import { RecoveryDistributionStep } from './steps/RecoveryDistributionStep';
+import { RecoverySetupStep } from './steps/RecoverySetupStep';
 
 /* ------------------------------------------------------------------ */
 /*  Constants                                                          */
@@ -82,6 +83,9 @@ const DEFAULT_ENABLED_ADAPTERS: Record<ShareStorageType, boolean> = {
   email: false,
   googleDrive: false,
   recoveryCode: true,
+  instagram: false,
+  whatsapp: false,
+  telegram: false,
 };
 
 /* ------------------------------------------------------------------ */

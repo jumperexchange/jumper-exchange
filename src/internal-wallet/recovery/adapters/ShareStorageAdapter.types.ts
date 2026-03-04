@@ -20,7 +20,22 @@ export interface ShareStorageAdapter {
   readonly retrieval: ShareRetrievalType;
   store(share: string, metadata: ShareMetadata): Promise<boolean>;
   retrieve(metadata: RetrieveShareParams): Promise<string | null>;
+  /** Passive check — no side-effects. Returns true if the adapter is already ready. */
   isAvailable(): Promise<boolean>;
+  /** User-initiated connection. May trigger OAuth or other interactive flows. */
+  connect(): Promise<boolean>;
+  /** Pre-store gate — returns true if store(share, metadata) is expected to succeed. */
+  isValid(metadata: ShareMetadata): Promise<boolean>;
+}
+
+/**
+ * Sub-interface for messaging-channel adapters (Instagram, Telegram, WhatsApp).
+ * These are opt-in adapters that send the recovery share via a messaging app.
+ * Implementations are dummy until real integrations are built.
+ */
+export interface MessagingShareAdapter extends ShareStorageAdapter {
+  /** The kind of recipient identifier the user must provide. */
+  readonly recipientFieldType: 'phone' | 'username';
 }
 
 // ---------------------------------------------------------------------------
@@ -29,7 +44,7 @@ export interface ShareStorageAdapter {
 
 /** Metadata describing a single user-provided field for an adapter. */
 export interface AdapterFieldConfig {
-  inputType: 'email' | 'text' | 'password';
+  inputType: 'email' | 'text' | 'password' | 'tel';
   autoComplete: string;
   placeholder: string;
 }
@@ -44,6 +59,21 @@ export const ADAPTER_FIELD_CONFIGS = {
     inputType: 'email',
     autoComplete: 'email',
     placeholder: 'your@email.com',
+  },
+  instagram: {
+    inputType: 'text',
+    autoComplete: 'off',
+    placeholder: '@username',
+  },
+  telegram: {
+    inputType: 'text',
+    autoComplete: 'off',
+    placeholder: '@username or +1234567890',
+  },
+  whatsapp: {
+    inputType: 'tel',
+    autoComplete: 'tel',
+    placeholder: '+1234567890',
   },
 } as const satisfies Partial<Record<ShareStorageType, AdapterFieldConfig>>;
 

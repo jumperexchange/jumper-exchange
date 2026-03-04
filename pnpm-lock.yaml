@@ -140,8 +140,8 @@ importers:
         specifier: ^1.10.0
         version: 1.10.0
       '@zkp2p/sdk':
-        specifier: 0.0.14
-        version: 0.0.14(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
+        specifier: 0.0.15
+        version: 0.0.15(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)
       accept-language:
         specifier: ^3.0.20
         version: 3.0.20
@@ -5152,8 +5152,8 @@ packages:
     peerDependencies:
       ethers: ^5.0.0 || ^6.0.0
 
-  '@zkp2p/sdk@0.0.14':
-    resolution: {integrity: sha512-OeAR+WfcB8zef6govNYzIazeY86Hk0V9g5QfhqMry01zx9Kb5Ki/G/FWfz2VZjQM0hrtoueklI3PC2mC9mq42A==}
+  '@zkp2p/sdk@0.0.15':
+    resolution: {integrity: sha512-ASRGD21Wjo1mmgDx6J/8opgCkwdwE5Jg+VO/vW3Gvf6PBbybpun7+L0X1QNWVcSu+1gByUj5py0+ORFCznPzMw==}
     engines: {node: '>=22'}
     peerDependencies:
       react: '>=16.8.0'
@@ -17709,7 +17709,7 @@ snapshots:
       - typescript
       - zod
 
-  '@zkp2p/sdk@0.0.14(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
+  '@zkp2p/sdk@0.0.15(bufferutil@4.1.0)(react@19.2.4)(typescript@5.9.3)(utf-8-validate@5.0.10)(viem@2.45.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)(zod@4.3.6))(zod@4.3.6)':
     dependencies:
       '@zkp2p/contracts-v2': 0.0.11(ethers@6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10))(typescript@5.9.3)(zod@4.3.6)
       ethers: 6.16.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)

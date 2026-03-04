@@ -6,10 +6,11 @@ import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { usePeerExtensionInstallStore } from '@/stores/peerExtensionInstall/PeerExtensionInstallStore';
+import getApiUrl from '@/utils/getApiUrl';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
-import getApiUrl from '@/utils/getApiUrl';
 
 /**
  * Configuration hook for the main widget variant
@@ -113,11 +114,9 @@ export function useMainWidgetConfig(
             toolDetails,
             data,
           }: FrontendAction) => {
-            if (toolDetails.key === 'zkp2p') {
+            if (toolDetails.key === 'peer') {
               if (!data?.intentHash) {
-                throw new Error(
-                  'Missing intent hash for zkP2P frontend action',
-                );
+                throw new Error('Missing intent hash for Peer frontend action');
               }
 
               // Check the status of the intent, is it done ?
@@ -138,23 +137,35 @@ export function useMainWidgetConfig(
               // Peer extension handling
               const extensionState = await peerExtensionSdk.getState();
               if (extensionState === 'needs_install') {
-                peerExtensionSdk.openInstallPage();
+                usePeerExtensionInstallStore
+                  .getState()
+                  .openModal('needs_install');
                 throw new Error('Peer extension not installed');
               } else if (extensionState === 'needs_connection') {
+                usePeerExtensionInstallStore
+                  .getState()
+                  .openModal('needs_connection');
                 await peerExtensionSdk.requestConnection();
+                peerExtensionSdk.onramp({
+                  intentHash: data.intentHash,
+                });
+                usePeerExtensionInstallStore.getState().openModal('onramp');
               } else {
                 peerExtensionSdk.onramp({
                   intentHash: data.intentHash,
                 });
+                usePeerExtensionInstallStore.getState().openModal('onramp');
               }
 
               return new Promise((resolve, reject) => {
                 const unsubscribe = peerExtensionSdk.onProofComplete(
                   (result) => {
+                    console.log('Proof complete status:', result);
                     switch (result.status) {
                       case 'success': {
                         // Peer handles the on-chain execution themselves
-                        return null;
+                        resolve(null);
+                        return;
                       }
                       case 'failure':
                         reject(

@@ -12,6 +12,7 @@ import { IntercomProvider } from 'src/providers/IntercomProvider';
 import { SettingsStoreProvider } from 'src/stores/settings';
 import initTranslations from '@/app/i18n';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { PeerExtensionInstallModal } from '@/components/PeerExtensionInstallModal/PeerExtensionInstallModal';
 import config from '@/config/env-config';
 import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
@@ -21,6 +22,10 @@ import {
   DefaultThemeProvider,
   MUIThemeProvider,
 } from '@/providers/ThemeProvider';
+import {
+  THEME_COLOR_SCHEME_STORAGE_KEY,
+  THEME_MODE_STORAGE_KEY,
+} from '@/providers/ThemeProvider/constants';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import {
   JumperWalletModalWrapper,
@@ -33,10 +38,6 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '../lib/metadata';
-import {
-  THEME_COLOR_SCHEME_STORAGE_KEY,
-  THEME_MODE_STORAGE_KEY,
-} from '@/providers/ThemeProvider/constants';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -212,6 +213,7 @@ export default async function RootLayout({
                   <WalletProvider>
                     <MUIThemeProvider>
                       <JumperWalletModalWrapper />
+                      <PeerExtensionInstallModal />
                       <SettingsStoreProvider>
                         <NavbarWrapper />
                         <IntercomProvider />

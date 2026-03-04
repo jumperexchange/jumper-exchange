@@ -32,4 +32,12 @@ export class RecoveryCodeAdapter implements ShareStorageAdapter {
   async isAvailable(): Promise<boolean> {
     return true;
   }
+
+  async connect(): Promise<boolean> {
+    return true;
+  }
+
+  async isValid(_metadata: ShareMetadata): Promise<boolean> {
+    return true;
+  }
 }

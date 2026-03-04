@@ -61,4 +61,12 @@ export class LocalStorageAdapter implements ShareStorageAdapter {
     // localStorage is virtually always available, so this adapter is always usable
     return true;
   }
+
+  async connect(): Promise<boolean> {
+    return true;
+  }
+
+  async isValid(_metadata: ShareMetadata): Promise<boolean> {
+    return true;
+  }
 }

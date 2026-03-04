@@ -14,6 +14,8 @@ import KeyIcon from '@mui/icons-material/Key';
 import EmailIcon from '@mui/icons-material/Email';
 import CloudIcon from '@mui/icons-material/Cloud';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ChatIcon from '@mui/icons-material/Chat';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -48,15 +50,19 @@ interface RecoverySetupStepProps {
   onThresholdChange: (threshold: number) => void;
 }
 
-const SHARE_OPTIONS: { type: ShareStorageType; icon: React.ReactNode }[] = [
+const ADAPTER_OPTIONS: {
+  type: ShareStorageType;
+  icon: React.ReactNode;
+  default?: boolean;
+}[] = [
   { type: 'localStorage', icon: <KeyIcon /> },
   { type: 'googleDrive', icon: <CloudIcon /> },
   { type: 'email', icon: <EmailIcon /> },
   { type: 'recoveryCode', icon: <ContentCopyIcon /> },
+  { type: 'instagram', icon: <ChatIcon />, default: false },
+  { type: 'telegram', icon: <ChatIcon />, default: false },
+  { type: 'whatsapp', icon: <ChatIcon />, default: false },
 ];
-
-/** Adapters that are always available with no user action required. */
-const ALWAYS_CONNECTED: ShareStorageType[] = ['localStorage', 'recoveryCode'];
 
 type AdapterConnectStatus = {
   connecting: boolean;
@@ -65,12 +71,16 @@ type AdapterConnectStatus = {
 };
 
 function buildInitialStatus(): Record<ShareStorageType, AdapterConnectStatus> {
-  return {
-    localStorage: { connecting: false, connected: true, error: null },
-    recoveryCode: { connecting: false, connected: true, error: null },
-    email: { connecting: false, connected: false, error: null },
-    googleDrive: { connecting: false, connected: false, error: null },
-  };
+  return Object.fromEntries(
+    ADAPTER_OPTIONS.map((o) => [
+      o.type,
+      {
+        connecting: false,
+        connected: false,
+        error: null,
+      },
+    ]),
+  ) as Record<ShareStorageType, AdapterConnectStatus>;
 }
 
 export function RecoverySetupStep({
@@ -90,43 +100,61 @@ export function RecoverySetupStep({
 
   const enabledCount = Object.values(enabledAdapters).filter(Boolean).length;
 
-  // Keep email's connected status in sync with the field value.
-  const emailConnected =
-    !!adapterFields.email &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adapterFields.email);
+  // Reactively check isAvailable() for all adapters whenever field values change.
+  // Field-driven adapters (email, messaging) become available once their field is valid.
+  // Connection-based adapters (googleDrive) check cached state (no side-effects).
   useEffect(() => {
-    setConnectStatus((prev) => ({
-      ...prev,
-      email: { connecting: false, connected: emailConnected, error: null },
-    }));
-  }, [emailConnected]);
+    for (const option of ADAPTER_OPTIONS) {
+      createAdapter(option.type, adapterFields)
+        .isAvailable()
+        .then((available) => {
+          setConnectStatus((prev) => ({
+            ...prev,
+            [option.type]: {
+              ...prev[option.type],
+              connected: available,
+            },
+          }));
+        })
+        .catch(() => {});
+    }
+  }, [adapterFields]);
 
   /**
-   * Call isAvailable() for the given adapter type, updating connect status.
+   * Call connect() for the given adapter type, updating connect status.
+   * Skips the connect call if isAvailable() already returns true.
    * Returns true on success.
    */
   const handleConnect = useCallback(
     async (type: ShareStorageType): Promise<boolean> => {
+      const adapter = createAdapter(type, adapterFields);
+
+      // Skip the connect flow if the adapter is already available.
+      if (await adapter.isAvailable()) {
+        setConnectStatus((prev) => ({
+          ...prev,
+          [type]: { connecting: false, connected: true, error: null },
+        }));
+        return true;
+      }
+
       setConnectStatus((prev) => ({
         ...prev,
         [type]: { connecting: true, connected: false, error: null },
       }));
       try {
-        const available = await createAdapter(
-          type,
-          adapterFields,
-        ).isAvailable();
+        const connected = await adapter.connect();
         setConnectStatus((prev) => ({
           ...prev,
           [type]: {
             connecting: false,
-            connected: available,
-            error: available
+            connected,
+            error: connected
               ? null
               : t(`jumperWallet.shares.${type}ConnectFailed`),
           },
         }));
-        return available;
+        return connected;
       } catch {
         setConnectStatus((prev) => ({
           ...prev,
@@ -169,11 +197,6 @@ export function RecoverySetupStep({
           ...prev,
           [type]: { ...prev[type], error: null },
         }));
-        return;
-      }
-
-      if (ALWAYS_CONNECTED.includes(type) || type === 'email') {
-        onToggleAdapter(type, true);
         return;
       }
 
@@ -270,7 +293,9 @@ export function RecoverySetupStep({
 
       {/* Single card list — toggles appear in-place when Advanced Setup is open */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-        {SHARE_OPTIONS.map((option) => {
+        {ADAPTER_OPTIONS.filter(
+          (o) => o.default !== false || enabledAdapters[o.type],
+        ).map((option) => {
           const isEnabled = enabledAdapters[option.type] ?? false;
           return (
             <Box key={option.type}>
@@ -486,6 +511,93 @@ export function RecoverySetupStep({
               </IconButton>
             </Box>
           </Box>
+
+          {/* Additional Connectors — opt-in adapters not yet enabled */}
+          {ADAPTER_OPTIONS.some(
+            (o) => o.default === false && !enabledAdapters[o.type],
+          ) && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                fontWeight={500}
+              >
+                {t('jumperWallet.signup.additionalConnectors')}
+              </Typography>
+              {ADAPTER_OPTIONS.filter(
+                (o) => o.default === false && !enabledAdapters[o.type],
+              ).map((option) => (
+                <Box
+                  key={option.type}
+                  sx={(theme) => ({
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    border: '1.5px dashed',
+                    borderColor: (theme.vars || theme).palette.divider,
+                    backgroundColor: (theme.vars || theme).palette.alphaLight200
+                      .main,
+                    ...theme.applyStyles('light', {
+                      backgroundColor: (theme.vars || theme).palette
+                        .alphaDark200.main,
+                    }),
+                  })}
+                >
+                  {option.icon}
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Typography variant="body2" fontWeight={500}>
+                      {t(`jumperWallet.shares.${option.type}`)}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {t(`jumperWallet.shares.${option.type}Desc`)}
+                    </Typography>
+                    {adapterHasField(option.type) && (
+                      <TextField
+                        size="small"
+                        type={
+                          ADAPTER_FIELD_CONFIGS[
+                            option.type as AdaptersWithFields
+                          ].inputType
+                        }
+                        autoComplete={
+                          ADAPTER_FIELD_CONFIGS[
+                            option.type as AdaptersWithFields
+                          ].autoComplete
+                        }
+                        name={option.type}
+                        placeholder={
+                          ADAPTER_FIELD_CONFIGS[
+                            option.type as AdaptersWithFields
+                          ].placeholder
+                        }
+                        value={
+                          adapterFields[option.type as AdaptersWithFields] ?? ''
+                        }
+                        onChange={(e) =>
+                          onAdapterFieldChange(
+                            option.type as AdaptersWithFields,
+                            e.target.value,
+                          )
+                        }
+                        sx={{ mt: 1 }}
+                        fullWidth
+                      />
+                    )}
+                  </Box>
+                  <IconButton
+                    size={'small'}
+                    onClick={() => handleAdvancedToggle(option.type, true)}
+                    disabled={connectStatus[option.type].connecting}
+                    title={t('jumperWallet.signup.enableAdapter')}
+                  >
+                    <AddCircleOutlineIcon fontSize={'small'} />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+          )}
         </Box>
       </Collapse>
     </StepContent>

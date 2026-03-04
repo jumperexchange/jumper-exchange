@@ -718,7 +718,9 @@
       "disclaimerTitle": "Your funds are your responsibility",
       "disclaimerBody": "If you lose your password and retrieve fewer than {{threshold}} of your recovery shares, you will permanently lose access to your funds. There is no way to recover them.",
       "disclaimerAcknowledge": "I understand",
-      "disclaimerAcknowledgeCountdown": "I understand ({{seconds}}s)"
+      "disclaimerAcknowledgeCountdown": "I understand ({{seconds}}s)",
+      "additionalConnectors": "Additional Connectors",
+      "enableAdapter": "Enable"
     },
     "login": {
       "title": "Unlock Jumper Account",
@@ -787,7 +789,16 @@
       "localStorageDesc": "Stored on this device",
       "emailDesc": "Sent to your email address",
       "googleDriveDesc": "Saved to your Google Drive",
-      "recoveryCodeDesc": "A code you copy and keep safe"
+      "recoveryCodeDesc": "A code you copy and keep safe",
+      "instagram": "Instagram",
+      "instagramDesc": "Sent via Instagram DM (coming soon)",
+      "instagramConnectFailed": "Failed to connect Instagram. Please try again.",
+      "telegram": "Telegram",
+      "telegramDesc": "Sent via Telegram message (coming soon)",
+      "telegramConnectFailed": "Failed to connect Telegram. Please try again.",
+      "whatsapp": "WhatsApp",
+      "whatsappDesc": "Sent via WhatsApp message (coming soon)",
+      "whatsappConnectFailed": "Failed to connect WhatsApp. Please try again."
     },
     "shareStatus": {
       "pending": "Pending",
