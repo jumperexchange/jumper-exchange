@@ -29,6 +29,7 @@ export const useSendTransactionExecutor = (): TransactionExecutor => {
         to: action.tx.to as Hex,
         data: action.tx.data as Hex,
         chainId: action.tx.chainId,
+        value: action.tx.value ? BigInt(action.tx.value) : undefined,
         gasPrice: action.tx.gasPrice,
         maxFeePerGas: action.tx.maxFeePerGas,
         maxPriorityFeePerGas: action.tx.maxPriorityFeePerGas,
