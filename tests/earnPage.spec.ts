@@ -239,6 +239,7 @@ test.describe('Analytics filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
+    await page.waitForLoadState('domcontentloaded');
     await expect(connectButton(page)).toBeVisible();
     await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();

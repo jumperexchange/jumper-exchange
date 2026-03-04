@@ -11,7 +11,7 @@ import values from './testData/values.json' assert { type: 'json' };
 test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('load');
+    await page.waitForLoadState('domcontentloaded');
     await closeWelcomeScreen(page);
   });
 
