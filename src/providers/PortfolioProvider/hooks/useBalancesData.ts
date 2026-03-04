@@ -182,7 +182,7 @@ export const useBalancesData = (): UseTokensDataResult => {
             isSuccess: query.isSuccess,
             isPlaceholderData: query.isPlaceholderData,
             updatedAt: query.data?.updatedAt ?? null,
-            error: query.error ?? null,
+            error: query.error,
           };
         }
 
