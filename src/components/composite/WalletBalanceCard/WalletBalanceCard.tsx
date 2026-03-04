@@ -14,6 +14,7 @@ import {
   WalletBalanceCardContainer,
   WalletBalanceCardContentContainer,
 } from './WalletBalanceCard.styles';
+import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import type { PortfolioBalance, WalletToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
@@ -35,6 +36,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   isFetching,
   isSuccess,
   updatedAt,
+  error,
   data,
   'data-testid': dataTestId,
 }) => {
@@ -132,6 +134,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
               })}
             />
             <Stack>
+              {error && <Alert severity="error">{error.message}</Alert>}
               {!isSuccess &&
                 balanceGroups.length == 0 &&
                 Array.from({ length: 8 }).map(() => (

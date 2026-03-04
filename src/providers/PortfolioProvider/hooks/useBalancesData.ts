@@ -14,6 +14,7 @@ export interface ResultState {
   isSuccess: boolean;
   isPlaceholderData: boolean;
   updatedAt: number | null;
+  error: Error | null;
 }
 
 export interface UseTokensDataResult extends ResultState {
@@ -181,6 +182,7 @@ export const useBalancesData = (): UseTokensDataResult => {
             isSuccess: query.isSuccess,
             isPlaceholderData: query.isPlaceholderData,
             updatedAt: query.data?.updatedAt ?? null,
+            error: query.error ?? null,
           };
         }
 

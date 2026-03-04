@@ -6,6 +6,7 @@ export interface UsePriceLookupResult {
   isLoading: boolean;
   hasFreshPrices: boolean;
   updatedAt: number | undefined;
+  error: Error | null;
 }
 
 /**
@@ -19,6 +20,7 @@ export const usePriceLookup = (): UsePriceLookupResult => {
     isLoading,
     isSuccess: hasFreshPrices,
     updatedAt,
+    error,
   } = useTokens();
 
   const getPrice = useMemo(() => {
@@ -38,5 +40,6 @@ export const usePriceLookup = (): UsePriceLookupResult => {
     isLoading,
     hasFreshPrices,
     updatedAt,
+    error,
   };
 };
