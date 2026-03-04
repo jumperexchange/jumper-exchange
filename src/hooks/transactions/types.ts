@@ -1,6 +1,8 @@
 export enum TransactionErrorType {
   TransactionRejected = 'TransactionRejected',
   TransactionFailed = 'TransactionFailed',
+  TransactionReverted = 'TransactionReverted',
+  TransactionCanceled = 'TransactionCanceled',
   InsufficientBalance = 'InsufficientBalance',
   NetworkError = 'NetworkError',
   FetchCallDataFailed = 'FetchCallDataFailed',

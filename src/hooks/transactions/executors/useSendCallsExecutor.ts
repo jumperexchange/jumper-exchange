@@ -1,5 +1,5 @@
-import { useCallback, useMemo } from 'react';
-import { useCallsStatus, useSendCalls } from 'wagmi';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSendCalls, useWaitForCallsStatus } from 'wagmi';
 import { type Hex } from 'viem';
 import type { TransactionAction, TransactionExecutor } from './types';
 
@@ -8,6 +8,9 @@ import type { TransactionAction, TransactionExecutor } from './types';
  * into a single wallet approval. Use when the wallet supports batch transactions.
  */
 export const useSendCallsExecutor = (): TransactionExecutor => {
+  const [txHash, setTxHash] = useState<Hex | undefined>();
+  const [error, setError] = useState<Error | undefined>();
+
   const {
     sendCalls,
     data: sendCallsData,
@@ -17,16 +20,14 @@ export const useSendCallsExecutor = (): TransactionExecutor => {
     reset,
   } = useSendCalls();
 
+  // @Note: this is the batch hash
   const sendCallsDataId = sendCallsData?.id ?? '';
 
   const {
     data: callsStatusData,
     isSuccess,
     isLoading: isConfirming,
-    isError: isCallsStatusError,
-    error: callsStatusError,
-    refetch,
-  } = useCallsStatus({
+  } = useWaitForCallsStatus({
     id: sendCallsDataId,
     query: {
       enabled: !!sendCallsDataId,
@@ -51,23 +52,51 @@ export const useSendCallsExecutor = (): TransactionExecutor => {
     [sendCalls],
   );
 
-  const txHash = useMemo(() => {
-    if (!callsStatusData?.receipts?.length) {
-      return undefined;
+  // @Note: this is based on sdk waitForBatchTransactionReceipt
+  useEffect(() => {
+    if (!callsStatusData) {
+      return;
     }
-    // @TODO maybe here we need some checks for the receipt status
-    const transactionReceipt = callsStatusData.receipts.at(-1)!;
-    return transactionReceipt.transactionHash;
+
+    if (callsStatusData?.status === 'success') {
+      if (
+        !callsStatusData.receipts?.length ||
+        !callsStatusData.receipts.every((receipt) => receipt.transactionHash) ||
+        callsStatusData.receipts.some(
+          (receipt) => receipt.status === 'reverted',
+        )
+      ) {
+        setError(new Error('Transaction was reverted.'));
+        return;
+      }
+
+      const transactionReceipt = callsStatusData.receipts.at(-1)!;
+      setTxHash(transactionReceipt.transactionHash);
+    }
+    if (
+      callsStatusData?.statusCode >= 400 &&
+      callsStatusData?.statusCode < 500
+    ) {
+      setError(new Error('Transaction was canceled.'));
+    }
+
+    setError(new Error('Transaction failed.'));
   }, [callsStatusData]);
+
+  const handleReset = useCallback(() => {
+    reset();
+    setTxHash(undefined);
+    setError(undefined);
+  }, [reset]);
 
   return {
     execute,
-    reset,
+    reset: handleReset,
     txHash,
     isPending,
     isConfirming,
     isSuccess: isSuccess && !!txHash,
-    isError: isSendCallsError || isCallsStatusError,
-    error: sendCallsError ?? callsStatusError ?? null,
+    isError: isSendCallsError || !!error,
+    error: sendCallsError ?? error ?? null,
   };
 };

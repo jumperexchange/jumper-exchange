@@ -718,6 +718,16 @@
           "description": "The transaction failed to complete. Please try again.",
           "tryAgain": "Try again"
         },
+        "transactionReverted": {
+          "title": "Transaction failed",
+          "description": "The transaction was reverted. Please try again.",
+          "close": "Close"
+        },
+        "transactionCanceled": {
+          "title": "Transaction canceled",
+          "description": "The transaction was canceled. Please try again.",
+          "close": "Close"
+        },
         "insufficientBalance": {
           "title": "Insufficient balance",
           "description": "You do not have enough balance to complete this transaction.",

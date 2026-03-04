@@ -58,6 +58,20 @@ export const DUST_CONVERSION_STATUS_KEYS: TransactionStatusKeys = {
         'portfolio.dustConversion.error.transactionFailed.description',
       action: 'portfolio.dustConversion.error.transactionFailed.tryAgain',
     },
+    [TransactionErrorType.TransactionReverted]: {
+      title: 'portfolio.dustConversion.error.transactionReverted.title',
+      description:
+        'portfolio.dustConversion.error.transactionReverted.description',
+      action: 'portfolio.dustConversion.error.transactionReverted.close',
+      isClose: true,
+    },
+    [TransactionErrorType.TransactionCanceled]: {
+      title: 'portfolio.dustConversion.error.transactionCanceled.title',
+      description:
+        'portfolio.dustConversion.error.transactionCanceled.description',
+      action: 'portfolio.dustConversion.error.transactionCanceled.close',
+      isClose: true,
+    },
     [TransactionErrorType.InsufficientBalance]: {
       title: 'portfolio.dustConversion.error.insufficientBalance.title',
       description:

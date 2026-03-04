@@ -100,6 +100,12 @@ const detectErrorType = (
   if (msg.includes('user rejected') || msg.includes('user denied')) {
     return TransactionErrorType.TransactionRejected;
   }
+  if (msg.includes('reverted')) {
+    return TransactionErrorType.TransactionReverted;
+  }
+  if (msg.includes('canceled')) {
+    return TransactionErrorType.TransactionCanceled;
+  }
   if (msg.includes('insufficient')) {
     return TransactionErrorType.InsufficientBalance;
   }

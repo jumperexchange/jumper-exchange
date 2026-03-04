@@ -783,6 +783,11 @@ interface Resources {
             description: 'You do not have enough balance to complete this transaction.';
             title: 'Insufficient balance';
           };
+          transactionCanceled: {
+            close: 'Close';
+            description: 'The transaction was canceled. Please try again.';
+            title: 'Transaction canceled';
+          };
           transactionFailed: {
             description: 'The transaction failed to complete. Please try again.';
             title: 'Transaction failed';
@@ -792,6 +797,11 @@ interface Resources {
             description: 'You rejected the transaction in your wallet. Please try again.';
             title: 'Transaction rejected';
             tryAgain: 'Try again';
+          };
+          transactionReverted: {
+            close: 'Close';
+            description: 'The transaction was reverted. Please try again.';
+            title: 'Transaction failed';
           };
           unknown: {
             description: 'An unexpected error occurred. Please try again.';
