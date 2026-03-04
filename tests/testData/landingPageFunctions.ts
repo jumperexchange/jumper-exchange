@@ -7,7 +7,10 @@ export const LANDING_PAGE = {
 };
 
 export async function closeWelcomeScreen(page: Page) {
-  return page.locator(LANDING_PAGE.GET_STARTED_BUTTON).click();
+  const getStartedButton = page.locator(LANDING_PAGE.GET_STARTED_BUTTON);
+  await getStartedButton.waitFor({ state: 'visible' });
+  await getStartedButton.click();
+  await getStartedButton.waitFor({ state: 'detached' });
 }
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();
