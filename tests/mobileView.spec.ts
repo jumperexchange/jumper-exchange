@@ -10,7 +10,6 @@ import {
   switchTheme,
   Theme,
 } from './testData/menuFunctions';
-import { LANDING_PAGE } from './testData/landingPageFunctions';
 import { qase } from 'playwright-qase-reporter';
 
 test.describe('Verify essential mobile flows', () => {
@@ -98,9 +97,7 @@ test.describe('Verify essential mobile flows', () => {
 
       await test.step('welcome can be closed', async () => {
         await closeWelcomeScreen(page);
-        await expect(
-          page.locator(LANDING_PAGE.GET_STARTED_BUTTON),
-        ).not.toBeVisible();
+        await expect(page.getByTestId('get-started-button')).not.toBeVisible();
       });
     },
   );
