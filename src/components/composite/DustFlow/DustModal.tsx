@@ -133,8 +133,6 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     },
   });
 
-  console.log(transactionForm);
-
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,

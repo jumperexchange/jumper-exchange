@@ -10,9 +10,14 @@ export const RouteOverviewSubmitButton = ({
 }) => {
   const { t } = useTranslation();
   const { isSubmitting } = useWidgetSubmit();
-  const isDisabled = isFormSubmitting || isSubmitting;
+  const isLoading = isFormSubmitting || isSubmitting;
   return (
-    <Button variant={Variant.Primary} disabled={isDisabled} type="submit">
+    <Button
+      variant={Variant.Primary}
+      disabled={isLoading}
+      loading={isLoading}
+      type="submit"
+    >
       {t('buttons.convertDust')}
     </Button>
   );
