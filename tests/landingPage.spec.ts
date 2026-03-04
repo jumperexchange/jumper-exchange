@@ -18,6 +18,7 @@ test.describe('Landing page and navigation', () => {
   test(
     qase(2, 'Should navigate to the homepage and change tabs'),
     async ({ page }) => {
+      await page.waitForLoadState('domcontentloaded');
       await page.getByTestId('tabs-container').waitFor({ state: 'visible' });
       await navigateToTab(page, 1, 'Gas');
       await navigateToTab(page, 0, 'Exchange');
