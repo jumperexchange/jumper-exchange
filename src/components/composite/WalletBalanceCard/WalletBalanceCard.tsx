@@ -135,22 +135,26 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
             />
             <Stack>
               {error && <Alert severity="error">{error.message}</Alert>}
-              {!isSuccess &&
-                balanceGroups.length == 0 &&
-                Array.from({ length: 8 }).map(() => (
-                  <BalanceCardSkeleton size={BalanceCardSize.SM} />
-                ))}
-              {balanceGroups.map(([symbol, balances], index) => (
-                <BalanceCard
-                  balances={balances}
-                  size={BalanceCardSize.SM}
-                  key={symbol}
-                  onSelect={handleSelectToken}
-                  shouldShowExpandedEndDivider={
-                    index !== balanceGroups.length - 1
-                  }
-                />
-              ))}
+              {!error && (
+                <>
+                  {!isSuccess &&
+                    balanceGroups.length == 0 &&
+                    Array.from({ length: 8 }).map(() => (
+                      <BalanceCardSkeleton size={BalanceCardSize.SM} />
+                    ))}
+                  {balanceGroups.map(([symbol, balances], index) => (
+                    <BalanceCard
+                      balances={balances}
+                      size={BalanceCardSize.SM}
+                      key={symbol}
+                      onSelect={handleSelectToken}
+                      shouldShowExpandedEndDivider={
+                        index !== balanceGroups.length - 1
+                      }
+                    />
+                  ))}
+                </>
+              )}
             </Stack>
           </WalletBalanceCardContentContainer>
         </StyledAccordionDetails>

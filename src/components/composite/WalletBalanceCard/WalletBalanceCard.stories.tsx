@@ -50,3 +50,15 @@ export const Default: Story = {
     ...walletBalanceCardFixture,
   },
 };
+
+export const WithError: Story = {
+  args: {
+    walletAddress: '0x1234567890123456789012345678901234567890',
+    updatedAt: 12345,
+    refetch: () => {},
+    isFetching: false,
+    isSuccess: false,
+    data: {},
+    error: new Error('Failed to load balances'),
+  },
+};
