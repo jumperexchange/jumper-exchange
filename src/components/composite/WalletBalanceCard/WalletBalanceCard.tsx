@@ -14,6 +14,7 @@ import {
   WalletBalanceCardContainer,
   WalletBalanceCardContentContainer,
 } from './WalletBalanceCard.styles';
+import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import type { PortfolioBalance, WalletToken } from 'src/types/tokens';
 import { WalletTotalBalance } from './components/WalletTotalBalance';
@@ -28,6 +29,8 @@ import {
   balanceGroupSortAccessors,
   sortPortfolioItems,
 } from '@/providers/PortfolioProvider/filtering/utils';
+import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
+import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -35,6 +38,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   isFetching,
   isSuccess,
   updatedAt,
+  error,
   data,
   'data-testid': dataTestId,
 }) => {
@@ -132,22 +136,32 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
               })}
             />
             <Stack>
-              {!isSuccess &&
-                balanceGroups.length == 0 &&
-                Array.from({ length: 8 }).map(() => (
-                  <BalanceCardSkeleton size={BalanceCardSize.SM} />
-                ))}
-              {balanceGroups.map(([symbol, balances], index) => (
-                <BalanceCard
-                  balances={balances}
-                  size={BalanceCardSize.SM}
-                  key={symbol}
-                  onSelect={handleSelectToken}
-                  shouldShowExpandedEndDivider={
-                    index !== balanceGroups.length - 1
-                  }
+              {error && (
+                <BaseAlert
+                  variant={BaseAlertVariant.Error}
+                  description={error.message}
                 />
-              ))}
+              )}
+              {!error && (
+                <>
+                  {!isSuccess &&
+                    balanceGroups.length == 0 &&
+                    Array.from({ length: 8 }).map(() => (
+                      <BalanceCardSkeleton size={BalanceCardSize.SM} />
+                    ))}
+                  {balanceGroups.map(([symbol, balances], index) => (
+                    <BalanceCard
+                      balances={balances}
+                      size={BalanceCardSize.SM}
+                      key={symbol}
+                      onSelect={handleSelectToken}
+                      shouldShowExpandedEndDivider={
+                        index !== balanceGroups.length - 1
+                      }
+                    />
+                  ))}
+                </>
+              )}
             </Stack>
           </WalletBalanceCardContentContainer>
         </StyledAccordionDetails>

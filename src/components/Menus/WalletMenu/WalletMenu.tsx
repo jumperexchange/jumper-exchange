@@ -110,28 +110,32 @@ export const WalletMenu = () => {
           </Typography>
         </WalletButton>
       </Stack>
-      {Object.entries(balancesByAddress).map(
-        ([walletAddress, balanceByAddress]) => {
-          const balanceStateByAddress =
-            sources.balancesByAddress[walletAddress] ?? {};
+      {accounts.map((account) => {
+        const walletAddress = account.address;
+        if (!walletAddress) {
+          return null;
+        }
+        const balanceByAddress = balancesByAddress[walletAddress];
+        const balanceStateByAddress =
+          sources.balancesByAddress[walletAddress] ?? {};
 
-          return (
-            <WalletBalanceCard
-              key={walletAddress}
-              data-testid="wallet-balance-card"
-              walletAddress={walletAddress}
-              refetch={() => refreshByAddress(walletAddress)}
-              isFetching={
-                balanceStateByAddress.isLoading ||
-                balanceStateByAddress.isRefreshing
-              }
-              isSuccess={balanceStateByAddress.isSuccess}
-              updatedAt={balanceStateByAddress.updatedAt ?? Date.now()}
-              data={balanceByAddress ?? {}}
-            />
-          );
-        },
-      )}
+        return (
+          <WalletBalanceCard
+            key={walletAddress}
+            data-testid="wallet-balance-card"
+            walletAddress={walletAddress}
+            refetch={() => refreshByAddress(walletAddress)}
+            isFetching={
+              balanceStateByAddress.isLoading ||
+              balanceStateByAddress.isRefreshing
+            }
+            isSuccess={balanceStateByAddress.isSuccess}
+            updatedAt={balanceStateByAddress.updatedAt ?? Date.now()}
+            data={balanceByAddress ?? {}}
+            error={balanceStateByAddress.error}
+          />
+        );
+      })}
     </CustomDrawer>
   );
 };
