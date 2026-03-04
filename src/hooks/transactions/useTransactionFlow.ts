@@ -89,7 +89,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       setCurrentActionIndex(0);
       setCurrentStep('success');
       setCallData(null);
-      executor.reset();
       options.onSuccess?.();
     }
   }, [

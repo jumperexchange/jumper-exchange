@@ -124,7 +124,13 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         },
       ],
     };
-  }, [isDustSelection, widgetNav, dustSummary, fetchQuotesAsync]);
+  }, [
+    isDustSelection,
+    widgetNav,
+    dustSummary,
+    fetchQuotesAsync,
+    approveTokens,
+  ]);
 
   const transactionForm = useTransactionForm({
     chainId: nativeTokenChainId,
