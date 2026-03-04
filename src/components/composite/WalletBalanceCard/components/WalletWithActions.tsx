@@ -38,6 +38,7 @@ interface WalletWithActionsProps {
 export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
   const { t } = useTranslation();
 
+  const disconnectWallet = useAccountDisconnect();
   const { trackEvent } = useUserTracking();
   const { chains } = useChains();
   const { isSafe } = useMultisig();
@@ -117,6 +118,8 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
     if (!walletAddress) {
       return;
     }
+
+    disconnectWallet(account);
 
     trackEvent({
       category: TrackingCategory.WalletMenu,
