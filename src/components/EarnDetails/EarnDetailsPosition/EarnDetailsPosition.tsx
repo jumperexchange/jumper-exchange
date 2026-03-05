@@ -170,8 +170,9 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
       tabs={tabs}
       size={HorizontalTabSize.SM}
       sx={{
+        maxWidth: '-webkit-fill-available',
         width: {
-          lg: 408,
+          md: 408,
         },
       }}
       renderContent={(value) => {

@@ -109,6 +109,7 @@ export const EarnDetailsRowFlexContainer = styled(EarnDetailsFlexContainer)(
 
 export const EarnDetailsColumnFlexContainer = styled(EarnDetailsFlexContainer)(
   ({ theme }) => ({
+    maxWidth: '-webkit-fill-available',
     flex: '1 0 fit-content',
     flexDirection: 'column',
     justifyContent: 'space-between',
