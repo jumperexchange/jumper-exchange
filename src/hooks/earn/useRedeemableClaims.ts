@@ -34,7 +34,16 @@ export const useRedeemableClaims = (
         throw result.error;
       }
       // @ts-expect-error see LF-15589 - we are transforming data in the backend
-      return result.data.data;
+      const data = result.data.data ?? {};
+
+      return {
+        ...data,
+        claimData: data.claimData
+          ? Array.isArray(data.claimData)
+            ? data.claimData
+            : [data.claimData]
+          : [],
+      };
     },
     enabled:
       !!address &&
