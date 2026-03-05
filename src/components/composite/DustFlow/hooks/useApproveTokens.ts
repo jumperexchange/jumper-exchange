@@ -1,4 +1,4 @@
-import { useSwitchChain, useWriteContract, useConfig } from 'wagmi';
+import { useWriteContract, useConfig } from 'wagmi';
 import { readContracts, waitForTransactionReceipt } from '@wagmi/core';
 import { ERC20_ABI } from '../constants';
 import type { Address } from 'viem';
@@ -15,7 +15,7 @@ export function useApproveTokens() {
       ownerAddress: Address,
       spenderAddress: Address,
     ) => {
-      const allowances = (await readContracts(config, {
+      const allowances = await readContracts(config, {
         contracts: tokens.map(({ address: token }) => ({
           address: token,
           abi: ERC20_ABI,
@@ -23,11 +23,12 @@ export function useApproveTokens() {
           args: [ownerAddress, spenderAddress] as const,
           chainId,
         })),
-        allowFailure: false,
-      })) as bigint[];
+        allowFailure: true,
+      });
 
       const needsApproval = tokens.filter(
-        ({ amount }, i) => allowances[i] < amount,
+        ({ amount }, i) =>
+          allowances[i].status === 'success' && allowances[i].result < amount,
       );
 
       console.log('needsApproval', needsApproval);
@@ -43,7 +44,7 @@ export function useApproveTokens() {
             abi: ERC20_ABI,
             functionName: 'approve',
             args: [spenderAddress, amount],
-            chainId, // also pin chainId on writes
+            chainId,
           }),
         ),
       );
