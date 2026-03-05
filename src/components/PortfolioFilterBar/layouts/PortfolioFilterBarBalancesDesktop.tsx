@@ -1,9 +1,6 @@
 'use client';
 
-import type { FC, PropsWithChildren } from 'react';
-
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
-import { PortfolioFilterBarContentContainer } from '../PortfolioFilterBar.styles';
 import { usePortfolioBalancesFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
@@ -27,9 +24,7 @@ interface PendingFilterValues {
   sortBy: SortByEnum;
 }
 
-export const PortfolioFilterBarBalancesDesktop: FC<PropsWithChildren> = ({
-  children,
-}) => {
+export const PortfolioFilterBarBalancesDesktop = () => {
   const { t } = useTranslation();
   const {
     isLoading,
@@ -207,28 +202,24 @@ export const PortfolioFilterBarBalancesDesktop: FC<PropsWithChildren> = ({
   }
 
   return (
-    <PortfolioFilterBarContentContainer>
-      <PortfolioAnimatedLayoutContainer>
-        {isLoading ? (
-          <PortfolioFilterOptionsSkeleton />
-        ) : (
-          <FilterSortModal
-            categories={categories}
-            applyButtonLabel={t('portfolio.filter.filterAndSort')}
-            clearButtonLabel={t('portfolio.filter.clearAll')}
-            onApply={applyFilters}
-            onClear={clearAll}
-            onClose={resetPending}
-            appliedFiltersCount={filtersCount}
-            disableApply={!hasPendingFiltersApplied}
-            disableClear={!hasPendingFiltersApplied}
-            testId="portfolio-filters-desktop-modal"
-            defaultTriggerSx={{ justifyContent: 'flex-end' }}
-          />
-        )}
-      </PortfolioAnimatedLayoutContainer>
-
-      {children}
-    </PortfolioFilterBarContentContainer>
+    <PortfolioAnimatedLayoutContainer useStackWrapper={false}>
+      {isLoading ? (
+        <PortfolioFilterOptionsSkeleton />
+      ) : (
+        <FilterSortModal
+          categories={categories}
+          applyButtonLabel={t('portfolio.filter.filterAndSort')}
+          clearButtonLabel={t('portfolio.filter.clearAll')}
+          onApply={applyFilters}
+          onClear={clearAll}
+          onClose={resetPending}
+          appliedFiltersCount={filtersCount}
+          disableApply={!hasPendingFiltersApplied}
+          disableClear={!hasPendingFiltersApplied}
+          testId="portfolio-filters-desktop-modal"
+          defaultTriggerSx={{ justifyContent: 'flex-end' }}
+        />
+      )}
+    </PortfolioAnimatedLayoutContainer>
   );
 };

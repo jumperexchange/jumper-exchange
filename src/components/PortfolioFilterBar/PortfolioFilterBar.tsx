@@ -14,14 +14,8 @@ import { PortfolioFilterBarEmptyDesktop } from './layouts/PortfolioFilterBarEmpt
 import { PortfolioFilterBarEmptyTablet } from './layouts/PortfolioFilterBarEmptyTablet';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AnimatePresence } from 'motion/react';
-import { PortfolioSortBalancesDesktop } from './layouts/PortfolioSortBalancesDesktop';
-import { PortfolioSortEmptyDesktop } from './layouts/PortfolioSortEmptyDesktop';
-import { PortfolioSortPositionsDesktop } from './layouts/PortfolioSortPositionsDesktop';
 import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
 import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
-import { PortfolioFilterBarBalancesLastUpdatedBadge } from './layouts/PortfolioFilterBarBalancesLastUpdatedBadge';
-import { PortfolioFilterBarPositionsLastUpdatedBadge } from './layouts/PortfolioFilterBarPositionsLastUpdatedBadge';
-
 export interface PortfolioFilterBarProps {
   value: PortfolioFilterBarTab;
   onChange: (value: PortfolioFilterBarTab) => void;
@@ -47,21 +41,9 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       ? PortfolioFilterBarBalancesTablet
       : PortfolioFilterBarPositionsTablet;
 
-  const PortfolioSortDesktop = isDisabled
-    ? PortfolioSortEmptyDesktop
-    : value === PortfolioFilterBarTab.TOKENS
-      ? PortfolioSortBalancesDesktop
-      : PortfolioSortPositionsDesktop;
-
   const PortfolioFilterView = isTablet
     ? PortfolioFilterViewTablet
     : PortfolioFilterViewDesktop;
-
-  const PortfolioFilterBarLastUpdatedBadge = isDisabled
-    ? Fragment
-    : value === PortfolioFilterBarTab.TOKENS
-      ? PortfolioFilterBarBalancesLastUpdatedBadge
-      : PortfolioFilterBarPositionsLastUpdatedBadge;
 
   return (
     <PortfolioFilterBarContainer>
@@ -71,20 +53,15 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
           value={value}
           onChange={onChange}
         />
-        {!isTablet && <PortfolioFilterBarLastUpdatedBadge />}
-        {isTablet && (
-          <AnimatePresence mode="wait">
-            <PortfolioFilterBarContentTablet key={value} />
-          </AnimatePresence>
-        )}
-      </PortfolioFilterBarHeaderContainer>
-      {!isTablet && (
+
         <AnimatePresence mode="wait">
-          <PortfolioFilterBarContentDesktop key={value}>
-            <PortfolioSortDesktop />
-          </PortfolioFilterBarContentDesktop>
+          {isTablet ? (
+            <PortfolioFilterBarContentTablet key={value} />
+          ) : (
+            <PortfolioFilterBarContentDesktop key={value} />
+          )}
         </AnimatePresence>
-      )}
+      </PortfolioFilterBarHeaderContainer>
     </PortfolioFilterBarContainer>
   );
 };
