@@ -702,7 +702,7 @@ interface Resources {
             title: 'Your wallet is currently not supported';
           };
           'not-supported': {
-            description: 'Please use an <strong>{{type}} wallet<strong> to execute transactions for this opportunity.';
+            description: 'Please use an <strong>{{type}} wallet</strong> to execute transactions for this opportunity.';
             title: 'Your wallet is currently not supported';
           };
         };
