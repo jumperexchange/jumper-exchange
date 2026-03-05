@@ -5,7 +5,7 @@ import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 import { useCallback } from 'react';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 
-export const queryKey = [getQueryKey('chains', 'jumper-default')];
+export const queryKey = [getQueryKey('chains')];
 
 export interface ChainProps {
   chains: ExtendedChain[];
