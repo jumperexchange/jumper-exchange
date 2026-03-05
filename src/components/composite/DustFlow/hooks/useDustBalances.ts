@@ -15,7 +15,7 @@ export const useDustBalances = () => {
   );
 
   const nonNativeBalances = useMemo(() => {
-    if (!allTokens?.tokens) {
+    if (!allTokens) {
       return [];
     }
 
@@ -42,13 +42,13 @@ export const useDustBalances = () => {
   );
 
   const nativeExtendedTokens = useMemo(() => {
-    if (!allTokens?.tokens) {
+    if (!allTokens) {
       return [];
     }
 
     return chains
       .flatMap((chain) => {
-        const nativeToken = allTokens.tokens[chain.id]?.find(
+        const nativeToken = allTokens[chain.id]?.find(
           (token) =>
             token.address.toLowerCase() ===
             chain.nativeToken.address.toLowerCase(),
