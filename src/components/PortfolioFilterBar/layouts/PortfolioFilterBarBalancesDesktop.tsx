@@ -1,18 +1,31 @@
 'use client';
 
 import type { FC, PropsWithChildren } from 'react';
-import Box from '@mui/material/Box';
-import { Select } from '@/components/core/form/Select/Select';
-import { SelectVariant } from '@/components/core/form/Select/Select.types';
+
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
-import {
-  PortfolioFilterBarClearFiltersButton,
-  PortfolioFilterBarContentContainer,
-} from '../PortfolioFilterBar.styles';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { PortfolioFilterBarContentContainer } from '../PortfolioFilterBar.styles';
 import { usePortfolioBalancesFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
+import { usePendingFilters } from '@/components/composite/MultiLayer/hooks';
+import { formatSliderValue } from '@/components/core/form/Select/utils';
+import { toFixedFractionDigits } from '@/utils/formatNumbers';
+import type { CategoryConfig } from '@/components/composite/MultiLayer/MultiLayer.types';
+import {
+  createMultiSelectCategory,
+  createSliderCategory,
+  createSingleSelectCategory,
+} from '@/components/composite/MultiLayer/utils';
+import type { SortByEnum } from '@/providers/PortfolioProvider/filtering/types';
+import { FilterSortModal } from '@/components/composite/FilterSortModal/FilterSortModal';
+
+interface PendingFilterValues {
+  wallets: string[];
+  chains: string[];
+  assets: string[];
+  value: number[];
+  sortBy: SortByEnum;
+}
 
 export const PortfolioFilterBarBalancesDesktop: FC<PropsWithChildren> = ({
   children,
@@ -24,17 +37,174 @@ export const PortfolioFilterBarBalancesDesktop: FC<PropsWithChildren> = ({
     chainOptions,
     assetOptions,
     hasFilterApplied,
+    filtersCount,
     filter,
     valueMin,
     valueMax,
     valueRangeMin,
     valueRangeMax,
-    handleWalletChange,
-    handleChainChange,
-    handleAssetChange,
-    handleValueChange,
+    sortByOptions,
+    sortBy,
+    handleApplyAllFilters,
+    handleSortBy,
     handleClearAllFilters,
   } = usePortfolioBalancesFilterBar();
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = usePendingFilters<PendingFilterValues>({
+    initialValues: {
+      wallets: filter?.wallets ?? [],
+      chains: filter?.chains?.map(String) ?? [],
+      assets: filter?.assets ?? [],
+      value: [valueMin, valueMax],
+      sortBy: sortBy,
+    },
+    onApply: (values) => {
+      handleApplyAllFilters({
+        wallets: values.wallets,
+        chains: values.chains.map(Number),
+        assets: values.assets,
+        minValue: values.value[0],
+        maxValue: values.value[1],
+      });
+      handleSortBy(values.sortBy);
+    },
+    onClear: handleClearAllFilters,
+    isFilterApplied: (values) => {
+      return (
+        values.wallets.length > 0 ||
+        values.chains.length > 0 ||
+        values.assets.length > 0 ||
+        values.value[0] !== valueRangeMin ||
+        values.value[1] !== valueRangeMax
+      );
+    },
+  });
+
+  const usedValueMin = pendingValues.value[0] ?? valueMin;
+  const usedValueMax = pendingValues.value[1] ?? valueMax;
+
+  const walletBadge =
+    pendingValues.wallets.length > 0
+      ? pendingValues.wallets.length.toString()
+      : undefined;
+  const chainBadge =
+    pendingValues.chains.length > 0
+      ? pendingValues.chains.length.toString()
+      : undefined;
+  const assetBadge =
+    pendingValues.assets.length > 0
+      ? pendingValues.assets.length.toString()
+      : undefined;
+  const valueBadge =
+    !isNaN(usedValueMin) &&
+    !isNaN(usedValueMax) &&
+    (usedValueMin !== valueRangeMin || usedValueMax !== valueRangeMax)
+      ? formatSliderValue(
+          pendingValues.value.map((value) =>
+            toFixedFractionDigits(value, 0, 2),
+          ),
+        )
+      : undefined;
+
+  const categories: CategoryConfig[] = [];
+
+  if (walletOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'wallet',
+        label: t('portfolio.filter.wallet'),
+        badgeLabel: walletBadge,
+        value: pendingValues.wallets,
+        onChange: (value) => setPendingValue('wallets', value),
+        options: walletOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.wallet').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-wallet-select-mobile',
+      }),
+    );
+  }
+
+  if (chainOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'chain',
+        label: t('portfolio.filter.chain'),
+        badgeLabel: chainBadge,
+        value: pendingValues.chains,
+        onChange: (value) => setPendingValue('chains', value),
+        options: chainOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.chain').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-chain-select-mobile',
+      }),
+    );
+  }
+
+  if (assetOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'asset',
+        label: t('portfolio.filter.asset'),
+        badgeLabel: assetBadge,
+        value: pendingValues.assets,
+        onChange: (value) => setPendingValue('assets', value),
+        options: assetOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.asset').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-asset-select-mobile',
+      }),
+    );
+  }
+
+  if (
+    !isNaN(valueRangeMin) &&
+    !isNaN(valueRangeMax) &&
+    valueRangeMin !== valueRangeMax
+  ) {
+    categories.push(
+      createSliderCategory({
+        id: 'value',
+        label: t('portfolio.filter.value'),
+        badgeLabel: valueBadge,
+        value: pendingValues.value,
+        onChange: (value) => setPendingValue('value', value),
+        min: valueRangeMin,
+        max: valueRangeMax,
+        testId: 'portfolio-filter-value-select-mobile',
+      }),
+    );
+  }
+
+  if (sortByOptions.length > 1) {
+    categories.push(
+      createSingleSelectCategory<SortByEnum>({
+        id: 'sortBy',
+        label: t('portfolio.sorting.sortBy'),
+        value: pendingValues.sortBy,
+        onChange: (value) => {
+          if (!value) {
+            return;
+          }
+          setPendingValue('sortBy', value);
+        },
+        options: sortByOptions,
+        testId: 'portfolio-filter-sort-select-mobile',
+      }),
+    );
+  }
 
   return (
     <PortfolioFilterBarContentContainer>
@@ -42,70 +212,19 @@ export const PortfolioFilterBarBalancesDesktop: FC<PropsWithChildren> = ({
         {isLoading ? (
           <PortfolioFilterOptionsSkeleton />
         ) : (
-          <Box
-            data-testid="portfolio-filter-bar-content"
-            sx={{ display: 'contents' }}
-          >
-            {walletOptions.length > 1 && (
-              <Select
-                options={walletOptions}
-                value={filter?.wallets || []}
-                onChange={handleWalletChange}
-                filterBy={t('portfolio.filter.wallet').toLowerCase()}
-                label={t('portfolio.filter.wallet')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-wallet-select"
-              />
-            )}
-
-            {chainOptions.length > 1 && (
-              <Select
-                options={chainOptions}
-                value={filter?.chains?.map(String) ?? []}
-                onChange={handleChainChange}
-                filterBy={t('portfolio.filter.chain').toLowerCase()}
-                label={t('portfolio.filter.chain')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-chain-select"
-              />
-            )}
-
-            {assetOptions.length > 1 && (
-              <Select
-                options={assetOptions}
-                value={filter?.assets || []}
-                onChange={handleAssetChange}
-                filterBy={t('portfolio.filter.asset').toLowerCase()}
-                label={t('portfolio.filter.asset')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-asset-select"
-              />
-            )}
-
-            {!isNaN(valueRangeMin) &&
-              !isNaN(valueRangeMax) &&
-              valueRangeMin !== valueRangeMax && (
-                <Select
-                  options={[]}
-                  value={[valueMin, valueMax]}
-                  min={valueRangeMin}
-                  max={valueRangeMax}
-                  onChange={handleValueChange}
-                  label={t('portfolio.filter.value')}
-                  variant={SelectVariant.Slider}
-                  data-testid="portfolio-filter-value-select"
-                />
-              )}
-
-            {hasFilterApplied && (
-              <PortfolioFilterBarClearFiltersButton
-                onClick={handleClearAllFilters}
-                data-testid="portfolio-filter-clear-filters-button"
-              >
-                <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
-              </PortfolioFilterBarClearFiltersButton>
-            )}
-          </Box>
+          <FilterSortModal
+            categories={categories}
+            applyButtonLabel={t('portfolio.filter.filterAndSort')}
+            clearButtonLabel={t('portfolio.filter.clearAll')}
+            onApply={applyFilters}
+            onClear={clearAll}
+            onClose={resetPending}
+            appliedFiltersCount={filtersCount}
+            disableApply={!hasPendingFiltersApplied}
+            disableClear={!hasPendingFiltersApplied}
+            testId="portfolio-filters-desktop-modal"
+            defaultTriggerSx={{ justifyContent: 'flex-end' }}
+          />
         )}
       </PortfolioAnimatedLayoutContainer>
 

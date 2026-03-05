@@ -1,42 +1,235 @@
 'use client';
 
 import type { FC, PropsWithChildren } from 'react';
-import Box from '@mui/material/Box';
-import { Select } from '@/components/core/form/Select/Select';
-import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
-import {
-  PortfolioFilterBarClearFiltersButton,
-  PortfolioFilterBarContentContainer,
-} from '../PortfolioFilterBar.styles';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { PortfolioFilterBarContentContainer } from '../PortfolioFilterBar.styles';
 import { usePortfolioPositionsFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
+import { usePendingFilters } from '@/components/composite/MultiLayer/hooks';
+import type { CategoryConfig } from '@/components/composite/MultiLayer/MultiLayer.types';
+import {
+  createMultiSelectCategory,
+  createSliderCategory,
+  createSingleSelectCategory,
+} from '@/components/composite/MultiLayer/utils';
+import { formatSliderValue } from '@/components/core/form/Select/utils';
+import type { SortByEnum } from '@/providers/PortfolioProvider/filtering/types';
+import { toFixedFractionDigits } from '@/utils/formatNumbers';
+import { FilterSortModal } from '@/components/composite/FilterSortModal/FilterSortModal';
+
+interface PendingFilterValues {
+  chains: string[];
+  protocols: string[];
+  types: string[];
+  assets: string[];
+  value: number[];
+  sortBy: SortByEnum;
+}
 
 export const PortfolioFilterBarPositionsDesktop: FC<PropsWithChildren> = ({
   children,
 }) => {
-  const { t } = useTranslation();
   const {
     isLoading,
     chainOptions,
     protocolOptions,
     typeOptions,
     assetOptions,
-    hasFilterApplied,
     filter,
     valueMin,
     valueMax,
     valueRangeMin,
     valueRangeMax,
-    handleChainChange,
-    handleProtocolChange,
-    handleTypeChange,
-    handleAssetChange,
-    handleValueChange,
+    filtersCount,
+    sortByOptions,
+    sortBy,
     handleClearAllFilters,
+    handleApplyAllFilters,
+    handleSortBy,
   } = usePortfolioPositionsFilterBar();
+
+  const { t } = useTranslation();
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = usePendingFilters<PendingFilterValues>({
+    initialValues: {
+      chains: filter?.chains?.map(String) ?? [],
+      protocols: filter?.protocols ?? [],
+      types: filter?.types ?? [],
+      assets: filter?.assets ?? [],
+      value: [valueMin, valueMax],
+      sortBy: sortBy,
+    },
+    onApply: (values) => {
+      handleApplyAllFilters({
+        chains: values.chains.map(Number),
+        protocols: values.protocols,
+        types: values.types,
+        assets: values.assets,
+        minValue: values.value[0],
+        maxValue: values.value[1],
+      });
+      handleSortBy(values.sortBy);
+    },
+    onClear: handleClearAllFilters,
+    isFilterApplied: (values) => {
+      return (
+        values.chains.length > 0 ||
+        values.protocols.length > 0 ||
+        values.types.length > 0 ||
+        values.assets.length > 0 ||
+        values.value[0] !== valueRangeMin ||
+        values.value[1] !== valueRangeMax
+      );
+    },
+  });
+
+  const usedValueMin = pendingValues.value[0] ?? valueMin;
+  const usedValueMax = pendingValues.value[1] ?? valueMax;
+
+  const chainBadge =
+    pendingValues.chains.length > 0
+      ? pendingValues.chains.length.toString()
+      : undefined;
+  const protocolBadge =
+    pendingValues.protocols.length > 0
+      ? pendingValues.protocols.length.toString()
+      : undefined;
+  const typeBadge =
+    pendingValues.types.length > 0
+      ? pendingValues.types.length.toString()
+      : undefined;
+  const assetBadge =
+    pendingValues.assets.length > 0
+      ? pendingValues.assets.length.toString()
+      : undefined;
+  const valueBadge =
+    !isNaN(usedValueMin) &&
+    !isNaN(usedValueMax) &&
+    (usedValueMin !== valueRangeMin || usedValueMax !== valueRangeMax)
+      ? formatSliderValue(
+          pendingValues.value.map((value) =>
+            toFixedFractionDigits(value, 0, 2),
+          ),
+        )
+      : undefined;
+
+  const categories: CategoryConfig[] = [];
+
+  if (chainOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'chain',
+        label: t('portfolio.filter.chain'),
+        badgeLabel: chainBadge,
+        value: pendingValues.chains,
+        onChange: (value) => setPendingValue('chains', value),
+        options: chainOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.chain').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-chain-select-mobile',
+      }),
+    );
+  }
+
+  if (protocolOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'protocol',
+        label: t('portfolio.filter.protocol'),
+        badgeLabel: protocolBadge,
+        value: pendingValues.protocols,
+        onChange: (value) => setPendingValue('protocols', value),
+        options: protocolOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.protocol').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-protocol-select-mobile',
+      }),
+    );
+  }
+
+  if (typeOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'type',
+        label: t('portfolio.filter.type'),
+        badgeLabel: typeBadge,
+        value: pendingValues.types,
+        onChange: (value) => setPendingValue('types', value),
+        options: typeOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.type').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-type-select-mobile',
+      }),
+    );
+  }
+
+  if (assetOptions.length > 1) {
+    categories.push(
+      createMultiSelectCategory({
+        id: 'asset',
+        label: t('portfolio.filter.asset'),
+        badgeLabel: assetBadge,
+        value: pendingValues.assets,
+        onChange: (value) => setPendingValue('assets', value),
+        options: assetOptions,
+        searchable: true,
+        searchPlaceholder: t('portfolio.filter.search', {
+          filterBy: t('portfolio.filter.asset').toLowerCase(),
+        }),
+        testId: 'portfolio-filter-asset-select-mobile',
+      }),
+    );
+  }
+
+  if (
+    !isNaN(valueRangeMin) &&
+    !isNaN(valueRangeMax) &&
+    valueRangeMin !== valueRangeMax
+  ) {
+    categories.push(
+      createSliderCategory({
+        id: 'value',
+        label: t('portfolio.filter.value'),
+        badgeLabel: valueBadge,
+        value: pendingValues.value,
+        onChange: (value) => setPendingValue('value', value),
+        min: valueRangeMin,
+        max: valueRangeMax,
+        testId: 'portfolio-filter-value-select-mobile',
+      }),
+    );
+  }
+
+  if (sortByOptions.length > 1) {
+    categories.push(
+      createSingleSelectCategory<SortByEnum>({
+        id: 'sortBy',
+        label: t('portfolio.sorting.sortBy'),
+        value: pendingValues.sortBy,
+        onChange: (value) => {
+          if (!value) {
+            return;
+          }
+          setPendingValue('sortBy', value);
+        },
+        options: sortByOptions,
+        testId: 'portfolio-filter-sort-select-mobile',
+      }),
+    );
+  }
 
   return (
     <PortfolioFilterBarContentContainer>
@@ -44,82 +237,19 @@ export const PortfolioFilterBarPositionsDesktop: FC<PropsWithChildren> = ({
         {isLoading ? (
           <PortfolioFilterOptionsSkeleton />
         ) : (
-          <Box
-            data-testid="portfolio-filter-bar-content"
-            sx={{ display: 'contents' }}
-          >
-            {chainOptions.length > 1 && (
-              <Select
-                options={chainOptions}
-                value={filter?.chains?.map(String) ?? []}
-                onChange={handleChainChange}
-                filterBy={t('portfolio.filter.chain').toLowerCase()}
-                label={t('portfolio.filter.chain')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-chain-select"
-              />
-            )}
-
-            {protocolOptions.length > 1 && (
-              <Select
-                options={protocolOptions}
-                value={filter?.protocols || []}
-                onChange={handleProtocolChange}
-                filterBy={t('portfolio.filter.protocol').toLowerCase()}
-                label={t('portfolio.filter.protocol')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-protocol-select"
-              />
-            )}
-
-            {typeOptions.length > 1 && (
-              <Select
-                options={typeOptions}
-                value={filter?.types || []}
-                onChange={handleTypeChange}
-                filterBy={t('portfolio.filter.type').toLowerCase()}
-                label={t('portfolio.filter.type')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-type-select"
-              />
-            )}
-
-            {assetOptions.length > 1 && (
-              <Select
-                options={assetOptions}
-                value={filter?.assets || []}
-                onChange={handleAssetChange}
-                filterBy={t('portfolio.filter.asset').toLowerCase()}
-                label={t('portfolio.filter.asset')}
-                variant={SelectVariant.Multi}
-                data-testid="portfolio-filter-asset-select"
-              />
-            )}
-
-            {!isNaN(valueRangeMin) &&
-              !isNaN(valueRangeMax) &&
-              valueRangeMin !== valueRangeMax && (
-                <Select
-                  options={[]}
-                  value={[valueMin, valueMax]}
-                  min={valueRangeMin}
-                  max={valueRangeMax}
-                  onChange={handleValueChange}
-                  label={t('portfolio.filter.value')}
-                  variant={SelectVariant.Slider}
-                  data-testid="portfolio-filter-value-select"
-                />
-              )}
-
-            {hasFilterApplied && (
-              <PortfolioFilterBarClearFiltersButton
-                onClick={handleClearAllFilters}
-                data-testid="portfolio-filter-clear-filters-button"
-              >
-                <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
-              </PortfolioFilterBarClearFiltersButton>
-            )}
-          </Box>
+          <FilterSortModal
+            categories={categories}
+            applyButtonLabel={t('portfolio.filter.filterAndSort')}
+            clearButtonLabel={t('portfolio.filter.clearAll')}
+            onApply={applyFilters}
+            onClear={clearAll}
+            onClose={resetPending}
+            appliedFiltersCount={filtersCount}
+            disableApply={!hasPendingFiltersApplied}
+            disableClear={!hasPendingFiltersApplied}
+            testId="portfolio-filters-desktop-modal"
+            defaultTriggerSx={{ justifyContent: 'flex-end' }}
+          />
         )}
       </PortfolioAnimatedLayoutContainer>
 
