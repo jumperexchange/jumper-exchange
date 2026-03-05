@@ -41,7 +41,7 @@ export const getTokensQuery = async (
 export const useTokens = () => {
   const { data, isLoading, isSuccess, isError, error, dataUpdatedAt } =
     useQuery({
-      queryKey: [getQueryKey('tokens', 'jumper-default')],
+      queryKey: [getQueryKey('tokens')],
       queryFn: ({ signal }) => getTokensQuery(signal),
       refetchInterval: 1000 * 60 * 60,
       refetchOnMount: false,
