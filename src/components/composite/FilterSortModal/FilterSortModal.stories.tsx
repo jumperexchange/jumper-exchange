@@ -186,7 +186,6 @@ const EarnFiltersTemplate = () => {
     <Stack gap={2} sx={{ width: 544, padding: 3 }}>
       <FilterSortModal
         categories={categories}
-        title="Filter & Sort"
         applyButtonLabel="Apply Filters"
         clearButtonLabel="Clear All"
         onApply={applyFilters}

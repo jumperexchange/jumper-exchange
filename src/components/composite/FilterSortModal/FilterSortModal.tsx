@@ -17,7 +17,7 @@ import { useFullScreenDrawer } from '@/components/core/FullScreenDrawer/hooks';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 
-interface FilterSortModalProps extends MultiLayerProps {
+interface FilterSortModalProps extends Omit<MultiLayerProps, 'title'> {
   triggerButtonLabel?: string;
 }
 
