@@ -24,7 +24,6 @@ interface FilterSortModalProps extends MultiLayerProps {
 export const FilterSortModal: FC<FilterSortModalProps> = ({
   ref,
   categories,
-  title,
   applyButtonLabel = 'Apply',
   clearButtonLabel = 'Clear',
   triggerButtonLabel = 'Filters & Sort',
@@ -34,7 +33,6 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
   disableClear = false,
   disableApply = false,
   testId = 'multi-layer-modal',
-  showFooter = true,
   triggerButton,
   defaultTriggerSx,
   appliedFiltersCount,
@@ -147,28 +145,36 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
 
             <Stack
               direction="column"
-              sx={(theme) => ({
+              sx={{
                 width: 264,
                 '& .MuiStack-root': {
                   overflowY: 'auto',
-                  '& .MuiInputBase-root': {
-                    ...theme.typography.bodySmall,
-                    fontWeight: 500,
-                    height: 40,
-                    '& svg': {
-                      height: 20,
-                      width: 20,
-                    },
-                  },
-                  '& .MuiButtonBase-root svg:last-of-type': {
-                    height: 16,
-                    width: 16,
-                  },
                 },
-              })}
+              }}
             >
               {selectedCategory && isLeafCategory(selectedCategory) ? (
-                <LeafCategoryRenderer category={selectedCategory} />
+                <LeafCategoryRenderer
+                  category={selectedCategory}
+                  slotProps={{
+                    searchSize: 'small',
+                    searchSx: {
+                      padding: 0,
+                    },
+                    listSpacing: 1,
+                    itemSx: (theme) => ({
+                      paddingX: 1,
+                      paddingY: 0.75,
+                      borderRadius: theme.shape.radius24,
+                      '& svg:last-of-type': {
+                        height: 16,
+                        width: 16,
+                      },
+                      '&:hover': {
+                        background: (theme.vars || theme).palette.surface1Hover,
+                      },
+                    }),
+                  }}
+                />
               ) : null}
             </Stack>
           </Stack>

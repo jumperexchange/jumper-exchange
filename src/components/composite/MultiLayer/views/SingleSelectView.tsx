@@ -1,21 +1,29 @@
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
-import type { SingleSelectLeafCategory } from '../MultiLayer.types';
+import type {
+  RendererSlotProps,
+  SingleSelectLeafCategory,
+} from '../MultiLayer.types';
 import {
   StyledMenuItem,
   StyledMenuItemContentContainer,
 } from 'src/components/core/form/Select/Select.styles';
 import { SelectorLabel } from 'src/components/core/form/Select/components/SelectLabel';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 export interface SingleSelectViewProps<TValue extends string | number> {
   category: SingleSelectLeafCategory<TValue>;
+  slotProps?: RendererSlotProps;
 }
 
 export const SingleSelectView = <TValue extends string | number>({
   category,
+  slotProps,
 }: SingleSelectViewProps<TValue>) => {
   const value = category.value || '';
   const options = category.options || [];
+
+  const listSpacing = slotProps?.listSpacing ?? 2;
 
   const handleSelect = (optionValue: TValue) => {
     if (!category.onChange) {
@@ -27,7 +35,11 @@ export const SingleSelectView = <TValue extends string | number>({
   };
 
   return (
-    <Stack direction="column" spacing={2} sx={{ flex: 1, overflowY: 'auto' }}>
+    <Stack
+      direction="column"
+      spacing={listSpacing}
+      sx={mergeSx({ flex: 1, overflowY: 'auto' }, slotProps?.listSx)}
+    >
       {options.map((option) => {
         const isSelected = value === option.value;
 
@@ -37,7 +49,7 @@ export const SingleSelectView = <TValue extends string | number>({
             disableRipple
             key={option.value}
             value={option.value}
-            sx={option.sx}
+            sx={mergeSx(option.sx, slotProps?.itemSx)}
             onClick={() => handleSelect(option.value)}
             disabled={option.disabled}
           >

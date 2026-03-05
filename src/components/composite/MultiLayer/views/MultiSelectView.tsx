@@ -5,7 +5,10 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import type { MultiSelectLeafCategory } from '../MultiLayer.types';
+import type {
+  RendererSlotProps,
+  MultiSelectLeafCategory,
+} from '../MultiLayer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -15,13 +18,16 @@ import {
 } from 'src/components/core/form/Select/Select.styles';
 import { SelectorLabel } from 'src/components/core/form/Select/components/SelectLabel';
 import { useTranslation } from 'react-i18next';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 export interface MultiSelectViewProps<TValue extends string | number> {
   category: MultiSelectLeafCategory<TValue>;
+  slotProps?: RendererSlotProps;
 }
 
 export const MultiSelectView = <TValue extends string | number>({
   category,
+  slotProps,
 }: MultiSelectViewProps<TValue>) => {
   const { t } = useTranslation();
   const [searchValue, setSearchValue] = useState('');
@@ -29,6 +35,10 @@ export const MultiSelectView = <TValue extends string | number>({
   const value = category.value || [];
   const options = category.options || [];
   const isSearchable = !!category.searchable;
+
+  const clearButtonSize = slotProps?.clearButtonSize ?? 'medium';
+  const searchSize = slotProps?.searchSize ?? 'medium';
+  const listSpacing = slotProps?.listSpacing ?? 2;
 
   const filteredOptions = useMemo(() => {
     if (!searchValue) {
@@ -78,7 +88,7 @@ export const MultiSelectView = <TValue extends string | number>({
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
-          size="medium"
+          size={clearButtonSize}
           data-testid={`${category.testId}-clear-button`}
           onClick={handleClear}
         >
@@ -88,8 +98,8 @@ export const MultiSelectView = <TValue extends string | number>({
 
       {isSearchable && (
         <StyledMultiSelectFiltersContainer
-          size="medium"
-          sx={{ marginBottom: 0 }}
+          size={searchSize}
+          sx={mergeSx({ marginBottom: 0 }, slotProps?.searchSx)}
           onKeyDown={(event) => {
             event.stopPropagation();
           }}
@@ -97,7 +107,7 @@ export const MultiSelectView = <TValue extends string | number>({
           <StyledMultiSelectFiltersInput
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
-            size="medium"
+            size={searchSize}
             name="search"
             startAdornment={<SearchIcon />}
             endAdornment={
@@ -120,7 +130,11 @@ export const MultiSelectView = <TValue extends string | number>({
         </StyledMultiSelectFiltersContainer>
       )}
 
-      <Stack direction="column" spacing={2} sx={{ flex: 1, overflowY: 'auto' }}>
+      <Stack
+        direction="column"
+        spacing={listSpacing}
+        sx={mergeSx({ flex: 1, overflowY: 'auto' }, slotProps?.listSx)}
+      >
         {filteredOptions.map((option) => {
           const isSelected = value.includes(option.value);
 
@@ -130,7 +144,7 @@ export const MultiSelectView = <TValue extends string | number>({
               disableRipple
               key={option.value.toString()}
               value={option.value}
-              sx={option.sx}
+              sx={mergeSx(option.sx, slotProps?.itemSx)}
               onClick={() => handleToggle(option.value)}
             >
               <StyledMenuItemContentContainer size="medium">

@@ -12,6 +12,15 @@ export enum CategoryContentType {
   Custom = 'custom',
 }
 
+export interface RendererSlotProps {
+  clearButtonSize?: 'small' | 'medium' | 'large';
+  searchSize?: 'small' | 'medium';
+  searchSx?: SxProps<Theme>;
+  listSx?: SxProps<Theme>;
+  listSpacing?: number;
+  itemSx?: SxProps<Theme>;
+}
+
 /**
  * Base category configuration
  */

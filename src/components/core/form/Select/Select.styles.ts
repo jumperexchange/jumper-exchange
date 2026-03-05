@@ -198,6 +198,10 @@ export const StyledMultiSelectFiltersInput = styled(InputBase, {
       style: {
         ...theme.typography.bodySmall,
         height: 40,
+        '& svg': {
+          height: 20,
+          width: 20,
+        },
       },
     },
     {
@@ -205,6 +209,10 @@ export const StyledMultiSelectFiltersInput = styled(InputBase, {
       style: {
         ...theme.typography.bodyMedium,
         height: 48,
+        '& svg': {
+          height: 24,
+          width: 24,
+        },
       },
     },
   ],
