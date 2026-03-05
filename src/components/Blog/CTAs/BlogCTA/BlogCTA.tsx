@@ -8,7 +8,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import { BlogCtaContainer, BlogCtaTitle } from '.';
+import { BlogCtaContainer, BlogCtaTitle } from './BlogCTA.style';
 
 interface BlogCTAProps {
   title?: string;

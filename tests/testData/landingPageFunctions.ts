@@ -1,13 +1,17 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getElementByText } from './commonFunctions';
-
-export const LANDING_PAGE = {
-  GET_STARTED_BUTTON: '#get-started-button',
-};
+/** Time for MUI Slide exit animation in WelcomeOverlayLayout (slideTimeout) */
+const WELCOME_SLIDE_TIMEOUT_MS = 500;
 
 export async function closeWelcomeScreen(page: Page) {
-  return page.locator(LANDING_PAGE.GET_STARTED_BUTTON).click();
+  const getStartedButton = page.getByTestId('get-started-button');
+  await expect(getStartedButton).toBeVisible();
+  await getStartedButton.scrollIntoViewIfNeeded();
+  await getStartedButton.click();
+  await expect(getStartedButton).not.toBeVisible({
+    timeout: WELCOME_SLIDE_TIMEOUT_MS + 5000,
+  });
 }
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();
@@ -51,7 +55,8 @@ export async function checkRoutesVisibility(
 }
 
 export async function navigateToTab(page, tabKey, expectedText) {
-  await page.locator(`#tab-key-${tabKey}`).click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.getByTestId(`tab-key-${tabKey}`).click();
   await expect(
     page.locator(`xpath=//p[text()="${expectedText}"]`),
   ).toBeVisible();

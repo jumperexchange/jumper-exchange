@@ -2,11 +2,18 @@
 // The config you add here will be used whenever a users loads a page in their browser.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
-import * as Sentry from '@sentry/nextjs';
+import {
+  init,
+  addIntegration,
+  consoleLoggingIntegration,
+  browserTracingIntegration,
+  getClient,
+  captureRouterTransitionStart,
+} from '@sentry/nextjs';
 import { isProduction } from './src/utils/isProduction';
 import './src/utils/instrumentation/lifiSdkConfig';
 
-Sentry.init({
+init({
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
@@ -26,20 +33,27 @@ Sentry.init({
   // Enable logs to be sent to Sentry
   enableLogs: true,
 
-  // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
-    Sentry.replayIntegration({
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
     // send console.log, console.warn, and console.error calls as logs to Sentry
-    Sentry.consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
-    Sentry.browserTracingIntegration(),
+    consoleLoggingIntegration({ levels: ['log', 'warn', 'error'] }),
+    browserTracingIntegration(),
   ],
 });
 
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', async () => {
+    const { replayIntegration } = await import('@sentry/nextjs');
+    addIntegration(
+      replayIntegration({
+        maskAllText: true,
+        blockAllMedia: true,
+      }),
+    );
+  });
+}
+
 // Log Sentry initialization status
-const client = Sentry.getClient();
+const client = getClient();
 console.log('[Sentry Client] Initialized:', {
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN
@@ -49,4 +63,4 @@ console.log('[Sentry Client] Initialized:', {
   isClientActive: !!client,
 });
 
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+export const onRouterTransitionStart = captureRouterTransitionStart;

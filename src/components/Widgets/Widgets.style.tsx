@@ -3,7 +3,7 @@
 import type { Breakpoint } from '@mui/material';
 import { Box, alpha, styled } from '@mui/material';
 import Image from 'next/image';
-import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen';
+import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen/WelcomeScreen.style';
 
 const GLOW_EFFECT_TOP_POSITIONS = {
   xs: '40%',

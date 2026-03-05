@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import {
   BackgroundGradientBottomLeft,
   BackgroundGradientBottomRight,
-} from './BackgroundGradient';
+} from './BackgroundGradient/BackgroundGradient.style';
 import { AnimatedBackgroundImage } from './core/AnimatedBackgroundImage/AnimatedBackgroundImage';
 import { useGetPartnerThemeImage } from 'src/hooks/theme/useGetPartnerThemeImage';
 import { useThemeConditionsMet } from '@/hooks/theme/useThemeConditionsMet';

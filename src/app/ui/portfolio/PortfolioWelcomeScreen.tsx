@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC, MouseEventHandler } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Trans } from 'react-i18next/TransWithoutContext';
 import { CustomColor } from '@/components/CustomColorTypography.style';
@@ -33,10 +33,6 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
   const { trackEvent } = useUserTracking();
   const { account } = useAccount();
   const { openWalletMenu } = useWalletMenu();
-
-  const [openChainsToolModal, setOpenChainsToolModal] = useState(false);
-  const [openBridgesToolModal, setOpenBridgesToolModal] = useState(false);
-  const [openDexsToolModal, setOpenDexsToolModal] = useState(false);
 
   useEffect(() => {
     if (portfolioWelcomeScreenClosed) {
@@ -78,14 +74,7 @@ export const PortfolioWelcomeScreen: FC<PortfolioWelcomeScreenProps> = ({
         >
           <Trans i18nKey={'portfolio.welcome.subtitle'} />
         </WelcomeScreenSubtitle>
-        <ToolCards
-          openChainsToolModal={openChainsToolModal}
-          setOpenChainsToolModal={setOpenChainsToolModal}
-          openBridgesToolModal={openBridgesToolModal}
-          setOpenBridgesToolModal={setOpenBridgesToolModal}
-          openDexsToolModal={openDexsToolModal}
-          setOpenDexsToolModal={setOpenDexsToolModal}
-        />
+        <ToolCards />
         <PortfolioWelcomeScreenButtonsContainer direction="row" useFlexGap>
           <PortfolioWelcomeScreenButton
             aria-label="Open portfolio page"

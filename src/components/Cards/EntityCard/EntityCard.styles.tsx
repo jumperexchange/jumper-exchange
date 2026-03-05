@@ -11,7 +11,7 @@ import type { StackProps } from '@mui/material/Stack';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 
 // Card & Containers
 

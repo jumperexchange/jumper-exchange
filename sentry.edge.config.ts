@@ -3,10 +3,10 @@
 // Note that this config is unrelated to the Vercel Edge Runtime and is also required when running locally.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
+import { init, getClient } from '@sentry/nextjs';
 import { isProduction } from './src/utils/isProduction';
-import * as Sentry from '@sentry/nextjs';
 
-Sentry.init({
+init({
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
@@ -19,7 +19,7 @@ Sentry.init({
 });
 
 // Log Sentry initialization status
-const client = Sentry.getClient();
+const client = getClient();
 console.log('[Sentry Edge] Initialized:', {
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN

@@ -1,15 +1,26 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { ParagraphBlockContainer } from '../RichBlocks.style';
-import {
-  CommonBlockProps,
-  ParagraphProps,
-  RichBlocksVariant,
-  TrackingKeys,
-} from '../types';
-import { ParagraphRenderer } from '../renderers/ParagraphRenderer';
-import { CTARenderer } from '../renderers/CTARenderer';
-import { WidgetRenderer } from '../renderers/WidgetRenderer';
-import { InstructionsRenderer } from '../renderers/InstructionsRenderer';
+import type { CommonBlockProps, ParagraphProps, TrackingKeys } from '../types';
+import { RichBlocksVariant } from '../types';
+import dynamic from 'next/dynamic';
+
+const ParagraphRenderer = dynamic(() =>
+  import('../renderers/ParagraphRenderer').then((mod) => mod.ParagraphRenderer),
+);
+
+const CTARenderer = dynamic(() =>
+  import('../renderers/CTARenderer').then((mod) => mod.CTARenderer),
+);
+
+const WidgetRenderer = dynamic(() =>
+  import('../renderers/WidgetRenderer').then((mod) => mod.WidgetRenderer),
+);
+
+const InstructionsRenderer = dynamic(() =>
+  import('../renderers/InstructionsRenderer').then(
+    (mod) => mod.InstructionsRenderer,
+  ),
+);
 
 interface ParagraphBlockProps extends PropsWithChildren, CommonBlockProps {
   trackingKeys?: TrackingKeys;

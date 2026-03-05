@@ -1,5 +1,5 @@
 import { ButtonPrimary } from '@/components/Button/Button.style';
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import Box from '@mui/material/Box';
 import FormGroup from '@mui/material/FormGroup';

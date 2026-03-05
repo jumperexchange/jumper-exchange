@@ -10,7 +10,11 @@ const nextConfig = {
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
-    optimizePackageImports: ['recharts'],
+    optimizePackageImports: [
+      'recharts',
+      '@mui/material-nextjs',
+      '@sentry/nextjs',
+    ],
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
@@ -224,8 +228,10 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
-  bundlePagesRouterDependencies: true,
-  reactComponentAnnotation: {
-    enabled: true,
+
+  webpack: {
+    reactComponentAnnotation: {
+      enabled: true,
+    },
   },
 });

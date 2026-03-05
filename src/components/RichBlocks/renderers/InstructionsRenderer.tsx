@@ -1,9 +1,7 @@
-import { FC } from 'react';
+import { type InstructionItemProps } from '@/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordionItem';
+import { type FC } from 'react';
 import generateKey from 'src/app/lib/generateKey';
-import {
-  InstructionsAccordion,
-  type InstructionItemProps,
-} from 'src/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
+import { InstructionsAccordion } from 'src/components/Blog/CTAs/InstructionsAccordion/InstructionsAccordion';
 
 interface InstructionsRendererProps {
   text: string;

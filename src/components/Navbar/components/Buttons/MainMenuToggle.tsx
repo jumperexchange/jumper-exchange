@@ -1,4 +1,3 @@
-import { MainMenu } from 'src/components/Menus/MainMenu/MainMenu';
 import {
   DotsMenuIcon,
   BurgerMenuIcon,
@@ -7,6 +6,12 @@ import {
 import { useRef } from 'react';
 import { useMenuStore } from 'src/stores/menu';
 import { useMediaQuery } from '@mui/material';
+import dynamic from 'next/dynamic';
+
+const MainMenu = dynamic(
+  () => import('@/components/Menus/MainMenu/MainMenu').then((m) => m.MainMenu),
+  { ssr: false },
+);
 
 export const MainMenuToggle = () => {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -40,7 +45,9 @@ export const MainMenuToggle = () => {
       >
         {isDesktop ? <DotsMenuIcon /> : <BurgerMenuIcon />}
       </NavbarMenuToggleButton>
-      <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
+      {openMainMenu && (
+        <MainMenu anchorEl={mainMenuAnchor.current ?? undefined} />
+      )}
     </>
   );
 };

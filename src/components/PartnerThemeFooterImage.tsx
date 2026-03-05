@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mui/material';
 import Link from 'next/link';
 import { useMainPaths } from 'src/hooks/useMainPaths';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
-import { BackgroundFooterImage } from './Widgets';
+import { BackgroundFooterImage } from './Widgets/Widgets.style';
 
 export const PartnerThemeFooterImage = () => {
   const { sourceChainToken, destinationChainToken } =

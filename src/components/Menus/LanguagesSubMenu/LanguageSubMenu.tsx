@@ -3,7 +3,6 @@ import { MenuKeysEnum } from '@/const/menuKeys';
 import { useMenuStore } from '@/stores/menu';
 import { useTranslation } from 'react-i18next';
 import { useLanguagesContent } from './useLanguagesContent';
-import { withCookies } from 'react-cookie';
 
 export const LanguagesSubmenu = () => {
   const { t } = useTranslation();

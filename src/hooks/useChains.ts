@@ -3,8 +3,9 @@ import { ChainType, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
 import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 import { useCallback } from 'react';
+import { getQueryKey } from '@/utils/queries/getQueryKey';
 
-export const queryKey = ['chainStats'];
+export const queryKey = [getQueryKey('chains', 'jumper-default')];
 
 export interface ChainProps {
   chains: ExtendedChain[];
@@ -22,7 +23,7 @@ export async function getChainsQuery() {
 
 export const useChains = (): ChainProps => {
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['chainStats'],
+    queryKey,
     queryFn: getChainsQuery,
     enabled: true,
     refetchInterval: 1000 * 60 * 60,

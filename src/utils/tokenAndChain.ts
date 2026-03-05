@@ -1,6 +1,4 @@
 import type { Chain, ChainId, ExtendedChain, TokensResponse } from '@lifi/sdk';
-import { zeroAddress } from 'viem';
-import { AllTokens } from '../hooks/useTokens';
 
 export const getChainById = (chains: ExtendedChain[], id: ChainId) => {
   if (!chains.length || !id) {

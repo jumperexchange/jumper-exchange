@@ -1,8 +1,6 @@
 'use client';
 
-import type { Breakpoint } from '@mui/material';
 import { Typography, styled } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 
 export const ToolCardContainer = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -35,7 +33,7 @@ export const ToolCardContainer = styled('div')(({ theme }) => ({
       backgroundColor: (theme.vars || theme).palette.alphaLight400.main,
     }),
   },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     width: 136,
     height: 120,
   },

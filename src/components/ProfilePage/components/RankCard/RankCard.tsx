@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import { AppPaths } from 'src/const/urls';
 import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
 import { ProfileContext } from 'src/providers/ProfileProvider';

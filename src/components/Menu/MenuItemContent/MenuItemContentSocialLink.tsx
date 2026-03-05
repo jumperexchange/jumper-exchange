@@ -1,4 +1,4 @@
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 import type { SocialLink } from '@/components/Menus/MainMenu/hooks';
 
 interface MenuItemContentSocialLinkProps {

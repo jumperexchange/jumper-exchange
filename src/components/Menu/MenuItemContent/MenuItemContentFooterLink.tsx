@@ -1,4 +1,4 @@
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 import type { FooterLink } from '@/components/Menus/MainMenu/hooks';
 import Typography from '@mui/material/Typography';
 

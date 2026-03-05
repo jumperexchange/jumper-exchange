@@ -1,7 +1,7 @@
 import { useSettingsStore } from '@/stores/settings';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useMainPaths } from '@/hooks/useMainPaths';
-import { useThemeStore } from '@/stores/theme';
+import { useHydrated } from '@/hooks/useHydrated';
 
 interface useWelcomeScreenResult {
   welcomeScreenClosed: boolean | undefined;
@@ -13,10 +13,23 @@ export const validThemes = ['default', 'light', 'dark', 'system'];
 
 export const useWelcomeScreen = (): useWelcomeScreenResult => {
   const { isMainPaths } = useMainPaths();
+  const hydrated = useHydrated();
 
-  const [welcomeScreenClosed, setWelcomeScreenClosed] = useSettingsStore(
-    (state) => [state.welcomeScreenClosed, state.setWelcomeScreenClosed],
+  const [welcomeScreenClosedFromStore, setWelcomeScreenClosed] =
+    useSettingsStore((state) => [
+      state.welcomeScreenClosed,
+      state.setWelcomeScreenClosed,
+    ]);
+
+  const [welcomeScreenClosed, setWelcomeScreenClosedLocal] = useState<boolean>(
+    welcomeScreenClosedFromStore,
   );
+
+  useEffect(() => {
+    if (hydrated) {
+      setWelcomeScreenClosedLocal(welcomeScreenClosedFromStore);
+    }
+  }, [hydrated, welcomeScreenClosedFromStore]);
 
   const enabled = !!isMainPaths;
 
@@ -26,6 +39,7 @@ export const useWelcomeScreen = (): useWelcomeScreenResult => {
         return;
       }
       setWelcomeScreenClosed(closed);
+      setWelcomeScreenClosedLocal(closed);
     },
     [enabled, setWelcomeScreenClosed],
   );

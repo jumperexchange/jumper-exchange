@@ -20,7 +20,7 @@ import {
   BlogArticleCardTitle,
   BlogArticleMetaDate,
   BlogArticleMetaReadingTime,
-} from '.';
+} from './BlogArticleCard.style';
 
 interface BlogArticleCardProps {
   article: BlogArticleData;

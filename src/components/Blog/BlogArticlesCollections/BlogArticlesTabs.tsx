@@ -21,7 +21,7 @@ import type {
 } from '@/types/strapi';
 import { chunkArray } from '@/utils/chunkArray';
 
-import { BlogArticleCard } from '../BlogArticleCard';
+import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import {
   BlogArticlesCollectionsContainer,
   BlogArticlesCollectionsTitle,

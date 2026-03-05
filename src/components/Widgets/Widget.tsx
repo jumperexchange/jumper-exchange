@@ -1,13 +1,11 @@
 'use client';
-import { ClientOnly } from '@/components/ClientOnly';
 import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { useThemeStore } from '@/stores/theme';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
-import { WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
@@ -15,13 +13,12 @@ import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { WidgetWrapper } from './Widget.style';
-import FeeContribution from './FeeContribution/FeeContribution';
 import type { WidgetProps } from './Widget.types';
-import { useTheme } from '@mui/material/styles';
-import { MainWidgetContext } from './variants/widgetConfig/types';
-import { useWidgetConfig } from './variants/widgetConfig/useWidgetConfig';
-import { Widget as BaseWidget } from './variants/base/Widget';
+import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useFormParameters } from './hooks';
+import { AppPaths } from '@/const/urls';
+import { Widget as BaseWidget } from './variants/base/Widget';
+import FeeContribution from './FeeContribution/FeeContribution';
 
 export function Widget({
   starterVariant,
@@ -36,11 +33,7 @@ export function Widget({
   activeTheme,
   autoHeight,
 }: WidgetProps) {
-  const theme = useTheme();
-  const [configTheme, widgetTheme] = useThemeStore((state) => [
-    state.configTheme,
-    state.widgetTheme,
-  ]);
+  const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const bridgeConditions = useBridgeConditions({
@@ -49,6 +42,7 @@ export function Widget({
     configThemeChains: configTheme?.chains,
   });
   const router = useRouter();
+  const pathname = usePathname();
   const { t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
@@ -60,9 +54,31 @@ export function Widget({
   );
 
   useEffect(() => {
-    router.prefetch('/', { kind: PrefetchKind.FULL });
-    router.prefetch('/gas', { kind: PrefetchKind.FULL });
-  }, [router]);
+    const routes = [AppPaths.Main, AppPaths.Gas].filter(
+      (route) => route !== pathname,
+    );
+
+    const runPrefetch = () => {
+      routes.forEach((route) =>
+        router.prefetch(route, { kind: PrefetchKind.AUTO }),
+      );
+    };
+
+    const hasRIC =
+      typeof window !== 'undefined' && 'requestIdleCallback' in window;
+
+    const id = hasRIC
+      ? window.requestIdleCallback(runPrefetch)
+      : window.setTimeout(runPrefetch, 0);
+
+    return () => {
+      if (hasRIC) {
+        window.cancelIdleCallback(id);
+      } else {
+        window.clearTimeout(id);
+      }
+    };
+  }, [router, pathname]);
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
@@ -112,13 +128,11 @@ export function Widget({
       formParametersCtx,
       allowFromChains,
       allowToChains,
-      configTheme,
       bridgeConditions,
       isConnectedAGW,
+      integratorStringByType,
     ],
   );
-
-  const widgetConfig = useWidgetConfig('main', context);
 
   return (
     <WidgetWrapper
@@ -128,16 +142,14 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <ClientOnly fallback={<LifiWidgetSkeleton config={widgetConfig} />}>
-        <BaseWidget
-          type="main"
-          ctx={context}
-          formRef={formRef}
-          feeConfig={{
-            _vcComponent: () => <FeeContribution translationFn={t} />,
-          }}
-        />
-      </ClientOnly>
+      <BaseWidget
+        type="main"
+        ctx={context}
+        formRef={formRef}
+        feeConfig={{
+          _vcComponent: () => <FeeContribution translationFn={t} />,
+        }}
+      />
     </WidgetWrapper>
   );
 }
