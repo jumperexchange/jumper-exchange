@@ -7,5 +7,6 @@ export interface WalletBalanceCardProps {
   isSuccess: boolean;
   updatedAt: number;
   data: Record<string, PortfolioBalance<WalletToken>[]>;
+  error: Error | null;
   ['data-testid']?: string;
 }

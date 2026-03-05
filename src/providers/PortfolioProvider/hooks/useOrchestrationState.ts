@@ -18,6 +18,7 @@ export const useOrchestrationState = (
       isStale: balances.isPlaceholderData,
       isSuccess: balances.isSuccess,
       updatedAt: balances.updatedAt,
+      error: balances.error,
     }),
     [
       balances.accounts,
@@ -27,6 +28,7 @@ export const useOrchestrationState = (
       balances.isSuccess,
       balances.isPlaceholderData,
       balances.updatedAt,
+      balances.error,
     ],
   );
 
@@ -41,6 +43,7 @@ export const useOrchestrationState = (
           isStale: state.isPlaceholderData,
           isSuccess: state.isSuccess,
           updatedAt: state.updatedAt,
+          error: state.error,
         },
       ]),
     );
@@ -54,6 +57,7 @@ export const useOrchestrationState = (
       isStale: positions.isPlaceholderData,
       isSuccess: positions.isSuccess,
       updatedAt: positions.updatedAt,
+      error: positions.error,
     }),
     [
       positions.accounts,
@@ -63,6 +67,7 @@ export const useOrchestrationState = (
       positions.isSuccess,
       positions.isPlaceholderData,
       positions.updatedAt,
+      positions.error,
     ],
   );
 
@@ -74,8 +79,14 @@ export const useOrchestrationState = (
       isStale: !pricesData.hasFreshPrices,
       isSuccess: pricesData.hasFreshPrices && !pricesData.isLoading,
       updatedAt: pricesData.updatedAt ?? null,
+      error: pricesData.error,
     }),
-    [pricesData.hasFreshPrices, pricesData.isLoading, pricesData.updatedAt],
+    [
+      pricesData.error,
+      pricesData.hasFreshPrices,
+      pricesData.isLoading,
+      pricesData.updatedAt,
+    ],
   );
 
   const isEmpty = balances.isEmpty && positions.isEmpty;
