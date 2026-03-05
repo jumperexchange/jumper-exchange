@@ -31,13 +31,31 @@ export function useApproveTokens() {
           allowances[i].status === 'success' && allowances[i].result < amount,
       );
 
+      const needsReset = needsApproval.filter(
+        (_, i) =>
+          allowances[i].status === 'success' && allowances[i].result > 0n,
+      );
+
       console.log('needsApproval', needsApproval);
+      console.log('needsReset', needsReset);
 
       if (needsApproval.length === 0) {
         return;
       }
 
-      const hashes = await Promise.all(
+      const resetHashes = await Promise.all(
+        needsReset.map(({ address: token }) =>
+          writeContractAsync({
+            address: token,
+            abi: ERC20_ABI,
+            functionName: 'approve',
+            args: [spenderAddress, 0n],
+            chainId,
+          }),
+        ),
+      );
+
+      const approvalHashes = await Promise.all(
         needsApproval.map(({ address: token, amount }) =>
           writeContractAsync({
             address: token,
@@ -49,9 +67,11 @@ export function useApproveTokens() {
         ),
       );
 
-      console.log('hashes', hashes);
+      console.log('reset hashes', resetHashes);
+      console.log('approval hashes', approvalHashes);
 
-      // chainId is explicit here too
+      const hashes = [...resetHashes, ...approvalHashes];
+
       await Promise.all(
         hashes.map((hash) =>
           waitForTransactionReceipt(config, { hash, chainId }),
