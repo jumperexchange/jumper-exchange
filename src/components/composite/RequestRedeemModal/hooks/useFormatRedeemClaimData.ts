@@ -8,9 +8,9 @@ export const useFormatRedeemClaimData = (
   const { t } = useTranslation();
   return useMemo(
     () =>
-      claimData?.claimData?.map((claim) => {
+      claimData?.claimData?.map((claim, index) => {
         return {
-          id: claim.id,
+          id: claim.id ?? index.toString(),
           status:
             claim.status === 'pending'
               ? 'pending'
