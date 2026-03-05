@@ -93,6 +93,7 @@ export const EarnDetailsEstimatedYieldView: FC<
         id="your-yield-estimate"
         name="your-yield-estimate"
         tokenBalance={depositTokenBalance}
+        syncValue={inputAmount}
         onAmountChange={handleAmountChange}
         sx={(theme) => ({
           marginBottom: theme.spacing(1.75),
