@@ -24,6 +24,8 @@ export const FeatureCardsInner = () => {
     return null;
   }
 
+  console.log(cards, spindl, featureCards);
+
   return (
     <FeatureCardsContainer>
       {cards?.map((cardData, index) => {

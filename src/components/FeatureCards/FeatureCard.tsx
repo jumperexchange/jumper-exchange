@@ -1,6 +1,6 @@
 'use client';
 import Slide from '@mui/material/Slide';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FeatureCardData } from '@/types/strapi';
 import { openInNewTab } from 'src/utils/openInNewTab';
@@ -22,20 +22,52 @@ import {
   useFeatureCardDisable,
   useFeatureCardStyles,
 } from './hooks';
+import { useAccount } from '@lifi/wallet-management';
+import { useAdCooldownStore } from '@/stores/adCooldown/AdCooldownStore';
 
 interface FeatureCardProps {
   data: FeatureCardData;
 }
 
 export const FeatureCard = ({ data }: FeatureCardProps) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
+  const { account } = useAccount();
 
   const imageUrl = useFeatureCardImage(data);
   const colors = useFeatureCardColors(data, imageUrl);
   const cardStyles = useFeatureCardStyles();
   const { trackDisplay, trackClose, trackClick } = useFeatureCardTracking(data);
   const { disableCard } = useFeatureCardDisable(data);
+
+  const walletAddress = account?.address ?? '';
+  const isInCooldown = useAdCooldownStore((state) =>
+    state.isInCooldown(walletAddress),
+  );
+  const getActiveAdId = useAdCooldownStore((state) => state.getActiveAdId);
+  const setAdShown = useAdCooldownStore((state) => state.setAdShown);
+  const _hasHydrated = useAdCooldownStore((state) => state._hasHydrated);
+
+  const adId = data.uid?.toString() ?? '';
+  const isActiveAd = getActiveAdId(walletAddress) === adId;
+
+  useEffect(() => {
+    if (!_hasHydrated || !adId || isInCooldown || isActiveAd) {
+      return;
+    }
+    setAdShown(walletAddress, adId);
+  }, [_hasHydrated, walletAddress, adId, isActiveAd, isInCooldown, setAdShown]);
+
+  useEffect(() => {
+    if (!isActiveAd) {
+      return;
+    }
+    setOpen(true);
+  }, [isActiveAd]);
+
+  if ((isInCooldown && !isActiveAd) || !open || !_hasHydrated) {
+    return null;
+  }
 
   const handleImpressionOnce = () => {
     if (open) {
