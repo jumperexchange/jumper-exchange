@@ -1,8 +1,5 @@
-import {
-  LeafCategory,
-  CategoryContentType,
-  BaseCategoryConfig,
-} from '../MultiLayerDrawer.types';
+import type { LeafCategory, BaseCategoryConfig } from '../MultiLayer.types';
+import { CategoryContentType } from '../MultiLayer.types';
 import { MultiSelectView } from '../views/MultiSelectView';
 import { SingleSelectView } from '../views/SingleSelectView';
 import { SliderView } from '../views/SliderView';

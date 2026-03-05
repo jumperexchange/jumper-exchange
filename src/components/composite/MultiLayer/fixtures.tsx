@@ -1,6 +1,7 @@
-import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
+import type { SortByEnum } from 'src/app/ui/earn/types';
+import { SortByOptions } from 'src/app/ui/earn/types';
 import { TokenStack } from '../TokenStack/TokenStack';
-import { CategoryOption } from './MultiLayerDrawer.types';
+import type { CategoryOption } from './MultiLayer.types';
 
 export const chainOptions: CategoryOption<string>[] = [
   { value: '1', label: 'Ethereum' },
@@ -9,6 +10,16 @@ export const chainOptions: CategoryOption<string>[] = [
   { value: '10', label: 'Optimism' },
   { value: '56', label: 'BSC' },
   { value: '43114', label: 'Avalanche' },
+  { value: '8453', label: 'Base' },
+  { value: '250', label: 'Fantom' },
+  { value: '1101', label: 'Polygon zkEVM' },
+  { value: '324', label: 'zkSync Era' },
+  { value: '59144', label: 'Linea' },
+  { value: '534352', label: 'Scroll' },
+  { value: '100', label: 'Gnosis' },
+  { value: '1284', label: 'Moonbeam' },
+  { value: '42220', label: 'Celo' },
+  { value: '25', label: 'Cronos' },
 ];
 
 export const protocolOptions: CategoryOption<string>[] = [

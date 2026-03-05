@@ -1,10 +1,11 @@
-import { useState, useMemo, ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
+import { useState, useMemo } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import type { MultiSelectLeafCategory } from '../MultiLayerDrawer.types';
+import type { MultiSelectLeafCategory } from '../MultiLayer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -30,7 +31,9 @@ export const MultiSelectView = <TValue extends string | number>({
   const isSearchable = !!category.searchable;
 
   const filteredOptions = useMemo(() => {
-    if (!searchValue) return options;
+    if (!searchValue) {
+      return options;
+    }
     const lowerSearch = searchValue.toLowerCase();
     return options.filter((option) =>
       option.label.toLowerCase().includes(lowerSearch),
@@ -47,7 +50,9 @@ export const MultiSelectView = <TValue extends string | number>({
   };
 
   const handleToggle = (optionValue: TValue) => {
-    if (!category.onChange) return;
+    if (!category.onChange) {
+      return;
+    }
 
     const isSelected = value.includes(optionValue);
     const newValue = isSelected

@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import CheckIcon from '@mui/icons-material/Check';
-import type { SingleSelectLeafCategory } from '../MultiLayerDrawer.types';
+import type { SingleSelectLeafCategory } from '../MultiLayer.types';
 import {
   StyledMenuItem,
   StyledMenuItemContentContainer,
@@ -18,7 +18,9 @@ export const SingleSelectView = <TValue extends string | number>({
   const options = category.options || [];
 
   const handleSelect = (optionValue: TValue) => {
-    if (!category.onChange) return;
+    if (!category.onChange) {
+      return;
+    }
 
     const newValue = value === optionValue ? '' : optionValue;
     category.onChange(newValue as TValue);

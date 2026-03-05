@@ -1,6 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { SliderLeafCategory } from '../MultiLayerDrawer.types';
+import type { SliderLeafCategory } from '../MultiLayer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,

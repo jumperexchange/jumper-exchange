@@ -1,5 +1,5 @@
-import { SxProps, Theme } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import type { SxProps, Theme } from '@mui/material/styles';
+import type { ReactNode } from 'react';
 
 /**
  * Defines the type of content to render when a leaf category is selected
@@ -172,7 +172,7 @@ export interface BreadcrumbItem {
 /**
  * Props for MultiLayerDrawer component
  */
-export interface MultiLayerDrawerProps {
+export interface MultiLayerProps {
   /** Ref for the drawer */
   ref?: React.RefObject<{ open: () => void; close: () => void }>;
   /** Default trigger button sx */

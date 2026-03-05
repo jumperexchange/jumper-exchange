@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
+import { MultiLayerDrawer } from '@/components/composite/MultiLayerDrawer/MultiLayerDrawer';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
 import { useTranslation } from 'react-i18next';
 
