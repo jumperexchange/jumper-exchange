@@ -1,4 +1,4 @@
-import type { CSSProperties, FC, MouseEvent, ReactNode } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWalletMenu } from '@lifi/wallet-management';
 
@@ -10,19 +10,20 @@ import { Badge } from 'src/components/Badge/Badge';
 import { Button } from 'src/components/Button/Button';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface ZapPlaceholderWidgetProps {
   label?: string;
   title: ReactNode;
   description: ReactNode;
-  style?: CSSProperties;
+  sx?: SxProps<Theme>;
 }
 
 export const ZapPlaceholderWidget = ({
   label,
   title,
   description,
-  style,
+  sx,
 }: ZapPlaceholderWidgetProps) => {
   const { t } = useTranslation();
   const { openWalletMenu } = useWalletMenu();
@@ -33,7 +34,7 @@ export const ZapPlaceholderWidget = ({
   };
 
   return (
-    <SectionCard sx={style}>
+    <SectionCard sx={sx}>
       <Stack sx={{ gap: 3 }}>
         <Badge
           startIcon={<AccessTimeIcon />}

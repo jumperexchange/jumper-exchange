@@ -76,7 +76,7 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
               }}
             />
           }
-          style={ctx.theme.container}
+          sx={ctx.theme.container}
         />
       )}
     </ModalContainer>

@@ -81,7 +81,7 @@ export const DepositModal: FC<DepositModalProps> = ({
               }}
             />
           }
-          style={ctx.theme.container}
+          sx={ctx.theme.container}
         />
       )}
     </ModalContainer>
