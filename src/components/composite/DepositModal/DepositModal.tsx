@@ -11,7 +11,7 @@ import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { useTheme } from '@mui/material/styles';
 
 import envConfig from 'src/config/env-config';
-import { useEarnByChainId } from '@/hooks/earn/useEarnByChainId';
+import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
 import { ZapPlaceholderWidget } from '@/components/Widgets/variants/base/ZapWidget/ZapPlaceholderWidget';
 import { Trans, useTranslation } from 'react-i18next';
 interface DepositModalProps extends ModalContainerProps {
@@ -31,11 +31,9 @@ export const DepositModal: FC<DepositModalProps> = ({
 
   const refetchCallback = useDepositFlowStore((state) => state.refetchCallback);
 
-  const earnDataByChainId = useEarnByChainId(
+  const chainTypeData = useChainTypeData(
     earnOpportunity?.lpToken?.chain?.chainId,
   );
-
-  const isConnected = earnDataByChainId?.account?.address;
 
   const ctx = useMemo(() => {
     return {
@@ -52,13 +50,13 @@ export const DepositModal: FC<DepositModalProps> = ({
       },
       taskType: TaskType.Zap as const,
       overrideHeader: t('widget.deposit.title'),
-      allowChains: earnDataByChainId?.chains.map((chain) => chain.id),
+      allowChains: chainTypeData.chainIds,
     };
-  }, [t, theme, earnDataByChainId]);
+  }, [t, theme, chainTypeData.chainIds]);
 
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
-      {isConnected ? (
+      {chainTypeData.isAccountConnected ? (
         <ClientOnly>
           <ZapDepositBackendWidget
             ctx={ctx}
@@ -77,7 +75,7 @@ export const DepositModal: FC<DepositModalProps> = ({
             <Trans
               i18nKey="widget.zap.placeholder.not-supported.description"
               values={{
-                type: earnDataByChainId?.chainType,
+                type: chainTypeData.chain?.chainType,
               }}
             />
           }

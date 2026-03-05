@@ -9,7 +9,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
 import { useWithdrawFlowStore } from '@/stores/withdrawFlow/WithdrawFlowStore';
-import { useEarnByChainId } from '@/hooks/earn/useEarnByChainId';
+import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
 import { ZapPlaceholderWidget } from '@/components/Widgets/variants/base/ZapWidget/ZapPlaceholderWidget';
 
 interface WithdrawModalProps extends ModalContainerProps {
@@ -31,11 +31,9 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
     (state) => state.refetchCallback,
   );
 
-  const earnDataByChainId = useEarnByChainId(
+  const chainTypeData = useChainTypeData(
     earnOpportunity?.lpToken?.chain?.chainId,
   );
-
-  const isConnected = earnDataByChainId?.account?.address;
 
   const ctx = useMemo(() => {
     return {
@@ -52,13 +50,13 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
       },
       taskType: TaskType.Zap as const,
       overrideHeader: t('widget.withdraw.title'),
-      allowChains: earnDataByChainId?.chains.map((chain) => chain.id),
+      allowChains: chainTypeData.chainIds,
     };
-  }, [t, theme, earnDataByChainId]);
+  }, [t, theme, chainTypeData.chainIds]);
 
   return (
     <ModalContainer isOpen={isOpen} onClose={onClose}>
-      {isConnected ? (
+      {chainTypeData.isAccountConnected ? (
         <ZapWithdrawWidget
           customInformation={{ projectData }}
           zapData={zapData}
@@ -72,7 +70,7 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
             <Trans
               i18nKey="widget.zap.placeholder.not-supported.description"
               values={{
-                type: earnDataByChainId?.chainType,
+                type: chainTypeData.chain?.chainType,
               }}
             />
           }
