@@ -130,7 +130,7 @@ export default async function RootLayout({
           {`
           /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
           /* Light mode */
-          body.light {
+          :root.light body {
             background-color: var(--jumper-palette-bg-main, #FCFAFF);
           }
           @media (prefers-color-scheme: light) {
@@ -140,13 +140,13 @@ export default async function RootLayout({
           }
 
           /* Dark mode */
+          :root.dark body {
+            background-color: var(--jumper-palette-bg-main, #120b1e);
+          }
           @media (prefers-color-scheme: dark) {
             body {
               background-color: var(--jumper-palette-bg-main, #120b1e);
             }
-          }
-          body.dark {
-            background-color: var(--jumper-palette-bg-main, #120b1e);
           }
 `}
         </style>
