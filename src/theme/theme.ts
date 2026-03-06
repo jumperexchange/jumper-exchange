@@ -88,7 +88,9 @@ export const createJumperTheme = (
     : defaultComponents;
 
   return extendTheme({
-    cssVariables: true,
+    cssVariables: {
+      colorSchemeSelector: 'class',
+    },
     cssVarPrefix: 'jumper',
     colorSchemeSelector: 'class',
     shape,
