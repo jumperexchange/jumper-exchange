@@ -16,6 +16,17 @@ import { capitalizeString } from '@/utils/capitalizeString';
 import { useChains } from '@/hooks/useChains';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
 import { EntityStack } from '../composite/EntityStack/EntityStack';
+import { usePendingFilters } from '../composite/MultiLayer/hooks';
+import type {
+  BalancesPendingFilterValues,
+  PositionsPendingFilterValues,
+} from './types';
+import {
+  createMultiSelectCategory,
+  createSliderCategory,
+  createSingleSelectCategory,
+} from '../composite/MultiLayer/utils';
+import { countBadge, valueBadge } from './utils';
 
 export const usePortfolioBalancesFilterBar = () => {
   const { t } = useTranslation();
@@ -181,6 +192,156 @@ export const usePortfolioBalancesFilterBar = () => {
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
     handleSortBy,
+  };
+};
+
+export const useBalancesFilterCategories = () => {
+  const { t } = useTranslation();
+  const {
+    isLoading,
+    walletOptions,
+    chainOptions,
+    assetOptions,
+    filter,
+    valueMin,
+    valueMax,
+    valueRangeMin,
+    valueRangeMax,
+    filtersCount,
+    sortByOptions,
+    sortBy,
+    handleClearAllFilters,
+    handleApplyAllFilters,
+    handleSortBy,
+  } = usePortfolioBalancesFilterBar();
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = usePendingFilters<BalancesPendingFilterValues>({
+    initialValues: {
+      wallets: filter?.wallets ?? [],
+      chains: filter?.chains?.map(String) ?? [],
+      assets: filter?.assets ?? [],
+      value: [valueMin, valueMax],
+      sortBy,
+    },
+    onApply: (values) => {
+      handleApplyAllFilters({
+        wallets: values.wallets,
+        chains: values.chains.map(Number),
+        assets: values.assets,
+        minValue: values.value[0],
+        maxValue: values.value[1],
+      });
+      handleSortBy(values.sortBy);
+    },
+    onClear: handleClearAllFilters,
+    isFilterApplied: (values) =>
+      values.wallets.length > 0 ||
+      values.chains.length > 0 ||
+      values.assets.length > 0 ||
+      values.value[0] !== valueRangeMin ||
+      values.value[1] !== valueRangeMax,
+  });
+
+  const usedMin = pendingValues.value[0] ?? valueMin;
+  const usedMax = pendingValues.value[1] ?? valueMax;
+
+  const categories = [
+    walletOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'wallet',
+          label: t('portfolio.filter.wallet'),
+          badgeLabel: countBadge(pendingValues.wallets.length),
+          value: pendingValues.wallets,
+          onChange: (v) => setPendingValue('wallets', v),
+          options: walletOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.wallet').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-wallet-select-mobile',
+        })
+      : null,
+    chainOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'chain',
+          label: t('portfolio.filter.chain'),
+          badgeLabel: countBadge(pendingValues.chains.length),
+          value: pendingValues.chains,
+          onChange: (v) => setPendingValue('chains', v),
+          options: chainOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.chain').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-chain-select-mobile',
+        })
+      : null,
+    assetOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'asset',
+          label: t('portfolio.filter.asset'),
+          badgeLabel: countBadge(pendingValues.assets.length),
+          value: pendingValues.assets,
+          onChange: (v) => setPendingValue('assets', v),
+          options: assetOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.asset').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-asset-select-mobile',
+        })
+      : null,
+    !isNaN(valueRangeMin) &&
+    !isNaN(valueRangeMax) &&
+    valueRangeMin !== valueRangeMax
+      ? createSliderCategory({
+          id: 'value',
+          label: t('portfolio.filter.value'),
+          badgeLabel: valueBadge(
+            usedMin,
+            usedMax,
+            valueRangeMin,
+            valueRangeMax,
+            pendingValues.value,
+          ),
+          value: pendingValues.value,
+          onChange: (v) => setPendingValue('value', v),
+          min: valueRangeMin,
+          max: valueRangeMax,
+          testId: 'portfolio-filter-value-select-mobile',
+        })
+      : null,
+    sortByOptions.length > 1
+      ? createSingleSelectCategory<SortByEnum>({
+          id: 'sortBy',
+          label: t('portfolio.sorting.sortBy'),
+          value: pendingValues.sortBy,
+          onChange: (v) => {
+            if (v) {
+              setPendingValue('sortBy', v);
+            }
+          },
+          options: sortByOptions,
+          testId: 'portfolio-filter-sort-select-mobile',
+        })
+      : null,
+  ].filter((category) => !!category);
+
+  return {
+    isLoading,
+    categories,
+    filtersCount,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
   };
 };
 
@@ -352,5 +513,174 @@ export const usePortfolioPositionsFilterBar = () => {
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
     handleSortBy,
+  };
+};
+
+export const usePositionsFilterCategories = () => {
+  const { t } = useTranslation();
+  const {
+    isLoading,
+    chainOptions,
+    protocolOptions,
+    typeOptions,
+    assetOptions,
+    filter,
+    valueMin,
+    valueMax,
+    valueRangeMin,
+    valueRangeMax,
+    filtersCount,
+    sortByOptions,
+    sortBy,
+    handleClearAllFilters,
+    handleApplyAllFilters,
+    handleSortBy,
+  } = usePortfolioPositionsFilterBar();
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = usePendingFilters<PositionsPendingFilterValues>({
+    initialValues: {
+      chains: filter?.chains?.map(String) ?? [],
+      protocols: filter?.protocols ?? [],
+      types: filter?.types ?? [],
+      assets: filter?.assets ?? [],
+      value: [valueMin, valueMax],
+      sortBy,
+    },
+    onApply: (values) => {
+      handleApplyAllFilters({
+        chains: values.chains.map(Number),
+        protocols: values.protocols,
+        types: values.types,
+        assets: values.assets,
+        minValue: values.value[0],
+        maxValue: values.value[1],
+      });
+      handleSortBy(values.sortBy);
+    },
+    onClear: handleClearAllFilters,
+    isFilterApplied: (values) =>
+      values.chains.length > 0 ||
+      values.protocols.length > 0 ||
+      values.types.length > 0 ||
+      values.assets.length > 0 ||
+      values.value[0] !== valueRangeMin ||
+      values.value[1] !== valueRangeMax,
+  });
+
+  const usedMin = pendingValues.value[0] ?? valueMin;
+  const usedMax = pendingValues.value[1] ?? valueMax;
+
+  const categories = [
+    chainOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'chain',
+          label: t('portfolio.filter.chain'),
+          badgeLabel: countBadge(pendingValues.chains.length),
+          value: pendingValues.chains,
+          onChange: (v) => setPendingValue('chains', v),
+          options: chainOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.chain').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-chain-select-mobile',
+        })
+      : null,
+    protocolOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'protocol',
+          label: t('portfolio.filter.protocol'),
+          badgeLabel: countBadge(pendingValues.protocols.length),
+          value: pendingValues.protocols,
+          onChange: (v) => setPendingValue('protocols', v),
+          options: protocolOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.protocol').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-protocol-select-mobile',
+        })
+      : null,
+    typeOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'type',
+          label: t('portfolio.filter.type'),
+          badgeLabel: countBadge(pendingValues.types.length),
+          value: pendingValues.types,
+          onChange: (v) => setPendingValue('types', v),
+          options: typeOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.type').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-type-select-mobile',
+        })
+      : null,
+    assetOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'asset',
+          label: t('portfolio.filter.asset'),
+          badgeLabel: countBadge(pendingValues.assets.length),
+          value: pendingValues.assets,
+          onChange: (v) => setPendingValue('assets', v),
+          options: assetOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.asset').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-asset-select-mobile',
+        })
+      : null,
+    !isNaN(valueRangeMin) &&
+    !isNaN(valueRangeMax) &&
+    valueRangeMin !== valueRangeMax
+      ? createSliderCategory({
+          id: 'value',
+          label: t('portfolio.filter.value'),
+          badgeLabel: valueBadge(
+            usedMin,
+            usedMax,
+            valueRangeMin,
+            valueRangeMax,
+            pendingValues.value,
+          ),
+          value: pendingValues.value,
+          onChange: (v) => setPendingValue('value', v),
+          min: valueRangeMin,
+          max: valueRangeMax,
+          testId: 'portfolio-filter-value-select-mobile',
+        })
+      : null,
+    sortByOptions.length > 1
+      ? createSingleSelectCategory<SortByEnum>({
+          id: 'sortBy',
+          label: t('portfolio.sorting.sortBy'),
+          value: pendingValues.sortBy,
+          onChange: (v) => {
+            if (v) {
+              setPendingValue('sortBy', v);
+            }
+          },
+          options: sortByOptions,
+          testId: 'portfolio-filter-sort-select-mobile',
+        })
+      : null,
+  ].filter((category) => !!category);
+
+  return {
+    isLoading,
+    categories,
+    filtersCount,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
   };
 };

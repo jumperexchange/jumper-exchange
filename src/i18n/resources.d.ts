@@ -559,6 +559,7 @@ interface Resources {
         chain: 'Chain';
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
+        filterSort: 'Filters & Sort';
         protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         type: 'Type';
