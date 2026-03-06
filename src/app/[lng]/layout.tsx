@@ -126,12 +126,6 @@ export default async function RootLayout({
     >
       <head>
         <meta name="base:app_id" content={appId} />
-        <InitColorSchemeScript
-          attribute="class"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-        />
         <style>
           {`
           /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
@@ -193,6 +187,12 @@ export default async function RootLayout({
 
       <body suppressHydrationWarning>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <InitColorSchemeScript
+            attribute="class"
+            defaultMode="system"
+            modeStorageKey={THEME_MODE_STORAGE_KEY}
+            colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+          />
           <ReactQueryProvider>
             <TranslationsProvider
               namespaces={[defaultNS]}
