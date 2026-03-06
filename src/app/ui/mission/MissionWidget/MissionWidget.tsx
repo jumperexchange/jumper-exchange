@@ -2,7 +2,6 @@
 
 import Box from '@mui/material/Box';
 import type { FC, ReactNode } from 'react';
-import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
 import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
@@ -62,31 +61,26 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     }
 
     return (
-      <ClientOnly>
-        <WidgetTrackingProvider
-          trackingActionKeys={{
-            sourceChainAndTokenSelection:
-              TrackingAction.OnSourceChainAndTokenSelectionMission,
-            availableRoutes: TrackingAction.OnAvailableRoutesMission,
-            routeExecutionStarted:
-              TrackingAction.OnRouteExecutionStartedMission,
-            routeExecutionCompleted:
-              TrackingAction.OnRouteExecutionCompletedMission,
-            routeExecutionFailed: TrackingAction.OnRouteExecutionFailedMission,
-            changeSettings: TrackingAction.OnChangeSettingsMission,
-          }}
-          trackingDataActionKeys={{
-            routeExecutionStarted:
-              TrackingEventDataAction.ExecutionStartMission,
-            routeExecutionCompleted:
-              TrackingEventDataAction.ExecutionCompletedMission,
-            routeExecutionFailed:
-              TrackingEventDataAction.ExecutionFailedMission,
-          }}
-        >
-          <MissionBaseWidget />
-        </WidgetTrackingProvider>
-      </ClientOnly>
+      <WidgetTrackingProvider
+        trackingActionKeys={{
+          sourceChainAndTokenSelection:
+            TrackingAction.OnSourceChainAndTokenSelectionMission,
+          availableRoutes: TrackingAction.OnAvailableRoutesMission,
+          routeExecutionStarted: TrackingAction.OnRouteExecutionStartedMission,
+          routeExecutionCompleted:
+            TrackingAction.OnRouteExecutionCompletedMission,
+          routeExecutionFailed: TrackingAction.OnRouteExecutionFailedMission,
+          changeSettings: TrackingAction.OnChangeSettingsMission,
+        }}
+        trackingDataActionKeys={{
+          routeExecutionStarted: TrackingEventDataAction.ExecutionStartMission,
+          routeExecutionCompleted:
+            TrackingEventDataAction.ExecutionCompletedMission,
+          routeExecutionFailed: TrackingEventDataAction.ExecutionFailedMission,
+        }}
+      >
+        <MissionBaseWidget />
+      </WidgetTrackingProvider>
     );
   };
 
