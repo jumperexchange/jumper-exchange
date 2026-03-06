@@ -158,7 +158,7 @@ export default async function RootLayout({
           strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
-        <Script strategy="lazyOnload" id="google-analytics">
+        <Script id="google-analytics">
           {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
@@ -210,7 +210,7 @@ export default async function RootLayout({
                         <PortfolioProvider>
                           <NavbarWrapper />
                           <IntercomProvider />
-                          {children}
+                          <main>{children}</main>
                         </PortfolioProvider>
                       </NuqsAdapter>
                     </SettingsStoreProvider>
