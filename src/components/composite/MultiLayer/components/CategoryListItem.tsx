@@ -5,11 +5,11 @@ import { hasSubcategories, isLeafCategory } from '../MultiLayer.types';
 import {
   CategoryListItemContainer,
   CategoryListItemContent,
-  MultiLayerDrawerFilterBadge,
 } from '../MultiLayer.styles';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/navigation';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
 
 export interface CategoryListItemProps {
   category: CategoryConfig;
@@ -49,9 +49,7 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
       </CategoryListItemContent>
 
       <Stack direction="row" gap={1} alignItems="center">
-        {category.badgeLabel && (
-          <MultiLayerDrawerFilterBadge label={category.badgeLabel} />
-        )}
+        {category.badgeLabel && <SelectBadge label={category.badgeLabel} />}
         {showChevron && <ChevronRightRoundedIcon />}
       </Stack>
     </CategoryListItemContainer>

@@ -4,18 +4,26 @@ import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
 import { isLeafCategory } from '../MultiLayer/MultiLayer.types';
 import Stack from '@mui/material/Stack';
 import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
-import {
-  MultiLayerDrawerAlphaButton,
-  MultiLayerDrawerDivider,
-  MultiLayerDrawerFilterBadge,
-  MultiLayerDrawerIconButton,
-  MultiLayerDrawerPrimaryButton,
-} from '../MultiLayer/MultiLayer.styles';
+import { MultiLayerDrawerDivider } from '../MultiLayer/MultiLayer.styles';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useFullScreenDrawer } from '@/components/core/FullScreenDrawer/hooks';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { Button } from '@/components/core/buttons/Button/Button';
+import { Size, Variant } from '@/components/core/buttons/types';
+import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
+import {
+  categoryListItemSx,
+  categoryListSx,
+  clearButtonSx,
+  clearIconButtonSx,
+  leafCategoryContainerSx,
+  leafCategorySlotProps,
+  sectionCardSx,
+  selectBadgeSx,
+} from './constants';
 
 interface FilterSortModalProps extends Omit<MultiLayerProps, 'title'> {
   triggerButtonLabel?: string;
@@ -75,105 +83,57 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
       ) : (
         <Stack direction="row" gap={1} sx={defaultTriggerSx}>
           {hasFilterApplied && (
-            <MultiLayerDrawerIconButton
+            <IconButton
+              size={Size.MD}
+              variant={Variant.AlphaDark}
               onClick={onClear}
               data-testid={`${testId}-clear-button`}
+              sx={clearIconButtonSx}
             >
-              <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
-            </MultiLayerDrawerIconButton>
+              <DeleteOutlineIcon />
+            </IconButton>
           )}
-          <MultiLayerDrawerAlphaButton
+          <Button
             onClick={open}
             data-testid={`${testId}-trigger-button`}
-            size="medium"
-            endIcon={
+            size={Size.MD}
+            variant={Variant.AlphaDark}
+            endAdornment={
               hasFilterApplied && (
-                <MultiLayerDrawerFilterBadge
+                <SelectBadge
                   label={appliedFiltersCount.toString()}
+                  sx={selectBadgeSx}
                 />
               )
             }
-            sx={{ paddingX: 2 }}
           >
             {triggerButtonLabel}
-          </MultiLayerDrawerAlphaButton>
+          </Button>
         </Stack>
       )}
       <ModalContainer isOpen={isOpen} onClose={handleClose}>
-        <SectionCard
-          sx={{
-            maxHeight: `calc(100vh - 10rem)`,
-            height: 570,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
+        <SectionCard sx={sectionCardSx}>
           <Stack direction="row" sx={{ flex: 1, minHeight: 0 }} gap={4}>
-            <Stack
-              direction="column"
-              gap={1}
-              sx={{
-                width: 200,
-                overflowY: 'auto',
-              }}
-            >
+            <Stack direction="column" gap={1} sx={categoryListSx}>
               {categories.map((category, index) => (
                 <CategoryListItem
                   key={category.id}
                   category={category}
                   onClick={() => {
-                    console.log('clicked', index);
                     setSelectedIndex(index);
                   }}
-                  sx={(theme) => ({
-                    background:
-                      selectedIndex === index
-                        ? (theme.vars || theme).palette.surface1Hover
-                        : 'transparent',
-                    transform: 'background 2s ease-in',
-                    borderRadius: theme.shape.radius24,
-                    padding: theme.spacing(1.125, 1.25, 1.125, 2.25),
-                    '& svg': {
-                      height: 22,
-                      width: 22,
-                    },
-                  })}
+                  sx={(theme) =>
+                    categoryListItemSx(theme, selectedIndex === index)
+                  }
                 />
               ))}
             </Stack>
 
-            <Stack
-              direction="column"
-              sx={{
-                width: 264,
-                '& .MuiStack-root': {
-                  overflowY: 'auto',
-                },
-              }}
-            >
+            <Stack direction="column" sx={leafCategoryContainerSx}>
               {selectedCategory && isLeafCategory(selectedCategory) ? (
                 <LeafCategoryRenderer
                   category={selectedCategory}
-                  slotProps={{
-                    searchSize: 'small',
-                    searchSx: {
-                      padding: 0,
-                    },
-                    listSpacing: 1,
-                    itemSx: (theme) => ({
-                      paddingX: 1,
-                      paddingY: 0.75,
-                      borderRadius: theme.shape.radius24,
-                      '& svg:last-of-type': {
-                        height: 16,
-                        width: 16,
-                      },
-                      '&:hover': {
-                        background: (theme.vars || theme).palette.surface1Hover,
-                      },
-                    }),
-                  }}
+                  slotProps={leafCategorySlotProps}
                 />
               ) : null}
             </Stack>
@@ -181,23 +141,26 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
 
           <MultiLayerDrawerDivider />
           <Stack direction="row" gap={2}>
-            <MultiLayerDrawerAlphaButton
-              fullWidth
+            <Button
               disabled={disableClear}
               onClick={handleClear}
+              size={Size.LG}
+              variant={Variant.AlphaDark}
               data-testid={`${testId}-clear-button`}
-              sx={{ width: 108 }}
+              sx={clearButtonSx}
             >
               {clearButtonLabel}
-            </MultiLayerDrawerAlphaButton>
-            <MultiLayerDrawerPrimaryButton
+            </Button>
+            <Button
               fullWidth
+              size={Size.LG}
+              variant={Variant.Primary}
               disabled={disableApply}
               onClick={handleApply}
               data-testid={`${testId}-apply-button`}
             >
               {applyButtonLabel}
-            </MultiLayerDrawerPrimaryButton>
+            </Button>
           </Stack>
         </SectionCard>
       </ModalContainer>

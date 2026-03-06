@@ -6,7 +6,6 @@ import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
 import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
 import {
-  MultiLayerDrawerFilterBadge,
   MultiLayerDrawerAlphaButton,
   MultiLayerDrawerDivider,
   MultiLayerDrawerIconButton,
@@ -15,6 +14,7 @@ import {
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { useMultiLayerNavigation } from '../MultiLayer/hooks';
+import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
 
 /**
  * MultiLayerDrawer - A generic drawer component that supports multi-level navigation
@@ -103,9 +103,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
             data-testid={`${testId}-trigger-button`}
           >
             {hasFilterApplied && (
-              <MultiLayerDrawerFilterBadge
-                label={appliedFiltersCount.toString()}
-              />
+              <SelectBadge label={appliedFiltersCount.toString()} />
             )}
             <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
           </MultiLayerDrawerIconButton>
