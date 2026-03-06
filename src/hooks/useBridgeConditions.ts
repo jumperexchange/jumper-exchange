@@ -1,7 +1,8 @@
-import { ChainId, ChainType } from '@lifi/sdk';
+import { ChainId, ChainType, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
-import { RefObject, useEffect, useMemo } from 'react';
+import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import { type RefObject, useEffect, useMemo, useState } from 'react';
 import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
 import { ARB_NATIVE_USDC } from 'src/config/tokens';
 import { useUrlParams } from './useUrlParams';
@@ -25,6 +26,8 @@ export const useBridgeConditions = ({
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
   const { getChainById } = useChains();
+  const widgetEvents = useWidgetEvents();
+  const [isPrivateSwapSelected, setIsPrivateSwapSelected] = useState(false);
 
   const {
     sourceChainToken: sourceChainTokenParam,
@@ -38,6 +41,19 @@ export const useBridgeConditions = ({
     }
     return getChainById(sourceChainTokenParam.chainId)?.chainType;
   }, [sourceChainTokenParam?.chainId, getChainById]);
+
+  useEffect(() => {
+    const handleSelectedRoute = ({ route }: { route: Route }) => {
+      setIsPrivateSwapSelected(
+        route.steps.some((step) => step.tool === 'houdini'),
+      );
+    };
+
+    widgetEvents.on(WidgetEvent.RouteSelected, handleSelectedRoute);
+    return () => {
+      widgetEvents.off(WidgetEvent.RouteSelected, handleSelectedRoute);
+    };
+  }, [widgetEvents]);
 
   // // Handle initial URL parameter clearing
   useEffect(() => {
@@ -89,7 +105,9 @@ export const useBridgeConditions = ({
   ]);
 
   useEffect(() => {
-    if (!formRef?.current) return;
+    if (!formRef?.current) {
+      return;
+    }
 
     if (
       (isConnectedAGW && toAddress === account.address) ||
@@ -108,5 +126,5 @@ export const useBridgeConditions = ({
     isConnectedAGW,
   ]);
 
-  return bridgeConditions;
+  return { ...bridgeConditions, isPrivateSwapSelected };
 };
