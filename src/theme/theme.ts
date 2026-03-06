@@ -62,6 +62,13 @@ export const createJumperTheme = (
 
   const themeBase = createTheme({
     palette,
+    cssVariables: {
+      colorSchemeSelector: 'class',
+    },
+    colorSchemes: {
+      light: true,
+      dark: true,
+    },
   });
 
   const defaultComponents = createComponents(themeBase);

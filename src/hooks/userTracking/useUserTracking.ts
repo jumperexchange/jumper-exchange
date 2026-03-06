@@ -60,7 +60,7 @@ const addressableEvent = ({
 
   typeof window !== 'undefined' &&
     data &&
-    window.__adrsbl.run(
+    window.__adrsbl?.run(
       action,
       isConversion ?? false,
       dataArray.concat(
