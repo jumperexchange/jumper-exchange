@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { useMemo, type FC } from 'react';
 import {
   AvatarStackWrapper,
   AvatarStackContainer,
@@ -34,21 +34,30 @@ export const AvatarStack: FC<AvatarStackProps> = ({
   avatarSx,
   useAvatarOverflow = false,
 }) => {
-  const hasOverflow = limit && avatars.length > limit;
-  const overflowCount = hasOverflow ? avatars.length - limit : 0;
-  const displayAvatars = hasOverflow ? avatars.slice(0, limit) : avatars;
+  const { orderedAvatars, overflowCount } = useMemo(() => {
+    const hasOverflow = limit && avatars.length > limit;
+    const overflowCount = hasOverflow ? avatars.length - limit : 0;
 
-  if (overflowCount > 0 && useAvatarOverflow) {
-    displayAvatars.push({
-      count: overflowCount,
-      variant: 'bodyXXSmallStrong',
-      startAdornment: '+',
-    });
-  }
+    const baseAvatars = hasOverflow ? avatars.slice(0, limit) : avatars;
 
-  const orderedAvatars = direction.includes('reverse')
-    ? displayAvatars.reverse()
-    : displayAvatars;
+    const avatarsWithOverflow =
+      overflowCount > 0 && useAvatarOverflow
+        ? [
+            ...baseAvatars,
+            {
+              count: overflowCount,
+              variant: 'bodyXXSmallStrong' as const,
+              startAdornment: '+',
+            },
+          ]
+        : baseAvatars;
+
+    const orderedAvatars = direction.includes('reverse')
+      ? [...avatarsWithOverflow].reverse()
+      : avatarsWithOverflow;
+
+    return { orderedAvatars, overflowCount };
+  }, [avatars, limit, useAvatarOverflow, direction]);
 
   return (
     <AvatarStackContainer direction={direction} useFlexGap>
