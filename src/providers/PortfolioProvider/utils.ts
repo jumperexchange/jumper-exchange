@@ -294,4 +294,7 @@ export const positionAccessors = {
 };
 
 export const isAllowedPositionPath = (pathname: string) =>
-  [AppPaths.Portfolio].some((allowedPath) => pathname.startsWith(allowedPath));
+  [AppPaths.Portfolio].some(
+    (allowedPath) =>
+      pathname === allowedPath || pathname.startsWith(allowedPath + '/'),
+  );
