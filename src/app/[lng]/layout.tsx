@@ -186,13 +186,13 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode="system"
+          modeStorageKey={THEME_MODE_STORAGE_KEY}
+          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <InitColorSchemeScript
-            attribute="class"
-            defaultMode="system"
-            modeStorageKey={THEME_MODE_STORAGE_KEY}
-            colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-          />
           <ReactQueryProvider>
             <TranslationsProvider
               namespaces={[defaultNS]}

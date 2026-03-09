@@ -96,7 +96,7 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
             },
           }}
         >
-          <ClientOnly>
+          <ClientOnly fallback={<WidgetSkeleton />}>
             <ZapDepositBackendWidget
               ctx={ctx}
               customInformation={customInformation}
