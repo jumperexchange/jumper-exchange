@@ -1,18 +1,18 @@
 'use client';
 
 import {
-  TextField,
   Alert,
-  CircularProgress,
-  Typography,
   Box,
+  CircularProgress,
+  TextField,
+  Typography,
 } from '@mui/material';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ButtonPrimary,
   ButtonTransparent,
 } from '@/components/Button/Button.style';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useJumperWallet } from '@/internal-wallet/hooks/useJumperWallet';
 import { usePasswordField } from '@/internal-wallet/hooks/usePasswordField';
 import { BiometricButton } from './BiometricButton';
@@ -26,6 +26,7 @@ export function PasswordPrompt() {
   const { t } = useTranslation();
   const { unlock, resolvePasswordRequest, unlockWithBiometric, hasBiometric } =
     useJumperWallet();
+
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
