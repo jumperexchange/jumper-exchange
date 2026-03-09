@@ -83,7 +83,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
         options.onError?.(e, 'chain-switch');
         setIsExecuting(false);
         setError(e);
-        throw e;
       }
     },
     [account?.chainId, switchChainAsync, sendTransaction, options],
