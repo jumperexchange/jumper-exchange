@@ -55,7 +55,7 @@ export const generateRouteLabel = (
 };
 
 export const isSupportedChainType = (
-  type: ChainType,
+  type?: ChainType | null | undefined,
 ): type is ChainType.EVM | ChainType.SVM => {
-  return [ChainType.EVM, ChainType.SVM].includes(type);
+  return !!type && [ChainType.EVM, ChainType.SVM].includes(type);
 };
