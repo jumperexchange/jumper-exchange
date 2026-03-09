@@ -154,6 +154,12 @@ export default async function RootLayout({
           {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
         </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode="system"
+          modeStorageKey={THEME_MODE_STORAGE_KEY}
+          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        />
         <Script
           strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
@@ -186,12 +192,6 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <InitColorSchemeScript
-          attribute="class"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-        />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
