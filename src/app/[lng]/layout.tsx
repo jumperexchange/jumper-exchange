@@ -125,17 +125,15 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        <Script
-          id="theme-script"
-          strategy="beforeInteractive"
+        <script
           data-cfasync="false"
-        >
-          {`
+          dangerouslySetInnerHTML={{
+            __html: `
             (function() {
               try {
-                var mode = localStorage.getItem('${THEME_MODE_STORAGE_KEY}') || 'system';
-                var dark = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-dark') || 'dark';
-                var light = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-light') || 'light';
+                var mode = localStorage.getItem('jumper-mode') || 'system';
+                var dark = localStorage.getItem('jumper-color-scheme-dark') || 'dark';
+                var light = localStorage.getItem('jumper-color-scheme-light') || 'light';
                 var colorScheme = mode;
 
                 if (mode === 'system') {
@@ -150,8 +148,9 @@ export default async function RootLayout({
                 }
               } catch (e) {}
             })();
-        `}
-        </Script>
+          `,
+          }}
+        />
         <meta name="base:app_id" content={appId} />
         <style>
           {`
