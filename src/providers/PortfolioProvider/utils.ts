@@ -24,6 +24,7 @@ import type {
 } from './types';
 import type { ExtendedChain } from '@lifi/sdk';
 import { uniqBy } from 'lodash';
+import { AppPaths } from '@/const/urls';
 
 type GetPrice = (chainId: number, address: string) => number | undefined;
 
@@ -291,3 +292,6 @@ export const positionAccessors = {
     return `${p.protocol.name}-unknown`;
   },
 };
+
+export const isAllowedPositionPath = (pathname: string) =>
+  [AppPaths.Portfolio].some((allowedPath) => pathname.startsWith(allowedPath));
