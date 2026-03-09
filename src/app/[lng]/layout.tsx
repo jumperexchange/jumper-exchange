@@ -125,12 +125,33 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        <InitColorSchemeScript
-          attribute="class"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-        />
+        <Script
+          id="theme-script"
+          strategy="beforeInteractive"
+          data-cfasync="false"
+        >
+          {`
+            (function() {
+              try {
+                var mode = localStorage.getItem('${THEME_MODE_STORAGE_KEY}') || 'system';
+                var dark = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-dark') || 'dark';
+                var light = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-light') || 'light';
+                var colorScheme = mode;
+
+                if (mode === 'system') {
+                  colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+                } else {
+                  colorScheme = mode === 'dark' ? dark : light;
+                }
+
+                if (colorScheme) {
+                  document.documentElement.classList.add(colorScheme);
+                  document.documentElement.setAttribute('data-mui-color-scheme', colorScheme);
+                }
+              } catch (e) {}
+            })();
+        `}
+        </Script>
         <meta name="base:app_id" content={appId} />
         <style>
           {`
