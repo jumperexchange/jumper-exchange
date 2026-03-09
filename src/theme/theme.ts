@@ -63,7 +63,7 @@ export const createJumperTheme = (
   const themeBase = createTheme({
     palette,
     cssVariables: {
-      colorSchemeSelector: 'class',
+      colorSchemeSelector: 'data-color-scheme',
     },
     colorSchemes: {
       light: true,
@@ -89,10 +89,10 @@ export const createJumperTheme = (
 
   return extendTheme({
     cssVariables: {
-      colorSchemeSelector: 'class',
+      colorSchemeSelector: 'data-color-scheme',
     },
     cssVarPrefix: 'jumper',
-    colorSchemeSelector: 'class',
+    colorSchemeSelector: 'data-color-scheme',
     shape,
     borders,
     components,
