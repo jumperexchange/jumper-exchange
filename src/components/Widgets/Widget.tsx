@@ -6,7 +6,7 @@ import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
@@ -19,6 +19,7 @@ import { useFormParameters } from './hooks';
 import { AppPaths } from '@/const/urls';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import FeeContribution from './FeeContribution/FeeContribution';
+import { PrivateSwapModal } from './PrivateSwapModal/PrivateSwapModal';
 
 export function Widget({
   starterVariant,
@@ -41,6 +42,12 @@ export function Widget({
     allowToChains,
     configThemeChains: configTheme?.chains,
   });
+  const [isPrivateSwapModalOpen, setIsPrivateSwapModalOpen] = useState(false);
+
+  useEffect(() => {
+    setIsPrivateSwapModalOpen(bridgeConditions.isPrivateSwapSelected);
+  }, [bridgeConditions.isPrivateSwapSelected]);
+
   const router = useRouter();
   const pathname = usePathname();
   const { t } = useTranslation();
@@ -148,6 +155,14 @@ export function Widget({
         formRef={formRef}
         feeConfig={{
           _vcComponent: () => <FeeContribution translationFn={t} />,
+        }}
+      />
+      <PrivateSwapModal
+        open={isPrivateSwapModalOpen}
+        onClose={() => setIsPrivateSwapModalOpen(false)}
+        onConfirm={(addr) => {
+          formRef.current?.setFieldValue('toAddress', addr);
+          setIsPrivateSwapModalOpen(false);
         }}
       />
     </WidgetWrapper>

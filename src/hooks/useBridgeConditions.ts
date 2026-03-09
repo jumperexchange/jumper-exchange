@@ -49,9 +49,22 @@ export const useBridgeConditions = ({
       );
     };
 
+    const handleResetPrivateSwapSelected = () => {
+      setIsPrivateSwapSelected(false);
+    };
+
     widgetEvents.on(WidgetEvent.RouteSelected, handleSelectedRoute);
+    widgetEvents.on(
+      WidgetEvent.RouteExecutionStarted,
+      handleResetPrivateSwapSelected,
+    );
+
     return () => {
       widgetEvents.off(WidgetEvent.RouteSelected, handleSelectedRoute);
+      widgetEvents.off(
+        WidgetEvent.RouteExecutionStarted,
+        handleResetPrivateSwapSelected,
+      );
     };
   }, [widgetEvents]);
 

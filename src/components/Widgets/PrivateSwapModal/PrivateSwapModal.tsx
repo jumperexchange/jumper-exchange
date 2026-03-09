@@ -1,0 +1,119 @@
+'use client';
+
+import type { FC } from 'react';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Typography from '@mui/material/Typography';
+
+import { Button } from 'src/components/Button/Button';
+import { FormInput } from 'src/components/Form/FormInput/FormInput';
+import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalContainer';
+import { isValidAddress } from 'src/utils/regex-patterns';
+
+import { PrivateSwapModalCard } from './PrivateSwapModal.styles';
+
+export interface PrivateSwapModalProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (address: string) => void;
+  initialAddress?: string;
+}
+
+export const PrivateSwapModal: FC<PrivateSwapModalProps> = ({
+  open,
+  onClose,
+  onConfirm,
+  initialAddress = '',
+}) => {
+  const { t } = useTranslation();
+  const [address, setAddress] = useState(initialAddress);
+  const [box1, setBox1] = useState(false);
+  const [box2, setBox2] = useState(false);
+
+  const canConfirm = isValidAddress(address) && box1 && box2;
+
+  const handlePaste = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setAddress(text);
+    } catch {
+      // clipboard access denied — no-op
+    }
+  };
+
+  const handleConfirm = () => {
+    if (canConfirm) {
+      onConfirm(address);
+    }
+  };
+
+  return (
+    <ModalContainer isOpen={open} onClose={onClose}>
+      <PrivateSwapModalCard>
+        <Typography variant="titleSmall" fontWeight={700}>
+          {t('modal.privateSwap.title')}
+        </Typography>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Typography variant="bodyMedium">
+            {t('modal.privateSwap.subtitle')}
+          </Typography>
+        </Box>
+
+        <FormInput
+          id="private-swap-address"
+          name="private-swap-address"
+          value={address}
+          placeholder={t('modal.privateSwap.addressPlaceholder')}
+          onChange={(e) => setAddress(e.target.value)}
+          startAdornment={
+            <Button variant="secondary" size="small" onClick={handlePaste}>
+              {t('modal.privateSwap.paste')}
+            </Button>
+          }
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={box1}
+              onChange={(e) => setBox1(e.target.checked)}
+            />
+          }
+          label={
+            <Typography variant="bodySmall">
+              {t('modal.privateSwap.disclaimer1')}
+            </Typography>
+          }
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={box2}
+              onChange={(e) => setBox2(e.target.checked)}
+            />
+          }
+          label={
+            <Typography variant="bodySmall">
+              {t('modal.privateSwap.disclaimer2')}
+            </Typography>
+          }
+        />
+
+        <Button
+          variant="primary"
+          fullWidth
+          disabled={!canConfirm}
+          onClick={handleConfirm}
+        >
+          {t('modal.privateSwap.confirm')}
+        </Button>
+      </PrivateSwapModalCard>
+    </ModalContainer>
+  );
+};
