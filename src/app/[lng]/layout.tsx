@@ -130,18 +130,18 @@ export default async function RootLayout({
           {`
           /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
           /* Light mode */
-          [data-color-scheme="light"] body {
+          :root.light body {
             background-color: var(--jumper-palette-bg-main, #FCFAFF);
           }
-          [data-color-scheme="dark"] body {
-            background-color: var(--jumper-palette-bg-main, #120b1e);
-          }
-
-          /* keep the media queries as fallback for first paint before script runs */
           @media (prefers-color-scheme: light) {
             body {
               background-color: var(--jumper-palette-bg-main, #FCFAFF);
             }
+          }
+
+          /* Dark mode */
+          :root.dark body {
+            background-color: var(--jumper-palette-bg-main, #120b1e);
           }
           @media (prefers-color-scheme: dark) {
             body {
@@ -154,6 +154,12 @@ export default async function RootLayout({
           {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
         </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode="system"
+          modeStorageKey={THEME_MODE_STORAGE_KEY}
+          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        />
         <Script
           strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
@@ -186,12 +192,6 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <InitColorSchemeScript
-          attribute="data-color-scheme"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-        />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
