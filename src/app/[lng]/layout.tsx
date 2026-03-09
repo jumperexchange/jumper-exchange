@@ -125,12 +125,18 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        <InitColorSchemeScript
+          attribute="class"
+          defaultMode="system"
+          modeStorageKey={THEME_MODE_STORAGE_KEY}
+          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        />
         <meta name="base:app_id" content={appId} />
         <style>
           {`
           /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
           /* Light mode */
-          body.light {
+          :root.light body {
             background-color: var(--jumper-palette-bg-main, #FCFAFF);
           }
           @media (prefers-color-scheme: light) {
@@ -140,13 +146,13 @@ export default async function RootLayout({
           }
 
           /* Dark mode */
+          :root.dark body {
+            background-color: var(--jumper-palette-bg-main, #120b1e);
+          }
           @media (prefers-color-scheme: dark) {
             body {
               background-color: var(--jumper-palette-bg-main, #120b1e);
             }
-          }
-          body.dark {
-            background-color: var(--jumper-palette-bg-main, #120b1e);
           }
 `}
         </style>
@@ -158,7 +164,7 @@ export default async function RootLayout({
           strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
-        <Script strategy="lazyOnload" id="google-analytics">
+        <Script id="google-analytics">
           {`
               window.dataLayer = window.dataLayer || [];
               function gtag() { dataLayer.push(arguments); }
@@ -186,12 +192,6 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <InitColorSchemeScript
-          attribute="class"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-        />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ReactQueryProvider>
             <TranslationsProvider
@@ -210,7 +210,7 @@ export default async function RootLayout({
                         <PortfolioProvider>
                           <NavbarWrapper />
                           <IntercomProvider />
-                          {children}
+                          <main>{children}</main>
                         </PortfolioProvider>
                       </NuqsAdapter>
                     </SettingsStoreProvider>

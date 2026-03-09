@@ -20,6 +20,10 @@ import { createPaletteLight } from './paletteLight';
 import { defaultShape } from './shape';
 import type { ThemeFonts } from './typography';
 import { createTypography, defaultFonts } from './typography';
+import {
+  THEME_MODE_STORAGE_KEY,
+  THEME_COLOR_SCHEME_STORAGE_KEY,
+} from '@/providers/ThemeProvider/constants';
 
 type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
@@ -62,6 +66,13 @@ export const createJumperTheme = (
 
   const themeBase = createTheme({
     palette,
+    cssVariables: {
+      colorSchemeSelector: 'class',
+    },
+    colorSchemes: {
+      light: true,
+      dark: true,
+    },
   });
 
   const defaultComponents = createComponents(themeBase);
@@ -81,7 +92,9 @@ export const createJumperTheme = (
     : defaultComponents;
 
   return extendTheme({
-    cssVariables: true,
+    cssVariables: {
+      colorSchemeSelector: 'class',
+    },
     cssVarPrefix: 'jumper',
     colorSchemeSelector: 'class',
     shape,
@@ -90,6 +103,8 @@ export const createJumperTheme = (
     typography,
     palette,
     colorSchemes,
+    modeStorageKey: THEME_MODE_STORAGE_KEY,
+    colorSchemeStorageKey: THEME_COLOR_SCHEME_STORAGE_KEY,
   } as Parameters<typeof extendTheme>[0]);
 };
 
