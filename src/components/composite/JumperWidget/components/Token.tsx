@@ -242,7 +242,7 @@ export const TokenMultiSelectSidePanel: FC<TokenMultiSelectFieldProps> = ({
         const next = selectedTokens.includes(key)
           ? selectedTokens.filter((a) => a !== key)
           : [...selectedTokens, key];
-        field.setValue(next.length > 0 ? { selectedTokens: next } : undefined!);
+        field.setValue({ selectedTokens: next });
       }}
       onClose={field.closeSidePanel}
     >

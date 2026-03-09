@@ -33,6 +33,7 @@ export const GoBackHeader = ({
         variant={Variant.Borderless}
         size={Size.XL}
         onClick={onBack}
+        aria-label="Go back"
         sx={{ position: 'absolute', left: 0 }}
       >
         <ArrowBackIcon />

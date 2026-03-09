@@ -48,7 +48,7 @@ export const createNumericSelectSchema = (
 
   const objectSchema = z.object({ value: valueSchema });
 
-  return required ? objectSchema : objectSchema;
+  return required ? objectSchema : objectSchema.optional();
 };
 
 export type NumericSelectValue = z.infer<

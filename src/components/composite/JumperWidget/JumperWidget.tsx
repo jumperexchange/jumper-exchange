@@ -98,7 +98,8 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
   const values = useStore(form.store, (s) => s.values);
 
   const { currentViewId, goToView, submit } = useWidgetNavigation();
-  const activeViewIndex = views.findIndex((v) => v.id === currentViewId) ?? 0;
+  const foundIndex = views.findIndex((v) => v.id === currentViewId);
+  const activeViewIndex = foundIndex === -1 ? 0 : foundIndex;
   const activeView = views[activeViewIndex];
   const isFirstViewActive = activeViewIndex === 0;
 

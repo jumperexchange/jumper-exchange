@@ -59,6 +59,10 @@ export const Summary: FC<SummaryProps> = ({
     );
   }
 
+  if (from.length === 0) {
+    return null;
+  }
+
   if (from.length === 1) {
     return (
       <FieldWrapper
