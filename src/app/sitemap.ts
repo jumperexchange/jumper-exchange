@@ -1,11 +1,7 @@
 import { AppPaths } from '@/const/urls';
 import type { MetadataRoute } from 'next';
-import { getArticles } from './lib/getArticles';
 import type { SitemapPage } from '@/types/sitemap';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
-import { buildUrl, toSitemapDate, toSitemapEntry } from '@/utils/sitemap';
-
-const strapiUrl = getStrapiBaseUrl();
+import { buildUrl, toSitemapEntry } from '@/utils/sitemap';
 
 export const pages: SitemapPage[] = [
   { path: AppPaths.Main, priority: 1.0 },
@@ -20,20 +16,7 @@ export const pages: SitemapPage[] = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const routes = pages.map(({ path, priority }) =>
+  return pages.map(({ path, priority }) =>
     toSitemapEntry(buildUrl(path), priority),
   );
-
-  const { data } = await getArticles();
-
-  const articles = data.map(({ Slug, updatedAt, publishedAt, Image }) =>
-    toSitemapEntry(
-      buildUrl(AppPaths.Learn, Slug),
-      0.8,
-      toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
-      Image?.url && strapiUrl ? [`${strapiUrl}/${Image.url}`] : undefined,
-    ),
-  );
-
-  return [...routes, ...articles];
 }
