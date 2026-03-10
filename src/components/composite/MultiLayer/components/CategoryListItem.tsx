@@ -1,26 +1,26 @@
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import Stack from '@mui/material/Stack';
-import {
-  CategoryConfig,
-  hasSubcategories,
-  isLeafCategory,
-} from '../MultiLayerDrawer.types';
+import type { CategoryConfig } from '../MultiLayer.types';
+import { hasSubcategories, isLeafCategory } from '../MultiLayer.types';
 import {
   CategoryListItemContainer,
   CategoryListItemContent,
-  MultiLayerDrawerFilterBadge,
-} from '../MultiLayerDrawer.styles';
+} from '../MultiLayer.styles';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/navigation';
+import type { SxProps, Theme } from '@mui/material/styles';
+import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
 
 export interface CategoryListItemProps {
   category: CategoryConfig;
   onClick: () => void;
+  sx?: SxProps<Theme>;
 }
 
 export const CategoryListItem: React.FC<CategoryListItemProps> = ({
   category,
   onClick,
+  sx,
 }) => {
   const router = useRouter();
   const showChevron = hasSubcategories(category) || isLeafCategory(category);
@@ -41,6 +41,7 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
       onClick={handleClick}
       data-testid={category.testId}
       disableRipple
+      sx={sx}
     >
       <CategoryListItemContent>
         {category.icon && <Stack sx={{ flexShrink: 0 }}>{category.icon}</Stack>}
@@ -48,9 +49,7 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
       </CategoryListItemContent>
 
       <Stack direction="row" gap={1} alignItems="center">
-        {category.badgeLabel && (
-          <MultiLayerDrawerFilterBadge label={category.badgeLabel} />
-        )}
+        {category.badgeLabel && <SelectBadge label={category.badgeLabel} />}
         {showChevron && <ChevronRightRoundedIcon />}
       </Stack>
     </CategoryListItemContainer>

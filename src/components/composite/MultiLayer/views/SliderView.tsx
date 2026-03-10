@@ -1,6 +1,9 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import type { SliderLeafCategory } from '../MultiLayerDrawer.types';
+import type {
+  RendererSlotProps,
+  SliderLeafCategory,
+} from '../MultiLayer.types';
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
@@ -15,9 +18,13 @@ import { useMemo } from 'react';
 
 export interface SliderViewProps {
   category: SliderLeafCategory;
+  slotProps?: RendererSlotProps;
 }
 
-export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
+export const SliderView: React.FC<SliderViewProps> = ({
+  category,
+  slotProps,
+}) => {
   const { t } = useTranslation();
 
   const min = category.min ?? 0;
@@ -26,6 +33,8 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
   const [displayMin, displayMax] = [min, max].map((v) =>
     toFixedFractionDigits(v, 0, 2),
   );
+
+  const clearButtonSize = slotProps?.clearButtonSize ?? 'medium';
 
   const isValueSelected = value[0] !== min || value[1] !== max;
 
@@ -53,7 +62,7 @@ export const SliderView: React.FC<SliderViewProps> = ({ category }) => {
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
-          size="medium"
+          size={clearButtonSize}
           data-testid={`${category.testId}-clear-button`}
           onClick={handleClear}
         >

@@ -1,10 +1,10 @@
 'use client';
 
-import { MultiLayerDrawer } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer';
+import { MultiLayerDrawer } from '@/components/composite/MultiLayerDrawer/MultiLayerDrawer';
 import type { FC } from 'react';
 import { usePortfolioBalancesFilterBar } from '../hooks';
-import type { CategoryConfig } from 'src/components/composite/MultiLayerDrawer/MultiLayerDrawer.types';
-import { usePendingFilters } from 'src/components/composite/MultiLayerDrawer/hooks';
+import type { CategoryConfig } from '@/components/composite/MultiLayer/MultiLayer.types';
+import { usePendingFilters } from '@/components/composite/MultiLayer/hooks';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
 import { toFixedFractionDigits } from 'src/utils/formatNumbers';
@@ -12,7 +12,7 @@ import {
   createMultiSelectCategory,
   createSingleSelectCategory,
   createSliderCategory,
-} from 'src/components/composite/MultiLayerDrawer/utils';
+} from '@/components/composite/MultiLayer/utils';
 import { useTranslation } from 'react-i18next';
 import type { SortByEnum } from '../../../providers/PortfolioProvider/filtering/types';
 import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
