@@ -1,8 +1,8 @@
 import { AppPaths } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { buildUrl, toSitemapDate, toSitemapEntry } from '@/utils/sitemap';
+import { slugify } from '@/utils/urls/slugify';
 import type { MetadataRoute } from 'next';
-import { slugify } from 'src/utils/validation-schemas';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { chains } = await getChainsQuery();

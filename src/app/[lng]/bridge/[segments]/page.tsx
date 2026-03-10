@@ -7,7 +7,7 @@ import {
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
-import { bridgeSegmentsSchema } from '@/utils/validation-schemas';
+import { bridgeSegmentsSchema, slugToLabel } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -23,6 +23,7 @@ export async function generateMetadata({
 
     // Validate segments
     const result = bridgeSegmentsSchema.safeParse(segments);
+
     if (!result.success) {
       throw new Error('Invalid bridge segments');
     }
@@ -34,11 +35,16 @@ export async function generateMetadata({
       destinationToken: destinationTokenSymbolParam,
     } = result.data;
 
-    const title = `Jumper | Best way to bridge from ${sourceTokenSymbolParam} on ${sourceChainNameParam} to ${destinationTokenSymbolParam} on ${destinationChainNameParam}`;
+    const sourceTokenSymbol = sourceTokenSymbolParam.toUpperCase();
+    const sourceChain = slugToLabel(sourceChainNameParam);
+    const destinationTokenSymbol = destinationTokenSymbolParam.toUpperCase();
+    const destinationChain = slugToLabel(destinationChainNameParam);
+
+    const title = `Jumper | Best way to bridge from ${sourceTokenSymbol} on ${sourceChain} to ${destinationTokenSymbol} on ${destinationChain}`;
 
     const openGraph: Metadata['openGraph'] = {
       title: title,
-      description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenSymbolParam} on ${sourceChainNameParam} to ${destinationTokenSymbolParam} on ${destinationChainNameParam} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
+      description: `Jumper offers the best way to do cross-chain bridging of ${sourceTokenSymbol} on ${sourceChain} to ${destinationTokenSymbol} on ${destinationChain} with the fastest speeds, lowest costs, and most secure bridge and swap providers available.`,
       siteName: siteName,
       url: `${getSiteUrl()}/bridge/${segments}`,
       type: 'article',
@@ -96,13 +102,19 @@ export default async function Page({ params }: { params: Params }) {
       getTokensQuery(),
     ]);
 
-    const sourceChain = getChainByName(chains, sourceChainNameParam);
+    const sourceChain = getChainByName(
+      chains,
+      slugToLabel(sourceChainNameParam),
+    );
     const sourceToken = getTokenBySymbolOnSpecificChain(
       tokens,
       sourceChain?.id ?? 0,
       sourceTokenSymbolParam,
     );
-    const destinationChain = getChainByName(chains, destinationChainNameParam);
+    const destinationChain = getChainByName(
+      chains,
+      slugToLabel(destinationChainNameParam),
+    );
     const destinationToken = getTokenBySymbolOnSpecificChain(
       tokens,
       destinationChain?.id ?? 0,

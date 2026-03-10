@@ -1,5 +1,4 @@
 import config from '@/config/env-config';
-import type { SitemapPage } from '@/types/sitemap';
 
 export const JUMPER_URL = 'https://jumper.xyz';
 export const JUMPER_STRAPI_URL = 'https://strapi.jumper.xyz';
@@ -34,6 +33,10 @@ export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
 export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
+
+export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
+export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
+export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER = `${JUMPER_BRIDGE_PATH_DELIMITER}${JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER}${JUMPER_BRIDGE_PATH_DELIMITER}`;
 
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
