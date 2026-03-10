@@ -4,14 +4,16 @@ import type { Hex } from 'viem';
 import { makeClient } from '@/app/lib/client';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
 
+interface ClaimDataEntry {
+  id?: string;
+  assetAmount?: string;
+  lpTokenAmount?: string;
+  timestamp?: string;
+  status?: string;
+}
+
 export interface RedeemableClaimData {
-  claimData: {
-    id: string;
-    assetAmount: string;
-    lpTokenAmount: string;
-    timestamp: string;
-    status: string;
-  }[];
+  claimData: ClaimDataEntry[];
 }
 
 export const useRedeemableClaims = (
