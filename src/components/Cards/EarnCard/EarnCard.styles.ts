@@ -15,7 +15,7 @@ interface EarnCardContainerProps {
 
 const EarnCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'hasLink' && prop !== 'isConnected',
-})<EarnCardContainerProps>(({ theme, hasLink, isConnected = 1 }) => ({
+})<EarnCardContainerProps>(({ theme, hasLink, isConnected = true }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   opacity: isConnected ? 1 : 0.5,
   border: getSurfaceBorder(theme, 'surface1'),
