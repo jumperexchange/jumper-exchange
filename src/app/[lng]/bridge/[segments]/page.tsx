@@ -7,7 +7,11 @@ import {
   getChainByName,
   getTokenBySymbolOnSpecificChain,
 } from '@/utils/tokenAndChain';
-import { bridgeSegmentsSchema, slugToLabel } from '@/utils/validation-schemas';
+import {
+  bridgeSegmentsSchema,
+  slugToDisplayLabel,
+  slugToLabel,
+} from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -36,9 +40,9 @@ export async function generateMetadata({
     } = result.data;
 
     const sourceTokenSymbol = sourceTokenSymbolParam.toUpperCase();
-    const sourceChain = slugToLabel(sourceChainNameParam);
+    const sourceChain = slugToDisplayLabel(sourceChainNameParam);
     const destinationTokenSymbol = destinationTokenSymbolParam.toUpperCase();
-    const destinationChain = slugToLabel(destinationChainNameParam);
+    const destinationChain = slugToDisplayLabel(destinationChainNameParam);
 
     const title = `Jumper | Best way to bridge from ${sourceTokenSymbol} on ${sourceChain} to ${destinationTokenSymbol} on ${destinationChain}`;
 

@@ -10,6 +10,7 @@ import {
   JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER,
 } from '@/const/urls';
 import { slugify } from './urls/slugify';
+import { capitalize } from 'lodash';
 
 /**
  * Helper function to check if a string contains only alphanumeric characters
@@ -18,11 +19,17 @@ export const isAlphanumeric = (str: string) => /^[a-zA-Z0-9]+$/.test(str);
 
 export const splitLast = (str: string) => {
   const i = str.lastIndexOf(JUMPER_BRIDGE_PATH_DELIMITER);
+  if (i === -1) {
+    return ['', str];
+  }
   return [str.slice(0, i), str.slice(i + 1)];
 };
 
 export const slugToLabel = (slug: string) =>
   slug.replaceAll(JUMPER_BRIDGE_PATH_DELIMITER, ' ');
+
+export const slugToDisplayLabel = (slug: string) =>
+  slug.split(JUMPER_BRIDGE_PATH_DELIMITER).map(capitalize).join(' ');
 
 /**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
