@@ -52,8 +52,8 @@ export const useBridgeConditions = ({
     const handleResetPrivateSwapSelected = () => {
       setIsPrivateSwapSelected(false);
     };
-    const handleResetPrivateSwapSelectedForPageEntered = (route: string) => {
-      if (route === '/routes' || route === '/') {
+    const handleResetPrivateSwapSelectedForPageEntered = (path: string) => {
+      if (path === '/routes' || path === '/') {
         setIsPrivateSwapSelected(false);
       }
     };
@@ -121,6 +121,8 @@ export const useBridgeConditions = ({
       isBridgeFromHypeToArbNativeUSDC,
       isBridgeFromEvmToHype,
       isAGWToNonABSChain,
+      isPrivateSwapSelected,
+      toAddress,
     };
   }, [
     sourceChainTokenParam.chainId,
@@ -152,5 +154,5 @@ export const useBridgeConditions = ({
     isConnectedAGW,
   ]);
 
-  return { ...bridgeConditions, isPrivateSwapSelected, toAddress };
+  return bridgeConditions;
 };
