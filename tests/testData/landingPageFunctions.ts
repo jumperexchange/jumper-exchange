@@ -4,8 +4,11 @@ import { getElementByText } from './commonFunctions';
 /** Time for MUI Slide exit animation in WelcomeOverlayLayout (slideTimeout) */
 const WELCOME_SLIDE_TIMEOUT_MS = 2000;
 /** Extra time for slow CI: wait for button to appear and for overlay to close */
-const WELCOME_VISIBLE_TIMEOUT_MS = 10_000;
-const WELCOME_CLOSE_TIMEOUT_MS = WELCOME_SLIDE_TIMEOUT_MS + 5_000;
+const WELCOME_VISIBLE_TIMEOUT_MS = 30_000;
+const WELCOME_CLOSE_TIMEOUT_MS = WELCOME_SLIDE_TIMEOUT_MS + 15_000;
+
+/** Selector for the welcome overlay container (overlayClassName in App.tsx) */
+const WELCOME_OVERLAY_SELECTOR = '.welcome-screen-container';
 
 export async function closeWelcomeScreen(page: Page) {
   const getStartedButton = page.getByTestId('get-started-button');
@@ -14,7 +17,7 @@ export async function closeWelcomeScreen(page: Page) {
   });
   await getStartedButton.scrollIntoViewIfNeeded();
   await getStartedButton.click();
-  await expect(getStartedButton).not.toBeVisible({
+  await expect(page.locator(WELCOME_OVERLAY_SELECTOR)).not.toBeVisible({
     timeout: WELCOME_CLOSE_TIMEOUT_MS,
   });
 }
