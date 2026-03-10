@@ -9,6 +9,8 @@ import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { EVMAccount } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
+import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
+import { isCurrentPageUsingPositionData } from '../utils';
 
 export interface UsePositionsDataProps {
   filter?: Omit<PortfolioPositionsQuery, 'evm'>;
@@ -50,6 +52,8 @@ interface QueryData {
 export const usePositionsData = ({
   filter,
 }: UsePositionsDataProps): UsePositionsDataResult => {
+  const pathname = usePathnameWithoutLocale();
+  const isEnabled = isCurrentPageUsingPositionData(pathname);
   const { accounts } = useAccount();
   const connectedAccounts = useMemo(
     () =>
@@ -89,7 +93,7 @@ export const usePositionsData = ({
         });
         return { ...result.data, address };
       },
-      enabled: !!address,
+      enabled: !!address && isEnabled,
       refetchInterval: ONE_HOUR_MS,
       placeholderData: shouldUseCache
         ? (): QueryData | undefined => {

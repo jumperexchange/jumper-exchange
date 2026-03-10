@@ -1,4 +1,3 @@
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
@@ -125,11 +124,32 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        <InitColorSchemeScript
-          attribute="class"
-          defaultMode="system"
-          modeStorageKey={THEME_MODE_STORAGE_KEY}
-          colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
+        <script
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              try {
+                var mode = localStorage.getItem('${THEME_MODE_STORAGE_KEY}') || 'system';
+                var dark = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-dark') || 'dark';
+                var light = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-light') || 'light';
+                var colorScheme = '';
+                if (mode === 'system') {
+                  colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+                } else {
+                  colorScheme = (mode === 'dark') ? dark : light;
+                }
+                if (colorScheme) {
+                  var d = document.documentElement;
+                  d.classList.remove('light', 'dark', light, dark); 
+                  d.classList.add(colorScheme);
+                  d.setAttribute('data-mui-color-scheme', colorScheme);
+                  d.style.colorScheme = (colorScheme === dark) ? 'dark' : 'light';
+                }
+              } catch (e) {}
+            })();
+          `,
+          }}
         />
         <meta name="base:app_id" content={appId} />
         <style>
