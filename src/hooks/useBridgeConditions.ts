@@ -1,6 +1,6 @@
 import { ChainId, ChainType, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
-import type { FormState } from '@lifi/widget';
+import type { FormFieldChanged, FormState } from '@lifi/widget';
 import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
 import { type RefObject, useEffect, useMemo, useState } from 'react';
 import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
@@ -28,12 +28,17 @@ export const useBridgeConditions = ({
   const { getChainById } = useChains();
   const widgetEvents = useWidgetEvents();
   const [isPrivateSwapSelected, setIsPrivateSwapSelected] = useState(false);
+  const [toAddress, setToAddress] = useState<string | undefined>(undefined);
 
   const {
     sourceChainToken: sourceChainTokenParam,
     destinationChainToken: destinationChainTokenParam,
-    toAddress,
+    toAddress: toAddressUrlParams,
   } = useUrlParams();
+
+  useEffect(() => {
+    setToAddress(toAddressUrlParams);
+  }, [toAddressUrlParams]);
 
   const sourceChainType = useMemo(() => {
     if (!sourceChainTokenParam?.chainId) {
@@ -57,6 +62,11 @@ export const useBridgeConditions = ({
         setIsPrivateSwapSelected(false);
       }
     };
+    const handleToAddressChange = (params: FormFieldChanged) => {
+      if (params?.fieldName === 'toAddress') {
+        setToAddress(params.newValue);
+      }
+    };
 
     widgetEvents.on(WidgetEvent.RouteSelected, handleSelectedRoute);
     widgetEvents.on(
@@ -67,6 +77,7 @@ export const useBridgeConditions = ({
       WidgetEvent.PageEntered,
       handleResetPrivateSwapSelectedForPageEntered,
     );
+    widgetEvents.on(WidgetEvent.FormFieldChanged, handleToAddressChange);
 
     return () => {
       widgetEvents.off(WidgetEvent.RouteSelected, handleSelectedRoute);
@@ -78,6 +89,8 @@ export const useBridgeConditions = ({
         WidgetEvent.PageEntered,
         handleResetPrivateSwapSelectedForPageEntered,
       );
+
+      widgetEvents.off(WidgetEvent.FormFieldChanged, handleToAddressChange);
     };
   }, [widgetEvents]);
 
@@ -130,6 +143,8 @@ export const useBridgeConditions = ({
     destinationChainTokenParam.chainId,
     destinationChainTokenParam.token,
     isConnectedAGW,
+    isPrivateSwapSelected,
+    toAddress,
   ]);
 
   useEffect(() => {
