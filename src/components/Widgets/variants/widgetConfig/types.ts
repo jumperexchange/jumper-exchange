@@ -68,6 +68,7 @@ export interface MainWidgetContext extends CommonWidgetContext {
     isBridgeFromHypeToArbNativeUSDC?: boolean;
     isBridgeFromEvmToHype?: boolean;
     isPrivateSwapSelected?: boolean;
+    toAddress?: string;
   };
   isConnectedAGW?: boolean;
 }
