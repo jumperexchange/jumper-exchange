@@ -11,7 +11,7 @@ export const PrivateSwapModalCard = styled(Box)(({ theme }) => ({
   flexDirection: 'column',
   gap: theme.spacing(2),
   padding: theme.spacing(3),
-  borderRadius: '16px',
+  borderRadius: theme.shape.radius16,
   background: (theme.vars || theme).palette.surface2.main,
   boxShadow: (theme.vars || theme).shadows[1],
   ...theme.applyStyles('light', {
