@@ -47,7 +47,12 @@ export const useAdCooldownStore = createWithEqualityFn(
       },
 
       setCooldownDuration: (duration: number) =>
-        set({ cooldownDuration: duration }),
+        set({
+          cooldownDuration:
+            duration > MIN_AD_COOLDOWN_DURATION
+              ? duration
+              : MIN_AD_COOLDOWN_DURATION,
+        }),
 
       clearCooldown: (walletAddress: string) => {
         const next = { ...get().cooldownTimestamps };

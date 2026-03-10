@@ -48,7 +48,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const setAdShown = useAdCooldownStore((state) => state.setAdShown);
   const _hasHydrated = useAdCooldownStore((state) => state._hasHydrated);
 
-  const adId = data.uid?.toString() ?? '';
+  const adId = (data.uid ?? data.id)?.toString() ?? '';
   const isActiveAd = getActiveAdId(walletAddress) === adId;
 
   useEffect(() => {
