@@ -1,43 +1,34 @@
-import {
-  getSiteUrl,
-  JUMPER_LEARN_PATH,
-  JUMPER_SWAP_PATH,
-  pages,
-} from '@/const/urls';
-import type { ChangeFrequency, SitemapPage } from '@/types/sitemap';
-import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
+import { AppPaths } from '@/const/urls';
 import type { MetadataRoute } from 'next';
-import { getChainsQuery } from 'src/hooks/useChains';
-import { removeTrailingSlash } from 'src/utils/removeTrailingSlash';
 import { getArticles } from './lib/getArticles';
+import type { SitemapPage } from '@/types/sitemap';
+import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import { buildUrl, toSitemapDate, toSitemapEntry } from '@/utils/sitemap';
+
+const strapiUrl = getStrapiBaseUrl();
+
+export const pages: SitemapPage[] = [
+  { path: AppPaths.Main, priority: 1.0 },
+  { path: AppPaths.Learn, priority: 0.9 },
+  { path: AppPaths.Profile, priority: 0.8 },
+  { path: AppPaths.Gas, priority: 0.7 },
+  { path: AppPaths.PrivacyPolicy, priority: 0.6 },
+];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // paths
-  const routes = pages.flatMap((route: SitemapPage) => {
-    return {
-      url: removeTrailingSlash(`${getSiteUrl()}${route.path}`),
-      lastModified: new Date().toISOString().split('T')[0],
-      changeFrequency: 'weekly' as ChangeFrequency,
-      priority: route.priority,
-    };
-  });
+  const routes = pages.map(({ path, priority }) =>
+    toSitemapEntry(buildUrl(path), priority),
+  );
 
-  // articles by slug
-  const articles = await getArticles().then(
-    (article: StrapiResponse<BlogArticleData>) => {
-      return article.data.map((el) => {
-        return {
-          url: removeTrailingSlash(
-            `${getSiteUrl()}${JUMPER_LEARN_PATH}/${el.Slug}`,
-          ),
-          lastModified: new Date(el?.updatedAt || el?.publishedAt || Date.now())
-            .toISOString()
-            .split('T')[0],
-          changeFrequency: 'weekly' as ChangeFrequency,
-          priority: 0.8,
-        };
-      });
-    },
+  const { data } = await getArticles();
+
+  const articles = data.map(({ Slug, updatedAt, publishedAt, Image }) =>
+    toSitemapEntry(
+      buildUrl(AppPaths.Learn, Slug),
+      0.8,
+      toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
+      Image?.url && strapiUrl ? [`${strapiUrl}/${Image.url}`] : undefined,
+    ),
   );
 
   return [...routes, ...articles];

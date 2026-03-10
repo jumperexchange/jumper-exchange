@@ -44,15 +44,6 @@ export function getSiteUrl() {
     : config.NEXT_PUBLIC_SITE_URL;
 }
 
-// prepare sitemap
-export const pages: SitemapPage[] = [
-  { path: JUMPER_MAIN_PATH, priority: 1.0 },
-  { path: JUMPER_LEARN_PATH, priority: 0.9 },
-  { path: JUMPER_PROFILE_PATH, priority: 0.8 },
-  { path: '/gas', priority: 0.7 },
-  { path: JUMPER_PRIVACY_POLICY_PATH, priority: 0.6 },
-];
-
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
   Gas = JUMPER_GAS_PATH,
