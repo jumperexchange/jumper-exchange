@@ -158,7 +158,7 @@ export const hasSubcategories = (
 ): category is CategoryWithSubcategories & {
   subcategories: CategoryConfig[];
 } => {
-  return 'subcategories' in category;
+  return 'subcategories' in category && !!category.subcategories;
 };
 
 /**
@@ -167,7 +167,7 @@ export const hasSubcategories = (
 export const isLeafCategory = <TValue>(
   category: CategoryConfig,
 ): category is LeafCategory<TValue> => {
-  return 'contentType' in category;
+  return 'contentType' in category && !!category.contentType;
 };
 
 /**
@@ -183,7 +183,7 @@ export interface BreadcrumbItem {
  */
 export interface MultiLayerProps {
   /** Ref for the drawer */
-  ref?: React.RefObject<{ open: () => void; close: () => void }>;
+  ref?: React.Ref<{ open: () => void; close: () => void }>;
   /** Default trigger button sx */
   defaultTriggerSx?: SxProps<Theme>;
   /** Trigger button to open the drawer */
