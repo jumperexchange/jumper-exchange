@@ -4,7 +4,9 @@ import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 export const PrivateSwapModalCard = styled(Box)(({ theme }) => ({
-  width: 400,
+  width: 'min(400px, calc(100vw - 32px))',
+  maxWidth: '100%',
+  boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(2),
