@@ -19,8 +19,13 @@ import { useFormParameters } from './hooks';
 import { AppPaths } from '@/const/urls';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import FeeContribution from './FeeContribution/FeeContribution';
-import { PrivateSwapModal } from './PrivateSwapModal/PrivateSwapModal';
+import dynamic from 'next/dynamic';
 
+const PrivateSwapModal = dynamic(() =>
+  import('./PrivateSwapModal/PrivateSwapModal').then(
+    (mod) => mod.PrivateSwapModal,
+  ),
+);
 export function Widget({
   starterVariant,
   fromChain,

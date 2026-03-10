@@ -7,6 +7,12 @@ import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
 import { ARB_NATIVE_USDC } from 'src/config/tokens';
 import { useUrlParams } from './useUrlParams';
 import { useChains } from './useChains';
+import {
+  setupWidgetEvents,
+  teardownWidgetEvents,
+} from '@/components/Widgets/WidgetEventsManager';
+
+const PRIVATE_SWAP_TOOL_KEYS = ['houdini'];
 
 interface UseWidgetSelectionProps {
   formRef?: RefObject<FormState | null>;
@@ -50,7 +56,7 @@ export const useBridgeConditions = ({
   useEffect(() => {
     const handleSelectedRoute = ({ route }: { route: Route }) => {
       setIsPrivateSwapSelected(
-        route.steps.some((step) => step.tool === 'houdini'),
+        route.steps.some((step) => PRIVATE_SWAP_TOOL_KEYS.includes(step.tool)),
       );
     };
 
@@ -63,34 +69,21 @@ export const useBridgeConditions = ({
       }
     };
     const handleToAddressChange = (params: FormFieldChanged) => {
-      if (params?.fieldName === 'toAddress') {
+      if (params?.fieldName === 'toAddress' && params.newValue !== undefined) {
         setToAddress(params.newValue);
       }
     };
+    const widgetEventsConfig = {
+      routeSelected: handleSelectedRoute,
+      routeExecutionStarted: handleResetPrivateSwapSelected,
+      pageEntered: handleResetPrivateSwapSelectedForPageEntered,
+      formFieldChanged: handleToAddressChange,
+    };
 
-    widgetEvents.on(WidgetEvent.RouteSelected, handleSelectedRoute);
-    widgetEvents.on(
-      WidgetEvent.RouteExecutionStarted,
-      handleResetPrivateSwapSelected,
-    );
-    widgetEvents.on(
-      WidgetEvent.PageEntered,
-      handleResetPrivateSwapSelectedForPageEntered,
-    );
-    widgetEvents.on(WidgetEvent.FormFieldChanged, handleToAddressChange);
+    setupWidgetEvents(widgetEventsConfig, widgetEvents);
 
     return () => {
-      widgetEvents.off(WidgetEvent.RouteSelected, handleSelectedRoute);
-      widgetEvents.off(
-        WidgetEvent.RouteExecutionStarted,
-        handleResetPrivateSwapSelected,
-      );
-      widgetEvents.off(
-        WidgetEvent.PageEntered,
-        handleResetPrivateSwapSelectedForPageEntered,
-      );
-
-      widgetEvents.off(WidgetEvent.FormFieldChanged, handleToAddressChange);
+      teardownWidgetEvents(widgetEventsConfig, widgetEvents);
     };
   }, [widgetEvents]);
 
