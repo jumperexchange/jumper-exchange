@@ -265,7 +265,7 @@ export const useBalancesFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.wallet').toLowerCase(),
           }),
-          testId: 'portfolio-filter-wallet-select-mobile',
+          testId: 'portfolio-filter-wallet-select',
         })
       : null,
     chainOptions.length > 1
@@ -280,7 +280,7 @@ export const useBalancesFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.chain').toLowerCase(),
           }),
-          testId: 'portfolio-filter-chain-select-mobile',
+          testId: 'portfolio-filter-chain-select',
         })
       : null,
     assetOptions.length > 1
@@ -295,7 +295,7 @@ export const useBalancesFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.asset').toLowerCase(),
           }),
-          testId: 'portfolio-filter-asset-select-mobile',
+          testId: 'portfolio-filter-asset-select',
         })
       : null,
     !isNaN(valueRangeMin) &&
@@ -315,7 +315,7 @@ export const useBalancesFilterCategories = () => {
           onChange: (v) => setPendingValue('value', v),
           min: valueRangeMin,
           max: valueRangeMax,
-          testId: 'portfolio-filter-value-select-mobile',
+          testId: 'portfolio-filter-value-select',
         })
       : null,
     sortByOptions.length > 1
@@ -329,7 +329,7 @@ export const useBalancesFilterCategories = () => {
             }
           },
           options: sortByOptions,
-          testId: 'portfolio-filter-sort-select-mobile',
+          testId: 'portfolio-filter-sort-select',
         })
       : null,
   ].filter((category) => !!category);
@@ -590,7 +590,7 @@ export const usePositionsFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.chain').toLowerCase(),
           }),
-          testId: 'portfolio-filter-chain-select-mobile',
+          testId: 'portfolio-filter-chain-select',
         })
       : null,
     protocolOptions.length > 1
@@ -605,7 +605,7 @@ export const usePositionsFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.protocol').toLowerCase(),
           }),
-          testId: 'portfolio-filter-protocol-select-mobile',
+          testId: 'portfolio-filter-protocol-select',
         })
       : null,
     typeOptions.length > 1
@@ -620,7 +620,7 @@ export const usePositionsFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.type').toLowerCase(),
           }),
-          testId: 'portfolio-filter-type-select-mobile',
+          testId: 'portfolio-filter-type-select',
         })
       : null,
     assetOptions.length > 1
@@ -635,7 +635,7 @@ export const usePositionsFilterCategories = () => {
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.asset').toLowerCase(),
           }),
-          testId: 'portfolio-filter-asset-select-mobile',
+          testId: 'portfolio-filter-asset-select',
         })
       : null,
     !isNaN(valueRangeMin) &&
@@ -655,7 +655,7 @@ export const usePositionsFilterCategories = () => {
           onChange: (v) => setPendingValue('value', v),
           min: valueRangeMin,
           max: valueRangeMax,
-          testId: 'portfolio-filter-value-select-mobile',
+          testId: 'portfolio-filter-value-select',
         })
       : null,
     sortByOptions.length > 1
@@ -669,7 +669,7 @@ export const usePositionsFilterCategories = () => {
             }
           },
           options: sortByOptions,
-          testId: 'portfolio-filter-sort-select-mobile',
+          testId: 'portfolio-filter-sort-select',
         })
       : null,
   ].filter((category) => !!category);
