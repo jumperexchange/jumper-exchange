@@ -1,5 +1,5 @@
 import Stack from '@mui/material/Stack';
-import type { ListLeafCategory } from '../MultiLayerDrawer.types';
+import type { ListLeafCategory } from '../MultiLayer.types';
 import Box from '@mui/material/Box';
 
 export interface ListViewProps<TValue> {

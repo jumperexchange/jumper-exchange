@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { MultiLayerDrawer } from './MultiLayerDrawer';
-import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
-import { useState } from 'react';
 import Stack from '@mui/material/Stack';
-import { formatSliderValue } from 'src/components/core/form/Select/utils';
+
+import { FilterSortModal } from './FilterSortModal';
 import { usePendingFilters } from '../MultiLayer/hooks';
 import {
   chainOptions,
@@ -17,11 +15,15 @@ import {
   createSingleSelectCategory,
   createSliderCategory,
 } from '../MultiLayer/utils';
-import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
 
-const meta: Meta<typeof MultiLayerDrawer> = {
-  title: 'Composite/MultiLayerDrawer',
-  component: MultiLayerDrawer,
+import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
+import { useState } from 'react';
+import { formatSliderValue } from '@/components/core/form/Select/utils';
+import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
+
+const meta: Meta<typeof FilterSortModal> = {
+  title: 'components/composite/FilterSortModal',
+  component: FilterSortModal,
   parameters: {
     nextjs: {
       appDirectory: true,
@@ -34,7 +36,7 @@ const meta: Meta<typeof MultiLayerDrawer> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof MultiLayerDrawer>;
+type Story = StoryObj<typeof FilterSortModal>;
 
 interface FilterState {
   chains: string[];
@@ -181,10 +183,9 @@ const EarnFiltersTemplate = () => {
   ];
 
   return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
-      <MultiLayerDrawer
+    <Stack gap={2} sx={{ width: 544, padding: 3 }}>
+      <FilterSortModal
         categories={categories}
-        title="Filter & Sort"
         applyButtonLabel="Apply Filters"
         clearButtonLabel="Clear All"
         onApply={applyFilters}
@@ -200,169 +201,4 @@ const EarnFiltersTemplate = () => {
 
 export const EarnFilters: Story = {
   render: () => <EarnFiltersTemplate />,
-};
-
-// Story 2: Nested Filters with 2 Layers
-const NestedFiltersTemplate = () => {
-  const [selectedNetwork, setSelectedNetwork] = useState<string>('ethereum');
-  const [selectedChains, setSelectedChains] = useState<string[]>([]);
-
-  const categories: CategoryConfig[] = [
-    {
-      id: 'networks',
-      label: 'Networks',
-      badgeLabel:
-        selectedChains.length > 0
-          ? selectedChains.length.toString()
-          : undefined,
-      subcategories: [
-        createSingleSelectCategory<string>({
-          id: 'ethereum',
-          label: 'Ethereum Ecosystem',
-          value: selectedNetwork,
-          onChange: setSelectedNetwork,
-          options: [
-            { value: 'ethereum', label: 'Ethereum Mainnet' },
-            { value: 'goerli', label: 'Goerli Testnet' },
-            { value: 'sepolia', label: 'Sepolia Testnet' },
-          ],
-          testId: 'ethereum-select',
-        }),
-        createMultiSelectCategory<string>({
-          id: 'layer2',
-          label: 'Layer 2',
-          value: selectedChains,
-          onChange: setSelectedChains,
-          options: [
-            { value: '42161', label: 'Arbitrum' },
-            { value: '10', label: 'Optimism' },
-            { value: '8453', label: 'Base' },
-          ],
-          searchable: true,
-          testId: 'layer2-multiselect',
-        }),
-      ],
-    },
-  ];
-
-  const handleClear = () => {
-    setSelectedNetwork('ethereum');
-    setSelectedChains([]);
-  };
-
-  const handleApply = () => {
-    console.log('Applied filters:', {
-      network: selectedNetwork,
-      chains: selectedChains,
-    });
-  };
-
-  return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
-      <MultiLayerDrawer
-        categories={categories}
-        title="Network Filters"
-        applyButtonLabel="Apply"
-        clearButtonLabel="Reset"
-        onApply={handleApply}
-        onClear={handleClear}
-        testId="nested-filters-drawer"
-      />
-    </Stack>
-  );
-};
-
-export const NestedFilters: Story = {
-  render: () => <NestedFiltersTemplate />,
-};
-
-// Story 3: Main Menu Navigation (based on actual Jumper menu)
-const MainMenuTemplate = () => {
-  const [selectedTheme, setSelectedTheme] = useState<string>('auto');
-  const [selectedLanguage, setSelectedLanguage] = useState<string>('en');
-
-  const categories: CategoryConfig[] = [
-    {
-      id: 'learn',
-      label: 'Learn',
-      href: '/learn',
-      testId: 'learn-menu',
-    },
-    {
-      id: 'scan',
-      label: 'Scan',
-      href: '/scan',
-      testId: 'scan-menu',
-    },
-    {
-      id: 'support',
-      label: 'Support',
-      onClick: () => console.log('Support clicked'),
-      testId: 'support-menu',
-    },
-    createSingleSelectCategory<string>({
-      id: 'theme',
-      label: 'Theme',
-      value: selectedTheme,
-      onChange: setSelectedTheme,
-      options: [
-        { value: 'light', label: 'Light Mode' },
-        { value: 'dark', label: 'Dark Mode' },
-        { value: 'auto', label: 'Auto (System)' },
-      ],
-      testId: 'theme-select',
-    }),
-    createSingleSelectCategory<string>({
-      id: 'language',
-      label: 'Language',
-      value: selectedLanguage,
-      onChange: setSelectedLanguage,
-      options: [
-        { value: 'en', label: 'English' },
-        { value: 'es', label: 'Español' },
-        { value: 'fr', label: 'Français' },
-        { value: 'de', label: 'Deutsch' },
-        { value: 'zh', label: '中文' },
-        { value: 'ja', label: '日本語' },
-        { value: 'ko', label: '한국어' },
-        { value: 'pt', label: 'Português' },
-      ],
-      searchable: true,
-      searchPlaceholder: 'Search languages...',
-      testId: 'language-select',
-    }),
-    {
-      id: 'resources',
-      label: 'Resources',
-      subcategories: [
-        {
-          id: 'docs',
-          label: 'Documentation',
-          href: '/docs',
-          testId: 'docs-menu',
-        },
-        {
-          id: 'github',
-          label: 'GitHub',
-          href: 'https://github.com/jumper-exchange',
-          testId: 'github-menu',
-        },
-      ],
-    },
-  ];
-
-  return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
-      <MultiLayerDrawer
-        categories={categories}
-        title="Main Menu"
-        showFooter={false}
-        testId="main-menu-drawer"
-      />
-    </Stack>
-  );
-};
-
-export const MainMenu: Story = {
-  render: () => <MainMenuTemplate />,
 };

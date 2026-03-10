@@ -1,5 +1,5 @@
-import { SxProps, Theme } from '@mui/material/styles';
-import { ReactNode } from 'react';
+import type { SxProps, Theme } from '@mui/material/styles';
+import type { ReactNode } from 'react';
 
 /**
  * Defines the type of content to render when a leaf category is selected
@@ -10,6 +10,15 @@ export enum CategoryContentType {
   Slider = 'slider',
   List = 'list',
   Custom = 'custom',
+}
+
+export interface RendererSlotProps {
+  clearButtonSize?: 'small' | 'medium' | 'large';
+  searchSize?: 'small' | 'medium';
+  searchSx?: SxProps<Theme>;
+  listSx?: SxProps<Theme>;
+  listSpacing?: number;
+  itemSx?: SxProps<Theme>;
 }
 
 /**
@@ -149,7 +158,7 @@ export const hasSubcategories = (
 ): category is CategoryWithSubcategories & {
   subcategories: CategoryConfig[];
 } => {
-  return 'subcategories' in category;
+  return 'subcategories' in category && !!category.subcategories;
 };
 
 /**
@@ -158,7 +167,7 @@ export const hasSubcategories = (
 export const isLeafCategory = <TValue>(
   category: CategoryConfig,
 ): category is LeafCategory<TValue> => {
-  return 'contentType' in category;
+  return 'contentType' in category && !!category.contentType;
 };
 
 /**
@@ -172,9 +181,9 @@ export interface BreadcrumbItem {
 /**
  * Props for MultiLayerDrawer component
  */
-export interface MultiLayerDrawerProps {
+export interface MultiLayerProps {
   /** Ref for the drawer */
-  ref?: React.RefObject<{ open: () => void; close: () => void }>;
+  ref?: React.Ref<{ open: () => void; close: () => void }>;
   /** Default trigger button sx */
   defaultTriggerSx?: SxProps<Theme>;
   /** Trigger button to open the drawer */

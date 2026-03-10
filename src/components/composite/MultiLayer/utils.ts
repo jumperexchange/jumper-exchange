@@ -1,11 +1,11 @@
-import {
-  CategoryContentType,
+import type {
   MultiSelectLeafCategory,
   SingleSelectLeafCategory,
   SliderLeafCategory,
   ListLeafCategory,
   CustomLeafCategory,
-} from './MultiLayerDrawer.types';
+} from './MultiLayer.types';
+import { CategoryContentType } from './MultiLayer.types';
 
 export const createSingleSelectCategory = <TValue extends string | number>(
   config: Omit<SingleSelectLeafCategory<TValue>, 'contentType'>,

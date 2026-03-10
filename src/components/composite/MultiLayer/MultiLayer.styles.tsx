@@ -4,7 +4,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import { ButtonPrimary, ButtonTransparent } from 'src/components/Button';
-import { SelectBadge } from 'src/components/core/form/Select/components/SelectBadge';
 
 export const MultiLayerDrawerIconButton = styled(IconButton)(({ theme }) => ({
   height: 40,
@@ -65,7 +64,3 @@ export const CategoryListItemContent = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1.5),
   flex: 1,
 }));
-
-export const MultiLayerDrawerFilterBadge = styled(SelectBadge)(
-  ({ theme }) => ({}),
-);
