@@ -293,7 +293,7 @@ export const positionAccessors = {
   },
 };
 
-export const isAllowedPositionPath = (pathname: string) =>
+export const isCurrentPageUsingPositionData = (pathname: string) =>
   [AppPaths.Portfolio].some(
     (allowedPath) =>
       pathname === allowedPath || pathname.startsWith(allowedPath + '/'),
