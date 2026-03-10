@@ -52,11 +52,20 @@ export const useBridgeConditions = ({
     const handleResetPrivateSwapSelected = () => {
       setIsPrivateSwapSelected(false);
     };
+    const handleResetPrivateSwapSelectedForPageEntered = (route: string) => {
+      if (route === '/routes' || route === '/') {
+        setIsPrivateSwapSelected(false);
+      }
+    };
 
     widgetEvents.on(WidgetEvent.RouteSelected, handleSelectedRoute);
     widgetEvents.on(
       WidgetEvent.RouteExecutionStarted,
       handleResetPrivateSwapSelected,
+    );
+    widgetEvents.on(
+      WidgetEvent.PageEntered,
+      handleResetPrivateSwapSelectedForPageEntered,
     );
 
     return () => {
@@ -64,6 +73,10 @@ export const useBridgeConditions = ({
       widgetEvents.off(
         WidgetEvent.RouteExecutionStarted,
         handleResetPrivateSwapSelected,
+      );
+      widgetEvents.off(
+        WidgetEvent.PageEntered,
+        handleResetPrivateSwapSelectedForPageEntered,
       );
     };
   }, [widgetEvents]);
@@ -139,5 +152,5 @@ export const useBridgeConditions = ({
     isConnectedAGW,
   ]);
 
-  return { ...bridgeConditions, isPrivateSwapSelected };
+  return { ...bridgeConditions, isPrivateSwapSelected, toAddress };
 };

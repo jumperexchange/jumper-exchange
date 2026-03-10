@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Box from '@mui/material/Box';
@@ -33,6 +33,12 @@ export const PrivateSwapModal: FC<PrivateSwapModalProps> = ({
   const [address, setAddress] = useState(initialAddress);
   const [box1, setBox1] = useState(false);
   const [box2, setBox2] = useState(false);
+
+  useEffect(() => {
+    if (open && initialAddress !== undefined) {
+      setAddress(initialAddress);
+    }
+  }, [open, initialAddress]);
 
   const canConfirm = isValidAddress(address) && box1 && box2;
 

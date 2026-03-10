@@ -159,6 +159,7 @@ export function Widget({
       />
       <PrivateSwapModal
         open={isPrivateSwapModalOpen}
+        initialAddress={bridgeConditions.toAddress}
         onClose={() => setIsPrivateSwapModalOpen(false)}
         onConfirm={(addr) => {
           formRef.current?.setFieldValue('toAddress', addr);
