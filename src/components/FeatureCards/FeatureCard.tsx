@@ -1,4 +1,5 @@
 'use client';
+
 import Slide from '@mui/material/Slide';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -41,31 +42,26 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const { disableCard } = useFeatureCardDisable(data);
 
   const walletAddress = account?.address ?? '';
-  const isInCooldown = useAdCooldownStore((state) =>
-    state.isInCooldown(walletAddress),
-  );
-  const getActiveAdId = useAdCooldownStore((state) => state.getActiveAdId);
-  const setAdShown = useAdCooldownStore((state) => state.setAdShown);
-  const _hasHydrated = useAdCooldownStore((state) => state._hasHydrated);
-
   const adId = (data.uid ?? data.id)?.toString() ?? '';
-  const isActiveAd = getActiveAdId(walletAddress) === adId;
+
+  const isInCooldown = useAdCooldownStore((s) => s.isInCooldown(walletAddress));
+  const isCardRegistered = useAdCooldownStore((s) =>
+    s.isCardRegistered(walletAddress, adId),
+  );
+  const _hasHydrated = useAdCooldownStore((s) => s._hasHydrated);
 
   useEffect(() => {
-    if (!_hasHydrated || !adId || isInCooldown || isActiveAd) {
+    if (!_hasHydrated) {
       return;
     }
-    setAdShown(walletAddress, adId);
-  }, [_hasHydrated, walletAddress, adId, isActiveAd, isInCooldown, setAdShown]);
-
-  useEffect(() => {
-    if (!isActiveAd) {
+    // Show if: no cooldown active, OR card was part of the registered session
+    if (isInCooldown && !isCardRegistered) {
       return;
     }
     setOpen(true);
-  }, [isActiveAd]);
+  }, [_hasHydrated, isInCooldown, isCardRegistered]);
 
-  if ((isInCooldown && !isActiveAd) || !open || !_hasHydrated) {
+  if (!open || !_hasHydrated) {
     return null;
   }
 

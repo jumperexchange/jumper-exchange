@@ -3,61 +3,81 @@
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import type { AdCooldownState } from './types';
 
 /** Ad cooldown: 10 minutes in milliseconds (default duration before showing another ad) */
 export const DEFAULT_AD_COOLDOWN_DURATION = 600_000;
 /** Ad cooldown: 5 minutes in milliseconds (minimum allowed duration) */
 export const MIN_AD_COOLDOWN_DURATION = 300_000;
 
-const initialCooldownState = {
-  cooldownTimestamps: {} as Record<string, { timestamp: number; adId: string }>,
-  cooldownDuration: DEFAULT_AD_COOLDOWN_DURATION,
-  _hasHydrated: false,
-};
+/** Key used when no wallet is connected so cooldown still applies. */
+export const NO_WALLET_COOLDOWN_KEY = '__no_wallet__';
+
+export const getCooldownKey = (walletAddress: string): string =>
+  walletAddress || NO_WALLET_COOLDOWN_KEY;
+
+interface AdSession {
+  timestamp: number;
+  adIds: string[];
+}
+
+interface AdCooldownState {
+  adSession: Record<string, AdSession>;
+  cooldownDuration: number;
+  _hasHydrated: boolean;
+
+  setHasHydrated: (value: boolean) => void;
+  setShownCards: (walletAddress: string, adIds: string[]) => void;
+  isInCooldown: (walletAddress: string) => boolean;
+  isCardRegistered: (walletAddress: string, adId: string) => boolean;
+  setCooldownDuration: (duration: number) => void;
+  clearCooldown: (walletAddress: string) => void;
+}
 
 export const useAdCooldownStore = createWithEqualityFn(
   persist<AdCooldownState>(
     (set, get) => ({
-      ...initialCooldownState,
+      adSession: {},
+      cooldownDuration: DEFAULT_AD_COOLDOWN_DURATION,
+      _hasHydrated: false,
 
-      setHasHydrated: (value: boolean) => set({ _hasHydrated: value }),
+      setHasHydrated: (value) => set({ _hasHydrated: value }),
 
-      setAdShown: (walletAddress: string, adId: string) => {
-        set({
-          cooldownTimestamps: {
-            ...get().cooldownTimestamps,
-            [walletAddress]: { timestamp: Date.now(), adId },
+      // Simple setter — caller is responsible for checking cooldown before calling
+      setShownCards: (walletAddress, adIds) => {
+        const key = getCooldownKey(walletAddress);
+        set((state) => ({
+          adSession: {
+            ...state.adSession,
+            [key]: { timestamp: Date.now(), adIds },
           },
-        });
+        }));
       },
 
-      isInCooldown: (walletAddress: string): boolean => {
-        const { cooldownTimestamps, cooldownDuration } = get();
-        const entry = cooldownTimestamps[walletAddress];
+      isInCooldown: (walletAddress) => {
+        const { adSession, cooldownDuration } = get();
+        const entry = adSession[getCooldownKey(walletAddress)];
         if (!entry) {
           return false;
         }
         return Date.now() - entry.timestamp < cooldownDuration;
       },
 
-      getActiveAdId: (walletAddress: string): string | null => {
-        const entry = get().cooldownTimestamps[walletAddress];
-        return entry?.adId ?? null;
+      isCardRegistered: (walletAddress, adId) => {
+        const entry = get().adSession[getCooldownKey(walletAddress)];
+        return entry?.adIds.includes(adId) ?? false;
       },
 
-      setCooldownDuration: (duration: number) =>
+      setCooldownDuration: (duration) =>
         set({
-          cooldownDuration:
-            duration > MIN_AD_COOLDOWN_DURATION
-              ? duration
-              : MIN_AD_COOLDOWN_DURATION,
+          cooldownDuration: Math.max(duration, MIN_AD_COOLDOWN_DURATION),
         }),
 
-      clearCooldown: (walletAddress: string) => {
-        const next = { ...get().cooldownTimestamps };
-        delete next[walletAddress];
-        set({ cooldownTimestamps: next });
+      clearCooldown: (walletAddress) => {
+        set((state) => {
+          const next = { ...state.adSession };
+          delete next[getCooldownKey(walletAddress)];
+          return { adSession: next };
+        });
       },
     }),
     {
@@ -65,13 +85,11 @@ export const useAdCooldownStore = createWithEqualityFn(
       version: 1,
       partialize: (state) =>
         ({
-          cooldownTimestamps: state.cooldownTimestamps,
+          adSession: state.adSession,
           cooldownDuration: state.cooldownDuration,
           // _hasHydrated intentionally excluded — never persisted
         }) as unknown as AdCooldownState,
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated(true);
-      },
+      onRehydrateStorage: () => (state) => state?.setHasHydrated(true),
     },
   ),
   shallow,
