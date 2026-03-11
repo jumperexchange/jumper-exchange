@@ -58,7 +58,12 @@ test.describe('Portfolio page', () => {
       ),
       async ({ page }) => {
         const portfolioPage = new PortfolioPage(page);
-        await portfolioPage.verifyValueSelectFilterIsVisible();
+        await portfolioPage.verifyGetStartedButtonIsVisible();
+        await portfolioPage.clickGetStartedButton();
+
+        await test.step('verify value filter exists', async () => {
+          await portfolioPage.verifyValueSelectFilterIsVisible();
+        });
 
         await test.step('click clear filters button', async () => {
           await portfolioPage.clickClearFiltersButton();
