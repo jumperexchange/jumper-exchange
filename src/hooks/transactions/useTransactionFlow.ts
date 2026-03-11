@@ -99,6 +99,8 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       return;
     }
 
+    flowLockedRef.current = false;
+
     options.onError?.(e, 'transaction');
     setIsExecuting(false);
     setError(e);
@@ -117,6 +119,8 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     if (!isSuccess || !callData || !isExecuting) {
       return;
     }
+
+    flowLockedRef.current = false;
 
     const nextIndex = currentActionIndex + 1;
 
@@ -163,14 +167,16 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
   );
 
   const retryCurrentAction = useCallback(async () => {
-    if (!callData) {
+    if (!callData || flowLockedRef.current) {
       return;
     }
+    flowLockedRef.current = true;
     setError(null);
     await executeAction(callData.actions[currentActionIndex]);
   }, [callData, currentActionIndex, executeAction]);
 
   const resetFlow = useCallback(() => {
+    flowLockedRef.current = false;
     setCallData(null);
     setIsExecuting(false);
     setCurrentActionIndex(0);
