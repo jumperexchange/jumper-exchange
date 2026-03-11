@@ -1,5 +1,4 @@
 import config from '@/config/env-config';
-import type { SitemapPage } from '@/types/sitemap';
 
 export const JUMPER_URL = 'https://jumper.xyz';
 export const JUMPER_STRAPI_URL = 'https://strapi.jumper.xyz';
@@ -35,6 +34,10 @@ export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 
+export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
+export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
+export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER = `${JUMPER_BRIDGE_PATH_DELIMITER}${JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER}${JUMPER_BRIDGE_PATH_DELIMITER}`;
+
 export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 
@@ -43,15 +46,6 @@ export function getSiteUrl() {
     ? `https://${config.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
     : config.NEXT_PUBLIC_SITE_URL;
 }
-
-// prepare sitemap
-export const pages: SitemapPage[] = [
-  { path: JUMPER_MAIN_PATH, priority: 1.0 },
-  { path: JUMPER_LEARN_PATH, priority: 0.9 },
-  { path: JUMPER_PROFILE_PATH, priority: 0.8 },
-  { path: '/gas', priority: 0.7 },
-  { path: JUMPER_PRIVACY_POLICY_PATH, priority: 0.6 },
-];
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
