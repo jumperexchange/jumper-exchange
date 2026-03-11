@@ -8,6 +8,7 @@ import {
   Fragment,
   type FC,
   useCallback,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -293,6 +294,11 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
       }
     },
   });
+
+  // Sync form state when defaultValues change (e.g. async data like lpTokenAmount loads)
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   const isSubmitting = useStore(form.store, (s) => s.isSubmitting) as boolean;
 

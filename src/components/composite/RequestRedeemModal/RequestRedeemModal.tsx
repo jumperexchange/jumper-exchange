@@ -57,7 +57,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     [formattedRedeemableClaims, selectedClaimId],
   );
 
-  const { lpToken, lpTokenAmount, assetToken } =
+  const { lpToken, lpTokenAmount, assetToken, refetchLpTokenAmount } =
     useEarnOpportunityTokens(earnOpportunity);
 
   const isClaimFlow = selectedClaim != null;
@@ -142,14 +142,17 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     isClaimFlow,
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
-    resetAmount: handleResetAmount,
+    resetAmount: () => {
+      handleResetAmount();
+      refetchLpTokenAmount();
+    },
   });
 
   const requestWithdrawFields = useMemo(
     () => [
       defineAmountField({
         fieldKey: 'requestAmount',
-        defaultValue: { amount: '0', maxAmount: lpTokenAmount?.toString() },
+        defaultValue: { amount, maxAmount: lpTokenAmount?.toString() },
         fieldProps: {
           token: lpToken,
           label: t('form.labels.amount'),
@@ -163,7 +166,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         t,
       }),
     ],
-    [assetToken, lpToken, lpTokenAmount, t],
+    [amount, assetToken, lpToken, lpTokenAmount, t],
   );
 
   const views = useMemo(

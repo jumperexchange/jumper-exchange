@@ -11,7 +11,10 @@ export function useEarnOpportunityTokens(
 ) {
   const accountAddress = useAccountAddress();
 
-  const { depositTokenData: lpTokenAmount } = useGetZapInPoolBalance(
+  const {
+    depositTokenData: lpTokenAmount,
+    refetchDepositToken: refetchLpTokenAmount,
+  } = useGetZapInPoolBalance(
     accountAddress as Address,
     earnOpportunity.lpToken.address as Address,
     earnOpportunity.lpToken.chain.chainId,
@@ -47,5 +50,5 @@ export function useEarnOpportunityTokens(
     [earnOpportunity.asset, extendedAssetToken?.priceUSD],
   );
 
-  return { lpToken, lpTokenAmount, assetToken };
+  return { lpToken, lpTokenAmount, assetToken, refetchLpTokenAmount };
 }
