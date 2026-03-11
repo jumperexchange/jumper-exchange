@@ -12,6 +12,7 @@ test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('load');
     await closeWelcomeScreen(page);
   });
 
