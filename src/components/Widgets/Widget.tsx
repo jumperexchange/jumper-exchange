@@ -162,15 +162,17 @@ export function Widget({
           _vcComponent: () => <FeeContribution translationFn={t} />,
         }}
       />
-      <PrivateSwapModal
-        open={isPrivateSwapModalOpen}
-        initialAddress={bridgeConditions.toAddress}
-        onClose={() => setIsPrivateSwapModalOpen(false)}
-        onConfirm={(addr) => {
-          formRef.current?.setFieldValue('toAddress', addr);
-          setIsPrivateSwapModalOpen(false);
-        }}
-      />
+      {isPrivateSwapModalOpen && (
+        <PrivateSwapModal
+          open={isPrivateSwapModalOpen}
+          initialAddress={bridgeConditions.toAddress}
+          onClose={() => setIsPrivateSwapModalOpen(false)}
+          onConfirm={(addr) => {
+            formRef.current?.setFieldValue('toAddress', addr);
+            setIsPrivateSwapModalOpen(false);
+          }}
+        />
+      )}
     </WidgetWrapper>
   );
 }
