@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   useSwitchChain,
   useSendTransaction,
@@ -39,6 +39,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     'idle' | 'approving' | 'executing' | 'confirming' | 'success'
   >('idle');
   const [error, setError] = useState<Error | null>(null);
+  const flowLockedRef = useRef(false);
 
   const {
     data: txHash,
@@ -142,7 +143,12 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
 
   const executeFlow = useCallback(
     async (data: CallDataResponse) => {
+      if (flowLockedRef.current) {
+        return;
+      }
+      flowLockedRef.current = true;
       if (!data?.actions?.length) {
+        flowLockedRef.current = false;
         const e = new Error('No actions');
         options.onError?.(e, 'fetch');
         throw e;

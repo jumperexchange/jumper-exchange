@@ -123,9 +123,7 @@ export const BalancesMultiSelectSidePanel = <
         const next = selectedAddresses.includes(key)
           ? selectedAddresses.filter((a) => a !== key)
           : [...selectedAddresses, key];
-        field.setValue(
-          next.length > 0 ? { selectedAddresses: next } : undefined!,
-        );
+        field.setValue({ selectedAddresses: next });
       }}
       onClose={field.closeSidePanel}
     >

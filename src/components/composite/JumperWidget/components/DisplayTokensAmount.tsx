@@ -12,6 +12,7 @@ import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { EntityStackWithBadge } from '../../EntityStackWithBadge/EntityStackWithBadge';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Pure display component — not a form field, no schema.
@@ -31,6 +32,7 @@ export const DisplayTokensAmount: FC<DisplayTokensAmountProps> = ({
   chainId,
   sx,
 }) => {
+  const { t } = useTranslation();
   const { toPriceDisplay } = useTokenAmountInput();
   const { getChainById } = useChains();
 
@@ -47,7 +49,7 @@ export const DisplayTokensAmount: FC<DisplayTokensAmountProps> = ({
       description={
         <Box sx={descriptionBoxStyles}>
           <SelectCardDescription variant="bodyXSmall" hideOverflow>
-            {`${noTokens} tokens on ${chainName}`}
+            {t('jumperWidget.label.tokenCount', { count: noTokens, chainName })}
           </SelectCardDescription>
           <SelectCardDescription
             variant="bodyXSmall"

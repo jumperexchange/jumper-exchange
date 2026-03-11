@@ -355,6 +355,10 @@ interface Resources {
         };
       };
       items: 'items';
+      label: {
+        tokenCount_one: '{{count}} token on {{chainName}}';
+        tokenCount_other: '{{count}} tokens on {{chainName}}';
+      };
       placeholder: {
         balancesMultiSelect: 'Select tokens';
         chainSingleSelect: 'Select chain';

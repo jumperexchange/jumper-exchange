@@ -859,6 +859,10 @@
       "balancesMultiSelect": "Select tokens",
       "tokenSingleSelect": "Select token",
       "tokenMultiSelect": "Select tokens"
+    },
+    "label": {
+      "tokenCount_one": "{{count}} token on {{chainName}}",
+      "tokenCount_other": "{{count}} tokens on {{chainName}}"
     }
   }
 }

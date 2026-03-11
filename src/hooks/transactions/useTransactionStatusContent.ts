@@ -56,18 +56,19 @@ export const useTransactionStatusContent = ({
 }: UseTransactionStatusContentOptions) => {
   const { t } = useTranslation();
 
-  const confirmationSheetContent: StatusSheetContent | null = keys.confirmation
-    ? {
-        title: t(keys.confirmation.title),
-        description: keys.confirmation.description
-          ? t(keys.confirmation.description)
-          : undefined,
-        callToAction: t(keys.confirmation.confirm),
-        callToActionType: 'button',
-        status: 'info',
-        onClick: handlers.onConfirm,
-      }
-    : null;
+  const confirmationSheetContent: StatusSheetContent | null =
+    keys.confirmation && handlers.onConfirm
+      ? {
+          title: t(keys.confirmation.title),
+          description: keys.confirmation.description
+            ? t(keys.confirmation.description)
+            : undefined,
+          callToAction: t(keys.confirmation.confirm),
+          callToActionType: 'button',
+          status: 'info',
+          onClick: handlers.onConfirm,
+        }
+      : null;
 
   const errorConfig = keys.errors[errorType] ?? keys.defaultError;
 
