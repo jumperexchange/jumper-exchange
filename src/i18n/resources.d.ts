@@ -329,7 +329,7 @@ interface Resources {
           overZero: 'Amount must be greater than zero';
         };
         balancesMultiSelect: {
-          max_one: 'You can select {{count}} items maximum';
+          max_one: 'You can select {{count}} item maximum';
           max_other: 'You can select {{count}} items maximum';
         };
         chainSingleSelect: {

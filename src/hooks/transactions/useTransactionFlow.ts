@@ -120,8 +120,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       return;
     }
 
-    flowLockedRef.current = false;
-
     const nextIndex = currentActionIndex + 1;
 
     if (nextIndex < callData.actions.length) {
@@ -129,6 +127,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       resetWrite();
       executeAction(callData.actions[nextIndex]);
     } else {
+      flowLockedRef.current = false;
       setIsExecuting(false);
       setCurrentActionIndex(0);
       setCurrentStep('success');
