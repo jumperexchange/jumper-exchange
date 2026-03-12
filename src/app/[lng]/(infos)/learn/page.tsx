@@ -4,6 +4,7 @@ import LearnPage from '@/app/ui/learn/LearnPage';
 import { PageContainer } from '@/components/Containers/PageContainer';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { getTags } from 'src/app/lib/getTags';
 
 export const metadata: Metadata = {
@@ -24,12 +25,14 @@ export default async function Page() {
   ]);
 
   return (
-    <PageContainer>
-      <LearnPage
-        tags={tags}
-        carouselArticles={carouselArticles}
-        featuredArticle={featuredArticle}
-      />
-    </PageContainer>
+    <Suspense>
+      <PageContainer>
+        <LearnPage
+          tags={tags}
+          carouselArticles={carouselArticles}
+          featuredArticle={featuredArticle}
+        />
+      </PageContainer>
+    </Suspense>
   );
 }
