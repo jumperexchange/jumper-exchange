@@ -54,7 +54,7 @@ export const ModalContainer: FC<ModalContainerProps> = ({
       <CenteredWrapper>
         {!isMobile && (
           <motion.div {...motionConfig}>
-            <CloseIconButton onClick={onClose}>
+            <CloseIconButton data-testId="modal-close-button" onClick={onClose}>
               <CloseIcon
                 sx={{
                   width: '24px',

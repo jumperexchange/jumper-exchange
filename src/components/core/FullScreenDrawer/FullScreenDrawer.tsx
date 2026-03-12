@@ -62,6 +62,7 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
 
           <IconButton
             onClick={onClose}
+            data-testId="drawer-close-button"
             sx={{ position: 'absolute', right: 0, top: 0 }}
           >
             <CloseIcon />

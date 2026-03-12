@@ -146,7 +146,7 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
               onClick={handleClear}
               size={Size.LG}
               variant={Variant.AlphaDark}
-              data-testid={`${testId}-clear-button`}
+              data-testid={`${testId}-clear-all-button`}
               sx={clearButtonSx}
             >
               {clearButtonLabel}

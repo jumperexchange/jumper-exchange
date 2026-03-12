@@ -143,7 +143,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
                 fullWidth
                 disabled={disableClear}
                 onClick={handleClear}
-                data-testid={`${testId}-clear-button`}
+                data-testid={`${testId}-clear-all-button`}
               >
                 {clearButtonLabel}
               </MultiLayerDrawerAlphaButton>

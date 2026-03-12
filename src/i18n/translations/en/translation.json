@@ -541,6 +541,7 @@
       "asset": "Asset",
       "value": "Value",
       "clearAll": "Clear all",
+      "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
       "search": "Search {{filterBy}}..."
     },
