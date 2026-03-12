@@ -1,8 +1,11 @@
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
-export async function getArticleBySlug(slug: string) {
-  const urlParams = new ArticleStrapiApi().filterBySlug(slug);
+export async function getArticleBySlug(slug: string, isDraftMode?: boolean) {
+  let urlParams = new ArticleStrapiApi().filterBySlug(slug);
+  if (isDraftMode) {
+    urlParams = urlParams.forceDraftMode();
+  }
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
