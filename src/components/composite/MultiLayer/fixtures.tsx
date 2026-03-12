@@ -1,7 +1,14 @@
-import type { SortByEnum } from 'src/app/ui/earn/types';
-import { SortByOptions } from 'src/app/ui/earn/types';
+import {
+  type SortByEnum as EarnSortByEnum,
+  SortByOptions as EarnSortByOptions,
+} from 'src/app/ui/earn/types';
+import {
+  type SortByEnum as LearnSortByEnum,
+  SortByOptions as LearnSortByOptions,
+} from 'src/providers/LearnProvider/filtering/types';
 import { TokenStack } from '../TokenStack/TokenStack';
 import type { CategoryOption } from './MultiLayer.types';
+import { addDays, subDays } from 'date-fns';
 
 export const chainOptions: CategoryOption<string>[] = [
   { value: '1', label: 'Ethereum' },
@@ -83,7 +90,33 @@ export const assetOptions: CategoryOption<string>[] = [
   },
 ];
 
-export const sortOptions: CategoryOption<SortByEnum>[] = [
-  { value: SortByOptions.APY, label: 'APY' },
-  { value: SortByOptions.TVL, label: 'TVL' },
+export const sortOptions: CategoryOption<EarnSortByEnum>[] = [
+  { value: EarnSortByOptions.APY, label: 'APY' },
+  { value: EarnSortByOptions.TVL, label: 'TVL' },
 ];
+
+export const blogArticlesTagOptions: CategoryOption<string>[] = [
+  { value: 'all', label: 'All' },
+  { value: 'announcements', label: 'Announcements' },
+  { value: 'bridge', label: 'Bridge' },
+  { value: 'knowledge', label: 'Knowledge' },
+  { value: 'partnerships', label: 'Partnerships' },
+  { value: 'tutorial', label: 'Tutorial' },
+];
+
+export const blogArticlesLevelOptions: CategoryOption<string>[] = [
+  { value: 'beginner', label: 'Beginner' },
+  { value: 'intermediate', label: 'Intermediate' },
+  { value: 'expert', label: 'Expert' },
+];
+
+export const blogArticlesSortOptions: CategoryOption<LearnSortByEnum>[] = [
+  { value: LearnSortByOptions.TAG, label: 'Tag' },
+  { value: LearnSortByOptions.LEVEL, label: 'Level' },
+  { value: LearnSortByOptions.DATE, label: 'Publish date' },
+];
+
+export const blogArticlesDateRange = {
+  min: subDays(Date.now(), 10),
+  max: addDays(Date.now(), 5),
+};

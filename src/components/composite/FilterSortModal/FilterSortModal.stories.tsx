@@ -9,17 +9,30 @@ import {
   tagOptions,
   sortOptions,
   assetOptions,
+  blogArticlesLevelOptions,
+  blogArticlesTagOptions,
+  blogArticlesSortOptions,
+  blogArticlesDateRange,
 } from '../MultiLayer/fixtures';
 import {
+  createDateRangeCategory,
   createMultiSelectCategory,
   createSingleSelectCategory,
   createSliderCategory,
 } from '../MultiLayer/utils';
 
-import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
+import {
+  SortByEnum as EarnSortByEnum,
+  SortByOptions as EarnSortByOptions,
+} from 'src/app/ui/earn/types';
+import {
+  SortByEnum as LearnSortByEnum,
+  SortByOptions as LearnSortByOptions,
+} from 'src/providers/LearnProvider/filtering/types';
 import { useState } from 'react';
 import { formatSliderValue } from '@/components/core/form/Select/utils';
 import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
+import { format } from 'date-fns';
 
 const meta: Meta<typeof FilterSortModal> = {
   title: 'components/composite/FilterSortModal',
@@ -38,24 +51,24 @@ const meta: Meta<typeof FilterSortModal> = {
 export default meta;
 type Story = StoryObj<typeof FilterSortModal>;
 
-interface FilterState {
+interface EarnFilterState {
   chains: string[];
   protocols: string[];
   tags: string[];
   apy: number[];
   assets: string[];
-  sortBy: SortByEnum;
+  sortBy: EarnSortByEnum;
 }
 
 // Story 1: Earn Filters (with pending filters pattern)
 const EarnFiltersTemplate = () => {
-  const [appliedFilters, setAppliedFilters] = useState<FilterState>({
+  const [appliedFilters, setAppliedFilters] = useState<EarnFilterState>({
     chains: [],
     protocols: [],
     tags: [],
     apy: [0, 100],
     assets: [],
-    sortBy: SortByOptions.APY,
+    sortBy: EarnSortByOptions.APY,
   });
 
   const {
@@ -77,7 +90,7 @@ const EarnFiltersTemplate = () => {
         tags: [],
         apy: [0, 100],
         assets: [],
-        sortBy: SortByOptions.APY,
+        sortBy: EarnSortByOptions.APY,
       });
       console.log('Cleared all filters');
     },
@@ -172,7 +185,7 @@ const EarnFiltersTemplate = () => {
       max: 100,
       testId: 'apy-filter',
     }),
-    createSingleSelectCategory<SortByEnum>({
+    createSingleSelectCategory<EarnSortByEnum>({
       id: 'sortBy',
       label: 'Sort By',
       value: pendingValues.sortBy,
@@ -201,4 +214,160 @@ const EarnFiltersTemplate = () => {
 
 export const EarnFilters: Story = {
   render: () => <EarnFiltersTemplate />,
+};
+
+interface BlogArticlesFilterState {
+  tags: string[];
+  levels: string[];
+  dates: (Date | null)[];
+  sortBy: LearnSortByEnum;
+}
+
+export const getDatesBadge = (
+  usedMin: Date | null,
+  usedMax: Date | null,
+  rangeMin: Date,
+  rangeMax: Date,
+  pendingValue: (Date | null)[],
+): string | undefined => {
+  if (usedMin === rangeMin && usedMax === rangeMax) return;
+
+  const [start, end] = pendingValue;
+
+  if (!start && !end) return;
+  if (start && !end) return `From ${format(start, 'd MMM yy')}`;
+  if (!start && end) return `Until ${format(end, 'd MMM yy')}`;
+  if (start && end)
+    return `${format(start, 'd MMM yy')}-${format(end, 'd MMM yy')}`;
+
+  return;
+};
+
+const BlogArticlesFiltersTemplate = () => {
+  const [appliedFilters, setAppliedFilters] = useState<BlogArticlesFilterState>(
+    {
+      tags: [],
+      levels: [],
+      dates: [blogArticlesDateRange.min, blogArticlesDateRange.max],
+      sortBy: LearnSortByOptions.DATE,
+    },
+  );
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    hasPendingFiltersApplied,
+  } = usePendingFilters({
+    initialValues: appliedFilters,
+    onApply: (values) => {
+      setAppliedFilters(values);
+      console.log('Applied filters:', values);
+    },
+    onClear: () => {
+      setAppliedFilters({
+        tags: [],
+        levels: [],
+        dates: [blogArticlesDateRange.min, blogArticlesDateRange.max],
+        sortBy: LearnSortByOptions.DATE,
+      });
+      console.log('Cleared all filters');
+    },
+    isFilterApplied: (values) => {
+      return (
+        values.tags.length > 0 ||
+        values.levels.length > 0 ||
+        values.dates[0] !== blogArticlesDateRange.min ||
+        values.dates[1] !== blogArticlesDateRange.max
+      );
+    },
+  });
+
+  const appliedFiltersCount =
+    appliedFilters.tags.length +
+    appliedFilters.levels.length +
+    (appliedFilters.dates[0] !== blogArticlesDateRange.min ||
+    appliedFilters.dates[1] !== blogArticlesDateRange.max
+      ? 1
+      : 0);
+
+  const tagBadge =
+    pendingValues.tags.length > 0
+      ? pendingValues.tags.length.toString()
+      : undefined;
+  const levelBadge =
+    pendingValues.levels.length > 0
+      ? pendingValues.levels.length.toString()
+      : undefined;
+  const datesBadge = getDatesBadge(
+    appliedFilters.dates[0],
+    appliedFilters.dates[1],
+    blogArticlesDateRange.min,
+    blogArticlesDateRange.max,
+    pendingValues.dates,
+  );
+
+  const categories: CategoryConfig[] = [
+    createMultiSelectCategory<string>({
+      id: 'tag',
+      label: 'Tag',
+      badgeLabel: tagBadge,
+      value: pendingValues.tags,
+      onChange: (value) => setPendingValue('tags', value),
+      options: blogArticlesTagOptions,
+      searchable: true,
+      searchPlaceholder: 'Search tags...',
+      testId: 'tags-filter',
+    }),
+    createMultiSelectCategory<string>({
+      id: 'level',
+      label: 'Level',
+      badgeLabel: levelBadge,
+      value: pendingValues.levels,
+      onChange: (value) => setPendingValue('levels', value),
+      options: blogArticlesLevelOptions,
+      searchable: true,
+      searchPlaceholder: 'Search level...',
+      testId: 'level-filter',
+    }),
+    createDateRangeCategory({
+      id: 'publish-date',
+      label: 'Publish date',
+      badgeLabel: datesBadge,
+      value: pendingValues.dates,
+      onChange: (value) => setPendingValue('dates', value),
+      min: blogArticlesDateRange.min,
+      max: blogArticlesDateRange.max,
+      testId: 'apy-filter',
+    }),
+    createSingleSelectCategory<LearnSortByEnum>({
+      id: 'sortBy',
+      label: 'Sort By',
+      value: pendingValues.sortBy,
+      onChange: (value) => setPendingValue('sortBy', value),
+      options: blogArticlesSortOptions,
+      testId: 'sort-filter',
+    }),
+  ];
+
+  return (
+    <Stack gap={2} sx={{ width: 544, padding: 3 }}>
+      <FilterSortModal
+        categories={categories}
+        applyButtonLabel="Apply Filters"
+        clearButtonLabel="Clear All"
+        onApply={applyFilters}
+        onClear={clearAll}
+        disableApply={!hasPendingFiltersApplied}
+        disableClear={!hasPendingFiltersApplied}
+        testId="earn-filters-drawer"
+        appliedFiltersCount={appliedFiltersCount}
+      />
+    </Stack>
+  );
+};
+
+export const BlogArticlesFilters: Story = {
+  render: () => <BlogArticlesFiltersTemplate />,
 };

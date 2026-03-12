@@ -29,6 +29,7 @@
     "@mui/material-nextjs": "^7.3.7",
     "@mui/system": "^7.3.7",
     "@mui/utils": "^7.3.7",
+    "@mui/x-date-pickers": "^8.27.2",
     "@mysten/dapp-kit": "^0.20.0",
     "@mysten/sui": "^1.45.2",
     "@safe-global/safe-apps-sdk": "^9.1.0",

@@ -8,6 +8,7 @@ export enum CategoryContentType {
   MultiSelect = 'multi-select',
   SingleSelect = 'single-select',
   Slider = 'slider',
+  DateRange = 'date-range',
   List = 'list',
   Custom = 'custom',
 }
@@ -90,6 +91,17 @@ export type SliderLeafCategory = BaseCategoryConfig & {
 };
 
 /**
+ * Dates leaf category
+ */
+export type DateRangeLeafCategory = BaseCategoryConfig & {
+  contentType: CategoryContentType.DateRange;
+  value?: (Date | null)[];
+  onChange?: (value: (Date | null)[]) => void;
+  min: Date;
+  max: Date;
+};
+
+/**
  * List leaf category
  */
 export type ListLeafCategory<TValue> = BaseCategoryConfig & {
@@ -119,6 +131,7 @@ export type LeafCategory<TValue> =
   | SingleSelectLeafCategory<TValue extends string | number ? TValue : string>
   | MultiSelectLeafCategory<TValue extends string | number ? TValue : string>
   | SliderLeafCategory
+  | DateRangeLeafCategory
   | ListLeafCategory<TValue>
   | CustomLeafCategory<TValue>;
 
