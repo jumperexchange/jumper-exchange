@@ -5,6 +5,9 @@ import { useMemo } from 'react';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
+import dynamic from 'next/dynamic';
+import { useBlogArticlesFilteringCategories } from './hooks';
+import Stack from '@mui/material/Stack';
 import { TAG_ALL } from '@/providers/LearnProvider/filtering/types';
 import { capitalizeString } from '@/utils/capitalizeString';
 import dynamic from 'next/dynamic';
@@ -26,10 +29,31 @@ const Select = dynamic(
   },
 );
 
+const MultiLayerDrawer = dynamic(() =>
+  import('@/components/composite/MultiLayerDrawer/MultiLayerDrawer').then(
+    (mod) => mod.MultiLayerDrawer,
+  ),
+);
+
+const FilterSortModal = dynamic(() =>
+  import('@/components/composite/FilterSortModal/FilterSortModal').then(
+    (mod) => mod.FilterSortModal,
+  ),
+);
+
 export const LearnPageArticlesFilteringBar = () => {
   const { t } = useTranslation();
   const { tab, tabs, changeTab } = useLearnFiltering();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
+
+  const {
+    categories,
+    filtersCount,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = useBlogArticlesFilteringCategories();
 
   const tabOptions = useMemo(
     () => [
@@ -72,6 +96,39 @@ export const LearnPageArticlesFilteringBar = () => {
           })}
         />
       )}
+      <Stack>
+        {isTablet ? (
+          <MultiLayerDrawer
+            categories={categories}
+            title={t('blog.filter.filterAndSort')}
+            applyButtonLabel={t('blog.filter.filterAndSort')}
+            clearButtonLabel={t('blog.filter.clearAll')}
+            onApply={applyFilters}
+            onClear={clearAll}
+            onClose={resetPending}
+            appliedFiltersCount={filtersCount}
+            disableApply={!hasPendingFiltersApplied}
+            disableClear={!hasPendingFiltersApplied}
+            testId="blog-articles-mobile-drawer"
+            defaultTriggerSx={{ justifyContent: 'flex-end' }}
+          />
+        ) : (
+          <FilterSortModal
+            categories={categories}
+            applyButtonLabel={t('blog.filter.filterAndSort')}
+            clearButtonLabel={t('blog.filter.clearAll')}
+            triggerButtonLabel={t('blog.filter.filterSort')}
+            onApply={applyFilters}
+            onClear={clearAll}
+            onClose={resetPending}
+            appliedFiltersCount={filtersCount}
+            disableApply={!hasPendingFiltersApplied}
+            disableClear={!hasPendingFiltersApplied}
+            testId="blog-articles-desktop-modal"
+            defaultTriggerSx={{ justifyContent: 'flex-end' }}
+          />
+        )}
+      </Stack>
     </LearnPageArticlesFilteringBarContainer>
   );
 };
