@@ -1,4 +1,5 @@
 'use client';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 
@@ -30,3 +31,22 @@ export const BlogArticleSection = styled(Box)(({ theme }) => ({
     paddingTop: theme.spacing(12),
   },
 }));
+
+export const LearnPageArticlesFilteringBarContainer = styled(Box)(
+  ({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: theme.shape.cardBorderRadius,
+    boxShadow: theme.shadows[2],
+    backgroundColor: (theme.vars || theme).palette.surface1.main,
+    border: getSurfaceBorder(theme, 'surface1'),
+    padding: theme.spacing(2),
+    gap: theme.spacing(2),
+    overflow: 'hidden',
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(3),
+    },
+  }),
+);

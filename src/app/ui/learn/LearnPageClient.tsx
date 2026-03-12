@@ -8,7 +8,8 @@ import type {
   TagAttributes,
 } from '@/types/strapi';
 import { useTranslation } from 'react-i18next';
-import { BlogArticlesCollections } from 'src/components/Blog/BlogArticlesCollections/BlogArticlesCollections';
+import { LearnPageArticlesSection } from './LearnPageArticlesSection/LearnPageArticlesSection';
+import { LearnFilteringProvider } from '../../../providers/LearnProvider/filtering/LearnFilteringContext';
 
 interface LearnPageClientProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
@@ -27,8 +28,10 @@ export const LearnPageClient = ({
         title={t('blog.recentPosts')}
         data={carouselArticles?.data}
       />
-      <JoinDiscordBanner />
-      <BlogArticlesCollections tags={tags.data} data={carouselArticles?.data} />
+      <JoinDiscordBanner sx={{ margin: '0 !important' }} />
+      <LearnFilteringProvider tags={tags}>
+        <LearnPageArticlesSection />
+      </LearnFilteringProvider>
     </>
   );
 };

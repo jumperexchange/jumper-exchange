@@ -18,7 +18,6 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   flexDirection: 'column',
   padding: theme.spacing(2),
-  margin: theme.spacing(4, 2, 0),
   '&:hover': {
     cursor: 'pointer',
     backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, white 4%)`,
@@ -27,7 +26,6 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
     }),
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    margin: theme.spacing(6, 8, 0),
     padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
@@ -41,8 +39,6 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
     gridTemplateColumns: '54% 1fr',
   },
   [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(6, 'auto', 0),
-    maxWidth: theme.breakpoints.values.xl,
     minHeight: 600,
   },
 }));

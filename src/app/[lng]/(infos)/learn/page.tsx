@@ -1,6 +1,7 @@
 import { getArticles } from '@/app/lib/getArticles';
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import LearnPage from '@/app/ui/learn/LearnPage';
+import { PageContainer } from '@/components/Containers/PageContainer';
 import { getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { getTags } from 'src/app/lib/getTags';
@@ -17,13 +18,18 @@ export const metadata: Metadata = {
 export default async function Page() {
   // TODO: make this component client side by removing async, a hook should do the job, will permit us to pre-render the pages
   const featuredArticle = (await getFeaturedArticle()).data?.[0];
-  const carouselArticles = await getArticles(featuredArticle?.id, 5);
-  const tags = await getTags();
+  const [carouselArticles, tags] = await Promise.all([
+    getArticles(featuredArticle?.id, 5),
+    getTags(),
+  ]);
+
   return (
-    <LearnPage
-      tags={tags}
-      carouselArticles={carouselArticles}
-      featuredArticle={featuredArticle}
-    />
+    <PageContainer>
+      <LearnPage
+        tags={tags}
+        carouselArticles={carouselArticles}
+        featuredArticle={featuredArticle}
+      />
+    </PageContainer>
   );
 }

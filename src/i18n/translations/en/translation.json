@@ -102,7 +102,10 @@
     "shareLinkedIn": "Share article on LinkedIn",
     "shareFb": "Share article on Facebook",
     "shareX": "Share article on X",
-    "shareLink": "Share the link"
+    "shareLink": "Share the link",
+    "views": {
+      "viewBy": "View by"
+    }
   },
   "solanaAlert": {
     "title": "Limited Solana token support",

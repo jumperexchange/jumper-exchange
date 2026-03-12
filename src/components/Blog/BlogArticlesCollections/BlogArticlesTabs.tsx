@@ -103,7 +103,7 @@ export function BlogArticlesTabs({
               <ArticlesGrid key={`blog-article-tab-${pageIndex}-`}>
                 {page.map((article, articleIndex: number) => (
                   <BlogArticleCard
-                    styles={{
+                    sx={{
                       display: 'inline-block',
                       [theme.breakpoints.up('sm' as Breakpoint)]: {
                         width: '100%',

@@ -1,13 +1,14 @@
-'use client';
-
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
 import type {
   BlogArticleData,
   StrapiResponse,
   TagAttributes,
 } from '@/types/strapi';
-import { LearnPageClient } from './LearnPageClient';
 import Box from '@mui/material/Box';
+import { LearnPageBlogCarousel } from './LearnPageBlogCarousel';
+import { LearnFilteringProvider } from '../../../providers/LearnProvider/filtering/LearnFilteringContext';
+import { LearnPageArticlesSection } from './LearnPageArticlesSection/LearnPageArticlesSection';
+import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 
 interface LearnPageProps {
   carouselArticles: StrapiResponse<BlogArticleData>;
@@ -28,6 +29,9 @@ const LearnPage = ({
           xs: 12,
           md: 0,
         },
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
       }}
     >
       {featuredArticle && (
@@ -38,7 +42,11 @@ const LearnPage = ({
           // }
         />
       )}
-      <LearnPageClient carouselArticles={carouselArticles} tags={tags} />
+      <LearnPageBlogCarousel articles={carouselArticles?.data} />
+      <JoinDiscordBanner sx={{ margin: '0 !important' }} />
+      <LearnFilteringProvider tags={tags}>
+        <LearnPageArticlesSection />
+      </LearnFilteringProvider>
     </Box>
   );
 };
