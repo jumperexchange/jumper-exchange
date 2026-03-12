@@ -25,7 +25,7 @@ export const categoryListItemSx = (theme: Theme, isSelected: boolean) => ({
   background: isSelected
     ? (theme.vars || theme).palette.surface1Hover
     : 'transparent',
-  transition: 'background 2s ease-in',
+  transition: 'background .2s ease-in',
   borderRadius: theme.shape.radius24,
   height: 40,
   padding: theme.spacing(1.125, 1.25, 1.125, 2.25),
@@ -54,6 +54,7 @@ export const leafCategorySlotProps = {
   itemSx: (theme: Theme) => ({
     paddingX: 1,
     paddingY: 0.75,
+    transition: 'background .2s ease-in',
     borderRadius: theme.shape.radius24,
     '& svg:last-of-type': {
       height: 16,
