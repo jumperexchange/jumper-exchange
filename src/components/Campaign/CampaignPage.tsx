@@ -1,28 +1,24 @@
-import { QuestDataExtended } from 'src/types/merkl';
-import { CampaignData } from 'src/types/strapi';
-import { CampaignHero } from './CampaignHero/CampaignHero';
-import { MissionsSection } from './MissionsSection/MissionsSection';
-import { MissionsList } from './MissionsSection/MissionsList';
-import { GridContainer } from '../Containers/GridContainer';
-import { PageContainer } from '../Containers/PageContainer';
+import { notFound } from 'next/navigation';
+import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
+import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { CampaignPageContent } from './CampaignPageContent';
 
 interface CampaignPageProps {
-  campaign: CampaignData;
-  quests: QuestDataExtended[];
+  slug: string;
 }
 
-export const CampaignPage = ({ campaign, quests }: CampaignPageProps) => {
-  return (
-    <PageContainer>
-      <CampaignHero campaign={campaign} />
+export async function CampaignPage({ slug }: CampaignPageProps) {
+  const campaign = await getCampaignBySlug(slug);
 
-      {!!quests.length && (
-        <MissionsSection>
-          <GridContainer>
-            <MissionsList missions={quests} />
-          </GridContainer>
-        </MissionsSection>
-      )}
-    </PageContainer>
+  if (!campaign || !campaign.data || campaign.data.length === 0) {
+    notFound();
+  }
+
+  const extendedQuests = await fetchQuestOpportunitiesByRewardsIds(
+    campaign.data[0].quests,
   );
-};
+
+  return (
+    <CampaignPageContent campaign={campaign.data[0]} quests={extendedQuests} />
+  );
+}
