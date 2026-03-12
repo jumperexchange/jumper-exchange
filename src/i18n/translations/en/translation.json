@@ -596,6 +596,10 @@
         "non-evm": {
           "title": "Your wallet is currently not supported",
           "description": "We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions."
+        },
+        "not-supported": {
+          "title": "Your wallet is currently not supported",
+          "description": "Please use an <strong>{{type}} wallet</strong> to execute transactions for this opportunity."
         }
       }
     },
@@ -604,6 +608,9 @@
     },
     "withdraw": {
       "title": "Withdraw"
+    },
+    "deposit": {
+      "title": "Quick deposit"
     }
   },
   "links": {
