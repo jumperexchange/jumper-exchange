@@ -38,6 +38,11 @@ import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
 import { RichBlocksVariant } from '@/components/RichBlocks/types';
+import {
+  TrackingCategory,
+  TrackingAction,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 
 interface BlogArticleProps {
   article: BlogArticleData;
@@ -191,6 +196,17 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                   ...theme.typography.bodyLargeParagraph,
                   fontWeight: 400,
                 }),
+              }}
+              trackingKeys={{
+                cta: {
+                  category: TrackingCategory.BlogArticle,
+                  action: TrackingAction.ClickBlogCTA,
+                  label: 'click-blog-cta',
+                  data: {
+                    [TrackingEventParameter.ArticleID]: String(id || ''),
+                    [TrackingEventParameter.ArticleTitle]: title || '',
+                  },
+                },
               }}
             />
           ) : (
