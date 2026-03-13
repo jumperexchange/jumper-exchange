@@ -87,6 +87,13 @@ export const createTypography = (
     lineHeight: '24px',
     letterSpacing: 0,
   },
+  bodyLargeParagraph: {
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: '18px',
+    lineHeight: '32px',
+    letterSpacing: 0,
+  },
   bodyMediumStrong: {
     fontStyle: 'normal',
     fontWeight: 700,

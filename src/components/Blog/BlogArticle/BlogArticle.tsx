@@ -186,6 +186,12 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
             <RichBlocks
               content={content}
               variant={RichBlocksVariant.BlogArticle}
+              blockSx={{
+                paragraph: (theme) => ({
+                  ...theme.typography.bodyLargeParagraph,
+                  fontWeight: 400,
+                }),
+              }}
             />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
