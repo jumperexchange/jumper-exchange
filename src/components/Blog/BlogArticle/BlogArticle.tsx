@@ -37,6 +37,7 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
+import { RichBlocksVariant } from '@/components/RichBlocks/types';
 
 interface BlogArticleProps {
   article: BlogArticleData;
@@ -182,7 +183,10 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <RichBlocks content={content} />
+            <RichBlocks
+              content={content}
+              variant={RichBlocksVariant.BlogArticle}
+            />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}
