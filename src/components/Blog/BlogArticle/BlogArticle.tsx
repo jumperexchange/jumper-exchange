@@ -33,6 +33,8 @@ import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
 import { ScrollProgress } from './ScrollProgress';
 import { useCallback } from 'react';
+import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
+import dynamic from 'next/dynamic';
 import {
   TrackingCategory,
   TrackingAction,
@@ -41,16 +43,26 @@ import {
 import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
 import Script from 'next/script';
 
+const BlogArticleModal = dynamic(
+  () => import('./BlogArticleModal').then((mod) => mod.BlogArticleModal),
+  {
+    ssr: false,
+  },
+);
+
 interface BlogArticleProps {
   article: BlogArticleData;
   id?: number;
 }
 
 const IMAGE_HEIGHT = 640;
+const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
   const {
+    id,
+    documentId,
     Subtitle: subtitle,
     Title: title,
     Content: content,
@@ -63,22 +75,46 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     tags,
     Image: image,
     faq_items,
+    popup,
   } = article;
   const baseUrl = getStrapiBaseUrl();
-  const id = article.id;
   const minRead = readingTime(wordCount);
   const { t } = useTranslation();
 
+  const [isModalOpen, openModal] = useBlogArticleStore((s) => [
+    s.isModalOpen,
+    s.openModal,
+  ]);
+
+  const shouldOpenModal = useBlogArticleStore((s) =>
+    s.shouldOpenModalForArticle(documentId),
+  );
+
   const mainTag = tags?.[0];
 
-  const handleScroll = useCallback((scrollProgress: number) => {
-    console.log(scrollProgress);
-  }, []);
+  const handleScroll = useCallback(
+    (scrollProgress: number) => {
+      if (!popup) {
+        return;
+      }
+
+      if (scrollProgress >= SCROLL_PROGRESS_OPEN_POPUP && !isModalOpen) {
+        openModal(documentId, {
+          title: popup.Title,
+          description: popup.Message,
+          ctaLink: popup.CTALink,
+          cta: popup.CTA,
+        });
+      }
+    },
+    [documentId, popup, isModalOpen, openModal],
+  );
 
   const blogArticleSchema = buildArticleSchema(article);
 
   return (
     <>
+      {isModalOpen && <BlogArticleModal />}
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
@@ -162,7 +198,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           <ScrollProgress
             // @TODO enable this with JUM-640
             // showProgress
-            onScroll={handleScroll}
+            onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
           >
             <WithSkeleton
