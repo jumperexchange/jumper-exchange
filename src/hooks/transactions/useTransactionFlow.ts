@@ -81,6 +81,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
           chainId: action.tx.chainId,
         });
       } catch (e: any) {
+        flowLockedRef.current = false;
         options.onError?.(e, 'chain-switch');
         setIsExecuting(false);
         setError(e);
