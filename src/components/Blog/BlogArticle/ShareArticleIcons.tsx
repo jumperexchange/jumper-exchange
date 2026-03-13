@@ -19,6 +19,7 @@ import {
   LINKEDIN_SHARE_URL,
   X_SHARE_URL,
 } from '@/const/urls';
+import { WithSkeleton } from './WithSkeleton';
 import { ShareArticleIcon } from './ShareArticleIcon';
 import {
   ShareIconsContainer,
@@ -34,29 +35,77 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
   const [showCopyMessage, setShowCopyMessage] = useState(false);
   const { t } = useTranslation();
   const pathname = usePathname();
-
   const { trackEvent } = useUserTracking();
   const isComponentMounted = useRef(false);
+
   useEffect(() => {
     isComponentMounted.current = true;
     return () => {
       isComponentMounted.current = false;
     };
   }, []);
-  const handleShareClick = () => {
-    navigator.clipboard.writeText(`${getSiteUrl()}${pathname}`);
-    setShowCopyMessage(true);
+
+  const pageUrl = `${getSiteUrl()}${pathname}`;
+
+  const trackShare = (action: TrackingAction, label: string) => {
     trackEvent({
       category: TrackingCategory.BlogArticle,
-      action: TrackingAction.ClickShareArticleLink,
-      label: 'click-share-blog-article-link',
+      action,
+      label,
       data: {
-        [TrackingEventParameter.ArticleTitle]: title || '',
-        [TrackingEventParameter.ArticleCardId]: slug || '',
+        [TrackingEventParameter.ArticleTitle]: title ?? '',
+        [TrackingEventParameter.ArticleCardId]: slug ?? '',
       },
     });
+  };
 
-    // Hide the copy message after 3 seconds
+  const SHARE_CONFIG = [
+    {
+      icon: <LinkedInIcon sx={{ width: '28px' }} />,
+      tooltipMsg: t('blog.shareLinkedIn'),
+      action: TrackingAction.ClickShareArticleLinkedIn,
+      label: 'click-share-blog-article-linkedin',
+      getUrl: () => {
+        const url = new URL(LINKEDIN_SHARE_URL);
+        url.searchParams.set('mini', 'true');
+        url.searchParams.set('url', pageUrl);
+        url.searchParams.set('title', title!);
+        return url.href;
+      },
+    },
+    {
+      icon: <FacebookIcon sx={{ width: '28px' }} />,
+      tooltipMsg: t('blog.shareFb'),
+      action: TrackingAction.ClickShareArticleFB,
+      label: 'click-share-blog-article-fb',
+      getUrl: () => {
+        const url = new URL(FB_SHARE_URL);
+        url.searchParams.set('u', pageUrl);
+        url.searchParams.set('title', title!);
+        return url.href;
+      },
+    },
+    {
+      icon: <XIcon sx={{ width: '28px' }} />,
+      tooltipMsg: t('blog.shareX'),
+      action: TrackingAction.ClickShareArticleX,
+      label: 'click-share-blog-article-x',
+      getUrl: () => {
+        const url = new URL(X_SHARE_URL);
+        url.searchParams.set('url', pageUrl);
+        url.searchParams.set('title', title!);
+        return url.href;
+      },
+    },
+  ];
+
+  const handleShareClick = () => {
+    navigator.clipboard.writeText(pageUrl);
+    setShowCopyMessage(true);
+    trackShare(
+      TrackingAction.ClickShareArticleLink,
+      'click-share-blog-article-link',
+    );
     setTimeout(() => {
       if (isComponentMounted.current) {
         setShowCopyMessage(false);
@@ -64,102 +113,43 @@ export const ShareArticleIcons = ({ title, slug }: ShareIconsProps) => {
     }, 3000);
   };
 
-  const handleXClick = () => {
-    if (!title) {
-      return;
-    }
-    const xUrl = new URL(X_SHARE_URL);
-    xUrl.searchParams.set('url', `${getSiteUrl()}${pathname}`);
-    xUrl.searchParams.set('title', title);
-    trackEvent({
-      category: TrackingCategory.BlogArticle,
-      action: TrackingAction.ClickShareArticleX,
-      label: 'click-share-blog-article-x',
-      data: {
-        [TrackingEventParameter.ArticleTitle]: title || '',
-        [TrackingEventParameter.ArticleCardId]: slug || '',
-      },
-    });
-    openInNewTab(xUrl.href);
-  };
-
-  const handleFbClick = () => {
-    if (!title) {
-      return;
-    }
-    const fbUrl = new URL(FB_SHARE_URL);
-    fbUrl.searchParams.set('u', `${getSiteUrl()}${pathname}`);
-    fbUrl.searchParams.set('title', title);
-    trackEvent({
-      category: TrackingCategory.BlogArticle,
-      action: TrackingAction.ClickShareArticleFB,
-      label: 'click-share-blog-article-fb',
-      data: {
-        [TrackingEventParameter.ArticleTitle]: title || '',
-        [TrackingEventParameter.ArticleCardId]: slug || '',
-      },
-    });
-    openInNewTab(fbUrl.href);
-  };
-
-  const handleLinkedInClick = () => {
-    if (!title) {
-      return;
-    }
-    const linkedInUrl = new URL(LINKEDIN_SHARE_URL);
-    linkedInUrl.searchParams.set('mini', 'true');
-    linkedInUrl.searchParams.set('url', `${getSiteUrl()}${pathname}`);
-    linkedInUrl.searchParams.set('title', title);
-    trackEvent({
-      category: TrackingCategory.BlogArticle,
-      action: TrackingAction.ClickShareArticleLinkedIn,
-      label: 'click-share-blog-article-linkedin',
-      data: {
-        [TrackingEventParameter.ArticleTitle]: title || '',
-        [TrackingEventParameter.ArticleCardId]: slug || '',
-      },
-    });
-    openInNewTab(linkedInUrl.href);
-  };
-  return title ? (
-    <ShareIconsContainer>
-      <ShareArticleIcon
-        handleShare={handleLinkedInClick}
-        tooltipMsg={t('blog.shareLinkedIn')}
-        icon={<LinkedInIcon sx={{ width: '28px' }} />}
-      />
-      <ShareArticleIcon
-        handleShare={handleFbClick}
-        tooltipMsg={t('blog.shareFb')}
-        icon={<FacebookIcon sx={{ width: '28px' }} />}
-      />
-      <ShareArticleIcon
-        handleShare={handleXClick}
-        tooltipMsg={t('blog.shareX')}
-        icon={<XIcon sx={{ width: '28px' }} />}
-      />
-      <ShareArticleIcon
-        handleShare={handleShareClick}
-        tooltipMsg={t('blog.shareLink')}
-        icon={
-          <LinkIcon
-            sx={[{
-              width: '28px'
-            }, showCopyMessage ? {
-              marginLeft: '2px'
-            } : {
-              marginLeft: 0
-            }]}
+  return (
+    <WithSkeleton
+      show={!!title}
+      skeleton={
+        <ShareIconsSkeletons
+          variant="rectangular"
+          sx={{ width: '228px', height: '48px' }}
+        />
+      }
+    >
+      <ShareIconsContainer>
+        {SHARE_CONFIG.map(({ icon, tooltipMsg, action, label, getUrl }) => (
+          <ShareArticleIcon
+            key={label}
+            handleShare={() => {
+              trackShare(action, label);
+              openInNewTab(getUrl());
+            }}
+            tooltipMsg={tooltipMsg}
+            icon={icon}
           />
-        }
-        showMsgActive={showCopyMessage}
-        showMsg={t('blog.copiedLink')}
-      />
-    </ShareIconsContainer>
-  ) : (
-    <ShareIconsSkeletons
-      variant="rectangular"
-      sx={{ width: '228px', height: '48px' }}
-    />
+        ))}
+        <ShareArticleIcon
+          handleShare={handleShareClick}
+          tooltipMsg={t('blog.shareLink')}
+          icon={
+            <LinkIcon
+              sx={[
+                { width: '28px' },
+                showCopyMessage ? { marginLeft: '2px' } : { marginLeft: 0 },
+              ]}
+            />
+          }
+          showMsgActive={showCopyMessage}
+          showMsg={t('blog.copiedLink')}
+        />
+      </ShareIconsContainer>
+    </WithSkeleton>
   );
 };

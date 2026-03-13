@@ -1,4 +1,3 @@
-import type { Breakpoint, TypographyProps } from '@mui/material';
 import {
   Box,
   Container,
@@ -7,120 +6,12 @@ import {
   Typography,
   alpha,
 } from '@mui/material';
-
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
-import { urbanist } from 'src/fonts/fonts';
 
-export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
-  width: '100%',
-  color: alpha(theme.palette.white.main, 0.88),
-  maxWidth: theme.breakpoints.values.xl,
-  textAlign: 'center',
-  padding: theme.spacing(2),
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    margin: theme.spacing(0, 'auto'),
-  },
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.grey[800],
-  }),
-}));
-
-export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
-  fontSize: '16px',
-  fontWeight: 400,
-  lineHeight: '32px',
-  color: alpha(theme.palette.white.main, 0.88),
-  '*': { textWrap: 'nowrap' },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ...theme.applyStyles('light', {
-    color: (theme.vars || theme).palette.grey[800],
-  }),
-}));
-
-export const BlogArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
+export const BaseBlogArticleSkeleton = styled(Skeleton)({
   transform: 'unset',
-  width: 164,
-  height: 32,
-  borderRadius: theme.shape.cardBorderRadiusMedium,
-  marginTop: theme.spacing(1.5),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(3),
-    marginTop: theme.spacing(0),
-  },
-}));
-
-export const BlogArticleHeaderTagSkeleton = styled(Skeleton)(({ theme }) => ({
-  height: '48px',
-  width: '120px',
-  borderRadius: theme.shape.cardBorderRadiusLarge,
-  transform: 'unset',
-}));
-
-export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(1.5),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: theme.spacing(0),
-  },
-}));
-
-export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginLeft: theme.spacing(3),
-  },
-  '&:after': {
-    content: '"•"',
-    margin: theme.spacing(0, 1),
-  },
-}));
-
-export const BlogArticleImage = styled(Image)(({ theme }) => ({
-  width: '100%',
-  height: 'auto',
-  borderRadius: theme.shape.cardBorderRadiusMedium,
-  maxWidth: theme.breakpoints.values.lg,
-  aspectRatio: '16/12',
-  objectFit: 'cover',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    aspectRatio: '15/8',
-  },
-}));
-
-export const BlogArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
-  width: '100%',
-  height: 'auto',
-  transform: 'unset',
-  borderRadius: theme.shape.cardBorderRadiusMedium,
-  margin: theme.spacing(0, 'auto', 0.75),
-  maxWidth: theme.breakpoints.values.lg,
-  textAlign: 'center',
-  aspectRatio: '16/12',
-  objectFit: 'cover',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    aspectRatio: '15/8',
-  },
-}));
-
-export const BlogAuthorAvatar = styled(Image)(({ theme }) => ({
-  width: '64px !important',
-  height: '64px',
-  marginRight: theme.spacing(3),
-  borderRadius: '32px',
-}));
-
-export const BlogAuthorAvatarSkeleton = styled(Skeleton)(({ theme }) => ({
-  marginRight: theme.spacing(3),
-  width: '64px',
-  height: '64px',
-  borderRadius: '32px',
-  transform: 'unset',
-}));
+});
 
 export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   margin: 'auto',
@@ -139,11 +30,11 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   },
   ':first-of-type': {
     marginTop: theme.spacing(4),
-    [theme.breakpoints.up('sm' as Breakpoint)]: {
+    [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(6),
     },
   },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
+  [theme.breakpoints.up('xl')]: {
     maxWidth: `${theme.breakpoints.values.md}px`,
   },
 }));
@@ -152,7 +43,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
   color: (theme.vars || theme).palette.text.secondary,
   marginTop: theme.spacing(4),
-  img: {
+  '& > img': {
     width: '100%',
   },
   '& a': {
@@ -164,27 +55,172 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   '& li': {
     color: 'inherit',
   },
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
+  [theme.breakpoints.up('md')]: {
     margin: theme.spacing(0, 'auto'),
     maxWidth: '100%',
   },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
+  [theme.breakpoints.up('lg')]: {
     maxWidth: theme.breakpoints.values.md,
   },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
+  [theme.breakpoints.up('xl')]: {
     maxWidth: theme.breakpoints.values.md,
   },
 }));
 
-export const BlogArticleContentSkeleton = styled(Skeleton)(() => ({
-  transform: 'unset',
+export const BlogArticleImageContainer = styled(Box)(({ theme }) => ({
+  width: '100%',
+  color: alpha(theme.palette.white.main, 0.88),
+  maxWidth: theme.breakpoints.values.xl,
+  textAlign: 'center',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('xl')]: {
+    margin: theme.spacing(0, 'auto'),
+  },
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.grey[800],
+  }),
+}));
+
+export const BlogArticleImage = styled(Image)(({ theme }) => ({
+  width: '100%',
+  height: 'auto',
+  borderRadius: theme.shape.cardBorderRadiusMedium,
+  maxWidth: theme.breakpoints.values.lg,
+  aspectRatio: '16/12',
+  objectFit: 'cover',
+  [theme.breakpoints.up('sm')]: {
+    aspectRatio: '15/8',
+  },
+}));
+
+export const BlogArticleImageSkeleton = styled(BaseBlogArticleSkeleton)(
+  ({ theme }) => ({
+    width: '100%',
+    height: 'auto',
+    borderRadius: theme.shape.cardBorderRadiusMedium,
+    margin: theme.spacing(0, 'auto', 0.75),
+    maxWidth: theme.breakpoints.values.lg,
+    aspectRatio: '16/12',
+    objectFit: 'cover',
+    [theme.breakpoints.up('sm')]: {
+      aspectRatio: '15/8',
+    },
+  }),
+);
+
+export const BlogArticleTopHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  fontSize: '16px',
+  fontWeight: 400,
+  lineHeight: '32px',
+  color: alpha(theme.palette.white.main, 0.88),
+  '*': { textWrap: 'nowrap' },
+  [theme.breakpoints.up('sm')]: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ...theme.applyStyles('light', {
+    color: (theme.vars || theme).palette.grey[800],
+  }),
+}));
+
+export const BlogArticleHeaderTagSkeleton = styled(BaseBlogArticleSkeleton)(
+  ({ theme }) => ({
+    height: '48px',
+    width: '120px',
+    borderRadius: theme.shape.cardBorderRadiusLarge,
+  }),
+);
+
+export const BlogArticleHeaderMeta = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(1.5),
+  [theme.breakpoints.up('sm')]: {
+    marginTop: 0,
+  },
+}));
+
+export const BlogArticleHeaderMetaDate = styled(Typography)(({ theme }) => ({
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(3),
+  },
+  '&:after': {
+    content: '"•"',
+    margin: theme.spacing(0, 1),
+  },
+}));
+
+export const BlogArticleMetaSkeleton = styled(BaseBlogArticleSkeleton)(
+  ({ theme }) => ({
+    width: 164,
+    height: 32,
+    borderRadius: theme.shape.cardBorderRadiusMedium,
+    marginTop: theme.spacing(1.5),
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: theme.spacing(3),
+      marginTop: 0,
+    },
+  }),
+);
+
+export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
+  color: alpha(theme.palette.white.main, 0.88),
+  marginTop: theme.spacing(4),
+  [theme.breakpoints.up('sm')]: {
+    marginTop: theme.spacing(8),
+  },
+  ...theme.applyStyles('light', {
+    color: alpha(theme.palette.black.main, 0.88),
+  }),
+}));
+
+export const BlogArticleTitleSkeleton = styled(BaseBlogArticleSkeleton)(
+  ({ theme }) => ({
+    marginTop: theme.spacing(4),
+    borderRadius: theme.shape.cardBorderRadiusMedium,
+    height: 320,
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      height: 192,
+      marginTop: theme.spacing(8),
+    },
+    [theme.breakpoints.up('md')]: {
+      height: 144,
+    },
+  }),
+);
+
+export const BlogArticleSubtitle = styled(Typography)(({ theme }) => ({
+  fontSize: theme.typography.h3.fontSize,
+  lineHeight: theme.typography.h3.lineHeight,
+  color: alpha(theme.palette.white.main, 0.88),
+  marginTop: theme.spacing(8),
+  marginBottom: theme.spacing(6),
+  ...theme.applyStyles('light', {
+    color: alpha(theme.palette.black.main, 0.88),
+  }),
+}));
+
+export const BlogArticleSubtitleSkeleton = styled(BaseBlogArticleSkeleton)(
+  ({ theme }) => ({
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(6),
+    width: '100%',
+    height: 300,
+    [theme.breakpoints.up('sm')]: { height: 190 },
+    [theme.breakpoints.up('lg')]: { height: 114 },
+  }),
+);
+
+export const BlogArticleContentSkeleton = styled(BaseBlogArticleSkeleton)({
   height: '5000px',
   width: '100%',
-}));
+});
 
 export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -192,16 +228,15 @@ export const BlogMetaContainer = styled(Box)(({ theme }) => ({
   alignItems: 'flex-start',
   gap: theme.spacing(2),
   flexDirection: 'column',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
+  [theme.breakpoints.up('sm')]: {
     marginTop: theme.spacing(8),
     alignItems: 'center',
     flexDirection: 'row',
   },
 }));
 
-export const BlogAuthorContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+export const BlogAuthorAvatar = styled(Image)(({ theme }) => ({
+  borderRadius: theme.shape.radius32,
 }));
 
 export const BlogAuthorWrapper = styled(Box)(({ theme }) => ({
@@ -214,117 +249,10 @@ export const BlogAuthorWrapper = styled(Box)(({ theme }) => ({
   borderRadius: '20px',
 }));
 
-export const BlogAuthorMetaWrapper = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  //todo: add to theme colors
-  color: alpha(theme.palette.white.main, 0.88),
-  ...theme.applyStyles('light', {
-    color: '#525252',
-  }),
-}));
-
 export const Divider = styled(MuiDivider)(({ theme }) => ({
   borderColor: alpha(theme.palette.white.main, 0.12),
   ...theme.applyStyles('light', {
     borderColor: alpha(theme.palette.black.main, 0.12),
   }),
   margin: theme.spacing(8, 0, 0),
-}));
-
-// Typography:
-
-export const BlogArticleTitle = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.white.main, 0.88),
-  marginTop: theme.spacing(4),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: theme.spacing(8),
-  },
-  ...theme.applyStyles('light', {
-    color: alpha(theme.palette.black.main, 0.88),
-  }),
-}));
-
-export const BlogArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  transform: 'unset',
-  borderRadius: theme.shape.cardBorderRadiusMedium,
-  height: 320,
-  width: '100%',
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: '192px',
-    marginTop: theme.spacing(8),
-  },
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    height: 144,
-  },
-}));
-
-export const BlogArticleSubtitle = styled(Typography)(({ theme }) => ({
-  color: alpha(theme.palette.white.main, 0.88),
-  marginTop: theme.spacing(8),
-  marginBottom: theme.spacing(6),
-  fontWeight: 700,
-  fontFamily: urbanist.style.fontFamily,
-  fontSize: '28px',
-  lineHeight: '40px',
-  ...theme.applyStyles('light', {
-    color: alpha(theme.palette.black.main, 0.88),
-  }),
-}));
-
-export const BlogArticleSubtitleSkeleton = styled(Skeleton)(({ theme }) => ({
-  marginTop: theme.spacing(8),
-  marginBottom: theme.spacing(6),
-  transform: 'unset',
-  width: '100%',
-  height: 300,
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    height: 190,
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    height: 114,
-  },
-}));
-
-export const BlogArticlAuthorName = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    color: alpha(theme.palette.white.main, 0.88),
-    fontSize: '24px',
-    lineHeight: '28px',
-    fontWeight: 700,
-    fontFamily: urbanist.style.fontFamily,
-    ...theme.applyStyles('light', {
-      color: (theme.vars || theme).palette.black.main,
-    }),
-  }),
-);
-
-export const BlogArticlAuthorNameSkeleton = styled(Skeleton)(({ theme }) => ({
-  width: 142,
-  height: 28,
-  transform: 'unset',
-}));
-
-export const BlogArticlAuthorRole = styled(Typography)<TypographyProps>(
-  ({ theme }) => ({
-    fontSize: '16px',
-    fontWeight: 400,
-    marginTop: theme.spacing(0.5),
-    lineHeight: '20px',
-  }),
-);
-
-export const BlogArticlAuthorRoleSkeleton = styled(Skeleton)(({ theme }) => ({
-  width: 220,
-  height: 20,
-  marginTop: theme.spacing(0.5),
-  transform: 'unset',
-}));
-
-export const BlogParagraphContainer = styled(Box)(({ theme }) => ({
-  margin: theme.spacing(2, 0),
-  '& a:not(:first-child)': {
-    marginLeft: 0,
-  },
 }));

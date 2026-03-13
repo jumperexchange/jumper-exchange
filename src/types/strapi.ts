@@ -248,7 +248,7 @@ export interface BlogArticleAttributes {
   updatedAt: string;
   tags: TagAttributes[];
   author: AuthorData;
-  faq_items: FaqData;
+  faq_items: FaqMeta[];
   publishedAt?: string;
   locale: string;
   RedirectURL?: string;

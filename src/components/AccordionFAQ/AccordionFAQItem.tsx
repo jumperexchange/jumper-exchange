@@ -10,10 +10,12 @@ import {
   AccordionToggleButton,
   FaqShowMoreArrow,
 } from '.';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { RichBlocks } from '../RichBlocks/RichBlocks';
 
 interface AccordionFAQItemProps {
   question: string;
-  answer: string;
+  answer: string | RootNode[];
   itemSx?: SxProps<Theme>;
   itemAnswerSx?: SxProps<Theme>;
   index: number;
@@ -62,12 +64,16 @@ export const AccordionFAQItem = ({
           className="accordion-details"
           sx={{ '& > img': { width: '100%' } }}
         >
-          <Typography
-            variant={answerTextTypography || 'bodyMedium'}
-            sx={itemAnswerSx}
-          >
-            {answer}
-          </Typography>
+          {typeof answer === 'string' ? (
+            <Typography
+              variant={answerTextTypography || 'bodyMedium'}
+              sx={itemAnswerSx}
+            >
+              {answer}
+            </Typography>
+          ) : (
+            <RichBlocks content={answer} />
+          )}
           {/* <BlocksRenderer content={el.Answer} /> */}
         </AccordionDetails>
       </Accordion>
