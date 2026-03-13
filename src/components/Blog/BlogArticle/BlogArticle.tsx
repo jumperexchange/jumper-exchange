@@ -31,6 +31,8 @@ import { RichBlocksVariant } from '@/components/RichBlocks/types';
 import { BlogArticleAuthor } from './BlogArticleAuthor';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
+import { ScrollProgress } from './ScrollProgress';
+import { useCallback } from 'react';
 import {
   TrackingCategory,
   TrackingAction,
@@ -43,6 +45,8 @@ interface BlogArticleProps {
   article: BlogArticleData;
   id?: number;
 }
+
+const IMAGE_HEIGHT = 640;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
@@ -66,6 +70,10 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const { t } = useTranslation();
 
   const mainTag = tags?.[0];
+
+  const handleScroll = useCallback((scrollProgress: number) => {
+    console.log(scrollProgress);
+  }, []);
 
   const blogArticleSchema = buildArticleSchema(article);
 
@@ -144,39 +152,46 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
             alt={image?.alternativeText ?? title}
             priority
             width={1200}
-            height={640}
+            height={IMAGE_HEIGHT}
           />
         </WithSkeleton>
       </BlogArticleImageContainer>
 
       <BlogArticleContainer>
         <BlogArticleContentContainer>
-          <WithSkeleton
-            show={!!content}
-            skeleton={<BlogArticleContentSkeleton variant="text" />}
+          <ScrollProgress
+            // @TODO enable this with JUM-640
+            // showProgress
+            onScroll={handleScroll}
+            topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
           >
-            <RichBlocks
-              content={content!}
-              variant={RichBlocksVariant.BlogArticle}
-              blockSx={{
-                paragraph: (theme) => ({
-                  ...theme.typography.bodyLargeParagraph,
-                  fontWeight: 400,
-                }),
-              }}
-              trackingKeys={{
-                cta: {
-                  category: TrackingCategory.BlogArticle,
-                  action: TrackingAction.ClickBlogCTA,
-                  label: 'click-blog-cta',
-                  data: {
-                    [TrackingEventParameter.ArticleID]: String(id || ''),
-                    [TrackingEventParameter.ArticleTitle]: title || '',
+            <WithSkeleton
+              show={!!content}
+              skeleton={<BlogArticleContentSkeleton variant="text" />}
+            >
+              <RichBlocks
+                content={content!}
+                variant={RichBlocksVariant.BlogArticle}
+                blockSx={{
+                  paragraph: (theme) => ({
+                    ...theme.typography.bodyLargeParagraph,
+                    fontWeight: 400,
+                  }),
+                }}
+                trackingKeys={{
+                  cta: {
+                    category: TrackingCategory.BlogArticle,
+                    action: TrackingAction.ClickBlogCTA,
+                    label: 'click-blog-cta',
+                    data: {
+                      [TrackingEventParameter.ArticleID]: String(id || ''),
+                      [TrackingEventParameter.ArticleTitle]: title || '',
+                    },
                   },
-                },
-              }}
-            />
-          </WithSkeleton>
+                }}
+              />
+            </WithSkeleton>
+          </ScrollProgress>
           {faq_items?.length > 0 && (
             <AccordionFAQ
               accordionHeader={
