@@ -23,6 +23,7 @@ import {
 } from 'react';
 import {
   parseAsArrayOf,
+  parseAsInteger,
   parseAsIsoDate,
   parseAsString,
   parseAsStringEnum,
@@ -43,7 +44,9 @@ const PAGE_SIZE = 6;
 export const EMPTY_FILTERING_PARAMS: LearnFilteringParams = {
   allTags: [],
   allLevels: [],
+  allAuthors: [],
   allDates: [],
+  allReadingTimes: [],
 };
 
 export interface LearnFilteringContextType extends LearnFilteringParams {
@@ -93,8 +96,11 @@ export const searchParamsParsers = {
   ),
   tags: parseAsArrayOf(parseAsString),
   levels: parseAsArrayOf(parseAsString),
+  authors: parseAsArrayOf(parseAsString),
   minDate: parseAsIsoDate,
   maxDate: parseAsIsoDate,
+  minReadingDuration: parseAsInteger,
+  maxReadingDuration: parseAsInteger,
 };
 
 export const LearnFilteringProvider = ({
@@ -195,19 +201,12 @@ export const LearnFilteringProvider = ({
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
+
     if (!isEqual(sanitized, filter)) {
       setFilter(removeNullValuesFromFilter(sanitized));
       setSearchParamsState(sanitized);
     }
   }, [stats]);
-
-  const changeTab = useCallback(
-    (tab: string) => {
-      setPage(0);
-      setSearchParamsState({ tab });
-    },
-    [setSearchParamsState],
-  );
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<BlogArticlesFilterWithoutSortByAndOrder>) => {
@@ -232,10 +231,22 @@ export const LearnFilteringProvider = ({
     updateFilter({
       tags: null,
       levels: null,
+      authors: null,
       minDate: null,
       maxDate: null,
+      minReadingDuration: null,
+      maxReadingDuration: null,
     });
   }, [updateFilter]);
+
+  const changeTab = useCallback(
+    (tab: string) => {
+      setPage(0);
+      setSearchParamsState({ tab });
+      clearFilters();
+    },
+    [setSearchParamsState, clearFilters],
+  );
 
   const context = useMemo(() => {
     return {

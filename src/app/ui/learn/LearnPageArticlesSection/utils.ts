@@ -1,7 +1,18 @@
-import { format } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 
 export const countBadge = (count: number): string | undefined =>
   count > 0 ? count.toString() : undefined;
+
+export const readingDurationBadge = (
+  value: number[],
+  rangeMin: number,
+  rangeMax: number,
+): string | undefined => {
+  if (value[0] === rangeMin && value[1] === rangeMax) {
+    return undefined;
+  }
+  return `${value[0]} - ${value[1]} mins`;
+};
 
 export const datesBadge = (
   usedMin: Date,
@@ -10,7 +21,10 @@ export const datesBadge = (
   rangeMax: Date,
   pendingValue: (Date | null)[],
 ): string | undefined => {
-  if (usedMin === rangeMin && usedMax === rangeMax) {
+  if (
+    differenceInDays(usedMin, rangeMin) === 0 &&
+    differenceInDays(usedMax, rangeMax) === 0
+  ) {
     return;
   }
 
@@ -19,15 +33,6 @@ export const datesBadge = (
   if (!start && !end) {
     return;
   }
-  if (start && !end) {
-    return `From ${format(start, 'd MMM yy')}`;
-  }
-  if (!start && end) {
-    return `Until ${format(end, 'd MMM yy')}`;
-  }
-  if (start && end) {
-    return `${format(start, 'd MMM yy')}-${format(end, 'd MMM yy')}`;
-  }
 
-  return;
+  return `1 range`;
 };

@@ -12,9 +12,10 @@ import {
   createDateRangeCategory,
   createMultiSelectCategory,
   createSingleSelectCategory,
+  createSliderCategory,
 } from '@/components/composite/MultiLayer/utils';
 import type { NullableFields } from '@/types/internal';
-import { countBadge, datesBadge } from './utils';
+import { countBadge, datesBadge, readingDurationBadge } from './utils';
 import type { BlogArticlesPendingFilterValues } from './types';
 
 export const useLearnFilterBar = () => {
@@ -22,7 +23,9 @@ export const useLearnFilterBar = () => {
   const {
     allTags,
     allLevels,
+    allAuthors,
     allDates,
+    allReadingTimes,
     filter,
     updateFilter,
     clearFilters,
@@ -56,23 +59,57 @@ export const useLearnFilterBar = () => {
     [allLevels],
   );
 
-  const allDateRange = {
-    min: new Date(
-      Math.min(...allDates.map((date) => new Date(date).getTime())),
-    ),
-    max: new Date(
-      Math.max(...allDates.map((date) => new Date(date).getTime())),
-    ),
-  };
+  const authorOptions = useMemo(
+    () =>
+      sortSelectOptions(
+        allAuthors.map((author) => ({
+          value: author,
+          label: author,
+        })),
+      ),
+    [allAuthors],
+  );
+
+  const allDateRange = useMemo(() => {
+    if (allDates.length === 0) {
+      const now = new Date();
+      return { min: now, max: now };
+    }
+    const times = allDates.map((date) => new Date(date).getTime());
+    return {
+      min: new Date(Math.min(...times)),
+      max: new Date(Math.max(...times)),
+    };
+  }, [allDates]);
 
   const dateMin = filter?.minDate ?? allDateRange.min;
   const dateMax = filter?.maxDate ?? allDateRange.max;
 
+  const allReadingTimesRange = useMemo(() => {
+    if (allReadingTimes.length === 0) {
+      return { min: 0, max: 0 };
+    }
+    return {
+      min: Math.min(...allReadingTimes),
+      max: Math.max(...allReadingTimes),
+    };
+  }, [allReadingTimes]);
+
+  const readingDurationRangeMin = allReadingTimesRange.min;
+  const readingDurationRangeMax = allReadingTimesRange.max;
+  const readingDurationMin =
+    filter?.minReadingDuration ?? readingDurationRangeMin;
+  const readingDurationMax =
+    filter?.maxReadingDuration ?? readingDurationRangeMax;
+
   const sortByOptions = useMemo(
     () => [
-      { value: SortByOptions.TAG, label: t('blog.sorting.tag') },
       { value: SortByOptions.LEVEL, label: t('blog.sorting.level') },
       { value: SortByOptions.DATE, label: t('blog.sorting.publishDate') },
+      {
+        value: SortByOptions.READING_TIME,
+        label: t('blog.sorting.readingTime'),
+      },
     ],
     [t],
   );
@@ -100,6 +137,24 @@ export const useLearnFilterBar = () => {
     });
   };
 
+  const handleAuthorChange = (values: string[]) => {
+    updateFilter({
+      ...filter,
+      authors: values.length > 0 ? values : null,
+    });
+  };
+
+  const handleReadingDurationChange = (value: number[]) => {
+    const [min, max] = value;
+    const isFullRange =
+      min === readingDurationRangeMin && max === readingDurationRangeMax;
+    updateFilter({
+      ...filter,
+      minReadingDuration: isFullRange ? null : min,
+      maxReadingDuration: isFullRange ? null : max,
+    });
+  };
+
   const handleApplyAllFilters = (
     values: NullableFields<BlogArticlesFilterWithoutSortByAndOrder>,
   ) => {
@@ -113,17 +168,25 @@ export const useLearnFilterBar = () => {
   const optionsCount = [
     tagOptions.length,
     levelOptions.length,
+    authorOptions.length,
     dateMin && dateMax ? 1 : 0,
+    readingDurationRangeMax > readingDurationRangeMin ? 1 : 0,
   ].reduce((count, length) => count + (length || 0), 0);
 
-  const arrayFiltersCount = [filter?.tags, filter?.levels].reduce(
-    (count, arr) => count + (arr?.length || 0),
-    0,
-  );
+  const arrayFiltersCount = [
+    filter?.tags,
+    filter?.levels,
+    filter?.authors,
+  ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
-  const hasValueFilterApplied =
+  const hasDateFilterApplied =
     dateMin !== allDateRange.min || dateMax !== allDateRange.max;
-  const valueFilterCount = hasValueFilterApplied ? 1 : 0;
+  const hasReadingDurationFilterApplied =
+    readingDurationRangeMax > readingDurationRangeMin &&
+    (readingDurationMin !== readingDurationRangeMin ||
+      readingDurationMax !== readingDurationRangeMax);
+  const valueFilterCount =
+    (hasDateFilterApplied ? 1 : 0) + (hasReadingDurationFilterApplied ? 1 : 0);
 
   const filtersCount = arrayFiltersCount + valueFilterCount;
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
@@ -133,16 +196,23 @@ export const useLearnFilterBar = () => {
     filtersCount,
     tagOptions,
     levelOptions,
+    authorOptions,
     filter,
     dateMin,
     dateMax,
     dateRangeMin: allDateRange.min,
     dateRangeMax: allDateRange.max,
+    readingDurationMin,
+    readingDurationMax,
+    readingDurationRangeMin,
+    readingDurationRangeMax,
     sortByOptions,
     sortBy,
     handleTagChange,
     handleLevelChange,
+    handleAuthorChange,
     handleDatesChange,
+    handleReadingDurationChange,
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
     handleSortBy,
@@ -156,11 +226,16 @@ export const useBlogArticlesFilteringCategories = () => {
     filtersCount,
     tagOptions,
     levelOptions,
+    authorOptions,
     filter,
     dateMin,
     dateMax,
     dateRangeMin,
     dateRangeMax,
+    readingDurationMin,
+    readingDurationMax,
+    readingDurationRangeMin,
+    readingDurationRangeMax,
     sortByOptions,
     sortBy,
     handleClearAllFilters,
@@ -179,15 +254,26 @@ export const useBlogArticlesFilteringCategories = () => {
     initialValues: {
       tags: filter?.tags ?? [],
       levels: filter?.levels ?? [],
+      authors: filter?.authors ?? [],
       dates: [dateMin, dateMax],
+      readingDuration: [readingDurationMin, readingDurationMax],
       sortBy,
     },
     onApply: (values) => {
       handleApplyAllFilters({
         tags: values.tags,
         levels: values.levels,
+        authors: values.authors,
         minDate: values.dates[0],
         maxDate: values.dates[1],
+        minReadingDuration:
+          values.readingDuration[0] !== readingDurationRangeMin
+            ? values.readingDuration[0]
+            : null,
+        maxReadingDuration:
+          values.readingDuration[1] !== readingDurationRangeMax
+            ? values.readingDuration[1]
+            : null,
       });
       handleSortBy(values.sortBy);
     },
@@ -195,12 +281,19 @@ export const useBlogArticlesFilteringCategories = () => {
     isFilterApplied: (values) =>
       values.tags.length > 0 ||
       values.levels.length > 0 ||
+      values.authors.length > 0 ||
       values.dates[0] !== dateRangeMin ||
-      values.dates[1] !== dateRangeMax,
+      values.dates[1] !== dateRangeMax ||
+      values.readingDuration[0] !== readingDurationRangeMin ||
+      values.readingDuration[1] !== readingDurationRangeMax,
   });
 
   const usedMin = pendingValues.dates[0] ?? dateMin;
   const usedMax = pendingValues.dates[1] ?? dateMax;
+  const usedReadingDuration = pendingValues.readingDuration ?? [
+    readingDurationMin,
+    readingDurationMax,
+  ];
 
   const categories = [
     tagOptions.length > 1
@@ -231,6 +324,37 @@ export const useBlogArticlesFilteringCategories = () => {
             filterBy: t('blog.filter.level').toLowerCase(),
           }),
           testId: 'blog-filter-level-select',
+        })
+      : null,
+    authorOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'author',
+          label: t('blog.filter.author'),
+          badgeLabel: countBadge(pendingValues.authors.length),
+          value: pendingValues.authors,
+          onChange: (v) => setPendingValue('authors', v),
+          options: authorOptions,
+          searchable: true,
+          searchPlaceholder: t('blog.filter.search', {
+            filterBy: t('blog.filter.author').toLowerCase(),
+          }),
+          testId: 'blog-filter-author-select',
+        })
+      : null,
+    readingDurationRangeMax > readingDurationRangeMin
+      ? createSliderCategory({
+          id: 'readingDuration',
+          label: t('blog.filter.readingDuration'),
+          badgeLabel: readingDurationBadge(
+            usedReadingDuration,
+            readingDurationRangeMin,
+            readingDurationRangeMax,
+          ),
+          value: usedReadingDuration,
+          onChange: (v) => setPendingValue('readingDuration', v),
+          min: readingDurationRangeMin,
+          max: readingDurationRangeMax,
+          testId: 'blog-filter-reading-duration-slider',
         })
       : null,
     dateRangeMin && dateRangeMax && dateRangeMin !== dateRangeMax

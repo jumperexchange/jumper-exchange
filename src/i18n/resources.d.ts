@@ -20,11 +20,13 @@ interface Resources {
       copiedLink: 'Copied Link';
       faq: 'FAQ';
       filter: {
+        author: 'Author';
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         level: 'Level';
         publishDate: 'Publish date';
+        readingDuration: 'Reading duration';
         search: 'Search {{filterBy}}...';
         tag: 'Tag';
       };
@@ -42,9 +44,9 @@ interface Resources {
       sorting: {
         level: 'Level';
         publishDate: 'Publish date';
+        readingTime: 'Reading time';
         sort: 'Sort';
         sortBy: 'Sort by';
-        tag: 'Tag';
       };
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
       title: 'Tips and tutorials';

@@ -353,7 +353,8 @@ export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
   },
   '& .rdp-day_button': {
     height: 36,
-    width: 36,
+    minWidth: 36,
+    width: '100%',
     padding: 8,
     display: 'flex',
     alignItems: 'center',

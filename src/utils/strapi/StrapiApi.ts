@@ -89,6 +89,7 @@ type ArticleField =
   | 'Title'
   | 'Subtitle'
   | 'Slug'
+  | 'Level'
   | 'RedirectURL'
   | 'featured'
   | 'WordCount'
@@ -101,6 +102,7 @@ const mainArticleFields: ArticleField[] = [
   'Title',
   'Subtitle',
   'Slug',
+  'Level',
   'RedirectURL',
   'featured',
   'WordCount',
@@ -173,7 +175,7 @@ class TagParams {
 
   private static defaultArticleFields: ArticleField[] = [...mainArticleFields];
 
-  private static defaultArticlePopulates: string[] = ['Image'];
+  private static defaultArticlePopulates: string[] = ['Image', 'author'];
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
