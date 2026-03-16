@@ -117,6 +117,6 @@ export const blogArticlesSortOptions: CategoryOption<LearnSortByEnum>[] = [
 ];
 
 export const blogArticlesDateRange = {
-  min: subDays(Date.now(), 10),
+  min: subDays(Date.now(), 45),
   max: addDays(Date.now(), 5),
 };

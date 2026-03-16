@@ -1,9 +1,9 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { format } from 'date-fns';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import type { DateRange } from 'react-day-picker';
 import type {
   DateRangeLeafCategory,
   RendererSlotProps,
@@ -11,7 +11,11 @@ import type {
 import {
   StyledMultiSelectFiltersContainer,
   StyledMultiSelectFiltersClearButton,
+  StyledDayPicker,
 } from 'src/components/core/form/Select/Select.styles';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 
 export interface DateRangeViewProps {
   category: DateRangeLeafCategory;
@@ -45,12 +49,8 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
 
   const formattedRange = useMemo(() => formatDateRange(from, to), [from, to]);
 
-  const handleFromChange = (date: Date | null) => {
-    category.onChange?.([date, to]);
-  };
-
-  const handleToChange = (date: Date | null) => {
-    category.onChange?.([from, date]);
+  const handleRangeChange = (range: DateRange | undefined) => {
+    category.onChange?.([range?.from ?? null, range?.to ?? null]);
   };
 
   const handleClear = () => {
@@ -61,9 +61,7 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
     <Stack direction="column" width="100%" gap={1}>
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyMediumStrong">
-          {isValueSelected
-            ? `${formattedRange} ${category.label}`
-            : category.label}
+          {isValueSelected ? formattedRange || category.label : category.label}
         </Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
@@ -76,90 +74,42 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
       </StyledMultiSelectFiltersContainer>
 
       <StyledMultiSelectFiltersContainer
-        sx={{ height: 'auto', padding: (theme) => theme.spacing(2) }}
+        sx={{
+          height: 'auto',
+          pointerEvents: 'auto',
+          paddingY: 2,
+          paddingX: 0,
+        }}
       >
-        <Stack
-          direction="column"
-          alignItems="center"
-          gap={2}
-          width="100%"
-          sx={{ pointerEvents: 'auto' }}
-        >
-          <Stack direction="column" gap={0.25} flex={1}>
-            <Typography variant="bodyXXSmallStrong" color="textSecondary">
-              {t('common.from', 'From')}
-            </Typography>
-            <DatePicker
-              value={from}
-              minDate={category.min}
-              maxDate={category.max}
-              disableHighlightToday
-              onChange={handleFromChange}
-              slotProps={{
-                openPickerButton: {
-                  size: 'small',
-                },
-                openPickerIcon: {
-                  fontSize: 'small',
-                },
-                textField: {
-                  size: 'small',
-                  variant: 'filled',
-                  placeholder: t('common.from', 'From'),
-                  inputProps: {
-                    'data-testid': `${category.testId}-from-input`,
-                  },
-                  InputProps: { disableUnderline: true },
-                },
-              }}
-              sx={(theme) => ({
-                '& .MuiPickersFilledInput-root': {
-                  borderRadius: theme.shape.inputTextBorderRadius,
-                },
-                '& .MuiPickersSectionList-root': {
-                  paddingY: theme.spacing(1),
-                  ...theme.typography.bodySmall,
-                },
-              })}
-            />
-          </Stack>
-          <Stack direction="column" gap={0.25} flex={1}>
-            <Typography variant="bodyXXSmallStrong" color="textSecondary">
-              {t('common.to', 'To')}
-            </Typography>
-            <DatePicker
-              value={to}
-              minDate={category.min}
-              maxDate={category.max}
-              disableHighlightToday
-              onChange={handleToChange}
-              slotProps={{
-                openPickerButton: {
-                  size: 'small',
-                },
-                openPickerIcon: {
-                  fontSize: 'small',
-                },
-                textField: {
-                  size: 'small',
-                  variant: 'filled',
-                  placeholder: t('common.to', 'To'),
-                  inputProps: { 'data-testid': `${category.testId}-to-input` },
-                  InputProps: { disableUnderline: true },
-                },
-              }}
-              sx={(theme) => ({
-                '& .MuiPickersFilledInput-root': {
-                  borderRadius: theme.shape.inputTextBorderRadius,
-                },
-                '& .MuiPickersSectionList-root': {
-                  paddingY: theme.spacing(1),
-                  ...theme.typography.bodySmall,
-                },
-              })}
-            />
-          </Stack>
-        </Stack>
+        <StyledDayPicker
+          mode="range"
+          selected={{
+            from: from ?? undefined,
+            to: to ?? undefined,
+          }}
+          components={{
+            Chevron: ({ orientation }) =>
+              orientation === 'left' ? (
+                <IconButton>
+                  <ArrowBackIcon fontSize="small" />
+                </IconButton>
+              ) : (
+                <IconButton>
+                  <ArrowForwardIcon fontSize="small" />
+                </IconButton>
+              ),
+          }}
+          showOutsideDays
+          onSelect={handleRangeChange}
+          navLayout="around"
+          resetOnSelect
+          disabled={{
+            before: category.min,
+            after: category.max,
+          }}
+          modifiersClassNames={{ today: '' }}
+          data-testid={category.testId}
+        />
       </StyledMultiSelectFiltersContainer>
     </Stack>
   );

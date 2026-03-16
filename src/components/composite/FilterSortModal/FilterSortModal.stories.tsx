@@ -32,7 +32,6 @@ import {
 import { useState } from 'react';
 import { formatSliderValue } from '@/components/core/form/Select/utils';
 import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
-import { format } from 'date-fns';
 
 const meta: Meta<typeof FilterSortModal> = {
   title: 'components/composite/FilterSortModal',
@@ -235,12 +234,8 @@ export const getDatesBadge = (
   const [start, end] = pendingValue;
 
   if (!start && !end) return;
-  if (start && !end) return `From ${format(start, 'd MMM yy')}`;
-  if (!start && end) return `Until ${format(end, 'd MMM yy')}`;
-  if (start && end)
-    return `${format(start, 'd MMM yy')}-${format(end, 'd MMM yy')}`;
 
-  return;
+  return `1 range`;
 };
 
 const BlogArticlesFiltersTemplate = () => {

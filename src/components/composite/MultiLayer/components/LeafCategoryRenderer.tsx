@@ -9,8 +9,6 @@ import { SingleSelectView } from '../views/SingleSelectView';
 import { SliderView } from '../views/SliderView';
 import { ListView } from '../views/ListView';
 import { DateRangeView } from '../views/DateRangeView';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 export interface LeafCategoryRendererProps<TValue> {
   category: LeafCategory<TValue>;
@@ -32,11 +30,7 @@ export const LeafCategoryRenderer = <TValue,>({
       return <SliderView category={category} slotProps={slotProps} />;
 
     case CategoryContentType.DateRange:
-      return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DateRangeView category={category} slotProps={slotProps} />
-        </LocalizationProvider>
-      );
+      return <DateRangeView category={category} slotProps={slotProps} />;
 
     case CategoryContentType.List:
       return <ListView category={category} />;
