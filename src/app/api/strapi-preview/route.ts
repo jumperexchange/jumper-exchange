@@ -63,7 +63,9 @@ export async function GET(request: Request) {
           timestamp: new Date().toISOString(),
         });
       }
-      return new Response('Invalid token', { status: 401 });
+      const errorMessage = err.message as PreviewError;
+      const statusCode = errorMessage === PreviewError.InvalidUrl ? 400 : 401;
+      return new Response(errorMessage, { status: statusCode });
     }
     throw err;
   }
