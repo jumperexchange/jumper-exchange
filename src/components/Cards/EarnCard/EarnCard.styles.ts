@@ -10,12 +10,14 @@ import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 interface EarnCardContainerProps {
   hasLink?: boolean;
+  isConnected?: boolean;
 }
 
 const EarnCardContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'hasLink',
-})<EarnCardContainerProps>(({ theme, hasLink }) => ({
+  shouldForwardProp: (prop) => prop !== 'hasLink' && prop !== 'isConnected',
+})<EarnCardContainerProps>(({ theme, hasLink, isConnected = true }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
+  opacity: isConnected ? 1 : 0.5,
   border: getSurfaceBorder(theme, 'surface1'),
   borderRadius: theme.shape.cardBorderRadius,
   boxShadow: theme.shadows[2],

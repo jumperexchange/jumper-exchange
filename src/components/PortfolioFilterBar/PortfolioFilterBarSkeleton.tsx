@@ -17,8 +17,8 @@ export const PortfolioFilterBarSkeleton = () => {
             height={32}
           />
         ))}
+        <PortfolioFilterOptionsSkeleton />
       </Stack>
-      <PortfolioFilterOptionsSkeleton />
     </PortfolioFilterBarContainer>
   );
 };

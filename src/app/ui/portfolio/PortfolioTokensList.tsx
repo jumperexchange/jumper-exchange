@@ -29,7 +29,7 @@ export const PortfolioTokensList = () => {
 
     if (balanceGroups.length > 0) {
       return balanceGroups.map(([symbol, balances]) => (
-        <PortfolioAnimatedAssetContainer key={symbol}>
+        <PortfolioAnimatedAssetContainer key={`${symbol}-${balances.length}`}>
           <BalanceCard balances={balances} size={BalanceCardSize.MD} />
         </PortfolioAnimatedAssetContainer>
       ));
