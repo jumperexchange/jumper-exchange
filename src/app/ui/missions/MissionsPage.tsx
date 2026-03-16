@@ -30,7 +30,7 @@ export const MissionsPage = async () => {
     <>
       <BannerCampaign campaigns={validBannerCampaigns} />
       <MissionsSection count={totalMissions}>
-        <GridContainer>
+        <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(min(320px, 100%), 1fr))">
           <MissionsList
             initialMissions={missions}
             shouldLoadMore={hasMoreMissions}

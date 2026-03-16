@@ -21,7 +21,7 @@ export const CampaignPageContent = ({
 
       {!!quests.length && (
         <MissionsSection>
-          <GridContainer>
+          <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(min(320px, 100%), 1fr))">
             <MissionsList missions={quests} />
           </GridContainer>
         </MissionsSection>
