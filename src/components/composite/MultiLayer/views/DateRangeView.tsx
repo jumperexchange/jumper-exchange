@@ -58,7 +58,7 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
   };
 
   const handleClear = () => {
-    category.onChange?.([]);
+    category.onChange?.([null, null]);
   };
 
   return (

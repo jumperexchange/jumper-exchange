@@ -31,7 +31,7 @@ import {
 } from 'src/providers/LearnProvider/filtering/types';
 import { useState } from 'react';
 import { formatSliderValue } from '@/components/core/form/Select/utils';
-import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
+import { CategoryConfig, DateRangeValue } from '../MultiLayer/MultiLayer.types';
 
 const meta: Meta<typeof FilterSortModal> = {
   title: 'components/composite/FilterSortModal',
@@ -218,7 +218,7 @@ export const EarnFilters: Story = {
 interface BlogArticlesFilterState {
   tags: string[];
   levels: string[];
-  dates: (Date | null)[];
+  dates: DateRangeValue;
   sortBy: LearnSortByEnum;
 }
 
@@ -227,7 +227,7 @@ const getDatesBadge = (
   usedMax: Date | null,
   rangeMin: Date,
   rangeMax: Date,
-  pendingValue: (Date | null)[],
+  pendingValue: DateRangeValue,
 ): string | undefined => {
   if (usedMin === rangeMin && usedMax === rangeMax) return;
 

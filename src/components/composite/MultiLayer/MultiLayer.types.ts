@@ -90,13 +90,14 @@ export type SliderLeafCategory = BaseCategoryConfig & {
   max: number;
 };
 
+export type DateRangeValue = [Date | null, Date | null];
 /**
  * Dates leaf category
  */
 export type DateRangeLeafCategory = BaseCategoryConfig & {
   contentType: CategoryContentType.DateRange;
-  value?: (Date | null)[];
-  onChange?: (value: (Date | null)[]) => void;
+  value?: DateRangeValue;
+  onChange?: (value: DateRangeValue) => void;
   min: Date;
   max: Date;
 };
