@@ -1,10 +1,8 @@
-import { useAccount } from '@lifi/wallet-management';
 import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
 import type { Hex } from 'viem';
-import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
 import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
 import { useGetZapInPoolBalance } from '@/hooks/zaps/useGetZapInPoolBalance';
@@ -22,6 +20,7 @@ import {
   EarnDetailsActionsContainer,
 } from './EarnDetails.styles';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
+import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -31,10 +30,9 @@ export const EarnDetailsActions = ({
   earnOpportunity,
 }: EarnDetailsActionsProps) => {
   const { t } = useTranslation();
-  const { account } = useAccount();
-  const accountAddress = useAccountAddress();
-
-  const isConnected = !!account?.address;
+  const { account, isAccountConnected: isConnected } = useChainTypeData(
+    earnOpportunity.lpToken.chain.chainId,
+  );
 
   const {
     isDisabled: isDepositFeatureDisabled,
@@ -56,7 +54,7 @@ export const EarnDetailsActions = ({
     isLoading: isLoadingPositions,
     refetch: refetchPositions,
   } = usePortfolioDeFiPositions({
-    addresses: accountAddress ? [accountAddress] : [],
+    accounts: account ? [account] : [],
     filter: {
       earn: earnOpportunity.slug,
     },
@@ -67,7 +65,7 @@ export const EarnDetailsActions = ({
     refetchDepositToken: refetchDepositAmount,
     isLoadingDepositTokenData: isLoadingDepositTokenData,
   } = useGetZapInPoolBalance(
-    accountAddress,
+    account?.address,
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
   );

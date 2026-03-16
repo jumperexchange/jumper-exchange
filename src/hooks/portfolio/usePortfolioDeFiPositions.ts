@@ -10,9 +10,11 @@ import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useTokens } from '../useTokens';
+import type { Account } from '@lifi/wallet-management';
+import { ChainType } from '@lifi/sdk';
 
 export interface Props {
-  addresses: Hex[];
+  accounts: Account[];
   filter?: Omit<PortfolioPositionsQuery, 'evm'>;
 }
 
@@ -25,7 +27,7 @@ export interface Result {
 }
 
 export const usePortfolioDeFiPositions = ({
-  addresses,
+  accounts,
   filter,
 }: Props): Result => {
   const { getToken, isLoading: isLoadingTokens, updatedAt } = useTokens();
@@ -59,17 +61,27 @@ export const usePortfolioDeFiPositions = ({
   );
 
   const queries = useQueries({
-    queries: addresses.map((address) => ({
-      queryKey: ['portfolio-defi-positions', address, filter, updatedAt],
+    queries: accounts.map((account) => ({
+      queryKey: [
+        'portfolio-defi-positions',
+        account.address,
+        filter,
+        updatedAt,
+      ],
       queryFn: async () => {
+        // @TODO JUM-624 handle svm address as query param
+        if (account.chainType !== ChainType.EVM) {
+          return;
+        }
+
         const result = await getPositionsForAddress({
-          evm: address,
+          evm: account.address as Hex,
           ...filter,
         });
         const positions = result.data;
         return updateWalletPositionsPrice(positions, getTokenUSDPrice);
       },
-      enabled: !!address && !isLoadingTokens,
+      enabled: !!account.address && account.isConnected && !isLoadingTokens,
       refetchInterval: ONE_HOUR_MS,
     })),
   });
