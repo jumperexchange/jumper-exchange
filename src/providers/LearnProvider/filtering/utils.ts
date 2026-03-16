@@ -46,7 +46,7 @@ export const sanitizeFilter = (
   filter: BlogArticlesFilterWithoutSortByAndOrder,
   stats: LearnFilteringParams,
 ): Nullable<BlogArticlesFilterWithoutSortByAndOrder> => {
-  if (!stats.allTags.length || !stats.allLevels.length) {
+  if (!stats.allTags.length && !stats.allLevels.length) {
     return filter;
   }
 

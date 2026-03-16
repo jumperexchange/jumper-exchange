@@ -222,7 +222,7 @@ interface BlogArticlesFilterState {
   sortBy: LearnSortByEnum;
 }
 
-export const getDatesBadge = (
+const getDatesBadge = (
   usedMin: Date | null,
   usedMax: Date | null,
   rangeMin: Date,

@@ -116,10 +116,10 @@ export const LearnFilteringProvider = ({
     return removeNullValuesFromFilter(rest);
   }, [rest]);
 
-  const initialTab = tags.data?.[0].Title;
+  const initialTab = tags.data?.[0]?.Title;
 
   useEffect(() => {
-    if (tab) {
+    if (tab || !initialTab) {
       return;
     }
     setSearchParamsState({

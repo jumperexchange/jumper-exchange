@@ -45,7 +45,11 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
   const [from, to] = category.value ?? [null, null];
 
   const clearButtonSize = slotProps?.clearButtonSize ?? 'medium';
-  const isValueSelected = from !== null || to !== null;
+  const isValueSelected = !!from || !!to;
+  const isDefaultRange =
+    from?.getTime() === category.min.getTime() &&
+    to?.getTime() === category.max.getTime();
+  const canClear = !isDefaultRange && isValueSelected;
 
   const formattedRange = useMemo(() => formatDateRange(from, to), [from, to]);
 
@@ -61,10 +65,10 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
     <Stack direction="column" width="100%" gap={1}>
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyMediumStrong">
-          {isValueSelected ? formattedRange || category.label : category.label}
+          {canClear ? formattedRange || category.label : category.label}
         </Typography>
         <StyledMultiSelectFiltersClearButton
-          disabled={!isValueSelected}
+          disabled={!canClear}
           size={clearButtonSize}
           data-testid={`${category.testId}-clear-button`}
           onClick={handleClear}
