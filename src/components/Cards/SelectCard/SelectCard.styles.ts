@@ -6,6 +6,7 @@ import InputBase from '@mui/material/InputBase';
 import InputLabel, { type InputLabelProps } from '@mui/material/InputLabel';
 import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
+import type { CSSProperties } from 'react';
 import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 
@@ -22,7 +23,12 @@ const getTypographyStyles = (
   theme: Theme,
   variant: TypographyVariantKey,
   fallback: TypographyThemeKey,
-) => theme.typography[variant === 'inherit' || !variant ? fallback : variant];
+) =>
+  theme.typography[
+    (variant === 'inherit' || !variant
+      ? fallback
+      : variant) as keyof typeof theme.typography
+  ] as CSSProperties;
 
 interface TextVariantProps {
   textVariant?: TypographyVariantKey;
