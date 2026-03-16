@@ -28,7 +28,7 @@ export const LearnPageArticlesPagination = () => {
         },
       });
     },
-    [tab, tabs],
+    [tab, tabs, trackEvent],
   );
 
   const handleSetPage = useCallback(

@@ -27,9 +27,9 @@ export const LearnPageArticlesSection: FC<
         >
           <LearnPageArticlesFilteringBar />
           <LearnPageArticlesList items={data} />
+          <LearnPageArticlesPagination />
         </Stack>
       </SectionCard>
-      <LearnPageArticlesPagination />
     </>
   );
 };
