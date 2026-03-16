@@ -334,7 +334,7 @@ const BlogArticlesFiltersTemplate = () => {
       onChange: (value) => setPendingValue('dates', value),
       min: blogArticlesDateRange.min,
       max: blogArticlesDateRange.max,
-      testId: 'apy-filter',
+      testId: 'publish-date-filter',
     }),
     createSingleSelectCategory<LearnSortByEnum>({
       id: 'sortBy',
