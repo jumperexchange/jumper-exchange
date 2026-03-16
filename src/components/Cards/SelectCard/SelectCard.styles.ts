@@ -14,21 +14,31 @@ export enum SelectCardMode {
   Display = 'display',
   Input = 'input',
 }
-
 export type TypographyVariantKey = TypographyProps['variant'];
 
-type TypographyThemeKey = Exclude<TypographyVariantKey, 'inherit' | undefined>;
+type TypographyThemeKey = Exclude<
+  TypographyVariantKey,
+  'inherit' | undefined | `@${string}` | ((...args: any[]) => any)
+>;
+
+const isTypographyThemeKey = (
+  theme: Theme,
+  variant: TypographyVariantKey,
+): variant is TypographyThemeKey =>
+  !!variant &&
+  variant !== 'inherit' &&
+  typeof variant !== 'function' &&
+  !variant.startsWith('@') &&
+  variant in theme.typography;
 
 const getTypographyStyles = (
   theme: Theme,
   variant: TypographyVariantKey,
   fallback: TypographyThemeKey,
-) =>
-  theme.typography[
-    (variant === 'inherit' || !variant
-      ? fallback
-      : variant) as keyof typeof theme.typography
-  ] as CSSProperties;
+) => {
+  const key = isTypographyThemeKey(theme, variant) ? variant : fallback;
+  return theme.typography[key];
+};
 
 interface TextVariantProps {
   textVariant?: TypographyVariantKey;
