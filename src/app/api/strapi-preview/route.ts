@@ -2,6 +2,12 @@ import { draftMode } from 'next/headers';
 import { redirect } from 'next/navigation';
 import envConfig from '@/config/env-config';
 import crypto from 'crypto';
+import { getSiteUrl } from '@/const/urls';
+
+enum PreviewError {
+  InvalidToken = 'Invalid token',
+  InvalidUrl = 'Invalid URL',
+}
 
 function isValidSecret(secret: string | null) {
   const key = Buffer.from('preview-secret-check');
@@ -16,6 +22,13 @@ function isValidSecret(secret: string | null) {
   return crypto.timingSafeEqual(hmacReceived, hmacExpected);
 }
 
+function isInternalUrl(url: string | null): boolean {
+  if (!url) {
+    return true;
+  }
+  return url.startsWith('/') || url.startsWith(getSiteUrl());
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
@@ -24,7 +37,10 @@ export async function GET(request: Request) {
 
   try {
     if (!isValidSecret(secret)) {
-      throw new Error('Invalid token');
+      throw new Error(PreviewError.InvalidToken);
+    }
+    if (!isInternalUrl(url)) {
+      throw new Error(PreviewError.InvalidUrl);
     }
     const draftModeHeader = await draftMode();
     // Enable Draft Mode by toggling nextjs header
@@ -36,7 +52,10 @@ export async function GET(request: Request) {
 
     redirect(url || '/');
   } catch (err) {
-    if (err instanceof Error && err.message === 'Invalid token') {
+    if (
+      err instanceof Error &&
+      Object.values(PreviewError).includes(err.message as PreviewError)
+    ) {
       if (!secret || !envConfig.STRAPI_PREVIEW_SECRET) {
         console.warn('[preview] auth rejected — missing token', {
           hasClientSecret: !!secret,
