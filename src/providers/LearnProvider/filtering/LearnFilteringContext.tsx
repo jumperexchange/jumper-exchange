@@ -116,16 +116,14 @@ export const LearnFilteringProvider = ({
     return removeNullValuesFromFilter(rest);
   }, [rest]);
 
-  const initialTab = tags.data?.[0]?.Title;
-
   useEffect(() => {
-    if (tab || !initialTab) {
+    if (tab) {
       return;
     }
     setSearchParamsState({
-      tab: initialTab,
+      tab: TAG_ALL,
     });
-  }, [tab, initialTab, setSearchParamsState]);
+  }, [tab, setSearchParamsState]);
 
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =

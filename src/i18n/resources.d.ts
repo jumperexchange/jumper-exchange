@@ -32,6 +32,9 @@ interface Resources {
       similarPosts: 'Similar Posts';
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
       title: 'Tips and tutorials';
+      views: {
+        viewBy: 'View by';
+      };
     };
     button: {
       connectAnotherWallet: 'Connect another wallet';
