@@ -4,7 +4,8 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
+import { ReferrerCapture } from 'src/components/ReferrerCapture/ReferrerCapture';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
@@ -228,6 +229,9 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
+                          <Suspense fallback={null}>
+                            <ReferrerCapture />
+                          </Suspense>
                           <NavbarWrapper />
                           <IntercomProvider />
                           <main>{children}</main>
