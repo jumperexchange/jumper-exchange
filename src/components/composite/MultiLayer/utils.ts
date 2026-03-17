@@ -4,6 +4,7 @@ import type {
   SliderLeafCategory,
   ListLeafCategory,
   CustomLeafCategory,
+  DateRangeLeafCategory,
 } from './MultiLayer.types';
 import { CategoryContentType } from './MultiLayer.types';
 
@@ -28,6 +29,13 @@ export const createSliderCategory = (
 ): SliderLeafCategory => ({
   ...config,
   contentType: CategoryContentType.Slider,
+});
+
+export const createDateRangeCategory = (
+  config: Omit<DateRangeLeafCategory, 'contentType'>,
+): DateRangeLeafCategory => ({
+  ...config,
+  contentType: CategoryContentType.DateRange,
 });
 
 export const createListCategory = <TValue>(
