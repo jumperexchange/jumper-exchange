@@ -12,7 +12,10 @@ import {
 import { useTokens } from '@/hooks/useTokens';
 import type { Address } from 'viem';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
-import { REWARD_CLAIM_CARD_CONFIG } from './constants';
+import {
+  CLAIMABLE_MIN_AMOUNT_USD,
+  REWARD_CLAIM_CARD_CONFIG,
+} from './constants';
 import { useTranslation } from 'react-i18next';
 import { BalanceStackItem } from '@/components/composite/BalanceCard/components/BalanceStackItem';
 import { createWalletToken } from '@/types/tokens';
@@ -97,6 +100,10 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
       amount: toRawAmount(amountStr, availableReward.tokenDecimals),
     };
   }, [availableReward, getToken, toRawAmount]);
+
+  if (balance.amountUSD < CLAIMABLE_MIN_AMOUNT_USD) {
+    return null;
+  }
 
   return (
     <RewardCardContainer gap={2}>
