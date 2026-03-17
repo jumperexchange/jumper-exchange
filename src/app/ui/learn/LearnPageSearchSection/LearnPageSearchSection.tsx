@@ -18,13 +18,18 @@ import { JUMPER_LEARN_PATH } from '@/const/urls';
 import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import { debounce } from 'lodash';
+import { useQueryState } from 'nuqs';
 
 const SEARCH_PAGE_SIZE = 6;
 const INPUT_ID = 'learn-search';
 
 export const LearnPageSearchSection = () => {
-  const [value, setValue] = useState('');
-  const [searchValue, setSearchValue] = useState('');
+  const [value, setValue] = useQueryState('q', {
+    defaultValue: '',
+    shallow: true,
+    scroll: false,
+  });
+  const [searchValue, setSearchValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
 
