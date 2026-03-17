@@ -7,16 +7,29 @@ import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBan
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
 import { getArticles } from '@/app/lib/getArticles';
 import { getTags } from '@/app/lib/getTags';
+import type { FC } from 'react';
 import { Suspense } from 'react';
 import { LearnPageArticlesSectionSkeleton } from './LearnPageArticlesSection/LearnPageArticlesSectionSkeleton';
 
 interface LearnPageProps {}
 
-const LearnPage = async ({}: LearnPageProps) => {
-  const featuredArticle = (await getFeaturedArticle()).data?.[0];
+const LearnPage: FC<LearnPageProps> = async () => {
+  const featuredArticle = (
+    await getFeaturedArticle().catch(() => ({ data: [] }))
+  ).data?.[0];
   const [carouselArticles, tags] = await Promise.all([
-    getArticles(featuredArticle?.id, 5),
-    getTags(),
+    getArticles(featuredArticle?.id, 5).catch(() => ({ data: [] })),
+    getTags().catch(() => ({
+      data: [],
+      meta: {
+        pagination: {
+          page: 0,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    })),
   ]);
 
   return (

@@ -16,6 +16,10 @@ export const LearnPageArticlesPagination = () => {
   const { trackEvent } = useUserTracking();
   const trackPagination = useCallback(
     (label: string, page: number) => {
+      if (!tab) {
+        return null;
+      }
+
       const _index = tabs?.findIndex((_tab) => _tab === tab) ?? -1;
 
       trackEvent({
@@ -24,7 +28,8 @@ export const LearnPageArticlesPagination = () => {
         action: TrackingAction.ClickPagination,
         data: {
           [TrackingEventParameter.Pagination]: page,
-          [TrackingEventParameter.PaginationCat]: _index === -1 ? 0 : _index,
+          [TrackingEventParameter.PaginationCat]:
+            _index === -1 ? 0 : _index + 1,
         },
       });
     },

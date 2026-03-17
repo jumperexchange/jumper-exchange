@@ -118,8 +118,6 @@ export const LearnFilteringProvider = ({
 
   const initialTab = tags.data?.[0]?.Title;
 
-  console.log(tab, initialTab);
-
   useEffect(() => {
     if (tab || !initialTab) {
       return;

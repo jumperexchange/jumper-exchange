@@ -34,7 +34,8 @@ export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
   items,
   loading,
 }) => {
-  const showPlaceholder = loading || !items?.length;
+  const showPlaceholder = !!loading;
+  const showEmptyState = !loading && !items?.length;
 
   return (
     <GridContainer
@@ -53,15 +54,17 @@ export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
                 <BlogArticleCardSkeleton sx={cardSx} />
               </motion.div>
             ))
-          : items.map((item, index) => (
-              <motion.div {...motionProps} key={`${item?.Slug}-${index}`}>
-                <BlogArticleCard
-                  sx={cardSx}
-                  article={item}
-                  trackingCategory={TrackingCategory.BlogArticlesCollection}
-                />
-              </motion.div>
-            ))}
+          : showEmptyState
+            ? null
+            : items.map((item, index) => (
+                <motion.div {...motionProps} key={`${item?.Slug}-${index}`}>
+                  <BlogArticleCard
+                    sx={cardSx}
+                    article={item}
+                    trackingCategory={TrackingCategory.BlogArticlesCollection}
+                  />
+                </motion.div>
+              ))}
       </AnimatePresence>
     </GridContainer>
   );

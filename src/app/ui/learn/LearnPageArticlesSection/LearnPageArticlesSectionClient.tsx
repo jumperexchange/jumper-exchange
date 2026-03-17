@@ -12,7 +12,7 @@ interface LearnPageArticlesSectionClientProps {}
 
 export const LearnPageArticlesSectionClient: FC<
   LearnPageArticlesSectionClientProps
-> = ({}) => {
+> = () => {
   const { data } = useLearnFiltering();
 
   return (
