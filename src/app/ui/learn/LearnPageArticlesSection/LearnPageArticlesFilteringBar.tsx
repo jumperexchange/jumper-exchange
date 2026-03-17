@@ -10,7 +10,6 @@ import { useBlogArticlesFilteringCategories } from './hooks';
 import Stack from '@mui/material/Stack';
 import { TAG_ALL } from '@/providers/LearnProvider/filtering/types';
 import { capitalizeString } from '@/utils/capitalizeString';
-import dynamic from 'next/dynamic';
 
 const HorizontalTabs = dynamic(
   () =>
