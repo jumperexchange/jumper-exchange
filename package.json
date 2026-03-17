@@ -178,7 +178,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@safe-global/safe-apps-provider": ">=0.18.6"
+      "@safe-global/safe-apps-provider": ">=0.18.6",
+      "hono": "^4.12.7"
     },
     "onlyBuiltDependencies": [
       "@reown/appkit",
