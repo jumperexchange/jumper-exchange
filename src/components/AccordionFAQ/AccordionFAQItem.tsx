@@ -12,6 +12,8 @@ import {
 } from '.';
 import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { RichBlocks } from '../RichBlocks/RichBlocks';
+import { IconButton } from '../core/buttons/IconButton/IconButton';
+import { Variant } from '../core/buttons/types';
 
 interface AccordionFAQItemProps {
   question: string;
@@ -47,9 +49,9 @@ export const AccordionFAQItem = ({
       <Accordion sx={itemSx} className="faq-item">
         <AccordionSummary
           expandIcon={
-            <AccordionToggleButton sx={{ color: 'text.primary' }} as="div">
+            <IconButton variant={Variant.AlphaDark}>
               <FaqShowMoreArrow arrowSize={arrowSize} />
-            </AccordionToggleButton>
+            </IconButton>
           }
           aria-controls={`panel${index}a-content`}
           id={`panel${index}a-header`}
