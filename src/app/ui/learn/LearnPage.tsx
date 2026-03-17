@@ -10,6 +10,7 @@ import { getTags } from '@/app/lib/getTags';
 import type { FC } from 'react';
 import { Suspense } from 'react';
 import { LearnPageArticlesSectionSkeleton } from './LearnPageArticlesSection/LearnPageArticlesSectionSkeleton';
+import { LearnPageSearchSection } from './LearnPageSearchSection/LearnPageSearchSection';
 
 interface LearnPageProps {}
 
@@ -45,6 +46,7 @@ const LearnPage: FC<LearnPageProps> = async () => {
         gap: 4,
       }}
     >
+      <LearnPageSearchSection />
       {featuredArticle && (
         <FeaturedArticle
           featuredArticle={featuredArticle}
