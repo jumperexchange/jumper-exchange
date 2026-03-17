@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
-import { useMemo, useRef, useState } from 'react';
+import Chip from '@mui/material/Chip';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
@@ -19,9 +20,11 @@ import Link from 'next/link';
 import Stack from '@mui/material/Stack';
 import { debounce } from 'lodash';
 import { useQueryState } from 'nuqs';
+import type { TagAttributes } from '@/types/strapi';
 
 const SEARCH_PAGE_SIZE = 6;
 const INPUT_ID = 'learn-search';
+const TAG_FILTER_ALL = 'all';
 
 export const LearnPageSearchSection = () => {
   const [value, setValue] = useQueryState('q', {
@@ -31,6 +34,9 @@ export const LearnPageSearchSection = () => {
   });
   const [searchValue, setSearchValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedTagId, setSelectedTagId] = useState<string | number>(
+    TAG_FILTER_ALL,
+  );
   const anchorRef = useRef<HTMLDivElement>(null);
 
   const debouncedSetSearchValue = useMemo(
@@ -47,6 +53,10 @@ export const LearnPageSearchSection = () => {
     searchText: searchValue,
     pageSize: SEARCH_PAGE_SIZE,
   });
+
+  useEffect(() => {
+    setSelectedTagId(TAG_FILTER_ALL);
+  }, [searchValue]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -71,10 +81,35 @@ export const LearnPageSearchSection = () => {
     setSearchValue('');
   };
 
+  const uniqueTags = useMemo(() => {
+    const seen = new Map<number, TagAttributes>();
+    articles.forEach((article) =>
+      article.tags?.forEach((tag) => {
+        if (tag?.id != null && !seen.has(tag.id)) {
+          seen.set(tag.id, tag);
+        }
+      }),
+    );
+    return Array.from(seen.values()).sort((a, b) =>
+      (a.Title ?? '').localeCompare(b.Title ?? ''),
+    );
+  }, [articles]);
+
+  const filteredArticles =
+    selectedTagId === TAG_FILTER_ALL
+      ? articles
+      : articles.filter((article) =>
+          article.tags?.some((t) => t.id === Number(selectedTagId)),
+        );
+
   const showPopper = isOpen && value.trim().length > 0;
   const showResults = showPopper && (isSuccess || isFetching);
   const hasResults = articles.length > 0;
   const showEmptyState = showPopper && isSuccess && !isFetching && !hasResults;
+
+  const handleTagFilter = (tagId: string | number) => {
+    setSelectedTagId(tagId);
+  };
 
   return (
     <Box ref={anchorRef} sx={{ width: '100%' }}>
@@ -114,7 +149,9 @@ export const LearnPageSearchSection = () => {
         style={{ width: anchorRef.current?.offsetWidth, zIndex: 1300 }}
         modifiers={[{ name: 'offset', options: { offset: [0, 2] } }]}
       >
-        <SectionCardContainer>
+        <SectionCardContainer
+          sx={{ overflowY: 'auto', maxHeight: 'calc(100vh - 12rem)' }}
+        >
           {isLoading || (isFetching && !hasResults) ? (
             <Stack alignItems="center" py={3}>
               <CircularProgress size={24} />
@@ -125,28 +162,70 @@ export const LearnPageSearchSection = () => {
             </Typography>
           ) : (
             showResults && (
-              <Stack
-                component="ul"
-                gap={1}
-                sx={{ listStyle: 'none', m: 0, p: 0 }}
-              >
-                {articles.map((article) => (
-                  <Box component="li" key={article.id}>
-                    <Link
-                      href={
-                        article.RedirectURL ??
-                        `${JUMPER_LEARN_PATH}/${article.Slug}`
+              <Stack gap={1.5}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  flexWrap="wrap"
+                  gap={1}
+                >
+                  <Typography variant="bodySmallParagraph" color="textHint">
+                    {selectedTagId === TAG_FILTER_ALL
+                      ? `${articles.length} ${articles.length === 1 ? 'result' : 'results'}`
+                      : `${filteredArticles.length} of ${articles.length} ${articles.length === 1 ? 'result' : 'results'}`}
+                  </Typography>
+                  <Stack direction="row" flexWrap="wrap" gap={0.5}>
+                    <Chip
+                      label="All"
+                      size="small"
+                      onClick={() => handleTagFilter(TAG_FILTER_ALL)}
+                      variant={
+                        selectedTagId === TAG_FILTER_ALL ? 'filled' : 'outlined'
                       }
-                      style={{ textDecoration: 'none' }}
-                    >
-                      <BlogArticleCard
-                        variant="preview"
-                        data={article}
-                        highlight={value.trim()}
+                      sx={{
+                        '& .MuiChip-label': { textTransform: 'capitalize' },
+                      }}
+                    />
+                    {uniqueTags.map((tag) => (
+                      <Chip
+                        key={tag.id}
+                        label={tag.Title}
+                        size="small"
+                        onClick={() => handleTagFilter(tag.id)}
+                        variant={
+                          selectedTagId === tag.id ? 'filled' : 'outlined'
+                        }
+                        sx={{
+                          '& .MuiChip-label': { textTransform: 'capitalize' },
+                        }}
                       />
-                    </Link>
-                  </Box>
-                ))}
+                    ))}
+                  </Stack>
+                </Stack>
+                <Stack
+                  component="ul"
+                  gap={1}
+                  sx={{ listStyle: 'none', m: 0, p: 0 }}
+                >
+                  {filteredArticles.map((article) => (
+                    <Box component="li" key={article.id}>
+                      <Link
+                        href={
+                          article.RedirectURL ??
+                          `${JUMPER_LEARN_PATH}/${article.Slug}`
+                        }
+                        style={{ textDecoration: 'none' }}
+                      >
+                        <BlogArticleCard
+                          variant="preview"
+                          data={article}
+                          highlight={value.trim()}
+                        />
+                      </Link>
+                    </Box>
+                  ))}
+                </Stack>
               </Stack>
             )
           )}

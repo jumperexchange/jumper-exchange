@@ -27,14 +27,13 @@ interface UseSearchArticlesResult {
 
 export const useSearchArticles = ({
   searchText,
-  pageSize = 10,
 }: UseSearchArticlesProps): UseSearchArticlesResult => {
   const trimmed = searchText.trim();
   const enabled = trimmed.length >= MIN_SEARCH_LENGTH;
 
   const { data, isLoading, isFetching, isSuccess, isError, error } = useQuery({
     queryKey: getSearchArticlesQueryKey(trimmed),
-    queryFn: () => searchArticles(trimmed, pageSize, 1, false),
+    queryFn: () => searchArticles(trimmed),
     enabled,
     staleTime: ONE_HOUR_MS,
   });

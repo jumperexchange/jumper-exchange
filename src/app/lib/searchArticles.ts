@@ -2,19 +2,14 @@ import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
-const DEFAULT_SEARCH_PAGE_SIZE = 10;
-
 export async function searchArticles(
   searchText: string,
-  pageSize: number = DEFAULT_SEARCH_PAGE_SIZE,
-  page: number = 1,
-  withCount: boolean = false,
 ): Promise<StrapiResponse<BlogArticleData>> {
   const trimmed = searchText.trim();
   if (!trimmed) {
     return {
       data: [],
-      meta: { pagination: { page: 1, pageSize, pageCount: 0, total: 0 } },
+      meta: { pagination: { page: 1, pageSize: 10, pageCount: 0, total: 0 } },
     };
   }
 
@@ -22,12 +17,8 @@ export async function searchArticles(
     excludeFields: ['Content'],
   })
     .filterByTitleOrSubtitle(trimmed)
-    .sort('desc')
-    .addPaginationParams({
-      page,
-      pageSize,
-      withCount,
-    });
+    .sort('desc');
+
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
