@@ -49,7 +49,9 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
       </CategoryListItemContent>
 
       <Stack direction="row" gap={1} alignItems="center">
-        {category.badgeLabel && <SelectBadge label={category.badgeLabel} />}
+        {category.badgeLabel && (
+          <SelectBadge label={category.badgeLabel} sx={{ mr: 0 }} />
+        )}
         {showChevron && <ChevronRightRoundedIcon />}
       </Stack>
     </CategoryListItemContainer>
