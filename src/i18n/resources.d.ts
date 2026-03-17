@@ -145,6 +145,14 @@ interface Resources {
       };
       riskDescriptions: {
         risk: 'Risk';
+        riskDisclaimer: {
+          description: {
+            category: 'The information provided regarding potential risks is for general informational purposes only and does not purport to be complete, accurate, or up to date. It should not be construed as investment advice, a recommendation, or a curated selection of investment opportunities, nor does it replace independent due diligence, professional advice, or your own research.\n\nNo responsibility or liability is assumed for the availability, accuracy, performance, or outcomes associated with any third-party products, services, or materials referenced. Any reliance placed on such information or third-party offerings is strictly at your own risk.';
+            protocol: 'The presentation of risks is provided for general informational purposes only and does not claim to be complete, accurate, or current. The services and functionalities of the respective protocols remain subject to ongoing changes, including potential extensions, modifications, or restrictions.\n\nNothing herein constitutes investment advice, a recommendation, or a curated selection of investment opportunities, nor does it replace independent research, due diligence, or professional consultation.\n\nNo liability whatsoever is assumed for any third-party products, services, protocols, or related materials, and any reliance on such third-party offerings is undertaken entirely at your own.';
+          };
+          seeDisclaimer: 'See {{type}} risk disclaimer';
+          title: '{{type}} risk disclaimer';
+        };
         riskTag: {
           'Basis Trading': "Basis Trading may encounter several risk vectors that could influence the vault's performance including but not limited to: funding rate inversion, spread compression, execution slippage, liquidation risk, exchange solvency risk, smart-contract risk, market volatility disrupting hedges, counterparty risk.";
           Bridge: 'Bridge liquidity provisioning may face risks including but not limited to cross-chain message failure, bridge contract exploits, validator misbehavior, chain reorganizations, liquidity shortages, bridged-asset depegs, and counterparty insolvency.';
@@ -218,6 +226,7 @@ interface Resources {
       assets_other: 'Assets';
       assets_other_one: 'Asset';
       capInDollar: 'Capacity';
+      category: 'Category';
       chains_one: 'Chain';
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';

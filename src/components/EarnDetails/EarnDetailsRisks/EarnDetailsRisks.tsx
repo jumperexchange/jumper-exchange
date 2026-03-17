@@ -13,14 +13,18 @@ import { capitalizeString } from '@/utils/capitalizeString';
 import {
   EarnDetailsRisksContainer,
   EarnRiskMissingWarning,
+  EarnRiskSeeMoreButton,
   EarnRiskTagsContainer,
 } from './EarnDetailsRisks.styles';
 import { EarnRiskTagsNav } from './EarnRiskTagsNav';
 import { EarnRiskTagsSelect } from './EarnRiskTagsSelect';
+import { EarnRiskDisclaimerModal } from './EarnRiskDisclaimerModal';
 
 // Eventually we want to get those from the API
 export type RiskTag =
   keyof Resources['translation']['earn']['riskDescriptions']['riskTag'];
+
+export type RiskDisclaimerType = 'protocol' | 'category' | null;
 
 export type RiskTagOptions = { value: string; label: string }[];
 
@@ -34,6 +38,8 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
   tags,
 }) => {
   const { t } = useTranslation();
+  const [riskDisclaimerType, setRiskDisclaimerType] =
+    useState<RiskDisclaimerType>(null);
 
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
@@ -89,10 +95,21 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
         <Typography
           variant="bodyMediumParagraph"
           color="textSecondary"
-          sx={(theme) => ({ marginBottom: theme.spacing(3) })}
+          sx={(theme) => ({ marginBottom: theme.spacing(1) })}
         >
           {riskDescription}
         </Typography>
+        <EarnRiskSeeMoreButton
+          variant="text"
+          size="small"
+          onClick={() => setRiskDisclaimerType('protocol')}
+          disableRipple
+          sx={(theme) => ({ marginBottom: theme.spacing(3) })}
+        >
+          {t('earn.riskDescriptions.riskDisclaimer.seeDisclaimer', {
+            type: t('labels.protocol').toLowerCase(),
+          })}
+        </EarnRiskSeeMoreButton>
         {protocol.url && (
           <ExternalLink href={protocol.url}>{linkText}</ExternalLink>
         )}
@@ -115,8 +132,23 @@ export const EarnDetailsRisks: React.FC<EarnDetailsRisksProps> = ({
           <Typography variant="bodySmallParagraph" color="textSecondary">
             {tagRiskDescription}
           </Typography>
+          <EarnRiskSeeMoreButton
+            variant="text"
+            size="small"
+            onClick={() => setRiskDisclaimerType('category')}
+            disableRipple
+          >
+            {t('earn.riskDescriptions.riskDisclaimer.seeDisclaimer', {
+              type: t('labels.category').toLowerCase(),
+            })}
+          </EarnRiskSeeMoreButton>
         </EarnRiskTagsContainer>
       )}
+      <EarnRiskDisclaimerModal
+        selectedTag={selectedTag}
+        type={riskDisclaimerType}
+        onClose={() => setRiskDisclaimerType(null)}
+      />
     </EarnDetailsRisksContainer>
   );
 };
