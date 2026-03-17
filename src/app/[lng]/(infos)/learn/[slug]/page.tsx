@@ -18,7 +18,7 @@ const FALLBACK_METADATA: Metadata = {
   alternates: { canonical: `${getSiteUrl()}/learn` },
 };
 
-function getSeoImageUrl(
+function getStrapiImageUrl(
   image: StrapiMediaData | undefined,
   baseUrl: string,
 ): string | undefined {
@@ -75,7 +75,7 @@ export async function generateMetadata({
 
   const ogImage =
     seo?.openGraph?.ogImage ?? seo?.metaImage ?? articleData.Image;
-  const ogImageUrl = getSeoImageUrl(ogImage, baseUrl);
+  const ogImageUrl = getStrapiImageUrl(ogImage, baseUrl);
 
   const title = getPageTitle(
     seo?.metaTitle ?? sliceStrToXChar(articleData.Title, 45),
