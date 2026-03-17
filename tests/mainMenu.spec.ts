@@ -77,7 +77,7 @@ test.describe('Main Menu flows', () => {
       await checkTabsInHeader(page);
       // Wait for the articles section to finish loading (client-side): grid visible and at least one card
       const articlesGrid = page.getByTestId('blog-articles-cards-grid');
-      articlesGrid.scrollIntoViewIfNeeded();
+      await articlesGrid.scrollIntoViewIfNeeded();
       await expect(articlesGrid).toBeVisible();
       await expect(page.getByTestId('blog-articles-tab-all')).toBeVisible();
       const firstArticleCard = articlesGrid.locator('a').first();
