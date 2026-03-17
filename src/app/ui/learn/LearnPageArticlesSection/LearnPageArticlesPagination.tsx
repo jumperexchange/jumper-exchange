@@ -53,13 +53,15 @@ export const LearnPageArticlesPagination = () => {
 
   return pagination.pageCount > 1 ? (
     <Pagination
-      variant={PaginationVariant.AllPages}
+      variant={PaginationVariant.WindowedPages}
+      maxVisiblePages={3}
       page={page}
       setPage={setPage}
       pagination={pagination}
       onPrev={handlePrev}
       onNext={handleNext}
       onSetPage={handleSetPage}
+      sx={{ width: '100%' }}
     />
   ) : null;
 };
