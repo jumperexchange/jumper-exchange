@@ -168,7 +168,9 @@ export function Widget({
           initialAddress={bridgeConditions.toAddress}
           onClose={() => setIsPrivateSwapModalOpen(false)}
           onConfirm={(addr) => {
-            formRef.current?.setFieldValue('toAddress', addr);
+            formRef.current?.setFieldValue('toAddress', addr, {
+              setUrlSearchParam: true,
+            });
             setIsPrivateSwapModalOpen(false);
           }}
         />
