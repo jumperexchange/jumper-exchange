@@ -12,7 +12,7 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface1.main,
   border: getSurfaceBorder(theme, 'surface1'),
   transition: 'background-color 250ms',
-  boxShadow: (theme.vars || theme).shadows[1],
+  boxShadow: (theme.vars || theme).shadows[2],
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',

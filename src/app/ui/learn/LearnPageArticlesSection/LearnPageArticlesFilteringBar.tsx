@@ -1,14 +1,30 @@
-import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.style';
 import { LearnPageArticlesFilteringBarContainer } from '../LearnArticlePage.style';
 import { useLearnFiltering } from '../../../../providers/LearnProvider/filtering/LearnFilteringContext';
 import { useMemo } from 'react';
-import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { TAG_ALL } from '@/providers/LearnProvider/filtering/types';
 import { capitalizeString } from '@/utils/capitalizeString';
+import dynamic from 'next/dynamic';
+
+const HorizontalTabs = dynamic(
+  () =>
+    import('@/components/HorizontalTabs/HorizontalTabs').then(
+      (mod) => mod.HorizontalTabs,
+    ),
+  {
+    ssr: false,
+  },
+);
+const Select = dynamic(
+  () =>
+    import('@/components/core/form/Select/Select').then((mod) => mod.Select),
+  {
+    ssr: false,
+  },
+);
 
 export const LearnPageArticlesFilteringBar = () => {
   const { t } = useTranslation();

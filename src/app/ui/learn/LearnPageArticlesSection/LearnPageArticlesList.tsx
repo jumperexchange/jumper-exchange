@@ -1,4 +1,5 @@
 import { BlogArticleCard } from '@/components/Blog/BlogArticleCard/BlogArticleCard';
+import { BlogArticleCardSkeleton } from '@/components/Blog/BlogArticleCard/BlogArticleCardSkeleton';
 import { GridContainer } from '@/components/Containers/GridContainer';
 import { TrackingCategory } from '@/const/trackingKeys';
 import type { BlogArticleData } from '@/types/strapi';
@@ -7,11 +8,34 @@ import type { FC } from 'react';
 
 interface LearnPageArticlesListProps {
   items: BlogArticleData[];
+  loading?: boolean;
 }
+
+const SKELETON_COUNT = 3;
+
+const cardSx = {
+  display: 'inline-block',
+  '&.MuiCard-root': {
+    width: '100%',
+    minWidth: 'initial',
+    maxWidth: 'initial',
+  },
+} as const;
+
+const motionProps = {
+  initial: { opacity: 0 },
+  whileInView: { opacity: 1 },
+  exit: { opacity: 0 },
+  viewport: { once: true, margin: '-50px' },
+  transition: { duration: 0.3, ease: 'easeInOut' },
+} as const;
 
 export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
   items,
+  loading,
 }) => {
+  const showPlaceholder = loading || !items?.length;
+
   return (
     <GridContainer
       gridTemplateColumns={'repeat(auto-fill, minmax(min(320px, 100%), 1fr))'}
@@ -20,30 +44,24 @@ export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
       dataTestId="blog-articles-cards-grid"
     >
       <AnimatePresence mode="popLayout">
-        {items?.map((item, index) => (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            key={`${item?.Slug}-${index}`}
-          >
-            <BlogArticleCard
-              sx={{
-                display: 'inline-block',
-                '&.MuiCard-root': {
-                  width: '100%',
-                  minWidth: 'initial',
-                  maxWidth: 'initial',
-                },
-              }}
-              article={item}
-              key={`blog-articles-collection-${index}`}
-              trackingCategory={TrackingCategory.BlogArticlesCollection}
-            />
-          </motion.div>
-        ))}
+        {showPlaceholder
+          ? Array.from({ length: SKELETON_COUNT }, (_, index) => (
+              <motion.div
+                {...motionProps}
+                key={`blog-article-skeleton-${index}`}
+              >
+                <BlogArticleCardSkeleton sx={cardSx} />
+              </motion.div>
+            ))
+          : items.map((item, index) => (
+              <motion.div {...motionProps} key={`${item?.Slug}-${index}`}>
+                <BlogArticleCard
+                  sx={cardSx}
+                  article={item}
+                  trackingCategory={TrackingCategory.BlogArticlesCollection}
+                />
+              </motion.div>
+            ))}
       </AnimatePresence>
     </GridContainer>
   );

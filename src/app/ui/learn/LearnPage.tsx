@@ -1,26 +1,24 @@
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
-import type {
-  BlogArticleData,
-  StrapiResponse,
-  TagAttributes,
-} from '@/types/strapi';
 import Box from '@mui/material/Box';
 import { LearnPageBlogCarousel } from './LearnPageBlogCarousel';
 import { LearnFilteringProvider } from '../../../providers/LearnProvider/filtering/LearnFilteringContext';
 import { LearnPageArticlesSection } from './LearnPageArticlesSection/LearnPageArticlesSection';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
+import { getArticles } from '@/app/lib/getArticles';
+import { getTags } from '@/app/lib/getTags';
+import { Suspense } from 'react';
+import { LearnPageArticlesSectionSkeleton } from './LearnPageArticlesSection/LearnPageArticlesSectionSkeleton';
 
-interface LearnPageProps {
-  carouselArticles: StrapiResponse<BlogArticleData>;
-  featuredArticle: BlogArticleData;
-  tags: StrapiResponse<TagAttributes>;
-}
+interface LearnPageProps {}
 
-const LearnPage = ({
-  carouselArticles,
-  featuredArticle,
-  tags,
-}: LearnPageProps) => {
+const LearnPage = async ({}: LearnPageProps) => {
+  const featuredArticle = (await getFeaturedArticle()).data?.[0];
+  const [carouselArticles, tags] = await Promise.all([
+    getArticles(featuredArticle?.id, 5),
+    getTags(),
+  ]);
+
   return (
     <Box
       className="learn-page"
@@ -44,9 +42,11 @@ const LearnPage = ({
       )}
       <LearnPageBlogCarousel articles={carouselArticles?.data} />
       <JoinDiscordBanner sx={{ margin: '0 !important' }} />
-      <LearnFilteringProvider tags={tags}>
-        <LearnPageArticlesSection />
-      </LearnFilteringProvider>
+      <Suspense fallback={<LearnPageArticlesSectionSkeleton />}>
+        <LearnFilteringProvider tags={tags}>
+          <LearnPageArticlesSection />
+        </LearnFilteringProvider>
+      </Suspense>
     </Box>
   );
 };

@@ -8,7 +8,7 @@ export const BlogCarouselContainer = styled(MuiContainer)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,
   border: getSurfaceBorder(theme, 'surface2'),
   borderRadius: theme.shape.cardBorderRadiusXLarge,
-  boxShadow: (theme.vars || theme).shadows[1],
+  boxShadow: (theme.vars || theme).shadows[2],
   padding: theme.spacing(2),
   paddingBottom: theme.spacing(1.25),
   width: '100%',
