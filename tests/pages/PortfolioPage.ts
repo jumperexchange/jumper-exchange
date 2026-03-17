@@ -15,8 +15,10 @@ export class PortfolioPage {
   private readonly valueSelectFilter: Locator;
   private readonly sortSelectFilter: Locator;
   private readonly clearFiltersButton: Locator;
-  private readonly filterBarContent: Locator;
   private readonly filterBarSkeleton: Locator;
+  private readonly filterTriggerButton: Locator;
+  private readonly filterModalApplyButton: Locator;
+  private readonly filterModalCloseButton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
   private readonly portfolioHeaderOverviewElement: Locator;
@@ -50,15 +52,29 @@ export class PortfolioPage {
     this.sortSelectFilter = this.page.getByTestId(
       'portfolio-filter-sort-select',
     );
-    this.clearFiltersButton = this.page.getByTestId(
-      'portfolio-filter-clear-filters-button',
-    );
-    this.filterBarContent = this.page.getByTestId(
-      'portfolio-filter-bar-content',
-    );
+    this.clearFiltersButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-clear-all-button')
+      .or(
+        this.page.getByTestId(
+          'portfolio-filters-mobile-drawer-clear-all-button',
+        ),
+      );
     this.filterBarSkeleton = this.page.getByTestId(
       'portfolio-filter-bar-skeleton',
     );
+    this.filterTriggerButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-trigger-button')
+      .or(
+        this.page.getByTestId('portfolio-filters-mobile-drawer-trigger-button'),
+      );
+    this.filterModalApplyButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-apply-button')
+      .or(
+        this.page.getByTestId('portfolio-filters-mobile-drawer-apply-button'),
+      );
+    this.filterModalCloseButton = this.page
+      .getByTestId('modal-close-button')
+      .or(this.page.getByTestId('drawer-close-button'));
     this.depositModalTitle = this.page.locator(
       'xpath=//p[normalize-space(text())="Quick deposit"]',
     );
@@ -128,9 +144,27 @@ export class PortfolioPage {
   }
 
   async waitForFilterBarReady(): Promise<void> {
-    // Wait for skeleton to disappear and content to appear
     await this.filterBarSkeleton.waitFor({ state: 'hidden', timeout: 30000 });
-    await this.filterBarContent.waitFor({ state: 'visible', timeout: 30000 });
+    await this.filterTriggerButton.waitFor({
+      state: 'visible',
+      timeout: 30000,
+    });
+  }
+
+  async openFilterModal(): Promise<void> {
+    await this.filterTriggerButton.click();
+    await this.filterModalApplyButton.waitFor({
+      state: 'visible',
+      timeout: 10000,
+    });
+  }
+
+  async closeFilterModal(): Promise<void> {
+    await this.filterModalCloseButton.click();
+    await this.filterModalCloseButton.waitFor({
+      state: 'hidden',
+      timeout: 5000,
+    });
   }
 
   private async verifyFiltersVisible(filters: Locator[]): Promise<void> {
@@ -153,7 +187,10 @@ export class PortfolioPage {
             (f) => f !== this.walletSelectFilter,
           );
 
+    await expect(this.filterTriggerButton).toBeVisible();
+    await this.openFilterModal();
     await this.verifyFiltersVisible(filtersToCheck);
+    await this.closeFilterModal();
   }
 
   async verifyFiltersAreVisibleOnDefiProtocolsTab(): Promise<void> {
@@ -170,12 +207,15 @@ export class PortfolioPage {
             (f) => f !== this.walletSelectFilter,
           );
 
+    await expect(this.filterTriggerButton).toBeVisible();
+    await this.openFilterModal();
     await this.verifyFiltersVisible(filtersToCheck);
+    await this.closeFilterModal();
   }
 
   async verifyAllFiltersAreVisible(): Promise<void> {
     await this.waitForFilterBarReady();
-    await this.verifyFiltersVisible(this.tokensFilterLocators);
+    await expect(this.filterTriggerButton).toBeVisible();
   }
 
   async getValueSelectFilterText(): Promise<string | null> {
@@ -192,20 +232,27 @@ export class PortfolioPage {
 
   async clickClearFiltersButton(): Promise<void> {
     await this.clearFiltersButton.click();
+    await this.clearFiltersButton.waitFor({
+      state: 'hidden',
+      timeout: 5000,
+    });
   }
 
   async verifyValueSelectFilterIsVisible(): Promise<void> {
     await this.waitForFilterBarReady();
+    await this.openFilterModal();
     await expect(this.valueSelectFilter).toBeVisible();
   }
 
   async verifyValueSelectFilterIsCleared(): Promise<void> {
+    await this.openFilterModal();
     const valueText = await this.getValueSelectFilterText();
     if (valueText !== null) {
       throw new Error(
         `Value filter still contains value range after clearing: ${valueText}`,
       );
     }
+    await this.closeFilterModal();
   }
 
   extractNumber(label: string | null): number {

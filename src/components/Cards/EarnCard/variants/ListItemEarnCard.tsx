@@ -30,6 +30,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const isEmpty = data === null || isLoading;
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(
     data,
     'list-item',

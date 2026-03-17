@@ -508,6 +508,11 @@ class ArticleStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set('filters[featured][$eq]', 'true');
     return this;
   }
+
+  forceDraftMode(): this {
+    this.apiUrl.searchParams.set('status', 'draft');
+    return this;
+  }
 }
 
 class TagStrapiApi extends StrapiApi {

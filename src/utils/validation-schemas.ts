@@ -4,11 +4,32 @@ import {
   sanitizeNumeric,
 } from './image-generation/sanitizeParams';
 import { isValidAddress, isValidTransaction } from './regex-patterns';
+import { buildBridgeSegments } from './getBridgeUrl';
+import {
+  JUMPER_BRIDGE_PATH_DELIMITER,
+  JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER,
+} from '@/const/urls';
+import { slugify } from './urls/slugify';
+import { capitalize } from 'lodash';
 
 /**
  * Helper function to check if a string contains only alphanumeric characters
  */
 export const isAlphanumeric = (str: string) => /^[a-zA-Z0-9]+$/.test(str);
+
+export const splitLast = (str: string) => {
+  const i = str.lastIndexOf(JUMPER_BRIDGE_PATH_DELIMITER);
+  if (i === -1) {
+    return ['', str];
+  }
+  return [str.slice(0, i), str.slice(i + 1)];
+};
+
+export const slugToLabel = (slug: string) =>
+  slug.replaceAll(JUMPER_BRIDGE_PATH_DELIMITER, ' ');
+
+export const slugToDisplayLabel = (slug: string) =>
+  slug.split(JUMPER_BRIDGE_PATH_DELIMITER).map(capitalize).join(' ');
 
 /**
  * Schema for path segments (alphanumeric, hyphens, and underscores)
@@ -51,6 +72,10 @@ const baseAddressSchema = z
  */
 export const tokenAddressSchema = baseAddressSchema;
 
+export const tokenSymbolSchema = z
+  .string()
+  .regex(/^[a-zA-Z0-9]+$/, 'Token symbol must be a single alphanumeric word');
+
 /**
  * Schema for theme options
  */
@@ -67,6 +92,13 @@ export const chainNameSchema = z
   .regex(
     /^[a-zA-Z0-9\s-]+$/,
     'Chain name must contain only alphanumeric characters, spaces, and hyphens',
+  );
+
+export const chainSlugSchema = z
+  .string()
+  .regex(
+    /^[a-zA-Z0-9-]+$/,
+    'Chain slug must contain only alphanumeric characters and hyphens',
   );
 
 /**
@@ -86,20 +118,6 @@ export const searchParamsSchema = z.object({
 });
 
 export type ValidatedSearchParams = z.infer<typeof searchParamsSchema>;
-
-/**
- * Converts text into a URL-friendly slug by:
- * 1. Converting to lowercase
- * 2. Replacing any non-alphanumeric characters with hyphens
- * 3. Replacing multiple hyphens with a single hyphen
- * Example: "Ethereum Mainnet!" → "ethereum-mainnet"
- */
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-') // Replace any non-alphanumeric chars with hyphens
-    .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens
-}
 
 /**
  * Schema for wallet addresses
@@ -195,18 +213,26 @@ export const bridgeSegmentsSchema = z
   .transform((val) => decodeURIComponent(val))
   .refine(
     (val) => {
-      const parts = val.split('-to-');
+      const parts = val.split(
+        JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER,
+      );
       return parts.length === 2;
     },
     {
-      error:
-        'Bridge segments must be in format: sourceChain-sourceToken-to-destinationChain-destinationToken',
+      error: `Bridge segments must be in format: ${buildBridgeSegments(
+        'sourceChain',
+        'sourceToken',
+        'destinationChain',
+        'destinationToken',
+      )}`,
     },
   )
   .transform((val) => {
-    const [source, destination] = val.split('-to-');
-    const [sourceChain, sourceToken] = source.split('-');
-    const [destinationChain, destinationToken] = destination.split('-');
+    const [source, destination] = val.split(
+      JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_FULL_DELIMITER,
+    );
+    const [sourceChain, sourceToken] = splitLast(source);
+    const [destinationChain, destinationToken] = splitLast(destination);
 
     return {
       sourceChain,
@@ -217,16 +243,17 @@ export const bridgeSegmentsSchema = z
   })
   .refine(
     (val) =>
-      isAlphanumeric(val.sourceToken) && isAlphanumeric(val.destinationToken),
-    {
-      error: 'Token names must contain only alphanumeric characters',
-    },
+      tokenSymbolSchema.safeParse(val.sourceToken).success &&
+      tokenSymbolSchema.safeParse(val.destinationToken).success,
+    { error: 'Token symbols must be single alphanumeric words' },
   )
   .refine(
     (val) =>
-      isAlphanumeric(val.sourceChain) && isAlphanumeric(val.destinationChain),
+      chainSlugSchema.safeParse(val.sourceChain).success &&
+      chainSlugSchema.safeParse(val.destinationChain).success,
     {
-      error: 'Chain names must contain only alphanumeric characters',
+      error:
+        'Chain slugs must contain only alphanumeric characters and hyphens',
     },
   );
 

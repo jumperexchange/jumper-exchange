@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 
 import { ThemeProvider } from '@mui/material/styles';
 import { themeCustomized } from './src/theme/theme';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 vi.mock('next/font/google', () => ({
   Inter: () => ({
@@ -99,8 +100,18 @@ global.ResizeObserver = class ResizeObserver {
 } as any;
 
 const customRender = (ui: React.ReactElement, options = {}) => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  });
+
   return render(
-    <ThemeProvider theme={themeCustomized}>{ui}</ThemeProvider>,
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={themeCustomized}>{ui}</ThemeProvider>
+    </QueryClientProvider>,
     options,
   );
 };

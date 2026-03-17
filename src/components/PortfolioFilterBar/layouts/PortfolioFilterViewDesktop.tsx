@@ -40,8 +40,12 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
       onChange={handleChange}
       value={value}
       sx={(theme) => ({
-        flex: '0 0 auto',
+        flexShrink: 0,
         backgroundColor: `${(theme.vars || theme).palette.alpha100.main} !important`,
+        '& .MuiTab-root': {
+          minWidth: 'fit-content',
+          whiteSpace: 'pre-wrap',
+        },
         ...(isDisabled && {
           '& .MuiTabs-indicator': {
             display: 'none',

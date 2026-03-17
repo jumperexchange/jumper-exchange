@@ -21,6 +21,10 @@ export const PortfolioFilterBarHeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   width: '100%',
   gap: theme.spacing(2),
+  '& > *:last-of-type': {
+    minWidth: 0,
+    flex: '1 1 0%',
+  },
 }));
 
 export const PortfolioFilterBarContentContainer = styled(Box)(({ theme }) => ({

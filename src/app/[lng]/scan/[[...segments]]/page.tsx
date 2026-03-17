@@ -3,7 +3,7 @@ import ScanPage from '@/app/ui/scan/ScanPage';
 import { getSiteUrl } from '@/const/urls';
 import { scanParamsSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
 
 type MetadataParams = Promise<{ segments: string[] }>;
 
@@ -76,12 +76,10 @@ export default async function Page({
   params: Params;
 }) {
   const { lng, segments } = await params;
-  // Validate segments
-  const result = scanParamsSchema.safeParse({ segments: segments });
 
-  if (!result.success) {
-    return notFound();
-  }
-
-  return <ScanPage lng={lng} />;
+  return (
+    <Suspense>
+      <ScanPage lng={lng} segments={segments} />
+    </Suspense>
+  );
 }
