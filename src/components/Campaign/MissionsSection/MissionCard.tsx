@@ -12,7 +12,7 @@ import {
 import { useMissionTimeStatus } from 'src/hooks/useMissionTimeStatus';
 import { useUserTracking } from 'src/hooks/userTracking';
 import type { QuestData, StrapiResponseData } from 'src/types/strapi';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import { BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 
@@ -27,6 +27,8 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     mission.EndDate,
     mission.hasEnded,
   );
+
+  const isMissionDisabled = isDisabled || !missionDisplayData.href;
 
   const badge = useMemo(() => {
     if (!status) {
@@ -63,13 +65,13 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       participants={missionDisplayData.participants}
       imageUrl={missionDisplayData.imageUrl}
       rewardGroups={missionDisplayData.rewardGroups}
-      onClick={!isDisabled ? handleClick : undefined}
+      onClick={!isMissionDisabled ? handleClick : undefined}
       fullWidth
       dataTestId={dataTestId}
     />
   );
 
-  return !isDisabled ? (
+  return !isMissionDisabled ? (
     <Link
       href={missionDisplayData.href}
       sx={{

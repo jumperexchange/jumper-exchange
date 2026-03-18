@@ -19,6 +19,7 @@ export const VerticalTabs = () => {
       orientation="vertical"
       onChange={handleChange}
       aria-label="vertical-tabs"
+      data-testid="tabs-container"
     >
       {verticalTabs.map((el: any, index) => {
         const tab = (
@@ -28,7 +29,7 @@ export const VerticalTabs = () => {
               el.onClick(event, el.value);
             }}
             icon={el.icon}
-            id={`tab-key-${el.value}`}
+            data-testid={`tab-key-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
           />
         );

@@ -106,7 +106,10 @@ export function useMainWidgetConfig(
       ],
     };
 
-    if (context.bridgeConditions?.isAGWToNonABSChain) {
+    if (
+      context.bridgeConditions?.isAGWToNonABSChain ||
+      context.bridgeConditions?.isPrivateSwapSelected
+    ) {
       config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
     }
 

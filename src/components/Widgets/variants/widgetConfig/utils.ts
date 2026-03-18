@@ -1,5 +1,6 @@
-import { Theme } from '@mui/material/styles';
-import { RouteLabelRule } from '@lifi/widget';
+import type { Theme } from '@mui/material/styles';
+import type { RouteLabelRule } from '@lifi/widget';
+import { ChainType } from '@lifi/widget';
 
 export const generateRouteLabel = (
   text: string,
@@ -51,4 +52,10 @@ export const generateRouteLabel = (
       allow: [allowExchange],
     },
   };
+};
+
+export const isSupportedChainType = (
+  type?: ChainType | null | undefined,
+): type is ChainType.EVM | ChainType.SVM => {
+  return !!type && [ChainType.EVM, ChainType.SVM].includes(type);
 };

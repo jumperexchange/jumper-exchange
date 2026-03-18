@@ -10,7 +10,11 @@ const nextConfig = {
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
-    optimizePackageImports: ['recharts'],
+    optimizePackageImports: [
+      'recharts',
+      '@mui/material-nextjs',
+      '@sentry/nextjs',
+    ],
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {
@@ -68,6 +72,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'strapi-staging.jumper.xyz',
+        port: '',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'strapi-staging.jumper.exchange',
         port: '',
         pathname: '/uploads/**',
       },
@@ -218,8 +228,10 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
-  bundlePagesRouterDependencies: true,
-  reactComponentAnnotation: {
-    enabled: true,
+
+  webpack: {
+    reactComponentAnnotation: {
+      enabled: true,
+    },
   },
 });

@@ -1,7 +1,8 @@
 import Box from '@mui/material/Box';
 import { alpha, darken, styled } from '@mui/material/styles';
-import { Link } from '../Link';
-import Typography, { TypographyProps } from '@mui/material/Typography';
+import { Link } from '../Link/Link';
+import type { TypographyProps } from '@mui/material/Typography';
+import Typography from '@mui/material/Typography';
 import { urbanist } from 'src/fonts/fonts';
 import { IconButtonPrimary } from '../IconButton';
 

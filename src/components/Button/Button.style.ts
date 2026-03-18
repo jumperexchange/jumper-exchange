@@ -1,7 +1,9 @@
 'use client';
-import type { ButtonProps as MuiButtonProps } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
-import MuiButton, { buttonClasses } from '@mui/material/Button';
+import MuiButton, {
+  buttonClasses,
+  type ButtonProps as MuiButtonProps,
+} from '@mui/material/Button';
 
 export const ButtonBase = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   borderRadius: theme.shape.buttonBorderRadius,

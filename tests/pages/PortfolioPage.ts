@@ -15,13 +15,21 @@ export class PortfolioPage {
   private readonly valueSelectFilter: Locator;
   private readonly sortSelectFilter: Locator;
   private readonly clearFiltersButton: Locator;
-  private readonly filterBarContent: Locator;
   private readonly filterBarSkeleton: Locator;
+  private readonly filterTriggerButton: Locator;
+  private readonly filterModalApplyButton: Locator;
+  private readonly filterModalCloseButton: Locator;
   private readonly tokensFilterLocators: Locator[];
   private readonly defiProtocolsFilterLocators: Locator[];
   private readonly portfolioHeaderOverviewElement: Locator;
   private readonly tokensOverviewElement: Locator;
   private readonly defiPositionsOverviewElement: Locator;
+  public readonly depositButton: Locator;
+  public readonly withdrawButton: Locator;
+  private readonly gearBoxPositionCard: Locator;
+  private readonly depositModalTitle: Locator;
+  private readonly withdrawModalTitle: Locator;
+  public readonly closeModalButton: Locator;
 
   constructor(private readonly page: Page) {
     this.getStartedButton = this.page.locator('#portfolio-get-started-button');
@@ -44,15 +52,37 @@ export class PortfolioPage {
     this.sortSelectFilter = this.page.getByTestId(
       'portfolio-filter-sort-select',
     );
-    this.clearFiltersButton = this.page.getByTestId(
-      'portfolio-filter-clear-filters-button',
-    );
-    this.filterBarContent = this.page.getByTestId(
-      'portfolio-filter-bar-content',
-    );
+    this.clearFiltersButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-clear-all-button')
+      .or(
+        this.page.getByTestId(
+          'portfolio-filters-mobile-drawer-clear-all-button',
+        ),
+      );
     this.filterBarSkeleton = this.page.getByTestId(
       'portfolio-filter-bar-skeleton',
     );
+    this.filterTriggerButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-trigger-button')
+      .or(
+        this.page.getByTestId('portfolio-filters-mobile-drawer-trigger-button'),
+      );
+    this.filterModalApplyButton = this.page
+      .getByTestId('portfolio-filters-desktop-modal-apply-button')
+      .or(
+        this.page.getByTestId('portfolio-filters-mobile-drawer-apply-button'),
+      );
+    this.filterModalCloseButton = this.page
+      .getByTestId('modal-close-button')
+      .or(this.page.getByTestId('drawer-close-button'));
+    this.depositModalTitle = this.page.locator(
+      'xpath=//p[normalize-space(text())="Quick deposit"]',
+    );
+    this.closeModalButton = this.page.getByTestId('CloseIcon');
+    this.withdrawModalTitle = this.page.locator(
+      'xpath=//p[normalize-space(text())="Withdraw"]',
+    );
+
     this.tokensFilterLocators = [
       this.walletSelectFilter,
       this.chainSelectFilter,
@@ -81,7 +111,17 @@ export class PortfolioPage {
     this.defiPositionsOverviewElement = this.page.getByTestId(
       'asset-overview-card-defi-positions',
     );
+    this.depositButton = this.page
+      .getByTestId('portfolio-deposit-button')
+      .first();
+    this.withdrawButton = this.page
+      .getByTestId('portfolio-withdraw-button')
+      .first();
+    this.gearBoxPositionCard = this.page.locator(
+      'xpath=//div[@aria-label="Position card for gearbox protocol"]',
+    );
   }
+
   async clickGetStartedButton(): Promise<void> {
     await this.getStartedButton.click();
   }
@@ -104,9 +144,27 @@ export class PortfolioPage {
   }
 
   async waitForFilterBarReady(): Promise<void> {
-    // Wait for skeleton to disappear and content to appear
     await this.filterBarSkeleton.waitFor({ state: 'hidden', timeout: 30000 });
-    await this.filterBarContent.waitFor({ state: 'visible', timeout: 30000 });
+    await this.filterTriggerButton.waitFor({
+      state: 'visible',
+      timeout: 30000,
+    });
+  }
+
+  async openFilterModal(): Promise<void> {
+    await this.filterTriggerButton.click();
+    await this.filterModalApplyButton.waitFor({
+      state: 'visible',
+      timeout: 10000,
+    });
+  }
+
+  async closeFilterModal(): Promise<void> {
+    await this.filterModalCloseButton.click();
+    await this.filterModalCloseButton.waitFor({
+      state: 'hidden',
+      timeout: 5000,
+    });
   }
 
   private async verifyFiltersVisible(filters: Locator[]): Promise<void> {
@@ -129,7 +187,10 @@ export class PortfolioPage {
             (f) => f !== this.walletSelectFilter,
           );
 
+    await expect(this.filterTriggerButton).toBeVisible();
+    await this.openFilterModal();
     await this.verifyFiltersVisible(filtersToCheck);
+    await this.closeFilterModal();
   }
 
   async verifyFiltersAreVisibleOnDefiProtocolsTab(): Promise<void> {
@@ -146,12 +207,15 @@ export class PortfolioPage {
             (f) => f !== this.walletSelectFilter,
           );
 
+    await expect(this.filterTriggerButton).toBeVisible();
+    await this.openFilterModal();
     await this.verifyFiltersVisible(filtersToCheck);
+    await this.closeFilterModal();
   }
 
   async verifyAllFiltersAreVisible(): Promise<void> {
     await this.waitForFilterBarReady();
-    await this.verifyFiltersVisible(this.tokensFilterLocators);
+    await expect(this.filterTriggerButton).toBeVisible();
   }
 
   async getValueSelectFilterText(): Promise<string | null> {
@@ -168,20 +232,27 @@ export class PortfolioPage {
 
   async clickClearFiltersButton(): Promise<void> {
     await this.clearFiltersButton.click();
+    await this.clearFiltersButton.waitFor({
+      state: 'hidden',
+      timeout: 5000,
+    });
   }
 
   async verifyValueSelectFilterIsVisible(): Promise<void> {
     await this.waitForFilterBarReady();
+    await this.openFilterModal();
     await expect(this.valueSelectFilter).toBeVisible();
   }
 
   async verifyValueSelectFilterIsCleared(): Promise<void> {
+    await this.openFilterModal();
     const valueText = await this.getValueSelectFilterText();
     if (valueText !== null) {
       throw new Error(
         `Value filter still contains value range after clearing: ${valueText}`,
       );
     }
+    await this.closeFilterModal();
   }
 
   extractNumber(label: string | null): number {
@@ -221,5 +292,26 @@ export class PortfolioPage {
         `Total value does not equal sum of individual values. Difference: ${difference}`,
       );
     }
+  }
+
+  async expandSparkPositionCard(): Promise<void> {
+    await this.gearBoxPositionCard.click();
+  }
+
+  async verifyDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.depositButton).toBeVisible({ timeout: 30000 });
+  }
+
+  async verifyDepositModalIsVisible(): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await expect(this.depositModalTitle).toBeVisible();
+  }
+
+  async verifyWithdrawButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+    await expect(this.withdrawButton).toBeVisible();
+  }
+  async verifyWithdrawModalIsVisible(): Promise<void> {
+    await expect(this.withdrawModalTitle).toBeVisible();
   }
 }

@@ -1,12 +1,11 @@
-import { FC, useEffect, useRef } from 'react';
+import type { FC } from 'react';
+import { useEffect, useRef } from 'react';
 import { ButtonPrimary } from 'src/components/Button/Button.style';
-import {
-  BottomSheet,
-  BottomSheetBase,
-} from 'src/components/core/BottomSheet/BottomSheet';
+import type { BottomSheetBase } from 'src/components/core/BottomSheet/BottomSheet';
+import { BottomSheet } from 'src/components/core/BottomSheet/BottomSheet';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface TxBottomSheetProps {

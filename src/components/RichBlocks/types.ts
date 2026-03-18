@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { StrapiMediaAttributes } from '@/types/strapi';
-import {
+import type {
   TrackingCategory,
   TrackingAction,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
-import { SxProps, Theme } from '@mui/material/styles';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 export enum RichBlocksVariant {
   BlogArticle = 'blogArticle',
@@ -47,7 +47,7 @@ export interface TrackingKeys {
     action: TrackingAction;
     label: string;
     data: {
-      [key in TrackingEventParameter]: string;
+      [key in TrackingEventParameter]?: string;
     };
   };
 }

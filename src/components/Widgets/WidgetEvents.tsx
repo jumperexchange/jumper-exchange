@@ -6,7 +6,6 @@ import { useMultisig } from '@/hooks/useMultisig';
 import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMultisigStore } from '@/stores/multisig';
-import { usePortfolioStore } from '@/stores/portfolio';
 import type { RouteExtended } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import type {
@@ -16,7 +15,6 @@ import type {
 } from '@lifi/widget';
 import { useWidgetEvents } from '@lifi/widget';
 import { useEffect, useState } from 'react';
-import { GoldenRouteModal } from 'src/components/GoldenRouteModal/GoldenRouteModal';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { getRouteStatus } from 'src/utils/routes';
@@ -24,6 +22,14 @@ import type { WidgetEventsConfig } from './WidgetEventsManager';
 import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
+import dynamic from 'next/dynamic';
+import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
+
+const GoldenRouteModal = dynamic(() =>
+  import('src/components/GoldenRouteModal/GoldenRouteModal').then(
+    (mod) => mod.GoldenRouteModal,
+  ),
+);
 
 export function WidgetEvents() {
   useContactSupportEvent();
@@ -46,7 +52,7 @@ export function WidgetEvents() {
 
   const [isMultisigConnectedAlertOpen, setIsMultisigConnectedAlertOpen] =
     useState(false);
-  const setForceRefresh = usePortfolioStore((state) => state.setForceRefresh);
+  const { refreshByAddress } = usePortfolioState();
   const [route, setRoute] = useState<{
     winner: boolean;
     position: number | null;
@@ -81,9 +87,9 @@ export function WidgetEvents() {
       const toAddress = route.toAddress;
 
       // Refresh portfolio value
-      setForceRefresh(fromAddress ?? '', true);
+      refreshByAddress(fromAddress ?? '');
       if (fromAddress !== toAddress) {
-        setForceRefresh(toAddress ?? '', true);
+        refreshByAddress(toAddress ?? '');
       }
 
       const routeStatus = getRouteStatus(route);
@@ -204,6 +210,7 @@ export function WidgetEvents() {
     setToChainId,
     setFromToken,
     setToToken,
+    refreshByAddress,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
@@ -220,6 +227,10 @@ export function WidgetEvents() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account?.address]);
 
+  const isGoldenRouteModalOpen =
+    Boolean(route.winner) ||
+    Boolean(!route.winner && route.position && route.position > 1);
+
   return (
     <>
       <MultisigConnectedAlert
@@ -230,14 +241,13 @@ export function WidgetEvents() {
         open={isMultiSigConfirmationModalOpen}
         onClose={onMultiSigConfirmationModalClose}
       />
-      <GoldenRouteModal
-        isOpen={
-          Boolean(route.winner) ||
-          Boolean(!route.winner && route.position && route.position > 1)
-        }
-        route={route}
-        onClose={() => setRoute({ winner: false, position: null })}
-      />
+      {isGoldenRouteModalOpen && (
+        <GoldenRouteModal
+          isOpen={isGoldenRouteModalOpen}
+          route={route}
+          onClose={() => setRoute({ winner: false, position: null })}
+        />
+      )}
     </>
   );
 }

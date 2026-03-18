@@ -6,6 +6,7 @@ export interface UsePriceLookupResult {
   isLoading: boolean;
   hasFreshPrices: boolean;
   updatedAt: number | undefined;
+  error: Error | null;
 }
 
 /**
@@ -19,24 +20,26 @@ export const usePriceLookup = (): UsePriceLookupResult => {
     isLoading,
     isSuccess: hasFreshPrices,
     updatedAt,
+    error,
   } = useTokens();
 
   const getPrice = useMemo(() => {
-    if (!allTokens?.tokens) {
+    if (!allTokens) {
       return () => undefined;
     }
     return (chainId: number, address: string) => {
-      const token = allTokens.tokens[chainId]?.find(
+      const token = allTokens[chainId]?.find(
         (t) => t.address.toLowerCase() === address.toLowerCase(),
       );
       return token ? parseFloat(token.priceUSD) : 0;
     };
-  }, [allTokens?.tokens]);
+  }, [allTokens]);
 
   return {
     getPrice,
     isLoading,
     hasFreshPrices,
     updatedAt,
+    error,
   };
 };

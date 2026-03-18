@@ -1,4 +1,3 @@
-import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import i18nConfig from 'i18n-config';
 import type { Metadata } from 'next';
@@ -12,7 +11,7 @@ import { IntercomProvider } from 'src/providers/IntercomProvider';
 import { SettingsStoreProvider } from 'src/stores/settings';
 import initTranslations from '@/app/i18n';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
-import config from '@/config/env-config';
+import config, { getPublicEnvVars } from '@/config/env-config';
 import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
@@ -74,17 +73,14 @@ export const metadata: Metadata = {
   other: {
     'fc:miniapp': JSON.stringify({
       version: 'next',
-      imageUrl: new URL(baseMiniApp.iconUrl, PUBLIC_URL).toString(),
+      imageUrl: baseMiniApp.iconUrl,
       button: {
         title: `Launch Jumper`,
         action: {
           type: 'launch_miniapp',
           name: 'Jumper',
           url: PUBLIC_URL,
-          splashImageUrl: new URL(
-            baseMiniApp.splashImageUrl,
-            PUBLIC_URL,
-          ).toString(),
+          splashImageUrl: baseMiniApp.splashImageUrl,
           splashBackgroundColor: baseMiniApp.splashBackgroundColor,
         },
       },
@@ -107,15 +103,18 @@ export default async function RootLayout({
   params: Params;
 }) {
   const { lng } = await params;
-  const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
-  const { resources } = await initTranslations(lng || fallbackLng, namespaces);
-  const { appId } = await getMiniAppSettings().catch((e) => {
-    console.error(
-      'Failed to fetch mini app settings, using default values.',
-      e,
-    );
-    return { appId: '' };
-  });
+
+  const [partnerThemes, { appId }, { resources }] = await Promise.all([
+    getPartnerThemes().catch(() => ({ data: [] })),
+    getMiniAppSettings().catch((e) => {
+      console.error(
+        'Failed to fetch mini app settings, using default values.',
+        e,
+      );
+      return { appId: '' };
+    }),
+    initTranslations(lng || fallbackLng, namespaces),
+  ]);
 
   return (
     <html
@@ -125,12 +124,39 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        <script
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function() {
+              try {
+                var mode = localStorage.getItem('${THEME_MODE_STORAGE_KEY}') || 'system';
+                var dark = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-dark') || 'dark';
+                var light = localStorage.getItem('${THEME_COLOR_SCHEME_STORAGE_KEY}-light') || 'light';
+                var colorScheme = '';
+                if (mode === 'system') {
+                  colorScheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
+                } else {
+                  colorScheme = (mode === 'dark') ? dark : light;
+                }
+                if (colorScheme) {
+                  var d = document.documentElement;
+                  d.classList.remove('light', 'dark', light, dark); 
+                  d.classList.add(colorScheme);
+                  d.setAttribute('data-mui-color-scheme', colorScheme);
+                  d.style.colorScheme = (colorScheme === dark) ? 'dark' : 'light';
+                }
+              } catch (e) {}
+            })();
+          `,
+          }}
+        />
         <meta name="base:app_id" content={appId} />
         <style>
           {`
           /* Loading background: MUI vars with fallbacks to avoid flicker before ThemeProvider mounts */
           /* Light mode */
-          body.light {
+          :root.light body {
             background-color: var(--jumper-palette-bg-main, #FCFAFF);
           }
           @media (prefers-color-scheme: light) {
@@ -140,21 +166,22 @@ export default async function RootLayout({
           }
 
           /* Dark mode */
+          :root.dark body {
+            background-color: var(--jumper-palette-bg-main, #120b1e);
+          }
           @media (prefers-color-scheme: dark) {
             body {
               background-color: var(--jumper-palette-bg-main, #120b1e);
             }
           }
-          body.dark {
-            background-color: var(--jumper-palette-bg-main, #120b1e);
-          }
 `}
         </style>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script type="text/javascript" src="/api/env-config.js" />
+        <script type="text/javascript">
+          {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
+        </script>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
-          async
+          strategy="lazyOnload"
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}
         />
         <Script id="google-analytics">
@@ -165,7 +192,7 @@ export default async function RootLayout({
               gtag('config', '${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}');
           `}
         </Script>
-        <Script id="addressable-tracker">
+        <Script strategy="lazyOnload" id="addressable-tracker">
           {`
             !function(w, d){
               w.__adrsbl = {
@@ -185,40 +212,34 @@ export default async function RootLayout({
       </head>
 
       <body suppressHydrationWarning>
-        <NuqsAdapter>
-          <InitColorSchemeScript
-            attribute="class"
-            defaultMode="system"
-            modeStorageKey={THEME_MODE_STORAGE_KEY}
-            colorSchemeStorageKey={THEME_COLOR_SCHEME_STORAGE_KEY}
-          />
-          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-            <ReactQueryProvider>
-              <TranslationsProvider
-                namespaces={[defaultNS]}
-                locale={lng}
-                resources={resources}
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ReactQueryProvider>
+            <TranslationsProvider
+              namespaces={[defaultNS]}
+              locale={lng}
+              resources={resources}
+            >
+              <DefaultThemeProvider
+                themes={partnerThemes.data ?? []}
+                activeTheme={'default'}
               >
-                <DefaultThemeProvider
-                  themes={partnerThemes.data ?? []}
-                  activeTheme={'default'}
-                >
-                  <WalletProvider>
-                    <MUIThemeProvider>
-                      <SettingsStoreProvider>
+                <WalletProvider>
+                  <MUIThemeProvider>
+                    <SettingsStoreProvider>
+                      <NuqsAdapter>
                         <PortfolioProvider>
                           <NavbarWrapper />
                           <IntercomProvider />
-                          {children}
+                          <main>{children}</main>
                         </PortfolioProvider>
-                      </SettingsStoreProvider>
-                    </MUIThemeProvider>
-                  </WalletProvider>
-                </DefaultThemeProvider>
-              </TranslationsProvider>
-            </ReactQueryProvider>
-          </AppRouterCacheProvider>
-        </NuqsAdapter>
+                      </NuqsAdapter>
+                    </SettingsStoreProvider>
+                  </MUIThemeProvider>
+                </WalletProvider>
+              </DefaultThemeProvider>
+            </TranslationsProvider>
+          </ReactQueryProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

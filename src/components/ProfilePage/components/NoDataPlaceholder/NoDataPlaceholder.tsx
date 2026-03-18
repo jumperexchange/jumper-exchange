@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import Typography from '@mui/material/Typography';
 import {
@@ -10,7 +10,7 @@ import {
   NoDataPlaceholderDescriptionContainer,
 } from './NoDataPlaceholder.style';
 import Image from 'next/image';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import { AppPaths } from 'src/const/urls';
 
 interface NoDataPlaceholderProps {

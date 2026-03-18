@@ -1,24 +1,20 @@
-import { useState, useMemo, useImperativeHandle } from 'react';
+import { useImperativeHandle } from 'react';
 import { FullScreenDrawer } from 'src/components/core/FullScreenDrawer/FullScreenDrawer';
 import { useFullScreenDrawer } from 'src/components/core/FullScreenDrawer/hooks';
 import Stack from '@mui/material/Stack';
+import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
+import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
+import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
 import {
-  MultiLayerDrawerProps,
-  CategoryConfig,
-  hasSubcategories,
-  isLeafCategory,
-} from './MultiLayerDrawer.types';
-import { CategoryListItem } from './components/CategoryListItem';
-import { LeafCategoryRenderer } from './components/LeafCategoryRenderer';
-import {
-  MultiLayerDrawerFilterBadge,
   MultiLayerDrawerAlphaButton,
   MultiLayerDrawerDivider,
   MultiLayerDrawerIconButton,
   MultiLayerDrawerPrimaryButton,
-} from './MultiLayerDrawer.styles';
+} from '../MultiLayer/MultiLayer.styles';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import { useMultiLayerNavigation } from '../MultiLayer/hooks';
+import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
 
 /**
  * MultiLayerDrawer - A generic drawer component that supports multi-level navigation
@@ -30,7 +26,7 @@ import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
  *
  * Supports unlimited nesting depth through recursive category structure.
  */
-export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
+export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
   ref,
   categories,
   title,
@@ -58,56 +54,18 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
     [open, close],
   );
 
-  const [navigationPath, setNavigationPath] = useState<number[]>([]);
-
-  const isRootLevel = navigationPath.length === 0;
-
-  const { currentCategories, breadcrumbLabel } = useMemo(() => {
-    if (navigationPath.length === 0) {
-      return { currentCategories: categories, breadcrumbLabel: '' };
-    }
-
-    let current: CategoryConfig[] = categories;
-    let label = '';
-
-    for (let i = 0; i < navigationPath.length; i++) {
-      const index = navigationPath[i];
-      const category = current[index];
-
-      if (!category) {
-        // Invalid path, return root
-        return { currentCategories: categories, breadcrumbLabel: '' };
-      }
-
-      label = category.label;
-
-      if (hasSubcategories(category)) {
-        current = category.subcategories;
-      } else if (isLeafCategory(category)) {
-        return { currentCategories: [category], breadcrumbLabel: label };
-      }
-    }
-
-    return { currentCategories: current, breadcrumbLabel: label };
-  }, [categories, navigationPath]);
-
-  const handleNavigateToSubcategory = (categoryIndex: number) => {
-    const category = currentCategories[categoryIndex];
-    if (!category) return;
-
-    if (hasSubcategories(category) || isLeafCategory(category)) {
-      setNavigationPath([...navigationPath, categoryIndex]);
-    }
-  };
-
-  const handleBack = () => {
-    if (!isRootLevel) {
-      setNavigationPath(navigationPath.slice(0, -1));
-    }
-  };
+  const {
+    isRootLevel,
+    currentCategories,
+    breadcrumbLabel,
+    currentLeafCategory,
+    navigateTo,
+    goBack,
+    reset,
+  } = useMultiLayerNavigation(categories);
 
   const handleClose = () => {
-    setNavigationPath([]);
+    reset();
     onClose?.();
     close();
   };
@@ -123,11 +81,6 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
     onClear?.();
     close();
   };
-
-  const currentLeafCategory =
-    currentCategories.length === 1 && isLeafCategory(currentCategories[0])
-      ? currentCategories[0]
-      : null;
 
   const hasFilterApplied = !!appliedFiltersCount;
 
@@ -150,9 +103,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
             data-testid={`${testId}-trigger-button`}
           >
             {hasFilterApplied && (
-              <MultiLayerDrawerFilterBadge
-                label={appliedFiltersCount.toString()}
-              />
+              <SelectBadge label={appliedFiltersCount.toString()} />
             )}
             <TuneRoundedIcon sx={{ height: 22, width: 22 }} />
           </MultiLayerDrawerIconButton>
@@ -164,7 +115,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
         onClose={handleClose}
         title={isRootLevel ? title : breadcrumbLabel}
         showBackButton={!isRootLevel}
-        onBack={handleBack}
+        onBack={goBack}
       >
         {/* Main content area */}
         <Stack direction="column" width="100%" gap={2} sx={{ flex: 1 }}>
@@ -177,7 +128,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
               <CategoryListItem
                 key={category.id}
                 category={category}
-                onClick={() => handleNavigateToSubcategory(index)}
+                onClick={() => navigateTo(index)}
               />
             ))
           )}
@@ -192,7 +143,7 @@ export const MultiLayerDrawer: React.FC<MultiLayerDrawerProps> = ({
                 fullWidth
                 disabled={disableClear}
                 onClick={handleClear}
-                data-testid={`${testId}-clear-button`}
+                data-testid={`${testId}-clear-all-button`}
               >
                 {clearButtonLabel}
               </MultiLayerDrawerAlphaButton>

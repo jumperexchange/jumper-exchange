@@ -2,18 +2,22 @@ import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
+const DEFAULT_PAGE_SIZE = 20;
+
 export async function getArticles(
   excludeId?: number,
-  pageSize?: number,
+  pageSize: number = DEFAULT_PAGE_SIZE,
+  page: number = 1,
+  withCount: boolean = false,
 ): Promise<StrapiResponse<BlogArticleData>> {
   const urlParams = new ArticleStrapiApi({
     excludeFields: ['Content'],
   })
     .sort('desc')
     .addPaginationParams({
-      page: 1,
-      pageSize: pageSize || 20,
-      withCount: false,
+      page,
+      pageSize,
+      withCount,
     });
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();

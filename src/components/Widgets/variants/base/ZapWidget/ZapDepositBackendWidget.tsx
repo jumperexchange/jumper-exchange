@@ -24,7 +24,6 @@ import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
 import { ZapDepositSettings } from './ZapDepositSettings';
 import { ZapDepositSuccessMessage } from './ZapDepositSuccessMessage';
-import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapDepositBackendWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -51,10 +50,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [customInformation?.projectData]);
 
   const formRef = useRef<FormState>(null);
-
-  const { account } = useAccount();
-  const chainType = account?.chainType;
-  const isEvmWallet = chainType === ChainType.EVM;
 
   const { setDestinationChainTokenForTracking } = useWidgetTrackingContext();
 
@@ -158,16 +153,6 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
-
-  if (!isEvmWallet) {
-    return (
-      <ZapPlaceholderWidget
-        titleKey="widget.zap.placeholder.non-evm.title"
-        descriptionKey="widget.zap.placeholder.non-evm.description"
-        style={widgetConfig.theme?.container}
-      />
-    );
-  }
 
   return isZapDataSuccess && toChainId && toTokenAddress ? (
     <LiFiWidget

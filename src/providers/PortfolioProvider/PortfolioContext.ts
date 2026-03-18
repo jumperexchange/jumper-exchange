@@ -79,6 +79,7 @@ const defaultSourceState: SourceState = {
   isRefreshing: false,
   isStale: false,
   updatedAt: null,
+  error: null,
 };
 
 const defaultOrchestrationState: OrchestrationState = {

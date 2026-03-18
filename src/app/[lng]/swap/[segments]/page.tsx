@@ -3,7 +3,8 @@ import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getTokensQuery } from '@/hooks/useTokens';
 import { getChainByName } from '@/utils/tokenAndChain';
-import { chainNameSchema, slugify } from '@/utils/validation-schemas';
+import { slugify } from '@/utils/urls/slugify';
+import { chainNameSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
@@ -70,7 +71,7 @@ export default async function Page({ params }: { params: Params }) {
       return notFound();
     }
 
-    const [{ chains }, { tokens }] = await Promise.all([
+    const [{ chains }, tokens] = await Promise.all([
       getChainsQuery(),
       getTokensQuery(),
     ]);

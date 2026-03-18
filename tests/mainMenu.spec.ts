@@ -18,7 +18,6 @@ import {
   openLeaderboardPage,
   openNewTabAndVerifyUrl,
   openOrCloseMainMenu,
-  sectionOnTheBlogPage,
 } from './testData/menuFunctions';
 import values from './testData/values.json' with { type: 'json' };
 import { injectMockWallet } from './utils/mockWallet';
@@ -68,29 +67,28 @@ test.describe('Main Menu flows', () => {
   test(
     qase(22, 'Should be able to navigate to the Jumper Learn'),
     async ({ page }) => {
-      const sectionName = [
-        'Announcements',
-        'Partnerships',
-        'Tutorial',
-        'Knowledge',
-      ];
       const socialNetworks = ['LinkedIn', 'Facebook', 'X'];
-      const blogArticle = await page.locator(
-        'xpath=(//div[@class="MuiCardContent-root mui-6l9nau-MuiCardContent-root"])[1]',
-      );
-      const articleTitle = await page.locator(
-        'xpath=(//h1[contains(@class,"MuiTypography-root MuiTypography-h1")])[1]',
-      );
       await itemInMenu(page, 'Learn');
-      await expect(page).toHaveURL(values.localLearnURL);
+      await expect(page).toHaveURL(
+        (url) =>
+          url.pathname === values.localLearnURL ||
+          url.pathname.startsWith(`${values.localLearnURL}/`),
+      );
       await page.waitForLoadState('load');
-      await page.locator('.learn-page').isVisible();
+      await expect(page.locator('.learn-page')).toBeVisible();
       await checkTabsInHeader(page);
-      sectionOnTheBlogPage(page, sectionName);
-      await blogArticle.click();
+      // Wait for the articles section to finish loading (client-side): grid visible and at least one card
+      const articlesGrid = page.getByTestId('blog-articles-cards-grid');
+      await articlesGrid.scrollIntoViewIfNeeded();
+      await expect(articlesGrid).toBeVisible();
+      await expect(page.getByTestId('blog-articles-tab-all')).toBeVisible();
+      const firstArticleCard = articlesGrid.locator('a').first();
+      await expect(firstArticleCard).toBeVisible();
+      await firstArticleCard.click();
       await page.waitForLoadState('load');
+      const articleTitle = page.getByRole('heading', { level: 1 });
       await expect(articleTitle).toBeVisible();
-      checkSocialNetworkIcons(page, socialNetworks);
+      await checkSocialNetworkIcons(page, socialNetworks);
     },
   );
 

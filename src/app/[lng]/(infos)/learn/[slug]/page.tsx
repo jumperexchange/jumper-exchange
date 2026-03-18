@@ -1,4 +1,5 @@
 import { getArticles } from '@/app/lib/getArticles';
+import { draftMode } from 'next/headers';
 import { siteName } from '@/app/lib/metadata';
 import LearnArticlePage from '@/app/ui/learn/LearnArticlePage';
 import { getSiteUrl } from '@/const/urls';
@@ -76,7 +77,10 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const { slug } = await params;
+  const [{ slug }, { isEnabled: isDraftMode }] = await Promise.all([
+    params,
+    draftMode(),
+  ]);
 
   // Validate learn page slug
   const result = learnSlugSchema.safeParse(slug);
@@ -85,7 +89,7 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const validatedSlug = result.data;
-  const article = await getArticleBySlug(validatedSlug);
+  const article = await getArticleBySlug(validatedSlug, isDraftMode);
 
   const articleData: BlogArticleData = article.data.data?.[0];
 

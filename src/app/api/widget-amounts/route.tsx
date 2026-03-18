@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     // Get chains and tokens data
     const { chains } = await getChainsQuery();
     const sortedChains = sortChainsBySpecificName(chains, params.chainName);
-    const { tokens } = await getTokensQuery();
+    const tokens = await getTokensQuery();
     const sortedTokensByChainId =
       sortedChains[0]?.id && tokens[sortedChains[0]?.id]?.slice(0, 4);
 
@@ -63,26 +63,24 @@ export async function GET(request: Request) {
     }) as CSSProperties;
 
     return new ImageResponse(
-      (
-        <div style={imageStyle}>
-          <img
-            alt="Widget Amount Example"
-            width={'100%'}
-            height={'100%'}
-            style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-swap-amounts-${params.theme}.png`}
-          />
-          <WidgetAmountsImage
-            height={WIDGET_IMAGE_WIDTH}
-            width={WIDGET_IMAGE_HEIGHT}
-            theme={params.theme}
-            chains={sortedChains}
-            amount={params.amount}
-            tokens={sortedTokensByChainId || undefined}
-            highlighted={params.highlighted as HighlightedAreas}
-          />
-        </div>
-      ),
+      <div style={imageStyle}>
+        <img
+          alt="Widget Amount Example"
+          width={'100%'}
+          height={'100%'}
+          style={imageStyle}
+          src={`${getSiteUrl()}/widget/widget-swap-amounts-${params.theme}.png`}
+        />
+        <WidgetAmountsImage
+          height={WIDGET_IMAGE_WIDTH}
+          width={WIDGET_IMAGE_HEIGHT}
+          theme={params.theme}
+          chains={sortedChains}
+          amount={params.amount}
+          tokens={sortedTokensByChainId || undefined}
+          highlighted={params.highlighted as HighlightedAreas}
+        />
+      </div>,
       options,
     );
   } catch (error) {

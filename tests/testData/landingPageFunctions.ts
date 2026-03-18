@@ -1,13 +1,25 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { getElementByText } from './commonFunctions';
+/** Time for MUI Slide exit animation in WelcomeOverlayLayout (slideTimeout) */
+const WELCOME_SLIDE_TIMEOUT_MS = 2000;
+/** Extra time for slow CI: wait for button to appear and for overlay to close */
+const WELCOME_VISIBLE_TIMEOUT_MS = 30_000;
+const WELCOME_CLOSE_TIMEOUT_MS = WELCOME_SLIDE_TIMEOUT_MS + 15_000;
 
-export const LANDING_PAGE = {
-  GET_STARTED_BUTTON: '#get-started-button',
-};
+/** Selector for the welcome overlay container (overlayClassName in App.tsx) */
+const WELCOME_OVERLAY_SELECTOR = '.welcome-screen-container';
 
 export async function closeWelcomeScreen(page: Page) {
-  return page.locator(LANDING_PAGE.GET_STARTED_BUTTON).click();
+  const getStartedButton = page.getByTestId('get-started-button');
+  await expect(getStartedButton).toBeVisible({
+    timeout: WELCOME_VISIBLE_TIMEOUT_MS,
+  });
+  await getStartedButton.scrollIntoViewIfNeeded();
+  await getStartedButton.click();
+  await expect(page.locator(WELCOME_OVERLAY_SELECTOR)).not.toBeVisible({
+    timeout: WELCOME_CLOSE_TIMEOUT_MS,
+  });
 }
 export async function itemInMenu(page, option: string) {
   await page.getByRole('menuitem', { name: option }).click();
@@ -51,7 +63,8 @@ export async function checkRoutesVisibility(
 }
 
 export async function navigateToTab(page, tabKey, expectedText) {
-  await page.locator(`#tab-key-${tabKey}`).click();
+  await page.waitForLoadState('domcontentloaded');
+  await page.getByTestId(`tab-key-${tabKey}`).click();
   await expect(
     page.locator(`xpath=//p[text()="${expectedText}"]`),
   ).toBeVisible();

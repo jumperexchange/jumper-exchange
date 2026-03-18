@@ -8,7 +8,7 @@ import {
   CompactEarnCardBody,
 } from '../EarnCard.styles';
 import Typography from '@mui/material/Typography';
-import { Link } from '@/components/Link';
+import { Link } from '@/components/Link/Link';
 import { AppPaths } from '@/const/urls';
 import { useTranslation } from 'react-i18next';
 

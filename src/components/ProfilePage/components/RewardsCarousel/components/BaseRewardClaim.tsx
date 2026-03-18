@@ -8,7 +8,7 @@ import {
 import { RewardClaimCard } from './RewardClaimCard';
 import type { BaseReward } from '@/types/rewards';
 import type { Abi, Hex } from 'viem';
-import * as Sentry from '@sentry/nextjs';
+import { captureException } from '@sentry/nextjs';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -90,7 +90,7 @@ export const BaseRewardClaim = <T extends BaseReward>({
         args: claimConfig.args,
       });
     } catch (err) {
-      Sentry.captureException(err);
+      captureException(err);
       handleError();
     }
   }, [

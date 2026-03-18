@@ -23,8 +23,6 @@ import { useChains } from '@/hooks/useChains';
 import { useMultisig } from '@/hooks/useMultisig';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu';
-import { usePortfolioStore } from '@/stores/portfolio';
-import { useSettingsStore } from '@/stores/settings/SettingsStore';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { walletDigest } from '@/utils/walletDigest';
 import {
@@ -59,9 +57,6 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
 
   const chainSrc = activeChain?.logoURI;
 
-  const deleteCacheTokenAddress = usePortfolioStore(
-    (state) => state.deleteCacheTokenAddress,
-  );
   const { closeAllMenus, setSnackbarState } = useMenuStore((state) => state);
 
   const handleExploreButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -124,9 +119,7 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
       return;
     }
 
-    disconnectWallet(account).then(() => {
-      deleteCacheTokenAddress(walletAddress);
-    });
+    disconnectWallet(account);
 
     trackEvent({
       category: TrackingCategory.WalletMenu,

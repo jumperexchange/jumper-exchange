@@ -89,6 +89,7 @@ export interface SourceState {
   isStale: boolean;
   isSuccess: boolean;
   updatedAt: number | null;
+  error: Error | null;
 }
 
 /**

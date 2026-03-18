@@ -1,12 +1,12 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import { getLevelBasedOnPoints } from 'src/components/ProfilePage/LevelBox/TierBox';
 import {
   getStrapiApiAccessToken,
   getStrapiBaseUrl,
 } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
+import { getLevelBasedOnPoints } from '@/components/ProfilePage/utils/getLevelBasedOnPoints';
 
 export interface UsePersonalizedFeatureOnLevelProps {
   featureCards: StrapiFeatureCardData[] | undefined;

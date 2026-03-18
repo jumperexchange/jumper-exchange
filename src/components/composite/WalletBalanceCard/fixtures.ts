@@ -9,4 +9,5 @@ export const walletBalanceCardFixture = {
   data: {
     USDC: mockMultiChainUsdcBalances,
   },
+  error: null,
 };

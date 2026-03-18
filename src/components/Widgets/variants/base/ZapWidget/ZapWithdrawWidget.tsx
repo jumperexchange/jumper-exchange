@@ -20,7 +20,6 @@ import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import type { WidgetProps } from '../Widget.types';
 import { WidgetSkeleton } from '../WidgetSkeleton';
-import { ZapPlaceholderWidget } from './ZapPlaceholderWidget';
 
 interface ZapWithdrawWidgetProps extends Omit<WidgetProps, 'type'> {
   ctx: ZapWidgetContext;
@@ -39,10 +38,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   }, [customInformation?.projectData]);
 
   const formRef = useRef<FormState>(null);
-
-  const { account } = useAccount();
-  const chainType = account?.chainType;
-  const isEvmWallet = chainType === ChainType.EVM;
 
   const [setSupportModalState] = useMenuStore((state) => [
     state.setSupportModalState,
@@ -122,16 +117,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
   }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
   const widgetConfig = useWidgetConfig('zap', enhancedCtx);
-
-  if (!isEvmWallet) {
-    return (
-      <ZapPlaceholderWidget
-        titleKey="widget.zap.placeholder.non-evm.title"
-        descriptionKey="widget.zap.placeholder.non-evm.description"
-        style={widgetConfig.theme?.container}
-      />
-    );
-  }
 
   return fromChain && fromToken ? (
     <LiFiWidget

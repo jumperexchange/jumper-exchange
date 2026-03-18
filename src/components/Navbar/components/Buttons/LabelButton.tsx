@@ -1,10 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   NavbarButton,
   NavbarButtonContentContainer,
   NavbarButtonLabel,
 } from './Buttons.style';
-import { Link } from 'src/components/Link';
+import { Link } from 'src/components/Link/Link';
 import Skeleton from '@mui/material/Skeleton';
 
 interface LabelButtonProps {
@@ -31,7 +31,12 @@ export const LabelButton: FC<LabelButtonProps> = ({
   'data-testid': dataTestId,
 }) => {
   const button = (
-    <NavbarButton isActive={isActive} id={id} onClick={onClick} data-testid={dataTestId}>
+    <NavbarButton
+      isActive={isActive}
+      id={id}
+      onClick={onClick}
+      data-testid={dataTestId}
+    >
       <NavbarButtonContentContainer>
         {icon}
         {isLoading ? (

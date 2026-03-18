@@ -1,7 +1,13 @@
-import { FC } from 'react';
-import { Lightbox } from 'src/components/Lightbox';
+import type { FC } from 'react';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { CommonBlockProps, ImageProps, RichBlocksVariant } from '../types';
+import type { CommonBlockProps, ImageProps } from '../types';
+import { RichBlocksVariant } from '../types';
+
+import dynamic from 'next/dynamic';
+
+const Lightbox = dynamic(() =>
+  import('src/components/Lightbox').then((mod) => mod.Lightbox),
+);
 
 interface ImageBlockProps extends ImageProps, CommonBlockProps {}
 

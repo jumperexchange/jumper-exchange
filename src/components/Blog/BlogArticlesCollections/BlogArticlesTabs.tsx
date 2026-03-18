@@ -21,7 +21,7 @@ import type {
 } from '@/types/strapi';
 import { chunkArray } from '@/utils/chunkArray';
 
-import { BlogArticleCard } from '../BlogArticleCard';
+import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import {
   BlogArticlesCollectionsContainer,
   BlogArticlesCollectionsTitle,
@@ -103,7 +103,7 @@ export function BlogArticlesTabs({
               <ArticlesGrid key={`blog-article-tab-${pageIndex}-`}>
                 {page.map((article, articleIndex: number) => (
                   <BlogArticleCard
-                    styles={{
+                    sx={{
                       display: 'inline-block',
                       [theme.breakpoints.up('sm' as Breakpoint)]: {
                         width: '100%',

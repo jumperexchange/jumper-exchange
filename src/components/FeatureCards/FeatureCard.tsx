@@ -1,6 +1,7 @@
 'use client';
+
 import Slide from '@mui/material/Slide';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { FeatureCardData } from '@/types/strapi';
 import { openInNewTab } from 'src/utils/openInNewTab';
@@ -14,7 +15,7 @@ import {
   FeatureCardCtaLink,
   FeatureCardSubtitle,
   FeatureCardTitle,
-} from '.';
+} from './FeatureCard.style';
 import {
   useFeatureCardTracking,
   useFeatureCardColors,
@@ -22,20 +23,47 @@ import {
   useFeatureCardDisable,
   useFeatureCardStyles,
 } from './hooks';
+import { useAccount } from '@lifi/wallet-management';
+import { useAdCooldownStore } from '@/stores/adCooldown/AdCooldownStore';
 
 interface FeatureCardProps {
   data: FeatureCardData;
 }
 
 export const FeatureCard = ({ data }: FeatureCardProps) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
+  const { account } = useAccount();
 
   const imageUrl = useFeatureCardImage(data);
   const colors = useFeatureCardColors(data, imageUrl);
   const cardStyles = useFeatureCardStyles();
   const { trackDisplay, trackClose, trackClick } = useFeatureCardTracking(data);
   const { disableCard } = useFeatureCardDisable(data);
+
+  const walletAddress = account?.address ?? '';
+  const adId = (data.uid ?? data.id)?.toString() ?? '';
+
+  const isInCooldown = useAdCooldownStore((s) => s.isInCooldown(walletAddress));
+  const isCardRegistered = useAdCooldownStore((s) =>
+    s.isCardRegistered(walletAddress, adId),
+  );
+  const _hasHydrated = useAdCooldownStore((s) => s._hasHydrated);
+
+  useEffect(() => {
+    if (!_hasHydrated) {
+      return;
+    }
+    // Show if: no cooldown active, OR card was part of the registered session
+    if (isInCooldown && !isCardRegistered) {
+      return;
+    }
+    setOpen(true);
+  }, [_hasHydrated, isInCooldown, isCardRegistered]);
+
+  if (!open || !_hasHydrated) {
+    return null;
+  }
 
   const handleImpressionOnce = () => {
     if (open) {

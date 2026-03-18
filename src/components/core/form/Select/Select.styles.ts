@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
+import { DayPicker } from 'react-day-picker';
 import { ButtonTertiary } from 'src/components/Button/Button.style';
 
 interface BaseSizeProps {
@@ -198,6 +199,10 @@ export const StyledMultiSelectFiltersInput = styled(InputBase, {
       style: {
         ...theme.typography.bodySmall,
         height: 40,
+        '& svg': {
+          height: 20,
+          width: 20,
+        },
       },
     },
     {
@@ -205,6 +210,10 @@ export const StyledMultiSelectFiltersInput = styled(InputBase, {
       style: {
         ...theme.typography.bodyMedium,
         height: 48,
+        '& svg': {
+          height: 24,
+          width: 24,
+        },
       },
     },
   ],
@@ -252,4 +261,103 @@ export const StyledSliderRangeContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
+}));
+
+export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
+  // CSS variables
+  '--rdp-accent-color': theme.palette.primary.main,
+  '--rdp-background-color': theme.palette.action.hover,
+
+  // Reset
+  '& button': {
+    border: 'none',
+    background: 'transparent',
+  },
+
+  // Header
+  '& .rdp-month': {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  '& .rdp-month_caption': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    margin: theme.spacing(1),
+  },
+  '& .rdp-caption_label': {
+    ...theme.typography.bodyMedium,
+    color: theme.palette.text.primary,
+  },
+  '& .rdp-button_previous, & .rdp-button_next': {
+    margin: theme.spacing(1),
+    padding: 0,
+  },
+  '& .rdp-button_previous': {
+    order: -1,
+  },
+  '& .rdp-button_next': {
+    order: 1,
+  },
+
+  // Grid
+  '& .rdp-month_grid': {
+    order: 2,
+    width: '100%',
+    borderSpacing: 1,
+    borderCollapse: 'separate',
+  },
+
+  // Weekdays
+  '& .rdp-weekday': {
+    ...theme.typography.bodyXXSmall,
+    color: theme.palette.text.secondary,
+    textTransform: 'capitalize',
+    borderTop: `${theme.spacing(1)} solid transparent`,
+    borderBottom: `${theme.spacing(1)} solid transparent`,
+    height: 48,
+    width: 32,
+  },
+
+  // Days
+  '& .rdp-day': {
+    ...theme.typography.bodyXSmall,
+    borderRadius: theme.shape.radius4,
+    padding: 0,
+
+    '&:not(.rdp-disabled)': {
+      color: (theme.vars || theme).palette.text.primary,
+      background: (theme.vars || theme).palette.surface1.main,
+    },
+    '&.rdp-range_middle': {
+      color: (theme.vars || theme).palette.text.primary,
+      background: (theme.vars || theme).palette.surface4.main,
+    },
+    '&.rdp-range_start, &.rdp-range_end, &.rdp-selected:not(.rdp-range_middle), &:hover:not(.rdp-day_selected):not(.rdp-disabled)':
+      {
+        color: (theme.vars || theme).palette.textSecondaryInverted,
+        background: (theme.vars || theme).palette.accent1.main,
+      },
+    '&.rdp-disabled:not(.rdp-outside):not(.rdp-hidden)': {
+      color: (theme.vars || theme).palette.text.primary,
+      background: (theme.vars || theme).palette.alpha100.main,
+      opacity: 0.5,
+    },
+    '&.rdp-outside.rdp-disabled:not(.rdp-hidden)': {
+      color: (theme.vars || theme).palette.text.primary,
+      background: 'transparent',
+      opacity: 0.5,
+    },
+  },
+  '& .rdp-day_button': {
+    height: 36,
+    width: 36,
+    padding: 8,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'inherit',
+  },
 }));

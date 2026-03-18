@@ -32,6 +32,9 @@ interface Resources {
       similarPosts: 'Similar Posts';
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
       title: 'Tips and tutorials';
+      views: {
+        viewBy: 'View by';
+      };
     };
     button: {
       connectAnotherWallet: 'Connect another wallet';
@@ -142,20 +145,28 @@ interface Resources {
       };
       riskDescriptions: {
         risk: 'Risk';
+        riskDisclaimer: {
+          description: {
+            category: 'The information provided regarding potential risks is for general informational purposes only and does not purport to be complete, accurate, or up to date. It should not be construed as investment advice, a recommendation, or a curated selection of investment opportunities, nor does it replace independent due diligence, professional advice, or your own research.\n\nNo responsibility or liability is assumed for the availability, accuracy, performance, or outcomes associated with any third-party products, services, or materials referenced. Any reliance placed on such information or third-party offerings is strictly at your own risk.';
+            protocol: 'The presentation of risks is provided for general informational purposes only and does not claim to be complete, accurate, or current. The services and functionalities of the respective protocols remain subject to ongoing changes, including potential extensions, modifications, or restrictions.\n\nNothing herein constitutes investment advice, a recommendation, or a curated selection of investment opportunities, nor does it replace independent research, due diligence, or professional consultation.\n\nNo liability whatsoever is assumed for any third-party products, services, protocols, or related materials, and any reliance on such third-party offerings is undertaken entirely at your own risk.';
+          };
+          seeDisclaimer: 'See {{type}} risk disclaimer';
+          title: '{{type}} risk disclaimer';
+        };
         riskTag: {
-          'Basis Trading': 'Basis Trading may encounter several risk vectors that could influence the vault’s performance: funding rate inversion, spread compression, execution slippage, liquidation risk, exchange solvency risk, smart-contract risk, market volatility disrupting hedges, counterparty risk.';
-          Bridge: 'Bridge liquidity provisioning may face risks such as cross-chain message failure, bridge contract exploits, validator misbehavior, chain reorganizations, liquidity shortages, bridged-asset depegs, and counterparty insolvency.';
-          CDP: 'CDP strategies may face risks including collateral price crashes, oracle manipulation, failed liquidations, rate volatility, collateral concentration, protocol changes, and stablecoin depegs.';
-          Credit: 'Credit may encounter several risk vectors that could influence the vault’s performance: borrower default, counterparty insolvency, collateral devaluation, liquidation failure, liquidity risk, interest-rate volatility, smart contract exploits';
-          Farming: 'Farming strategies may face risks such as reward-token volatility, impermanent loss, emission dilution, liquidity migration, execution slippage, and smart-contract exploits.';
-          Lending: 'Lending may encounter several risk vectors that could influence the vault’s performance: oracle manipulation, collateral price crashes leading to borrower liquidation events, liquidity withdrawal constraints, depegs, interest-rate instability, smart contract exploits';
-          'Liquid Staking': 'Liquid Staking may encounter several risk vectors that could influence the vault’s performance: slashing events, validator downtime, liquid staking token peg instability, liquidity shortages, smart contract exploits';
-          Liquidity: 'Liquidity provisioning may face risks including impermanent loss, pool imbalance, liquidity drains, volatility disrupting ranges, oracle failures, and smart-contract exploits.';
-          RWA: 'RWA strategies may face risks such as issuer default, legal or jurisdictional issues, custodial failure, redemption delays, liquidity constraints, and valuation mismatches between on-chain and off-chain markets.';
-          Staking: 'Staking strategies may face risks including validator downtime, slashing, LST peg instability, withdrawal delays, governance shifts, and smart-contract exploits.';
-          Structured: 'Structured products may face risks such as model errors, volatility shifts, barrier breaches, rebalancing slippage, liquidity gaps, counterparty defaults, and oracle failures.';
-          Synthetic: "Synthetic may encounter several risk vectors that could influence the vault's performance: oracle manipulation, under-collateralization, market dislocations impacting peg, liquidity gaps, counterparty risk, smart contract exploits";
-          'Yield Aggregator': 'Yield Aggregator may encounter several risk vectors that could influence the vault’s performance: auto-compounder logic failures, rebalancing errors, strategy misconfiguration, dependency risk from integrated protocols, multisig or governance compromise, stacked smart-contract risk across underlying protocols';
+          'Basis Trading': "Basis Trading may encounter several risk vectors that could influence the vault's performance including but not limited to: funding rate inversion, spread compression, execution slippage, liquidation risk, exchange solvency risk, smart-contract risk, market volatility disrupting hedges, counterparty risk.";
+          Bridge: 'Bridge liquidity provisioning may face risks including but not limited to cross-chain message failure, bridge contract exploits, validator misbehavior, chain reorganizations, liquidity shortages, bridged-asset depegs, and counterparty insolvency.';
+          CDP: 'CDP strategies may face risks including but not limited to collateral price crashes, oracle manipulation, failed liquidations, rate volatility, collateral concentration, protocol changes, and stablecoin depegs.';
+          Credit: "Credit may encounter several risk vectors that could influence the vault's performance including but not limited to: borrower default, counterparty insolvency, collateral devaluation, liquidation failure, liquidity risk, interest-rate volatility, smart contract exploits";
+          Farming: 'Farming strategies may face risks including but not limited to reward-token volatility, impermanent loss, emission dilution, liquidity migration, execution slippage, and smart-contract exploits.';
+          Lending: "Lending may encounter several risk vectors that could influence the vault's performance including but not limited to: oracle manipulation, collateral price crashes leading to borrower liquidation events, liquidity withdrawal constraints, depegs, interest-rate instability, smart contract exploits";
+          'Liquid Staking': "Liquid Staking may encounter several risk vectors that could influence the vault's performance including but not limited to: slashing events, validator downtime, liquid staking token peg instability, liquidity shortages, smart contract exploits";
+          Liquidity: 'Liquidity provisioning may face risks including but not limited to: impermanent loss, pool imbalance, liquidity drains, volatility disrupting ranges, oracle failures, and smart-contract exploits.';
+          RWA: 'RWA strategies may face risks including but not limited to: issuer default, legal or jurisdictional issues, custodial failure, redemption delays, liquidity constraints, and valuation mismatches between on-chain and off-chain markets.';
+          Staking: 'Staking strategies may face risks including but not limited to: validator downtime, slashing, LST peg instability, withdrawal delays, governance shifts, and smart-contract exploits.';
+          Structured: 'Structured products may face risks including but not limited to: model errors, volatility shifts, barrier breaches, rebalancing slippage, liquidity gaps, counterparty defaults, and oracle failures.';
+          Synthetic: "Synthetic may encounter several risk vectors that could influence the vault's performance including but not limited to: oracle manipulation, under-collateralization, market dislocations impacting peg, liquidity gaps, counterparty risk, smart contract exploits";
+          'Yield Aggregator': "Yield Aggregator may encounter several risk vectors that could influence the vault's performance including but not limited to: auto-compounder logic failures, rebalancing errors, strategy misconfiguration, dependency risk from integrated protocols, multisig or governance compromise, stacked smart-contract risk across underlying protocols";
         };
         website: 'website';
       };
@@ -215,6 +226,7 @@ interface Resources {
       assets_other: 'Assets';
       assets_other_one: 'Asset';
       capInDollar: 'Capacity';
+      category: 'Category';
       chains_one: 'Chain';
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
@@ -369,6 +381,15 @@ interface Resources {
           description: 'Please check the fields and try again.';
           title: 'Validation failed';
         };
+      };
+      privateSwap: {
+        addressPlaceholder: 'Recipient address';
+        confirm: 'Confirm';
+        disclaimer1: "The address is correct and not an exchange wallet. Tokens sent to the wrong address can't be retrieved.";
+        disclaimer2: "This transaction is fulfilled by a centralized provider who might ask for KYC if it's flagged.";
+        paste: 'Paste';
+        subtitle: 'Set recipient address to keep it private.';
+        title: "You're going Incognito";
       };
     };
     multisig: {
@@ -559,6 +580,7 @@ interface Resources {
         chain: 'Chain';
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
+        filterSort: 'Filters & Sort';
         protocol: 'Protocol';
         search: 'Search {{filterBy}}...';
         type: 'Type';
@@ -667,6 +689,9 @@ interface Resources {
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
     };
     widget: {
+      deposit: {
+        title: 'Quick deposit';
+      };
       depositCard: {
         apy: 'Base APR';
         boostedApy: 'Boosted APR';
@@ -686,6 +711,10 @@ interface Resources {
           comingSoon: 'Coming soon';
           'non-evm': {
             description: 'We are working on adding support for non-EVM wallets. In the meantime please use an EVM wallet to execute transactions.';
+            title: 'Your wallet is currently not supported';
+          };
+          'not-supported': {
+            description: 'Please use an <strong>{{type}} wallet</strong> to execute transactions for this opportunity.';
             title: 'Your wallet is currently not supported';
           };
         };

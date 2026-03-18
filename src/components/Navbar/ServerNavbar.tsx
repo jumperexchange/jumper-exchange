@@ -1,7 +1,7 @@
 import { Logo } from './components/Logo/Logo';
 import { NavbarContainer } from './Navbar.style';
 import { Layout } from './layout/Layout';
-import { Link } from '../Link';
+import { Link } from '../Link/Link';
 
 import { AppPaths } from 'src/const/urls';
 

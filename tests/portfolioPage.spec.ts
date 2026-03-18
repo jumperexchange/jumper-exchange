@@ -58,7 +58,12 @@ test.describe('Portfolio page', () => {
       ),
       async ({ page }) => {
         const portfolioPage = new PortfolioPage(page);
-        await portfolioPage.verifyValueSelectFilterIsVisible();
+        await portfolioPage.verifyGetStartedButtonIsVisible();
+        await portfolioPage.clickGetStartedButton();
+
+        await test.step('verify value filter exists', async () => {
+          await portfolioPage.verifyValueSelectFilterIsVisible();
+        });
 
         await test.step('click clear filters button', async () => {
           await portfolioPage.clickClearFiltersButton();
@@ -79,6 +84,33 @@ test.describe('Portfolio page', () => {
 
       await test.step('verify main total value equals sum of individual values', async () => {
         await portfolioPage.verifyMainTotalValueEqualsSumOfIndividualValues();
+      });
+    });
+    test('verify that deposit and withdraw buttons are visible on DeFI positions tab', async ({
+      page,
+    }) => {
+      const portfolioPage = new PortfolioPage(page);
+      await portfolioPage.verifyGetStartedButtonIsVisible();
+      await portfolioPage.clickGetStartedButton();
+
+      await test.step('verify deposit and withdraw buttons are visible on defi positions tab', async () => {
+        await portfolioPage.clickDefiProtocolsTab();
+        await portfolioPage.expandSparkPositionCard();
+        await portfolioPage.verifyDepositButtonIsVisibleOnDeFiPositionsTab();
+        await portfolioPage.verifyWithdrawButtonIsVisibleOnDeFiPositionsTab();
+      });
+      await test.step('click deposit button', async () => {
+        await portfolioPage.depositButton.click();
+      });
+      await test.step('verify deposit modal is visible', async () => {
+        await portfolioPage.verifyDepositModalIsVisible();
+        await portfolioPage.closeModalButton.click();
+      });
+      await test.step('click withdraw button', async () => {
+        await portfolioPage.withdrawButton.click();
+      });
+      await test.step('verify withdraw modal is visible', async () => {
+        await portfolioPage.verifyWithdrawModalIsVisible();
       });
     });
   });

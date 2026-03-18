@@ -1,3 +1,4 @@
+import type { SxProps, Theme } from '@mui/material/styles';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -7,14 +8,25 @@ import {
   BlogArticleCardMetaSkeleton,
   BlogArticleCardTagSkeleton,
   BlogArticleCardTitleSkeleton,
-} from '.';
+} from './BlogArticleCard.style';
+import type { FC } from 'react';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
-export const BlogArticleCardSkeleton = () => {
+interface BlogArticleCardSkeletonProps {
+  sx?: SxProps<Theme>;
+}
+
+export const BlogArticleCardSkeleton: FC<BlogArticleCardSkeletonProps> = ({
+  sx,
+}) => {
   return (
     <BlogArticleCardContainer
-      sx={{
-        boxShadow: 'unset',
-      }}
+      sx={mergeSx(
+        {
+          boxShadow: 'unset',
+        },
+        sx,
+      )}
     >
       <BlogArticleCardImageSkeleton variant="rectangular" />
       <BlogArticleCardContent>

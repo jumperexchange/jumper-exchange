@@ -3,13 +3,22 @@ import { sdk } from '@farcaster/miniapp-sdk';
 import { Box } from '@mui/material';
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { AnnouncementBanner } from 'src/components/AnnouncementBanner/AnnouncementBanner';
-import { VerticalTabs } from 'src/components/Menus/VerticalMenu';
 import { HeaderHeight } from 'src/const/headerHeight';
 import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
+import dynamic from 'next/dynamic';
+
+const AnnouncementBannerWrapper = dynamic(() =>
+  import('./AnnouncementBannerWrapper').then(
+    (mod) => mod.AnnouncementBannerWrapper,
+  ),
+);
+
+const VerticalTabsWrapper = dynamic(() =>
+  import('./VerticalTabsWrapper').then((mod) => mod.VerticalTabsWrapper),
+);
 
 export interface AppProps {
   children: React.ReactNode;
@@ -69,28 +78,12 @@ const App = ({ children }: { children: React.ReactNode }) => {
       }}
       leftSideContent={
         welcomeScreenClosed && (
-          <Box
-            sx={{
-              marginTop: `${announcementBannerHeight}px`,
-              transition: 'margin-top 0.3s ease-in-out',
-            }}
-          >
-            <VerticalTabs />
-          </Box>
+          <VerticalTabsWrapper marginTop={announcementBannerHeight} />
         )
       }
     >
       {welcomeScreenClosed && (
-        <Box
-          sx={{
-            '& > :last-child': {
-              marginBottom: `16px`,
-            },
-          }}
-          ref={announcementBannersRef}
-        >
-          <AnnouncementBanner />
-        </Box>
+        <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
     </WelcomeOverlayLayout>

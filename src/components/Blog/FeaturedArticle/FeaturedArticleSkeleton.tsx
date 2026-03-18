@@ -7,7 +7,7 @@ import {
   FeaturedArticleSubtitleSkeleton,
   FeaturedArticleTagSkeleton,
   FeaturedArticleTitleSkeleton,
-} from '.';
+} from './FeaturedArticle.style';
 
 export const FeaturedArticleSkeleton = () => {
   return (

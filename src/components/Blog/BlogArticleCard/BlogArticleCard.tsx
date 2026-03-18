@@ -4,7 +4,7 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
-import type { CSSObject } from '@mui/material';
+import type { SxProps, Theme } from '@mui/material/styles';
 import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
@@ -20,18 +20,18 @@ import {
   BlogArticleCardTitle,
   BlogArticleMetaDate,
   BlogArticleMetaReadingTime,
-} from '.';
+} from './BlogArticleCard.style';
 
 interface BlogArticleCardProps {
   article: BlogArticleData;
   trackingCategory: string;
-  styles?: CSSObject;
+  sx?: SxProps<Theme>;
 }
 
 export const BlogArticleCard = ({
   article,
   trackingCategory,
-  styles,
+  sx,
 }: BlogArticleCardProps) => {
   const { trackEvent } = useUserTracking();
   const baseUrl = getStrapiBaseUrl();
@@ -54,12 +54,12 @@ export const BlogArticleCard = ({
   return (
     <Link
       href={article?.RedirectURL ?? `${JUMPER_LEARN_PATH}/${article?.Slug}`}
-      style={{ textDecoration: 'none', width: '100%', maxWidth: '416px' }}
+      style={{ textDecoration: 'none', width: '100%' }}
     >
       <BlogArticleCardContainer
         variant="outlined"
         onClick={handleClick}
-        sx={styles}
+        sx={sx}
       >
         {article?.Image && baseUrl ? (
           <BlogArticleCardImage

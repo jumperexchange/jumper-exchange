@@ -1,22 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { MultiLayerDrawer } from './MultiLayerDrawer';
-import { CategoryConfig, CategoryContentType } from './MultiLayerDrawer.types';
+import { CategoryConfig } from '../MultiLayer/MultiLayer.types';
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { formatSliderValue } from 'src/components/core/form/Select/utils';
-import { usePendingFilters } from './hooks';
+import { usePendingFilters } from '../MultiLayer/hooks';
 import {
   chainOptions,
   protocolOptions,
   tagOptions,
   sortOptions,
   assetOptions,
-} from './fixtures';
+} from '../MultiLayer/fixtures';
 import {
   createMultiSelectCategory,
   createSingleSelectCategory,
   createSliderCategory,
-} from './utils';
+} from '../MultiLayer/utils';
 import { SortByEnum, SortByOptions } from 'src/app/ui/earn/types';
 
 const meta: Meta<typeof MultiLayerDrawer> = {

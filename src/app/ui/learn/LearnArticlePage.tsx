@@ -1,7 +1,7 @@
 'use client';
 
 import Background from '@/components/Background';
-import { BlogBackgroundGradient } from '@/components/BackgroundGradient';
+import { BlogBackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient.style';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
 import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';

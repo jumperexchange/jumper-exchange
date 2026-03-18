@@ -1,6 +1,6 @@
 import { MenuItemLink } from './MenuItem.style';
 import { MenuItemLabel } from './MenuItemLabel';
-import RouterLink from 'next/link';
+import { Link } from '@/components/Link/Link';
 import type { MenuItemProps } from './MenuItem.types';
 
 export const MenuItemLinkInternal = ({
@@ -13,7 +13,7 @@ export const MenuItemLinkInternal = ({
   MenuItemProps,
   'label' | 'prefixIcon' | 'suffixIcon' | 'showMoreIcon' | 'link'
 >) => (
-  <MenuItemLink as={RouterLink} href={link?.url || '#'}>
+  <MenuItemLink as={Link} prefetch={false} href={link?.url || '#'}>
     <MenuItemLabel
       label={label}
       showMoreIcon={showMoreIcon}
