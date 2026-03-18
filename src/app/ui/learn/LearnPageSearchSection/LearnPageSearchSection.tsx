@@ -84,7 +84,9 @@ export const LearnPageSearchSection = () => {
             sx={(theme) => ({
               overflowY: 'auto',
               maxHeight: 'calc(100vh - 12rem)',
-              background: (theme.vars || theme).palette.surface1.main,
+              ...theme.applyStyles('light', {
+                background: (theme.vars || theme).palette.surface1.main,
+              }),
             })}
           >
             <LearnPageSearchPopperContent searchValue={searchValue} />
