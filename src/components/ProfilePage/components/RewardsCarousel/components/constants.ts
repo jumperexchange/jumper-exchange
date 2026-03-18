@@ -16,3 +16,5 @@ export const REWARD_CLAIM_CARD_CONFIG = {
     },
   },
 } as const;
+
+export const CLAIMABLE_MIN_AMOUNT_USD = 0.1;
