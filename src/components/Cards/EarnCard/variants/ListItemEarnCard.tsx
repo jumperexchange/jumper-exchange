@@ -18,7 +18,6 @@ import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
-import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -31,8 +30,6 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const isEmpty = data === null || isLoading;
 
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-
-  const chainTypeData = useChainTypeData(data?.lpToken?.chain.chainId);
 
   const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(
     data,
@@ -65,10 +62,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   return (
     <ConditionalLink href={href}>
-      <ListItemEarnCardContainer
-        hasLink={!!href}
-        isConnected={chainTypeData.isAccountConnected}
-      >
+      <ListItemEarnCardContainer hasLink={!!href}>
         <ListItemEarnCardBody hasHintHoverActive>
           <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
             <EntityChainStack
