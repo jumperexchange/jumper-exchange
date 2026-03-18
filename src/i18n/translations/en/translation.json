@@ -123,7 +123,9 @@
       "level": "Level",
       "publishDate": "Publish date",
       "readingTime": "Reading time"
-    }
+    },
+    "popularPosts": "Popular posts",
+    "noPostsFound": "No posts found for your search criteria."
   },
   "solanaAlert": {
     "title": "Limited Solana token support",
@@ -366,6 +368,14 @@
     "category": "Category",
     "overview": "Overview",
     "capInDollar": "Capacity"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "noResults": "No results found",
+    "result_one": "{{count}} result",
+    "result_other": "{{count}} results",
+    "filteredResult_one": "{{filterCount}} of {{count}} result",
+    "filteredResult_other": "{{filterCount}} of {{count}} results"
   },
   "earn": {
     "top": {

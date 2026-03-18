@@ -9,6 +9,7 @@ import {
 import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import { JUMPER_STRAPI_URL } from '@/const/urls';
 import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
+import { PreviewBlogArticleCardSkeleton } from './PreviewBlogArticleCardSkeleton';
 
 const highlightText = (text: string, highlight: string) => {
   if (!highlight?.trim()) {
@@ -32,11 +33,16 @@ const highlightText = (text: string, highlight: string) => {
 };
 
 export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
+  isLoading,
   data,
   highlight = '',
 }) => {
   //   const baseUrl = getStrapiBaseUrl();
   //   console.log(baseUrl);
+
+  if (!data || isLoading) {
+    return <PreviewBlogArticleCardSkeleton />;
+  }
 
   const title = data.Title;
   const subtitle = data.Subtitle;

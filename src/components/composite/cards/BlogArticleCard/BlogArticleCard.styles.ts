@@ -37,14 +37,15 @@ export const BlogArticleCardHighlightText = styled(Typography)(({ theme }) => ({
   '& mark': {
     background: 'transparent',
     color: (theme.vars || theme).palette.accent1Alt.main,
+
     position: 'relative',
-    zIndex: 1,
+    isolation: 'isolate',
 
     '&::before': {
       content: '""',
       position: 'absolute',
-      height: '100%',
       width: `calc(100% + ${theme.spacing(0.5)})`,
+      height: '100%',
       left: theme.spacing(-0.25),
       top: 0,
       background: (theme.vars || theme).palette.surface1ActiveAccent,
