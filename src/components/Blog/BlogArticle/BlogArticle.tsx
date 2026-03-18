@@ -29,7 +29,6 @@ import {
   Divider,
 } from './BlogArticle.style';
 
-import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
@@ -43,6 +42,8 @@ import {
   TrackingAction,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
+import Script from 'next/script';
 
 interface BlogArticleProps {
   article: BlogArticleData;
@@ -70,6 +71,8 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const { t } = useTranslation();
 
   const mainTag = tags?.[0];
+
+  const blogArticleSchema = buildArticleSchema(article);
 
   return (
     <>
@@ -253,15 +256,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
-      {image && publishedAt && author && title && createdAt ? (
-        <ArticleJsonSchema
-          title={title}
-          images={[`${baseUrl}${image?.url}`]}
-          datePublished={publishedAt || createdAt}
-          dateModified={updatedAt || createdAt}
-          authorName={author?.Name}
-        />
-      ) : null}
+      {blogArticleSchema && (
+        <Script type="application/ld+json" id="json-schema-article">
+          {JSON.stringify(blogArticleSchema)}
+        </Script>
+      )}
     </>
   );
 };
