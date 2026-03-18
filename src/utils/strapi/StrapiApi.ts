@@ -175,7 +175,11 @@ class TagParams {
 
   private static defaultArticleFields: ArticleField[] = [...mainArticleFields];
 
-  private static defaultArticlePopulates: string[] = ['Image', 'author'];
+  private static defaultArticlePopulates: string[] = [
+    'Image',
+    'author',
+    'tags',
+  ];
 
   constructor(apiUrl: URL) {
     this.apiUrl = apiUrl;
