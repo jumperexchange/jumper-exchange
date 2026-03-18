@@ -1,9 +1,11 @@
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 
 import { ButtonTransparent, type ButtonProps } from '@/components/Button';
 
 import { EarnDetailsSectionContainer } from '../EarnDetails.styles';
+import { SectionCardContainer } from '@/components/Cards/SectionCard/SectionCard.style';
 
 export const EarnDetailsRisksContainer = styled(EarnDetailsSectionContainer)(
   ({ theme }) => ({
@@ -60,4 +62,22 @@ export const EarnRiskTagsContainer = styled(Stack)(({ theme }) => ({
 
 export const EarnRiskMissingWarning = styled('span')(({ theme }) => ({
   color: (theme.vars || theme).palette.statusError,
+}));
+
+export const EarnRiskSeeMoreButton = styled(Button)(({ theme }) => ({
+  ...theme.typography.bodySmallParagraph,
+  fontWeight: 700,
+  color: (theme.vars || theme).palette.text.secondary,
+  padding: 0,
+  alignSelf: 'start',
+}));
+
+export const EarnRiskDescriptionModalContentContainer = styled(
+  SectionCardContainer,
+)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: theme.spacing(3),
+  width: 488,
+  maxWidth: 'calc(100vw - 32px)',
 }));

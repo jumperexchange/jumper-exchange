@@ -222,6 +222,7 @@ declare module '@mui/material/styles' {
     bodyXLarge: React.CSSProperties;
     bodyLargeStrong: React.CSSProperties;
     bodyLarge: React.CSSProperties;
+    bodyLargeParagraph: React.CSSProperties;
     bodyMediumStrong: React.CSSProperties;
     bodyMedium: React.CSSProperties;
     bodyMediumParagraph: React.CSSProperties;
@@ -260,6 +261,7 @@ declare module '@mui/material/styles' {
     bodyXLarge: React.CSSProperties;
     bodyLargeStrong: React.CSSProperties;
     bodyLarge: React.CSSProperties;
+    bodyLargeParagraph: React.CSSProperties;
     bodyMediumStrong: React.CSSProperties;
     bodyMedium: React.CSSProperties;
     bodyMediumParagraph: React.CSSProperties;
@@ -301,6 +303,7 @@ declare module '@mui/material/Typography' {
     bodyXLarge: true;
     bodyLargeStrong: true;
     bodyLarge: true;
+    bodyLargeParagraph: true;
     bodyMediumStrong: true;
     bodyMedium: true;
     bodyMediumParagraph: true;

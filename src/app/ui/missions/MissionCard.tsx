@@ -28,6 +28,8 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
     mission.hasEnded,
   );
 
+  const isMissionDisabled = isDisabled || !missionDisplayData.href;
+
   const badge = useMemo(() => {
     if (!status) {
       return null;
@@ -64,13 +66,13 @@ export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
       participants={missionDisplayData.participants}
       imageUrl={missionDisplayData.imageUrl}
       rewardGroups={missionDisplayData.rewardGroups}
-      onClick={!isDisabled ? handleClick : undefined}
+      onClick={!isMissionDisabled ? handleClick : undefined}
       fullWidth
       dataTestId={dataTestId}
     />
   );
 
-  return !isDisabled ? (
+  return !isMissionDisabled ? (
     <Link
       href={missionDisplayData.href}
       sx={{

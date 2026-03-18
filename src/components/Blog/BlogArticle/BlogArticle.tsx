@@ -29,14 +29,21 @@ import {
   Divider,
 } from './BlogArticle.style';
 
-import { ArticleJsonSchema } from '@/components/JsonSchema/JsonSchemaArticle';
 import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 import { ShareArticleIcons } from './ShareArticleIcons';
-import { CustomRichBlocks } from '../CustomRichBlocks';
+import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
+import { RichBlocksVariant } from '@/components/RichBlocks/types';
+import {
+  TrackingCategory,
+  TrackingAction,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
+import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
+import Script from 'next/script';
 
 interface BlogArticleProps {
   article: BlogArticleData;
@@ -63,14 +70,16 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const minRead = readingTime(wordCount);
   const { t } = useTranslation();
 
-  const mainTag = tags[0];
+  const mainTag = tags?.[0];
+
+  const blogArticleSchema = buildArticleSchema(article);
 
   return (
     <>
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {tags?.[0]?.Title ? (
+            {mainTag?.Title ? (
               <Tag
                 sx={
                   mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
@@ -182,7 +191,27 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       <BlogArticleContainer>
         <BlogArticleContentContainer>
           {content ? (
-            <CustomRichBlocks id={id} content={content} />
+            <RichBlocks
+              content={content}
+              variant={RichBlocksVariant.BlogArticle}
+              blockSx={{
+                paragraph: (theme) => ({
+                  ...theme.typography.bodyLargeParagraph,
+                  fontWeight: 400,
+                }),
+              }}
+              trackingKeys={{
+                cta: {
+                  category: TrackingCategory.BlogArticle,
+                  action: TrackingAction.ClickBlogCTA,
+                  label: 'click-blog-cta',
+                  data: {
+                    [TrackingEventParameter.ArticleID]: String(id || ''),
+                    [TrackingEventParameter.ArticleTitle]: title || '',
+                  },
+                },
+              }}
+            />
           ) : (
             <BlogArticleContentSkeleton variant="text" />
           )}
@@ -227,15 +256,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
-      {image && publishedAt && author && title && createdAt ? (
-        <ArticleJsonSchema
-          title={title}
-          images={[`${baseUrl}${image?.url}`]}
-          datePublished={publishedAt || createdAt}
-          dateModified={updatedAt || createdAt}
-          authorName={author?.Name}
-        />
-      ) : null}
+      {blogArticleSchema && (
+        <Script type="application/ld+json" id="json-schema-article">
+          {JSON.stringify(blogArticleSchema)}
+        </Script>
+      )}
     </>
   );
 };
