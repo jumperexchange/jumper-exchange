@@ -229,7 +229,7 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
-                          <Suspense fallback={null}>
+                          <Suspense>
                             <ReferrerCapture />
                           </Suspense>
                           <NavbarWrapper />
