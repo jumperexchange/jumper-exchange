@@ -36,75 +36,92 @@ export const NewsletterForm = styled(Box)(({ theme }) => ({
 }));
 
 export const NewsletterFormGroup = styled(FormGroup, {
-  shouldForwardProp: (prop) => prop !== 'error' && prop !== 'disabled',
-})<{ error?: boolean; disabled?: boolean }>(({ theme }) => ({
-  width: '100%',
-  boxShadow: theme.shadows[2],
-  verticalAlign: 'middle',
-  padding: theme.spacing(0.5, 0.5, 0.5, 2),
-  border: `1px solid`,
-  transition: 'border-color 0.2s ease-in-out',
-  borderRadius: theme.shape.buttonBorderRadius,
-  backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'nowrap',
-  ...theme.applyStyles?.('light', {
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-    border: getSurfaceBorder(theme, 'surface1'),
-  }),
-  '.MuiInputBase-root': {
-    ':before, :after': {
-      display: 'none',
-    },
-  },
-  '& input': {
-    ...theme.typography.bodyMedium,
-  },
-  '& input::placeholder': {
-    opacity: 1,
-    ...theme.typography.bodyMedium,
-    color: (theme.vars || theme).palette.textHint,
-  },
-  '& input:disabled': {
-    pointerEvents: 'none',
-    '&::placeholder': {
-      color: (theme.vars || theme).palette.textDisabled,
-    },
-  },
-  variants: [
-    {
-      props: { error: true },
-      style: {
-        borderColor: (theme.vars || theme).palette.borderError,
+  shouldForwardProp: (prop) =>
+    prop !== 'error' && prop !== 'disabled' && prop !== 'layout',
+})<{ error?: boolean; disabled?: boolean; layout?: 'inline' | 'stacked' }>(
+  ({ theme }) => ({
+    width: '100%',
+    boxShadow: theme.shadows[2],
+    verticalAlign: 'middle',
+    padding: theme.spacing(0.5, 0.5, 0.5, 2),
+    border: `1px solid`,
+    transition: 'border-color 0.2s ease-in-out',
+    borderRadius: theme.shape.buttonBorderRadius,
+    backgroundColor: (theme.vars || theme).palette.alphaLight100.main,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    alignItems: 'center',
+    ...theme.applyStyles?.('light', {
+      backgroundColor: (theme.vars || theme).palette.surface1.main,
+      border: getSurfaceBorder(theme, 'surface1'),
+    }),
+    '.MuiInputBase-root': {
+      ':before, :after': {
+        display: 'none',
       },
     },
-    {
-      props: { error: false },
-      style: {
-        borderColor: (theme.vars || theme).palette.grey[100],
-        '&:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
-          borderColor: (theme.vars || theme).palette.borderActive,
+    '& input': {
+      ...theme.typography.bodyMedium,
+    },
+    '& input::placeholder': {
+      opacity: 1,
+      ...theme.typography.bodyMedium,
+      color: (theme.vars || theme).palette.textHint,
+    },
+    '& input:disabled': {
+      pointerEvents: 'none',
+      '&::placeholder': {
+        color: (theme.vars || theme).palette.textDisabled,
+      },
+    },
+    variants: [
+      {
+        props: { error: true },
+        style: {
+          borderColor: (theme.vars || theme).palette.borderError,
         },
       },
-    },
-    {
-      props: { disabled: true },
-      style: {
-        '&, &:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
+      {
+        props: { error: false },
+        style: {
           borderColor: (theme.vars || theme).palette.grey[100],
-          backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+          '&:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
+            borderColor: (theme.vars || theme).palette.borderActive,
+          },
         },
       },
-    },
-  ],
-}));
+      {
+        props: { disabled: true },
+        style: {
+          '&, &:hover, &:active, &:focus, &:focus-visible, &:focus-within': {
+            borderColor: (theme.vars || theme).palette.grey[100],
+            backgroundColor: (theme.vars || theme).palette.buttonDisabledBg,
+          },
+        },
+      },
+      {
+        props: { layout: 'stacked' },
+        style: {
+          padding: theme.spacing(1.25, 2),
+          '& .MuiInputBase-root': {
+            width: '100%',
+          },
+        },
+      },
+    ],
+  }),
+);
 
 export const NewsletterFormButton = styled(ButtonPrimary)(({ theme }) => ({
   '&.MuiButtonBase-root.MuiButton-root': {
     ...theme.typography.bodySmallStrong,
     minWidth: 'fit-content',
     padding: theme.spacing(1.375, 2),
+    '&.MuiButton-fullWidth': {
+      minWidth: 'unset',
+      width: '100%',
+    },
     backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
     color: (theme.vars || theme).palette.buttonPrimaryAction,
     '&:disabled': {

@@ -42,6 +42,7 @@ import {
 } from '@/const/trackingKeys';
 import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
 import Script from 'next/script';
+import { useBlogArticleTracking } from '@/hooks/userTracking/useBlogArticleTracking';
 
 const BlogArticleModal = dynamic(
   () => import('./BlogArticleModal').then((mod) => mod.BlogArticleModal),
@@ -71,7 +72,6 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     author,
     publishedAt,
     createdAt,
-    updatedAt,
     tags,
     Image: image,
     faq_items,
@@ -80,6 +80,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const baseUrl = getStrapiBaseUrl();
   const minRead = readingTime(wordCount);
   const { t } = useTranslation();
+  const { trackBlogArticleOpenPopupEvent } = useBlogArticleTracking();
 
   const [isModalOpen, openModal] = useBlogArticleStore((s) => [
     s.isModalOpen,
@@ -99,6 +100,8 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       }
 
       if (scrollProgress >= SCROLL_PROGRESS_OPEN_POPUP && !isModalOpen) {
+        trackBlogArticleOpenPopupEvent(id, title, popup.Title);
+
         openModal(documentId, {
           title: popup.Title,
           description: popup.Message,
@@ -107,14 +110,22 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         });
       }
     },
-    [documentId, popup, isModalOpen, openModal],
+    [
+      documentId,
+      popup,
+      id,
+      title,
+      isModalOpen,
+      openModal,
+      trackBlogArticleOpenPopupEvent,
+    ],
   );
 
   const blogArticleSchema = buildArticleSchema(article);
 
   return (
     <>
-      {isModalOpen && <BlogArticleModal />}
+      {isModalOpen && <BlogArticleModal articleId={id} articleTitle={title} />}
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
