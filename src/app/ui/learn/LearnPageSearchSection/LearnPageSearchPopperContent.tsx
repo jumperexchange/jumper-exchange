@@ -89,23 +89,21 @@ export const LearnPageSearchPopperContent: FC<
     return null;
   }
 
+  const popularPostsSection = (
+    <Stack gap={1.5}>
+      <Typography variant="bodyXSmallStrong" color="textHint" sx={{ my: 0.75 }}>
+        {t('blog.popularPosts')}
+      </Typography>
+      <LearnPageSearchArticleList
+        articles={featuredArticles?.slice(0, 6) ?? []}
+      />
+    </Stack>
+  );
+
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div key={contentKey} {...fadeSlide}>
-        {contentKey === 'popular' && (
-          <Stack gap={1.5}>
-            <Typography
-              variant="bodyXSmallStrong"
-              color="textHint"
-              sx={{ my: 0.75 }}
-            >
-              {t('blog.popularPosts')}
-            </Typography>
-            <LearnPageSearchArticleList
-              articles={featuredArticles?.slice(0, 6) ?? []}
-            />
-          </Stack>
-        )}
+        {contentKey === 'popular' && popularPostsSection}
 
         {contentKey === 'loading' && (
           <Stack gap={1.5}>
@@ -118,13 +116,16 @@ export const LearnPageSearchPopperContent: FC<
         )}
 
         {contentKey === 'empty' && (
-          <Typography
-            variant="bodyXSmallStrong"
-            color="textHint"
-            sx={{ my: 0.75 }}
-          >
-            {t('blog.noPostsFound')}
-          </Typography>
+          <Stack gap={2}>
+            <Typography
+              variant="bodyXSmallStrong"
+              color="textHint"
+              sx={{ my: 0.75 }}
+            >
+              {t('blog.noPostsFound')}
+            </Typography>
+            {popularPostsSection}
+          </Stack>
         )}
 
         {contentKey === 'results' && (
