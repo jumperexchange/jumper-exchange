@@ -173,7 +173,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               }}
             />
           </WithSkeleton>
-          {faq_items && (
+          {faq_items?.length > 0 && (
             <AccordionFAQ
               accordionHeader={
                 <BlogArticleSubtitle
