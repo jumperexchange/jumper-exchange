@@ -4,7 +4,6 @@ import type { SortByEnum } from '@/providers/LearnProvider/filtering/types';
 export interface BlogArticlesPendingFilterValues {
   tags: string[];
   levels: string[];
-  authors: string[];
   dates: DateRangeValue;
   readingDuration: number[];
   sortBy: SortByEnum;

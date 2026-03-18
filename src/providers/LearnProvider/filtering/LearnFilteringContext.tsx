@@ -44,7 +44,6 @@ const PAGE_SIZE = 6;
 export const EMPTY_FILTERING_PARAMS: LearnFilteringParams = {
   allTags: [],
   allLevels: [],
-  allAuthors: [],
   allDates: [],
   allReadingTimes: [],
 };
@@ -96,7 +95,6 @@ export const searchParamsParsers = {
   ),
   tags: parseAsArrayOf(parseAsString),
   levels: parseAsArrayOf(parseAsString),
-  authors: parseAsArrayOf(parseAsString),
   minDate: parseAsIsoDate,
   maxDate: parseAsIsoDate,
   minReadingDuration: parseAsInteger,
@@ -231,7 +229,6 @@ export const LearnFilteringProvider = ({
     updateFilter({
       tags: null,
       levels: null,
-      authors: null,
       minDate: null,
       maxDate: null,
       minReadingDuration: null,

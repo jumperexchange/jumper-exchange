@@ -24,7 +24,6 @@ export const useLearnFilterBar = () => {
   const {
     allTags,
     allLevels,
-    allAuthors,
     allDates,
     allReadingTimes,
     filter,
@@ -58,17 +57,6 @@ export const useLearnFilterBar = () => {
         }),
       ),
     [allLevels],
-  );
-
-  const authorOptions = useMemo(
-    () =>
-      sortSelectOptions(
-        allAuthors.map((author) => ({
-          value: author,
-          label: author,
-        })),
-      ),
-    [allAuthors],
   );
 
   const allDateRange = useMemo(() => {
@@ -138,13 +126,6 @@ export const useLearnFilterBar = () => {
     });
   };
 
-  const handleAuthorChange = (values: string[]) => {
-    updateFilter({
-      ...filter,
-      authors: values.length > 0 ? values : null,
-    });
-  };
-
   const handleReadingDurationChange = (value: number[]) => {
     const [min, max] = value;
     const isFullRange =
@@ -169,16 +150,14 @@ export const useLearnFilterBar = () => {
   const optionsCount = [
     tagOptions.length,
     levelOptions.length,
-    authorOptions.length,
     dateMin && dateMax ? 1 : 0,
     readingDurationRangeMax > readingDurationRangeMin ? 1 : 0,
   ].reduce((count, length) => count + (length || 0), 0);
 
-  const arrayFiltersCount = [
-    filter?.tags,
-    filter?.levels,
-    filter?.authors,
-  ].reduce((count, arr) => count + (arr?.length || 0), 0);
+  const arrayFiltersCount = [filter?.tags, filter?.levels].reduce(
+    (count, arr) => count + (arr?.length || 0),
+    0,
+  );
 
   const hasDateFilterApplied =
     !isEqual(dateMin, allDateRange.min) || !isEqual(dateMax, allDateRange.max);
@@ -197,7 +176,6 @@ export const useLearnFilterBar = () => {
     filtersCount,
     tagOptions,
     levelOptions,
-    authorOptions,
     filter,
     dateMin,
     dateMax,
@@ -211,7 +189,6 @@ export const useLearnFilterBar = () => {
     sortBy,
     handleTagChange,
     handleLevelChange,
-    handleAuthorChange,
     handleDatesChange,
     handleReadingDurationChange,
     handleClearAllFilters: clearFilters,
@@ -226,7 +203,6 @@ export const useBlogArticlesFilteringCategories = () => {
     filtersCount,
     tagOptions,
     levelOptions,
-    authorOptions,
     filter,
     dateMin,
     dateMax,
@@ -254,7 +230,6 @@ export const useBlogArticlesFilteringCategories = () => {
     initialValues: {
       tags: filter?.tags ?? [],
       levels: filter?.levels ?? [],
-      authors: filter?.authors ?? [],
       dates: [dateMin, dateMax],
       readingDuration: [readingDurationMin, readingDurationMax],
       sortBy,
@@ -263,7 +238,6 @@ export const useBlogArticlesFilteringCategories = () => {
       handleApplyAllFilters({
         tags: values.tags,
         levels: values.levels,
-        authors: values.authors,
         minDate: values.dates[0],
         maxDate: values.dates[1],
         minReadingDuration:
@@ -281,7 +255,6 @@ export const useBlogArticlesFilteringCategories = () => {
     isFilterApplied: (values) =>
       values.tags.length > 0 ||
       values.levels.length > 0 ||
-      values.authors.length > 0 ||
       !values.dates[0] ||
       !isEqual(values.dates[0], dateRangeMin) ||
       !values.dates[1] ||
@@ -327,21 +300,6 @@ export const useBlogArticlesFilteringCategories = () => {
             filterBy: t('blog.filter.level').toLowerCase(),
           }),
           testId: 'blog-filter-level-select',
-        })
-      : null,
-    authorOptions.length > 1
-      ? createMultiSelectCategory({
-          id: 'author',
-          label: t('blog.filter.author'),
-          badgeLabel: countBadge(pendingValues.authors.length),
-          value: pendingValues.authors,
-          onChange: (v) => setPendingValue('authors', v),
-          options: authorOptions,
-          searchable: true,
-          searchPlaceholder: t('blog.filter.search', {
-            filterBy: t('blog.filter.author').toLowerCase(),
-          }),
-          testId: 'blog-filter-author-select',
         })
       : null,
     readingDurationRangeMax > readingDurationRangeMin

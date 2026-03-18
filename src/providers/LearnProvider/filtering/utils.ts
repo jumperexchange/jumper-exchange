@@ -51,7 +51,6 @@ export const extractFilteringParams = (
   return {
     allTags,
     allLevels,
-    allAuthors,
     allDates,
     allReadingTimes,
   };
@@ -64,7 +63,6 @@ export const sanitizeFilter = (
   if (
     !stats.allTags.length &&
     !stats.allLevels.length &&
-    !stats.allAuthors.length &&
     !stats.allDates.length &&
     !stats.allReadingTimes.length
   ) {
@@ -73,7 +71,6 @@ export const sanitizeFilter = (
 
   const validTags = new Set(stats.allTags);
   const validLevels = new Set(stats.allLevels);
-  const validAuthors = new Set(stats.allAuthors);
   const validDates = new Set(
     stats.allDates.map((date) => new Date(date).getTime()),
   );
@@ -91,7 +88,6 @@ export const sanitizeFilter = (
     ...filter,
     tags: filter.tags?.filter((t) => validTags.has(t)) ?? null,
     levels: filter.levels?.filter((t) => validLevels.has(t)) ?? null,
-    authors: filter.authors?.filter((a) => validAuthors.has(a)) ?? null,
     minDate: filter.minDate
       ? minDate != null && maxDate != null
         ? new Date(
@@ -131,7 +127,6 @@ export const filterBlogArticles = (
     const {
       tags,
       levels,
-      authors,
       minDate,
       maxDate,
       minReadingDuration,
@@ -147,13 +142,6 @@ export const filterBlogArticles = (
 
     if (levels?.length && item.Level) {
       if (!levels.includes(item.Level)) {
-        return false;
-      }
-    }
-
-    if (authors?.length) {
-      const authorName = item.author?.Name;
-      if (!authorName || !authors.includes(authorName)) {
         return false;
       }
     }

@@ -22,7 +22,6 @@ export type SortAccessors = Partial<
 export interface LearnFilteringParams {
   allTags: string[];
   allLevels: string[];
-  allAuthors: string[];
   allDates: string[];
   allReadingTimes: number[];
 }
@@ -30,7 +29,6 @@ export interface LearnFilteringParams {
 export interface BlogArticlesFilterWithoutSortByAndOrder {
   tags?: string[];
   levels?: string[];
-  authors?: string[];
   minDate?: Date;
   maxDate?: Date;
   minReadingDuration?: number;
