@@ -223,7 +223,6 @@ export const useLearnFilterBar = () => {
 export const useBlogArticlesFilteringCategories = () => {
   const { t } = useTranslation();
   const {
-    hasFilterApplied,
     filtersCount,
     tagOptions,
     levelOptions,
@@ -288,7 +287,8 @@ export const useBlogArticlesFilteringCategories = () => {
       !values.dates[1] ||
       !isEqual(values.dates[1], dateRangeMax) ||
       values.readingDuration[0] !== readingDurationRangeMin ||
-      values.readingDuration[1] !== readingDurationRangeMax,
+      values.readingDuration[1] !== readingDurationRangeMax ||
+      values.sortBy != sortBy,
   });
 
   const usedMin = pendingValues.dates[0] ?? dateMin;
