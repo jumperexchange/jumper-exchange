@@ -126,7 +126,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                 },
               }}
             >
-              <BlogArticleAuthor author={author} source="blog-article-header" />
+              <BlogArticleAuthor
+                author={author}
+                articleId={id}
+                source="blog-article-header"
+              />
             </Box>
             <ShareArticleIcons title={title} slug={slug} />
           </BlogMetaContainer>
@@ -199,6 +203,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           <BlogAuthorWrapper>
             <BlogArticleAuthor
               author={author}
+              articleId={id}
               showRole
               source="blog-article-footer"
             />
