@@ -29,8 +29,8 @@ import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
 import { Variant as IconButtonVariant } from '@/components/core/buttons/types';
 import CheckIcon from '@mui/icons-material/Check';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import { isDevelopment } from '@/utils/isDevelopment';
 import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
+import { isProduction } from '@/utils/isProduction';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -194,7 +194,7 @@ export const EarnDetailsActions = ({
             sx={{ flex: 1 }}
           />
         )}
-        {hasDeposited && !earnOpportunity.isRedeemable && isDevelopment && (
+        {hasDeposited && !earnOpportunity.isRedeemable && !isProduction && (
           <RequestRedeemFlowButton
             earnOpportunity={earnOpportunity}
             size="large"
@@ -241,7 +241,7 @@ export const EarnDetailsActions = ({
         <Typography variant="bodyXSmall" color="textSecondary">
           {t('earn.position.label')}
         </Typography>
-        {isDevelopment && claimRedeemButton}
+        {!isProduction && claimRedeemButton}
       </EarnDetailsActionsHeaderContainer>
       <EarnDetailsActionsPosition
         token={earnOpportunity.lpToken}
