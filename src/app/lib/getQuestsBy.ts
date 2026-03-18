@@ -6,8 +6,7 @@ import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 export async function getQuestsBy(key: string, value: string) {
   const urlParams = new QuestStrapiApi()
     .filterBy(key, value)
-    .populateCampaign()
-    .filterByStartAndEndDate();
+    .populateCampaign();
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
 
