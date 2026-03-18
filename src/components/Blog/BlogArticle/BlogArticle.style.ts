@@ -218,7 +218,7 @@ export const BlogArticleSubtitleSkeleton = styled(BaseBlogArticleSkeleton)(
 );
 
 export const BlogArticleContentSkeleton = styled(BaseBlogArticleSkeleton)({
-  height: '5000px',
+  height: 'clamp(480px, 60vh, 1200px)',
   width: '100%',
 });
 

@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import { WithSkeleton } from './WithSkeleton';
 
 interface BlogArticleAuthorProps extends PropsWithChildren {
-  author: AuthorData;
+  author?: AuthorData;
   avatarSize?: number;
   articleId?: number;
   source: string;
