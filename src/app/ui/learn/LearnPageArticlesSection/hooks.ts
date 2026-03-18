@@ -17,6 +17,7 @@ import {
 import type { NullableFields } from '@/types/internal';
 import { countBadge, datesBadge, readingDurationBadge } from './utils';
 import type { BlogArticlesPendingFilterValues } from './types';
+import { isEqual } from 'date-fns';
 
 export const useLearnFilterBar = () => {
   const { t } = useTranslation();
@@ -180,7 +181,7 @@ export const useLearnFilterBar = () => {
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
   const hasDateFilterApplied =
-    dateMin !== allDateRange.min || dateMax !== allDateRange.max;
+    !isEqual(dateMin, allDateRange.min) || !isEqual(dateMax, allDateRange.max);
   const hasReadingDurationFilterApplied =
     readingDurationRangeMax > readingDurationRangeMin &&
     (readingDurationMin !== readingDurationRangeMin ||
@@ -282,8 +283,10 @@ export const useBlogArticlesFilteringCategories = () => {
       values.tags.length > 0 ||
       values.levels.length > 0 ||
       values.authors.length > 0 ||
-      values.dates[0] !== dateRangeMin ||
-      values.dates[1] !== dateRangeMax ||
+      !values.dates[0] ||
+      !isEqual(values.dates[0], dateRangeMin) ||
+      !values.dates[1] ||
+      !isEqual(values.dates[1], dateRangeMax) ||
       values.readingDuration[0] !== readingDurationRangeMin ||
       values.readingDuration[1] !== readingDurationRangeMax,
   });
@@ -350,6 +353,8 @@ export const useBlogArticlesFilteringCategories = () => {
             readingDurationRangeMin,
             readingDurationRangeMax,
           ),
+          renderLabel: (value) =>
+            Array.isArray(value) || value !== 1 ? 'mins' : 'min',
           value: usedReadingDuration,
           onChange: (v) => setPendingValue('readingDuration', v),
           min: readingDurationRangeMin,
@@ -357,7 +362,7 @@ export const useBlogArticlesFilteringCategories = () => {
           testId: 'blog-filter-reading-duration-slider',
         })
       : null,
-    dateRangeMin && dateRangeMax && dateRangeMin !== dateRangeMax
+    dateRangeMin && dateRangeMax && !isEqual(dateRangeMin, dateRangeMax)
       ? createDateRangeCategory({
           id: 'publishDate',
           label: t('blog.filter.publishDate'),

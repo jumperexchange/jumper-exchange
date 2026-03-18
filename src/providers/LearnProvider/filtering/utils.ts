@@ -64,9 +64,9 @@ export const sanitizeFilter = (
   if (
     !stats.allTags.length &&
     !stats.allLevels.length &&
-    !stats.allAuthors &&
-    !stats.allDates &&
-    !stats.allReadingTimes
+    !stats.allAuthors.length &&
+    !stats.allDates.length &&
+    !stats.allReadingTimes.length
   ) {
     return filter;
   }

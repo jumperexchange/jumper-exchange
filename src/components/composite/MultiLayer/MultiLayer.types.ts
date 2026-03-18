@@ -88,6 +88,7 @@ export type SliderLeafCategory = BaseCategoryConfig & {
   onChange?: (value: number[]) => void;
   min: number;
   max: number;
+  renderLabel?: (value: number | number[]) => string;
 };
 
 export type DateRangeValue = [Date | null, Date | null];
