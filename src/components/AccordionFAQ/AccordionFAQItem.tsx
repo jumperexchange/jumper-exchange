@@ -74,7 +74,12 @@ export const AccordionFAQItem = ({
               {answer}
             </Typography>
           ) : (
-            <RichBlocks content={answer} />
+            <RichBlocks
+              content={answer}
+              blockSx={{
+                paragraph: itemAnswerSx,
+              }}
+            />
           )}
           {/* <BlocksRenderer content={el.Answer} /> */}
         </AccordionDetails>

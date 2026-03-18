@@ -191,7 +191,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               variant="h2"
               sx={{ marginTop: 0, marginBottom: 1 }}
             >
-              FAQ
+              {t('blog.faq')}
             </BlogArticleSubtitle>
           }
           content={faq_items}

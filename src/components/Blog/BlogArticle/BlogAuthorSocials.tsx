@@ -1,6 +1,5 @@
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import XIcon from '@mui/icons-material/X';
-import Link from 'next/link';
 import type { AuthorData } from 'src/types/strapi';
 import { IconButtonTertiary } from 'src/components/IconButton.style';
 import {
@@ -10,6 +9,8 @@ import {
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
 import Box from '@mui/material/Box';
+import type { ElementType } from 'react';
+import { Link } from '@/components/Link/Link';
 
 interface BlogAuthorSocialsProps {
   author?: AuthorData;
@@ -40,7 +41,7 @@ const SOCIAL_CONFIG = [
 interface SocialLinkProps {
   url: string;
   ariaLabel: string;
-  icon: React.ElementType;
+  icon: ElementType;
   onClick: () => void;
 }
 
@@ -49,13 +50,22 @@ const SocialLink = ({
   ariaLabel,
   icon: Icon,
   onClick,
-}: SocialLinkProps) => (
-  <Link href={url} target="_blank">
-    <IconButtonTertiary aria-label={ariaLabel} onClick={onClick} sx={BUTTON_SX}>
+}: SocialLinkProps) => {
+  const anchorsProps = {
+    component: Link,
+    href: url,
+    target: '_blank',
+    rel: 'noopener noreferrer',
+    ['aria-label']: ariaLabel,
+    onClick,
+    sx: BUTTON_SX,
+  };
+  return (
+    <IconButtonTertiary {...anchorsProps}>
       <Icon sx={ICON_SX} />
     </IconButtonTertiary>
-  </Link>
-);
+  );
+};
 
 export const BlogAuthorSocials = ({
   author,
