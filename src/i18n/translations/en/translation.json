@@ -724,7 +724,8 @@
     "deposit": "Deposit",
     "depositNow": "Deposit now",
     "requestWithdraw": "Request withdraw",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "close": "Close"
   },
   "form": {
     "labels": {

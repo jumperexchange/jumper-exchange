@@ -7,6 +7,7 @@ interface ModalContent {
   description: string;
   cta?: string;
   ctaLink?: string;
+  isNewsletterSubscription: boolean;
 }
 
 interface BlogArticleState {

@@ -218,6 +218,7 @@ export interface BlogArticlePopupAttributes {
   Message: string;
   CTA: string;
   CTALink?: string;
+  IsNewsletterSubscription?: boolean;
 }
 
 export interface SeoAttributes {

@@ -61,6 +61,7 @@ interface Resources {
       okay: 'Okay';
     };
     buttons: {
+      close: 'Close';
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
       depositNow: 'Deposit now';

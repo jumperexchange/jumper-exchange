@@ -9,6 +9,7 @@ import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface BlogArticleModalProps {
   articleId: number;
@@ -19,6 +20,7 @@ export const BlogArticleModal: FC<BlogArticleModalProps> = ({
   articleId,
   articleTitle,
 }) => {
+  const { t } = useTranslation();
   const { trackBlogArticleClosePopupEvent } = useBlogArticleTracking();
   const [isModalOpen, modalContent, closeModal] = useBlogArticleStore((s) => [
     s.isModalOpen,
@@ -35,9 +37,6 @@ export const BlogArticleModal: FC<BlogArticleModalProps> = ({
 
     closeModal();
   };
-
-  // @Note: add prop in Strapi
-  const isSubscribeModal = !modalContent?.ctaLink || !modalContent?.cta;
 
   return (
     isModalOpen &&
@@ -66,7 +65,7 @@ export const BlogArticleModal: FC<BlogArticleModalProps> = ({
                 {modalContent.description}
               </Typography>
             </Stack>
-            {isSubscribeModal ? (
+            {modalContent.isNewsletterSubscription ? (
               <NewsletterSubscribeForm utmCampaign="blog-article" />
             ) : (
               <Button
@@ -76,7 +75,7 @@ export const BlogArticleModal: FC<BlogArticleModalProps> = ({
                 component={modalContent.ctaLink ? ExternalLink : undefined}
                 onClick={handleClick}
               >
-                {modalContent.cta}
+                {modalContent.cta ?? t('buttons.close')}
               </Button>
             )}
           </Stack>

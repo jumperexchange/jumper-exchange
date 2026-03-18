@@ -107,6 +107,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           description: popup.Message,
           ctaLink: popup.CTALink,
           cta: popup.CTA,
+          isNewsletterSubscription: !!popup.IsNewsletterSubscription,
         });
       }
     },
