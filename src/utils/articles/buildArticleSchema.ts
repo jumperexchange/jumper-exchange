@@ -29,7 +29,7 @@ export function buildArticleSchema(articleData: BlogArticleData) {
         url: getSiteUrl(),
         logo: {
           '@type': 'ImageObject',
-          url: `${getSiteUrl()}/logo.png`,
+          url: `${getSiteUrl()}/logo-512x512.png`,
         },
       },
       mainEntityOfPage: {
