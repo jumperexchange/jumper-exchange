@@ -51,6 +51,9 @@ interface Resources {
         sortBy: 'Sort by';
       };
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
+      tags: {
+        all: 'All';
+      };
       title: 'Tips and tutorials';
       views: {
         viewBy: 'View by';

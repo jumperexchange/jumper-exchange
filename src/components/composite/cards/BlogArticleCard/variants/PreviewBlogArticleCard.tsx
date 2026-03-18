@@ -16,7 +16,8 @@ const highlightText = (text: string, highlight: string) => {
     return <>{text}</>;
   }
 
-  const regex = new RegExp(`(${highlight})`, 'gi');
+  const escapedHighlight = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const regex = new RegExp(`(${escapedHighlight})`, 'gi');
   const parts = text.split(regex);
 
   return (
@@ -25,7 +26,7 @@ const highlightText = (text: string, highlight: string) => {
         part.toLowerCase() === highlight.toLowerCase() ? (
           <mark key={i}>{part}</mark>
         ) : (
-          <span>{part}</span>
+          <span key={i}>{part}</span>
         ),
       )}
     </>

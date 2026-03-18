@@ -4,7 +4,7 @@ import { FormInput } from '@/components/Form/FormInput/FormInput';
 import Popper from '@mui/material/Popper';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
@@ -34,6 +34,12 @@ export const LearnPageSearchSection = () => {
     [],
   );
 
+  useEffect(() => {
+    return () => {
+      debouncedSetSearchValue.cancel();
+    };
+  }, [debouncedSetSearchValue]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setValue(value);
@@ -42,6 +48,7 @@ export const LearnPageSearchSection = () => {
   };
 
   const handleClear = () => {
+    debouncedSetSearchValue.cancel();
     setValue('');
     setSearchValue('');
   };

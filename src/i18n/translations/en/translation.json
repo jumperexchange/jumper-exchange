@@ -124,6 +124,9 @@
       "publishDate": "Publish date",
       "readingTime": "Reading time"
     },
+    "tags": {
+      "all": "All"
+    },
     "popularPosts": "Popular posts",
     "noPostsFound": "No posts found for your search criteria."
   },

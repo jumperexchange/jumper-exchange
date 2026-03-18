@@ -61,8 +61,8 @@ export const LearnPageSearchPopperContent: FC<
   }, [articles]);
 
   const tagOptions = useMemo<TagOption[]>(
-    () => [{ id: TAG_ALL, Title: 'All' }, ...uniqueTags],
-    [uniqueTags],
+    () => [{ id: TAG_ALL, Title: t('blog.tags.all') }, ...uniqueTags],
+    [uniqueTags, t],
   );
 
   const filteredArticles =

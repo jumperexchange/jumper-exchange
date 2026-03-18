@@ -1,5 +1,5 @@
 import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
-import { ONE_HOUR_MS } from '@/const/time';
+import { FIVE_MINUTES_MS } from '@/const/time';
 import { useQuery } from '@tanstack/react-query';
 
 export const useFeaturedArticles = () => {
@@ -7,6 +7,6 @@ export const useFeaturedArticles = () => {
     queryKey: ['articles-featured'],
     queryFn: () => getFeaturedArticle(),
     select: (payload) => payload.data,
-    staleTime: ONE_HOUR_MS,
+    staleTime: FIVE_MINUTES_MS,
   });
 };

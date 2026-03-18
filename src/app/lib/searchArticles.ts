@@ -21,7 +21,7 @@ export async function searchArticles(
 
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
-  const res = await fetch(decodeURIComponent(apiUrl), {
+  const res = await fetch(apiUrl, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
