@@ -173,6 +173,28 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               }}
             />
           </WithSkeleton>
+          {faq_items && (
+            <AccordionFAQ
+              accordionHeader={
+                <BlogArticleSubtitle
+                  variant="h2"
+                  sx={{ marginTop: 0, marginBottom: 1 }}
+                >
+                  {t('blog.faq')}
+                </BlogArticleSubtitle>
+              }
+              content={faq_items}
+              questionTextTypography="bodyLargeStrong"
+              itemSx={(theme) => ({
+                background: (theme.vars || theme).palette.surface1.main,
+                boxShadow: theme.shadows[2],
+                '&:hover': {
+                  background: (theme.vars || theme).palette.surface1Hover,
+                },
+              })}
+              sx={{ width: '100%', maxWidth: '100% !important' }}
+            />
+          )}
           <Divider />
           <BlogAuthorWrapper>
             <BlogArticleAuthor
@@ -183,28 +205,6 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
-
-      {faq_items && (
-        <AccordionFAQ
-          accordionHeader={
-            <BlogArticleSubtitle
-              variant="h2"
-              sx={{ marginTop: 0, marginBottom: 1 }}
-            >
-              {t('blog.faq')}
-            </BlogArticleSubtitle>
-          }
-          content={faq_items}
-          questionTextTypography="bodyLargeStrong"
-          itemSx={(theme) => ({
-            background: (theme.vars || theme).palette.surface1.main,
-            boxShadow: theme.shadows[2],
-            '&:hover': {
-              background: (theme.vars || theme).palette.surface1Hover,
-            },
-          })}
-        />
-      )}
 
       {blogArticleSchema && (
         <Script type="application/ld+json" id="json-schema-article">
