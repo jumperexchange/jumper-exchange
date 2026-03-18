@@ -12,9 +12,14 @@ import { useReferrerStore } from '@/stores/referrer/ReferrerStore';
  */
 export function ReferrerCapture() {
   const searchParams = useSearchParams();
+  const referrer = useReferrerStore((state) => state.referrer);
   const setReferrer = useReferrerStore((state) => state.setReferrer);
 
   useEffect(() => {
+    if (referrer) {
+      return;
+    }
+
     const refFromUrl = searchParams.get('ref');
     if (refFromUrl) {
       const trimmed = refFromUrl.trim();
@@ -22,7 +27,7 @@ export function ReferrerCapture() {
         setReferrer(trimmed);
       }
     }
-  }, [searchParams, setReferrer]);
+  }, [referrer, searchParams, setReferrer]);
 
   return null;
 }
