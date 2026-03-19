@@ -4,6 +4,7 @@ import { ChainType } from '@lifi/sdk';
 import envConfig from '@/config/env-config';
 import { publicRPCList } from 'src/const/rpcList';
 import getApiUrl from 'src/utils/getApiUrl';
+import { useReferrerStore } from '@/stores/referrer/ReferrerStore';
 import type {
   EnglishLanguageResource,
   FormData,
@@ -16,18 +17,22 @@ import type { LanguageKey } from 'src/types/i18n';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 
 /**
- * Shared base configuration that's common across all widget types
+ * Shared base configuration that's common across all widget types.
+ * Referrer is read from the store (captured once in layout via ReferrerCapture).
  */
 export function useSharedBaseConfig(
   context: WidgetContext,
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
+  const referrer = useReferrerStore((state) => state.referrer);
+
   return useMemo(
     () => ({
       explorerUrls: {
         internal: [`${getSiteUrl()}${AppPaths.Scan}`],
       },
       integrator: context.integrator ?? envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      referrer,
       keyPrefix: context.keyPrefix,
       apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
       defaultUI: {
@@ -40,7 +45,7 @@ export function useSharedBaseConfig(
         },
       },
     }),
-    [deps.wallet, context.integrator, context.keyPrefix],
+    [deps.wallet, context.integrator, context.keyPrefix, referrer],
   );
 }
 
