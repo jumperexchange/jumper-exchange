@@ -43,6 +43,7 @@ export const LearnPageSearchPopperContent: FC<
     isLoading,
     isFetching,
     isSuccess,
+    isError,
   } = useSearchArticles({
     searchText: searchValue,
   });
@@ -79,7 +80,7 @@ export const LearnPageSearchPopperContent: FC<
     ? 'popular'
     : isLoading || (isFetching && !hasResults)
       ? 'loading'
-      : isSuccess && !isFetching && !hasResults
+      : (isSuccess || isError) && !isFetching && !hasResults
         ? 'empty'
         : isSuccess || isFetching
           ? 'results'
