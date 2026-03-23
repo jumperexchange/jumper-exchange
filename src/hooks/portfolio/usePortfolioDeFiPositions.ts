@@ -10,7 +10,7 @@ import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useTokens } from '../useTokens';
-import type { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import { ChainType } from '@lifi/sdk';
 
 export interface Props {

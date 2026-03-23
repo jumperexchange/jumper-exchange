@@ -5,7 +5,7 @@ import {
   STRAPI_PARTNER_THEMES,
 } from '@/const/strapiContentKeys';
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
-import type { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import { useQuery } from '@tanstack/react-query';
 import {
   getStrapiApiAccessToken,

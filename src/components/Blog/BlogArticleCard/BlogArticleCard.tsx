@@ -112,7 +112,7 @@ export const BlogArticleCard = ({
                 />
               )}
               <BlogArticleMetaReadingTime variant="bodyXSmall" as="span">
-                {t('blog.minRead', { minRead: minRead })}
+                {t('blog.minRead', { minRead: `${minRead}` })}
               </BlogArticleMetaReadingTime>
             </BlogArticleCardMetaContainer>
           </BlogArticleCardDetails>

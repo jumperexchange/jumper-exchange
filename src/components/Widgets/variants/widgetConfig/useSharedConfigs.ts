@@ -58,7 +58,7 @@ export function useSharedRPCConfig(): Partial<WidgetConfig> {
       sdkConfig: {
         apiUrl: getApiUrl(),
         rpcUrls: {
-          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
+          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
           ...publicRPCList,
         },
         routeOptions: {

@@ -1,6 +1,7 @@
 import { getTokenBalance } from '@lifi/sdk';
 import type { Token } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 
 export async function getTokenBalanceQuery({
   queryKey,
@@ -8,7 +9,7 @@ export async function getTokenBalanceQuery({
   queryKey: [string, string, Token];
 }) {
   const [, walletAddress, token] = queryKey;
-  const tokenBalance = await getTokenBalance(walletAddress, token);
+  const tokenBalance = await getTokenBalance(sdkClient, walletAddress, token);
 
   return tokenBalance;
 }

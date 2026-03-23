@@ -1,37 +1,45 @@
 'use client';
 
-import type { Adapter } from '@solana/wallet-adapter-base';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from '@solana/wallet-adapter-react';
-import { clusterApiUrl } from '@solana/web3.js';
-import { type FC, type PropsWithChildren } from 'react';
-import config from '@/config/env-config';
+import { SolanaProvider } from '@solana/react-hooks';
+import { useWallet } from '@solana/react-hooks';
+import { useSolanaWalletStandard } from '@lifi/widget-provider-solana';
+import { type FC, type PropsWithChildren, useEffect } from 'react';
 
-const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
 /**
- * Wallets that implement either of these standards will be available automatically.
- *
- *   - Solana Mobile Stack Mobile Wallet Adapter Protocol
- *     (https://github.com/solana-mobile/mobile-wallet-adapter)
- *   - Solana Wallet Standard
- *     (https://github.com/solana-labs/wallet-standard)
- *
- * If you wish to support a wallet that supports neither of those standards,
- * instantiate its legacy wallet adapter here. Common legacy adapters can be found
- * in the npm package `@solana/wallet-adapter-*`.
+ * Syncs the Solana wallet connection state from @solana/react-hooks
+ * into the widget's internal useSolanaWalletStandard store.
+ * This ensures the widget's SolanaProviderValues sees the connected wallet.
  */
-const wallets: Adapter[] = [new CoinbaseWalletAdapter()];
+const SolanaWalletSync: FC<PropsWithChildren> = ({ children }) => {
+  const wallet = useWallet();
+  const { connect, disconnect } = useSolanaWalletStandard();
+  const connectorName =
+    wallet.status === 'connected' ? wallet.session.connector.name : undefined;
+
+  useEffect(() => {
+    if (wallet.status === 'connected' && connectorName) {
+      connect(connectorName, { silent: true });
+    } else if (wallet.status === 'disconnected') {
+      disconnect();
+    }
+
+    return () => {
+      if (wallet.status === 'connected') {
+        disconnect();
+      }
+    };
+  }, [wallet.status, connectorName, connect, disconnect]);
+
+  return <>{children}</>;
+};
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        {children}
-      </WalletProvider>
-    </ConnectionProvider>
+    <SolanaProvider
+      config={{ cluster: 'mainnet' }}
+      walletPersistence={{ autoConnect: true, storageKey: 'jumper-solana' }}
+    >
+      <SolanaWalletSync>{children}</SolanaWalletSync>
+    </SolanaProvider>
   );
 };

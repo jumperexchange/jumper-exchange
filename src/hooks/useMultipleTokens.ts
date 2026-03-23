@@ -1,6 +1,7 @@
 import type { ChainId, Token } from '@lifi/sdk';
 import { getToken } from '@lifi/sdk';
 import { useQueries } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 
 export interface TokenProps {
   tokens: (Token | null)[];
@@ -10,7 +11,7 @@ export interface TokenProps {
 }
 
 export async function getTokenQuery(chainId: ChainId, tokenAddress: string) {
-  const token = await getToken(chainId, tokenAddress);
+  const token = await getToken(sdkClient, chainId, tokenAddress);
   return token;
 }
 

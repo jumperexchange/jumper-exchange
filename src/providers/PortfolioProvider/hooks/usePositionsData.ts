@@ -6,7 +6,7 @@ import type { Hex } from 'viem';
 import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
 import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
 import type { DefiPosition } from '@/utils/positions/type-guards';
-import type { EVMAccount } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import { useAccount } from '@lifi/wallet-management';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
@@ -19,7 +19,7 @@ export interface UsePositionsDataProps {
 export interface UsePositionsDataResult {
   positions: DefiPosition[];
   positionsByAddress: Record<string, DefiPosition[]>;
-  accounts: EVMAccount[];
+  accounts: Account[];
   isLoading: boolean;
   isFetching: boolean;
   isPlaceholderData: boolean;
@@ -59,7 +59,7 @@ export const usePositionsData = ({
     () =>
       accounts.filter(
         (acc) => acc.isConnected && acc.chainType === 'EVM' && acc.address,
-      ) as EVMAccount[],
+      ) as Account[],
     [accounts],
   );
 

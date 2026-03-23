@@ -101,7 +101,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                     value: new Date(publishedAt || createdAt!),
                   })}
                 </BlogArticleHeaderMetaDate>
-                <span>{t('blog.minRead', { minRead })}</span>
+                <span>{t('blog.minRead', { minRead: `${minRead}` })}</span>
               </BlogArticleHeaderMeta>
             </WithSkeleton>
           </BlogArticleTopHeader>

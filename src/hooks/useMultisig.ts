@@ -1,4 +1,4 @@
-import { type Process, type Route } from '@lifi/sdk';
+import { type ExecutionAction, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
@@ -60,9 +60,8 @@ export const useMultisig = () => {
     const isRouteFailed = routeStatus === 'FAILED';
 
     const multisigRouteStarted = route.steps.some((step) =>
-      (step as any).execution?.process.find(
-        (process: Process) =>
-          !!process.multisigTxHash && process.status === 'ACTION_REQUIRED',
+      (step as any).execution?.actions?.find(
+        (action: ExecutionAction) => action.status === 'ACTION_REQUIRED',
       ),
     );
 

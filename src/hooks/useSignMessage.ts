@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { isHex } from 'viem';
 import { useSignMessage as useSignMessageWagmi } from 'wagmi';
-import { useWallet as useSolanaWallet } from '@solana/wallet-adapter-react';
+import { useWalletSession } from '@solana/react-hooks';
 import { ChainType } from '@lifi/sdk';
 import { useMutation } from '@tanstack/react-query';
 
@@ -29,7 +29,7 @@ interface SignMessageParams {
 
 export const useSignMessage = () => {
   const { signMessageAsync } = useSignMessageWagmi();
-  const solanaWallet = useSolanaWallet();
+  const solanaSession = useWalletSession();
 
   const signMessageFn = useCallback(
     async ({
@@ -46,16 +46,16 @@ export const useSignMessage = () => {
             message,
           });
         } else if (walletType === ChainType.SVM) {
-          if (!solanaWallet.signMessage) {
+          if (!solanaSession?.signMessage) {
             throw new SignMessageError(
               'Solana wallet does not support message signing',
               SignMessageErrorType.UnsupportedWallet,
             );
           }
           const encodedMessage = new TextEncoder().encode(message);
-          const signatureBuffer =
-            await solanaWallet.signMessage(encodedMessage);
-          signature = Buffer.from(signatureBuffer).toString('base64');
+          const signatureBytes =
+            await solanaSession.signMessage(encodedMessage);
+          signature = Buffer.from(signatureBytes).toString('base64');
         } else {
           throw new SignMessageError(
             'Unsupported wallet type',
@@ -74,7 +74,7 @@ export const useSignMessage = () => {
         );
       }
     },
-    [signMessageAsync, solanaWallet],
+    [signMessageAsync, solanaSession],
   );
 
   const mutation = useMutation({

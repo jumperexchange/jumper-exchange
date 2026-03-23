@@ -36,7 +36,8 @@ export const MissionFormWidget = () => {
   } = useMissionStore();
 
   const taskTitleWithFallback =
-    taskTitle ?? t('missions.tasks.type', { type: currentActiveTaskType });
+    taskTitle ??
+    t('missions.tasks.type', { type: `${currentActiveTaskType ?? ''}` });
   const taskCTATextWithFallback = taskCTAText ?? t('missions.tasks.action.go');
 
   const { trackEvent } = useUserTracking();

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
-import type { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import { useAccount } from '@lifi/wallet-management';
 import type { ChainType } from '@lifi/sdk';
 import { compact, max } from 'lodash';

@@ -111,7 +111,7 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
                 component="span"
                 fontSize={'inherit'}
               >
-                {t('blog.minRead', { minRead: minRead })}
+                {t('blog.minRead', { minRead: `${minRead}` })}
               </Typography>
             </FeaturedArticleMetaContainer>
           </FeaturedArticleDetails>
