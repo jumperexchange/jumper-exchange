@@ -65,6 +65,9 @@ interface Resources {
       depositButtonLabel: 'Quick deposit';
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
+      requestRedeemButtonLabel: 'Request redeem';
+      requestWithdraw: 'Request withdraw';
+      withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
     };
     campaign: {
@@ -161,6 +164,76 @@ interface Resources {
       relatedMarkets: {
         title: 'Related Markets';
       };
+      requestRedeemFlow: {
+        confirmation: {
+          cancel: 'Cancel';
+          confirm: 'Confirm';
+          description: 'Please confirm that you want to request a withdrawal. This action will initiate the redemption process.';
+          title: 'Confirm Request';
+        };
+        error: {
+          chainSwitchFailed: {
+            close: 'Close';
+            description: 'Could not switch to the required network. Please switch manually in your wallet.';
+            title: 'Failed to switch network';
+          };
+          fetchCallDataFailed: {
+            description: 'We could not prepare your transaction. Please try again.';
+            title: 'Failed to prepare transaction';
+            tryAgain: 'Try again';
+          };
+          insufficientBalance: {
+            close: 'Close';
+            description: 'You do not have enough balance to complete this transaction.';
+            title: 'Insufficient balance';
+          };
+          transactionFailed: {
+            description: 'The transaction failed to complete. Please try again.';
+            title: 'Transaction failed';
+            tryAgain: 'Try again';
+          };
+          transactionRejected: {
+            description: 'You rejected the transaction in your wallet. Please try again.';
+            title: 'Transaction rejected';
+            tryAgain: 'Try again';
+          };
+          unknown: {
+            description: 'An unexpected error occurred. Please try again.';
+            title: 'Error';
+            tryAgain: 'Try again';
+          };
+        };
+        requests: {
+          approved: {
+            description: 'Click to complete your withdrawal';
+            title: 'Accepted request';
+          };
+          failed: {
+            description: 'Request failed';
+            title: 'Failed request';
+          };
+          pending: {
+            description: 'Waiting for request to be approved';
+            title: 'Pending request';
+          };
+        };
+        success: {
+          claim: {
+            done: 'Done';
+            seeDetails: 'See details';
+            title: 'Withdraw complete';
+          };
+          request: {
+            done: 'Done';
+            seeDetails: 'See details';
+            title: 'Withdraw request sent';
+          };
+        };
+        title: {
+          claim: 'Withdraw position';
+          request: 'Request withdraw';
+        };
+      };
       riskDescriptions: {
         risk: 'Risk';
         riskDisclaimer: {
@@ -214,6 +287,15 @@ interface Resources {
     featureCard: {
       learnMore: 'Learn more';
     };
+    form: {
+      labels: {
+        amount: 'Amount';
+        received: 'Received';
+        requested: 'Requested';
+        swap: 'Swap';
+        withdrawTo: 'Withdraw to';
+      };
+    };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
       currencyCompact: '{{value, currencyExt(currency: USD; notation: compact; compactDisplay: short)}}';
@@ -237,6 +319,52 @@ interface Resources {
         notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
       };
       title: 'Welcome to {{pageTitle}}!';
+    };
+    jumperWidget: {
+      emptyList: 'No {{itemsName}} available for selection';
+      fieldErrors: {
+        amount: {
+          max: 'Amount must be at most {{max}}';
+          min: 'Amount must be at least {{min}}';
+          overZero: 'Amount must be greater than zero';
+        };
+        balancesMultiSelect: {
+          max_one: 'You can select {{count}} item maximum';
+          max_other: 'You can select {{count}} items maximum';
+        };
+        chainSingleSelect: {
+          notSupported: 'Selected chain is not supported for this operation';
+        };
+        numericSelect: {
+          max: 'Value must be at most {{max}}';
+          min: 'Value must be at least {{min}}';
+        };
+        tokenChain: {
+          notSupported: 'Token is not on a supported chain';
+        };
+        tokenMultiSelect: {
+          max_one: 'You can select up to {{count}} token';
+          max_other: 'You can select up to {{count}} tokens';
+          min_one: 'Please select at least {{count}} token';
+          min_other: 'Please select at least {{count}} tokens';
+          notSupported: 'One or more selected tokens are not supported';
+        };
+        tokenSingleSelect: {
+          min: 'Please select a token';
+          notSupported: 'Selected token is not supported for this operation';
+        };
+      };
+      items: 'items';
+      label: {
+        tokenCount_one: '{{count}} token on {{chainName}}';
+        tokenCount_other: '{{count}} tokens on {{chainName}}';
+      };
+      placeholder: {
+        balancesMultiSelect: 'Select tokens';
+        chainSingleSelect: 'Select chain';
+        tokenMultiSelect: 'Select tokens';
+        tokenSingleSelect: 'Select token';
+      };
     };
     labels: {
       apy: 'APY';

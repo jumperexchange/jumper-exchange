@@ -101,8 +101,6 @@ export const EarnDetailsActionsPosition: FC<
       <Box>
         <SelectCard
           mode={SelectCardMode.Display}
-          label={t('earn.position.label')}
-          labelVariant="bodyXSmall"
           value={priceData.formattedAmountUSD}
           description={priceData.formattedAmount}
           placeholder="0"

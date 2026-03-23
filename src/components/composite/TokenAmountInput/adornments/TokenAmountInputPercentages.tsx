@@ -60,7 +60,7 @@ export const TokenAmountInputPercentages = ({
           onClick={handleMax}
           data-delay="3"
         >
-          max
+          MAX
         </PercentageButton>
       </PercentagesContainer>
     </Box>

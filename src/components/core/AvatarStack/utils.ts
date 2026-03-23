@@ -1,4 +1,10 @@
-import type { AvatarOverlap, AvatarStackDirection } from './AvatarStack.types';
+import type {
+  AvatarCountItemProps,
+  AvatarImageItemProps,
+  AvatarItemProps,
+  AvatarOverlap,
+  AvatarStackDirection,
+} from './AvatarStack.types';
 
 export const getOverlapFromDirection = (
   direction: AvatarStackDirection,
@@ -19,4 +25,16 @@ export const getOverlapFromDirection = (
     default:
       return 'right';
   }
+};
+
+export const isAvatarCountItem = (
+  props: AvatarItemProps,
+): props is AvatarCountItemProps => {
+  return 'count' in props.avatar;
+};
+
+export const isAvatarImageItem = (
+  props: AvatarItemProps,
+): props is AvatarImageItemProps => {
+  return 'src' in props.avatar;
 };

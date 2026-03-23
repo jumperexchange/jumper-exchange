@@ -43,6 +43,22 @@ export const useEarnTracking = () => {
     },
     [trackEvent],
   );
+  const trackEarnRequestRedeemClickEvent = useCallback(
+    (slug?: string) => {
+      const data: JumperEventData = slug
+        ? {
+            [TrackingEventParameter.EarnOpportunitySlug]: slug,
+          }
+        : {};
+      trackEvent({
+        category: TrackingCategory.Earn,
+        action: TrackingAction.ClickEarnRequestRedeemButton,
+        label: 'click-earn-request-redeem-button',
+        data,
+      });
+    },
+    [trackEvent],
+  );
 
   const trackEarnWithdrawClickEvent = useCallback(
     (slug?: string) => {
@@ -64,6 +80,7 @@ export const useEarnTracking = () => {
   return {
     trackEarnPageOverviewEvent,
     trackEarnDepositClickEvent,
+    trackEarnRequestRedeemClickEvent,
     trackEarnWithdrawClickEvent,
   };
 };

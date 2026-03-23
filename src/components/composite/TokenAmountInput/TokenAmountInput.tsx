@@ -10,7 +10,7 @@ import {
 } from '../../Cards/SelectCard/SelectCard.styles';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
-import type { Balance, ExtendedToken } from '@/types/tokens';
+import type { Balance, PricedToken } from '@/types/tokens';
 import { descriptionBoxStyles } from './constants';
 import { TokenAmountInputAvatar } from './adornments/TokenAmountInputAvatar';
 import { TokenAmountInputReset } from './adornments/TokenAmountInputReset';
@@ -19,7 +19,7 @@ import type { SxProps, Theme } from '@mui/material/styles';
 export type PositionPrimaryDisplay = 'amount' | 'price';
 
 interface TokenAmountInputProps {
-  tokenBalance: Balance<ExtendedToken>;
+  tokenBalance: Balance<PricedToken>;
   mode?: SelectCardMode;
   primaryDisplay?: PositionPrimaryDisplay;
   enableSwapButton?: boolean;
@@ -70,9 +70,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
   const handleInitialAmount = useCallback(() => {
     const nextValue = toAmount(tokenBalance.amount, token.decimals);
     setValue(nextValue);
-    const nextPriceValue = toPrice(nextValue, token.priceUSD).toString();
-    setFormattedPriceInput(nextPriceValue);
-  }, [tokenBalance.amount, token.decimals, token.priceUSD, toAmount, toPrice]);
+  }, [tokenBalance.amount, token.decimals, toAmount]);
 
   useLayoutEffect(() => {
     handleInitialAmount();
@@ -161,7 +159,7 @@ export const TokenAmountInput: FC<TokenAmountInputProps> = ({
     primaryDisplay === 'price'
       ? toDisplayAmount({ token, amount: rawAmount }, token.symbol, {
           minimumFractionDigits: 0,
-          maximumFractionDigits: token.decimals,
+          maximumFractionDigits: 6,
         })
       : toDisplayAmountUSD({ token, amount: rawAmount });
 
