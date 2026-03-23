@@ -9,12 +9,13 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Typography from '@mui/material/Typography';
 
-import { Button } from 'src/components/Button/Button';
 import { FormInput } from 'src/components/Form/FormInput/FormInput';
 import { ModalContainer } from 'src/components/core/modals/ModalContainer/ModalContainer';
 import { isValidAddress } from 'src/utils/regex-patterns';
 
 import { PrivateSwapModalCard } from './PrivateSwapModal.styles';
+import { Variant } from '@/components/core/buttons/types';
+import { Button } from '@/components/core/buttons/Button/Button';
 
 export interface PrivateSwapModalProps {
   open: boolean;
@@ -77,7 +78,7 @@ export const PrivateSwapModal: FC<PrivateSwapModalProps> = ({
           placeholder={t('modal.privateSwap.addressPlaceholder')}
           onChange={(e) => setAddress(e.target.value)}
           startAdornment={
-            <Button variant="secondary" size="small" onClick={handlePaste}>
+            <Button variant={Variant.Secondary} onClick={handlePaste}>
               {t('modal.privateSwap.paste')}
             </Button>
           }
@@ -112,7 +113,7 @@ export const PrivateSwapModal: FC<PrivateSwapModalProps> = ({
         />
 
         <Button
-          variant="primary"
+          variant={Variant.Primary}
           fullWidth
           disabled={!canConfirm}
           onClick={handleConfirm}

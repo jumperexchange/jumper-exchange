@@ -124,6 +124,10 @@ class ArticleParams {
     'tags',
     'author.Avatar',
     'faq_items',
+    'seo',
+    'seo.metaImage',
+    'seo.openGraph',
+    'seo.openGraph.ogImage',
   ];
 
   constructor(apiUrl: URL) {

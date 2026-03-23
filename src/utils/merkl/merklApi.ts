@@ -1,6 +1,6 @@
 import { MerklApi } from '@merkl/api';
 
-export const MERKL_API = 'https://api.merkl.xyz';
+export const MERKL_API = 'https://api-merkl.angle.money';
 export const MERKL_CACHE_TIME = 1000 * 60 * 60; // 1 hour
 export const MERKL_STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
