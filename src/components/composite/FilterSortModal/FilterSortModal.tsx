@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useImperativeHandle, useState } from 'react';
+import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
 import { isLeafCategory } from '../MultiLayer/MultiLayer.types';
 import Stack from '@mui/material/Stack';
@@ -58,6 +58,10 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const selectedCategory = categories[selectedIndex] ?? null;
+
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [categories.length]);
 
   const handleClose = () => {
     onClose?.();
