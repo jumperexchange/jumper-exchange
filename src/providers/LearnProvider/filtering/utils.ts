@@ -174,7 +174,6 @@ export const filterBlogArticles = (
   });
 };
 
-/** Sort order for Level: Beginner/null first (0), Intermediate (1), Expert (2). */
 const LEVEL_SORT_ORDER: Record<string, number> = {
   Beginner: 0,
   Intermediate: 1,
@@ -190,8 +189,7 @@ export const tagAccessors = {
 };
 
 export const sortAccessors: SortAccessors = {
-  [SortByOptions.DATE]: (item) =>
-    item.publishedAt ?? item.updatedAt ?? item.createdAt,
+  [SortByOptions.DATE]: (item) => item.publishedAt ?? item.createdAt,
   [SortByOptions.LEVEL]: (item) => getLevelSortOrder(item.Level),
   [SortByOptions.READING_TIME]: (item) => getReadingTimeMinutes(item),
 };
