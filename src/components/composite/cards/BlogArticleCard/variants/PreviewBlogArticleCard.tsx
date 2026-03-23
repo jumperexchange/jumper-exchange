@@ -6,8 +6,7 @@ import {
   BlogArticleCardHighlightText,
   BlogArticleCardImage,
 } from '../BlogArticleCard.styles';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
-import { JUMPER_STRAPI_URL } from '@/const/urls';
+
 import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
 import { PreviewBlogArticleCardSkeleton } from './PreviewBlogArticleCardSkeleton';
 
@@ -36,11 +35,9 @@ const highlightText = (text: string, highlight: string) => {
 export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
   isLoading,
   data,
+  baseUrl,
   highlight = '',
 }) => {
-  //   const baseUrl = getStrapiBaseUrl();
-  //   console.log(baseUrl);
-
   if (!data || isLoading) {
     return <PreviewBlogArticleCardSkeleton />;
   }
@@ -51,7 +48,7 @@ export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
     <BlogArticleCardContainer>
       {data?.Image && (
         <BlogArticleCardImage
-          src={`${JUMPER_STRAPI_URL}${data?.Image?.formats.small.url || data?.Image?.url}`}
+          src={`${baseUrl}${data?.Image?.formats.small.url || data?.Image?.url}`}
           alt={data?.Image?.alternativeText ?? data?.Title}
           width={0}
           height={0}
