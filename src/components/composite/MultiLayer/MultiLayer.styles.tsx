@@ -63,4 +63,5 @@ export const CategoryListItemContent = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   gap: theme.spacing(1.5),
   flex: 1,
+  minWidth: 0,
 }));
