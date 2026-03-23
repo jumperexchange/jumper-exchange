@@ -242,6 +242,7 @@ export interface BlogArticleAttributes {
   Content: RootNode[];
   Image: StrapiMediaData;
   Slug: string;
+  Level?: string;
   WordCount: number;
   createdAt: string;
   updatedAt: string;

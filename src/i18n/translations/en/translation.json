@@ -105,6 +105,24 @@
     "shareLink": "Share the link",
     "views": {
       "viewBy": "View by"
+    },
+    "filter": {
+      "tag": "Tag",
+      "level": "Level",
+      "author": "Author",
+      "publishDate": "Publish date",
+      "readingDuration": "Reading duration",
+      "clearAll": "Clear all",
+      "filterSort": "Filters & Sort",
+      "filterAndSort": "Filter and sort",
+      "search": "Search {{filterBy}}..."
+    },
+    "sorting": {
+      "sortBy": "Sort by",
+      "sort": "Sort",
+      "level": "Level",
+      "publishDate": "Publish date",
+      "readingTime": "Reading time"
     }
   },
   "solanaAlert": {

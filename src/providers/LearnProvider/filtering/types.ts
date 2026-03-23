@@ -1,9 +1,9 @@
 import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 
 export const SortByOptions = {
-  TAG: 'tag',
   LEVEL: 'level',
   DATE: 'date',
+  READING_TIME: 'readingTime',
 } as const;
 
 export type SortByEnum = (typeof SortByOptions)[keyof typeof SortByOptions];
@@ -23,6 +23,7 @@ export interface LearnFilteringParams {
   allTags: string[];
   allLevels: string[];
   allDates: string[];
+  allReadingTimes: number[];
 }
 
 export interface BlogArticlesFilterWithoutSortByAndOrder {
@@ -30,6 +31,8 @@ export interface BlogArticlesFilterWithoutSortByAndOrder {
   levels?: string[];
   minDate?: Date;
   maxDate?: Date;
+  minReadingDuration?: number;
+  maxReadingDuration?: number;
 }
 
 export const TAG_ALL = 'all';

@@ -54,12 +54,24 @@ export const SliderView: React.FC<SliderViewProps> = ({
     return value.map((v: number) => toFixedFractionDigits(v, 0, 2));
   }, [value]);
 
+  const renderHeader = () => {
+    const displayValue = formatSliderValue(formattedValue);
+
+    if (!displayValue) {
+      return category.label;
+    }
+
+    if (!category.renderLabel) {
+      return `${displayValue} ${category.label}`;
+    }
+
+    return `${displayValue} ${category.renderLabel(value)}`;
+  };
+
   return (
     <Stack direction="column" width="100%" gap={1}>
       <StyledMultiSelectFiltersContainer>
-        <Typography variant="bodyMediumStrong">
-          {`${formatSliderValue(formattedValue)} ${category.label}`}
-        </Typography>
+        <Typography variant="bodyMediumStrong">{renderHeader()}</Typography>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
           size={clearButtonSize}
@@ -83,8 +95,16 @@ export const SliderView: React.FC<SliderViewProps> = ({
             max={max}
           />
           <StyledSliderRangeContainer>
-            <Typography variant="bodyXSmall">{displayMin}</Typography>
-            <Typography variant="bodyXSmall">{displayMax}</Typography>
+            <Typography variant="bodyXSmall">
+              {category.renderLabel
+                ? `${displayMin} ${category.renderLabel?.(min)}`
+                : displayMin}
+            </Typography>
+            <Typography variant="bodyXSmall">
+              {category.renderLabel
+                ? `${displayMax} ${category.renderLabel?.(max)}`
+                : displayMax}
+            </Typography>
           </StyledSliderRangeContainer>
         </StyledSliderContainer>
       </StyledMultiSelectFiltersContainer>

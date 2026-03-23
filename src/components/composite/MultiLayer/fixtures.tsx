@@ -111,7 +111,7 @@ export const blogArticlesLevelOptions: CategoryOption<string>[] = [
 ];
 
 export const blogArticlesSortOptions: CategoryOption<LearnSortByEnum>[] = [
-  { value: LearnSortByOptions.TAG, label: 'Tag' },
+  { value: LearnSortByOptions.READING_TIME, label: 'Reading time' },
   { value: LearnSortByOptions.LEVEL, label: 'Level' },
   { value: LearnSortByOptions.DATE, label: 'Publish date' },
 ];

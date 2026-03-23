@@ -19,6 +19,17 @@ interface Resources {
       categories: 'Categories';
       copiedLink: 'Copied Link';
       faq: 'FAQ';
+      filter: {
+        author: 'Author';
+        clearAll: 'Clear all';
+        filterAndSort: 'Filter and sort';
+        filterSort: 'Filters & Sort';
+        level: 'Level';
+        publishDate: 'Publish date';
+        readingDuration: 'Reading duration';
+        search: 'Search {{filterBy}}...';
+        tag: 'Tag';
+      };
       goToArticle: 'Go to article';
       jumperCta: 'Try jumper.xyz';
       minRead: '{{minRead}} min read';
@@ -30,6 +41,13 @@ interface Resources {
       shareLinkedIn: 'Share article on LinkedIn';
       shareX: 'Share article on X';
       similarPosts: 'Similar Posts';
+      sorting: {
+        level: 'Level';
+        publishDate: 'Publish date';
+        readingTime: 'Reading time';
+        sort: 'Sort';
+        sortBy: 'Sort by';
+      };
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
       title: 'Tips and tutorials';
       views: {

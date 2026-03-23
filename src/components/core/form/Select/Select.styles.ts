@@ -265,8 +265,8 @@ export const StyledSliderRangeContainer = styled(Box)(({ theme }) => ({
 
 export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
   // CSS variables
-  '--rdp-accent-color': theme.palette.primary.main,
-  '--rdp-background-color': theme.palette.action.hover,
+  '--rdp-accent-color': (theme.vars || theme).palette.primary.main,
+  '--rdp-background-color': (theme.vars || theme).palette.action.hover,
 
   // Reset
   '& button': {
@@ -289,7 +289,7 @@ export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
   },
   '& .rdp-caption_label': {
     ...theme.typography.bodyMedium,
-    color: theme.palette.text.primary,
+    color: (theme.vars || theme).palette.text.primary,
   },
   '& .rdp-button_previous, & .rdp-button_next': {
     margin: theme.spacing(1),
@@ -313,7 +313,7 @@ export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
   // Weekdays
   '& .rdp-weekday': {
     ...theme.typography.bodyXXSmall,
-    color: theme.palette.text.secondary,
+    color: (theme.vars || theme).palette.text.secondary,
     textTransform: 'capitalize',
     borderTop: `${theme.spacing(1)} solid transparent`,
     borderBottom: `${theme.spacing(1)} solid transparent`,
@@ -353,7 +353,8 @@ export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
   },
   '& .rdp-day_button': {
     height: 36,
-    width: 36,
+    minWidth: 36,
+    width: '100%',
     padding: 8,
     display: 'flex',
     alignItems: 'center',
