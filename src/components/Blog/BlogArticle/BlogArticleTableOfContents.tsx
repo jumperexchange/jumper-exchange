@@ -4,6 +4,7 @@ import { useMemo, type FC } from 'react';
 import type { TableOfContentsItem } from '@/utils/richBlocks/getTableOfContentsFromContent';
 import { Link } from '@/components/Link/Link';
 import { useActiveTocSectionId } from '@/hooks/useActiveTocSectionId';
+import { useTranslation } from 'react-i18next';
 
 interface BlogArticleTableOfContentsProps {
   items: TableOfContentsItem[];
@@ -15,6 +16,7 @@ interface BlogArticleTableOfContentsProps {
 export const BlogArticleTableOfContents: FC<
   BlogArticleTableOfContentsProps
 > = ({ items, sx, maxDisplayLevels = 1, activeSectionScrollOffsetPx }) => {
+  const { t } = useTranslation();
   const minLevel = useMemo(
     () => items.reduce((min, item) => Math.min(min, item.level), 6),
     [items],
@@ -42,7 +44,7 @@ export const BlogArticleTableOfContents: FC<
   return (
     <Box component="nav" aria-label="Table of contents" sx={sx}>
       <Typography variant="title2XSmall" component="h5">
-        On this page
+        {t('blog.tableOfContents.title')}
       </Typography>
       <Box component="ul" sx={{ listStyle: 'none', margin: 0, padding: 0 }}>
         {displayItems.map((item) => (
