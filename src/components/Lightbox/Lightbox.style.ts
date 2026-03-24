@@ -29,15 +29,18 @@ export const LightboxContainer = styled(Box)(({ theme }) => ({
 
 export const LightboxToolbarContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
-  top: 0,
-  right: 0,
+  bottom: theme.spacing(1),
+  left: `50%`,
+  transform: `translateX(-50%)`,
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(0.75),
   padding: theme.spacing(2),
   zIndex: 10,
   backdropFilter: 'blur(24px)',
+  background: (theme.vars || theme).palette.surface4.main,
   borderRadius: theme.shape.radius32,
+  boxShadow: theme.shadows[2],
 }));
 
 interface LightboxImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
