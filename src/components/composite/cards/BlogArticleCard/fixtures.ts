@@ -231,5 +231,5 @@ export const blogArticle: BlogArticleData = {
       updatedAt: '2024-09-09T14:36:23.698Z',
     },
   },
-  faq_items: { data: [] },
+  faq_items: [],
 };
