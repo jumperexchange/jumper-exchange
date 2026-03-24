@@ -144,7 +144,8 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     isClaimFlow,
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
-    resetAmount: () => {
+    onCloseCallback: () => {
+      setSelectedClaimId(null);
       handleResetAmount();
       refetchLpTokenAmount();
     },
