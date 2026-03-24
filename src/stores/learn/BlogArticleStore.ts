@@ -1,6 +1,10 @@
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
+import superjson from 'superjson';
+
+const getLocalStorage = () =>
+  typeof window === 'undefined' ? undefined : localStorage;
 
 interface ModalContent {
   title?: string;
@@ -50,8 +54,19 @@ export const useBlogArticleStore = createWithEqualityFn(
       },
     }),
     {
-      name: 'blog-article-storage',
-      storage: createJSONStorage(() => localStorage),
+      name: 'blog-article-store',
+      storage: {
+        getItem: (name) => {
+          const str = getLocalStorage()?.getItem(name);
+          return str ? superjson.parse(str) : null;
+        },
+        setItem: (name, value) => {
+          getLocalStorage()?.setItem(name, superjson.stringify(value));
+        },
+        removeItem: (name) => {
+          getLocalStorage()?.removeItem(name);
+        },
+      },
       partialize: (state) =>
         ({
           modalShownForArticlesIds: state.modalShownForArticlesIds,

@@ -95,6 +95,11 @@ export const NewsletterSubscribeForm: FC<NewsletterSubscribeFormProps> = ({
       id="newsletter-subscribe-email"
       placeholder={t('newsletter.welcome.emailPlaceholder')}
       fullWidth
+      type="email"
+      autoComplete="email"
+      inputProps={{
+        'aria-label': t('newsletter.welcome.emailPlaceholder'),
+      }}
       value={email}
       disabled={isPending}
       onChange={handleEmailChange}
