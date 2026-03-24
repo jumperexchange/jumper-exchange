@@ -13,7 +13,7 @@ interface LearnPageArticlesSectionClientProps {}
 export const LearnPageArticlesSectionClient: FC<
   LearnPageArticlesSectionClientProps
 > = () => {
-  const { data } = useLearnFiltering();
+  const { data, clearFilters } = useLearnFiltering();
 
   return (
     <>
@@ -26,7 +26,7 @@ export const LearnPageArticlesSectionClient: FC<
           }}
         >
           <LearnPageArticlesFilteringBar />
-          <LearnPageArticlesList items={data} />
+          <LearnPageArticlesList items={data} onClearFilters={clearFilters} />
           <LearnPageArticlesPagination />
         </Stack>
       </SectionCard>
