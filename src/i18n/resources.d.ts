@@ -42,6 +42,12 @@ interface Resources {
       minRead: '{{minRead}} min read';
       noPostsFound: 'No posts found for your search criteria.';
       openApp: 'Open app';
+      order: {
+        highest: '(highest)';
+        lowest: '(lowest)';
+        newest: '(newest)';
+        oldest: '(oldest)';
+      };
       popularPosts: 'Popular posts';
       recentPosts: 'Recent Posts';
       seeAllPosts: 'See all posts';

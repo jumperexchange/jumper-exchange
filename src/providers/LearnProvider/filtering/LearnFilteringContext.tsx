@@ -9,6 +9,7 @@ import type {
 import type {
   BlogArticlesFilterWithoutSortByAndOrder,
   LearnFilteringParams,
+  OrderEnum,
   SortByEnum,
 } from './types';
 import { OrderOptions, SortByOptions, TAG_ALL } from './types';
@@ -51,6 +52,8 @@ export const EMPTY_FILTERING_PARAMS: LearnFilteringParams = {
 export interface LearnFilteringContextType extends LearnFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
+  order: OrderEnum;
+  setOrder: (order: OrderEnum) => void;
   filter: BlogArticlesFilterWithoutSortByAndOrder;
   updateFilter: (
     filter: NullableFields<BlogArticlesFilterWithoutSortByAndOrder>,
@@ -69,6 +72,8 @@ export const LearnFilteringContext = createContext<LearnFilteringContextType>({
   ...EMPTY_FILTERING_PARAMS,
   sortBy: SortByOptions.DATE,
   setSortBy: () => {},
+  order: OrderOptions.ASC,
+  setOrder: () => {},
   filter: {},
   updateFilter: () => {},
   clearFilters: () => {},
@@ -114,7 +119,12 @@ export const LearnFilteringProvider = ({
       history: 'replace',
     },
   );
-  const { sortBy: initialSortBy, tab, ...rest } = searchParamsState;
+  const {
+    sortBy: initialSortBy,
+    order: initialOrder,
+    tab,
+    ...rest
+  } = searchParamsState;
 
   const initialFilter = useMemo(() => {
     return removeNullValuesFromFilter(rest);
@@ -130,6 +140,7 @@ export const LearnFilteringProvider = ({
   }, [tab, setSearchParamsState]);
 
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
+  const [order, setOrder] = useState<OrderEnum>(initialOrder);
   const [filter, setFilter] =
     useState<BlogArticlesFilterWithoutSortByAndOrder>(initialFilter);
   const [page, setPage] = useState(0);
@@ -167,10 +178,10 @@ export const LearnFilteringProvider = ({
   const filteredSortedData = useMemo(() => {
     const filteredData = filterBlogArticles(unfilteredTabData, filter);
 
-    const sortedData = sortBlogArticles(filteredData, sortBy);
+    const sortedData = sortBlogArticles(filteredData, sortBy, order);
 
     return sortedData;
-  }, [unfilteredTabData, filter, sortBy]);
+  }, [unfilteredTabData, filter, sortBy, order]);
 
   const { data, pagination } = useMemo(() => {
     const total = filteredSortedData.length;
@@ -225,6 +236,15 @@ export const LearnFilteringProvider = ({
     [setSortBy, setSearchParamsState],
   );
 
+  const updateOrder = useCallback(
+    (newOrder: OrderEnum) => {
+      setPage(0);
+      setOrder(newOrder);
+      setSearchParamsState({ order: newOrder });
+    },
+    [setOrder, setSearchParamsState],
+  );
+
   const clearFilters = useCallback(() => {
     updateFilter({
       tags: null,
@@ -249,6 +269,8 @@ export const LearnFilteringProvider = ({
     return {
       sortBy,
       setSortBy: updateSortBy,
+      order,
+      setOrder: updateOrder,
       filter,
       updateFilter,
       clearFilters,
@@ -267,6 +289,8 @@ export const LearnFilteringProvider = ({
     changeTab,
     sortBy,
     updateSortBy,
+    order,
+    updateOrder,
     filter,
     updateFilter,
     data,

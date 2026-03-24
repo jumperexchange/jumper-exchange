@@ -2,9 +2,13 @@ import { useMemo } from 'react';
 import { useLearnFiltering } from '@/providers/LearnProvider/filtering/LearnFilteringContext';
 import type {
   BlogArticlesFilterWithoutSortByAndOrder,
+  OrderEnum,
   SortByEnum,
 } from '@/providers/LearnProvider/filtering/types';
-import { SortByOptions } from '@/providers/LearnProvider/filtering/types';
+import {
+  OrderOptions,
+  SortByOptions,
+} from '@/providers/LearnProvider/filtering/types';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
 import { useTranslation } from 'react-i18next';
 import { usePendingFilters } from '@/components/composite/MultiLayer/hooks';
@@ -31,6 +35,8 @@ export const useLearnFilterBar = () => {
     clearFilters,
     sortBy,
     setSortBy,
+    order,
+    setOrder,
   } = useLearnFiltering();
 
   const tagOptions = useMemo(
@@ -92,14 +98,33 @@ export const useLearnFilterBar = () => {
     filter?.maxReadingDuration ?? readingDurationRangeMax;
 
   const sortByOptions = useMemo(
-    () => [
-      { value: SortByOptions.LEVEL, label: t('blog.sorting.level') },
-      { value: SortByOptions.DATE, label: t('blog.sorting.publishDate') },
-      {
-        value: SortByOptions.READING_TIME,
-        label: t('blog.sorting.readingTime'),
-      },
-    ],
+    () =>
+      [
+        {
+          value: `${SortByOptions.LEVEL}:${OrderOptions.ASC}`,
+          label: `${t('blog.sorting.level')} ${t('blog.order.lowest')}`,
+        },
+        {
+          value: `${SortByOptions.LEVEL}:${OrderOptions.DESC}`,
+          label: `${t('blog.sorting.level')} ${t('blog.order.highest')}`,
+        },
+        {
+          value: `${SortByOptions.DATE}:${OrderOptions.ASC}`,
+          label: `${t('blog.sorting.publishDate')} ${t('blog.order.oldest')}`,
+        },
+        {
+          value: `${SortByOptions.DATE}:${OrderOptions.DESC}`,
+          label: `${t('blog.sorting.publishDate')} ${t('blog.order.newest')}`,
+        },
+        {
+          value: `${SortByOptions.READING_TIME}:${OrderOptions.ASC}`,
+          label: `${t('blog.sorting.readingTime')} ${t('blog.order.lowest')}`,
+        },
+        {
+          value: `${SortByOptions.READING_TIME}:${OrderOptions.DESC}`,
+          label: `${t('blog.sorting.readingTime')} ${t('blog.order.highest')}`,
+        },
+      ] as { value: `${SortByEnum}:${OrderEnum}`; label: string }[],
     [t],
   );
 
@@ -147,6 +172,10 @@ export const useLearnFilterBar = () => {
     setSortBy(value as SortByEnum);
   };
 
+  const handleOrder = (value: string) => {
+    setOrder(value as OrderEnum);
+  };
+
   const optionsCount = [
     tagOptions.length,
     levelOptions.length,
@@ -187,6 +216,7 @@ export const useLearnFilterBar = () => {
     readingDurationRangeMax,
     sortByOptions,
     sortBy,
+    order,
     handleTagChange,
     handleLevelChange,
     handleDatesChange,
@@ -194,6 +224,7 @@ export const useLearnFilterBar = () => {
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
     handleSortBy,
+    handleOrder,
   };
 };
 
@@ -214,9 +245,11 @@ export const useBlogArticlesFilteringCategories = () => {
     readingDurationRangeMax,
     sortByOptions,
     sortBy,
+    order,
     handleClearAllFilters,
     handleApplyAllFilters,
     handleSortBy,
+    handleOrder,
   } = useLearnFilterBar();
 
   const {
@@ -233,6 +266,7 @@ export const useBlogArticlesFilteringCategories = () => {
       dates: [dateMin, dateMax],
       readingDuration: [readingDurationMin, readingDurationMax],
       sortBy,
+      order,
     },
     onApply: (values) => {
       handleApplyAllFilters({
@@ -250,6 +284,7 @@ export const useBlogArticlesFilteringCategories = () => {
             : null,
       });
       handleSortBy(values.sortBy);
+      handleOrder(values.order);
     },
     onClear: handleClearAllFilters,
     isFilterApplied: (values) =>
@@ -261,7 +296,8 @@ export const useBlogArticlesFilteringCategories = () => {
       !isEqual(values.dates[1], dateRangeMax) ||
       values.readingDuration[0] !== readingDurationRangeMin ||
       values.readingDuration[1] !== readingDurationRangeMax ||
-      values.sortBy != sortBy,
+      values.sortBy != sortBy ||
+      values.order != order,
   });
 
   const usedMin = pendingValues.dates[0] ?? dateMin;
@@ -339,13 +375,21 @@ export const useBlogArticlesFilteringCategories = () => {
         })
       : null,
     sortByOptions.length > 1
-      ? createSingleSelectCategory<SortByEnum>({
+      ? createSingleSelectCategory<`${SortByEnum}:${OrderEnum}`>({
           id: 'sortBy',
           label: t('blog.sorting.sortBy'),
-          value: pendingValues.sortBy,
+          value: `${pendingValues.sortBy}:${pendingValues.order}`,
           onChange: (v) => {
-            if (v) {
-              setPendingValue('sortBy', v);
+            if (!v) {
+              return;
+            }
+            const [nextSortBy, nextOrder] = v.split(':') as [
+              SortByEnum,
+              OrderEnum,
+            ];
+            if (nextSortBy && nextOrder) {
+              setPendingValue('sortBy', nextSortBy);
+              setPendingValue('order', nextOrder);
             }
           },
           options: sortByOptions,
