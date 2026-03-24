@@ -15,7 +15,13 @@ export const lookupI18nLocaleDetector = (
     const languages = new Negotiator({
       headers: negotiatorHeaders,
     }).languages();
-    return match(languages, [...config.locales], config.defaultLocale, {
+
+    const primaryLanguage = languages[0];
+    if (!primaryLanguage || primaryLanguage === '*') {
+      return config.defaultLocale;
+    }
+
+    return match([primaryLanguage], [...config.locales], config.defaultLocale, {
       algorithm: 'lookup',
     });
   } catch {
