@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticleContainer,
@@ -19,6 +19,8 @@ import {
   BlogAuthorWrapper,
   BlogMetaContainer,
   Divider,
+  getContentContainerStylesForTOC,
+  getTOCStyles,
 } from './BlogArticle.style';
 
 import { Tag } from '@/components/Tag.style';
@@ -61,17 +63,7 @@ interface BlogArticleProps {
 const IMAGE_HEIGHT = 640;
 const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
 
-const tocStyles = {
-  display: { xs: 'none', lg: 'block' },
-  position: 'sticky',
-  top: 16,
-  alignSelf: 'flex-start',
-  width: 240,
-  flexShrink: 0,
-} as const;
-
 export const BlogArticle = ({ article }: BlogArticleProps) => {
-  const theme = useTheme();
   const {
     id,
     documentId,
@@ -136,6 +128,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const blogArticleSchema = buildArticleSchema(article);
 
   const tableOfContents = getTableOfContentsFromContent(content);
+  const hasToc = tableOfContents.length > 0;
 
   return (
     <>
@@ -188,11 +181,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
 
           <BlogMetaContainer>
             <Box
-              sx={{
+              sx={(theme) => ({
                 [theme.breakpoints.down('sm')]: {
                   '.blog-author-socials': { display: 'none' },
                 },
-              }}
+              })}
             >
               <BlogArticleAuthor
                 author={author}
@@ -218,27 +211,15 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       </BlogArticleImageContainer>
 
       <BlogArticleContainer
-        sx={(theme) => ({
-          position: 'relative',
-          display: 'flex',
-          gap: 2,
-          maxWidth:
-            tableOfContents.length > 0
-              ? `calc(${theme.breakpoints.values.md}px + 240px + ${theme.spacing(2)}) !important`
-              : `${theme.breakpoints.values.md}px !important`,
-        })}
+        sx={hasToc ? getContentContainerStylesForTOC : undefined}
       >
-        {tableOfContents.length > 0 && (
-          <BlogArticleTableOfContents items={tableOfContents} sx={tocStyles} />
+        {hasToc && (
+          <BlogArticleTableOfContents
+            items={tableOfContents}
+            sx={getTOCStyles}
+          />
         )}
-        <BlogArticleContentContainer
-          sx={{
-            flex: 1,
-            minWidth: 0,
-            margin: '0 !important',
-            maxWidth: '100% !important',
-          }}
-        >
+        <BlogArticleContentContainer>
           <ScrollProgress
             onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
