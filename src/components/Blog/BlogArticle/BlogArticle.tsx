@@ -28,7 +28,9 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
 import { RichBlocksVariant } from '@/components/RichBlocks/types';
+import { getTableOfContentsFromContent } from '@/utils/richBlocks/getTableOfContentsFromContent';
 import { BlogArticleAuthor } from './BlogArticleAuthor';
+import { BlogArticleTableOfContents } from './BlogArticleTableOfContents';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
 import { ScrollProgress } from './ScrollProgress';
@@ -58,6 +60,15 @@ interface BlogArticleProps {
 
 const IMAGE_HEIGHT = 640;
 const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
+
+const tocStyles = {
+  display: { xs: 'none', lg: 'block' },
+  position: 'sticky',
+  top: 16,
+  alignSelf: 'flex-start',
+  width: 240,
+  flexShrink: 0,
+} as const;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
@@ -124,6 +135,8 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
 
   const blogArticleSchema = buildArticleSchema(article);
 
+  const tableOfContents = getTableOfContentsFromContent(content);
+
   return (
     <>
       {isModalOpen && <BlogArticleModal articleId={id} articleTitle={title} />}
@@ -174,7 +187,6 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           </WithSkeleton>
 
           <BlogMetaContainer>
-            {/*// The following block is a duplication of the row 196 onwards but with slightly different styles, needs to be revisited*/}
             <Box
               sx={{
                 [theme.breakpoints.down('sm')]: {
@@ -205,11 +217,29 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         </WithSkeleton>
       </BlogArticleImageContainer>
 
-      <BlogArticleContainer>
-        <BlogArticleContentContainer>
+      <BlogArticleContainer
+        sx={(theme) => ({
+          position: 'relative',
+          display: 'flex',
+          gap: 2,
+          maxWidth:
+            tableOfContents.length > 0
+              ? `calc(${theme.breakpoints.values.md}px + 240px + ${theme.spacing(2)}) !important`
+              : `${theme.breakpoints.values.md}px !important`,
+        })}
+      >
+        {tableOfContents.length > 0 && (
+          <BlogArticleTableOfContents items={tableOfContents} sx={tocStyles} />
+        )}
+        <BlogArticleContentContainer
+          sx={{
+            flex: 1,
+            minWidth: 0,
+            margin: '0 !important',
+            maxWidth: '100% !important',
+          }}
+        >
           <ScrollProgress
-            // @TODO enable this with JUM-640
-            // showProgress
             onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
           >
@@ -240,6 +270,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               />
             </WithSkeleton>
           </ScrollProgress>
+        </BlogArticleContentContainer>
+      </BlogArticleContainer>
+
+      <BlogArticleContainer>
+        <BlogArticleContentContainer>
           {faq_items?.length > 0 && (
             <AccordionFAQ
               accordionHeader={

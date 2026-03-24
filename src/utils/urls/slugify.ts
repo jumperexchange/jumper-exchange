@@ -7,6 +7,7 @@
  */
 export const slugify = (text: string): string =>
   text
+    .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-') // Replace any non-alphanumeric chars with hyphens
     .replace(/^-+|-+$/g, ''); // Remove leading/trailing hyphens

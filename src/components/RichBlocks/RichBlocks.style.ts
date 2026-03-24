@@ -18,6 +18,7 @@ interface HeadingProps extends TypographyProps {
 export const Heading = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'level',
 })<HeadingProps>(({ theme }) => ({
+  display: 'inline-block',
   color: (theme.vars || theme).palette.alpha800.main,
   a: {
     fontWeight: 600,

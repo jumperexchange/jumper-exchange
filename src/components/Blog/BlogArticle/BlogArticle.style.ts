@@ -19,7 +19,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   borderRadius: '8px',
   position: 'relative',
   width: '100% !important',
-  overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
   li: {
     color: alpha(theme.palette.text.primary, 0.75),
@@ -254,5 +253,5 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
   ...theme.applyStyles('light', {
     borderColor: alpha(theme.palette.black.main, 0.12),
   }),
-  margin: theme.spacing(8, 0, 0),
+  marginTop: theme.spacing(2),
 }));
