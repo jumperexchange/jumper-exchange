@@ -1,10 +1,6 @@
 import { Box, useTheme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
-  BlogArticlAuthorName,
-  BlogArticlAuthorNameSkeleton,
-  BlogArticlAuthorRole,
-  BlogArticlAuthorRoleSkeleton,
   BlogArticleContainer,
   BlogArticleContentContainer,
   BlogArticleContentSkeleton,
@@ -20,10 +16,6 @@ import {
   BlogArticleTitle,
   BlogArticleTitleSkeleton,
   BlogArticleTopHeader,
-  BlogAuthorAvatar,
-  BlogAuthorAvatarSkeleton,
-  BlogAuthorContainer,
-  BlogAuthorMetaWrapper,
   BlogAuthorWrapper,
   BlogMetaContainer,
   Divider,
@@ -33,10 +25,12 @@ import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { BlogAuthorSocials } from '../BlogAuthorSocials/BlogAuthorSocials';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
 import { RichBlocksVariant } from '@/components/RichBlocks/types';
+import { BlogArticleAuthor } from './BlogArticleAuthor';
+import { WithSkeleton } from './WithSkeleton';
+import { AccordionFAQ } from '@/components/AccordionFAQ';
 import {
   TrackingCategory,
   TrackingAction,
@@ -64,6 +58,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     updatedAt,
     tags,
     Image: image,
+    faq_items,
   } = article;
   const baseUrl = getStrapiBaseUrl();
   const id = article.id;
@@ -79,7 +74,10 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
-            {mainTag?.Title ? (
+            <WithSkeleton
+              show={!!mainTag?.Title}
+              skeleton={<BlogArticleHeaderTagSkeleton variant="rectangular" />}
+            >
               <Tag
                 sx={
                   mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
@@ -91,108 +89,74 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               >
                 {mainTag?.Title}
               </Tag>
-            ) : (
-              <BlogArticleHeaderTagSkeleton variant="rectangular" />
-            )}
-            {createdAt ? (
+            </WithSkeleton>
+
+            <WithSkeleton
+              show={!!createdAt}
+              skeleton={<BlogArticleMetaSkeleton variant="text" />}
+            >
               <BlogArticleHeaderMeta>
                 <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
                   {t('format.shortDate', {
-                    value: new Date(publishedAt || createdAt),
+                    value: new Date(publishedAt || createdAt!),
                   })}
                 </BlogArticleHeaderMetaDate>
-                <span>{t('blog.minRead', { minRead: minRead })}</span>
+                <span>{t('blog.minRead', { minRead })}</span>
               </BlogArticleHeaderMeta>
-            ) : (
-              <BlogArticleMetaSkeleton variant="text" />
-            )}
+            </WithSkeleton>
           </BlogArticleTopHeader>
 
-          {title ? (
+          <WithSkeleton show={!!title} skeleton={<BlogArticleTitleSkeleton />}>
             <BlogArticleTitle variant="h1">{title}</BlogArticleTitle>
-          ) : (
-            <BlogArticleTitleSkeleton />
-          )}
+          </WithSkeleton>
 
-          {subtitle ? (
-            <BlogArticleSubtitle variant="headerMedium" as="h2">
-              {subtitle}
-            </BlogArticleSubtitle>
-          ) : (
-            <BlogArticleSubtitleSkeleton variant="text" />
-          )}
+          <WithSkeleton
+            show={!!subtitle}
+            skeleton={<BlogArticleSubtitleSkeleton variant="text" />}
+          >
+            <BlogArticleSubtitle variant="h2">{subtitle}</BlogArticleSubtitle>
+          </WithSkeleton>
 
           <BlogMetaContainer>
             {/*// The following block is a duplication of the row 196 onwards but with slightly different styles, needs to be revisited*/}
-            <BlogAuthorContainer>
-              {author?.Avatar?.url ? (
-                <BlogAuthorAvatar
-                  width={64}
-                  height={64}
-                  src={`${baseUrl}${author?.Avatar?.url}`}
-                  alt={`${author?.Name}'s avatar`}
-                />
-              ) : (
-                <BlogAuthorAvatarSkeleton variant="rounded" />
-              )}
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignSelf: 'center',
-                  [theme.breakpoints.down('sm')]: {
-                    '&:has(.blog-author-socials)': {
-                      alignItems: 'center',
-                      alignSelf: 'flex-start',
-                    },
-                    '.blog-author-socials': {
-                      display: 'none',
-                    },
-                  },
-                  [theme.breakpoints.up('sm')]: {
-                    alignSelf: 'center',
-                  },
-                }}
-              >
-                {author ? (
-                  <BlogArticlAuthorName
-                    variant="bodyXSmallStrong"
-                    component="span"
-                  >
-                    {author?.Name}
-                  </BlogArticlAuthorName>
-                ) : (
-                  <BlogArticlAuthorNameSkeleton variant="text" />
-                )}
-                <BlogAuthorSocials
-                  author={author}
-                  articleId={id}
-                  source="blog-article-header"
-                />
-              </Box>
-            </BlogAuthorContainer>
+            <Box
+              sx={{
+                [theme.breakpoints.down('sm')]: {
+                  '.blog-author-socials': { display: 'none' },
+                },
+              }}
+            >
+              <BlogArticleAuthor
+                author={author}
+                articleId={id}
+                source="blog-article-header"
+              />
+            </Box>
             <ShareArticleIcons title={title} slug={slug} />
           </BlogMetaContainer>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
+
       <BlogArticleImageContainer>
-        {image ? (
+        <WithSkeleton show={!!image} skeleton={<BlogArticleImageSkeleton />}>
           <BlogArticleImage
-            src={`${baseUrl}${image.url}`}
+            src={`${baseUrl}${image!.url}`}
             alt={image?.alternativeText ?? title}
             priority
             width={1200}
             height={640}
           />
-        ) : (
-          <BlogArticleImageSkeleton />
-        )}
+        </WithSkeleton>
       </BlogArticleImageContainer>
+
       <BlogArticleContainer>
         <BlogArticleContentContainer>
-          {content ? (
+          <WithSkeleton
+            show={!!content}
+            skeleton={<BlogArticleContentSkeleton variant="text" />}
+          >
             <RichBlocks
-              content={content}
+              content={content!}
               variant={RichBlocksVariant.BlogArticle}
               blockSx={{
                 paragraph: (theme) => ({
@@ -212,50 +176,41 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                 },
               }}
             />
-          ) : (
-            <BlogArticleContentSkeleton variant="text" />
+          </WithSkeleton>
+          {faq_items?.length > 0 && (
+            <AccordionFAQ
+              accordionHeader={
+                <BlogArticleSubtitle
+                  variant="h2"
+                  sx={{ marginTop: 0, marginBottom: 1 }}
+                >
+                  {t('blog.faq')}
+                </BlogArticleSubtitle>
+              }
+              content={faq_items}
+              questionTextTypography="bodyLargeStrong"
+              itemSx={(theme) => ({
+                background: (theme.vars || theme).palette.surface1.main,
+                boxShadow: theme.shadows[2],
+                '&:hover': {
+                  background: (theme.vars || theme).palette.surface1Hover,
+                },
+              })}
+              sx={{ width: '100%', maxWidth: '100% !important' }}
+            />
           )}
           <Divider />
           <BlogAuthorWrapper>
-            {author?.Avatar?.url ? (
-              <BlogAuthorAvatar
-                width={64}
-                height={64}
-                src={`${baseUrl}${author?.Avatar?.url}`}
-                alt="author-avatar"
-              />
-            ) : (
-              <BlogAuthorAvatarSkeleton
-                variant="rounded"
-                sx={{
-                  marginRight: theme.spacing(3),
-                }}
-              />
-            )}
-            <BlogAuthorMetaWrapper>
-              {author ? (
-                <BlogArticlAuthorName component="span">
-                  {author.Name}
-                </BlogArticlAuthorName>
-              ) : (
-                <BlogArticlAuthorNameSkeleton variant="text" />
-              )}
-              {author ? (
-                <BlogArticlAuthorRole variant="bodyXSmall" component="span">
-                  {author?.Role}
-                </BlogArticlAuthorRole>
-              ) : (
-                <BlogArticlAuthorRoleSkeleton variant="text" />
-              )}
-              <BlogAuthorSocials
-                author={author}
-                articleId={id}
-                source="blog-article-footer"
-              />
-            </BlogAuthorMetaWrapper>
+            <BlogArticleAuthor
+              author={author}
+              articleId={id}
+              showRole
+              source="blog-article-footer"
+            />
           </BlogAuthorWrapper>
         </BlogArticleContentContainer>
       </BlogArticleContainer>
+
       {blogArticleSchema && (
         <Script type="application/ld+json" id="json-schema-article">
           {JSON.stringify(blogArticleSchema)}

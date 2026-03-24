@@ -10,10 +10,14 @@ import {
   AccordionToggleButton,
   FaqShowMoreArrow,
 } from '.';
+import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { RichBlocks } from '../RichBlocks/RichBlocks';
+import { IconButton } from '../core/buttons/IconButton/IconButton';
+import { Variant } from '../core/buttons/types';
 
 interface AccordionFAQItemProps {
   question: string;
-  answer: string;
+  answer: string | RootNode[];
   itemSx?: SxProps<Theme>;
   itemAnswerSx?: SxProps<Theme>;
   index: number;
@@ -45,9 +49,9 @@ export const AccordionFAQItem = ({
       <Accordion sx={itemSx} className="faq-item">
         <AccordionSummary
           expandIcon={
-            <AccordionToggleButton sx={{ color: 'text.primary' }} as="div">
+            <IconButton variant={Variant.AlphaDark}>
               <FaqShowMoreArrow arrowSize={arrowSize} />
-            </AccordionToggleButton>
+            </IconButton>
           }
           aria-controls={`panel${index}a-content`}
           id={`panel${index}a-header`}
@@ -62,12 +66,21 @@ export const AccordionFAQItem = ({
           className="accordion-details"
           sx={{ '& > img': { width: '100%' } }}
         >
-          <Typography
-            variant={answerTextTypography || 'bodyMedium'}
-            sx={itemAnswerSx}
-          >
-            {answer}
-          </Typography>
+          {typeof answer === 'string' ? (
+            <Typography
+              variant={answerTextTypography || 'bodyMedium'}
+              sx={itemAnswerSx}
+            >
+              {answer}
+            </Typography>
+          ) : (
+            <RichBlocks
+              content={answer}
+              blockSx={{
+                paragraph: itemAnswerSx,
+              }}
+            />
+          )}
           {/* <BlocksRenderer content={el.Answer} /> */}
         </AccordionDetails>
       </Accordion>
