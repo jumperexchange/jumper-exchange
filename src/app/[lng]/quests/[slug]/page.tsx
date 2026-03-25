@@ -66,9 +66,14 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const { data } = await getQuestsWithNoCampaignAttached();
+  try {
+    const { data } = await getQuestsWithNoCampaignAttached();
 
-  return data.data.map((quest) => ({ slug: quest.Slug }));
+    return data.data.map((quest) => ({ slug: quest.Slug }));
+  } catch (error) {
+    console.warn('Failed to fetch quests for static params:', error);
+    return [];
+  }
 }
 
 export const dynamicParams = true;

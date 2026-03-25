@@ -144,11 +144,14 @@ export default async function Page({ params }: { params: Params }) {
 }
 
 export async function generateStaticParams() {
-  const articles = await getArticles();
+  try {
+    const articles = await getArticles();
 
-  const data = articles.data.map((article) => ({
-    slug: article?.Slug,
-  }));
-
-  return data;
+    return articles.data.map((article) => ({
+      slug: article?.Slug,
+    }));
+  } catch (error) {
+    console.warn('Failed to fetch articles for static params:', error);
+    return [];
+  }
 }

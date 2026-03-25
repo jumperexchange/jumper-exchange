@@ -44,9 +44,14 @@ export async function generateSitemaps() {
     return [{ id: '0' }];
   }
 
-  const total = await getArticlesTotal();
-  const numberOfChunks = Math.ceil(total / SITEMAP_LIMIT);
-  return [...Array(numberOfChunks).keys()].map((id) => ({ id: String(id) }));
+  try {
+    const total = await getArticlesTotal();
+    const numberOfChunks = Math.ceil(total / SITEMAP_LIMIT);
+    return [...Array(numberOfChunks).keys()].map((id) => ({ id: String(id) }));
+  } catch (error) {
+    console.warn('Failed to fetch articles for learn sitemap:', error);
+    return [{ id: '0' }];
+  }
 }
 
 export default async function sitemap(props: {

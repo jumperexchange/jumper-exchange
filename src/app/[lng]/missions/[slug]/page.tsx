@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { Metadata } from 'next/types';
+import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
@@ -23,15 +23,22 @@ const getPageTitle = (title: string) => {
 const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
-  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
-    {
-      page: 1,
-      pageSize: 12,
-    },
-    UPCOMING_DAYS_AHEAD,
-  );
+  try {
+    const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
+      {
+        page: 1,
+        pageSize: 12,
+      },
+      UPCOMING_DAYS_AHEAD,
+    );
 
-  return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));
+    return missionsResponse.data.map((mission) => ({
+      slug: mission.Slug || '',
+    }));
+  } catch (error) {
+    console.warn('Failed to fetch missions for static params:', error);
+    return [];
+  }
 }
 
 export async function generateMetadata({

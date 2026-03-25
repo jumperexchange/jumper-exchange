@@ -52,11 +52,16 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
-  const { chains } = await getChainsQuery();
+  try {
+    const { chains } = await getChainsQuery();
 
-  return chains.map((chain) => ({
-    segments: slugify(chain.name),
-  }));
+    return chains.map((chain) => ({
+      segments: slugify(chain.name),
+    }));
+  } catch (error) {
+    console.warn('Failed to fetch chains for static params:', error);
+    return [];
+  }
 }
 
 export default async function Page({ params }: { params: Params }) {
