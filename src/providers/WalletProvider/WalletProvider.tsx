@@ -50,6 +50,7 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
                   walletEcosystemsOrder: walletEcosystemsOrder,
                 }}
                 providers={widgetProviders}
+                isExternalContext={true}
                 chains={(chains ?? []) as ExtendedChain[]}
               >
                 <WalletTrackingProvider>{children}</WalletTrackingProvider>

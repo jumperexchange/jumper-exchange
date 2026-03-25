@@ -3,7 +3,33 @@
 import { SolanaProvider } from '@solana/react-hooks';
 import { useWallet } from '@solana/react-hooks';
 import { useSolanaWalletStandard } from '@lifi/widget-provider-solana';
-import { type FC, type PropsWithChildren, useEffect } from 'react';
+import {
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
+import type { SolanaClientConfig } from '@solana/client';
+import envConfig from '@/config/env-config';
+
+const SOLANA_CHAIN_ID = '1151111081099710';
+
+function getSolanaRpcUrl(): string | undefined {
+  if (envConfig.NEXT_PUBLIC_SOLANA_RPC_URI) {
+    return envConfig.NEXT_PUBLIC_SOLANA_RPC_URI;
+  }
+  try {
+    const customRpcs = JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS || '{}');
+    const solanaRpcs = customRpcs[SOLANA_CHAIN_ID];
+    if (Array.isArray(solanaRpcs) && solanaRpcs.length > 0) {
+      return solanaRpcs[0];
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return undefined;
+}
 
 /**
  * Syncs the Solana wallet connection state from @solana/react-hooks
@@ -15,28 +41,34 @@ const SolanaWalletSync: FC<PropsWithChildren> = ({ children }) => {
   const { connect, disconnect } = useSolanaWalletStandard();
   const connectorName =
     wallet.status === 'connected' ? wallet.session.connector.name : undefined;
+  const prevStatusRef = useRef(wallet.status);
 
   useEffect(() => {
+    const prevStatus = prevStatusRef.current;
+    prevStatusRef.current = wallet.status;
+
     if (wallet.status === 'connected' && connectorName) {
       connect(connectorName, { silent: true });
-    } else if (wallet.status === 'disconnected') {
+    } else if (wallet.status === 'disconnected' && prevStatus === 'connected') {
       disconnect();
     }
-
-    return () => {
-      if (wallet.status === 'connected') {
-        disconnect();
-      }
-    };
   }, [wallet.status, connectorName, connect, disconnect]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
+  const solanaConfig = useMemo<SolanaClientConfig>(() => {
+    const rpcUrl = getSolanaRpcUrl();
+    return {
+      cluster: 'mainnet',
+      ...(rpcUrl && { endpoint: rpcUrl as `https://${string}` }),
+    };
+  }, []);
+
   return (
     <SolanaProvider
-      config={{ cluster: 'mainnet' }}
+      config={solanaConfig}
       walletPersistence={{ autoConnect: true, storageKey: 'jumper-solana' }}
     >
       <SolanaWalletSync>{children}</SolanaWalletSync>

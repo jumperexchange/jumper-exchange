@@ -60,8 +60,10 @@ export const useMultisig = () => {
     const isRouteFailed = routeStatus === 'FAILED';
 
     const multisigRouteStarted = route.steps.some((step) =>
-      (step as any).execution?.actions?.find(
-        (action: ExecutionAction) => action.status === 'ACTION_REQUIRED',
+      (step as any).execution?.actions.find(
+        (action: ExecutionAction) =>
+          !!(action as any).multisigTxHash &&
+          action.status === 'ACTION_REQUIRED',
       ),
     );
 
