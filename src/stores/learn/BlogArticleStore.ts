@@ -58,7 +58,15 @@ export const useBlogArticleStore = createWithEqualityFn(
       storage: {
         getItem: (name) => {
           const str = getLocalStorage()?.getItem(name);
-          return str ? superjson.parse(str) : null;
+          if (!str) {
+            return null;
+          }
+          try {
+            return superjson.parse(str);
+          } catch {
+            getLocalStorage()?.removeItem(name);
+            return null;
+          }
         },
         setItem: (name, value) => {
           getLocalStorage()?.setItem(name, superjson.stringify(value));
