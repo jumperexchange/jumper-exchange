@@ -207,6 +207,20 @@ export interface AvatarData extends StrapiMediaAttributes {
   // attributes: StrapiMediaAttributes;
 }
 
+export interface BlogArticlePopupData extends BlogArticlePopupAttributes {
+  id: number;
+  documentId: string;
+  // attributes: BlogArticleAttributes;
+}
+
+export interface BlogArticlePopupAttributes {
+  Title?: string;
+  Message: string;
+  CTA: string;
+  CTALink?: string;
+  IsNewsletterSubscription?: boolean;
+}
+
 export interface SeoAttributes {
   metaTitle: string;
   metaDescription: string;
@@ -248,7 +262,8 @@ export interface BlogArticleAttributes {
   updatedAt: string;
   tags: TagAttributes[];
   author: AuthorData;
-  faq_items: FaqData;
+  faq_items: FaqMeta[];
+  popup?: BlogArticlePopupData;
   publishedAt?: string;
   locale: string;
   RedirectURL?: string;

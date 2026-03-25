@@ -17,7 +17,7 @@ import {
 import type { NullableFields } from '@/types/internal';
 import { countBadge, datesBadge, readingDurationBadge } from './utils';
 import type { BlogArticlesPendingFilterValues } from './types';
-import { isEqual } from 'date-fns';
+import { isEqual, startOfDay } from 'date-fns';
 
 export const useLearnFilterBar = () => {
   const { t } = useTranslation();
@@ -66,8 +66,8 @@ export const useLearnFilterBar = () => {
     }
     const times = allDates.map((date) => new Date(date).getTime());
     return {
-      min: new Date(Math.min(...times)),
-      max: new Date(Math.max(...times)),
+      min: startOfDay(new Date(Math.min(...times))),
+      max: startOfDay(new Date(Math.max(...times))),
     };
   }, [allDates]);
 
