@@ -30,11 +30,7 @@ const LearnArticlePage = ({ article, articles }: LearnArticlePageProps) => {
       <BlogArticleSection>
         <Box component={Background} sx={{ position: 'absolute' }} />
         {articles.length > 2 && (
-          <BlogCarousel
-            title={t('blog.similarPosts')}
-            showAllButton={true}
-            data={articles}
-          />
+          <BlogCarousel title={t('blog.similarPosts')} data={articles} />
         )}
         <JoinDiscordBanner />
       </BlogArticleSection>
