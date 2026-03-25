@@ -1,26 +1,24 @@
 import { type ExecutionAction, type Route } from '@lifi/sdk';
 import { useAccount } from '@lifi/wallet-management';
+import type { WalletConnector } from '@lifi/widget-provider';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
-import type { Connector } from 'wagmi';
 
 import { isIframeEnvironment } from '@/utils/iframe';
 import { getRouteStatus } from '@/utils/routes';
 
-const getIsSafeConnector = async (connector?: Connector): Promise<boolean> => {
-  let isSafeConnector = connector?.id === 'safe';
-  if (isSafeConnector) {
-    return isSafeConnector;
+const getIsSafeConnector = (connector?: WalletConnector): boolean => {
+  if (connector?.id === 'safe') {
+    return true;
   }
-  const isWalletConnect = connector?.id === 'walletConnect';
-  if (!isWalletConnect) {
-    return false;
+  // Check connector name as a fallback for Safe wallets connected via
+  // WalletConnect — the old approach used getProvider() to inspect
+  // WalletConnect peer metadata, but WalletConnector is now a plain
+  // metadata object without provider access.
+  if (connector?.name?.toLowerCase?.().includes?.('safe')) {
+    return true;
   }
-  const provider = (await connector?.getProvider()) as any;
-  isSafeConnector = provider?.signer?.session?.peer?.metadata?.name
-    ?.toLowerCase?.()
-    ?.includes?.('safe');
-  return isSafeConnector;
+  return false;
 };
 
 export const useMultisig = () => {
@@ -32,10 +30,7 @@ export const useMultisig = () => {
 
   useEffect(() => {
     const checkMultisigEnvironment = async () => {
-      const isSafeConnector = await getIsSafeConnector(
-        account.connector as Connector,
-      );
-      setIsSafeConnector(isSafeConnector);
+      setIsSafeConnector(getIsSafeConnector(account.connector));
 
       // Check if running inside Safe iframe environment
       if (!isIframeEnvironment()) {
@@ -71,14 +66,10 @@ export const useMultisig = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      const isSafeConnector = await getIsSafeConnector(
-        account.connector as Connector,
-      );
-      if (isSafeConnector) {
-        setIsSafeConnector(isSafeConnector);
-      }
-    })();
+    const isSafe = getIsSafeConnector(account.connector);
+    if (isSafe) {
+      setIsSafeConnector(true);
+    }
   }, [account.connector]);
 
   return {
