@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { ParseKeys } from 'i18next';
 import { useLearnFiltering } from '@/providers/LearnProvider/filtering/LearnFilteringContext';
 import type {
   BlogArticlesFilterWithoutSortByAndOrder,
@@ -22,6 +23,41 @@ import type { NullableFields } from '@/types/internal';
 import { countBadge, datesBadge, readingDurationBadge } from './utils';
 import type { BlogArticlesPendingFilterValues } from './types';
 import { isEqual, startOfDay } from 'date-fns';
+
+type LearnArticlesSortByOption = {
+  value: `${SortByEnum}:${OrderEnum}`;
+  label: string;
+};
+
+const SORT_OPTIONS_CONFIG: Record<
+  SortByEnum,
+  {
+    label: ParseKeys<'translation'>;
+    order: Record<OrderEnum, ParseKeys<'translation'>>;
+  }
+> = {
+  [SortByOptions.LEVEL]: {
+    label: 'blog.sorting.level',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.lowest',
+      [OrderOptions.DESC]: 'blog.order.highest',
+    },
+  },
+  [SortByOptions.DATE]: {
+    label: 'blog.sorting.publishDate',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.oldest',
+      [OrderOptions.DESC]: 'blog.order.newest',
+    },
+  },
+  [SortByOptions.READING_TIME]: {
+    label: 'blog.sorting.readingTime',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.lowest',
+      [OrderOptions.DESC]: 'blog.order.highest',
+    },
+  },
+};
 
 export const useLearnFilterBar = () => {
   const { t } = useTranslation();
@@ -97,36 +133,20 @@ export const useLearnFilterBar = () => {
   const readingDurationMax =
     filter?.maxReadingDuration ?? readingDurationRangeMax;
 
-  const sortByOptions = useMemo(
-    () =>
-      [
-        {
-          value: `${SortByOptions.LEVEL}:${OrderOptions.ASC}`,
-          label: `${t('blog.sorting.level')} ${t('blog.order.lowest')}`,
-        },
-        {
-          value: `${SortByOptions.LEVEL}:${OrderOptions.DESC}`,
-          label: `${t('blog.sorting.level')} ${t('blog.order.highest')}`,
-        },
-        {
-          value: `${SortByOptions.DATE}:${OrderOptions.ASC}`,
-          label: `${t('blog.sorting.publishDate')} ${t('blog.order.oldest')}`,
-        },
-        {
-          value: `${SortByOptions.DATE}:${OrderOptions.DESC}`,
-          label: `${t('blog.sorting.publishDate')} ${t('blog.order.newest')}`,
-        },
-        {
-          value: `${SortByOptions.READING_TIME}:${OrderOptions.ASC}`,
-          label: `${t('blog.sorting.readingTime')} ${t('blog.order.lowest')}`,
-        },
-        {
-          value: `${SortByOptions.READING_TIME}:${OrderOptions.DESC}`,
-          label: `${t('blog.sorting.readingTime')} ${t('blog.order.highest')}`,
-        },
-      ] as { value: `${SortByEnum}:${OrderEnum}`; label: string }[],
-    [t],
-  );
+  const sortByOptions = useMemo((): LearnArticlesSortByOption[] => {
+    const sortByValues = Object.values(SortByOptions) as SortByEnum[];
+    const orderValues = Object.values(OrderOptions) as OrderEnum[];
+
+    return sortByValues.flatMap((sortBy) =>
+      orderValues.map((order) => {
+        const config = SORT_OPTIONS_CONFIG[sortBy];
+        return {
+          value: `${sortBy}:${order}` as LearnArticlesSortByOption['value'],
+          label: `${t(config.label)} ${t(config.order[order])}`,
+        };
+      }),
+    );
+  }, [t]);
 
   const handleTagChange = (values: string[]) => {
     updateFilter({
