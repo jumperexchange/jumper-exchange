@@ -64,3 +64,17 @@ export const TitleContrastColor: Story = {
     },
   },
 };
+
+export const TitleContrastColorMidas: Story = {
+  args: {
+    ...commonArgs,
+    fullWidth: false,
+    data: {
+      ...commonArgs.data,
+      protocol: {
+        ...commonArgs.data.protocol,
+        logo: `${JUMPER_STRAPI_URL}/uploads/Midas_Logo_Icon_PRIMARY_c280a8c7c9.png`,
+      },
+    },
+  },
+};
