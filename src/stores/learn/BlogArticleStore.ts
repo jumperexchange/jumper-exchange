@@ -36,13 +36,13 @@ export const useBlogArticleStore = createWithEqualityFn(
       },
 
       openModal: (articleId: string, modalContent: ModalContent) => {
+        const currentIds = get().modalShownForArticlesIds ?? [];
         set({
           isModalOpen: true,
           modalContent,
-          modalShownForArticlesIds: [
-            ...(get().modalShownForArticlesIds ?? []),
-            articleId,
-          ],
+          modalShownForArticlesIds: currentIds.includes(articleId)
+            ? currentIds
+            : [...currentIds, articleId],
         });
       },
 
