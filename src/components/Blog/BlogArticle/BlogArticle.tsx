@@ -31,6 +31,10 @@ import { RichBlocksVariant } from '@/components/RichBlocks/types';
 import { BlogArticleAuthor } from './BlogArticleAuthor';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
+import { ScrollProgress } from './ScrollProgress';
+import { useCallback } from 'react';
+import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
+import dynamic from 'next/dynamic';
 import {
   TrackingCategory,
   TrackingAction,
@@ -38,15 +42,28 @@ import {
 } from '@/const/trackingKeys';
 import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
 import Script from 'next/script';
+import { useBlogArticleTracking } from '@/hooks/userTracking/useBlogArticleTracking';
+
+const BlogArticleModal = dynamic(
+  () => import('./BlogArticleModal').then((mod) => mod.BlogArticleModal),
+  {
+    ssr: false,
+  },
+);
 
 interface BlogArticleProps {
   article: BlogArticleData;
   id?: number;
 }
 
+const IMAGE_HEIGHT = 640;
+const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
+
 export const BlogArticle = ({ article }: BlogArticleProps) => {
   const theme = useTheme();
   const {
+    id,
+    documentId,
     Subtitle: subtitle,
     Title: title,
     Content: content,
@@ -55,22 +72,61 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     author,
     publishedAt,
     createdAt,
-    updatedAt,
     tags,
     Image: image,
     faq_items,
+    popup,
   } = article;
   const baseUrl = getStrapiBaseUrl();
-  const id = article.id;
   const minRead = readingTime(wordCount);
   const { t } = useTranslation();
+  const { trackBlogArticleOpenPopupEvent } = useBlogArticleTracking();
+
+  const [isModalOpen, openModal] = useBlogArticleStore((s) => [
+    s.isModalOpen,
+    s.openModal,
+  ]);
+
+  const shouldOpenModal = useBlogArticleStore((s) =>
+    s.shouldOpenModalForArticle(documentId),
+  );
 
   const mainTag = tags?.[0];
+
+  const handleScroll = useCallback(
+    (scrollProgress: number) => {
+      if (!popup) {
+        return;
+      }
+
+      if (scrollProgress >= SCROLL_PROGRESS_OPEN_POPUP && !isModalOpen) {
+        trackBlogArticleOpenPopupEvent(id, title, popup.Title);
+
+        openModal(documentId, {
+          title: popup.Title,
+          description: popup.Message,
+          ctaLink: popup.CTALink,
+          cta: popup.CTA,
+          isNewsletterSubscription: !!popup.IsNewsletterSubscription,
+        });
+      }
+    },
+    [
+      documentId,
+      popup,
+      id,
+      title,
+      isModalOpen,
+      openModal,
+      trackBlogArticleOpenPopupEvent,
+    ],
+  );
 
   const blogArticleSchema = buildArticleSchema(article);
 
   return (
     <>
+      {isModalOpen && <BlogArticleModal articleId={id} articleTitle={title} />}
       <BlogArticleContainer>
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
@@ -144,7 +200,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
             alt={image.alternativeText ?? title}
             priority
             width={1200}
-            height={640}
+            height={IMAGE_HEIGHT}
           />
         ) : (
           <BlogArticleImageSkeleton />
@@ -153,32 +209,39 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
 
       <BlogArticleContainer>
         <BlogArticleContentContainer>
-          <WithSkeleton
-            show={!!content}
-            skeleton={<BlogArticleContentSkeleton variant="text" />}
+          <ScrollProgress
+            // @TODO enable this with JUM-640
+            // showProgress
+            onScroll={shouldOpenModal ? handleScroll : undefined}
+            topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
           >
-            <RichBlocks
-              content={content!}
-              variant={RichBlocksVariant.BlogArticle}
-              blockSx={{
-                paragraph: (theme) => ({
-                  ...theme.typography.bodyLargeParagraph,
-                  fontWeight: 400,
-                }),
-              }}
-              trackingKeys={{
-                cta: {
-                  category: TrackingCategory.BlogArticle,
-                  action: TrackingAction.ClickBlogCTA,
-                  label: 'click-blog-cta',
-                  data: {
-                    [TrackingEventParameter.ArticleID]: String(id || ''),
-                    [TrackingEventParameter.ArticleTitle]: title || '',
+            <WithSkeleton
+              show={!!content}
+              skeleton={<BlogArticleContentSkeleton variant="text" />}
+            >
+              <RichBlocks
+                content={content!}
+                variant={RichBlocksVariant.BlogArticle}
+                blockSx={{
+                  paragraph: (theme) => ({
+                    ...theme.typography.bodyLargeParagraph,
+                    fontWeight: 400,
+                  }),
+                }}
+                trackingKeys={{
+                  cta: {
+                    category: TrackingCategory.BlogArticle,
+                    action: TrackingAction.ClickBlogCTA,
+                    label: 'click-blog-cta',
+                    data: {
+                      [TrackingEventParameter.ArticleID]: String(id || ''),
+                      [TrackingEventParameter.ArticleTitle]: title || '',
+                    },
                   },
-                },
-              }}
-            />
-          </WithSkeleton>
+                }}
+              />
+            </WithSkeleton>
+          </ScrollProgress>
           {faq_items?.length > 0 && (
             <AccordionFAQ
               accordionHeader={
