@@ -588,7 +588,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          class="MuiBox-root css-nosxnw"
+                                          class="MuiBox-root css-mtay44"
                                         >
                                           <div
                                             class="MuiStack-root css-8lrfwp-MuiStack-root"
@@ -678,7 +678,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           </div>
                                         </div>
                                         <div
-                                          class="MuiBox-root css-nosxnw"
+                                          class="MuiBox-root css-mtay44"
                                         >
                                           <div
                                             class="MuiStack-root css-8lrfwp-MuiStack-root"

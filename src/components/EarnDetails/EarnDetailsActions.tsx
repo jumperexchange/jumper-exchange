@@ -18,9 +18,19 @@ import {
   EarnDetailsActionsButtonsContainer,
   EarnDetailsActionsButtonsFallbackContainer,
   EarnDetailsActionsContainer,
+  EarnDetailsActionsHeaderContainer,
 } from './EarnDetails.styles';
 import { EarnDetailsActionsPosition } from './EarnDetailsActionsPosition';
+import {
+  RequestRedeemFlowButton,
+  RequestRedeemFlowIconButton,
+} from '../composite/RequestRedeemFlow/RequestRedeemFlow';
+import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
+import { Variant as IconButtonVariant } from '@/components/core/buttons/types';
+import CheckIcon from '@mui/icons-material/Check';
+import ScheduleIcon from '@mui/icons-material/Schedule';
 import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
+import { isProduction } from '@/utils/isProduction';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -99,9 +109,24 @@ export const EarnDetailsActions = ({
   const areActionsDisabled =
     isDepositFeatureDisabled && isWithdrawFeatureDisabled;
 
+  const { data: redeemableClaims, refetch: refetchRedeemableClaims } =
+    useRedeemableClaims(earnOpportunity, hasDeposited);
+
+  const { hasAcceptedClaims, hasPendingClaims } = useMemo(() => {
+    return {
+      hasAcceptedClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'ready',
+      ),
+      hasPendingClaims: redeemableClaims?.claimData?.some(
+        (claim) => claim.status === 'pending',
+      ),
+    };
+  }, [redeemableClaims]);
+
   const handleRefreshBalances = () => {
     refetchPositions();
     refetchDepositAmount();
+    refetchRedeemableClaims();
   };
 
   const renderFooter = () => {
@@ -112,6 +137,7 @@ export const EarnDetailsActions = ({
         </EarnDetailsActionsButtonsFallbackContainer>
       );
     }
+
     if (isLoading) {
       return (
         <EarnDetailsActionsButtonsContainer>
@@ -158,7 +184,7 @@ export const EarnDetailsActions = ({
           data-testid="quick-deposit-button"
           sx={{ flex: 1 }}
         />
-        {hasDeposited && (
+        {hasDeposited && earnOpportunity.isRedeemable && (
           <WithdrawFlowButton
             earnOpportunity={earnOpportunity}
             size="large"
@@ -168,12 +194,55 @@ export const EarnDetailsActions = ({
             sx={{ flex: 1 }}
           />
         )}
+        {hasDeposited && !earnOpportunity.isRedeemable && !isProduction && (
+          <RequestRedeemFlowButton
+            earnOpportunity={earnOpportunity}
+            size="large"
+            label={t('buttons.withdrawButtonLabel')}
+            refetchCallback={handleRefreshBalances}
+            data-testid="request-redeem-button"
+            sx={{ flex: 1 }}
+          />
+        )}
       </EarnDetailsActionsButtonsContainer>
     );
   };
 
+  let claimRedeemButton = null;
+
+  if (hasAcceptedClaims) {
+    claimRedeemButton = (
+      <RequestRedeemFlowIconButton
+        variant={IconButtonVariant.Success}
+        tooltipContent="Your withdrawal is ready"
+        earnOpportunity={earnOpportunity}
+        refetchCallback={handleRefreshBalances}
+      >
+        <CheckIcon />
+      </RequestRedeemFlowIconButton>
+    );
+  } else if (hasPendingClaims) {
+    claimRedeemButton = (
+      <RequestRedeemFlowIconButton
+        variant={IconButtonVariant.AlphaDark}
+        tooltipContent="You have a pending withdraw request"
+        earnOpportunity={earnOpportunity}
+        refetchCallback={handleRefreshBalances}
+      >
+        <ScheduleIcon />
+      </RequestRedeemFlowIconButton>
+    );
+  }
+
   return (
     <EarnDetailsActionsContainer>
+      <EarnDetailsActionsHeaderContainer>
+        {/** This is an interim solution until we can replace the section with the MultiViewCard */}
+        <Typography variant="bodyXSmall" color="textSecondary">
+          {t('earn.position.label')}
+        </Typography>
+        {!isProduction && claimRedeemButton}
+      </EarnDetailsActionsHeaderContainer>
       <EarnDetailsActionsPosition
         token={earnOpportunity.lpToken}
         amountUSD={depositAmountUSD}

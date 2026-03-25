@@ -45,10 +45,16 @@ export const CategoryListItem: React.FC<CategoryListItemProps> = ({
     >
       <CategoryListItemContent>
         {category.icon && <Stack sx={{ flexShrink: 0 }}>{category.icon}</Stack>}
-        <Typography variant="bodyMedium">{category.label}</Typography>
+        <Typography
+          variant="bodyMedium"
+          noWrap
+          sx={{ minWidth: 0, flex: 1, textAlign: 'start' }}
+        >
+          {category.label}
+        </Typography>
       </CategoryListItemContent>
 
-      <Stack direction="row" gap={1} alignItems="center">
+      <Stack direction="row" gap={1} alignItems="center" sx={{ flexShrink: 0 }}>
         {category.badgeLabel && (
           <SelectBadge label={category.badgeLabel} sx={{ mr: 0 }} />
         )}

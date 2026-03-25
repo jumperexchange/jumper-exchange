@@ -25,6 +25,7 @@ export const Default: Story = {
   args: {
     isOpen: true,
     earnOpportunity: {
+      isRedeemable: true,
       name: 'morpho',
       slug: 'morpho',
       protocol: {
@@ -112,6 +113,7 @@ export const WithToggleAndConnectButton: Story = {
   args: {
     isOpen: false,
     earnOpportunity: {
+      isRedeemable: true,
       slug: 'morpho',
       name: 'morpho',
       protocol: {

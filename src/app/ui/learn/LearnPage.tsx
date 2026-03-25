@@ -1,25 +1,37 @@
-'use client';
-
 import { FeaturedArticle } from '@/components/Blog/FeaturedArticle/FeaturedArticle';
-import type {
-  BlogArticleData,
-  StrapiResponse,
-  TagAttributes,
-} from '@/types/strapi';
-import { LearnPageClient } from './LearnPageClient';
 import Box from '@mui/material/Box';
+import { LearnPageBlogCarousel } from './LearnPageBlogCarousel';
+import { LearnFilteringProvider } from '../../../providers/LearnProvider/filtering/LearnFilteringContext';
+import { LearnPageArticlesSection } from './LearnPageArticlesSection/LearnPageArticlesSection';
+import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
+import { getFeaturedArticle } from '@/app/lib/getFeaturedArticle';
+import { getArticles } from '@/app/lib/getArticles';
+import { getTags } from '@/app/lib/getTags';
+import type { FC } from 'react';
+import { Suspense } from 'react';
+import { LearnPageArticlesSectionSkeleton } from './LearnPageArticlesSection/LearnPageArticlesSectionSkeleton';
 
-interface LearnPageProps {
-  carouselArticles: StrapiResponse<BlogArticleData>;
-  featuredArticle: BlogArticleData;
-  tags: StrapiResponse<TagAttributes>;
-}
+interface LearnPageProps {}
 
-const LearnPage = ({
-  carouselArticles,
-  featuredArticle,
-  tags,
-}: LearnPageProps) => {
+const LearnPage: FC<LearnPageProps> = async () => {
+  const featuredArticle = (
+    await getFeaturedArticle().catch(() => ({ data: [] }))
+  ).data?.[0];
+  const [carouselArticles, tags] = await Promise.all([
+    getArticles(featuredArticle?.id, 5).catch(() => ({ data: [] })),
+    getTags().catch(() => ({
+      data: [],
+      meta: {
+        pagination: {
+          page: 0,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0,
+        },
+      },
+    })),
+  ]);
+
   return (
     <Box
       className="learn-page"
@@ -28,6 +40,9 @@ const LearnPage = ({
           xs: 12,
           md: 0,
         },
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
       }}
     >
       {featuredArticle && (
@@ -38,7 +53,13 @@ const LearnPage = ({
           // }
         />
       )}
-      <LearnPageClient carouselArticles={carouselArticles} tags={tags} />
+      <LearnPageBlogCarousel articles={carouselArticles?.data} />
+      <JoinDiscordBanner sx={{ margin: '0 !important' }} />
+      <Suspense fallback={<LearnPageArticlesSectionSkeleton />}>
+        <LearnFilteringProvider tags={tags}>
+          <LearnPageArticlesSection />
+        </LearnFilteringProvider>
+      </Suspense>
     </Box>
   );
 };

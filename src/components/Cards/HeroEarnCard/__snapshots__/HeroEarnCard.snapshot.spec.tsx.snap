@@ -107,7 +107,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -249,7 +249,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -391,7 +391,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -533,7 +533,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                     />
                   </div>
                 </div>
@@ -679,7 +679,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                     >
                       <span
-                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                        class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                       />
                     </div>
                   </div>
@@ -746,7 +746,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
           class="MuiBox-root css-1lr3mj0"
         >
           <span
-            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1ja4xpg-MuiSkeleton-root"
+            class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-kqkmxp-MuiSkeleton-root"
           />
         </div>
         <span
@@ -865,7 +865,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-d2d7y6-MuiAvatar-root"
                   >
                     <span
-                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-gn4zsg-MuiSkeleton-root"
+                      class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-1v01e84-MuiSkeleton-root"
                     />
                   </div>
                 </div>

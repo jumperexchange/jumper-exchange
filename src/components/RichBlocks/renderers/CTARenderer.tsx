@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { TrackingKeys } from '../types';
+import type { FC } from 'react';
+import type { TrackingKeys } from '../types';
 import { IconButtonPrimary } from '@/components/IconButton.style';
 import { useTranslation } from 'react-i18next';
 import { useUserTracking } from 'src/hooks/userTracking/useUserTracking';
@@ -62,7 +62,6 @@ export const CTARenderer: FC<CTARendererProps> = ({ text, trackingKeys }) => {
             sx={(theme) => ({
               width: '28px',
               height: '28px',
-              color: (theme.vars || theme).palette.white.main,
             })}
           />
         </IconButtonPrimary>

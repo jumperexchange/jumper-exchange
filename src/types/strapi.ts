@@ -207,6 +207,28 @@ export interface AvatarData extends StrapiMediaAttributes {
   // attributes: StrapiMediaAttributes;
 }
 
+export interface SeoAttributes {
+  metaTitle: string;
+  metaDescription: string;
+  metaImage?: StrapiMediaData;
+  openGraph?: {
+    ogTitle: string;
+    ogDescription: string;
+    ogImage?: StrapiMediaData;
+    ogUrl?: string;
+    ogType?: string;
+  };
+  keywords?: string;
+  metaRobots?: string;
+  metaViewport?: string;
+  canonicalURL?: string;
+  structuredData?: any;
+}
+
+export interface SeoData extends SeoAttributes {
+  id: number;
+}
+
 /* Blog */
 export interface BlogArticleData extends BlogArticleAttributes {
   id: number;
@@ -220,18 +242,20 @@ export interface BlogArticleAttributes {
   Content: RootNode[];
   Image: StrapiMediaData;
   Slug: string;
+  Level?: string;
   WordCount: number;
   createdAt: string;
   updatedAt: string;
   tags: TagAttributes[];
   author: AuthorData;
-  faq_items: FaqData;
+  faq_items: FaqMeta[];
   publishedAt?: string;
   locale: string;
   RedirectURL?: string;
   localizations: {
     data: any[];
   };
+  seo?: SeoData | null;
 }
 
 export interface PartnerThemesData extends PartnerThemesAttributes {
