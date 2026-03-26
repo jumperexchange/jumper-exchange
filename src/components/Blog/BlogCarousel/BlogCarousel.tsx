@@ -82,13 +82,13 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
         <Typography variant="bodyXLargeStrong">{title}</Typography>
 
         <Box sx={{ ml: 'auto', display: isSpread ? 'flex' : 'none', gap: 1 }}>
-          <IconButton onClick={handlePrev}>
+          <IconButton onClick={handlePrev} aria-label="Previous slide">
             <ArrowBackRoundedIcon />
           </IconButton>
 
           <BlogCarouselPagination total={total} activeIndex={displayIndex} />
 
-          <IconButton onClick={handleNext}>
+          <IconButton onClick={handleNext} aria-label="Next slide">
             <ArrowForwardRoundedIcon />
           </IconButton>
         </Box>
