@@ -1,10 +1,15 @@
 import { useMemo } from 'react';
+import type { ParseKeys } from 'i18next';
 import { useLearnFiltering } from '@/providers/LearnProvider/filtering/LearnFilteringContext';
 import type {
   BlogArticlesFilterWithoutSortByAndOrder,
+  OrderEnum,
   SortByEnum,
 } from '@/providers/LearnProvider/filtering/types';
-import { SortByOptions } from '@/providers/LearnProvider/filtering/types';
+import {
+  OrderOptions,
+  SortByOptions,
+} from '@/providers/LearnProvider/filtering/types';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
 import { useTranslation } from 'react-i18next';
 import { usePendingFilters } from '@/components/composite/MultiLayer/hooks';
@@ -19,6 +24,41 @@ import { countBadge, datesBadge, readingDurationBadge } from './utils';
 import type { BlogArticlesPendingFilterValues } from './types';
 import { isEqual, startOfDay } from 'date-fns';
 
+type LearnArticlesSortByOption = {
+  value: `${SortByEnum}:${OrderEnum}`;
+  label: string;
+};
+
+const SORT_OPTIONS_CONFIG: Record<
+  SortByEnum,
+  {
+    label: ParseKeys<'translation'>;
+    order: Record<OrderEnum, ParseKeys<'translation'>>;
+  }
+> = {
+  [SortByOptions.LEVEL]: {
+    label: 'blog.sorting.level',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.lowest',
+      [OrderOptions.DESC]: 'blog.order.highest',
+    },
+  },
+  [SortByOptions.DATE]: {
+    label: 'blog.sorting.publishDate',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.oldest',
+      [OrderOptions.DESC]: 'blog.order.newest',
+    },
+  },
+  [SortByOptions.READING_TIME]: {
+    label: 'blog.sorting.readingTime',
+    order: {
+      [OrderOptions.ASC]: 'blog.order.lowest',
+      [OrderOptions.DESC]: 'blog.order.highest',
+    },
+  },
+};
+
 export const useLearnFilterBar = () => {
   const { t } = useTranslation();
   const {
@@ -31,6 +71,8 @@ export const useLearnFilterBar = () => {
     clearFilters,
     sortBy,
     setSortBy,
+    order,
+    setOrder,
   } = useLearnFiltering();
 
   const tagOptions = useMemo(
@@ -91,17 +133,20 @@ export const useLearnFilterBar = () => {
   const readingDurationMax =
     filter?.maxReadingDuration ?? readingDurationRangeMax;
 
-  const sortByOptions = useMemo(
-    () => [
-      { value: SortByOptions.LEVEL, label: t('blog.sorting.level') },
-      { value: SortByOptions.DATE, label: t('blog.sorting.publishDate') },
-      {
-        value: SortByOptions.READING_TIME,
-        label: t('blog.sorting.readingTime'),
-      },
-    ],
-    [t],
-  );
+  const sortByOptions = useMemo((): LearnArticlesSortByOption[] => {
+    const sortByValues = Object.values(SortByOptions) as SortByEnum[];
+    const orderValues = Object.values(OrderOptions) as OrderEnum[];
+
+    return sortByValues.flatMap((sortBy) =>
+      orderValues.map((order) => {
+        const config = SORT_OPTIONS_CONFIG[sortBy];
+        return {
+          value: `${sortBy}:${order}` as LearnArticlesSortByOption['value'],
+          label: `${t(config.label)} ${t(config.order[order])}`,
+        };
+      }),
+    );
+  }, [t]);
 
   const handleTagChange = (values: string[]) => {
     updateFilter({
@@ -147,6 +192,10 @@ export const useLearnFilterBar = () => {
     setSortBy(value as SortByEnum);
   };
 
+  const handleOrder = (value: string) => {
+    setOrder(value as OrderEnum);
+  };
+
   const optionsCount = [
     tagOptions.length,
     levelOptions.length,
@@ -187,6 +236,7 @@ export const useLearnFilterBar = () => {
     readingDurationRangeMax,
     sortByOptions,
     sortBy,
+    order,
     handleTagChange,
     handleLevelChange,
     handleDatesChange,
@@ -194,6 +244,7 @@ export const useLearnFilterBar = () => {
     handleClearAllFilters: clearFilters,
     handleApplyAllFilters,
     handleSortBy,
+    handleOrder,
   };
 };
 
@@ -214,9 +265,11 @@ export const useBlogArticlesFilteringCategories = () => {
     readingDurationRangeMax,
     sortByOptions,
     sortBy,
+    order,
     handleClearAllFilters,
     handleApplyAllFilters,
     handleSortBy,
+    handleOrder,
   } = useLearnFilterBar();
 
   const {
@@ -233,6 +286,7 @@ export const useBlogArticlesFilteringCategories = () => {
       dates: [dateMin, dateMax],
       readingDuration: [readingDurationMin, readingDurationMax],
       sortBy,
+      order,
     },
     onApply: (values) => {
       handleApplyAllFilters({
@@ -250,6 +304,7 @@ export const useBlogArticlesFilteringCategories = () => {
             : null,
       });
       handleSortBy(values.sortBy);
+      handleOrder(values.order);
     },
     onClear: handleClearAllFilters,
     isFilterApplied: (values) =>
@@ -261,7 +316,8 @@ export const useBlogArticlesFilteringCategories = () => {
       !isEqual(values.dates[1], dateRangeMax) ||
       values.readingDuration[0] !== readingDurationRangeMin ||
       values.readingDuration[1] !== readingDurationRangeMax ||
-      values.sortBy != sortBy,
+      values.sortBy != sortBy ||
+      values.order != order,
   });
 
   const usedMin = pendingValues.dates[0] ?? dateMin;
@@ -339,13 +395,21 @@ export const useBlogArticlesFilteringCategories = () => {
         })
       : null,
     sortByOptions.length > 1
-      ? createSingleSelectCategory<SortByEnum>({
+      ? createSingleSelectCategory<`${SortByEnum}:${OrderEnum}`>({
           id: 'sortBy',
           label: t('blog.sorting.sortBy'),
-          value: pendingValues.sortBy,
+          value: `${pendingValues.sortBy}:${pendingValues.order}`,
           onChange: (v) => {
-            if (v) {
-              setPendingValue('sortBy', v);
+            if (!v) {
+              return;
+            }
+            const [nextSortBy, nextOrder] = v.split(':') as [
+              SortByEnum,
+              OrderEnum,
+            ];
+            if (nextSortBy && nextOrder) {
+              setPendingValue('sortBy', nextSortBy);
+              setPendingValue('order', nextOrder);
             }
           },
           options: sortByOptions,
