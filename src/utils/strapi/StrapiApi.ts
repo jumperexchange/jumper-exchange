@@ -527,6 +527,19 @@ class ArticleStrapiApi extends StrapiApi {
     this.apiUrl.searchParams.set('status', 'draft');
     return this;
   }
+
+  filterByTitleOrSubtitle(searchText: string): this {
+    const trimmed = searchText.trim();
+    if (!trimmed) {
+      return this;
+    }
+    this.apiUrl.searchParams.set('filters[$or][0][Title][$containsi]', trimmed);
+    this.apiUrl.searchParams.set(
+      'filters[$or][1][Subtitle][$containsi]',
+      trimmed,
+    );
+    return this;
+  }
 }
 
 class TagStrapiApi extends StrapiApi {
