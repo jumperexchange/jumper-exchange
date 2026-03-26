@@ -103,6 +103,9 @@
     "shareFb": "Share article on Facebook",
     "shareX": "Share article on X",
     "shareLink": "Share the link",
+    "tableOfContents": {
+      "title": "On this page"
+    },
     "views": {
       "viewBy": "View by"
     },

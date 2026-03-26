@@ -1,4 +1,4 @@
-import { Box, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import {
   BlogArticleContainer,
@@ -19,6 +19,8 @@ import {
   BlogAuthorWrapper,
   BlogMetaContainer,
   Divider,
+  getContentContainerStylesForTOC,
+  getTOCStyles,
 } from './BlogArticle.style';
 
 import { Tag } from '@/components/Tag.style';
@@ -28,11 +30,13 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
 import { RichBlocksVariant } from '@/components/RichBlocks/types';
+import { getTableOfContentsFromContent } from '@/utils/richBlocks/getTableOfContentsFromContent';
 import { BlogArticleAuthor } from './BlogArticleAuthor';
+import { BlogArticleTableOfContents } from './BlogArticleTableOfContents';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
 import { ScrollProgress } from './ScrollProgress';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
 import dynamic from 'next/dynamic';
 import {
@@ -58,9 +62,9 @@ interface BlogArticleProps {
 
 const IMAGE_HEIGHT = 640;
 const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
+const MAX_TOC_LEVELS = 2;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
-  const theme = useTheme();
   const {
     id,
     documentId,
@@ -124,6 +128,13 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
 
   const blogArticleSchema = buildArticleSchema(article);
 
+  const tableOfContents = getTableOfContentsFromContent(content);
+  const displayTableOfContents = useMemo(
+    () => tableOfContents.filter((item) => item.level <= MAX_TOC_LEVELS),
+    [tableOfContents],
+  );
+  const hasToc = displayTableOfContents.length > 0;
+
   return (
     <>
       {isModalOpen && <BlogArticleModal articleId={id} articleTitle={title} />}
@@ -174,13 +185,12 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           </WithSkeleton>
 
           <BlogMetaContainer>
-            {/*// The following block is a duplication of the row 196 onwards but with slightly different styles, needs to be revisited*/}
             <Box
-              sx={{
+              sx={(theme) => ({
                 [theme.breakpoints.down('sm')]: {
                   '.blog-author-socials': { display: 'none' },
                 },
-              }}
+              })}
             >
               <BlogArticleAuthor
                 author={author}
@@ -205,11 +215,17 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         </WithSkeleton>
       </BlogArticleImageContainer>
 
-      <BlogArticleContainer>
+      <BlogArticleContainer
+        sx={hasToc ? getContentContainerStylesForTOC : undefined}
+      >
+        {hasToc && (
+          <BlogArticleTableOfContents
+            items={displayTableOfContents}
+            sx={getTOCStyles}
+          />
+        )}
         <BlogArticleContentContainer>
           <ScrollProgress
-            // @TODO enable this with JUM-640
-            // showProgress
             onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
           >
@@ -240,6 +256,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               />
             </WithSkeleton>
           </ScrollProgress>
+        </BlogArticleContentContainer>
+      </BlogArticleContainer>
+
+      <BlogArticleContainer>
+        <BlogArticleContentContainer>
           {faq_items?.length > 0 && (
             <AccordionFAQ
               accordionHeader={

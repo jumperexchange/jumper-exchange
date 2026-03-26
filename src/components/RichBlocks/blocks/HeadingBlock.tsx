@@ -1,17 +1,17 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import generateKey from 'src/app/lib/generateKey';
-import { CommonBlockProps, HeadingProps } from '../types';
+import type { CommonBlockProps, HeadingProps } from '../types';
 import { Heading } from '../RichBlocks.style';
+import { isValidHeadingLevel } from '@/utils/richBlocks/isValidHeadingLevel';
 
-interface HeadingBlockProps extends HeadingProps, CommonBlockProps {}
-
-const isValidHeadingLevel = (level: number): level is 1 | 2 | 3 | 4 | 5 | 6 => {
-  return level >= 1 && level <= 6;
-};
+interface HeadingBlockProps extends HeadingProps, CommonBlockProps {
+  id?: string;
+}
 
 export const HeadingBlock: FC<HeadingBlockProps> = ({
   children,
   level,
+  id,
   sx,
 }) => {
   if (!children) {
@@ -22,6 +22,7 @@ export const HeadingBlock: FC<HeadingBlockProps> = ({
 
   return (
     <Heading
+      id={id}
       level={level}
       variant={`h${validLevel}`}
       sx={sx}

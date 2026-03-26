@@ -6,8 +6,40 @@ import {
   Typography,
   alpha,
 } from '@mui/material';
+import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
+
+export const getContentContainerStylesForTOC = (theme: Theme) => ({
+  position: 'relative',
+  display: 'grid',
+  width: '100%',
+  gridTemplateColumns: '1fr',
+  overflow: 'visible',
+  [theme.breakpoints.up('md')]: {
+    maxWidth: 'none !important',
+    gridTemplateColumns: `1fr min(${theme.breakpoints.values.sm}px, 100%) 1fr`,
+  },
+  [theme.breakpoints.up('xl')]: {
+    maxWidth: 'none !important',
+    gridTemplateColumns: `1fr min(${theme.breakpoints.values.md}px, 100%) 1fr`,
+  },
+});
+
+export const getTOCStyles = (theme: Theme) => ({
+  display: 'none',
+  [theme.breakpoints.up('md')]: {
+    display: 'block',
+    justifySelf: 'end',
+    width: 'auto',
+    maxWidth: 240,
+    pr: 2,
+    boxSizing: 'border-box',
+    position: 'sticky',
+    top: theme.spacing(2),
+    alignSelf: 'start',
+  },
+});
 
 export const BaseBlogArticleSkeleton = styled(Skeleton)({
   transform: 'unset',
@@ -19,7 +51,6 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   borderRadius: '8px',
   position: 'relative',
   width: '100% !important',
-  overflow: 'hidden',
   padding: theme.spacing(1.5, 2, 3),
   li: {
     color: alpha(theme.palette.text.primary, 0.75),
@@ -33,6 +64,9 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
     [theme.breakpoints.up('sm')]: {
       marginTop: theme.spacing(6),
     },
+  },
+  [theme.breakpoints.up('md')]: {
+    maxWidth: `${theme.breakpoints.values.sm}px`,
   },
   [theme.breakpoints.up('xl')]: {
     maxWidth: `${theme.breakpoints.values.md}px`,
@@ -60,8 +94,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     maxWidth: '100%',
   },
   [theme.breakpoints.up('md')]: {
-    margin: theme.spacing(0, 'auto'),
-    maxWidth: '100%',
+    maxWidth: theme.breakpoints.values.sm,
   },
   [theme.breakpoints.up('lg')]: {
     maxWidth: theme.breakpoints.values.md,
@@ -254,5 +287,5 @@ export const Divider = styled(MuiDivider)(({ theme }) => ({
   ...theme.applyStyles('light', {
     borderColor: alpha(theme.palette.black.main, 0.12),
   }),
-  margin: theme.spacing(8, 0, 0),
+  marginTop: theme.spacing(2),
 }));
