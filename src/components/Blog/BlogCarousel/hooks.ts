@@ -75,6 +75,7 @@ export const useCarouselDrag = (
       if (!dragEnabled) {
         return;
       }
+      isAnimating.current = false;
       e.currentTarget.setPointerCapture(e.pointerId);
       pointerSession.current = {
         active: true,

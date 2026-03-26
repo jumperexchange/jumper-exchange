@@ -41,9 +41,16 @@ export const BlogCarouselPagination = ({
   activeIndex,
 }: BlogCarouselPaginationProps) => {
   return (
-    <Track>
+    <Track role="tablist" aria-label="Carousel pagination">
       {Array.from({ length: total }).map((_, i) => (
-        <Dot key={i} isActive={i === activeIndex} layout>
+        <Dot
+          key={i}
+          isActive={i === activeIndex}
+          layout
+          role="tab"
+          aria-selected={i === activeIndex}
+          aria-label={`Slide ${i + 1} of ${total}`}
+        >
           {i === activeIndex && (
             <Fill style={{ width: '100%', transformOrigin: 'left' }} />
           )}

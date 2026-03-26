@@ -98,7 +98,7 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
         <Box
           sx={{
             position: 'relative',
-            height: containerHeight ?? FALLBACK_CARD_WIDTH,
+            height: containerHeight ?? FALLBACK_CARD_HEIGHT,
           }}
         >
           <DraggableRow
