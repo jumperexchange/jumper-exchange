@@ -40,7 +40,9 @@ interface Resources {
       goToArticle: 'Go to article';
       jumperCta: 'Try jumper.xyz';
       minRead: '{{minRead}} min read';
+      noPostsFound: 'No posts found for your search criteria.';
       openApp: 'Open app';
+      popularPosts: 'Popular posts';
       recentPosts: 'Recent Posts';
       seeAllPosts: 'See all posts';
       shareFb: 'Share article on Facebook';
@@ -56,6 +58,9 @@ interface Resources {
         sortBy: 'Sort by';
       };
       subtitle: 'TL;DR step-by-step guides to DeFi and crypto for all levels';
+      tags: {
+        all: 'All';
+      };
       title: 'Tips and tutorials';
       views: {
         viewBy: 'View by';
@@ -812,6 +817,14 @@ interface Resources {
       earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month and this has been added to your total XP balance.";
       join: 'Join';
       xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} addtional XP this month.';
+    };
+    search: {
+      filteredResult_one: '{{filterCount}} of {{count}} result';
+      filteredResult_other: '{{filterCount}} of {{count}} results';
+      noResults: 'No results found';
+      placeholder: 'Search...';
+      result_one: '{{count}} result';
+      result_other: '{{count}} results';
     };
     seiAlert: {
       buttonText: 'Link Wallet';

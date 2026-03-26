@@ -15,6 +15,7 @@ export interface FormInputProps {
   onBlur?: FocusEventHandler<HTMLInputElement>;
   sx?: SxProps<Theme>;
   startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
 }
 
 export const FormInput: FC<FormInputProps> = ({
@@ -29,6 +30,7 @@ export const FormInput: FC<FormInputProps> = ({
   onBlur,
   sx,
   startAdornment,
+  endAdornment,
 }) => {
   return (
     <>
@@ -46,6 +48,7 @@ export const FormInput: FC<FormInputProps> = ({
         onBlur={onBlur}
         onFocus={onFocus}
         startAdornment={startAdornment}
+        endAdornment={endAdornment}
         sx={sx}
       />
       {errorMessage && (
