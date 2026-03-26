@@ -3,6 +3,7 @@ import { ParagraphBlockContainer } from '../RichBlocks.style';
 import type { CommonBlockProps, ParagraphProps, TrackingKeys } from '../types';
 import { RichBlocksVariant } from '../types';
 import dynamic from 'next/dynamic';
+import { parseMarkdownTable } from '../utils/parseMarkdownTable';
 
 const ParagraphRenderer = dynamic(() =>
   import('../renderers/ParagraphRenderer').then((mod) => mod.ParagraphRenderer),
@@ -20,6 +21,10 @@ const InstructionsRenderer = dynamic(() =>
   import('../renderers/InstructionsRenderer').then(
     (mod) => mod.InstructionsRenderer,
   ),
+);
+
+const TableRenderer = dynamic(() =>
+  import('../renderers/TableRenderer').then((mod) => mod.TableRenderer),
 );
 
 interface ParagraphBlockProps extends PropsWithChildren, CommonBlockProps {
@@ -66,6 +71,11 @@ export const ParagraphBlock: FC<ParagraphBlockProps> = ({
     variant === RichBlocksVariant.BlogArticle
   ) {
     return <InstructionsRenderer text={paragraphChildren[0].props.text} />;
+  }
+
+  const tableData = parseMarkdownTable(paragraphChildren[0].props.text);
+  if (tableData) {
+    return <TableRenderer headers={tableData.headers} rows={tableData.rows} />;
   }
 
   return (

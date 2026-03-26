@@ -5,6 +5,9 @@ import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
 import { urbanist } from 'src/fonts/fonts';
 import { IconButtonPrimary } from '../IconButton';
+import TableContainer from '@mui/material/TableContainer';
+import type { TableCellProps } from '@mui/material/TableCell';
+import TableCell from '@mui/material/TableCell';
 
 // Heading styles
 
@@ -206,3 +209,38 @@ export const WidgetHeader = styled(Box)(({ theme }) => ({
   justifyContent: 'flex-end',
   marginBottom: theme.spacing(3),
 }));
+
+// Table styles
+
+export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+  overflowX: 'auto',
+  borderRadius: theme.shape.radius4,
+  border: `1px solid ${(theme.vars || theme).palette.alpha200.main}`,
+  background: (theme.vars || theme).palette.surface1.main,
+  boxShadow: (theme.vars || theme).shadows[3],
+}));
+
+const StyledCommonCell = styled(TableCell)<TableCellProps>(({ theme }) => ({
+  padding: theme.spacing(1.5, 2),
+  color: (theme.vars || theme).palette.text.primary,
+  ':not(:last-child)': {
+    borderRight: `1px solid ${(theme.vars || theme).palette.alpha200.main}`,
+  },
+}));
+
+export const StyledHeaderCell = styled(StyledCommonCell)<TableCellProps>(
+  ({ theme }) => ({
+    backgroundColor: (theme.vars || theme).palette.secondary.main,
+    ...theme.typography.bodySmallStrong,
+  }),
+);
+
+export const StyledBodyCell = styled(StyledCommonCell)<TableCellProps>(
+  ({ theme }) => ({
+    borderBottom: `1px solid ${(theme.vars || theme).palette.alpha200.main}`,
+    'tr:last-child &': {
+      borderBottom: 'none',
+    },
+    ...theme.typography.bodySmall,
+  }),
+);
