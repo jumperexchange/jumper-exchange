@@ -18,6 +18,13 @@ interface Resources {
       allCategories: 'All';
       categories: 'Categories';
       copiedLink: 'Copied Link';
+      emptyList: {
+        noResults: {
+          clearFilters: 'Clear filters';
+          description: 'Unfortunately there are no results for your search, try clearing your filters.';
+          title: 'No results';
+        };
+      };
       faq: 'FAQ';
       filter: {
         author: 'Author';
@@ -66,6 +73,7 @@ interface Resources {
       okay: 'Okay';
     };
     buttons: {
+      close: 'Close';
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
       depositNow: 'Deposit now';

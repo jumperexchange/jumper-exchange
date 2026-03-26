@@ -121,6 +121,8 @@ export enum TrackingAction {
   ClickShareArticleLink = 'action_share_article_link',
   ClickAuthorsLinkedIn = 'action_click_author_linkedin',
   ClickAuthorsX = 'action_click_author_x',
+  OpenArticlePopup = 'action_open_article_popup',
+  CloseArticlePopup = 'action_close_article_popup',
 
   // Quests
   ClickQuestCard = 'action_click_quest_card',
@@ -304,6 +306,7 @@ export enum TrackingEventParameter {
   SwipeDirection = 'param_swipe_direction',
   ArticleTitle = 'param_article_title',
   ArticleID = 'param_article_id',
+  ArticlePopupTitle = 'param_article_popup_title',
 
   // Pagination
   Pagination = 'param_pagination',

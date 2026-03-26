@@ -9,7 +9,7 @@ import {
 import type { BlogArticleData, TagAttributes } from '@/types/strapi';
 import { readingTime } from '@/utils/readingTime';
 import { flatMap, map, orderBy, uniq } from 'lodash';
-import { isAfter, isBefore } from 'date-fns';
+import { isAfter, isBefore, startOfDay } from 'date-fns';
 
 export const getReadingTimeMinutes = (item: BlogArticleData): number => {
   const t = readingTime(item.WordCount);
@@ -38,13 +38,8 @@ export const extractFilteringParams = (
 
   const allDates = flatMap(data, (article) => [
     article.publishedAt,
-    article.updatedAt,
     article.createdAt,
   ]).filter((date): date is string => !!date);
-
-  const allAuthors: string[] = uniq(
-    map(data, (item) => item.author?.Name).filter(Boolean) as string[],
-  );
 
   const allReadingTimes = uniq(data.map(getReadingTimeMinutes));
 
@@ -146,7 +141,8 @@ export const filterBlogArticles = (
       }
     }
 
-    const itemDate = item.publishedAt ?? item.updatedAt ?? item.createdAt;
+    const itemDate = startOfDay(item.publishedAt ?? item.createdAt);
+
     if (minDate && isBefore(itemDate, minDate)) {
       return false;
     }

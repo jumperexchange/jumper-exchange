@@ -58,7 +58,7 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
   };
 
   const handleClear = () => {
-    category.onChange?.([null, null]);
+    category.onChange?.([category.min, category.max]);
   };
 
   return (
@@ -111,6 +111,7 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
             before: category.min,
             after: category.max,
           }}
+          defaultMonth={category.max}
           modifiersClassNames={{ today: '' }}
           data-testid={category.testId}
         />

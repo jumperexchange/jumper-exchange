@@ -31,5 +31,5 @@ export const isPortfolioFeatureEnabled = () => {
 };
 
 export const isNewsletterFeatureEnabled = () => {
-  return !isProduction;
+  return true;
 };

@@ -5,11 +5,24 @@ import { TrackingCategory } from '@/const/trackingKeys';
 import type { BlogArticleData } from '@/types/strapi';
 import { AnimatePresence, motion } from 'motion/react';
 import type { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
 
-interface LearnPageArticlesListProps {
+type LearnPageArticlesListNonLoadingProps = {
+  loading?: false;
   items: BlogArticleData[];
-  loading?: boolean;
-}
+  onClearFilters: () => void;
+};
+
+type LearnPageArticlesListLoadingProps = {
+  loading: true;
+  items?: never[];
+  onClearFilters?: never;
+};
+
+type LearnPageArticlesListProps =
+  | LearnPageArticlesListNonLoadingProps
+  | LearnPageArticlesListLoadingProps;
 
 const SKELETON_COUNT = 3;
 
@@ -33,9 +46,26 @@ const motionProps = {
 export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
   items,
   loading,
+  onClearFilters,
 }) => {
+  const { t } = useTranslation();
   const showPlaceholder = !!loading;
   const showEmptyState = !loading && !items?.length;
+
+  if (showEmptyState) {
+    return (
+      <AnimatePresence mode="popLayout">
+        <motion.div {...motionProps}>
+          <PortfolioEmptyList
+            title={t('blog.emptyList.noResults.title')}
+            description={t('blog.emptyList.noResults.description')}
+            primaryButtonLabel={t('blog.emptyList.noResults.clearFilters')}
+            onPrimaryButtonClick={onClearFilters}
+          />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
 
   return (
     <GridContainer
@@ -54,17 +84,15 @@ export const LearnPageArticlesList: FC<LearnPageArticlesListProps> = ({
                 <BlogArticleCardSkeleton sx={cardSx} />
               </motion.div>
             ))
-          : showEmptyState
-            ? null
-            : items.map((item, index) => (
-                <motion.div {...motionProps} key={`${item?.Slug}-${index}`}>
-                  <BlogArticleCard
-                    sx={cardSx}
-                    article={item}
-                    trackingCategory={TrackingCategory.BlogArticlesCollection}
-                  />
-                </motion.div>
-              ))}
+          : items.map((item, index) => (
+              <motion.div {...motionProps} key={`${item?.Slug}-${index}`}>
+                <BlogArticleCard
+                  sx={cardSx}
+                  article={item}
+                  trackingCategory={TrackingCategory.BlogArticlesCollection}
+                />
+              </motion.div>
+            ))}
       </AnimatePresence>
     </GridContainer>
   );

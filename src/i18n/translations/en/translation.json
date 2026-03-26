@@ -106,6 +106,13 @@
     "views": {
       "viewBy": "View by"
     },
+    "emptyList": {
+      "noResults": {
+        "title": "No results",
+        "description": "Unfortunately there are no results for your search, try clearing your filters.",
+        "clearFilters": "Clear filters"
+      }
+    },
     "filter": {
       "tag": "Tag",
       "level": "Level",
@@ -737,7 +744,8 @@
     "deposit": "Deposit",
     "depositNow": "Deposit now",
     "requestWithdraw": "Request withdraw",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "close": "Close"
   },
   "form": {
     "labels": {

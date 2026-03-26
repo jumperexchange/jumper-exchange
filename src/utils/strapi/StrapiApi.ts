@@ -124,6 +124,7 @@ class ArticleParams {
     'tags',
     'author.Avatar',
     'faq_items',
+    'popup',
     'seo',
     'seo.metaImage',
     'seo.openGraph',
@@ -487,7 +488,10 @@ class ArticleStrapiApi extends StrapiApi {
   } = {}) {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
     const articleParams = new ArticleParams(this.apiUrl);
-    this.apiUrl = articleParams.addParams({ includeFields, excludeFields });
+    this.apiUrl = articleParams.addParams({
+      includeFields,
+      excludeFields,
+    });
   }
 
   sort(order: SortOrder): this {

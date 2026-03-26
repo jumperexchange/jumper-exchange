@@ -114,7 +114,7 @@ export const useGetColorsFromImage = (
   imageUrl: string,
   useCenterCrop = false,
   useEdgeCrop = false,
-  cropRatio = 0.5,
+  cropRatio = 0.45,
 ) => {
   const [colors, setColors] = useState<Color[]>([]);
 
