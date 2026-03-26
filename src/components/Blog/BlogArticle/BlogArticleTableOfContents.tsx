@@ -8,36 +8,28 @@ import { useTranslation } from 'react-i18next';
 
 interface BlogArticleTableOfContentsProps {
   items: TableOfContentsItem[];
-  maxDisplayLevels?: number;
   activeSectionScrollOffsetPx?: number;
   sx?: SxProps<Theme>;
 }
 
 export const BlogArticleTableOfContents: FC<
   BlogArticleTableOfContentsProps
-> = ({ items, sx, maxDisplayLevels = 1, activeSectionScrollOffsetPx }) => {
+> = ({ items, sx, activeSectionScrollOffsetPx }) => {
   const { t } = useTranslation();
+
   const minLevel = useMemo(
     () => items.reduce((min, item) => Math.min(min, item.level), 6),
     [items],
   );
 
-  const displayItems = useMemo(
-    () => items.filter((item) => item.level - minLevel < maxDisplayLevels),
-    [items, minLevel, maxDisplayLevels],
-  );
-
-  const sectionIds = useMemo(
-    () => displayItems.map((item) => item.id),
-    [displayItems],
-  );
+  const sectionIds = useMemo(() => items.map((item) => item.id), [items]);
 
   const activeId = useActiveTocSectionId(
     sectionIds,
     activeSectionScrollOffsetPx,
   );
 
-  if (displayItems.length === 0) {
+  if (items.length === 0) {
     return null;
   }
 
@@ -47,7 +39,7 @@ export const BlogArticleTableOfContents: FC<
         {t('blog.tableOfContents.title')}
       </Typography>
       <Box component="ul" sx={{ listStyle: 'none', margin: 0, padding: 0 }}>
-        {displayItems.map((item) => (
+        {items.map((item) => (
           <TocItem
             key={item.id}
             item={item}

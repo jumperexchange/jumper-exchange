@@ -36,7 +36,7 @@ import { BlogArticleTableOfContents } from './BlogArticleTableOfContents';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
 import { ScrollProgress } from './ScrollProgress';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
 import dynamic from 'next/dynamic';
 import {
@@ -62,6 +62,7 @@ interface BlogArticleProps {
 
 const IMAGE_HEIGHT = 640;
 const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
+const MAX_TOC_LEVELS = 2;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
   const {
@@ -128,7 +129,11 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   const blogArticleSchema = buildArticleSchema(article);
 
   const tableOfContents = getTableOfContentsFromContent(content);
-  const hasToc = tableOfContents.length > 0;
+  const displayTableOfContents = useMemo(
+    () => tableOfContents.filter((item) => item.level <= MAX_TOC_LEVELS),
+    [tableOfContents],
+  );
+  const hasToc = displayTableOfContents.length > 0;
 
   return (
     <>
@@ -215,7 +220,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       >
         {hasToc && (
           <BlogArticleTableOfContents
-            items={tableOfContents}
+            items={displayTableOfContents}
             sx={getTOCStyles}
           />
         )}
