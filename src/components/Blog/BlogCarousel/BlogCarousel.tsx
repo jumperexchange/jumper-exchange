@@ -113,7 +113,7 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
               left: 0,
               top: 0,
               cursor: isSpread ? 'grab' : 'default',
-              touchAction: isSpread ? 'none' : 'auto',
+              touchAction: isSpread ? 'pan-y' : 'auto',
             }}
           >
             {data.map((article, index) => (
