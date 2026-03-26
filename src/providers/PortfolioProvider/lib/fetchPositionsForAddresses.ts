@@ -1,4 +1,4 @@
-import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
+import { getPositionsForAddresses } from '@/app/lib/getPositionsForAddress';
 import type {
   HttpResponse,
   JumperBackend,
@@ -11,17 +11,9 @@ export type FetchPositionsParams = Parameters<
 
 export type FetchPositionsResult = HttpResponse<WalletPositions, unknown>;
 
-/** Fetch positions for a single wallet address */
-export const fetchPositionsForAddress = async (
+export const fetchPositionsForAddresses = async (
   params: FetchPositionsParams,
 ): Promise<FetchPositionsResult> => {
-  const result = await getPositionsForAddress(params);
+  const result = await getPositionsForAddresses(params);
   return result;
-};
-
-/** Fetch positions for multiple addresses */
-export const fetchPositionsForAddresses = async (
-  params: FetchPositionsParams[],
-): Promise<FetchPositionsResult[]> => {
-  return Promise.all(params.map(fetchPositionsForAddress));
 };
