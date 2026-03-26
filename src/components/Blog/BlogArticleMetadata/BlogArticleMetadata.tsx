@@ -30,7 +30,7 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
 }) => {
   const { t } = useTranslation();
   const firstTag = article?.tags?.[0];
-  const publishDate = article.publishedAt || article.createdAt;
+  const publishDate = article.publishedAt || article.createdAt || Date.now();
   const updateDate = article.updatedAt;
   const isUpdateAfterPublish = differenceInDays(updateDate, publishDate) > 0;
   const minRead = readingTime(article?.WordCount);
@@ -46,15 +46,18 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
           rowGap: 0.5,
         }}
       >
-        <BlogArticleMetaProperty
-          variant={metaVariant}
-          component="span"
-          color="textSecondary"
-        >
-          {t('format.shortDate', {
-            value: new Date(publishDate),
-          })}
-        </BlogArticleMetaProperty>
+        {!!publishDate && (
+          <BlogArticleMetaProperty
+            variant={metaVariant}
+            component="span"
+            color="textSecondary"
+          >
+            {t('format.shortDate', {
+              value: new Date(publishDate),
+            })}
+          </BlogArticleMetaProperty>
+        )}
+
         {isUpdateAfterPublish && (
           <BlogArticleMetaProperty
             variant={metaVariant}
