@@ -134,6 +134,12 @@
       "publishDate": "Publish date",
       "readingTime": "Reading time"
     },
+    "order": {
+      "highest": "(highest)",
+      "lowest": "(lowest)",
+      "newest": "(newest)",
+      "oldest": "(oldest)"
+    },
     "tags": {
       "all": "All"
     },
