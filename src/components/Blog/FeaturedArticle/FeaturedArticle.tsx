@@ -1,8 +1,7 @@
 'use client';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { Tag } from '@/components/Tag.style';
 import {
   TrackingAction,
   TrackingCategory,
@@ -10,7 +9,6 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import type { BlogArticleData } from '@/types/strapi';
-import { readingTime } from '@/utils/readingTime';
 import RouterLink from 'next/link';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import useClient from 'src/hooks/useClient';
@@ -20,12 +18,13 @@ import {
   FeaturedArticleDetails,
   FeaturedArticleImage,
   FeaturedArticleLink,
-  FeaturedArticleMetaContainer,
-  FeaturedArticleMetaDate,
   FeaturedArticleSubtitle,
   FeaturedArticleTitle,
 } from './FeaturedArticle.style';
 import { FeaturedArticleSkeleton } from './FeaturedArticleSkeleton';
+import { BlogArticleMetadata } from '../BlogArticleMetadata/BlogArticleMetadata';
+import { BadgeSize } from '@/components/Badge/Badge.styles';
+import { BlogArticleMetadataSkeleton } from '../BlogArticleMetadata/BlogArticleMetadataSkeleton';
 
 interface FeaturedArticleProps {
   featuredArticle: BlogArticleData;
@@ -46,17 +45,11 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
     });
   };
 
-  const formattedDate =
-    featuredArticle &&
-    t('format.shortDate', {
-      value: new Date(
-        featuredArticle?.publishedAt || featuredArticle?.createdAt,
-      ),
-    });
+  if (!featuredArticle) {
+    return <FeaturedArticleSkeleton />;
+  }
 
-  const minRead = featuredArticle && readingTime(featuredArticle?.WordCount);
-
-  return featuredArticle ? (
+  return (
     <>
       <FeaturedArticleLink
         as={RouterLink}
@@ -81,39 +74,34 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
         />
         <FeaturedArticleContent>
           <FeaturedArticleDetails>
-            {featuredArticle?.tags.slice(0, 1).map((el, index) => (
-              <Tag
-                key={`blog-highlights-tag-${index}`}
-                variant="bodyMediumStrong"
-              >
-                {el?.Title}
-              </Tag>
-            ))}
-            <FeaturedArticleMetaContainer>
-              {isClient ? (
-                <FeaturedArticleMetaDate variant="bodyXSmall" component="span">
-                  {formattedDate}
-                </FeaturedArticleMetaDate>
-              ) : (
-                <Skeleton
-                  component="span"
-                  sx={{
-                    width: '96px',
-                    transform: 'unset',
-                    borderRadius: '16px',
-                    marginRight: '12px',
-                  }}
-                />
-              )}
-
-              <Typography
-                variant="bodyXSmall"
-                component="span"
-                fontSize={'inherit'}
-              >
-                {t('blog.minRead', { minRead: minRead })}
-              </Typography>
-            </FeaturedArticleMetaContainer>
+            {isClient ? (
+              <BlogArticleMetadata
+                article={featuredArticle}
+                tagSize={BadgeSize.XL}
+                metaVariant="bodyMedium"
+                sx={(theme) => ({
+                  flexDirection: 'column',
+                  gap: 3,
+                  [theme.breakpoints.up('sm')]: {
+                    flexDirection: 'row-reverse',
+                    gap: 3,
+                  },
+                })}
+              />
+            ) : (
+              <BlogArticleMetadataSkeleton
+                tagSize={BadgeSize.XL}
+                metaVariant="bodyMedium"
+                sx={(theme) => ({
+                  flexDirection: 'column',
+                  gap: 3,
+                  [theme.breakpoints.up('sm')]: {
+                    flexDirection: 'row-reverse',
+                    gap: 3,
+                  },
+                })}
+              />
+            )}
           </FeaturedArticleDetails>
           <Box>
             <FeaturedArticleTitle variant="headerMedium" as="h2">
@@ -128,7 +116,5 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
         </FeaturedArticleContent>
       </FeaturedArticleLink>
     </>
-  ) : (
-    <FeaturedArticleSkeleton />
   );
 };

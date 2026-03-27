@@ -99,12 +99,11 @@ export const createComponents = (themeBase: Theme) => ({
     styleOverrides: {
       '@supports': { fontVariationSettings: 'normal' },
       html: {
-        height: '100%',
         margin: 0,
         padding: 0,
       },
       body: {
-        height: '100%',
+        minHeight: '100dvh',
         scrollBehavior: 'smooth',
         margin: 0,
         padding: 0,

@@ -1,16 +1,16 @@
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
+
+import { navbarHideOnScrollTriggerOptions } from '@/const/navbar';
 import {
   BlogArticleContainer,
   BlogArticleContentContainer,
   BlogArticleContentSkeleton,
-  BlogArticleHeaderMeta,
-  BlogArticleHeaderMetaDate,
-  BlogArticleHeaderTagSkeleton,
   BlogArticleImage,
   BlogArticleImageContainer,
   BlogArticleImageSkeleton,
-  BlogArticleMetaSkeleton,
   BlogArticleSubtitle,
   BlogArticleSubtitleSkeleton,
   BlogArticleTitle,
@@ -23,9 +23,7 @@ import {
   getTOCStyles,
 } from './BlogArticle.style';
 
-import { Tag } from '@/components/Tag.style';
 import type { BlogArticleData } from '@/types/strapi';
-import { readingTime } from '@/utils/readingTime';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
@@ -46,6 +44,10 @@ import {
 } from '@/const/trackingKeys';
 import { buildArticleSchema } from '@/utils/articles/buildArticleSchema';
 import Script from 'next/script';
+import { BlogArticleMetadata } from '../BlogArticleMetadata/BlogArticleMetadata';
+import { BadgeSize } from '@/components/Badge/Badge.styles';
+import { BlogArticleMetadataSkeleton } from '../BlogArticleMetadata/BlogArticleMetadataSkeleton';
+import useClient from '@/hooks/useClient';
 import { useBlogArticleTracking } from '@/hooks/userTracking/useBlogArticleTracking';
 
 const BlogArticleModal = dynamic(
@@ -65,25 +67,22 @@ const SCROLL_PROGRESS_OPEN_POPUP = 0.3;
 const MAX_TOC_LEVELS = 2;
 
 export const BlogArticle = ({ article }: BlogArticleProps) => {
+  const { t } = useTranslation();
+
   const {
     id,
     documentId,
     Subtitle: subtitle,
     Title: title,
     Content: content,
-    WordCount: wordCount,
     Slug: slug,
     author,
-    publishedAt,
-    createdAt,
-    tags,
     Image: image,
     faq_items,
     popup,
   } = article;
   const baseUrl = getStrapiBaseUrl();
-  const minRead = readingTime(wordCount);
-  const { t } = useTranslation();
+  const scrollHidesAppBar = useScrollTrigger(navbarHideOnScrollTriggerOptions);
   const { trackBlogArticleOpenPopupEvent } = useBlogArticleTracking();
 
   const [isModalOpen, openModal] = useBlogArticleStore((s) => [
@@ -95,7 +94,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     s.shouldOpenModalForArticle(documentId),
   );
 
-  const mainTag = tags?.[0];
+  const isClient = useClient();
 
   const handleScroll = useCallback(
     (scrollProgress: number) => {
@@ -142,34 +141,35 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         <BlogArticleContentContainer sx={{ marginTop: 0 }}>
           <BlogArticleTopHeader>
             <WithSkeleton
-              show={!!mainTag?.Title}
-              skeleton={<BlogArticleHeaderTagSkeleton variant="rectangular" />}
-            >
-              <Tag
-                sx={
-                  mainTag?.TextColor ? { color: mainTag.TextColor } : undefined
-                }
-                backgroundColor={mainTag?.BackgroundColor}
-                component="span"
-                variant="bodyMediumStrong"
-                key={`blog-article-tag-${mainTag?.id}`}
-              >
-                {mainTag?.Title}
-              </Tag>
-            </WithSkeleton>
-
-            <WithSkeleton
-              show={!!createdAt}
-              skeleton={<BlogArticleMetaSkeleton variant="text" />}
-            >
-              <BlogArticleHeaderMeta>
-                <BlogArticleHeaderMetaDate variant="bodyXSmall" as="span">
-                  {t('format.shortDate', {
-                    value: new Date(publishedAt || createdAt!),
+              show={isClient}
+              skeleton={
+                <BlogArticleMetadataSkeleton
+                  tagSize={BadgeSize.XL}
+                  metaVariant="bodyMedium"
+                  sx={(theme) => ({
+                    flexDirection: 'column',
+                    gap: 3,
+                    [theme.breakpoints.up('sm')]: {
+                      flexDirection: 'row-reverse',
+                      gap: 3,
+                    },
                   })}
-                </BlogArticleHeaderMetaDate>
-                <span>{t('blog.minRead', { minRead })}</span>
-              </BlogArticleHeaderMeta>
+                />
+              }
+            >
+              <BlogArticleMetadata
+                article={article}
+                tagSize={BadgeSize.XL}
+                metaVariant="bodyMedium"
+                sx={(theme) => ({
+                  flexDirection: 'column',
+                  gap: 3,
+                  [theme.breakpoints.up('sm')]: {
+                    flexDirection: 'row-reverse',
+                    gap: 3,
+                  },
+                })}
+              />
             </WithSkeleton>
           </BlogArticleTopHeader>
 
@@ -221,7 +221,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         {hasToc && (
           <BlogArticleTableOfContents
             items={displayTableOfContents}
-            sx={getTOCStyles}
+            sx={(theme) => getTOCStyles(theme, { scrollHidesAppBar })}
           />
         )}
         <BlogArticleContentContainer>

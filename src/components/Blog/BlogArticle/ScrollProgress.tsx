@@ -37,10 +37,10 @@ export const ScrollProgress: FC<ScrollProgressProps> = ({
           style={{
             scaleX: scrollYProgress,
             position: 'fixed',
-            top: 0,
+            bottom: 0,
             left: 0,
             right: 0,
-            height: 10,
+            height: theme.spacing(1.25),
             originX: 0,
             background: (theme.vars || theme).palette.primary.main,
             zIndex: 1000,
