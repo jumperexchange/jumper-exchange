@@ -6,39 +6,15 @@ import InputBase from '@mui/material/InputBase';
 import InputLabel, { type InputLabelProps } from '@mui/material/InputLabel';
 import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
-import type { CSSProperties } from 'react';
 import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import type { TypographyVariantKey } from '@/utils/theme/isTypographyThemeKey';
+import { getTypographyStyles } from '@/utils/theme/isTypographyThemeKey';
 
 export enum SelectCardMode {
   Display = 'display',
   Input = 'input',
 }
-export type TypographyVariantKey = TypographyProps['variant'];
-
-type TypographyThemeKey = Exclude<
-  TypographyVariantKey,
-  'inherit' | undefined | `@${string}` | ((...args: any[]) => any)
->;
-
-const isTypographyThemeKey = (
-  theme: Theme,
-  variant: TypographyVariantKey,
-): variant is TypographyThemeKey =>
-  !!variant &&
-  variant !== 'inherit' &&
-  typeof variant !== 'function' &&
-  !variant.startsWith('@') &&
-  variant in theme.typography;
-
-const getTypographyStyles = (
-  theme: Theme,
-  variant: TypographyVariantKey,
-  fallback: TypographyThemeKey,
-) => {
-  const key = isTypographyThemeKey(theme, variant) ? variant : fallback;
-  return theme.typography[key];
-};
 
 interface TextVariantProps {
   textVariant?: TypographyVariantKey;
