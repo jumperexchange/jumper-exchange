@@ -20,18 +20,18 @@ describe('calculateVisibleYRange', () => {
     });
   });
 
-  it('extends maxValue to 1 for single small positive value', () => {
+  it('applies 20% headroom for small positive value', () => {
     const result = calculateVisibleYRange(createDataPoints([0.5]));
 
     expect(result.minValue).toBe(0);
-    expect(result.maxValue).toBe(1);
+    expect(result.maxValue).toBe(0.6);
     expect(result.isNegative).toBe(false);
   });
 
-  it('extends minValue to -1 for single small negative value', () => {
+  it('keeps min to same value for single small negative value', () => {
     const result = calculateVisibleYRange(createDataPoints([-0.5]));
 
-    expect(result.minValue).toBe(-1);
+    expect(result.minValue).toBe(-0.5);
     expect(result.maxValue).toBe(0);
     expect(result.isNegative).toBe(true);
   });
@@ -60,7 +60,7 @@ describe('calculateVisibleYRange', () => {
     expect(result.isNegative).toBe(false);
   });
 
-  it('spans min to 0 for multiple negative values', () => {
+  it('spans max to 0 for multiple negative values', () => {
     const result = calculateVisibleYRange(createDataPoints([-10, -5]));
 
     expect(result.minValue).toBe(-10);
