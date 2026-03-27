@@ -1,8 +1,8 @@
+import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import {
   Box,
   Container,
   Divider as MuiDivider,
-  Skeleton,
   Typography,
   alpha,
 } from '@mui/material';
@@ -41,7 +41,7 @@ export const getTOCStyles = (theme: Theme) => ({
   },
 });
 
-export const BaseBlogArticleSkeleton = styled(Skeleton)({
+export const BaseBlogArticleSkeleton = styled(BaseSurfaceSkeleton)({
   transform: 'unset',
 });
 

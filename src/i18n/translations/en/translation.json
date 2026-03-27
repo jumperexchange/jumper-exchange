@@ -103,6 +103,7 @@
     "shareFb": "Share article on Facebook",
     "shareX": "Share article on X",
     "shareLink": "Share the link",
+    "updated": "Updated {{date}}",
     "tableOfContents": {
       "title": "On this page"
     },

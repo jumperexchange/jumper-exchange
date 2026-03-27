@@ -1,7 +1,8 @@
+import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { urbanist } from '@/fonts/fonts';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import type { Breakpoint, TypographyProps } from '@mui/material';
-import { Box, Skeleton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -59,31 +60,6 @@ export const FeaturedArticleCard = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleMetaContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  fontSize: '16px',
-  alignItems: 'center',
-  color: (theme.vars || theme).palette.text.primary,
-  marginTop: theme.spacing(2),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: 0,
-    marginLeft: theme.spacing(3),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    marginTop: 0,
-  },
-}));
-
-export const FeaturedArticleMetaDate = styled(Typography)<TypographyProps>(
-  () => ({
-    fontSize: 'inherit',
-    '&:after': {
-      content: '"•"',
-      margin: '0 4px',
-    },
-  }),
-);
-
 export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   borderRadius: '20px',
   userSelect: 'none',
@@ -97,52 +73,37 @@ export const FeaturedArticleImage = styled(Image)(({ theme }) => ({
   },
 }));
 
-export const FeaturedArticleImageSkeleton = styled(Skeleton)(({ theme }) => ({
-  borderRadius: '14px',
-  aspectRatio: 1.6,
-  width: '100%',
-  height: '100%',
-  userSelect: 'none',
-  transform: 'unset',
-  alignSelf: 'flex-start',
-  boxShadow: (theme.vars || theme).shadows[1],
-  [theme.breakpoints.up('md' as Breakpoint)]: {
-    alignSelf: 'center',
-  },
-}));
+export const FeaturedArticleImageSkeleton = styled(BaseSurfaceSkeleton)(
+  ({ theme }) => ({
+    borderRadius: '14px',
+    aspectRatio: 1.6,
+    width: '100%',
+    height: '100%',
+    userSelect: 'none',
+    transform: 'unset',
+    alignSelf: 'flex-start',
+    boxShadow: (theme.vars || theme).shadows[2],
+    [theme.breakpoints.up('md' as Breakpoint)]: {
+      alignSelf: 'center',
+    },
+  }),
+);
 
-export const FeaturedArticleTagSkeleton = styled(Skeleton)(({ theme }) => ({
-  height: '48px',
-  width: '108px',
-  borderRadius: '24px',
-  transform: 'unset',
-}));
-
-export const FeaturedArticleMetaSkeleton = styled(Skeleton)(({ theme }) => ({
-  height: 16,
-  width: 150,
-  borderRadius: 8,
-  transform: 'unset',
-  marginTop: theme.spacing(2),
-  [theme.breakpoints.up('sm' as Breakpoint)]: {
-    marginTop: 0,
-    marginLeft: theme.spacing(3),
-  },
-}));
-
-export const FeaturedArticleTitleSkeleton = styled(Skeleton)(({ theme }) => ({
-  margin: theme.spacing(2, 0),
-  transform: 'unset',
-  width: '100%',
-  height: 112,
-  borderRadius: '12px',
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    margin: theme.spacing(4, 0),
+export const FeaturedArticleTitleSkeleton = styled(BaseSurfaceSkeleton)(
+  ({ theme }) => ({
+    margin: theme.spacing(2, 0),
+    transform: 'unset',
+    width: '100%',
     height: 112,
-  },
-}));
+    borderRadius: '12px',
+    [theme.breakpoints.up('lg' as Breakpoint)]: {
+      margin: theme.spacing(4, 0),
+      height: 112,
+    },
+  }),
+);
 
-export const FeaturedArticleSubtitleSkeleton = styled(Skeleton)(
+export const FeaturedArticleSubtitleSkeleton = styled(BaseSurfaceSkeleton)(
   ({ theme }) => ({
     height: '64px',
     transform: 'unset',

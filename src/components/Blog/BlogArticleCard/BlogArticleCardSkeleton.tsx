@@ -4,13 +4,11 @@ import {
   BlogArticleCardContent,
   BlogArticleCardDetails,
   BlogArticleCardImageSkeleton,
-  BlogArticleCardMetaContainer,
-  BlogArticleCardMetaSkeleton,
-  BlogArticleCardTagSkeleton,
   BlogArticleCardTitleSkeleton,
 } from './BlogArticleCard.style';
 import type { FC } from 'react';
 import { mergeSx } from '@/utils/theme/mergeSx';
+import { BlogArticleMetadataSkeleton } from '../BlogArticleMetadata/BlogArticleMetadataSkeleton';
 
 interface BlogArticleCardSkeletonProps {
   sx?: SxProps<Theme>;
@@ -32,10 +30,7 @@ export const BlogArticleCardSkeleton: FC<BlogArticleCardSkeletonProps> = ({
       <BlogArticleCardContent>
         <BlogArticleCardTitleSkeleton variant="text" />
         <BlogArticleCardDetails>
-          <BlogArticleCardTagSkeleton variant="text" />
-          <BlogArticleCardMetaContainer hasTags={true}>
-            <BlogArticleCardMetaSkeleton variant="text" />
-          </BlogArticleCardMetaContainer>
+          <BlogArticleMetadataSkeleton />
         </BlogArticleCardDetails>
       </BlogArticleCardContent>
     </BlogArticleCardContainer>

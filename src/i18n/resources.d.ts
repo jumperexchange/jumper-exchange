@@ -71,6 +71,7 @@ interface Resources {
         all: 'All';
       };
       title: 'Tips and tutorials';
+      updated: 'Updated {{date}}';
       views: {
         viewBy: 'View by';
       };
