@@ -10,6 +10,12 @@ import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Image from 'next/image';
 
+import { HeaderHeight } from '@/const/headerHeight';
+
+export interface BlogArticleTocScrollAlignmentOpts {
+  scrollHidesAppBar: boolean;
+}
+
 export const getContentContainerStylesForTOC = (theme: Theme) => ({
   position: 'relative',
   display: 'grid',
@@ -26,7 +32,10 @@ export const getContentContainerStylesForTOC = (theme: Theme) => ({
   },
 });
 
-export const getTOCStyles = (theme: Theme) => ({
+export const getTOCStyles = (
+  theme: Theme,
+  opts: BlogArticleTocScrollAlignmentOpts,
+) => ({
   display: 'none',
   [theme.breakpoints.up('md')]: {
     display: 'block',
@@ -36,8 +45,14 @@ export const getTOCStyles = (theme: Theme) => ({
     pr: 2,
     boxSizing: 'border-box',
     position: 'sticky',
-    top: theme.spacing(2),
+    top: opts.scrollHidesAppBar
+      ? theme.spacing(2)
+      : `calc(${HeaderHeight.MD}px + ${theme.spacing(2)})`,
     alignSelf: 'start',
+    transition: theme.transitions.create('top', {
+      duration: theme.transitions.duration.shortest,
+      easing: theme.transitions.easing.easeInOut,
+    }),
   },
 });
 
