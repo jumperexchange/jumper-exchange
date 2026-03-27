@@ -5561,20 +5561,38 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                 <rect
                   class="recharts-cartesian-grid-bg"
                   fill="transparent"
-                  height="35"
+                  height="15"
                   stroke="none"
                   width="30"
                   x="65"
-                  y="0"
+                  y="5"
                 />
                 <rect
                   class="recharts-cartesian-grid-bg"
                   fill="transparent"
-                  height="30"
+                  height="15"
+                  stroke="none"
+                  width="30"
+                  x="65"
+                  y="20"
+                />
+                <rect
+                  class="recharts-cartesian-grid-bg"
+                  fill="transparent"
+                  height="15"
                   stroke="none"
                   width="30"
                   x="65"
                   y="35"
+                />
+                <rect
+                  class="recharts-cartesian-grid-bg"
+                  fill="transparent"
+                  height="15"
+                  stroke="none"
+                  width="30"
+                  x="65"
+                  y="50"
                 />
               </g>
               <g
@@ -5590,8 +5608,21 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   x1="65"
                   x2="95"
                   y="5"
-                  y1="35"
-                  y2="35"
+                  y1="65"
+                  y2="65"
+                />
+                <line
+                  fill="none"
+                  height="60"
+                  stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
+                  stroke-dasharray="0"
+                  width="30"
+                  x="65"
+                  x1="65"
+                  x2="95"
+                  y="5"
+                  y1="50"
+                  y2="50"
                 />
                 <line
                   fill="none"
@@ -5616,8 +5647,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   x1="65"
                   x2="95"
                   y="5"
-                  y1="35"
-                  y2="35"
+                  y1="20"
+                  y2="20"
                 />
                 <line
                   fill="none"
@@ -5629,21 +5660,8 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   x1="65"
                   x2="95"
                   y="5"
-                  y1="35"
-                  y2="35"
-                />
-                <line
-                  fill="none"
-                  height="60"
-                  stroke="color-mix(in srgb, var(--jumper-palette-alpha900-main) 10%, transparent)"
-                  stroke-dasharray="0"
-                  width="30"
-                  x="65"
-                  x1="65"
-                  x2="95"
-                  y="5"
-                  y1="35"
-                  y2="35"
+                  y1="5"
+                  y2="5"
                 />
               </g>
             </g>
@@ -5697,7 +5715,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                     id="animationClipPath-recharts-area-_r_t_"
                   >
                     <rect
-                      height="36"
+                      height="66"
                       width="0"
                       x="65"
                       y="0"
@@ -5713,7 +5731,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   >
                     <path
                       class="recharts-curve recharts-area-area"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,35C92.5,35,90,35,87.5,35C85,35,82.5,35,80,35C77.5,35,75,35,72.5,35C70,35,67.5,35,65,35Z"
+                      d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                       fill="url(#_r_s_)"
                       fill-opacity="1"
                       height="60"
@@ -5725,7 +5743,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                     />
                     <path
                       class="recharts-curve recharts-area-curve"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35"
+                      d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65"
                       fill="none"
                       fill-opacity="1"
                       height="60"
@@ -5962,7 +5980,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   text-anchor="end"
                   width="60"
                   x="51"
-                  y="35"
+                  y="65"
                 >
                   <tspan
                     dy="0.355em"
@@ -5986,13 +6004,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   text-anchor="end"
                   width="60"
                   x="51"
-                  y="35"
+                  y="50"
                 >
                   <tspan
                     dy="0.355em"
                     x="51"
                   >
-                    0
+                    0.25
                   </tspan>
                 </text>
               </g>
@@ -6016,7 +6034,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                     dy="0.355em"
                     x="51"
                   >
-                    0
+                    0.5
                   </tspan>
                 </text>
               </g>
@@ -6034,13 +6052,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   text-anchor="end"
                   width="60"
                   x="51"
-                  y="35"
+                  y="20"
                 >
                   <tspan
                     dy="0.355em"
                     x="51"
                   >
-                    0
+                    0.75
                   </tspan>
                 </text>
               </g>
@@ -6058,13 +6076,13 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
                   text-anchor="end"
                   width="60"
                   x="51"
-                  y="35"
+                  y="5"
                 >
                   <tspan
                     dy="0.355em"
                     x="51"
                   >
-                    0
+                    1
                   </tspan>
                 </text>
               </g>

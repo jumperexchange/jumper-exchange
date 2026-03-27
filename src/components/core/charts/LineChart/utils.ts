@@ -121,9 +121,19 @@ export const calculateVisibleYRange = <
   const dataMaxValue = Math.max(...values);
 
   const isNegative = dataMinValue < 0;
+  const isSame = Math.abs(dataMinValue - dataMaxValue) < Number.EPSILON;
+  const isZero = Math.abs(dataMinValue) < Number.EPSILON;
 
-  const minValue = Math.min(0, dataMinValue);
-  const maxValue = dataMaxValue > 0 ? dataMaxValue * 1.2 : 0;
+  let minValue = Math.min(0, dataMinValue);
+  let maxValue = dataMaxValue > 0 ? dataMaxValue * 1.2 : 0;
+
+  if (isSame && isZero) {
+    if (isNegative) {
+      minValue = -1;
+    } else {
+      maxValue = 1;
+    }
+  }
 
   return {
     minValue,
