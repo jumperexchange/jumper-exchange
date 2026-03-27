@@ -16,7 +16,6 @@ import {
   CarouselViewport,
   DraggableRow,
   CARD_GAP,
-  FALLBACK_CARD_WIDTH,
   SPREAD_SPRING,
   FALLBACK_CARD_HEIGHT,
 } from './BlogCarousel.style';
@@ -39,8 +38,8 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
   const total = data?.length ?? 0;
 
   const isInView = useInView(sectionRef, {
-    amount: 'all',
-    margin: `${FALLBACK_CARD_HEIGHT}px 100px 100px 0px`,
+    amount: 0.5,
+    margin: `${FALLBACK_CARD_HEIGHT / 2}px 100px 0px 0px`,
     once: false,
   });
 
