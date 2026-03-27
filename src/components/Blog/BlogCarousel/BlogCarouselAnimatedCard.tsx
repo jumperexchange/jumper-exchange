@@ -4,6 +4,7 @@ import type { BlogArticleData, StrapiResponseData } from '@/types/strapi';
 import { TrackingCategory } from '@/const/trackingKeys';
 import { BlogArticleCard } from '../BlogArticleCard/BlogArticleCard';
 import { useRef } from 'react';
+import { Box } from '@mui/material';
 import {
   motion,
   useMotionValue,
@@ -38,6 +39,8 @@ interface BlogCarouselAnimatedCardProps {
   cardSlot: ReturnType<typeof useMotionValue<number>>;
   total: number;
   isSpread: boolean;
+  isDragging: boolean;
+  carouselSessionActiveRef: React.MutableRefObject<boolean>;
   measureRef?: React.RefObject<HTMLDivElement | null>;
 }
 
@@ -49,6 +52,8 @@ export const BlogCarouselAnimatedCard = ({
   cardSlot,
   total,
   isSpread,
+  isDragging,
+  carouselSessionActiveRef,
   measureRef,
 }: BlogCarouselAnimatedCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -79,7 +84,7 @@ export const BlogCarouselAnimatedCard = ({
   const imgY = useTransform(springY, [-0.5, 0.5], [-8, 8]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isSpread) {
+    if (!isSpread || carouselSessionActiveRef.current) {
       return;
     }
     const rect = (
@@ -142,6 +147,12 @@ export const BlogCarouselAnimatedCard = ({
     (mi) => total - Math.round(Math.abs(wrapRelativeIndex(index - mi, total))),
   );
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    if (carouselSessionActiveRef.current) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <motion.div
       ref={ref as React.RefObject<HTMLDivElement>}
@@ -159,15 +170,21 @@ export const BlogCarouselAnimatedCard = ({
         left: 0,
         top: 0,
         width: 'max-content',
-        pointerEvents: isSpread ? 'auto' : 'none',
+        pointerEvents: !isSpread || isDragging ? 'none' : 'auto',
       }}
     >
-      <motion.div style={{ x: imgX, y: imgY }}>
-        <BlogArticleCard
-          article={article}
-          trackingCategory={TrackingCategory.BlogCarousel}
-        />
-      </motion.div>
+      <Box
+        component="div"
+        onDragStart={handleDragStart}
+        sx={{ width: 'max-content' }}
+      >
+        <motion.div style={{ x: imgX, y: imgY }}>
+          <BlogArticleCard
+            article={article}
+            trackingCategory={TrackingCategory.BlogCarousel}
+          />
+        </motion.div>
+      </Box>
     </motion.div>
   );
 };

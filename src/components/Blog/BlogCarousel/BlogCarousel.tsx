@@ -48,6 +48,8 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
 
   const {
     displayIndex,
+    isDragging,
+    carouselSessionActiveRef,
     handlePointerCancel,
     handlePointerDown,
     handlePointerMove,
@@ -102,6 +104,7 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
           }}
         >
           <DraggableRow
+            onDragStart={(e) => e.preventDefault()}
             onPointerCancel={handlePointerCancel}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
@@ -126,6 +129,8 @@ export const BlogCarousel = ({ data, title }: BlogCarouselProps) => {
                 cardSlot={cardSlot}
                 total={total}
                 isSpread={isSpread}
+                isDragging={isDragging}
+                carouselSessionActiveRef={carouselSessionActiveRef}
                 measureRef={index === 0 ? firstCardRef : undefined}
               />
             ))}
