@@ -2,20 +2,23 @@ import { useQueries } from '@tanstack/react-query';
 import { min } from 'date-fns';
 import { useCallback, useMemo } from 'react';
 import { ONE_HOUR_MS } from 'src/const/time';
-import type { Address, Hex } from 'viem';
-import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
-import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
+import type { Address } from 'viem';
+import type {
+  AddressQueryParams,
+  PortfolioPositionsQuery,
+} from '@/app/lib/getPositionsForAddress';
+import { getPositionsForAddresses } from '@/app/lib/getPositionsForAddress';
 import type { WalletPositions } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
 import { useTokens } from '../useTokens';
 import type { Account } from '@lifi/widget-provider';
-import { ChainType } from '@lifi/sdk';
+import { useAccountGroupsByChainType } from '../accounts/useAccountGroupsByChainType';
 
 export interface Props {
   accounts: Account[];
-  filter?: Omit<PortfolioPositionsQuery, 'evm'>;
+  filter?: Omit<PortfolioPositionsQuery, keyof AddressQueryParams>;
 }
 
 export interface Result {
@@ -26,31 +29,29 @@ export interface Result {
   refetch: () => void;
 }
 
+// @Note: wrap earn pages with portfolio provider and remove this hook
 export const usePortfolioDeFiPositions = ({
   accounts,
   filter,
 }: Props): Result => {
   const { getToken, isLoading: isLoadingTokens, updatedAt } = useTokens();
+  const accountGroups = useAccountGroupsByChainType(accounts);
 
   const getTokenUSDPrice: GetTokenUSDPrice = useCallback(
     (token: { chainId: number; address: string }) => {
       try {
         const tokenFound = getToken(token.chainId, token.address as Address);
-
         if (!tokenFound) {
           throw new Error(
             `Token not found for address ${token.address} on chain ${token.chainId}`,
           );
         }
-
         const priceUSD = parseFloat(tokenFound.priceUSD);
-
         if (isNaN(priceUSD)) {
           throw new Error(
             `Price USD is NaN for token ${token.address} on chain ${token.chainId}`,
           );
         }
-
         return priceUSD;
       } catch (error) {
         console.warn('Could not get token USD price', token, error);
@@ -61,74 +62,56 @@ export const usePortfolioDeFiPositions = ({
   );
 
   const queries = useQueries({
-    queries: accounts.map((account) => ({
+    queries: accountGroups.map(({ addressParam, addresses }) => ({
       queryKey: [
         'portfolio-defi-positions',
-        account.address,
+        addressParam,
+        addresses,
         filter,
         updatedAt,
       ],
       queryFn: async () => {
-        // @TODO JUM-624 handle svm address as query param
-        if (account.chainType !== ChainType.EVM) {
-          return;
-        }
-
-        const result = await getPositionsForAddress({
-          evm: account.address as Hex,
+        const result = await getPositionsForAddresses({
           ...filter,
+          [addressParam]: addresses,
         });
-        const positions = result.data;
-        return updateWalletPositionsPrice(positions, getTokenUSDPrice);
+        return updateWalletPositionsPrice(result.data, getTokenUSDPrice);
       },
-      enabled: !!account.address && account.isConnected && !isLoadingTokens,
+      enabled: !isLoadingTokens && addresses.length > 0,
       refetchInterval: ONE_HOUR_MS,
     })),
   });
 
-  const isLoading = isLoadingTokens || queries.some((query) => query.isLoading);
-  const isSuccess = queries.every((query) => query.isSuccess);
-  const error = queries.find((query) => query.error)?.error ?? null;
+  const isLoading = isLoadingTokens || queries.some((q) => q.isLoading);
+  const isSuccess = queries.every((q) => q.isSuccess);
+  const error = queries.find((q) => q.error)?.error ?? null;
 
   const data = useMemo((): WalletPositions | undefined => {
     if (!isSuccess || queries.length === 0) {
       return undefined;
     }
 
-    const successfulQueries = queries.filter(
-      (query) => query.isSuccess && query.data,
-    );
-
+    const successfulQueries = queries.filter((q) => q.isSuccess && q.data);
     const allPositions: DefiPosition[] = successfulQueries.flatMap(
-      (query) => query.data?.data ?? [],
+      (q) => q.data?.data ?? [],
     );
 
-    // Extract dates from all queries (meta.updatedAt is ISO string, dataUpdatedAt is timestamp)
-    const dates = successfulQueries.map((query) => {
-      const metaUpdatedAt = query.data?.meta?.updatedAt;
+    const dates = successfulQueries.map((q) => {
+      const metaUpdatedAt = q.data?.meta?.updatedAt;
       return metaUpdatedAt
         ? new Date(metaUpdatedAt)
-        : new Date(query.dataUpdatedAt);
+        : new Date(q.dataUpdatedAt);
     });
 
-    const oldestUpdatedAtOrFallback =
+    const oldestUpdatedAt =
       dates.length > 0 ? min(dates).toISOString() : new Date().toISOString();
 
-    return {
-      data: allPositions,
-      meta: { updatedAt: oldestUpdatedAtOrFallback },
-    };
+    return { data: allPositions, meta: { updatedAt: oldestUpdatedAt } };
   }, [queries, isSuccess]);
 
   const refetch = () => {
-    queries.forEach((query) => query.refetch());
+    queries.forEach((q) => q.refetch());
   };
 
-  return {
-    data,
-    isLoading,
-    isSuccess,
-    error,
-    refetch,
-  };
+  return { data, isLoading, isSuccess, error, refetch };
 };
