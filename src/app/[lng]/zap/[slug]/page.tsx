@@ -60,12 +60,16 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  // const { data } = await getQuestBySlug(params.slug, 'ExtendedQuest');
-  const { data } = await getQuestBySlug(slug);
+  try {
+    const { data } = await getQuestBySlug(slug);
 
-  if (!data) {
+    if (!data) {
+      return notFound();
+    }
+
+    return <ZapPage market={data} />;
+  } catch (error) {
+    console.warn('Failed to fetch zap data:', error);
     return notFound();
   }
-
-  return <ZapPage market={data} />;
 }

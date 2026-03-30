@@ -9,22 +9,36 @@ import { MissionsSection } from './MissionsSection';
 import { MissionPageTracking } from '@/components/headless/tracking/MissionPageTracking';
 
 export const MissionsPage = async () => {
-  const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
-    getProfileBannerCampaigns(),
-    getQuestsWithNoCampaignAttached(
-      {
-        page: 1,
-        pageSize: PAGE_SIZE,
-        withCount: true,
-      },
-      UPCOMING_DAYS_AHEAD,
-    ),
-  ]);
-  const missions = missionsResponse.data;
-  const totalMissions = missionsResponse.meta.pagination?.total || 0;
-  const hasMoreMissions = totalMissions > missions.length;
+  let missions: Awaited<
+    ReturnType<typeof getQuestsWithNoCampaignAttached>
+  >['data']['data'] = [];
+  let totalMissions = 0;
+  let validBannerCampaigns: Awaited<
+    ReturnType<typeof getProfileBannerCampaigns>
+  >['data'] = [];
 
-  const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
+  try {
+    const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all(
+      [
+        getProfileBannerCampaigns(),
+        getQuestsWithNoCampaignAttached(
+          {
+            page: 1,
+            pageSize: PAGE_SIZE,
+            withCount: true,
+          },
+          UPCOMING_DAYS_AHEAD,
+        ),
+      ],
+    );
+    missions = missionsResponse.data;
+    totalMissions = missionsResponse.meta.pagination?.total || 0;
+    validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
+  } catch (error) {
+    console.warn('Failed to fetch missions page data:', error);
+  }
+
+  const hasMoreMissions = totalMissions > missions.length;
 
   return (
     <>
