@@ -92,6 +92,8 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   margin: 'auto',
   color: (theme.vars || theme).palette.text.secondary,
   marginTop: theme.spacing(4),
+  minWidth: 0,
+  width: '100%',
   '& > img': {
     width: '100%',
   },

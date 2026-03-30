@@ -5,7 +5,6 @@ import type { TypographyProps } from '@mui/material/Typography';
 import Typography from '@mui/material/Typography';
 import { urbanist } from 'src/fonts/fonts';
 import { IconButtonPrimary } from '../IconButton';
-import TableContainer from '@mui/material/TableContainer';
 import type { TableCellProps } from '@mui/material/TableCell';
 import TableCell from '@mui/material/TableCell';
 
@@ -213,8 +212,14 @@ export const WidgetHeader = styled(Box)(({ theme }) => ({
 
 // Table styles
 
-export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+export const StyledTableContainer = styled(Box)(({ theme }) => ({
+  display: 'block',
+  width: '100%',
+  maxWidth: '100%',
+  minWidth: 0,
   overflowX: 'auto',
+  overscrollBehaviorX: 'contain',
+  WebkitOverflowScrolling: 'touch',
   borderRadius: theme.shape.radius4,
   border: `1px solid ${(theme.vars || theme).palette.alpha200.main}`,
   background: (theme.vars || theme).palette.surface1.main,
