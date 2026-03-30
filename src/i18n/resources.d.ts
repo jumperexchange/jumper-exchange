@@ -17,8 +17,8 @@ interface Resources {
     blog: {
       allCategories: 'All';
       banner: {
-        description: 'Subscribe to Make. The. Jump. newsletter and get the latest updates from Jumper straight to your inbox.';
-        title: 'Stay ahead in crypto';
+        description: 'Subscribe to the <strong>Jumper Newsletter</strong> to get the latest updates from Jumper delivered to your inbox.';
+        title: 'Get the latest Jumper updates';
       };
       categories: 'Categories';
       copiedLink: 'Copied Link';
