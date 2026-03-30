@@ -16,6 +16,10 @@ interface Resources {
     };
     blog: {
       allCategories: 'All';
+      banner: {
+        description: 'Subscribe to Make. The. Jump. newsletter and get the latest updates from Jumper straight to your inbox.';
+        title: 'Stay ahead in crypto';
+      };
       categories: 'Categories';
       copiedLink: 'Copied Link';
       emptyList: {

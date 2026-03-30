@@ -4,7 +4,6 @@ import Background from '@/components/Background';
 import { BlogBackgroundGradient } from '@/components/BackgroundGradient/BackgroundGradient.style';
 import { BlogArticle } from '@/components/Blog/BlogArticle/BlogArticle';
 import { BlogCarousel } from '@/components/Blog/BlogCarousel/BlogCarousel';
-import { JoinDiscordBanner } from '@/components/JoinDiscordBanner/JoinDiscordBanner';
 import type { BlogArticleData } from '@/types/strapi';
 import { Box } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +11,7 @@ import {
   BlogArticleSection,
   BlogArticleWrapper,
 } from './LearnArticlePage.style';
+import { BlogArticleBanner } from '@/components/Blog/BlogArticleBanner/BlogArticleBanner';
 
 interface LearnArticlePageProps {
   article: BlogArticleData;
@@ -32,7 +32,9 @@ const LearnArticlePage = ({ article, articles }: LearnArticlePageProps) => {
         {articles.length > 2 && (
           <BlogCarousel title={t('blog.similarPosts')} data={articles} />
         )}
-        <JoinDiscordBanner />
+      </BlogArticleSection>
+      <BlogArticleSection sx={{ mb: 8 }}>
+        <BlogArticleBanner />
       </BlogArticleSection>
     </>
   );
