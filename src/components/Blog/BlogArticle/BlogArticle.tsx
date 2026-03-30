@@ -1,5 +1,9 @@
 import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
+
+import { navbarHideOnScrollTriggerOptions } from '@/const/navbar';
 import {
   BlogArticleContainer,
   BlogArticleContentContainer,
@@ -78,6 +82,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     popup,
   } = article;
   const baseUrl = getStrapiBaseUrl();
+  const scrollHidesAppBar = useScrollTrigger(navbarHideOnScrollTriggerOptions);
   const { trackBlogArticleOpenPopupEvent } = useBlogArticleTracking();
 
   const [isModalOpen, openModal] = useBlogArticleStore((s) => [
@@ -216,7 +221,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         {hasToc && (
           <BlogArticleTableOfContents
             items={displayTableOfContents}
-            sx={getTOCStyles}
+            sx={(theme) => getTOCStyles(theme, { scrollHidesAppBar })}
           />
         )}
         <BlogArticleContentContainer>

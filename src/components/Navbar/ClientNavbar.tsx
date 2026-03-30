@@ -15,6 +15,7 @@ import {
   checkIsScanPage,
   checkIsPrivacyPolicyPage,
 } from './utils';
+import { HideOnScroll } from '../core/HideOnScroll/HideOnScroll';
 
 export const ClientNavbar = () => {
   const pathname = usePathname();
@@ -56,14 +57,16 @@ export const ClientNavbar = () => {
   }, [isLearnPage, isScanPage, isPrivacyPolicyPage]);
 
   return (
-    <NavbarContainer
-      enableColorOnDark
-      hasBlurredNavigation={configTheme?.hasBlurredNavigation}
-    >
-      <LogoLinkWrapper href={href} id="jumper-logo" onClick={handleClick}>
-        <Logo variant={variant} />
-      </LogoLinkWrapper>
-      <Layout />
-    </NavbarContainer>
+    <HideOnScroll>
+      <NavbarContainer
+        enableColorOnDark
+        hasBlurredNavigation={configTheme?.hasBlurredNavigation}
+      >
+        <LogoLinkWrapper href={href} id="jumper-logo" onClick={handleClick}>
+          <Logo variant={variant} />
+        </LogoLinkWrapper>
+        <Layout />
+      </NavbarContainer>
+    </HideOnScroll>
   );
 };
