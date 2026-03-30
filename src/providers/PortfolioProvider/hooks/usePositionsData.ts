@@ -1,25 +1,35 @@
 import { useQueries } from '@tanstack/react-query';
 import { min } from 'date-fns';
+import groupBy from 'lodash/groupBy';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ONE_HOUR_MS } from 'src/const/time';
 import type { Hex } from 'viem';
-import type { PortfolioPositionsQuery } from '@/app/lib/getPositionsForAddress';
-import { getPositionsForAddress } from '@/app/lib/getPositionsForAddress';
+import type {
+  AddressQueryParams,
+  PortfolioPositionsQuery,
+} from '@/app/lib/getPositionsForAddress';
+import { getPositionsForAddresses } from '@/app/lib/getPositionsForAddress';
 import type { DefiPosition } from '@/utils/positions/type-guards';
-import type { EVMAccount } from '@lifi/wallet-management';
+import type { Account } from '@lifi/wallet-management';
 import { useAccount } from '@lifi/wallet-management';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
 import { isCurrentPageUsingPositionData } from '../utils';
+import { useAccountGroupsByChainType } from '@/hooks/accounts/useAccountGroupsByChainType';
+
+type PositionsFilter = Omit<
+  NonNullable<PortfolioPositionsQuery>,
+  keyof AddressQueryParams
+>;
 
 export interface UsePositionsDataProps {
-  filter?: Omit<PortfolioPositionsQuery, 'evm'>;
+  filter?: PositionsFilter;
 }
 
 export interface UsePositionsDataResult {
   positions: DefiPosition[];
   positionsByAddress: Record<string, DefiPosition[]>;
-  accounts: EVMAccount[];
+  accounts: Account[];
   isLoading: boolean;
   isFetching: boolean;
   isPlaceholderData: boolean;
@@ -29,15 +39,11 @@ export interface UsePositionsDataResult {
   refetch: () => void;
 }
 
-type PositionsFilter = Omit<PortfolioPositionsQuery, 'evm'>;
-
 const hasFilteringKeys = (filter?: PositionsFilter): boolean => {
   if (!filter) {
     return false;
   }
-
   const nonFilteringKeys: Array<keyof PositionsFilter> = ['sortBy', 'order'];
-
   return Object.keys(filter).some(
     (key) => !nonFilteringKeys.includes(key as keyof PositionsFilter),
   );
@@ -46,7 +52,8 @@ const hasFilteringKeys = (filter?: PositionsFilter): boolean => {
 interface QueryData {
   data: DefiPosition[];
   meta: { updatedAt: string };
-  address: Hex;
+  addresses: string[];
+  addressParam: keyof AddressQueryParams;
 }
 
 export const usePositionsData = ({
@@ -55,11 +62,9 @@ export const usePositionsData = ({
   const pathname = usePathnameWithoutLocale();
   const isEnabled = isCurrentPageUsingPositionData(pathname);
   const { accounts } = useAccount();
+
   const connectedAccounts = useMemo(
-    () =>
-      accounts.filter(
-        (acc) => acc.isConnected && acc.chainType === 'EVM' && acc.address,
-      ) as EVMAccount[],
+    () => accounts.filter((acc) => acc.isConnected && acc.address) as Account[],
     [accounts],
   );
 
@@ -67,6 +72,8 @@ export const usePositionsData = ({
     () => connectedAccounts.map((acc) => acc.address as Hex),
     [connectedAccounts],
   );
+
+  const accountGroups = useAccountGroupsByChainType(connectedAccounts);
 
   const getPositions = usePortfolioCacheStore((s) => s.getPositions);
   const setPositionsCache = usePortfolioCacheStore((s) => s.setPositions);
@@ -82,30 +89,30 @@ export const usePositionsData = ({
   const shouldUseCache = !hasFilteringKeys(filter);
 
   const queries = useQueries({
-    queries: addresses.map((address) => ({
-      queryKey: ['portfolio-positions', address, filter],
+    queries: accountGroups.map(({ addressParam, addresses: batch }) => ({
+      queryKey: ['portfolio-positions', addressParam, batch, filter],
       queryFn: async (): Promise<QueryData> => {
         shouldSetCacheRef.current = shouldUseCache;
-
-        const result = await getPositionsForAddress({
-          evm: address,
+        const result = await getPositionsForAddresses({
           ...filter,
+          [addressParam]: batch,
         });
-        return { ...result.data, address };
+        return { ...result.data, addresses: batch, addressParam };
       },
-      enabled: !!address && isEnabled,
+      enabled: isEnabled && batch.length > 0,
       refetchInterval: ONE_HOUR_MS,
       placeholderData: shouldUseCache
         ? (): QueryData | undefined => {
-            const cached = getPositions(address);
-            if (cached.length > 0) {
-              return {
-                data: cached,
-                meta: { updatedAt: '' },
-                address,
-              };
+            const cachedChunks = batch.map((addr) => getPositions(addr));
+            if (!cachedChunks.some((c) => c.length > 0)) {
+              return undefined;
             }
-            return undefined;
+            return {
+              data: batch.flatMap((addr) => getPositions(addr)),
+              meta: { updatedAt: '' },
+              addresses: batch,
+              addressParam,
+            };
           }
         : undefined,
     })),
@@ -115,15 +122,18 @@ export const usePositionsData = ({
     if (!shouldUseCache || !shouldSetCacheRef.current) {
       return;
     }
-
     shouldSetCacheRef.current = false;
 
-    queries.forEach((query) => {
-      if (query.isSuccess && query.data && !query.isPlaceholderData) {
-        const { address, data: positions } = query.data;
-        setPositionsCache(address, positions);
+    for (const query of queries) {
+      if (!query.isSuccess || !query.data || query.isPlaceholderData) {
+        continue;
       }
-    });
+      const { addresses: batch, data: positions } = query.data;
+      const byAddress = groupBy(positions, (p) => p.address.toLowerCase());
+      for (const addr of batch) {
+        setPositionsCache(addr, byAddress[addr.toLowerCase()] ?? []);
+      }
+    }
   }, [queries, setPositionsCache, shouldUseCache]);
 
   useEffect(() => {
@@ -132,22 +142,22 @@ export const usePositionsData = ({
     }
   }, [positionPatchVersion, wasCachePatched]);
 
-  const isLoading = queries.some((query) => query.isLoading);
-  const isFetching = queries.some((query) => query.isFetching);
-  const isPlaceholderData = queries.some((query) => query.isPlaceholderData);
-  const isSuccess = queries.every((query) => query.isSuccess);
-  const error = (queries.find((query) => query.error)?.error as Error) ?? null;
+  const isLoading = queries.some((q) => q.isLoading);
+  const isFetching = queries.some((q) => q.isFetching);
+  const isPlaceholderData = queries.some((q) => q.isPlaceholderData);
+  const isSuccess = queries.every((q) => q.isSuccess);
+  const error = (queries.find((q) => q.error)?.error as Error) ?? null;
 
   const successfulQueries = useMemo(
-    () => queries.filter((query) => query.isSuccess && query.data),
+    () => queries.filter((q) => q.isSuccess && q.data),
     [queries],
   );
 
   const positions = useMemo((): DefiPosition[] => {
     if (wasCachePatched && shouldUseCache) {
-      return addresses.flatMap((address) => getPositions(address));
+      return addresses.flatMap((addr) => getPositions(addr));
     }
-    return successfulQueries.flatMap((query) => query.data?.data ?? []);
+    return successfulQueries.flatMap((q) => q.data?.data ?? []);
   }, [
     successfulQueries,
     wasCachePatched,
@@ -158,24 +168,16 @@ export const usePositionsData = ({
 
   const positionsByAddress = useMemo((): Record<string, DefiPosition[]> => {
     if (wasCachePatched && shouldUseCache) {
-      return addresses.reduce(
-        (acc, address) => {
-          acc[address] = getPositions(address);
-          return acc;
-        },
-        {} as Record<string, DefiPosition[]>,
+      return Object.fromEntries(
+        addresses.map((addr) => [addr, getPositions(addr)]),
       );
     }
 
-    return addresses.reduce(
-      (acc, address) => {
-        const query = successfulQueries.find(
-          (q) => q.data?.address === address,
-        );
-        acc[address] = query?.data?.data ?? [];
-        return acc;
-      },
-      {} as Record<string, DefiPosition[]>,
+    const allPositions = successfulQueries.flatMap((q) => q.data?.data ?? []);
+    const byAddress = groupBy(allPositions, (p) => p.address.toLowerCase());
+
+    return Object.fromEntries(
+      addresses.map((addr) => [addr, byAddress[addr.toLowerCase()] ?? []]),
     );
   }, [
     addresses,
@@ -189,19 +191,17 @@ export const usePositionsData = ({
     if (successfulQueries.length === 0) {
       return null;
     }
-
-    const dates = successfulQueries.map((query) => {
-      const metaUpdatedAt = query.data?.meta?.updatedAt;
+    const dates = successfulQueries.map((q) => {
+      const metaUpdatedAt = q.data?.meta?.updatedAt;
       return metaUpdatedAt
         ? new Date(metaUpdatedAt)
-        : new Date(query.dataUpdatedAt);
+        : new Date(q.dataUpdatedAt);
     });
-
-    return dates.length > 0 ? min(dates).getTime() : null;
+    return min(dates).getTime();
   }, [successfulQueries]);
 
   const refetch = useCallback(() => {
-    queries.forEach((query) => query.refetch());
+    queries.forEach((q) => q.refetch());
   }, [queries]);
 
   return {

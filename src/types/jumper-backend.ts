@@ -13,6 +13,37 @@ import type { Hex } from 'viem';
  * ---------------------------------------------------------------
  */
 
+export interface WalletEVM {
+  address: string;
+  message: string;
+  signature: string;
+}
+
+export interface SolanaSignature {
+  type: string;
+  data: number[];
+}
+
+export interface WalletSolana {
+  message: string;
+  signature: SolanaSignature;
+  publicKey: string;
+}
+
+export interface VerifyWalletDto {
+  /** EVM wallet */
+  evm?: WalletEVM;
+  /** Solana wallet */
+  solana?: WalletSolana;
+}
+
+export interface WalletVerificationDto {
+  /** Origin wallet data */
+  origin_wallet: WalletEVM;
+  /** Destination wallet data */
+  destination_wallet: WalletEVM;
+}
+
 export interface CreateUserTrackingDto {
   /**
    * The category of the tracking event
@@ -500,37 +531,6 @@ export interface PosthogFeatureFlag {
   data: string | boolean;
 }
 
-export interface WalletEVM {
-  address: string;
-  message: string;
-  signature: string;
-}
-
-export interface SolanaSignature {
-  type: string;
-  data: number[];
-}
-
-export interface WalletSolana {
-  message: string;
-  signature: SolanaSignature;
-  publicKey: string;
-}
-
-export interface VerifyWalletDto {
-  /** EVM wallet */
-  evm?: WalletEVM;
-  /** Solana wallet */
-  solana?: WalletSolana;
-}
-
-export interface WalletVerificationDto {
-  /** Origin wallet data */
-  origin_wallet: WalletEVM;
-  /** Destination wallet data */
-  destination_wallet: WalletEVM;
-}
-
 export interface CreateWalletTransactionDto {
   sessionId: string;
   /**
@@ -668,9 +668,9 @@ export interface EarnOpportunityHistoryItem {
 
 export interface EarnOpportunityWithLatestAnalytics {
   name: string;
-  isRedeemable: boolean;
   asset: Token;
   protocol: Protocol;
+  isRedeemable: boolean;
   url?: string;
   description: string;
   tags: string[];
@@ -930,9 +930,9 @@ export interface GeneratePayloadDto {
 
 export interface EarnOpportunityWithScore {
   name: string;
-  isRedeemable: boolean;
   asset: Token;
   protocol: Protocol;
+  isRedeemable: boolean;
   url?: string;
   description: string;
   tags: string[];
@@ -1638,14 +1638,16 @@ export class JumperBackend<
      */
     portfolioControllerGetTokensForAddressV1: (
       query?: {
-        /** The EVM address to get tokens for */
-        evm?: string;
-        /** The Solana address to get tokens for */
-        solana?: string;
-        /** The SUI address to get tokens for */
-        sui?: string;
-        /** The UTXO address to get tokens for */
-        bitcoin?: string;
+        /** EVM addresses to get tokens for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses to get tokens for */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses to get tokens for, e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses to get tokens for, e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses to get tokens for */
+        tvm?: string[];
         /**
          * The chain ids to filter for
          * @example [1,10,137]
@@ -1686,9 +1688,17 @@ export class JumperBackend<
      * @request GET:/v1/portfolio/positions
      */
     portfolioControllerGetPositionsForAddressV1: (
-      query: {
-        /** The EVM address to get positions for */
-        evm: string;
+      query?: {
+        /** EVM addresses to get positions for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses (reserved for future use) */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses (reserved for future use), e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses (reserved for future use), e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses (reserved for future use) */
+        tvm?: string[];
         /**
          * Sort by field.
          * @example "value"
