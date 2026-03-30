@@ -28,6 +28,7 @@ export const LearnPageSearchSection = () => {
   const [searchValue, setSearchValue] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
   const anchorRef = useRef<HTMLDivElement>(null);
+  const skipNextUrlSyncRef = useRef(false);
 
   const debouncedSetSearchValue = useMemo(
     () => debounce((v: string) => setSearchValue(v), 500),
@@ -40,17 +41,34 @@ export const LearnPageSearchSection = () => {
     };
   }, [debouncedSetSearchValue]);
 
+  useEffect(() => {
+    if (skipNextUrlSyncRef.current) {
+      return;
+    }
+    const trimmed = value.trim();
+    if (!trimmed) {
+      setSearchValue('');
+      setIsOpen(false);
+      return;
+    }
+    setSearchValue(value);
+    setIsOpen(true);
+  }, [value]);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setValue(value);
-    debouncedSetSearchValue(value);
+    const { value: nextValue } = event.target;
+    skipNextUrlSyncRef.current = true;
+    setValue(nextValue);
+    debouncedSetSearchValue(nextValue);
     setIsOpen(true);
   };
 
   const handleClear = () => {
     debouncedSetSearchValue.cancel();
+    skipNextUrlSyncRef.current = true;
     setValue('');
     setSearchValue('');
+    setIsOpen(false);
   };
 
   return (
