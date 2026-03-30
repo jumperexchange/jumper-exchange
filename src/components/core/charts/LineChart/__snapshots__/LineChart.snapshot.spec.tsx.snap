@@ -2133,7 +2133,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     id="animationClipPath-recharts-area-_r_e_"
                   >
                     <rect
-                      height="36"
+                      height="66"
                       width="0"
                       x="65"
                       y="0"
@@ -2149,7 +2149,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                   >
                     <path
                       class="recharts-curve recharts-area-area"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
+                      d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65L95,5C92.5,5,90,5,87.5,5C85,5,82.5,5,80,5C77.5,5,75,5,72.5,5C70,5,67.5,5,65,5Z"
                       fill="url(#_r_d_)"
                       fill-opacity="1"
                       height="60"
@@ -2161,7 +2161,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     />
                     <path
                       class="recharts-curve recharts-area-curve"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35"
+                      d="M65,65C67.5,65,70,65,72.5,65C75,65,77.5,65,80,65C82.5,65,85,65,87.5,65C90,65,92.5,65,95,65"
                       fill="none"
                       fill-opacity="1"
                       height="60"
@@ -2404,7 +2404,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    -1
+                    -0.5
                   </tspan>
                 </text>
               </g>
@@ -2428,7 +2428,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    -0.75
+                    -0.375
                   </tspan>
                 </text>
               </g>
@@ -2452,7 +2452,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    -0.5
+                    -0.25
                   </tspan>
                 </text>
               </g>
@@ -2476,7 +2476,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    -0.25
+                    -0.125
                   </tspan>
                 </text>
               </g>
@@ -3886,7 +3886,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                   >
                     <path
                       class="recharts-curve recharts-area-area"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
+                      d="M65,14.999999999999996C67.5,14.999999999999996,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,14.999999999999996,80,14.999999999999996C82.5,14.999999999999996,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,14.999999999999996,95,14.999999999999996L95,65C92.5,65,90,65,87.5,65C85,65,82.5,65,80,65C77.5,65,75,65,72.5,65C70,65,67.5,65,65,65Z"
                       fill="url(#_r_m_)"
                       fill-opacity="1"
                       height="60"
@@ -3898,7 +3898,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     />
                     <path
                       class="recharts-curve recharts-area-curve"
-                      d="M65,35C67.5,35,70,35,72.5,35C75,35,77.5,35,80,35C82.5,35,85,35,87.5,35C90,35,92.5,35,95,35"
+                      d="M65,14.999999999999996C67.5,14.999999999999996,70,14.999999999999996,72.5,14.999999999999996C75,14.999999999999996,77.5,14.999999999999996,80,14.999999999999996C82.5,14.999999999999996,85,14.999999999999996,87.5,14.999999999999996C90,14.999999999999996,92.5,14.999999999999996,95,14.999999999999996"
                       fill="none"
                       fill-opacity="1"
                       height="60"
@@ -4165,7 +4165,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    0.25
+                    0.15
                   </tspan>
                 </text>
               </g>
@@ -4189,7 +4189,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    0.5
+                    0.3
                   </tspan>
                 </text>
               </g>
@@ -4213,7 +4213,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    0.75
+                    0.44999999999999996
                   </tspan>
                 </text>
               </g>
@@ -4237,7 +4237,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
                     dy="0.355em"
                     x="51"
                   >
-                    1
+                    0.6
                   </tspan>
                 </text>
               </g>

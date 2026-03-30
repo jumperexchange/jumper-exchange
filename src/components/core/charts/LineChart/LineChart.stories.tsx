@@ -123,6 +123,26 @@ export const MonthlyTVL: Story = {
   },
 };
 
+export const ApySameWithNulls: Story = {
+  render: DefaultRenderer,
+  args: {
+    ...commonArgs,
+    dateFormat: 'dd MMM HH:mm',
+    data: [
+      { date: '2026-03-20T08:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T09:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T10:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T11:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T12:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T13:00:00.000Z', value: null },
+      { date: '2026-03-20T14:00:00.000Z', value: null },
+      { date: '2026-03-20T15:00:00.000Z', value: null },
+      { date: '2026-03-20T16:00:00.000Z', value: 0.0375 },
+      { date: '2026-03-20T17:00:00.000Z', value: 0.0375 },
+    ] as unknown as LineChartProps<number>['data'],
+  },
+};
+
 export const OnlyWithBaseLayers: Story = {
   render: DefaultRenderer,
   args: {
