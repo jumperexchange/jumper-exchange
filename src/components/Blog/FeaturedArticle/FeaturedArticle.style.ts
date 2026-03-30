@@ -17,30 +17,22 @@ export const FeaturedArticleLink = styled(Link)(({ theme }) => ({
   display: 'grid',
   gridTemplateRows: '1fr',
   textDecoration: 'none',
-  flexDirection: 'column',
+  flexDirection: 'row',
+  alignItems: 'center',
   padding: theme.spacing(2),
   '&:hover': {
     cursor: 'pointer',
-    backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, white 4%)`,
-    ...theme.applyStyles('light', {
-      backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.surface1.main} 96%, black 4%)`,
-    }),
+    backgroundColor: (theme.vars || theme).palette.surface1Hover,
   },
   [theme.breakpoints.up('sm' as Breakpoint)]: {
     padding: theme.spacing(3),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
-    padding: theme.spacing(4),
-  },
-  [theme.breakpoints.up('lg' as Breakpoint)]: {
-    padding: theme.spacing(8),
-    minHeight: 500,
-    gap: theme.spacing(8),
+    padding: theme.spacing(8, 4),
+    gap: theme.spacing(4),
+    minHeight: 480,
     gridTemplateRows: '1fr',
-    gridTemplateColumns: '54% 1fr',
-  },
-  [theme.breakpoints.up('xl' as Breakpoint)]: {
-    minHeight: 600,
+    gridTemplateColumns: '50% 1fr',
   },
 }));
 

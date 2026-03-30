@@ -6,7 +6,7 @@ import { RichBlocksVariant } from '../types';
 import dynamic from 'next/dynamic';
 
 const Lightbox = dynamic(() =>
-  import('src/components/Lightbox').then((mod) => mod.Lightbox),
+  import('src/components/Lightbox/Lightbox').then((mod) => mod.Lightbox),
 );
 
 interface ImageBlockProps extends ImageProps, CommonBlockProps {}
