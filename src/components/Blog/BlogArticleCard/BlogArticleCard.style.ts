@@ -15,7 +15,8 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
   flexShrink: 0,
   display: 'flex',
   flexDirection: 'column',
-  width: 'auto',
+  width: 'min(416px, calc(100vw - 64px))',
+  minWidth: 0,
   maxWidth: 416,
   border: getSurfaceBorder(theme, 'surface1'),
   padding: theme.spacing(2),
@@ -39,6 +40,7 @@ export const BlogArticleCardContainer = styled(Card)(({ theme }) => ({
 export const BlogArticleCardDetails = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column-reverse',
+  minWidth: 0,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   width: '100%',
@@ -49,7 +51,9 @@ export const BlogArticleCardDetails = styled(Box)(({ theme }) => ({
 }));
 
 export const BlogArticleCardImage = styled(Image)(({ theme }) => ({
+  display: 'block',
   width: '100%',
+  maxWidth: '100%',
   height: 'auto',
   borderRadius: theme.shape.cardBorderRadiusMedium,
   objectFit: 'cover',
@@ -68,12 +72,15 @@ export const BlogArticleCardImageSkeleton = styled(BaseSurfaceSkeleton)(
 );
 
 export const BlogArticleCardContent = styled(CardContent)(({ theme }) => ({
+  minWidth: 0,
   margin: 0,
   padding: theme.spacing(2),
   '&:last-child': { paddingBottom: theme.spacing(1) },
 }));
 
 export const BlogArticleCardTitle = styled(Typography)(({ theme }) => ({
+  width: '100%',
+  minWidth: 0,
   color: 'inherit',
   fontWeight: 700, //todo: use typography
   fontSize: '24px',
