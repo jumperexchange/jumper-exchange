@@ -1,7 +1,9 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useHeaderHeight } from './useHeaderHeight';
 
-const LAYOUT_STABILIZE_MS = 500;
+const DEFAULT_SCROLL_OFFSET_PX = 120;
+const HEADER_SCROLL_OFFSET_PX = 10;
+const LAYOUT_STABILIZE_MS = 100;
 
 const computeActiveId = (
   sectionIds: readonly string[],
@@ -19,12 +21,13 @@ const computeActiveId = (
 
 export const useActiveTocSectionId = (
   sectionIds: readonly string[],
-  scrollOffsetPx?: number,
+  scrollOffsetPx: number = DEFAULT_SCROLL_OFFSET_PX,
 ): string | undefined => {
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
   const rafId = useRef(0);
-  const headerHeight = useHeaderHeight();
-  const offset = scrollOffsetPx ?? headerHeight;
+  const alignmentIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const didAlignRef = useRef(false);
+  const headerHeightPx = useHeaderHeight();
 
   useLayoutEffect(() => {
     if (sectionIds.length === 0) {
@@ -33,54 +36,43 @@ export const useActiveTocSectionId = (
     }
 
     const hash = window.location.hash.slice(1);
-    let observer: ResizeObserver | undefined;
-    let stabilizeTimer = 0;
 
-    if (hash && sectionIds.includes(hash)) {
+    if (hash && sectionIds.includes(hash) && !didAlignRef.current) {
       setActiveId((prev) => (prev === hash ? prev : hash));
 
       const section = document.getElementById(hash);
       if (section) {
         const tryAlign = () => {
-          const scrollMarginTop =
-            parseFloat(getComputedStyle(section).scrollMarginTop) || offset;
           const { top } = section.getBoundingClientRect();
-          if (top < 0 || top > scrollMarginTop) {
+          if (
+            top < HEADER_SCROLL_OFFSET_PX ||
+            top > headerHeightPx + HEADER_SCROLL_OFFSET_PX
+          ) {
             section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+
+          didAlignRef.current = true;
+          if (alignmentIntervalRef.current) {
+            clearInterval(alignmentIntervalRef.current);
           }
         };
 
         tryAlign();
-
-        // Re-align whenever the document layout shifts (images/fonts loading).
-        // Disconnects once the layout has been stable for LAYOUT_STABILIZE_MS.
-        observer = new ResizeObserver(() => {
-          tryAlign();
-          clearTimeout(stabilizeTimer);
-          stabilizeTimer = window.setTimeout(
-            () => observer?.disconnect(),
-            LAYOUT_STABILIZE_MS,
-          );
-        });
-
-        observer.observe(document.body);
-
-        // Start the timer immediately so the observer disconnects even if no
-        // resize or layout-shift fires during the initial load.
-        stabilizeTimer = window.setTimeout(
-          () => observer?.disconnect(),
+        alignmentIntervalRef.current = setInterval(
+          tryAlign,
           LAYOUT_STABILIZE_MS,
         );
       }
     } else {
-      const initial = computeActiveId(sectionIds, offset);
+      const initial = computeActiveId(sectionIds, scrollOffsetPx);
       setActiveId((prev) => (prev === initial ? prev : initial));
     }
 
     const scheduleUpdate = () => {
       cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
-        const next = computeActiveId(sectionIds, offset);
+        const next = computeActiveId(sectionIds, scrollOffsetPx);
         setActiveId((prev) => (prev === next ? prev : next));
       });
     };
@@ -91,12 +83,13 @@ export const useActiveTocSectionId = (
 
     return () => {
       cancelAnimationFrame(rafId.current);
-      clearTimeout(stabilizeTimer);
-      observer?.disconnect();
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
+      if (alignmentIntervalRef.current) {
+        clearInterval(alignmentIntervalRef.current);
+      }
     };
-  }, [sectionIds, offset]);
+  }, [sectionIds, headerHeightPx, scrollOffsetPx]);
 
   return activeId;
 };
