@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
+import { useHeaderHeight } from './useHeaderHeight';
 
-const DEFAULT_SCROLL_OFFSET_PX = 120;
-const EXPECTED_TOP_MAX_PX = 80;
 const LAYOUT_STABILIZE_MS = 500;
 
 const computeActiveId = (
@@ -20,10 +19,12 @@ const computeActiveId = (
 
 export const useActiveTocSectionId = (
   sectionIds: readonly string[],
-  scrollOffsetPx: number = DEFAULT_SCROLL_OFFSET_PX,
+  scrollOffsetPx?: number,
 ): string | undefined => {
   const [activeId, setActiveId] = useState<string | undefined>(undefined);
   const rafId = useRef(0);
+  const headerHeight = useHeaderHeight();
+  const offset = scrollOffsetPx ?? headerHeight;
 
   useLayoutEffect(() => {
     if (sectionIds.length === 0) {
@@ -41,8 +42,10 @@ export const useActiveTocSectionId = (
       const section = document.getElementById(hash);
       if (section) {
         const tryAlign = () => {
+          const scrollMarginTop =
+            parseFloat(getComputedStyle(section).scrollMarginTop) || offset;
           const { top } = section.getBoundingClientRect();
-          if (top < 0 || top > EXPECTED_TOP_MAX_PX) {
+          if (top < 0 || top > scrollMarginTop) {
             section.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
         };
@@ -61,16 +64,23 @@ export const useActiveTocSectionId = (
         });
 
         observer.observe(document.body);
+
+        // Start the timer immediately so the observer disconnects even if no
+        // resize or layout-shift fires during the initial load.
+        stabilizeTimer = window.setTimeout(
+          () => observer?.disconnect(),
+          LAYOUT_STABILIZE_MS,
+        );
       }
     } else {
-      const initial = computeActiveId(sectionIds, scrollOffsetPx);
+      const initial = computeActiveId(sectionIds, offset);
       setActiveId((prev) => (prev === initial ? prev : initial));
     }
 
     const scheduleUpdate = () => {
       cancelAnimationFrame(rafId.current);
       rafId.current = requestAnimationFrame(() => {
-        const next = computeActiveId(sectionIds, scrollOffsetPx);
+        const next = computeActiveId(sectionIds, offset);
         setActiveId((prev) => (prev === next ? prev : next));
       });
     };
@@ -86,7 +96,7 @@ export const useActiveTocSectionId = (
       window.removeEventListener('scroll', scheduleUpdate);
       window.removeEventListener('resize', scheduleUpdate);
     };
-  }, [sectionIds, scrollOffsetPx]);
+  }, [sectionIds, offset]);
 
   return activeId;
 };
