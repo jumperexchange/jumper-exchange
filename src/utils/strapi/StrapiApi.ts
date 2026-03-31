@@ -1,5 +1,6 @@
 import type { Account } from '@lifi/wallet-management';
 import { getStrapiBaseUrl } from './strapiHelper';
+import { sanitizeStrapiContainsSearchInput } from './sanitizeStrapiContainsSearchInput';
 import config from '@/config/env-config';
 import { addDays, format, startOfToday } from 'date-fns';
 
@@ -533,10 +534,19 @@ class ArticleStrapiApi extends StrapiApi {
     if (!trimmed) {
       return this;
     }
-    this.apiUrl.searchParams.set('filters[$or][0][Title][$containsi]', trimmed);
+    const sanitized = sanitizeStrapiContainsSearchInput(trimmed);
+    if (!sanitized) {
+      // No safe substring to search; match nothing (avoids unfiltered list).
+      this.apiUrl.searchParams.set('filters[id][$eq]', '0');
+      return this;
+    }
+    this.apiUrl.searchParams.set(
+      'filters[$or][0][Title][$containsi]',
+      sanitized,
+    );
     this.apiUrl.searchParams.set(
       'filters[$or][1][Subtitle][$containsi]',
-      trimmed,
+      sanitized,
     );
     return this;
   }
