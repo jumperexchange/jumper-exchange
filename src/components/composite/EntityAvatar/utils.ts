@@ -74,7 +74,7 @@ export const getEntityAvatarData = (entity: DisplayableEntity): AvatarData => {
   if (isBackendToken(entity)) {
     return {
       id: `${entity.address}-${entity.chain.chainId}`,
-      src: entity.logo,
+      src: entity.logo ?? '',
       alt: entity.name || entity.symbol || entity.address,
     };
   }
