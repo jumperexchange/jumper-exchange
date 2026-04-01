@@ -3,6 +3,7 @@ import type { ModalContainerProps } from '@/components/core/modals/ModalContaine
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
 import { useMemo, useState, useCallback, type FC } from 'react';
 import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
+import type { FormattedClaim } from './hooks/useFormatRedeemClaimData';
 import { useFormatRedeemClaimData } from './hooks/useFormatRedeemClaimData';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
@@ -40,27 +41,19 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   const { t } = useTranslation();
   const accountAddress = useAccountAddress();
 
-  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [selectedClaim, setSelectedClaim] = useState<FormattedClaim | null>(
+    null,
+  );
   const [amount, setAmount] = useState('0');
 
   const { data: redeemableClaims, refetch: refetchClaims } =
     useRedeemableClaims(earnOpportunity, true);
   const formattedRedeemableClaims = useFormatRedeemClaimData(redeemableClaims);
 
-  const selectedClaim = useMemo(
-    () =>
-      selectedClaimId
-        ? formattedRedeemableClaims.find(
-            (claim) => claim.id === selectedClaimId,
-          )
-        : null,
-    [formattedRedeemableClaims, selectedClaimId],
-  );
-
   const { lpToken, lpTokenAmount, assetToken, refetchLpTokenAmount } =
     useEarnOpportunityTokens(earnOpportunity);
 
-  const isClaimFlow = selectedClaim != null;
+  const isClaimFlow = selectedClaim !== null;
 
   const fetchCallData = useCallback(async () => {
     const client = makeClient();
@@ -133,7 +126,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
   );
 
   const handleModalClose = () => {
-    setSelectedClaimId(null);
+    setSelectedClaim(null);
     handleResetAmount();
     transactionForm.resetForm();
     onClose?.();
@@ -145,7 +138,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
     selectedClaimToTokenBalance,
     requestWithdrawToTokenBalance,
     onCloseCallback: () => {
-      setSelectedClaimId(null);
+      setSelectedClaim(null);
       handleResetAmount();
       refetchLpTokenAmount();
     },
@@ -182,7 +175,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         content: (
           <ClaimList
             claims={formattedRedeemableClaims}
-            setSelectedClaimId={setSelectedClaimId}
+            setSelectedClaim={setSelectedClaim}
             fromToken={lpToken}
             toToken={assetToken}
           />
