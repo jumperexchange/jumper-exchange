@@ -7,6 +7,8 @@ import { isAlphanumeric } from '@/utils/validation-schemas';
 import type { Token, ExtendedChain } from '@lifi/sdk';
 import type { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 const SITEMAP_LIMIT = 50_000;
 
 const getFilteredCoins = (availableChainIds: number[]): Token[] =>

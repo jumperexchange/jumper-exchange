@@ -3,6 +3,8 @@ import type { MetadataRoute } from 'next';
 import type { SitemapPage } from '@/types/sitemap';
 import { buildUrl, toSitemapEntry } from '@/utils/sitemap';
 
+export const dynamic = 'force-static';
+
 export const pages: SitemapPage[] = [
   { path: AppPaths.Main, priority: 1.0 },
   { path: AppPaths.Learn, priority: 0.9 },

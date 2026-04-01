@@ -4,6 +4,8 @@ import { buildUrl, toSitemapDate, toSitemapEntry } from '@/utils/sitemap';
 import { slugify } from '@/utils/urls/slugify';
 import type { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { chains } = await getChainsQuery();
 
