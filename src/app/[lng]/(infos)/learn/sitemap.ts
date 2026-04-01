@@ -6,6 +6,8 @@ import type { BlogArticleData } from '@/types/strapi';
 import type { MetadataRoute } from 'next';
 import { isProduction } from '@/utils/isProduction';
 
+export const dynamic = 'force-static';
+
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
 const DEV_CHUNK_SIZE = 20;
