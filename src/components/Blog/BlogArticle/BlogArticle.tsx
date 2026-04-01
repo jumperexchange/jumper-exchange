@@ -228,6 +228,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           <ScrollProgress
             onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
+            showProgress
           >
             <WithSkeleton
               show={!!content}
