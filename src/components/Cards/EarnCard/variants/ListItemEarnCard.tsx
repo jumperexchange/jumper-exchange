@@ -2,8 +2,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import type { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
@@ -18,6 +16,7 @@ import { ListItemTooltipBadge } from './ListItemTooltipBadge';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -65,13 +64,12 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
       <ListItemEarnCardContainer hasLink={!!href}>
         <ListItemEarnCardBody hasHintHoverActive>
           <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
-            <EntityChainStack
-              variant={EntityChainStackVariant.Protocol}
-              address={lpToken?.address}
-              protocol={protocol}
-              chains={chains}
-              protocolSize={AvatarSize.XXL}
-              chainsSize={AvatarSize.SM}
+            <EntityStackWithBadge
+              addressOverride={lpToken?.address}
+              entities={[protocol!]}
+              size={AvatarSize.XXL}
+              badgeEntities={chains}
+              badgeSize={AvatarSize.SM}
               content={{
                 title,
               }}

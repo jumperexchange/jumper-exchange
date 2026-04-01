@@ -2,8 +2,6 @@ import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatLockupDuration } from 'src/utils/earn/utils';
-import { TokenStack } from 'src/components/composite/TokenStack/TokenStack';
-import { toTokenStackTokens } from 'src/components/composite/TokenStack/utils';
 import type {
   Chain,
   EarnOpportunityWithLatestAnalytics,
@@ -14,15 +12,14 @@ import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { ChainStack } from 'src/components/composite/ChainStack/ChainStack';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import type { TFunction } from 'i18next';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { formatCapInDollar } from '@/utils/numbers/capInDollar';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -146,15 +143,15 @@ const buildAssetsItem = (
 
   const isOverviewVariant = variant === 'overview';
   const assetsValuePrepend = isOverviewVariant ? (
-    <EntityChainStack
-      variant={EntityChainStackVariant.Tokens}
-      tokens={assets}
-      tokensSize={AvatarSize.MD}
-      chainsSize={AvatarSize['3XS']}
+    <EntityStackWithBadge
+      entities={assets}
+      badgeEntities={assets.map((asset) => asset.chain)}
+      size={AvatarSize.MD}
+      badgeSize={AvatarSize['3XS']}
       isContentVisible={false}
     />
   ) : (
-    <TokenStack tokens={toTokenStackTokens(assets)} />
+    <EntityStack entities={assets} />
   );
 
   const assetValue = assetsCount === 1 ? assets[0].symbol : '';
@@ -187,8 +184,8 @@ const buildChainsItem = (
     value: chains.map((chain) => formatter(chain)).join(', '),
     tooltip: t('tooltips.chains', { count: chainsCount }),
     valuePrepend: (
-      <ChainStack
-        chainIds={chains.map((chain) => chain.chainId.toString())}
+      <EntityStack
+        entities={chains}
         size={AvatarSize.MD}
         spacing={-1.5}
         direction="row"
@@ -217,12 +214,11 @@ const buildProtocolItem = (
     value: capitalizeString(protocolValue),
     tooltip: t('tooltips.protocol'),
     valuePrepend: (
-      <EntityChainStack
-        variant={EntityChainStackVariant.Protocol}
-        protocolSize={AvatarSize.MD}
-        chainsSize={AvatarSize['3XS']}
-        protocol={protocol}
-        chains={chains}
+      <EntityStackWithBadge
+        entities={[protocol]}
+        badgeEntities={chains}
+        size={AvatarSize.MD}
+        badgeSize={AvatarSize['3XS']}
         isContentVisible={false}
       />
     ),
