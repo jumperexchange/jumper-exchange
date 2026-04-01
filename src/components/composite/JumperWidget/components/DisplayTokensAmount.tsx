@@ -49,7 +49,10 @@ export const DisplayTokensAmount: FC<DisplayTokensAmountProps> = ({
       description={
         <Box sx={descriptionBoxStyles}>
           <SelectCardDescription variant="bodyXSmall" hideOverflow>
-            {t('jumperWidget.label.tokenCount', { count: noTokens, chainName })}
+            {t('jumperWidget.label.tokenCount', {
+              count: noTokens,
+              chainName: String(chainName),
+            })}
           </SelectCardDescription>
           <SelectCardDescription
             variant="bodyXSmall"

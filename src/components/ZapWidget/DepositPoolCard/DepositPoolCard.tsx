@@ -104,8 +104,8 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     if (analyticsBoostedApy && Number(analyticsBoostedApy) > 0) {
       return {
         tooltip: t('tooltips.boostedApy', {
-          baseApy: analyticsBaseApy,
-          boostedApy: analyticsBoostedApy,
+          baseApy: String(analyticsBaseApy ?? ''),
+          boostedApy: String(analyticsBoostedApy),
         }),
         value: analyticsTotalApy,
         label: t('widget.depositCard.boostedApy'),

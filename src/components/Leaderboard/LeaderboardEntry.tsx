@@ -49,7 +49,8 @@ export const LeaderboardEntry = ({
           <RankLabel variant="bodyXSmallStrong">
             {isUserEntry && !isUserConnected
               ? '?'
-              : t('format.decimal2Digit', { value: position }) || 'N/A'}
+              : t('format.decimal2Digit', { value: Number(position ?? 0) }) ||
+                'N/A'}
           </RankLabel>
         </Box>
         {walletAddress ? (
@@ -83,7 +84,7 @@ export const LeaderboardEntry = ({
       ) : (
         <RankPointsContainer>
           <Typography variant="bodyLargeStrong">
-            {t('format.decimal2Digit', { value: points })}
+            {t('format.decimal2Digit', { value: Number(points) })}
           </Typography>
           <XPIcon />
         </RankPointsContainer>
