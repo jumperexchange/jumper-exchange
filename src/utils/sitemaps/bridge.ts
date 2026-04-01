@@ -7,6 +7,8 @@ import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isAlphanumeric } from '@/utils/validation-schemas';
 import type { ExtendedChain, Token } from '@lifi/sdk';
 
+export const dynamic = 'force-static';
+
 const SITEMAP_LIMIT = 50_000;
 
 const getFilteredCoins = (availableChainIds: number[]): Token[] =>

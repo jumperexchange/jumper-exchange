@@ -6,6 +6,8 @@ import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isProduction } from '@/utils/isProduction';
 
+export const dynamic = 'force-static';
+
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
 const DEV_CHUNK_SIZE = 20;
