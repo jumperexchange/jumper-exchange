@@ -1,12 +1,13 @@
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { ModalContainerProps } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
-import { useMemo, useState, useCallback, type FC } from 'react';
+import { useMemo, useState, useCallback, useRef, type FC } from 'react';
 import { useRedeemableClaims } from '@/hooks/earn/useRedeemableClaims';
 import type { FormattedClaim } from './hooks/useFormatRedeemClaimData';
 import { useFormatRedeemClaimData } from './hooks/useFormatRedeemClaimData';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
+import type { NavigationContextValue } from '../JumperWidget/context';
 import { createTokenBalance } from '@/types/tokens';
 import { useTranslation } from 'react-i18next';
 import { RequestViewSubmitButton } from './components/RequestViewSubmitButton';
@@ -52,6 +53,15 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
 
   const { lpToken, lpTokenAmount, assetToken, refetchLpTokenAmount } =
     useEarnOpportunityTokens(earnOpportunity);
+
+  const widgetNavigationRef = useRef<NavigationContextValue | null>(null);
+
+  const handleWidgetNavigationReady = useCallback(
+    (value: NavigationContextValue) => {
+      widgetNavigationRef.current = value;
+    },
+    [],
+  );
 
   const isClaimFlow = selectedClaim !== null;
 
@@ -141,6 +151,14 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       setSelectedClaim(null);
       handleResetAmount();
       refetchLpTokenAmount();
+      if (
+        widgetNavigationRef.current?.currentViewId !==
+        RequestRedeemModalView.REQUEST_WITHDRAW
+      ) {
+        widgetNavigationRef.current?.goToView(
+          RequestRedeemModalView.REQUEST_WITHDRAW,
+        );
+      }
     },
   });
 
@@ -227,6 +245,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         <JumperWidget
           views={views}
           statusSheet={statusSheet}
+          onNavigationReady={handleWidgetNavigationReady}
           style={widgetStyle}
         />
       ) : null}
