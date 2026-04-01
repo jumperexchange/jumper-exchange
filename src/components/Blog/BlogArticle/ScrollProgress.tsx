@@ -56,7 +56,10 @@ export const ScrollProgress: FC<ScrollProgressProps> = ({
           <Box
             sx={(theme) => ({
               position: 'absolute',
-              bottom: theme.spacing(-7),
+              bottom: {
+                xs: theme.spacing(-9),
+                sm: theme.spacing(-7),
+              },
               left: '50%',
               width: '100vw',
               marginLeft: '-50vw',
