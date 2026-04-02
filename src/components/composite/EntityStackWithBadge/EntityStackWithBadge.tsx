@@ -111,13 +111,11 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
 
   // Show explorer link on hover when single chain + single address
   const hintOnHover = useMemo(() => {
-    if (
-      (addressOverride || (assetAddresses && assetAddresses.length === 1)) &&
-      chainIds.length === 1
-    ) {
+    const resolvedAddress = addressOverride?.trim() || assetAddresses[0];
+    if (resolvedAddress && chainIds.length === 1) {
       return (
         <EntityExplorerLink
-          address={addressOverride ?? assetAddresses[0]}
+          address={resolvedAddress}
           chainId={chainIds[0]}
           hintVariant={content.hintVariant}
         />
