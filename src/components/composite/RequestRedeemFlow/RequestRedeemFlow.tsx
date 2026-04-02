@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
-import { RequestRedeemModal } from '../RequestRedeemModal/RequestRedeemModal';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
@@ -13,6 +12,17 @@ import { useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRed
 import type { IconButtonProps } from '@/components/core/buttons/IconButton/IconButton.types';
 import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
+import dynamic from 'next/dynamic';
+
+const RequestRedeemModal = dynamic(
+  () =>
+    import('../RequestRedeemModal/RequestRedeemModal').then(
+      (mod) => mod.RequestRedeemModal,
+    ),
+  {
+    ssr: false,
+  },
+);
 
 export const RequestRedeemFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal, refetchCallback } =
@@ -44,12 +54,14 @@ export const RequestRedeemFlowModal = () => {
           TrackingEventDataAction.ExecutionFailedEarnWithdraw,
       }}
     >
-      <RequestRedeemModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        earnOpportunity={selectedEarnOpportunity!}
-        refetchCallback={refetchCallback}
-      />
+      {isModalOpen && (
+        <RequestRedeemModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          earnOpportunity={selectedEarnOpportunity!}
+          refetchCallback={refetchCallback}
+        />
+      )}
     </WidgetTrackingProvider>
   );
 };
