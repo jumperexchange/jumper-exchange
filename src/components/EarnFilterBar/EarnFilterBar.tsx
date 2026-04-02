@@ -9,15 +9,13 @@ import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
-import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
 import {
   EarnFilterBarContainer,
   EarnFilterBarHeaderContainer,
 } from './EarnFilterBar.styles';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
-import { EarnFilterBarContentAllDesktop } from './layouts/EarnFilterBarContentAllDesktop';
-import { EarnFilterBarContentAllTablet } from './layouts/EarnFilterBarContentAllTablet';
+import { EarnFilterBarContentAll } from './layouts/EarnFilterBarContentAll';
 import { EarnFilterViewDesktop } from './layouts/EarnFilterViewDesktop';
 import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
 
@@ -42,38 +40,50 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
 
   const isForYouTab = EarnFilterTab.FOR_YOU === tab;
 
-  const EarnFilterBarContent = isForYouTab
-    ? EarnFilterBarContentForYou
-    : EarnFilterBarContentAllDesktop;
-
   return (
-    <EarnFilterBarContainer>
-      <EarnFilterBarHeaderContainer>
-        {isTablet ? <EarnFilterViewTablet /> : <EarnFilterViewDesktop />}
-        {!isTablet && updatedAt && (
-          <Badge
-            variant={BadgeVariant.Secondary}
-            size={BadgeSize.SM}
-            label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
-          />
-        )}
-        {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
-      </EarnFilterBarHeaderContainer>
-      {!isTablet && (
-        <EarnFilterBarContent>
+    <>
+      <EarnFilterBarContainer>
+        <EarnFilterBarHeaderContainer>
+          {isTablet ? <EarnFilterViewTablet /> : <EarnFilterViewDesktop />}
           <Stack
             direction="row"
             sx={{
               gap: 1,
+              display: 'flex',
               alignItems: 'center',
               flexShrink: 0,
             }}
           >
-            <EarnListMode variant={variant} setVariant={setVariant} />
-            {!isForYouTab && <EarnFilterSort />}
+            <Stack
+              direction="row"
+              sx={{
+                gap: 1,
+                display: 'flex',
+                alignItems: 'center',
+                flexShrink: 0,
+              }}
+            >
+              <EarnListMode variant={variant} setVariant={setVariant} />
+            </Stack>
+            {!isForYouTab && <EarnFilterBarContentAll />}
           </Stack>
-        </EarnFilterBarContent>
+        </EarnFilterBarHeaderContainer>
+      </EarnFilterBarContainer>
+      {isForYouTab && (
+        <EarnFilterBarContainer>
+          <EarnFilterBarContentForYou>
+            {!isTablet && updatedAt && (
+              <Badge
+                variant={BadgeVariant.Secondary}
+                size={BadgeSize.SM}
+                label={t('badge.updated', {
+                  time: formatDistanceToNow(updatedAt),
+                })}
+              />
+            )}
+          </EarnFilterBarContentForYou>
+        </EarnFilterBarContainer>
       )}
-    </EarnFilterBarContainer>
+    </>
   );
 };

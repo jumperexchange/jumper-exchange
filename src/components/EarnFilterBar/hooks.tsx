@@ -15,6 +15,24 @@ import { capitalizeString } from '@/utils/capitalizeString';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
+import { usePendingFilters } from '../composite/MultiLayer/hooks';
+import {
+  createMultiSelectCategory,
+  createSingleSelectCategory,
+  createSliderCategory,
+} from '../composite/MultiLayer/utils';
+import { countBadge, valueBadge } from './utils';
+
+interface EarnPendingFilterValues {
+  chains: string[];
+  protocols: string[];
+  tags: string[];
+  assets: string[];
+  apy: number[];
+  tvl: number[];
+  sortBy: SortByEnum;
+  rewardsAPY: RewardsAPYEnum[];
+}
 
 export const useEarnFilterBar = () => {
   const { t } = useTranslation();
@@ -255,5 +273,218 @@ export const useEarnFilterBar = () => {
     handleClearAllFilters: clearFilters,
     handleSortBy,
     handleApplyAllFilters,
+  };
+};
+
+export const useEarnFilterCategories = () => {
+  const { t } = useTranslation();
+  const {
+    chainOptions,
+    protocolOptions,
+    tagOptions,
+    assetOptions,
+    filter,
+    apyMinValue,
+    apyMaxValue,
+    apyMin,
+    apyMax,
+    tvlMinValue,
+    tvlMaxValue,
+    tvlMin,
+    tvlMax,
+    rewardsAPYValue,
+    rewardsAPYOptions,
+    sortByOptions,
+    sortBy,
+    filtersCount,
+    handleClearAllFilters,
+    handleApplyAllFilters,
+  } = useEarnFilterBar();
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
+  } = usePendingFilters<EarnPendingFilterValues>({
+    initialValues: {
+      chains: filter?.chains?.map(String) ?? [],
+      protocols: filter?.protocols ?? [],
+      tags: filter?.tags ?? [],
+      assets: filter?.assets ?? [],
+      apy: [apyMinValue, apyMaxValue],
+      tvl: [tvlMinValue, tvlMaxValue],
+      sortBy: sortBy ?? '',
+      rewardsAPY: rewardsAPYValue ? [rewardsAPYValue] : [],
+    },
+    onApply: (values) => {
+      const minRewardsAPY = values.rewardsAPY.includes(
+        RewardsAPYOptions.WITH_REWARDS,
+      )
+        ? 0.0
+        : undefined;
+      handleApplyAllFilters({
+        chains: values.chains.map(Number) ?? [],
+        protocols: values.protocols ?? [],
+        tags: values?.tags ?? [],
+        assets: values.assets ?? [],
+        minAPY: values.apy[0] / 100,
+        maxAPY: values.apy[1] / 100,
+        minTVL: values.tvl[0],
+        maxTVL: values.tvl[1],
+        sortBy: values.sortBy ?? '',
+        minRewardsAPY,
+      });
+    },
+    onClear: handleClearAllFilters,
+    isFilterApplied: (values) =>
+      values.chains.length > 0 ||
+      values.protocols.length > 0 ||
+      values.tags.length > 0 ||
+      values.assets.length > 0 ||
+      values.apy[0] !== apyMin ||
+      values.apy[1] !== apyMax ||
+      values.tvl[0] !== tvlMin ||
+      values.tvl[1] !== tvlMax ||
+      values.rewardsAPY.length > 0,
+  });
+
+  const usedApyMin = pendingValues.apy[0] ?? apyMinValue;
+  const usedApyMax = pendingValues.apy[1] ?? apyMaxValue;
+  const usedTvlMin = pendingValues.tvl[0] ?? tvlMinValue;
+  const usedTvlMax = pendingValues.tvl[1] ?? tvlMaxValue;
+
+  const categories = [
+    chainOptions.length > 1
+      ? createMultiSelectCategory<string>({
+          id: 'chain',
+          label: t('earn.filter.chain'),
+          badgeLabel: countBadge(pendingValues.chains.length),
+          value: pendingValues.chains,
+          onChange: (v) => setPendingValue('chains', v),
+          options: chainOptions,
+          searchable: true,
+          searchPlaceholder: t('earn.filter.search', {
+            filterBy: t('earn.filter.chain').toLowerCase(),
+          }),
+          testId: 'earn-filter-chain-select',
+        })
+      : null,
+    protocolOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'protocol',
+          label: t('earn.filter.protocol'),
+          badgeLabel: countBadge(pendingValues.protocols.length),
+          value: pendingValues.protocols,
+          onChange: (v) => setPendingValue('protocols', v),
+          options: protocolOptions,
+          searchable: true,
+          searchPlaceholder: t('earn.filter.search', {
+            filterBy: t('earn.filter.protocol').toLowerCase(),
+          }),
+          testId: 'earn-filter-protocol-select',
+        })
+      : null,
+    tagOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'tag',
+          label: t('earn.filter.tag'),
+          badgeLabel: countBadge(pendingValues.tags.length),
+          value: pendingValues.tags,
+          onChange: (v) => setPendingValue('tags', v),
+          options: tagOptions,
+          searchable: true,
+          searchPlaceholder: t('earn.filter.search', {
+            filterBy: t('earn.filter.tag').toLowerCase(),
+          }),
+          testId: 'earn-filter-tag-select',
+        })
+      : null,
+    assetOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'asset',
+          label: t('earn.filter.asset'),
+          badgeLabel: countBadge(pendingValues.assets.length),
+          value: pendingValues.assets,
+          onChange: (v) => setPendingValue('assets', v),
+          options: assetOptions,
+          searchable: true,
+          searchPlaceholder: t('earn.filter.search', {
+            filterBy: t('earn.filter.asset').toLowerCase(),
+          }),
+          testId: 'earn-filter-asset-select',
+        })
+      : null,
+    !isNaN(apyMin) && !isNaN(apyMax) && apyMin !== apyMax
+      ? createSliderCategory({
+          id: 'apy',
+          label: t('earn.filter.apy'),
+          badgeLabel: valueBadge(
+            usedApyMin,
+            usedApyMax,
+            apyMin,
+            apyMax,
+            pendingValues.apy,
+          ),
+          value: pendingValues.apy,
+          onChange: (v) => setPendingValue('apy', v),
+          min: apyMin,
+          max: apyMax,
+          testId: 'earn-filter-apy-select',
+        })
+      : null,
+    !isNaN(tvlMin) && !isNaN(tvlMax) && tvlMin !== tvlMax
+      ? createSliderCategory({
+          id: 'tvl',
+          label: t('earn.filter.tvl'),
+          badgeLabel: valueBadge(
+            usedTvlMin,
+            usedTvlMax,
+            tvlMin,
+            tvlMax,
+            pendingValues.tvl,
+          ),
+          value: pendingValues.tvl,
+          onChange: (v) => setPendingValue('tvl', v),
+          min: tvlMin,
+          max: tvlMax,
+          testId: 'earn-filter-tvl-select',
+        })
+      : null,
+    rewardsAPYOptions.length > 0
+      ? createMultiSelectCategory<RewardsAPYEnum>({
+          id: 'rewardsAPY',
+          label: t('earn.filter.rewards.label'),
+          value: pendingValues.rewardsAPY ?? [],
+          onChange: (v: RewardsAPYEnum[]) => setPendingValue('rewardsAPY', v),
+          options: rewardsAPYOptions,
+          testId: 'earn-filter-rewards-select',
+        })
+      : null,
+    sortByOptions.length > 1
+      ? createSingleSelectCategory<SortByEnum>({
+          id: 'sortBy',
+          label: t('earn.sorting.sort'),
+          value: pendingValues.sortBy,
+          onChange: (v) => {
+            if (v) {
+              setPendingValue('sortBy', v);
+            }
+          },
+          options: sortByOptions,
+          testId: 'earn-filter-sort-select',
+        })
+      : null,
+  ].filter((category) => !!category);
+
+  return {
+    categories,
+    filtersCount,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingFiltersApplied,
   };
 };

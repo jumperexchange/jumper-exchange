@@ -167,6 +167,7 @@ interface Resources {
         clear: 'Clear';
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
+        filterSort: 'Filters & Sort';
         protocol: 'Protocol';
         rewards: {
           label: 'Rewards';
