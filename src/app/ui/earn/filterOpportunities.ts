@@ -1,4 +1,4 @@
-import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash';
+import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash-es';
 import type { Nullable } from 'nuqs';
 
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';

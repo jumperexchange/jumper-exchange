@@ -1,5 +1,5 @@
 import { useAccount } from '@lifi/wallet-management';
-import { isEqual } from 'lodash';
+import { isEqual } from 'lodash-es';
 import { useQueryStates } from 'nuqs';
 import {
   createContext,
