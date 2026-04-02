@@ -243,7 +243,6 @@ test.describe('Analytics filters on Earn page', () => {
     await expect(connectButton(page)).toBeVisible();
     await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
-    await page.waitForLoadState('load');
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
   });
