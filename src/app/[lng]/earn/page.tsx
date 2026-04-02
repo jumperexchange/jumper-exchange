@@ -3,7 +3,8 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
+import { EarnsPage } from '@/app/ui/earn/EarnsPage';
+import { EarnsPageSkeleton } from '@/app/ui/earn/EarnsPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';

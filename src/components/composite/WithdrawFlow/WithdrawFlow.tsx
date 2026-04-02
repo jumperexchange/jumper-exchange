@@ -6,7 +6,6 @@ import type { EarnOpportunityExtended } from 'src/stores/withdrawFlow/WithdrawFl
 import { useWithdrawFlowStore } from 'src/stores/withdrawFlow/WithdrawFlowStore';
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
-import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
@@ -15,6 +14,15 @@ import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatur
 import type { EarnInteractionFlags } from '@/types/jumper-backend';
 import { EarnInteractionFeature } from '@/types/earn';
 import { DisabledEarnFeatureTooltip } from '@/components/EarnDetails/DisabledEarnFeatureTooltip';
+import dynamic from 'next/dynamic';
+
+const WithdrawModal = dynamic(
+  () =>
+    import('../WithdrawModal/WithdrawModal').then((mod) => mod.WithdrawModal),
+  {
+    ssr: false,
+  },
+);
 
 export const WithdrawFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -46,11 +54,13 @@ export const WithdrawFlowModal = () => {
           TrackingEventDataAction.ExecutionFailedEarnWithdraw,
       }}
     >
-      <WithdrawModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        earnOpportunity={selectedEarnOpportunity!}
-      />
+      {isModalOpen && (
+        <WithdrawModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          earnOpportunity={selectedEarnOpportunity!}
+        />
+      )}
     </WidgetTrackingProvider>
   );
 };

@@ -6,7 +6,6 @@ import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlow
 import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
 import { DepositButton } from '../DepositButton/DepositButton';
 import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
-import { DepositModal } from '../DepositModal/DepositModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
@@ -15,6 +14,14 @@ import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatur
 import type { EarnInteractionFlags } from '@/types/jumper-backend';
 import { EarnInteractionFeature } from '@/types/earn';
 import { DisabledEarnFeatureTooltip } from '@/components/EarnDetails/DisabledEarnFeatureTooltip';
+import dynamic from 'next/dynamic';
+
+const DepositModal = dynamic(
+  () => import('../DepositModal/DepositModal').then((mod) => mod.DepositModal),
+  {
+    ssr: false,
+  },
+);
 
 export const DepositFlowModal = () => {
   const { selectedEarnOpportunity, isModalOpen, closeModal } =
@@ -46,11 +53,13 @@ export const DepositFlowModal = () => {
           TrackingEventDataAction.ExecutionFailedEarnDeposit,
       }}
     >
-      <DepositModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        earnOpportunity={selectedEarnOpportunity!}
-      />
+      {isModalOpen && (
+        <DepositModal
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          earnOpportunity={selectedEarnOpportunity!}
+        />
+      )}
     </WidgetTrackingProvider>
   );
 };
