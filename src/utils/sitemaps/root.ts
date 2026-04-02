@@ -1,11 +1,9 @@
 import { AppPaths } from '@/const/urls';
-import type { MetadataRoute } from 'next';
 import type { SitemapPage } from '@/types/sitemap';
-import { buildUrl, toSitemapEntry } from '@/utils/sitemap';
+import { buildUrl, toSitemapDate } from '@/utils/sitemap';
+import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 
-export const dynamic = 'force-static';
-
-export const pages: SitemapPage[] = [
+const pages: SitemapPage[] = [
   { path: AppPaths.Main, priority: 1.0 },
   { path: AppPaths.Learn, priority: 0.9 },
   { path: AppPaths.Earn, priority: 0.8 },
@@ -17,8 +15,12 @@ export const pages: SitemapPage[] = [
   { path: AppPaths.Newsletter, priority: 0.5 },
 ];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  return pages.map(({ path, priority }) =>
-    toSitemapEntry(buildUrl(path), priority),
-  );
-}
+export const getRootSitemapEntries = (
+  lastModified = toSitemapDate(Date.now()),
+): SitemapXmlEntry[] =>
+  pages.map(({ path, priority }) => ({
+    loc: buildUrl(path),
+    lastModified,
+    changeFrequency: 'weekly',
+    priority,
+  }));
