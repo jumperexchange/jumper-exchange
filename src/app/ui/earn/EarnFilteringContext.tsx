@@ -12,7 +12,10 @@ import {
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { NullableFields } from 'src/types/internal';
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type {
+  EarnOpportunities,
+  EarnOpportunityWithLatestAnalytics,
+} from 'src/types/jumper-backend';
 import type { StrapiMetaPagination } from 'src/types/strapi';
 import type { Hex } from 'viem';
 import { useStoreSearchParams } from '@/stores/earn/SearchParamsStore';
@@ -94,8 +97,10 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
 });
 
 export const EarnFilteringProvider = ({
+  initialAllOpportunities,
   children,
 }: {
+  initialAllOpportunities: EarnOpportunities;
   children: React.ReactNode;
 }) => {
   useStoreSearchParams();
@@ -176,9 +181,14 @@ export const EarnFilteringProvider = ({
     },
   );
 
-  const allNoFilter = useEarnFilterOpportunities({
-    filter: {},
-  });
+  const allNoFilter = useEarnFilterOpportunities(
+    {
+      filter: {},
+    },
+    {
+      initialData: initialAllOpportunities,
+    },
+  );
 
   const allNoFilterData = useMemo(
     () => allNoFilter.data?.data ?? [],

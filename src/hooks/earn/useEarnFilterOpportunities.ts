@@ -16,12 +16,14 @@ type MetadataWithUpdatedAt = Omit<EarnOpportunities['meta'], 'updatedAt'> & {
   updatedAt: Date;
 };
 
-export type Result = UseQueryResult<
-  Omit<EarnOpportunities, 'meta'> & {
-    meta: MetadataWithUpdatedAt;
-  },
-  unknown
->;
+export type EarnOpportunitiesWithParsedMeta = Omit<
+  EarnOpportunities,
+  'meta'
+> & {
+  meta: MetadataWithUpdatedAt;
+};
+
+export type Result = UseQueryResult<EarnOpportunitiesWithParsedMeta, unknown>;
 
 export const useEarnFilterOpportunities = (
   { filter }: Props,

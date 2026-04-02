@@ -24,6 +24,7 @@ import {
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
+import type { EarnOpportunities } from '@/types/jumper-backend';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -121,11 +122,15 @@ const EarnOpportunitiesAllInner = () => {
   );
 };
 
-interface EarnOpportunitiesAllProps {}
+interface EarnOpportunitiesAllProps {
+  initialAllOpportunities: EarnOpportunities;
+}
 
-export const EarnOpportunitiesAll: FC<EarnOpportunitiesAllProps> = () => {
+export const EarnOpportunitiesAll: FC<EarnOpportunitiesAllProps> = ({
+  initialAllOpportunities,
+}) => {
   return (
-    <EarnFilteringProvider>
+    <EarnFilteringProvider initialAllOpportunities={initialAllOpportunities}>
       <EarnOpportunitiesAllInner />
     </EarnFilteringProvider>
   );
