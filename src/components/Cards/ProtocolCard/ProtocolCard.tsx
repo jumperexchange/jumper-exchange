@@ -132,6 +132,7 @@ export const ProtocolCard: FC<ProtocolCardProps> = ({
                 alt={protocol?.name || 'Protocol Logo'}
                 height={56}
                 width={56}
+                priority
                 onLoad={() => setProtocolAvatarLoaded(true)}
               />
             )}
