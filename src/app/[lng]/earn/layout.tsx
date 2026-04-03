@@ -1,5 +1,3 @@
-'use client';
-
 import { Gatekeeper } from '@/app/ui/gatekeeper/Gatekeeper';
 import EarnBetaIllustration from '@/components/illustrations/EarnBetaIllustration';
 import { notFound } from 'next/navigation';

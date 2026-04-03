@@ -48,6 +48,7 @@ export const useEarnFilterOpportunities = (
       };
     },
     refetchInterval: ONE_HOUR_MS,
+    staleTime: ONE_HOUR_MS,
     placeholderData: (previousData) =>
       !('enabled' in options) || options.enabled ? previousData : undefined,
     ...options,

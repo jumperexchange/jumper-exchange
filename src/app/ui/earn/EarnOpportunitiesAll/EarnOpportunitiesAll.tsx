@@ -11,7 +11,6 @@ import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawF
 import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
-import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
@@ -22,6 +21,19 @@ import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
 import type { EarnOpportunities } from '@/types/jumper-backend';
+import dynamic from 'next/dynamic';
+import { EarnFilterBarSkeleton } from '@/components/EarnFilterBar/EarnFilterBarSkeleton';
+
+const EarnFilterBar = dynamic(
+  () =>
+    import('@/components/EarnFilterBar/EarnFilterBar').then(
+      (mod) => mod.EarnFilterBar,
+    ),
+  {
+    ssr: false,
+    loading: () => <EarnFilterBarSkeleton />,
+  },
+);
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();

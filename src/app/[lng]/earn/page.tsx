@@ -3,11 +3,10 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
+import { getEarnInitialAllOpportunitiesCached } from '@/app/lib/getEarnInitialAllOpportunitiesCached';
 import { EarnsPage } from '@/app/ui/earn/EarnsPage';
-import { EarnsPageSkeleton } from '@/app/ui/earn/EarnsPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
-import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: pageMetadataFields.earn.title,
@@ -25,11 +24,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  console.log('1. Earn page');
+  const initialAllOpportunities = await getEarnInitialAllOpportunitiesCached();
 
-  return (
-    <Suspense fallback={<EarnsPageSkeleton />}>
-      <EarnsPage />
-    </Suspense>
-  );
+  return <EarnsPage initialAllOpportunities={initialAllOpportunities} />;
 }
