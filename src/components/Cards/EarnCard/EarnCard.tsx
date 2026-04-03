@@ -1,13 +1,10 @@
-import { FC } from 'react';
-import { EarnCardProps } from './EarnCard.types';
+import { memo, type FC } from 'react';
+import type { EarnCardProps } from './EarnCard.types';
 import { CompactEarnCard } from './variants/CompactEarnCard';
 import { ListItemEarnCard } from './variants/ListItemEarnCard';
 import { OverviewEarnCard } from './variants/OverviewEarnCard';
 
-export const EarnCard: FC<EarnCardProps> = ({
-  variant = 'compact',
-  ...rest
-}) => {
+const EarnCardBase: FC<EarnCardProps> = ({ variant = 'compact', ...rest }) => {
   if (variant === 'list-item') {
     return <ListItemEarnCard {...rest} />;
   }
@@ -16,3 +13,13 @@ export const EarnCard: FC<EarnCardProps> = ({
   }
   return <CompactEarnCard {...rest} />;
 };
+
+export const EarnCard = memo(EarnCardBase, (prev, next) => {
+  return (
+    prev.variant === next.variant &&
+    prev.data?.slug === next.data?.slug &&
+    prev.isLoading === next.isLoading &&
+    prev.isMissingPosition === next.isMissingPosition &&
+    prev.href === next.href
+  );
+});

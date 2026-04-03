@@ -45,7 +45,7 @@ export const EarnOpportunitiesCards = ({
             exit={{ opacity: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            key={`${item?.slug}-${index}`}
+            key={item?.slug ?? `loading-${index}`}
           >
             {item == null ? (
               <EarnCard variant={variant} isLoading={true} data={null} />
