@@ -70,7 +70,9 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
         </EarnFilterBarHeaderContainer>
       </EarnFilterBarContainer>
       {isForYouTab && (
-        <EarnFilterBarContainer>
+        <EarnFilterBarContainer
+          sx={(theme) => ({ padding: `${theme.spacing(1)} !important` })}
+        >
           <EarnFilterBarContentForYou>
             {!isTablet && updatedAt && (
               <Badge

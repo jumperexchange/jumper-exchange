@@ -29,7 +29,7 @@ export const EarnFilterBarContentForYou: FC<PropsWithChildren> = ({
       <EarnAnimatedLayoutContainer>
         <Badge
           variant={BadgeVariant.Secondary}
-          size={BadgeSize.LG}
+          size={BadgeSize.MD}
           startIcon={<RecommendationIcon height={20} width={20} />}
         />
         <Typography variant="bodyMediumStrong">{copy}</Typography>
