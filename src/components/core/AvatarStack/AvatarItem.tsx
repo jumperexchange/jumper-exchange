@@ -1,4 +1,4 @@
-import { type FC, useState } from 'react';
+import { type FC, forwardRef, useState } from 'react';
 import {
   Avatar,
   AvatarSkeleton,
@@ -13,6 +13,30 @@ import { isAvatarCountItem, isAvatarImageItem } from './utils';
 import Typography from '@mui/material/Typography';
 import { mergeSx } from '@/utils/theme/mergeSx';
 import { useGetContrastBgColor } from '@/hooks/images/useGetContrastBgColor';
+import type { ImageProps } from 'next/image';
+import Image from 'next/image';
+
+type NextImageAdapterProps = Omit<ImageProps, 'fill'> & {
+  className?: string;
+};
+
+export const NextImageAdapter = forwardRef<
+  HTMLImageElement,
+  NextImageAdapterProps
+>(function NextImageAdapter(props, ref) {
+  const { className, ...rest } = props;
+
+  return (
+    <Image
+      {...rest}
+      ref={ref}
+      className={className}
+      fill
+      loading="lazy"
+      style={{ objectFit: 'contain' }}
+    />
+  );
+});
 
 export const AvatarImage: FC<AvatarImageItemProps> = ({
   avatar,
@@ -36,14 +60,16 @@ export const AvatarImage: FC<AvatarImageItemProps> = ({
   return (
     <Avatar
       size={size}
-      spacing={spacing}
       src={avatar.src}
       alt={avatar.alt}
+      spacing={spacing}
       overlap={overlap}
       variant="circular"
+      slots={{
+        img: NextImageAdapter,
+      }}
       slotProps={{
         img: {
-          loading: 'lazy',
           onLoadCapture: handleLoad,
           onErrorCapture: handleError,
         },
