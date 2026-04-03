@@ -376,7 +376,12 @@
     "noPositionsToManage": "You do not have any positions to manage",
     "capInDollar": "Available liquidity capacity of the market",
     "depositDisabled": "Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
-    "withdrawDisabled": "Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
+    "withdrawDisabled": "Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "close": "Close"
   },
   "labels": {
     "apy": "APY",
@@ -694,7 +699,7 @@
   },
   "newsletter": {
     "welcome": {
-      "title": "Make. The. Jump.",
+      "title": "Subscribe to the Jumper Newsletter",
       "subtitle": "Get the latest news and updates directly from <strong>Jumper.</strong>",
       "hint": "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at any time from the link in the email footer.",
       "subscribe": "Subscribe",

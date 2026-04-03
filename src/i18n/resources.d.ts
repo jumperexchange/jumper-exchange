@@ -668,7 +668,7 @@ interface Resources {
         subscribe: 'Subscribe';
         subtitle: 'Get the latest news and updates directly from <strong>Jumper.</strong>';
         success: 'Newsletter subscription successful!';
-        title: 'Make. The. Jump.';
+        title: 'Subscribe to the Jumper Newsletter';
       };
     };
     portfolio: {
@@ -858,9 +858,12 @@ interface Resources {
       capInDollar: 'Available liquidity capacity of the market';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
+      close: 'Close';
       deposit: 'The token on which the market is defined and yield accrues on.';
       depositDisabled: 'Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       deposited: 'The token you have deposited into this market.';
+      exitFullscreen: 'Exit fullscreen';
+      fullscreen: 'Fullscreen';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
       noPositionsToManage: 'You do not have any positions to manage';
@@ -868,6 +871,8 @@ interface Resources {
       rewardsApy: 'Expected yearly return rate distributed in reward token.';
       tvl: 'Total value of crypto assets deposited in this market.';
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
+      zoomIn: 'Zoom in';
+      zoomOut: 'Zoom out';
     };
     widget: {
       deposit: {

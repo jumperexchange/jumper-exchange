@@ -196,8 +196,8 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // For providing readable stack traces for errors using source maps, we need to setup the auth token
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
-  // Suppresses source map uploading logs during build
-  silent: false,
+  // Suppress noisy sentry-cli progress output in CI logs.
+  silent: true,
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: false,
@@ -218,16 +218,9 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
     deleteSourcemapsAfterUpload: true, // Security: delete after upload
   },
 
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
-  disableLogger: true,
+  telemetry: false,
 
   environment: process.env.NEXT_PUBLIC_ENVIRONMENT,
-
-  // Enables automatic instrumentation of Vercel Cron Monitors.
-  // See the following for more information:
-  // https://docs.sentry.io/product/crons/
-  // https://vercel.com/docs/cron-jobs
-  automaticVercelMonitors: true,
 
   webpack: {
     reactComponentAnnotation: {
