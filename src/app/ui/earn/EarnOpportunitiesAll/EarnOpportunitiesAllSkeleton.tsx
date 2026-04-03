@@ -1,3 +1,4 @@
+'use client';
 import { Grid } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { CompactEarnCardSkeleton } from 'src/components/Cards/EarnCard/variants/CompactEarnCardSkeleton';
