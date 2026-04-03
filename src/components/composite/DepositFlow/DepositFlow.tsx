@@ -101,6 +101,7 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
     <DepositButton
       onClick={handleClick}
       label={t('buttons.depositButtonLabel')}
+      aria-label={t('buttons.depositButtonLabel')}
       tooltip={tooltipContent}
       {...effectiveProps}
     />
@@ -163,6 +164,7 @@ export const DepositFlowOnDemandButton: FC<
     <DepositButton
       onClick={handleClick}
       label={t('buttons.depositButtonLabel')}
+      aria-label={t('buttons.depositButtonLabel')}
       tooltip={tooltipContent}
       {...effectiveProps}
     />
