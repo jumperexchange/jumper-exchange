@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
 import { AppPaths } from '@/const/urls';
 
-import { useEarnFiltering } from '../EarnFilteringContext';
+import { useEarnData } from '../EarnFilteringContext';
 import { EarnFilterTab } from '../types';
 
 export const EarnEmptyListYourPositions = () => {
   const { t } = useTranslation();
-  const { changeTab, isConnected } = useEarnFiltering();
+  const { changeTab, isConnected } = useEarnData();
   const router = useRouter();
   const { openWalletMenu } = useWalletMenu();
 

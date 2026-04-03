@@ -17,10 +17,7 @@ import { HeaderHeight } from '@/const/headerHeight';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
-import {
-  EarnFilteringProvider,
-  useEarnFiltering,
-} from '../EarnFilteringContext';
+import { EarnFilteringProvider, useEarnData } from '../EarnFilteringContext';
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
@@ -38,7 +35,7 @@ const EarnOpportunitiesAllInner = () => {
     pagination,
     page,
     setPage,
-  } = useEarnFiltering();
+  } = useEarnData();
 
   const [variant, setVariant] = useSettingsStore((state) => [
     state.earnCardVariant,

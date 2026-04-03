@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEarnFiltering } from '@/app/ui/earn/EarnFilteringContext';
+import { useEarnData } from '@/app/ui/earn/EarnFilteringContext';
 import { EarnFilterTab } from '@/app/ui/earn/types';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 
 export const EarnFilterViewTablet = () => {
   const { t } = useTranslation();
-  const { changeTab, tab } = useEarnFiltering();
+  const { changeTab, tab } = useEarnData();
 
   const options = useMemo(() => {
     return [

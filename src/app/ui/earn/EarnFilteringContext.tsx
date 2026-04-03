@@ -40,7 +40,28 @@ import {
 
 const PAGE_SIZE = 18;
 
-export interface EarnFilteringContextType extends EarnFilteringParams {
+// ─── Data context ────────────────────────────────────────────────────────────
+// Changes when: data loads, page changes, tab changes, connection state changes.
+
+export interface EarnDataContextType {
+  data: EarnOpportunityWithLatestAnalytics[];
+  updatedAt: Date | undefined;
+  isLoading: boolean;
+  isAllDataLoading: boolean;
+  error: unknown | undefined;
+  isConnected: boolean;
+  tab: EarnFilterTab;
+  changeTab: (tab: EarnFilterTab) => void;
+  page: number;
+  setPage: (page: number) => void;
+  pagination: StrapiMetaPagination;
+}
+
+// ─── Filter context ───────────────────────────────────────────────────────────
+// Changes when: filters change, sort changes, address changes, stats change.
+// Does NOT change when page or data changes.
+
+export interface EarnFilterContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: EarnOpportunityFilterWithoutSortByAndOrder;
@@ -49,28 +70,36 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   ) => void;
   clearFilters: () => void;
   usedYourAddress: boolean;
-  changeTab: (tab: EarnFilterTab) => void;
   totalMarkets: number;
-  data: EarnOpportunityWithLatestAnalytics[];
-  updatedAt: Date | undefined;
-  isLoading: boolean;
-  error: unknown | undefined;
-  isAllDataLoading: boolean;
-  isConnected: boolean;
-  tab: EarnFilterTab;
-  page: number;
-  setPage: (page: number) => void;
-  pagination: StrapiMetaPagination;
 }
 
-export const EarnFilteringContext = createContext<EarnFilteringContextType>({
+// Combined type — used only for stories/testing via EarnFilteringMockProvider.
+export type EarnFilteringContextType = EarnDataContextType &
+  EarnFilterContextType;
+
+// ─── Context objects ──────────────────────────────────────────────────────────
+
+const EarnDataContext = createContext<EarnDataContextType>({
+  data: [],
+  updatedAt: undefined,
+  isLoading: false,
+  isAllDataLoading: false,
+  error: undefined,
+  isConnected: true,
+  tab: EarnFilterTab.FOR_YOU,
+  changeTab: () => {},
+  page: 0,
+  setPage: () => {},
+  pagination: { page: 0, pageSize: PAGE_SIZE, pageCount: 0, total: 0 },
+});
+
+const EarnFilterContext = createContext<EarnFilterContextType>({
   sortBy: SortByOptions.APY,
   setSortBy: () => {},
   filter: {},
   updateFilter: () => {},
   clearFilters: () => {},
   usedYourAddress: false,
-  changeTab: () => {},
   totalMarkets: 0,
   allChains: [],
   allProtocols: [],
@@ -79,22 +108,9 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allAPY: {},
   allTVL: {},
   allRewardsOptions: [],
-  data: [],
-  updatedAt: undefined,
-  isLoading: false,
-  error: undefined,
-  isAllDataLoading: false,
-  isConnected: true,
-  tab: EarnFilterTab.FOR_YOU,
-  page: 0,
-  setPage: () => {},
-  pagination: {
-    page: 0,
-    pageSize: PAGE_SIZE,
-    pageCount: 0,
-    total: 0,
-  },
 });
+
+// ─── Provider ─────────────────────────────────────────────────────────────────
 
 export const EarnFilteringProvider = ({
   initialAllOpportunities,
@@ -227,9 +243,7 @@ export const EarnFilteringProvider = ({
     }
 
     const filtered = filterOpportunities(sourceData, filter);
-
     const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
-
     return sorted;
   }, [sourceData, filter, sortBy, tab]);
 
@@ -277,7 +291,6 @@ export const EarnFilteringProvider = ({
     if (unfilteredTabData.length === 0) {
       return EMPTY_FILTERING_PARAMS;
     }
-
     return extractFilteringParams(unfilteredTabData);
   }, [unfilteredTabData]);
 
@@ -331,72 +344,139 @@ export const EarnFilteringProvider = ({
     });
   }, [updateFilter]);
 
-  const context: EarnFilteringContextType = useMemo(() => {
+  const isLoading = useMemo(() => {
     const hasData = !!data && data.length > 0;
-    let isLoading = false;
     switch (tab) {
       case EarnFilterTab.FOR_YOU:
-        isLoading = !hasData && forYou.isLoading;
-        break;
+        return !hasData && forYou.isLoading;
       case EarnFilterTab.YOUR_POSITIONS:
-        isLoading = !hasData && yourPositionsNoFilter.isLoading;
-        break;
+        return !hasData && yourPositionsNoFilter.isLoading;
       case EarnFilterTab.ALL:
-        isLoading = !hasData && allNoFilter.isLoading;
-        break;
+        return !hasData && allNoFilter.isLoading;
     }
+  }, [
+    tab,
+    data,
+    forYou.isLoading,
+    yourPositionsNoFilter.isLoading,
+    allNoFilter.isLoading,
+  ]);
 
-    return {
+  // Data context — re-renders consumers when page/data/loading changes.
+  const dataContextValue = useMemo<EarnDataContextType>(
+    () => ({
+      data,
+      updatedAt,
+      isLoading,
+      isAllDataLoading: allNoFilter.isLoading,
+      error,
+      isConnected: !!account?.address,
+      tab,
+      changeTab,
+      page,
+      setPage,
+      pagination,
+    }),
+    [
+      data,
+      updatedAt,
+      isLoading,
+      allNoFilter.isLoading,
+      error,
+      account?.address,
+      tab,
+      changeTab,
+      page,
+      pagination,
+    ],
+  );
+
+  // Filter context — re-renders consumers only when filters/stats change.
+  // Does NOT change when page or data slice changes.
+  const filterContextValue = useMemo<EarnFilterContextType>(
+    () => ({
       sortBy,
       setSortBy: updateSortBy,
       filter,
       updateFilter,
       clearFilters,
-      tab,
       usedYourAddress,
-      changeTab,
       totalMarkets,
-      data,
-      updatedAt,
-      isLoading,
-      error,
-      isAllDataLoading: allNoFilter.isLoading,
-      isConnected: !!account?.address,
-      page,
-      setPage,
-      pagination,
       ...stats,
-    };
-  }, [
-    error,
-    sortBy,
-    filter,
-    updateFilter,
-    updateSortBy,
-    clearFilters,
-    tab,
-    usedYourAddress,
-    totalMarkets,
-    pagination,
-    page,
-    updatedAt,
-    address,
-    allNoFilter.isLoading,
-    forYou.isLoading,
-    yourPositionsNoFilter.isLoading,
-    stats,
-    changeTab,
-    data,
-    account,
-  ]);
+    }),
+    [
+      sortBy,
+      updateSortBy,
+      filter,
+      updateFilter,
+      clearFilters,
+      usedYourAddress,
+      totalMarkets,
+      stats,
+    ],
+  );
 
   return (
-    <EarnFilteringContext.Provider value={context}>
-      {children}
-    </EarnFilteringContext.Provider>
+    <EarnDataContext.Provider value={dataContextValue}>
+      <EarnFilterContext.Provider value={filterContextValue}>
+        {children}
+      </EarnFilterContext.Provider>
+    </EarnDataContext.Provider>
   );
 };
 
-export const useEarnFiltering = (): EarnFilteringContextType => {
-  return useContext(EarnFilteringContext);
+// ─── Hooks ────────────────────────────────────────────────────────────────────
+
+export const useEarnData = (): EarnDataContextType =>
+  useContext(EarnDataContext);
+
+export const useEarnFilter = (): EarnFilterContextType =>
+  useContext(EarnFilterContext);
+
+// ─── Stories / testing helper ─────────────────────────────────────────────────
+// Use this instead of individual context providers in Storybook decorators.
+
+export const EarnFilteringMockProvider = ({
+  value,
+  children,
+}: {
+  value: EarnFilteringContextType;
+  children: React.ReactNode;
+}) => {
+  const {
+    data,
+    updatedAt,
+    isLoading,
+    isAllDataLoading,
+    error,
+    isConnected,
+    tab,
+    changeTab,
+    page,
+    setPage,
+    pagination,
+    ...filterValue
+  } = value;
+
+  return (
+    <EarnDataContext.Provider
+      value={{
+        data,
+        updatedAt,
+        isLoading,
+        isAllDataLoading,
+        error,
+        isConnected,
+        tab,
+        changeTab,
+        page,
+        setPage,
+        pagination,
+      }}
+    >
+      <EarnFilterContext.Provider value={filterValue}>
+        {children}
+      </EarnFilterContext.Provider>
+    </EarnDataContext.Provider>
+  );
 };

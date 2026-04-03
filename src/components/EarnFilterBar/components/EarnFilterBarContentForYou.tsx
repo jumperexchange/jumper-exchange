@@ -1,7 +1,7 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import Typography from '@mui/material/Typography';
 import { useTranslation } from 'react-i18next';
-import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
+import { useEarnFilter } from 'src/app/ui/earn/EarnFilteringContext';
 import { Badge } from '../../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../../Badge/Badge.styles';
 import { RecommendationIcon } from '../../illustrations/RecommendationIcon';
@@ -13,7 +13,7 @@ export const EarnFilterBarContentForYou: FC<PropsWithChildren> = ({
 }) => {
   const { t } = useTranslation();
 
-  const { totalMarkets, usedYourAddress } = useEarnFiltering();
+  const { totalMarkets, usedYourAddress } = useEarnFilter();
 
   const formatedTotalMarkets = totalMarkets.toLocaleString();
 

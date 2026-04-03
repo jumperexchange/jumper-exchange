@@ -1,4 +1,4 @@
-import { useEarnFiltering } from '@/app/ui/earn/EarnFilteringContext';
+import { useEarnData } from '@/app/ui/earn/EarnFilteringContext';
 import { EarnFilterTab } from '@/app/ui/earn/types';
 import type { HorizontalTabItem } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export const EarnFilterViewDesktop = () => {
   const { t } = useTranslation();
-  const { changeTab, tab } = useEarnFiltering();
+  const { changeTab, tab } = useEarnData();
 
   const tabOptions: HorizontalTabItem[] = [
     {

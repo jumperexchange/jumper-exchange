@@ -1,14 +1,14 @@
 import { AnimatePresence, motion } from 'motion/react';
 import { useMemo } from 'react';
 
-import { useEarnFiltering } from '../EarnFilteringContext';
+import { useEarnData } from '../EarnFilteringContext';
 import { EarnFilterTab } from '../types';
 import { EarnEmptyListAllMarkets } from './EarnEmptyListAllMarkets';
 import { EarnEmptyListForYou } from './EarnEmptyListForYou';
 import { EarnEmptyListYourPositions } from './EarnEmptyListYourPositions';
 
 export const EarnEmptyList = () => {
-  const { data, isLoading, tab } = useEarnFiltering();
+  const { data, isLoading, tab } = useEarnData();
 
   const isEmptyList = useMemo(() => {
     return !isLoading && (!data || data.length === 0);

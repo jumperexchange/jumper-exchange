@@ -1,10 +1,10 @@
 import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
 import { useTranslation } from 'react-i18next';
-import { useEarnFiltering } from '../EarnFilteringContext';
+import { useEarnFilter } from '../EarnFilteringContext';
 
 export const EarnEmptyListAllMarkets = () => {
   const { t } = useTranslation();
-  const { clearFilters } = useEarnFiltering();
+  const { clearFilters } = useEarnFilter();
 
   return (
     <PortfolioEmptyList

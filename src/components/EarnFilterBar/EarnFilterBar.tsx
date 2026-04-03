@@ -3,7 +3,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { formatDistanceToNow } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 
-import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
+import { useEarnData } from '../../app/ui/earn/EarnFilteringContext';
 import { EarnFilterTab } from '../../app/ui/earn/types';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
@@ -31,7 +31,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   isLoading,
 }) => {
   const { t } = useTranslation();
-  const { tab, updatedAt } = useEarnFiltering();
+  const { tab, updatedAt } = useEarnData();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   if (isLoading) {

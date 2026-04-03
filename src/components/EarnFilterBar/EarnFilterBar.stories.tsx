@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
+import { EarnFilteringMockProvider } from '../../app/ui/earn/EarnFilteringContext';
 import {
   EarnFilterTab,
   SortByEnum,
@@ -18,9 +18,9 @@ const meta = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
       return (
-        <EarnFilteringContext.Provider value={mockContextValue()}>
+        <EarnFilteringMockProvider value={mockContextValue()}>
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],
@@ -182,7 +182,7 @@ export const EmptyState: Story = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
       return (
-        <EarnFilteringContext.Provider
+        <EarnFilteringMockProvider
           value={{
             ...mockContextValue(),
             allChains: [],
@@ -195,7 +195,7 @@ export const EmptyState: Story = {
           }}
         >
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],
@@ -210,7 +210,7 @@ export const LoadingState: Story = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
       return (
-        <EarnFilteringContext.Provider
+        <EarnFilteringMockProvider
           value={{
             ...mockContextValue(),
             isLoading: true,
@@ -218,7 +218,7 @@ export const LoadingState: Story = {
           }}
         >
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],
@@ -233,7 +233,7 @@ export const MinimalData: Story = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('list-item');
       return (
-        <EarnFilteringContext.Provider
+        <EarnFilteringMockProvider
           value={{
             ...mockContextValue(),
             allChains: [{ chainId: 1, chainKey: 'ethereum' }],
@@ -256,7 +256,7 @@ export const MinimalData: Story = {
           }}
         >
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],
@@ -271,7 +271,7 @@ export const WithActiveFilters: Story = {
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
       return (
-        <EarnFilteringContext.Provider
+        <EarnFilteringMockProvider
           value={{
             ...mockContextValue(),
             filter: {
@@ -285,7 +285,7 @@ export const WithActiveFilters: Story = {
           }}
         >
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],
@@ -315,7 +315,7 @@ export const LargeDataSet: Story = {
       const largeTags = Array.from({ length: 30 }, (_, i) => `Tag${i + 1}`);
 
       return (
-        <EarnFilteringContext.Provider
+        <EarnFilteringMockProvider
           value={{
             ...mockContextValue(),
             allChains: largeChains,
@@ -325,7 +325,7 @@ export const LargeDataSet: Story = {
           }}
         >
           <Story args={{ variant, setVariant }} />
-        </EarnFilteringContext.Provider>
+        </EarnFilteringMockProvider>
       );
     },
   ],

@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 
 import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';
 
-import { useEarnFiltering } from '../EarnFilteringContext';
+import { useEarnData } from '../EarnFilteringContext';
 
 export const EarnEmptyListForYou = () => {
   const { t } = useTranslation();
-  const { isConnected } = useEarnFiltering();
+  const { isConnected } = useEarnData();
   const { openWalletMenu } = useWalletMenu();
 
   const handleConnectWallet = () => {
