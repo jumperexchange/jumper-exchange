@@ -20,8 +20,10 @@ import {
   createMultiSelectCategory,
   createSingleSelectCategory,
   createSliderCategory,
+  createToggleCategory,
 } from '../composite/MultiLayer/utils';
 import { countBadge, valueBadge } from './utils';
+import { difference } from 'lodash-es';
 
 interface EarnPendingFilterValues {
   chains: string[];
@@ -31,7 +33,7 @@ interface EarnPendingFilterValues {
   apy: number[];
   tvl: number[];
   sortBy: SortByEnum;
-  rewardsAPY: RewardsAPYEnum[];
+  rewardsAPY: boolean;
 }
 
 export const useEarnFilterBar = () => {
@@ -185,10 +187,8 @@ export const useEarnFilterBar = () => {
     });
   };
 
-  const handleRewardsAPYChange = (values: string[]) => {
-    const hasValues = values.length > 0;
-    const minRewardsAPY =
-      hasValues && values[0] === RewardsAPYOptions.WITH_REWARDS ? 0.0 : null;
+  const handleRewardsAPYChange = (enabled: boolean) => {
+    const minRewardsAPY = enabled ? 0.0 : null;
     updateFilter({ ...filter, minRewardsAPY });
   };
 
@@ -318,14 +318,10 @@ export const useEarnFilterCategories = () => {
       apy: [apyMinValue, apyMaxValue],
       tvl: [tvlMinValue, tvlMaxValue],
       sortBy: sortBy ?? '',
-      rewardsAPY: rewardsAPYValue ? [rewardsAPYValue] : [],
+      rewardsAPY: !!rewardsAPYValue,
     },
     onApply: (values) => {
-      const minRewardsAPY = values.rewardsAPY.includes(
-        RewardsAPYOptions.WITH_REWARDS,
-      )
-        ? 0.0
-        : undefined;
+      const minRewardsAPY = values.rewardsAPY ? 0.0 : undefined;
       handleApplyAllFilters({
         chains: values.chains.map(Number) ?? [],
         protocols: values.protocols ?? [],
@@ -349,7 +345,7 @@ export const useEarnFilterCategories = () => {
       values.apy[1] !== apyMax ||
       values.tvl[0] !== tvlMin ||
       values.tvl[1] !== tvlMax ||
-      values.rewardsAPY.length > 0 ||
+      values.rewardsAPY !== !!rewardsAPYValue ||
       values.sortBy !== sortBy,
   });
 
@@ -456,12 +452,12 @@ export const useEarnFilterCategories = () => {
         })
       : null,
     rewardsAPYOptions.length > 0
-      ? createMultiSelectCategory<RewardsAPYEnum>({
+      ? createToggleCategory({
           id: 'rewardsAPY',
           label: t('earn.filter.rewards.label'),
-          value: pendingValues.rewardsAPY ?? [],
-          onChange: (v: RewardsAPYEnum[]) => setPendingValue('rewardsAPY', v),
-          options: rewardsAPYOptions,
+          value: pendingValues.rewardsAPY,
+          description: rewardsAPYOptions[0].label,
+          onChange: (v) => setPendingValue('rewardsAPY', v),
           testId: 'earn-filter-rewards-select',
         })
       : null,

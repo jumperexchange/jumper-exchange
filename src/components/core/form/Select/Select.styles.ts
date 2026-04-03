@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
 import { DayPicker } from 'react-day-picker';
 import { ButtonTertiary } from 'src/components/Button/Button.style';
 
@@ -360,5 +361,39 @@ export const StyledDayPicker = styled(DayPicker)(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     color: 'inherit',
+  },
+}));
+
+export const StyledSwitch = styled(Switch)(({ theme }) => ({
+  width: 32,
+  height: 16,
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: theme.spacing(0.25),
+    top: 0,
+    left: 0,
+    '&.Mui-checked': {
+      transform: 'translateX(100%)',
+      color: (theme.vars || theme).palette.common.white,
+      '& + .MuiSwitch-track': {
+        backgroundColor: (theme.vars || theme).palette.accent1.main,
+        opacity: 1,
+        borderColor: 'transparent',
+      },
+    },
+    '&.Mui-disabled': {
+      '& + .MuiSwitch-track': {
+        opacity: (theme.vars || theme).palette.action.disabledOpacity,
+      },
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    width: 12,
+    height: 12,
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 13,
+    opacity: 1,
+    backgroundColor: (theme.vars || theme).palette.alpha300.main,
   },
 }));

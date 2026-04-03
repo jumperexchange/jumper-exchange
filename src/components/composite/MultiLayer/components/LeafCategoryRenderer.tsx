@@ -6,6 +6,7 @@ import type {
 import { CategoryContentType } from '../MultiLayer.types';
 import { MultiSelectView } from '../views/MultiSelectView';
 import { SingleSelectView } from '../views/SingleSelectView';
+import { ToggleView } from '../views/ToggleView';
 import { SliderView } from '../views/SliderView';
 import { ListView } from '../views/ListView';
 import { DateRangeView } from '../views/DateRangeView';
@@ -25,6 +26,9 @@ export const LeafCategoryRenderer = <TValue,>({
 
     case CategoryContentType.SingleSelect:
       return <SingleSelectView category={category} slotProps={slotProps} />;
+
+    case CategoryContentType.Toggle:
+      return <ToggleView category={category} slotProps={slotProps} />;
 
     case CategoryContentType.Slider:
       return <SliderView category={category} slotProps={slotProps} />;

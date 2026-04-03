@@ -1,6 +1,7 @@
 import type {
   MultiSelectLeafCategory,
   SingleSelectLeafCategory,
+  ToggleLeafCategory,
   SliderLeafCategory,
   ListLeafCategory,
   CustomLeafCategory,
@@ -23,6 +24,13 @@ export const createMultiSelectCategory = <TValue extends string | number>(
     ...config,
     contentType: CategoryContentType.MultiSelect,
   }) as MultiSelectLeafCategory<TValue>;
+
+export const createToggleCategory = (
+  config: Omit<ToggleLeafCategory, 'contentType'>,
+): ToggleLeafCategory => ({
+  ...config,
+  contentType: CategoryContentType.Toggle,
+});
 
 export const createSliderCategory = (
   config: Omit<SliderLeafCategory, 'contentType'>,

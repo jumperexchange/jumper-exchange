@@ -7,6 +7,7 @@ import type { ReactNode } from 'react';
 export enum CategoryContentType {
   MultiSelect = 'multi-select',
   SingleSelect = 'single-select',
+  Toggle = 'toggle',
   Slider = 'slider',
   DateRange = 'date-range',
   List = 'list',
@@ -80,6 +81,16 @@ export type MultiSelectLeafCategory<TValue extends string | number> =
   };
 
 /**
+ * Toggle leaf category (boolean on/off)
+ */
+export type ToggleLeafCategory = BaseCategoryConfig & {
+  contentType: CategoryContentType.Toggle;
+  value?: boolean;
+  onChange?: (value: boolean) => void;
+  description?: ReactNode;
+};
+
+/**
  * Slider leaf category
  */
 export type SliderLeafCategory = BaseCategoryConfig & {
@@ -132,6 +143,7 @@ export type CustomLeafCategory<TValue> = BaseCategoryConfig & {
 export type LeafCategory<TValue> =
   | SingleSelectLeafCategory<TValue extends string | number ? TValue : string>
   | MultiSelectLeafCategory<TValue extends string | number ? TValue : string>
+  | ToggleLeafCategory
   | SliderLeafCategory
   | DateRangeLeafCategory
   | ListLeafCategory<TValue>
