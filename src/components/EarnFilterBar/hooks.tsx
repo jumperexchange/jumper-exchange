@@ -299,6 +299,7 @@ export const useEarnFilterCategories = () => {
     filtersCount,
     handleClearAllFilters,
     handleApplyAllFilters,
+    handleSortBy,
   } = useEarnFilterBar();
 
   const {
@@ -334,9 +335,9 @@ export const useEarnFilterCategories = () => {
         maxAPY: values.apy[1] / 100,
         minTVL: values.tvl[0],
         maxTVL: values.tvl[1],
-        sortBy: values.sortBy ?? '',
         minRewardsAPY,
       });
+      handleSortBy(values.sortBy ?? '');
     },
     onClear: handleClearAllFilters,
     isFilterApplied: (values) =>
@@ -348,7 +349,8 @@ export const useEarnFilterCategories = () => {
       values.apy[1] !== apyMax ||
       values.tvl[0] !== tvlMin ||
       values.tvl[1] !== tvlMax ||
-      values.rewardsAPY.length > 0,
+      values.rewardsAPY.length > 0 ||
+      values.sortBy !== sortBy,
   });
 
   const usedApyMin = pendingValues.apy[0] ?? apyMinValue;
