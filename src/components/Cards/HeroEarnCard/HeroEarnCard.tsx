@@ -1,5 +1,5 @@
 import { uniqBy } from 'lodash';
-import type { FC } from 'react';
+import { memo, type FC } from 'react';
 import { Trans } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
@@ -58,7 +58,7 @@ type HeroEarnCardProps =
   | HeroEarnCardNotEmptyProps
   | HeroEarnCardEmptyAndLoadingProps;
 
-export const HeroEarnCard: FC<HeroEarnCardProps> = ({
+const HeroEarnCardBase: FC<HeroEarnCardProps> = ({
   primaryAction,
   data,
   isLoading,
@@ -166,3 +166,13 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
     </ConditionalLink>
   );
 };
+
+export const HeroEarnCard = memo(HeroEarnCardBase, (prev, next) => {
+  return (
+    prev.data?.slug === next.data?.slug &&
+    prev.isLoading === next.isLoading &&
+    prev.copy === next.copy &&
+    prev.isMain === next.isMain &&
+    prev.href === next.href
+  );
+});
