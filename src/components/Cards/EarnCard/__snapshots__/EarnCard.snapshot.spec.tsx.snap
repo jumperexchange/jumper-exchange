@@ -116,9 +116,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -326,9 +328,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -438,9 +442,11 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -648,9 +654,11 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -764,9 +772,11 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                     >
                       <img
                         alt="morpho"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -974,9 +984,11 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                       >
                         <img
                           alt="USD Coin"
-                          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                          class="MuiAvatar-img"
                           loading="lazy"
+                          ownerstate="[object Object]"
                           src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                          style="object-fit: contain;"
                         />
                       </div>
                     </div>
@@ -1144,9 +1156,11 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -1354,9 +1368,11 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -1466,9 +1482,11 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -1676,9 +1694,11 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -1783,9 +1803,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -1993,9 +2015,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -2131,9 +2155,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -2341,9 +2367,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -2479,9 +2507,11 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -2617,9 +2647,11 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
                     >
                       <img
                         alt="USD Coin"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -2670,9 +2702,11 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -2826,9 +2860,11 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -2904,9 +2940,11 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -3060,9 +3098,11 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -3116,9 +3156,11 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                     >
                       <img
                         alt="morpho"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -3272,9 +3314,11 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                   >
                     <img
                       alt="USD Coin"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -3387,9 +3431,11 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -3543,9 +3589,11 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -3595,9 +3643,11 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -3751,9 +3801,11 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -3803,9 +3855,11 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -3928,9 +3982,11 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -4006,9 +4062,11 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -4162,9 +4220,11 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                 >
                   <img
                     alt="USD Coin"
-                    class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                    class="MuiAvatar-img"
                     loading="lazy"
+                    ownerstate="[object Object]"
                     src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                    style="object-fit: contain;"
                   />
                 </div>
               </div>
@@ -4367,9 +4427,11 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                         >
                           <img
                             alt="USD Coin"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -4519,9 +4581,11 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                         >
                           <img
                             alt="morpho"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -4751,9 +4815,11 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                         >
                           <img
                             alt="USD Coin"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -4903,9 +4969,11 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                         >
                           <img
                             alt="morpho"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -5132,9 +5200,11 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                         >
                           <img
                             alt="USD Coin"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -5284,9 +5354,11 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                         >
                           <img
                             alt="morpho"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -5547,9 +5619,11 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                         >
                           <img
                             alt="USD Coin"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -5699,9 +5773,11 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                         >
                           <img
                             alt="morpho"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -5928,9 +6004,11 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                         >
                           <img
                             alt="USD Coin"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>
@@ -6080,9 +6158,11 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                         >
                           <img
                             alt="morpho"
-                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            class="MuiAvatar-img"
                             loading="lazy"
+                            ownerstate="[object Object]"
                             src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                            style="object-fit: contain;"
                           />
                         </div>
                       </div>

@@ -89,9 +89,11 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -236,9 +238,11 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -383,9 +387,11 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -530,9 +536,11 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>
@@ -681,9 +689,11 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                     >
                       <img
                         alt="morpho"
-                        class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                        class="MuiAvatar-img"
                         loading="lazy"
+                        ownerstate="[object Object]"
                         src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                        style="object-fit: contain;"
                       />
                     </div>
                   </div>
@@ -872,9 +882,11 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                   >
                     <img
                       alt="morpho"
-                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      class="MuiAvatar-img"
                       loading="lazy"
+                      ownerstate="[object Object]"
                       src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                      style="object-fit: contain;"
                     />
                   </div>
                 </div>

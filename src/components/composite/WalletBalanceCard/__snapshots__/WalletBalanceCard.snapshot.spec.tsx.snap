@@ -469,9 +469,11 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         >
                                           <img
                                             alt="USD Coin"
-                                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                                            class="MuiAvatar-img"
                                             loading="lazy"
+                                            ownerstate="[object Object]"
                                             src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                                            style="object-fit: contain;"
                                           />
                                         </div>
                                       </div>
@@ -579,9 +581,11 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               >
                                                 <img
                                                   alt="USD Coin"
-                                                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                                                  class="MuiAvatar-img"
                                                   loading="lazy"
+                                                  ownerstate="[object Object]"
                                                   src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                                                  style="object-fit: contain;"
                                                 />
                                               </div>
                                             </div>
@@ -669,9 +673,11 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               >
                                                 <img
                                                   alt="USD Coin"
-                                                  class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                                                  class="MuiAvatar-img"
                                                   loading="lazy"
+                                                  ownerstate="[object Object]"
                                                   src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                                                  style="object-fit: contain;"
                                                 />
                                               </div>
                                             </div>
