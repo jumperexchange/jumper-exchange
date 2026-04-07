@@ -1,15 +1,16 @@
 import { AppPaths } from '@/const/urls';
 import { getArticles } from '@/app/lib/getArticles';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
-import { buildUrl, toSitemapDate, toSitemapEntry } from '@/utils/sitemap';
 import type { BlogArticleData } from '@/types/strapi';
-import type { MetadataRoute } from 'next';
+import { buildUrl, toSitemapDate } from '@/utils/sitemap';
+import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isProduction } from '@/utils/isProduction';
+
+export const dynamic = 'force-static';
 
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
 const DEV_CHUNK_SIZE = 20;
-
 const strapiUrl = getStrapiBaseUrl();
 const chunkSize = isProduction ? SITEMAP_LIMIT : DEV_CHUNK_SIZE;
 
@@ -25,7 +26,7 @@ const fetchArticlesChunk = async (
   const firstPage = Math.floor(start / ARTICLES_PAGE_SIZE) + 1;
   const lastPage = Math.ceil((start + chunkSize) / ARTICLES_PAGE_SIZE);
   const pageRange = [...Array(lastPage - firstPage + 1).keys()].map(
-    (i) => firstPage + i,
+    (index) => firstPage + index,
   );
 
   const pages = await Promise.all(
@@ -39,33 +40,31 @@ const fetchArticlesChunk = async (
   return pages.flat().slice(0, chunkSize);
 };
 
-export async function generateSitemaps() {
+export const getLearnSitemapChunkIds = async (): Promise<string[]> => {
   if (!isProduction) {
-    return [{ id: '0' }];
+    return ['0'];
   }
 
   try {
     const total = await getArticlesTotal();
     const numberOfChunks = Math.ceil(total / SITEMAP_LIMIT);
-    return [...Array(numberOfChunks).keys()].map((id) => ({ id: String(id) }));
+    return Array.from({ length: numberOfChunks }, (_, index) => String(index));
   } catch (error) {
     console.warn('Failed to fetch articles for learn sitemap:', error);
-    return [{ id: '0' }];
+    return ['0'];
   }
-}
+};
 
-export default async function sitemap(props: {
-  id: Promise<string>;
-}): Promise<MetadataRoute.Sitemap> {
-  const id = Number(await props.id);
-  const articles = await fetchArticlesChunk(id);
+export const getLearnSitemapEntriesForChunk = async (
+  chunkId: number,
+): Promise<SitemapXmlEntry[]> => {
+  const articles = await fetchArticlesChunk(chunkId);
 
-  return articles.map(({ Slug, updatedAt, publishedAt, Image }) =>
-    toSitemapEntry(
-      buildUrl(AppPaths.Learn, Slug),
-      0.8,
-      toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
-      Image?.url && strapiUrl ? [`${strapiUrl}${Image.url}`] : undefined,
-    ),
-  );
-}
+  return articles.map(({ Slug, updatedAt, publishedAt, Image }) => ({
+    loc: buildUrl(AppPaths.Learn, Slug),
+    lastModified: toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+    images: Image?.url && strapiUrl ? [`${strapiUrl}${Image.url}`] : undefined,
+  }));
+};

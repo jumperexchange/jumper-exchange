@@ -664,7 +664,7 @@ interface Resources {
         subscribe: 'Subscribe';
         subtitle: 'Get the latest news and updates directly from <strong>Jumper.</strong>';
         success: 'Newsletter subscription successful!';
-        title: 'Make. The. Jump.';
+        title: 'Subscribe to the Jumper Newsletter';
       };
     };
     portfolio: {

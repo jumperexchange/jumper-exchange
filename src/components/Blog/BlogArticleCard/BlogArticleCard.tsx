@@ -48,7 +48,7 @@ export const BlogArticleCard = ({
   return (
     <Link
       href={article?.RedirectURL ?? `${JUMPER_LEARN_PATH}/${article?.Slug}`}
-      style={{ textDecoration: 'none', width: '100%' }}
+      style={{ textDecoration: 'none', display: 'block' }}
     >
       <BlogArticleCardContainer
         variant="outlined"
