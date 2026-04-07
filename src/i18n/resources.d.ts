@@ -359,8 +359,8 @@ interface Resources {
           notSupported: 'Selected chain is not supported for this operation';
         };
         numericSelect: {
-          max: 'Value must be at most {{max}}';
-          min: 'Value must be at least {{min}}';
+          max: 'Value must be at most {{max, number}}';
+          min: 'Value must be at least {{min, number}}';
         };
         tokenChain: {
           notSupported: 'Token is not on a supported chain';
@@ -379,8 +379,8 @@ interface Resources {
       };
       items: 'items';
       label: {
-        tokenCount_one: '{{count}} token on {{chainName}}';
-        tokenCount_other: '{{count}} tokens on {{chainName}}';
+        tokenCount_one: '{{count, number}} token on {{chainName}}';
+        tokenCount_other: '{{count, number}} tokens on {{chainName}}';
       };
       placeholder: {
         balancesMultiSelect: 'Select tokens';
@@ -785,7 +785,7 @@ interface Resources {
       copyAddress: 'Copy wallet address';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
-      levelWithValue: 'Level {{level}}';
+      levelWithValue: 'Level {{level, number}}';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       mobileTitle: 'Only available on Desktop';
       noData: {
@@ -809,7 +809,7 @@ interface Resources {
       };
       shareProfile: 'Share profile';
       tooltips: {
-        unlockAtLevel: 'Unlocked at Level {{level}}';
+        unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
     };
@@ -824,17 +824,17 @@ interface Resources {
         transact_oor: 'trading';
       };
       completed: 'Completed';
-      earnedXPDescription: "You've unlocked {{earnedXP}}XP by {{action}} so far this month and this has been added to your total XP balance.";
+      earnedXPDescription: "You've unlocked {{earnedXP, number}}XP by {{action}} so far this month and this has been added to your total XP balance.";
       join: 'Join';
-      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn}} addtional XP this month.';
+      xpToEarnDescription: 'Complete the progress bar by {{action}} to earn +{{xpToEarn, number}} addtional XP this month.';
     };
     search: {
-      filteredResult_one: '{{filterCount}} of {{count}} result';
-      filteredResult_other: '{{filterCount}} of {{count}} results';
+      filteredResult_one: '{{filterCount, number}} of {{count, number}} result';
+      filteredResult_other: '{{filterCount, number}} of {{count, number}} results';
       noResults: 'No results found';
       placeholder: 'Search...';
-      result_one: '{{count}} result';
-      result_other: '{{count}} results';
+      result_one: '{{count, number}} result';
+      result_other: '{{count, number}} results';
     };
     seiAlert: {
       buttonText: 'Link Wallet';
@@ -850,7 +850,7 @@ interface Resources {
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
-      boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
+      boostedApy: '{{baseApy, number}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy, number}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
       capInDollar: 'Available liquidity capacity of the market';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';

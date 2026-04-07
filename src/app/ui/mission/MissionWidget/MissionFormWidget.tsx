@@ -35,8 +35,11 @@ export const MissionFormWidget = () => {
     currentActiveTaskType,
   } = useMissionStore();
 
-  const taskTitleWithFallback =
-    taskTitle ?? t('missions.tasks.type', { type: currentActiveTaskType });
+  const fallback = currentActiveTaskType
+    ? t('missions.tasks.type', { type: currentActiveTaskType })
+    : 'any task';
+
+  const taskTitleWithFallback = taskTitle ?? fallback;
   const taskCTATextWithFallback = taskCTAText ?? t('missions.tasks.action.go');
 
   const { trackEvent } = useUserTracking();

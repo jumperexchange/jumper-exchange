@@ -39,13 +39,13 @@ export const useTokenFormatters = () => {
     ): string => {
       const value = toAmountUSD(balance);
       if (options.compact) {
-        return t('format.currencyCompact', { value });
+        return t('format.currencyCompact', { value: Number(value) });
       }
 
       const { compact, ...rest } = options;
 
       return t('format.currency', {
-        value,
+        value: Number(value),
         ...rest,
       });
     },
@@ -60,7 +60,7 @@ export const useTokenFormatters = () => {
     ): string => {
       const amount = toAmount(balance);
       const formatted = t('format.decimal', {
-        value: amount,
+        value: Number(amount),
         minimumFractionDigits: options?.minimumFractionDigits,
         maximumFractionDigits: options?.maximumFractionDigits ?? 3,
       });

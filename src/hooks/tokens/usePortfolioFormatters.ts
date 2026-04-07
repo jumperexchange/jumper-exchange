@@ -58,7 +58,7 @@ export const usePortfolioFormatters = () => {
   const toDisplayAggregatedAmount = useCallback(
     (balances: PortfolioBalance<PricedToken>[]): string => {
       const amount = toAggregatedAmount(balances);
-      const formatted = t('format.decimal', { value: amount });
+      const formatted = t('format.decimal', { value: Number(amount) });
       return `${formatted} ${balances[0].token.symbol}`;
     },
     [t, toAggregatedAmount],

@@ -1,27 +1,27 @@
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from 'src/components/Button';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
+import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import type { CustomInformation } from 'src/types/loyaltyPass';
+import type { ProjectData } from 'src/types/questDetails';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import { openInNewTab } from 'src/utils/openInNewTab';
+import { formatUnits } from 'viem';
+import type { ZapDataResponse } from '@/types/zaps';
+import BadgeWithChain from '../BadgeWithChain';
 import {
   DepositPoolCardContainer,
   DepositPoolHeaderContainer,
 } from './DepositPoolCard.style';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
-import type { FC } from 'react';
-import { useMemo } from 'react';
-import type { CustomInformation } from 'src/types/loyaltyPass';
-import { formatUnits } from 'viem';
-import BadgeWithChain from '../BadgeWithChain';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import { DepositPoolCardItem } from './DepositPoolCardItem';
-import { useTranslation } from 'react-i18next';
 import { DepositPoolCardSkeleton } from './DepositPoolCardSkeleton';
-import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import { Button } from 'src/components/Button';
-import type { ProjectData } from 'src/types/questDetails';
-import { openInNewTab } from 'src/utils/openInNewTab';
-import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
-import Tooltip from '@mui/material/Tooltip';
-import { capitalizeString } from 'src/utils/capitalizeString';
-import type { ZapDataResponse } from '@/types/zaps';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
@@ -104,7 +104,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     if (analyticsBoostedApy && Number(analyticsBoostedApy) > 0) {
       return {
         tooltip: t('tooltips.boostedApy', {
-          baseApy: analyticsBaseApy,
+          baseApy: analyticsBaseApy ?? 0,
           boostedApy: analyticsBoostedApy,
         }),
         value: analyticsTotalApy,
