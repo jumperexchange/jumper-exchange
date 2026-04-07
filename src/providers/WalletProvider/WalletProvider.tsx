@@ -26,9 +26,18 @@ import { EthereumProvider as EthereumWidgetProvider } from '@lifi/widget-provide
 import { SolanaProvider as SolanaWidgetProvider } from '@lifi/widget-provider-solana';
 import { BitcoinProvider as BitcoinWidgetProvider } from '@lifi/widget-provider-bitcoin';
 import { SuiProvider as SuiWidgetProvider } from '@lifi/widget-provider-sui';
+import { defaultWalletConnectConfig } from '@/config/walletConnect';
+import { defaultCoinbaseConfig } from '@/config/coinbase';
+import { defaultMetaMaskConfig } from '@/config/metaMask';
 
 export const widgetProviders = [
-  EthereumWidgetProvider(),
+  EthereumWidgetProvider({
+    walletConnect: defaultWalletConnectConfig,
+    coinbase: defaultCoinbaseConfig,
+    metaMask: defaultMetaMaskConfig,
+    porto: true,
+    baseAccount: true,
+  }),
   SolanaWidgetProvider(),
   BitcoinWidgetProvider(),
   SuiWidgetProvider(),

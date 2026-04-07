@@ -70,7 +70,7 @@ export const WithdrawModal: FC<WithdrawModalProps> = ({
             <Trans
               i18nKey="widget.zap.placeholder.not-supported.description"
               values={{
-                type: chainTypeData.chain?.chainType,
+                type: chainTypeData.chain?.chainType ?? '',
               }}
             />
           }
