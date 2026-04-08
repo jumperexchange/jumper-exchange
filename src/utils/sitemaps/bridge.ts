@@ -32,19 +32,11 @@ const generateBridgePairs = (tokens: Token[]): Array<[Token, Token]> => {
 };
 
 const getChainData = async () => {
-  try {
-    const { chains } = await getChainsQuery();
-    const availableChainIds = chains.map((chain) => chain.id);
-    const filteredCoins = getFilteredCoins(availableChainIds);
-    const pairs = generateBridgePairs(filteredCoins);
-    return { chains, pairs };
-  } catch (error) {
-    console.warn('Failed to fetch chain data for bridge sitemap:', error);
-    return {
-      chains: [] as ExtendedChain[],
-      pairs: [] as Array<[Token, Token]>,
-    };
-  }
+  const { chains } = await getChainsQuery();
+  const availableChainIds = chains.map((chain) => chain.id);
+  const filteredCoins = getFilteredCoins(availableChainIds);
+  const pairs = generateBridgePairs(filteredCoins);
+  return { chains, pairs };
 };
 
 const toRouteEntry = (

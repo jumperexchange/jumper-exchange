@@ -204,17 +204,15 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       </BlogArticleContainer>
 
       <BlogArticleImageContainer>
-        {image ? (
+        <WithSkeleton show={!!image} skeleton={<BlogArticleImageSkeleton />}>
           <BlogArticleImage
-            src={`${baseUrl}${image.url}`}
-            alt={image.alternativeText ?? title}
+            src={`${baseUrl}${image!.url}`}
+            alt={image?.alternativeText ?? title}
             priority
             width={1200}
             height={IMAGE_HEIGHT}
           />
-        ) : (
-          <BlogArticleImageSkeleton />
-        )}
+        </WithSkeleton>
       </BlogArticleImageContainer>
 
       <BlogArticleContainer

@@ -37,15 +37,12 @@ export const createNumericSelectSchema = (
 
   let valueSchema = z
     .number()
-    .min(
-      min,
-      t('jumperWidget.fieldErrors.numericSelect.min', { min: `${min}` }),
-    );
+    .min(min, t('jumperWidget.fieldErrors.numericSelect.min', { min }));
 
   if (max !== undefined) {
     valueSchema = valueSchema.max(
       max,
-      t('jumperWidget.fieldErrors.numericSelect.max', { max: `${max}` }),
+      t('jumperWidget.fieldErrors.numericSelect.max', { max }),
     );
   }
 

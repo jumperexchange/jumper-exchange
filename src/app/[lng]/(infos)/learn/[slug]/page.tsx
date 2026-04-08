@@ -61,13 +61,7 @@ export async function generateMetadata({
   }
 
   const validatedSlug = parsed.data;
-  let article;
-  try {
-    article = await getArticleBySlug(validatedSlug);
-  } catch (error) {
-    console.warn('Failed to fetch article metadata:', error);
-    return FALLBACK_METADATA;
-  }
+  const article = await getArticleBySlug(validatedSlug);
   const articleData = article.data?.data?.[0];
 
   if (!articleData) {
@@ -130,40 +124,31 @@ export default async function Page({ params }: { params: Params }) {
   }
 
   const validatedSlug = result.data;
+  const article = await getArticleBySlug(validatedSlug, isDraftMode);
 
-  try {
-    const article = await getArticleBySlug(validatedSlug, isDraftMode);
+  const articleData: BlogArticleData = article.data.data?.[0];
 
-    const articleData: BlogArticleData = article.data.data?.[0];
-
-    if (!articleData) {
-      return notFound();
-    }
-
-    if (articleData?.RedirectURL) {
-      return permanentRedirect(articleData?.RedirectURL);
-    }
-
-    const currentTags = articleData?.tags.map((el) => el?.id);
-    const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
-    return (
-      <LearnArticlePage article={articleData} articles={relatedArticles.data} />
-    );
-  } catch (error) {
-    console.warn('Failed to fetch learn article:', error);
+  if (!articleData) {
     return notFound();
   }
+
+  if (articleData?.RedirectURL) {
+    return permanentRedirect(articleData?.RedirectURL);
+  }
+
+  const currentTags = articleData?.tags.map((el) => el?.id);
+  const relatedArticles = await getArticlesByTag(articleData.id, currentTags);
+  return (
+    <LearnArticlePage article={articleData} articles={relatedArticles.data} />
+  );
 }
 
 export async function generateStaticParams() {
-  try {
-    const articles = await getArticles();
+  const articles = await getArticles();
 
-    return articles.data.map((article) => ({
-      slug: article?.Slug,
-    }));
-  } catch (error) {
-    console.warn('Failed to fetch articles for static params:', error);
-    return [];
-  }
+  const data = articles.data.map((article) => ({
+    slug: article?.Slug,
+  }));
+
+  return data;
 }

@@ -72,7 +72,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     if (isLocked) {
       return {
         startIcon: <LockIcon />,
-        label: t('profile_page.levelWithValue', { level: `${unlockLevel}` }),
+        label: t('profile_page.levelWithValue', { level: unlockLevel }),
         variant: BadgeVariant.Alpha,
       };
     }
@@ -144,7 +144,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
   return (
     <Tooltip
       title={t('profile_page.tooltips.unlockAtLevel', {
-        level: `${unlockLevel}`,
+        level: unlockLevel,
       })}
       arrow
       placement="top"

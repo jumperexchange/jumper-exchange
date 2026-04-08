@@ -10,20 +10,15 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 // Add generateStaticParams function
 export async function generateStaticParams() {
-  try {
-    const { data } = await getCampaigns();
+  const { data } = await getCampaigns();
 
-    if (!data) {
-      return [];
-    }
-
-    return data.map((campaign) => ({
-      slug: campaign.Slug,
-    }));
-  } catch (error) {
-    console.warn('Failed to fetch campaigns for static params:', error);
+  if (!data) {
     return [];
   }
+
+  return data.map((campaign) => ({
+    slug: campaign.Slug,
+  }));
 }
 
 export const dynamicParams = true;

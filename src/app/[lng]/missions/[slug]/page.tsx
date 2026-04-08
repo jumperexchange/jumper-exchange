@@ -23,22 +23,15 @@ const getPageTitle = (title: string) => {
 const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
-  try {
-    const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
-      {
-        page: 1,
-        pageSize: 12,
-      },
-      UPCOMING_DAYS_AHEAD,
-    );
+  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
+    {
+      page: 1,
+      pageSize: 12,
+    },
+    UPCOMING_DAYS_AHEAD,
+  );
 
-    return missionsResponse.data.map((mission) => ({
-      slug: mission.Slug || '',
-    }));
-  } catch (error) {
-    console.warn('Failed to fetch missions for static params:', error);
-    return [];
-  }
+  return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));
 }
 
 export async function generateMetadata({

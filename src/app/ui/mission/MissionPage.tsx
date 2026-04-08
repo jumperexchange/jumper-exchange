@@ -14,35 +14,30 @@ interface MissionPageProps {
 }
 
 export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
-  try {
-    const { data } = await getQuestBySlug(slug);
-    if (!data) {
-      return notFound();
-    }
-
-    const rewardsIds = data.CustomInformation?.['rewardsIds'];
-    const tasksVerification = data.tasks_verification;
-    const [rewardOpportunities, taskOpportunities] = await Promise.all([
-      fetchOpportunitiesByRewardsIds(rewardsIds),
-      fetchTaskOpportunities(tasksVerification),
-    ]);
-
-    return (
-      <>
-        <TwoColumnLayout
-          mainContent={
-            <MissionDetails mission={data} tasks={taskOpportunities} />
-          }
-          sideContent={
-            <MissionWidget customInformation={data.CustomInformation} />
-          }
-          shouldStretchSideContent
-        />
-        <MissionPageTracking slug={slug} />
-      </>
-    );
-  } catch (error) {
-    console.warn('Failed to fetch mission data:', error);
+  const { data } = await getQuestBySlug(slug);
+  if (!data) {
     return notFound();
   }
+
+  const rewardsIds = data.CustomInformation?.['rewardsIds'];
+  const tasksVerification = data.tasks_verification;
+  const [rewardOpportunities, taskOpportunities] = await Promise.all([
+    fetchOpportunitiesByRewardsIds(rewardsIds),
+    fetchTaskOpportunities(tasksVerification),
+  ]);
+
+  return (
+    <>
+      <TwoColumnLayout
+        mainContent={
+          <MissionDetails mission={data} tasks={taskOpportunities} />
+        }
+        sideContent={
+          <MissionWidget customInformation={data.CustomInformation} />
+        }
+        shouldStretchSideContent
+      />
+      <MissionPageTracking slug={slug} />
+    </>
+  );
 };

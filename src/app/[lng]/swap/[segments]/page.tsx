@@ -24,37 +24,27 @@ export async function generateMetadata({
     notFound();
   }
 
-  try {
-    const { chains } = await getChainsQuery();
-    const sourceChain = getChainByName(chains, result.data);
-    const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
+  const { chains } = await getChainsQuery();
+  const sourceChain = getChainByName(chains, result.data);
+  const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
 
-    const openGraph: Metadata['openGraph'] = {
-      title: title,
-      description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
-      siteName: siteName,
-      url: `${getSiteUrl()}/swap/${slugify(segments)}`,
-      type: 'article',
-    };
+  const openGraph: Metadata['openGraph'] = {
+    title: title,
+    description: `Jumper offers the best way to swap tokens on ${sourceChain?.name} with the fastest speeds, lowest costs, and most secure swap providers available.`,
+    siteName: siteName,
+    url: `${getSiteUrl()}/swap/${slugify(segments)}`,
+    type: 'article',
+  };
 
-    return {
-      title,
-      description: title,
-      twitter: openGraph,
-      openGraph,
-      alternates: {
-        canonical: `${getSiteUrl()}/swap/${segments}`,
-      },
-    };
-  } catch (error) {
-    console.warn('Failed to fetch chain data for swap metadata:', error);
-    return {
-      title: `Jumper | Swap on ${segments}`,
-      alternates: {
-        canonical: `${getSiteUrl()}/swap/${segments}`,
-      },
-    };
-  }
+  return {
+    title,
+    description: title,
+    twitter: openGraph,
+    openGraph,
+    alternates: {
+      canonical: `${getSiteUrl()}/swap/${segments}`,
+    },
+  };
 }
 
 export const revalidate = 86400;
@@ -62,16 +52,11 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
-  try {
-    const { chains } = await getChainsQuery();
+  const { chains } = await getChainsQuery();
 
-    return chains.map((chain) => ({
-      segments: slugify(chain.name),
-    }));
-  } catch (error) {
-    console.warn('Failed to fetch chains for static params:', error);
-    return [];
-  }
+  return chains.map((chain) => ({
+    segments: slugify(chain.name),
+  }));
 }
 
 export default async function Page({ params }: { params: Params }) {

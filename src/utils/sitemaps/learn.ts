@@ -45,14 +45,9 @@ export const getLearnSitemapChunkIds = async (): Promise<string[]> => {
     return ['0'];
   }
 
-  try {
-    const total = await getArticlesTotal();
-    const numberOfChunks = Math.ceil(total / SITEMAP_LIMIT);
-    return Array.from({ length: numberOfChunks }, (_, index) => String(index));
-  } catch (error) {
-    console.warn('Failed to fetch articles for learn sitemap:', error);
-    return ['0'];
-  }
+  const total = await getArticlesTotal();
+  const numberOfChunks = Math.ceil(total / SITEMAP_LIMIT);
+  return Array.from({ length: numberOfChunks }, (_, index) => String(index));
 };
 
 export const getLearnSitemapEntriesForChunk = async (
