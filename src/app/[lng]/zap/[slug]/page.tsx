@@ -1,4 +1,4 @@
-import { type Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
@@ -60,7 +60,6 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  // const { data } = await getQuestBySlug(params.slug, 'ExtendedQuest');
   const { data } = await getQuestBySlug(slug);
 
   if (!data) {

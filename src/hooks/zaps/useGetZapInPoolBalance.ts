@@ -3,6 +3,7 @@ import { useReadContracts } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
 import { getToken, getTokenBalances } from '@lifi/sdk';
 import { type Hex, type Address, isAddress } from 'viem';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 
 const BALANCE_OF_ABI = [
   {
@@ -90,8 +91,10 @@ export const useGetZapInPoolBalance = (
       walletAddress ?? '',
     ),
     queryFn: async () => {
-      const token = await getToken(chainId, tokenAddress);
-      const [balance] = await getTokenBalances(walletAddress!, [token]);
+      const token = await getToken(sdkClient, chainId, tokenAddress);
+      const [balance] = await getTokenBalances(sdkClient, walletAddress!, [
+        token,
+      ]);
       return balance ?? null;
     },
     enabled: isNonEvmWallet,

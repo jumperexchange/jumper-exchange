@@ -1,23 +1,23 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { useMissionStore } from 'src/stores/mission';
-import {
-  MissionWidgetContainer,
-  MissionWidgetContentContainer,
-  MissionWidgetTitle,
-  MissionWidgetDescription,
-  MissionDescriptionLink,
-} from './MissionWidget.styles';
+import { useTranslation } from 'react-i18next';
 import { Button } from 'src/components/Button';
+import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import {
-  TrackingCategory,
   TrackingAction,
+  TrackingCategory,
   TrackingEventParameter,
 } from 'src/const/trackingKeys';
 import { useUserTracking } from 'src/hooks/userTracking';
+import { useMissionStore } from 'src/stores/mission';
 import { openInNewTab } from 'src/utils/openInNewTab';
 import { MissionForm } from './MissionForm';
-import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import { useTranslation } from 'react-i18next';
+import {
+  MissionDescriptionLink,
+  MissionWidgetContainer,
+  MissionWidgetContentContainer,
+  MissionWidgetDescription,
+  MissionWidgetTitle,
+} from './MissionWidget.styles';
 
 export const MissionFormWidget = () => {
   const { t } = useTranslation();
@@ -36,7 +36,8 @@ export const MissionFormWidget = () => {
   } = useMissionStore();
 
   const taskTitleWithFallback =
-    taskTitle ?? t('missions.tasks.type', { type: currentActiveTaskType });
+    taskTitle ??
+    t('missions.tasks.type', { type: currentActiveTaskType ?? '' });
   const taskCTATextWithFallback = taskCTAText ?? t('missions.tasks.action.go');
 
   const { trackEvent } = useUserTracking();

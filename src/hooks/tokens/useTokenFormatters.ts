@@ -37,7 +37,7 @@ export const useTokenFormatters = () => {
       balance: Balance<PricedToken>,
       options: FormatAmountUSDOptions = {},
     ): string => {
-      const value = toAmountUSD(balance);
+      const value = Number(toAmountUSD(balance));
       if (options.compact) {
         return t('format.currencyCompact', { value });
       }
@@ -60,7 +60,7 @@ export const useTokenFormatters = () => {
     ): string => {
       const amount = toAmount(balance);
       const formatted = t('format.decimal', {
-        value: amount,
+        value: Number(amount),
         minimumFractionDigits: options?.minimumFractionDigits,
         maximumFractionDigits: options?.maximumFractionDigits ?? 3,
       });
