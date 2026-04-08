@@ -326,7 +326,8 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.Action]:
             trackingDataActionKeys.routeExecutionFailed,
           [TrackingEventParameter.TransactionStatus]: 'FAILED',
-          [TrackingEventParameter.Message]: update.process.message || '',
+          [TrackingEventParameter.Message]:
+            update.action.error?.message || update.action.message || '',
           [TrackingEventParameter.IsFinal]: true,
         }),
         enableAddressable: true,

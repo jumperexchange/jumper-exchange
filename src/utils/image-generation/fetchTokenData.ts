@@ -1,5 +1,6 @@
 import type { ChainId } from '@lifi/sdk';
 import { getToken } from '@lifi/sdk';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 
 export async function fetchTokenData(
   chainId: string | null,
@@ -9,7 +10,11 @@ export async function fetchTokenData(
     return null;
   }
   try {
-    return await getToken(parseInt(chainId) as ChainId, tokenAddress);
+    return await getToken(
+      sdkClient,
+      parseInt(chainId) as ChainId,
+      tokenAddress,
+    );
   } catch (error) {
     console.error(`Error fetching token data: ${error}`);
     return null;

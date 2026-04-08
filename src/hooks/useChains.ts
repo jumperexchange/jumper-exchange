@@ -1,6 +1,7 @@
 import type { ChainId, ExtendedChain } from '@lifi/sdk';
 import { ChainType, getChains } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import { getChainById as getChainByIdHelper } from '@/utils/tokenAndChain';
 import { useCallback } from 'react';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
@@ -15,7 +16,7 @@ export interface ChainProps {
 }
 
 export async function getChainsQuery() {
-  const chains = await getChains({
+  const chains = await getChains(sdkClient, {
     chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
   });
   return { chains };

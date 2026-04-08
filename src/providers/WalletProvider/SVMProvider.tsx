@@ -1,37 +1,77 @@
 'use client';
 
-import type { Adapter } from '@solana/wallet-adapter-base';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { CoinbaseWalletAdapter } from '@solana/wallet-adapter-coinbase';
+import { SolanaProvider } from '@solana/react-hooks';
+import { useWallet } from '@solana/react-hooks';
+import { useSolanaWalletStandard } from '@lifi/widget-provider-solana';
 import {
-  ConnectionProvider,
-  WalletProvider,
-} from '@solana/wallet-adapter-react';
-import { clusterApiUrl } from '@solana/web3.js';
-import { type FC, type PropsWithChildren } from 'react';
-import config from '@/config/env-config';
+  type FC,
+  type PropsWithChildren,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
+import type { SolanaClientConfig } from '@solana/client';
+import envConfig from '@/config/env-config';
 
-const endpoint = clusterApiUrl(WalletAdapterNetwork.Mainnet);
+const SOLANA_CHAIN_ID = '1151111081099710';
+
+function getSolanaRpcUrl(): string | undefined {
+  if (envConfig.NEXT_PUBLIC_SOLANA_RPC_URI) {
+    return envConfig.NEXT_PUBLIC_SOLANA_RPC_URI;
+  }
+  try {
+    const customRpcs = JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS || '{}');
+    const solanaRpcs = customRpcs[SOLANA_CHAIN_ID];
+    if (Array.isArray(solanaRpcs) && solanaRpcs.length > 0) {
+      return solanaRpcs[0];
+    }
+  } catch {
+    // ignore parse errors
+  }
+  return undefined;
+}
+
 /**
- * Wallets that implement either of these standards will be available automatically.
- *
- *   - Solana Mobile Stack Mobile Wallet Adapter Protocol
- *     (https://github.com/solana-mobile/mobile-wallet-adapter)
- *   - Solana Wallet Standard
- *     (https://github.com/solana-labs/wallet-standard)
- *
- * If you wish to support a wallet that supports neither of those standards,
- * instantiate its legacy wallet adapter here. Common legacy adapters can be found
- * in the npm package `@solana/wallet-adapter-*`.
+ * Syncs the Solana wallet connection state from @solana/react-hooks
+ * into the widget's internal useSolanaWalletStandard store.
+ * This ensures the widget's SolanaProviderValues sees the connected wallet.
  */
-const wallets: Adapter[] = [new CoinbaseWalletAdapter()];
+const SolanaWalletSync: FC<PropsWithChildren> = ({ children }) => {
+  const wallet = useWallet();
+  const { connect, disconnect } = useSolanaWalletStandard();
+  const connectorName =
+    wallet.status === 'connected' ? wallet.session.connector.name : undefined;
+  const prevStatusRef = useRef(wallet.status);
+
+  useEffect(() => {
+    const prevStatus = prevStatusRef.current;
+    prevStatusRef.current = wallet.status;
+
+    if (wallet.status === 'connected' && connectorName) {
+      connect(connectorName, { silent: true });
+    } else if (wallet.status === 'disconnected' && prevStatus === 'connected') {
+      disconnect();
+    }
+  }, [wallet.status, connectorName, connect, disconnect]);
+
+  return children;
+};
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
+  const solanaConfig = useMemo<SolanaClientConfig>(() => {
+    const rpcUrl = getSolanaRpcUrl();
+    return {
+      cluster: 'mainnet',
+      ...(rpcUrl && { endpoint: rpcUrl as `https://${string}` }),
+    };
+  }, []);
+
   return (
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        {children}
-      </WalletProvider>
-    </ConnectionProvider>
+    <SolanaProvider
+      config={solanaConfig}
+      walletPersistence={{ autoConnect: true, storageKey: 'jumper-solana' }}
+    >
+      <SolanaWalletSync>{children}</SolanaWalletSync>
+    </SolanaProvider>
   );
 };
