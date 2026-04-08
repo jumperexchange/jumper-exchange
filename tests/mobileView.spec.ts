@@ -79,16 +79,25 @@ test.describe('Verify essential mobile flows', () => {
 
       await test.step('check if the number of chains, bridges and DEXs are loaded', async () => {
         await page.waitForLoadState('networkidle'); // Making sure the number of chains, bridges and DEXs are loaded
-        await page.waitForTimeout(2000); // Let the animation finish
-        const numberOfChains = (await page
-          .locator('//*[text()="Chains"]/preceding-sibling::*[1]')
-          .textContent()) as string;
-        const numberOfBridges = (await page
-          .locator('//*[text()="Bridges"]/preceding-sibling::*[1]')
-          .textContent()) as string;
-        const numberOfDEXs = (await page
-          .locator('//*[text()="DEXs"]/preceding-sibling::*[1]')
-          .textContent()) as string;
+
+        const chainsLocator = page.locator(
+          '//*[text()="Chains"]/preceding-sibling::*[1]',
+        );
+        const bridgesLocator = page.locator(
+          '//*[text()="Bridges"]/preceding-sibling::*[1]',
+        );
+        const dexsLocator = page.locator(
+          '//*[text()="DEXs"]/preceding-sibling::*[1]',
+        );
+
+        // Wait until all three have a non-zero numeric value
+        await expect(chainsLocator).not.toHaveText('0', { timeout: 5000 });
+        await expect(bridgesLocator).not.toHaveText('0', { timeout: 5000 });
+        await expect(dexsLocator).not.toHaveText('0', { timeout: 5000 });
+
+        const numberOfChains = (await chainsLocator.textContent()) as string;
+        const numberOfBridges = (await bridgesLocator.textContent()) as string;
+        const numberOfDEXs = (await dexsLocator.textContent()) as string;
 
         expect(Number(numberOfChains)).toBeGreaterThan(0);
         expect(Number(numberOfBridges)).toBeGreaterThan(0);
