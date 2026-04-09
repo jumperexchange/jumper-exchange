@@ -1,4 +1,5 @@
 'use client';
+import { siteName } from '@/app/lib/metadata';
 import {
   createDAppKit,
   DAppKitProvider,
@@ -21,6 +22,7 @@ export const SuiProvider: FC<PropsWithChildren> = ({ children }) => {
         }),
       autoConnect: true,
       storageKey: 'jumper-sui-wallet-connection',
+      slushWalletConfig: { appName: siteName },
     });
   }
 
