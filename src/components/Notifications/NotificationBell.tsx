@@ -1,5 +1,6 @@
 'use client';
 
+import { useAccount } from '@lifi/wallet-management';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavbarMenuToggleButton } from '@/components/Navbar/components/Buttons/Buttons.style';
@@ -9,6 +10,7 @@ import { NotificationPopover } from './NotificationPopover';
 import { BellIcon, NotificationBadge } from './Notifications.style';
 
 export const NotificationBell = () => {
+  const { account } = useAccount();
   const { t } = useTranslation();
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -32,6 +34,10 @@ export const NotificationBell = () => {
     event.stopPropagation();
     setOpen((prev) => !prev);
   };
+
+  if (!account?.address) {
+    return null;
+  }
 
   return (
     <>
