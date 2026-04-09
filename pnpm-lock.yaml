@@ -79,8 +79,8 @@ importers:
         specifier: 4.0.0-beta.11
         version: 4.0.0-beta.11(@tanstack/react-query@5.97.0(react@19.2.5))(@types/react@19.2.14)(bufferutil@4.1.0)(immer@11.1.4)(react-dom@19.2.5(react@19.2.5))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.5)(utf-8-validate@6.0.6))(react@19.2.5)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.5))(utf-8-validate@6.0.6)(zod@4.3.6)
       '@lifi/widget':
-        specifier: 4.0.0-beta.11
-        version: 4.0.0-beta.11(@tanstack/react-query@5.97.0(react@19.2.5))(@types/react@19.2.14)(bufferutil@4.1.0)(immer@11.1.4)(react-dom@19.2.5(react@19.2.5))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.5)(utf-8-validate@6.0.6))(react@19.2.5)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.5))(utf-8-validate@6.0.6)(zod@4.3.6)
+        specifier: 4.0.0-beta.12
+        version: 4.0.0-beta.12(@tanstack/react-query@5.97.0(react@19.2.5))(@types/react@19.2.14)(bufferutil@4.1.0)(immer@11.1.4)(react-dom@19.2.5(react@19.2.5))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.5)(utf-8-validate@6.0.6))(react@19.2.5)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.5))(utf-8-validate@6.0.6)(zod@4.3.6)
       '@lifi/widget-provider':
         specifier: 4.0.0-beta.11
         version: 4.0.0-beta.11(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)(zod@4.3.6)
@@ -2040,8 +2040,8 @@ packages:
   '@lifi/widget-provider@4.0.0-beta.11':
     resolution: {integrity: sha512-UqMU4056ZfjX8X3w8q5F/QMVqUgiMjSgkmI1iqw6/De8CpM0DUGfcJbDHJANYPWt35k1poljhgkOvurGuZvCsg==}
 
-  '@lifi/widget@4.0.0-beta.11':
-    resolution: {integrity: sha512-hD1IrRznJlN4JC99CKlRqnVArZTLs0XQbcnuM1KbmIo7VBigW/CY62pCddQeliUPM8WcEc8rK1Gm0b+k0NUnjg==}
+  '@lifi/widget@4.0.0-beta.12':
+    resolution: {integrity: sha512-mLGNnnXwBXMz8343WwUXnu9DLekvoHItrrZpAu/qt1rKyTiJX/8M5J/OtSrCkhVWrDYYkF9Yfd/zxbTiK7uQHQ==}
     peerDependencies:
       '@tanstack/react-query': '>=5.90.0'
       react: '>=18'
@@ -13400,7 +13400,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/widget@4.0.0-beta.11(@tanstack/react-query@5.97.0(react@19.2.5))(@types/react@19.2.14)(bufferutil@4.1.0)(immer@11.1.4)(react-dom@19.2.5(react@19.2.5))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.5)(utf-8-validate@6.0.6))(react@19.2.5)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.5))(utf-8-validate@6.0.6)(zod@4.3.6)':
+  '@lifi/widget@4.0.0-beta.12(@tanstack/react-query@5.97.0(react@19.2.5))(@types/react@19.2.14)(bufferutil@4.1.0)(immer@11.1.4)(react-dom@19.2.5(react@19.2.5))(react-native@0.84.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.5)(utf-8-validate@6.0.6))(react@19.2.5)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.5))(utf-8-validate@6.0.6)(zod@4.3.6)':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.5)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
