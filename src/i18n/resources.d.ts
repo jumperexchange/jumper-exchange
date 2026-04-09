@@ -16,6 +16,10 @@ interface Resources {
     };
     blog: {
       allCategories: 'All';
+      banner: {
+        description: 'Subscribe to the <strong>Jumper Newsletter</strong> to get the latest updates from Jumper delivered to your inbox.';
+        title: 'Get the latest Jumper updates';
+      };
       categories: 'Categories';
       copiedLink: 'Copied Link';
       emptyList: {
