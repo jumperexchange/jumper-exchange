@@ -7,7 +7,7 @@ import {
   useScroll,
   useTransform,
 } from 'motion/react';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, RefObject } from 'react';
 import { useRef, useState } from 'react';
 
 type OffsetPoint = NonNullable<UseScrollOptions['offset']>[number];
@@ -16,6 +16,7 @@ interface ScrollProgressProps extends PropsWithChildren {
   topOffset?: OffsetPoint;
   showProgress?: boolean;
   onScroll?: (value: number) => void;
+  targetRef?: RefObject<HTMLElement | null>;
 }
 
 export const ScrollProgress: FC<ScrollProgressProps> = ({
@@ -23,76 +24,69 @@ export const ScrollProgress: FC<ScrollProgressProps> = ({
   topOffset,
   showProgress,
   onScroll,
+  targetRef,
 }) => {
   const theme = useTheme();
-  const contentRef = useRef(null);
-  const [isDockedAtContentEnd, setIsDockedAtContentEnd] = useState(false);
+  const contentRef = useRef<HTMLElement>(null);
+
+  // Represents the pixel gap from contentRef's bottom to targetRef's bottom
+  const [dockedBottom, setDockedBottom] = useState<number | string>(0);
+  const [isDocked, setIsDocked] = useState(false);
 
   const { scrollYProgress } = useScroll({
     target: contentRef,
     offset: [topOffset ?? 'start start', 'end end'],
   });
 
-  const clampedProgress = useTransform(scrollYProgress, (v) =>
+  const { scrollY } = useScroll();
+
+  const progress = useTransform(scrollYProgress, (v) =>
     Math.min(1, Math.max(0, v)),
   );
 
-  useMotionValueEvent(clampedProgress, 'change', (p) => {
+  // Tracks the bar's bottom offset relative to the viewport
+  const fixedBottom = useTransform(scrollY, () => {
+    const bottom = targetRef?.current?.getBoundingClientRect().bottom ?? 0;
+    return Math.max(0, window.innerHeight - bottom);
+  });
+
+  useMotionValueEvent(progress, 'change', (p) => {
     onScroll?.(p);
-    if (p >= 1) {
-      setIsDockedAtContentEnd(true);
-    } else if (p < 0.995) {
-      setIsDockedAtContentEnd(false);
+    if (p >= 1 && !isDocked) {
+      if (contentRef.current && targetRef?.current) {
+        const contentBottom = contentRef.current.getBoundingClientRect().bottom;
+        const targetBottom = targetRef.current.getBoundingClientRect().bottom;
+        setDockedBottom(contentBottom - targetBottom);
+      }
+      setIsDocked(true);
+    } else if (p < 0.995 && isDocked) {
+      setIsDocked(false);
     }
   });
 
-  const barColor = (theme.vars || theme).palette.primary.main;
   const barHeight = theme.spacing(1.25);
+  const barColor = (theme.vars || theme).palette.primary.main;
 
   return (
     <Box ref={contentRef} sx={{ position: 'relative' }}>
-      {showProgress &&
-        (isDockedAtContentEnd ? (
-          <Box
-            sx={(theme) => ({
-              position: 'absolute',
-              bottom: {
-                xs: theme.spacing(-9),
-                sm: theme.spacing(-7),
-              },
-              left: '50%',
-              width: '100vw',
-              marginLeft: '-50vw',
-              height: barHeight,
-              zIndex: 1,
-              pointerEvents: 'none',
-            })}
-          >
-            <motion.div
-              style={{
-                scaleX: 1,
-                height: '100%',
-                width: '100%',
-                originX: 0,
-                background: barColor,
-              }}
-            />
-          </Box>
-        ) : (
-          <motion.div
-            style={{
-              scaleX: clampedProgress,
-              position: 'fixed',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: barHeight,
-              originX: 0,
-              background: barColor,
-              zIndex: 1000,
-            }}
-          />
-        ))}
+      {showProgress && (
+        <motion.div
+          style={{
+            scaleX: isDocked ? 1 : progress,
+            position: isDocked ? 'absolute' : 'fixed',
+            bottom: isDocked ? dockedBottom : fixedBottom,
+            left: isDocked ? '50%' : 0,
+            marginLeft: isDocked ? '-50vw' : 0,
+            right: isDocked ? undefined : 0,
+            width: isDocked ? '100vw' : undefined,
+            height: barHeight,
+            originX: 0,
+            background: barColor,
+            zIndex: 1000,
+            pointerEvents: 'none',
+          }}
+        />
+      )}
       {children}
     </Box>
   );

@@ -34,7 +34,7 @@ import { BlogArticleTableOfContents } from './BlogArticleTableOfContents';
 import { WithSkeleton } from './WithSkeleton';
 import { AccordionFAQ } from '@/components/AccordionFAQ';
 import { ScrollProgress } from './ScrollProgress';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { useBlogArticleStore } from '@/stores/learn/BlogArticleStore';
 import dynamic from 'next/dynamic';
 import {
@@ -95,6 +95,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   );
 
   const isClient = useClient();
+  const dividerRef = useRef<HTMLHRElement>(null);
 
   const handleScroll = useCallback(
     (scrollProgress: number) => {
@@ -228,6 +229,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
           <ScrollProgress
             onScroll={shouldOpenModal ? handleScroll : undefined}
             topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
+            targetRef={dividerRef}
             showProgress
           >
             <WithSkeleton
@@ -287,7 +289,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
               sx={{ width: '100%', maxWidth: '100% !important', paddingY: 2 }}
             />
           )}
-          <Divider />
+          <Divider ref={dividerRef} />
           <BlogAuthorWrapper>
             <BlogArticleAuthor
               author={author}
