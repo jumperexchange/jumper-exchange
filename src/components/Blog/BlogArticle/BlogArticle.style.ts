@@ -100,7 +100,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   '& > img': {
     width: '100%',
   },
-  '& a': {
+  '& a:not(.MuiIconButton-root)': {
     color: (theme.vars || theme).palette.accent1Alt.main,
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
