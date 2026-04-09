@@ -32,8 +32,10 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
   const firstTag = article?.tags?.[0];
   const now = Date.now();
   const publishDate = article.publishedAt || article.createdAt || now;
-  const updateDate = article.updatedAt || now;
-  const isUpdateAfterPublish = differenceInDays(updateDate, publishDate) > 0;
+  const updateDate = article.updatedAt || publishDate;
+  const isUpdateAfterPublish =
+    Boolean(article.updatedAt) &&
+    differenceInDays(updateDate, publishDate) > 0;
   const minRead = readingTime(article?.WordCount);
 
   return (
