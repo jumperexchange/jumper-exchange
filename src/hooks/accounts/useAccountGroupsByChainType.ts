@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import groupBy from 'lodash/groupBy';
-import type { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import type { AddressQueryParams } from '@/app/lib/getPositionsForAddress';
 import { CHAIN_TYPE_TO_QUERY_PARAM } from '@/app/lib/getPositionsForAddress';
 

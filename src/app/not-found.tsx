@@ -30,9 +30,13 @@ export default async function NotFound() {
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script type="text/javascript">
-          {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
-        </script>
+        <Script
+          id="env-config"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window._env_ = ${JSON.stringify(getPublicEnvVars())};`,
+          }}
+        />
         <Script
           async
           src={`https://www.googletagmanager.com/gtag/js?id=${config.NEXT_PUBLIC_GOOGLE_ANALYTICS_TRACKING_ID}`}

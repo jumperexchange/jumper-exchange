@@ -1,5 +1,7 @@
-import { getTransactionHistory, TransactionAnalyticsResponse } from '@lifi/sdk';
+import type { TransactionAnalyticsResponse } from '@lifi/sdk';
+import { getTransactionHistory } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import { FIVE_MINUTES_MS, THIRTY_MINUTES_MS } from 'src/const/time';
 
 export interface TxHistoryProps {
@@ -20,7 +22,7 @@ export const useTxHistory = (
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['transfers', walletAddress, completedRouteId],
     queryFn: () =>
-      getTransactionHistory({
+      getTransactionHistory(sdkClient, {
         wallet: walletAddress!,
         status: 'ALL',
         fromTimestamp,

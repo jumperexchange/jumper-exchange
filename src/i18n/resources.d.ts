@@ -363,8 +363,8 @@ interface Resources {
           notSupported: 'Selected chain is not supported for this operation';
         };
         numericSelect: {
-          max: 'Value must be at most {{max}}';
-          min: 'Value must be at least {{min}}';
+          max: 'Value must be at most {{max, number}}';
+          min: 'Value must be at least {{min, number}}';
         };
         tokenChain: {
           notSupported: 'Token is not on a supported chain';
@@ -789,7 +789,7 @@ interface Resources {
       copyAddress: 'Copy wallet address';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
-      levelWithValue: 'Level {{level}}';
+      levelWithValue: 'Level {{level, number}}';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       mobileTitle: 'Only available on Desktop';
       noData: {
@@ -813,7 +813,7 @@ interface Resources {
       };
       shareProfile: 'Share profile';
       tooltips: {
-        unlockAtLevel: 'Unlocked at Level {{level}}';
+        unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
     };
@@ -854,7 +854,7 @@ interface Resources {
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
-      boostedApy: '{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
+      boostedApy: '{{baseApy, number}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy, number}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
       capInDollar: 'Available liquidity capacity of the market';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';

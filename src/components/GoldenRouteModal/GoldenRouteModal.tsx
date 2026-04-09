@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { WinningLayout } from './WinningLayout';
 import { ContactLayout } from './ContactLayout';
 import { useAccount as useWagmiAccount, useSignMessage } from 'wagmi';
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useWalletSession } from '@solana/react-hooks';
 import { useActiveAccountByChainType } from '@/hooks/useActiveAccountByChainType';
 import dynamic from 'next/dynamic';
 import { NiceTryLayout } from './NiceTryLayout';
@@ -85,7 +85,7 @@ export const GoldenRouteModal: React.FC<GoldenRouteModalProps> = ({
   const [error, setError] = useState('');
   const { address: evmAddress } = useWagmiAccount();
   const { signMessageAsync } = useSignMessage();
-  const solanaWallet = useWallet();
+  const solanaSession = useWalletSession();
   const activeAccount = useActiveAccountByChainType();
 
   const [layout, setLayout] = useState<
@@ -156,13 +156,12 @@ export const GoldenRouteModal: React.FC<GoldenRouteModalProps> = ({
 
       // Handle signing based on the active account's chain type
       if (activeAccount?.chainType === 'SVM') {
-        // Solana signing
-        if (!solanaWallet.signMessage) {
+        if (!solanaSession?.signMessage) {
           throw new Error('Solana wallet does not support message signing');
         }
         const encodedMessage = new TextEncoder().encode(message);
-        const signatureBuffer = await solanaWallet.signMessage(encodedMessage);
-        signature = Buffer.from(signatureBuffer).toString('base64');
+        const signatureBytes = await solanaSession.signMessage(encodedMessage);
+        signature = Buffer.from(signatureBytes).toString('base64');
       } else if (activeAccount?.chainType === 'EVM') {
         // EVM signing
         signature = await signMessageAsync({

@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 import {
   getConnectorIcon,
   useAccountDisconnect,

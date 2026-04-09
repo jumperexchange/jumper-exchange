@@ -25,14 +25,16 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts5-clip"
+              id="recharts6-clip"
             >
               <rect
                 height="90"
@@ -63,6 +65,7 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -119,30 +122,39 @@ exports[`LineChart snapshot > base layers matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           />
         </svg>
@@ -177,6 +189,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -294,6 +307,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
@@ -329,6 +343,7 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -385,15 +400,19 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -458,18 +477,23 @@ exports[`LineChart snapshot > default matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -801,6 +825,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -918,11 +943,12 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts31-clip"
+              id="recharts37-clip"
             >
               <rect
                 height="60"
@@ -953,6 +979,7 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -1009,15 +1036,19 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -1079,18 +1110,23 @@ exports[`LineChart snapshot > mixed positive negative matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -1398,6 +1434,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -1515,11 +1552,12 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts11-clip"
+              id="recharts12-clip"
             >
               <rect
                 height="60"
@@ -1550,6 +1588,7 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -1606,15 +1645,19 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -1673,18 +1716,23 @@ exports[`LineChart snapshot > negative values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -1968,6 +2016,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -2085,11 +2134,12 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts15-clip"
+              id="recharts17-clip"
             >
               <rect
                 height="60"
@@ -2120,6 +2170,7 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -2176,15 +2227,19 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -2243,18 +2298,23 @@ exports[`LineChart snapshot > negative values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -2538,6 +2598,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -2655,11 +2716,12 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts19-clip"
+              id="recharts22-clip"
             >
               <rect
                 height="60"
@@ -2690,6 +2752,7 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -2746,15 +2809,19 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -2816,18 +2883,23 @@ exports[`LineChart snapshot > negative values varying matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -3135,6 +3207,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -3252,11 +3325,12 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts23-clip"
+              id="recharts27-clip"
             >
               <rect
                 height="60"
@@ -3287,6 +3361,7 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -3343,15 +3418,19 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -3410,18 +3489,23 @@ exports[`LineChart snapshot > positive values same matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -3705,6 +3789,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -3822,11 +3907,12 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts27-clip"
+              id="recharts32-clip"
             >
               <rect
                 height="60"
@@ -3857,6 +3943,7 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -3913,15 +4000,19 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -3980,18 +4071,23 @@ exports[`LineChart snapshot > positive values same small matches snapshot 1`] = 
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -4277,14 +4373,16 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts8-clip"
+              id="recharts9-clip"
             >
               <rect
                 height="90"
@@ -4300,6 +4398,7 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
             />
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -4344,30 +4443,39 @@ exports[`LineChart snapshot > skeleton matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           />
         </svg>
@@ -4410,6 +4518,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -4527,11 +4636,12 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts43-clip"
+              id="recharts52-clip"
             >
               <rect
                 height="60"
@@ -4562,6 +4672,7 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -4618,15 +4729,19 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -4685,18 +4800,23 @@ exports[`LineChart snapshot > very large values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -4980,6 +5100,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -5097,11 +5218,12 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts39-clip"
+              id="recharts47-clip"
             >
               <rect
                 height="60"
@@ -5132,6 +5254,7 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -5188,15 +5311,19 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -5255,18 +5382,23 @@ exports[`LineChart snapshot > very small values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g
@@ -5550,6 +5682,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
           <title />
           <desc />
           <g
+            class="recharts-zIndex-layer_-100"
             tabindex="-1"
           >
             <g
@@ -5667,11 +5800,12 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_-50"
             tabindex="-1"
           />
           <defs>
             <clippath
-              id="recharts35-clip"
+              id="recharts42-clip"
             >
               <rect
                 height="60"
@@ -5702,6 +5836,7 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
             </lineargradient>
           </defs>
           <g
+            class="recharts-zIndex-layer_100"
             tabindex="-1"
           >
             <g
@@ -5758,15 +5893,19 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_300"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_400"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_500"
             tabindex="-1"
           >
             <g
@@ -5825,18 +5964,23 @@ exports[`LineChart snapshot > zero values matches snapshot 1`] = `
             </g>
           </g>
           <g
+            class="recharts-zIndex-layer_600"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1000"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1100"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_1200"
             tabindex="-1"
           />
           <g
+            class="recharts-zIndex-layer_2000"
             tabindex="-1"
           >
             <g

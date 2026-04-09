@@ -1,8 +1,8 @@
 import {
   LiFiErrorCode,
+  type ExecutionAction,
   type LiFiStep,
   type LiFiStepExtended,
-  type Process,
   type RouteExtended,
 } from '@lifi/sdk';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
@@ -19,7 +19,9 @@ interface GetProcessInformationType {
 }
 
 const findErrorKeyFromErrorCode = (code?: string) => {
-  if (!code) return null;
+  if (!code) {
+    return null;
+  }
 
   return findKey(LiFiErrorCode, (value) => value.toString() === code) ?? null;
 };
@@ -41,17 +43,17 @@ export const getProcessInformation = (
   route.steps?.forEach((step: LiFiStep | LiFiStepExtended) => {
     const detailInformation = getDetailInformation(step);
 
-    if ('process' in detailInformation) {
-      detailInformation.process.forEach((process: Process) => {
+    if ('actions' in detailInformation) {
+      detailInformation.actions.forEach((action: ExecutionAction) => {
         // Truncate error message at the data field to keep only useful info
-        let errorMessage = process.error?.message;
+        let errorMessage = action.error?.message;
         if (errorMessage && errorMessage.includes('data:')) {
           errorMessage = errorMessage.substring(
             0,
             errorMessage.indexOf('data:'),
           );
         }
-        const errorCode = process.error?.code?.toString();
+        const errorCode = action.error?.code?.toString();
         const errorCodeKey = findErrorKeyFromErrorCode(errorCode);
 
         if (errorCode) {
@@ -65,14 +67,14 @@ export const getProcessInformation = (
         }
 
         // Collect transaction data in arrays
-        if (process.txHash) {
-          txHashes.push(process.txHash);
+        if (action.txHash) {
+          txHashes.push(action.txHash);
         }
-        if (process.txLink) {
-          txLinks.push(process.txLink);
+        if (action.txLink) {
+          txLinks.push(action.txLink);
         }
-        if (process.status) {
-          txStatuses.push(process.status);
+        if (action.status) {
+          txStatuses.push(action.status);
         }
       });
     }
