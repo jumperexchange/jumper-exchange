@@ -919,6 +919,30 @@ interface Resources {
         };
       };
     };
+    notifications: {
+      title: 'Notifications';
+      unread_zero: 'No unread notifications';
+      unread_one: '{{count}} unread notification';
+      unread_other: '{{count}} unread notifications';
+      emptyState: 'No notifications';
+      categories: {
+        all: 'All Categories';
+        product: 'Product';
+        campaign: 'Campaign';
+        earn: 'Earn';
+        portfolio: 'Portfolio';
+      };
+      dateFilter: {
+        all: 'All Time';
+        today: 'Today';
+        week: 'Past Week';
+        month: 'Past Month';
+      };
+      aria: {
+        openPanel: 'Notifications';
+        deleteNotification: 'Delete notification';
+      };
+    };
   };
 }
 

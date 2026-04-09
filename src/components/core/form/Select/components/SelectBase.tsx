@@ -29,6 +29,7 @@ export const SelectBase = <T extends TData>({
   disabled,
   selectorContent,
   menuPlacementX = 'left',
+  menuSx,
   ...rest
 }: ExtendedSelectBaseProps<T>) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +70,7 @@ export const SelectBase = <T extends TData>({
       variant="standard"
       displayEmpty
       MenuProps={{
+        sx: menuSx,
         anchorOrigin: {
           vertical: 'bottom',
           horizontal: menuPlacementX,
