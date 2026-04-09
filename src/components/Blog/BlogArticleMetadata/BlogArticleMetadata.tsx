@@ -77,7 +77,7 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
           component="span"
           color="textSecondary"
         >
-          {t('blog.minRead', { minRead: minRead })}
+          {t('blog.minRead', { minRead: `${minRead}` })}
         </BlogArticleMetaProperty>
       </Stack>
 

@@ -100,13 +100,13 @@ export function WidgetEvents() {
           return;
         }
 
-        const process = route.steps[0].execution?.process;
+        const actions = route.steps[0].execution?.actions;
 
-        if (!Array.isArray(process) || process.length === 0) {
+        if (!Array.isArray(actions) || actions.length === 0) {
           return;
         }
 
-        const txHash = process[process.length - 1]?.txHash;
+        const txHash = actions[actions.length - 1]?.txHash;
 
         if (txHash) {
           const { winner, position } = await checkWinningSwap({

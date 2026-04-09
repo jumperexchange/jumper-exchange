@@ -31,7 +31,10 @@ export function useSharedBaseConfig(
       explorerUrls: {
         internal: [`${getSiteUrl()}${AppPaths.Scan}`],
       },
-      integrator: context.integrator ?? envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR,
+      integrator:
+        context.integrator ??
+        envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR ??
+        'jumper.exchange',
       referrer,
       keyPrefix: context.keyPrefix,
       apiKey: envConfig.NEXT_PUBLIC_LIFI_API_KEY,
@@ -58,7 +61,7 @@ export function useSharedRPCConfig(): Partial<WidgetConfig> {
       sdkConfig: {
         apiUrl: getApiUrl(),
         rpcUrls: {
-          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS),
+          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
           ...publicRPCList,
         },
         routeOptions: {

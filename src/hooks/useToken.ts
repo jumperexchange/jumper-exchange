@@ -1,5 +1,6 @@
 import { type ChainId, getToken } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import type { Address } from 'viem';
 import type { SimpleToken } from '../utils/Token';
 import { ExtendedToken } from '../utils/Token';
@@ -9,7 +10,7 @@ export async function getTokenQuery(chainId?: ChainId, tokenAddress?: string) {
   if (!chainId || !tokenAddress) {
     return;
   }
-  return getToken(chainId, tokenAddress);
+  return getToken(sdkClient, chainId, tokenAddress);
 }
 
 type UseTokenReturn<T> = {

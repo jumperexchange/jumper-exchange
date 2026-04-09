@@ -310,6 +310,7 @@ export const LineChart = <
             {
               payload: activeDot.payload,
               value: activeDot.payload.value,
+              graphicalItemId: dataSetId ?? '',
             },
           ]}
           label={activeDot.payload.date}

@@ -18,7 +18,7 @@ export const isTokensType = (e: DisplayableEntity): e is Token =>
   'type' in e && ['base', 'extended', 'position', 'wallet'].includes(e.type);
 
 export const isBackendToken = (e: DisplayableEntity): e is BackendToken =>
-  'chain' in e && 'logo' in e && !('type' in e);
+  'chain' in e && 'address' in e && !('type' in e);
 
 /** Chain from jumper-backend (no logo) */
 export const isChain = (e: DisplayableEntity): e is Chain =>

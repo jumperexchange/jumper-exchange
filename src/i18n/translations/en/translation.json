@@ -104,6 +104,10 @@
     "shareX": "Share article on X",
     "shareLink": "Share the link",
     "updated": "Updated {{date}}",
+    "banner": {
+      "title": "Get the latest Jumper updates",
+      "description": "Subscribe to the <strong>Jumper Newsletter</strong> to get the latest updates from Jumper delivered to your inbox."
+    },
     "tableOfContents": {
       "title": "On this page"
     },
@@ -695,7 +699,7 @@
   },
   "newsletter": {
     "welcome": {
-      "title": "Make. The. Jump.",
+      "title": "Subscribe to the Jumper Newsletter",
       "subtitle": "Get the latest news and updates directly from <strong>Jumper.</strong>",
       "hint": "By signing up to our newsletter you are implicitly agreeing to Jumper's <0>terms of service</0> and <1>privacy policy</1>. You can unsubscribe at any time from the link in the email footer.",
       "subscribe": "Subscribe",

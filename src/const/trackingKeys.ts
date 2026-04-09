@@ -119,6 +119,7 @@ export enum TrackingAction {
   ClickShareArticleLinkedIn = 'action_share_article_linked',
   ClickShareArticleX = 'action_share_article_x',
   ClickShareArticleLink = 'action_share_article_link',
+  ClickShareArticleDiscord = 'action_share_article_discord',
   ClickAuthorsLinkedIn = 'action_click_author_linkedin',
   ClickAuthorsX = 'action_click_author_x',
   OpenArticlePopup = 'action_open_article_popup',

@@ -11,6 +11,7 @@ import {
   isChain,
   isTokensType,
   getTokenChainId,
+  isBackendToken,
 } from '../EntityAvatar/utils';
 
 export const EntityStack: FC<EntityStackProps> = ({
@@ -48,6 +49,19 @@ export const EntityStack: FC<EntityStackProps> = ({
         return {
           id: `${entity.address}-${chainId ?? 'unknown'}`,
           src: entity.logoURI ?? fallbackToken?.logoURI,
+          alt: entity.name || entity.symbol || entity.address,
+        };
+      }
+
+      if (isBackendToken(entity)) {
+        const chainId = entity.chain.chainId;
+        const fallbackToken = chainId
+          ? getToken(chainId, entity.address as Address)
+          : undefined;
+
+        return {
+          id: `${entity.address}-${chainId ?? 'unknown'}`,
+          src: entity.logo ?? fallbackToken?.logoURI,
           alt: entity.name || entity.symbol || entity.address,
         };
       }
