@@ -3,8 +3,6 @@ import { chunk } from 'lodash';
 import type { FC } from 'react';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
   CompactEarnCardBody,
@@ -19,6 +17,8 @@ import { CompactEarnCardSkeleton } from './CompactEarnCardSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { CompactEarnCardMissingPosition } from './CompactEarnCardMissingPosition';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -90,11 +90,11 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
             {primaryAction}
           </CompactEarnCardHeaderContainer>
           <CompactEarnCardContentContainer>
-            <EntityChainStack
-              variant={EntityChainStackVariant.Protocol}
-              address={lpToken?.address}
-              protocol={protocol}
-              chains={chains}
+            <EntityStackWithBadge
+              addressOverride={lpToken?.address}
+              entities={[protocol!]}
+              size={AvatarSize.XL}
+              badgeEntities={chains}
               content={{
                 title,
               }}

@@ -56,6 +56,7 @@ export interface EntityStackWithBadgeProps {
   badgeSize?: AvatarSize;
   badgeLimit?: number;
   badgeDirection?: AvatarStackDirection;
+  addressOverride?: string;
   // Spacing configuration
   spacing?: EntityStackSpacing;
   // Content configuration
