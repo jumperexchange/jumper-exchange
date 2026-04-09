@@ -1,6 +1,6 @@
 'use client';
-import type { StarterVariantType } from '@/types/internal';
 import { ChainId } from '@lifi/sdk';
+import type { StarterVariantType } from '@/types/internal';
 import type { BlogWidgetProps } from '../Blog/BlogWidget';
 
 export const themeAllowChains: ChainId[] = [
@@ -19,6 +19,8 @@ export const ExtendedChainId = {
 export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   allowToChains?: number[];
+  allowBridges?: string[] | null;
+  allowExchanges?: string[] | null;
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
   activeTheme?: string;

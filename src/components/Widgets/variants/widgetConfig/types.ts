@@ -1,5 +1,8 @@
 import type { WidgetConfig, WidgetProvider } from '@lifi/widget';
+import type { Theme as MuiTheme } from '@mui/material/styles';
+import type { i18n, TFunction } from 'i18next';
 import type { StarterVariantType } from 'src/types/internal';
+import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
 import type {
   TaskWidgetInformationChainData,
   TaskWidgetInformationTokenData,
@@ -7,10 +10,7 @@ import type {
 } from 'src/types/strapi';
 import { TaskType } from 'src/types/strapi';
 import type { WidgetThemeConfig } from 'src/types/theme';
-import type { PartnerThemeConfig } from 'src/types/PartnerThemeConfig';
-import type { TFunction, i18n } from 'i18next';
 import type { Hex } from 'viem';
-import type { Theme as MuiTheme } from '@mui/material/styles';
 
 export type EnglishLanguageResource = NonNullable<
   WidgetConfig['languageResources']
@@ -63,6 +63,8 @@ export interface CommonWidgetContext {
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
   partnerName: string;
+  allowBridges?: string[] | null;
+  allowExchanges?: string[] | null;
   bridgeConditions?: {
     isAGWToNonABSChain?: boolean;
     isBridgeFromHypeToArbNativeUSDC?: boolean;

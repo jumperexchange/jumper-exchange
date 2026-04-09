@@ -1,9 +1,9 @@
-import type { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
+import type { MenuItemLinkType } from '@/components/Menu/MenuItem/MenuItem.types';
 
 declare global {
   interface Window {
@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-export type StarterVariantType = 'buy' | WidgetSubvariant;
+export type StarterVariantType = 'private' | WidgetSubvariant;
 
 export interface MenuListItem {
   label: string;

@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
 import type { WidgetConfig } from '@lifi/widget';
-import { HiddenUI, RequiredUI, ChainId } from '@lifi/widget';
-import { ThemesMap } from 'src/const/themesMap';
-import type { MainWidgetContext, HookDependencies } from './types';
-import { useMemelist } from 'src/hooks/useMemelist';
+import { ChainId, HiddenUI, RequiredUI } from '@lifi/widget';
+import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
-import { generateRouteLabel } from './utils';
+import { ThemesMap } from 'src/const/themesMap';
+import { useMemelist } from 'src/hooks/useMemelist';
 import { themeAllowChains } from '../../Widget.types';
+import type { HookDependencies, MainWidgetContext } from './types';
+import { generateRouteLabel } from './utils';
 
 /**
  * Configuration hook for the main widget variant
@@ -26,13 +26,36 @@ export function useMainWidgetConfig(
 
   return useMemo(() => {
     const isMemecoins = context.partnerName === ThemesMap.Memecoins;
-    const isBuyVariant = context.starterVariant === 'buy';
 
     const _tokens = tokens || {};
     if (memeListTokens) {
       const currentAllowList = _tokens?.allow ?? [];
       const newAllowList = currentAllowList.concat(memeListTokens);
       _tokens.allow = newAllowList;
+    }
+
+    let allowBridges: { allow: string[] } | undefined;
+    if (deps.theme.configTheme?.allowedBridges) {
+      allowBridges = { allow: deps.theme.configTheme.allowedBridges };
+    }
+    if (context.allowBridges) {
+      const allowedSet = new Set(context.allowBridges);
+      if (allowBridges?.allow) {
+        allowedSet.intersection(new Set(allowBridges.allow));
+      }
+      allowBridges = { allow: [...allowedSet] };
+    }
+
+    let allowExchanges: { allow: string[] } | undefined;
+    if (deps.theme.configTheme?.allowedExchanges) {
+      allowExchanges = { allow: deps.theme.configTheme.allowedExchanges };
+    }
+    if (context.allowExchanges) {
+      const allowedSet = new Set(context.allowExchanges);
+      if (allowExchanges?.allow) {
+        allowedSet.intersection(new Set(allowExchanges.allow));
+      }
+      allowExchanges = { allow: [...allowedSet] };
     }
 
     const config: Partial<WidgetConfig> = {
@@ -42,11 +65,9 @@ export function useMainWidgetConfig(
       buildUrl: true,
       useRelayerRoutes: true,
       subvariant:
-        isBuyVariant || isMemecoins
+        context.starterVariant === 'private' || isMemecoins
           ? 'default'
-          : context.starterVariant === 'buy'
-            ? 'default'
-            : context.starterVariant,
+          : context.starterVariant,
       subvariantOptions: {},
 
       // UI configuration
@@ -81,12 +102,8 @@ export function useMainWidgetConfig(
       tokens: _tokens,
 
       // Bridge and exchange configuration
-      bridges: deps.theme.configTheme?.allowedBridges
-        ? { allow: deps.theme.configTheme.allowedBridges }
-        : undefined,
-      exchanges: deps.theme.configTheme?.allowedExchanges
-        ? { allow: deps.theme.configTheme?.allowedExchanges }
-        : undefined,
+      bridges: allowBridges,
+      exchanges: allowExchanges,
 
       routeLabels: [
         generateRouteLabel(
@@ -106,7 +123,8 @@ export function useMainWidgetConfig(
 
     if (
       context.bridgeConditions?.isAGWToNonABSChain ||
-      context.bridgeConditions?.isPrivateSwapSelected
+      context.bridgeConditions?.isPrivateSwapSelected ||
+      context.starterVariant === 'private'
     ) {
       config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
     }

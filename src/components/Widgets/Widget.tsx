@@ -1,25 +1,25 @@
 'use client';
-import envConfig from '@/config/env-config';
-import { TabsMap } from '@/const/tabsMap';
-import { useThemeStore } from '@/stores/theme';
 import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
+import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
+import envConfig from '@/config/env-config';
+import { TabsMap } from '@/const/tabsMap';
+import { AppPaths } from '@/const/urls';
+import { useThemeStore } from '@/stores/theme';
+import FeeContribution from './FeeContribution/FeeContribution';
+import { useFormParameters } from './hooks';
+import { Widget as BaseWidget } from './variants/base/Widget';
+import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
-import type { MainWidgetContext } from './variants/widgetConfig/types';
-import { useFormParameters } from './hooks';
-import { AppPaths } from '@/const/urls';
-import { Widget as BaseWidget } from './variants/base/Widget';
-import FeeContribution from './FeeContribution/FeeContribution';
-import dynamic from 'next/dynamic';
 
 const PrivateSwapModal = dynamic(() =>
   import('./PrivateSwapModal/PrivateSwapModal').then(
@@ -35,6 +35,8 @@ export function Widget({
   fromAmount,
   allowChains: allowFromChains,
   allowToChains,
+  allowBridges,
+  allowExchanges,
   widgetIntegrator,
   activeTheme,
   autoHeight,
@@ -133,6 +135,8 @@ export function Widget({
       allowToChains,
       bridgeConditions,
       isConnectedAGW,
+      allowBridges,
+      allowExchanges,
     }),
     [
       starterVariant,
@@ -140,6 +144,8 @@ export function Widget({
       formParametersCtx,
       allowFromChains,
       allowToChains,
+      allowBridges,
+      allowExchanges,
       bridgeConditions,
       isConnectedAGW,
       integratorStringByType,
