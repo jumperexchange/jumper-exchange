@@ -161,7 +161,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -483,7 +483,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -809,7 +809,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                   data-testid="entity-stack-hint"
-                  style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                  style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
                 </p>
@@ -1189,7 +1189,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -1511,7 +1511,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -1828,7 +1828,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -2176,7 +2176,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -2524,7 +2524,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -2715,7 +2715,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -2949,7 +2949,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -3161,7 +3161,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                   data-testid="entity-stack-hint"
-                  style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                  style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
                 </p>
@@ -3432,7 +3432,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -3640,7 +3640,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -3848,7 +3848,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -4051,7 +4051,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
