@@ -1,17 +1,20 @@
 'use client';
 
 import { useAccount } from '@lifi/wallet-management';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavbarMenuToggleButton } from '@/components/Navbar/components/Buttons/Buttons.style';
 import { useNotifications } from '@/hooks/notifications/useNotifications';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
+import { NotificationDrawer } from './NotificationDrawer';
 import { NotificationPopover } from './NotificationPopover';
 import { BellIcon, NotificationBadge } from './Notifications.style';
 
 export const NotificationBell = () => {
   const { account } = useAccount();
   const { t } = useTranslation();
+  const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -59,12 +62,16 @@ export const NotificationBell = () => {
           <BellIcon />
         </NavbarMenuToggleButton>
       </NotificationBadge>
-      {open && (
-        <NotificationPopover
-          anchorEl={anchorRef.current}
-          open={open}
-          setOpen={setOpen}
-        />
+      {isDesktop ? (
+        open && (
+          <NotificationPopover
+            anchorEl={anchorRef.current}
+            open={open}
+            setOpen={setOpen}
+          />
+        )
+      ) : (
+        <NotificationDrawer open={open} setOpen={setOpen} />
       )}
     </>
   );

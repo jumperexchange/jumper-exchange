@@ -31,11 +31,13 @@ const CATEGORY_BADGE_VARIANT: Record<NotificationCategory, BadgeVariant> = {
 interface NotificationItemProps {
   notification: Notification;
   onCtaClick: () => void;
+  alwaysShowDelete?: boolean;
 }
 
 export const NotificationItem: FC<NotificationItemProps> = ({
   notification,
   onCtaClick,
+  alwaysShowDelete,
 }) => {
   const { t } = useTranslation();
   const [readNotificationIds, markAsRead, deleteNotification] =
@@ -119,6 +121,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
         aria-label={t('notifications.aria.deleteNotification')}
         onClick={handleDelete}
         size="small"
+        sx={alwaysShowDelete ? { opacity: 1 } : undefined}
       >
         <DeleteOutlineRounded fontSize="small" />
       </TrashButton>

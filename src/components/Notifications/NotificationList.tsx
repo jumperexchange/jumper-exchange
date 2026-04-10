@@ -7,11 +7,13 @@ import { EmptyState, NotificationListContainer } from './Notifications.style';
 interface NotificationListProps {
   notifications: Notification[];
   onCtaClick: () => void;
+  alwaysShowDelete?: boolean;
 }
 
 export const NotificationList: FC<NotificationListProps> = ({
   notifications,
   onCtaClick,
+  alwaysShowDelete,
 }) => {
   const { t } = useTranslation();
 
@@ -26,6 +28,7 @@ export const NotificationList: FC<NotificationListProps> = ({
           key={notification.id}
           notification={notification}
           onCtaClick={onCtaClick}
+          alwaysShowDelete={alwaysShowDelete}
         />
       ))}
     </NotificationListContainer>
