@@ -11,10 +11,10 @@ interface BaseSizeProps {
   size?: 'small' | 'medium';
 }
 
-export const StyledSelect = styled(Select)(({ theme }) => ({
+export const StyledSelect = styled(Select)(({ theme, fullWidth }) => ({
   '&.MuiSelect-root': {
     padding: 0,
-    width: 'fit-content',
+    width: fullWidth ? '100%' : 'fit-content',
   },
   '&.MuiSelect-root .MuiSelect-select': {
     padding: '0 !important',
@@ -39,10 +39,22 @@ export const StyledSelectorContainer = styled(Box, {
   cursor: disabled ? 'default' : 'pointer',
 }));
 
-export const StyledSelectorContentContainer = styled(Box)(({ theme }) => ({
+export const StyledSelectorContentContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'fullWidth',
+})<{ fullWidth?: boolean }>(({ theme, fullWidth }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0.1, 0.25),
+  variants: [
+    {
+      props: ({ fullWidth }) => fullWidth,
+      style: {
+        '& :first-child': {
+          flexGrow: 1,
+        },
+      },
+    },
+  ],
 }));
 
 export const StyledLabelContainer = styled(Box, {
