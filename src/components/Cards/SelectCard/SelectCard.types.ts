@@ -8,7 +8,7 @@ export interface SelectCardBaseProps {
   labelVariant?: TypographyProps['variant'];
   value?: string;
   valueVariant?: TypographyProps['variant'];
-  placeholder: string;
+  placeholder?: string;
   placeholderVariant?: TypographyProps['variant'];
   description?: ReactNode;
   startAdornment?: ReactNode;
