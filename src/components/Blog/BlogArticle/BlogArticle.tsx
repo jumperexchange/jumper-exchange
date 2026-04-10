@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { useTranslation } from 'react-i18next';
 
@@ -18,7 +17,6 @@ import {
   BlogArticleTopHeader,
   BlogAuthorWrapper,
   BlogMetaContainer,
-  Divider,
   getContentContainerStylesForTOC,
   getTOCStyles,
 } from './BlogArticle.style';
@@ -95,7 +93,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
   );
 
   const isClient = useClient();
-  const dividerRef = useRef<HTMLHRElement>(null);
+  const richBlocksRef = useRef<HTMLElement>(null);
 
   const handleScroll = useCallback(
     (scrollProgress: number) => {
@@ -216,80 +214,87 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
         </WithSkeleton>
       </BlogArticleImageContainer>
 
-      <BlogArticleContainer
-        sx={hasToc ? getContentContainerStylesForTOC : undefined}
+      <ScrollProgress
+        onScroll={shouldOpenModal ? handleScroll : undefined}
+        topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
+        progressRef={richBlocksRef}
+        showProgress
       >
-        {hasToc && (
-          <BlogArticleTableOfContents
-            items={displayTableOfContents}
-            sx={(theme) => getTOCStyles(theme, { scrollHidesAppBar })}
-          />
-        )}
-        <BlogArticleContentContainer>
-          <ScrollProgress
-            onScroll={shouldOpenModal ? handleScroll : undefined}
-            topOffset={image ? `-${IMAGE_HEIGHT / 2}px` : 0}
-            targetRef={dividerRef}
-            showProgress
-          >
-            <WithSkeleton
-              show={!!content}
-              skeleton={<BlogArticleContentSkeleton variant="text" />}
-            >
-              <RichBlocks
-                content={content!}
-                variant={RichBlocksVariant.BlogArticle}
-                blockSx={{
-                  paragraph: (theme) => ({
-                    ...theme.typography.bodyLargeParagraph,
-                    fontWeight: 400,
-                    '& + &': {
-                      marginTop: theme.typography.bodyLargeParagraph.lineHeight,
+        <BlogArticleContainer
+          sx={hasToc ? getContentContainerStylesForTOC : undefined}
+        >
+          {hasToc && (
+            <BlogArticleTableOfContents
+              items={displayTableOfContents}
+              sx={(theme) => getTOCStyles(theme, { scrollHidesAppBar })}
+            />
+          )}
+          <BlogArticleContentContainer>
+            <Box ref={richBlocksRef}>
+              <WithSkeleton
+                show={!!content}
+                skeleton={<BlogArticleContentSkeleton variant="text" />}
+              >
+                <RichBlocks
+                  content={content!}
+                  variant={RichBlocksVariant.BlogArticle}
+                  blockSx={{
+                    paragraph: (theme) => ({
+                      ...theme.typography.bodyLargeParagraph,
+                      fontWeight: 400,
+                      '& + &': {
+                        marginTop:
+                          theme.typography.bodyLargeParagraph.lineHeight,
+                      },
+                    }),
+                  }}
+                  trackingKeys={{
+                    cta: {
+                      category: TrackingCategory.BlogArticle,
+                      action: TrackingAction.ClickBlogCTA,
+                      label: 'click-blog-cta',
+                      data: {
+                        [TrackingEventParameter.ArticleID]: String(id || ''),
+                        [TrackingEventParameter.ArticleTitle]: title || '',
+                      },
                     },
-                  }),
-                }}
-                trackingKeys={{
-                  cta: {
-                    category: TrackingCategory.BlogArticle,
-                    action: TrackingAction.ClickBlogCTA,
-                    label: 'click-blog-cta',
-                    data: {
-                      [TrackingEventParameter.ArticleID]: String(id || ''),
-                      [TrackingEventParameter.ArticleTitle]: title || '',
-                    },
+                  }}
+                />
+              </WithSkeleton>
+            </Box>
+          </BlogArticleContentContainer>
+        </BlogArticleContainer>
+
+        <BlogArticleContainer>
+          <BlogArticleContentContainer>
+            {faq_items?.length > 0 && (
+              <AccordionFAQ
+                accordionHeader={
+                  <BlogArticleSubtitle
+                    variant="h2"
+                    sx={{ marginTop: 0, marginBottom: 1 }}
+                  >
+                    {t('blog.faq')}
+                  </BlogArticleSubtitle>
+                }
+                content={faq_items}
+                questionTextTypography="bodyLargeStrong"
+                itemSx={(theme) => ({
+                  background: (theme.vars || theme).palette.surface1.main,
+                  boxShadow: theme.shadows[2],
+                  '&:hover': {
+                    background: (theme.vars || theme).palette.surface1Hover,
                   },
-                }}
+                })}
+                sx={{ width: '100%', maxWidth: '100% !important', paddingY: 2 }}
               />
-            </WithSkeleton>
-          </ScrollProgress>
-        </BlogArticleContentContainer>
-      </BlogArticleContainer>
+            )}
+          </BlogArticleContentContainer>
+        </BlogArticleContainer>
+      </ScrollProgress>
 
       <BlogArticleContainer>
         <BlogArticleContentContainer>
-          {faq_items?.length > 0 && (
-            <AccordionFAQ
-              accordionHeader={
-                <BlogArticleSubtitle
-                  variant="h2"
-                  sx={{ marginTop: 0, marginBottom: 1 }}
-                >
-                  {t('blog.faq')}
-                </BlogArticleSubtitle>
-              }
-              content={faq_items}
-              questionTextTypography="bodyLargeStrong"
-              itemSx={(theme) => ({
-                background: (theme.vars || theme).palette.surface1.main,
-                boxShadow: theme.shadows[2],
-                '&:hover': {
-                  background: (theme.vars || theme).palette.surface1Hover,
-                },
-              })}
-              sx={{ width: '100%', maxWidth: '100% !important', paddingY: 2 }}
-            />
-          )}
-          <Divider ref={dividerRef} />
           <BlogAuthorWrapper>
             <BlogArticleAuthor
               author={author}
