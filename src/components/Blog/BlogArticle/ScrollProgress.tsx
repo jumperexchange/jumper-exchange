@@ -46,8 +46,12 @@ export const ScrollProgress: FC<ScrollProgressProps> = ({
 
   // Tracks the bar's bottom offset relative to the viewport
   const fixedBottom = useTransform(scrollY, () => {
+    if (typeof window === 'undefined') {
+      return 0;
+    }
     const bottom = targetRef?.current?.getBoundingClientRect().bottom ?? 0;
-    return Math.max(0, window.innerHeight - bottom);
+    const height = window.innerHeight ?? 0;
+    return Math.max(0, height - bottom);
   });
 
   useMotionValueEvent(progress, 'change', (p) => {
