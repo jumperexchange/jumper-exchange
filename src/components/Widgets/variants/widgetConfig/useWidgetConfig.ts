@@ -31,7 +31,7 @@ export function useWidgetConfig<T extends WidgetType>(
     : T extends 'mission'
       ? MissionWidgetContext
       : ZapWidgetContext,
-): WidgetConfig {
+): { config: WidgetConfig; isReady: boolean } {
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
   const sharedRPC = useSharedRPCConfig();
@@ -42,10 +42,16 @@ export function useWidgetConfig<T extends WidgetType>(
     address: account?.address ?? '',
   });
 
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
+
   // Language configuration
   const language = useLanguageConfig(
     {
       useMainWidget: type === 'main',
+      useTradeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
       ...context,
     },
     deps,
@@ -77,7 +83,7 @@ export function useWidgetConfig<T extends WidgetType>(
   }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig, type]);
 
   // Merge all configurations
-  return useMemo(() => {
+  const config = useMemo(() => {
     const baseConfig = merge(
       {},
       sharedBase,
@@ -128,4 +134,9 @@ export function useWidgetConfig<T extends WidgetType>(
     priceImpactABTest.isEnabled,
     priceImpactABTest.value,
   ]);
+
+  return {
+    config,
+    isReady: !tradeABTest.isLoading && !priceImpactABTest.isLoading,
+  };
 }

@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Exchange",
+      "trade": "Trade",
       "portfolio": "Portfolio",
       "missions": "Missions",
       "earn": "Earn",
@@ -750,6 +751,12 @@
     },
     "deposit": {
       "title": "Quick deposit"
+    },
+    "exchange": {
+      "title": "Exchange"
+    },
+    "trade": {
+      "title": "Trade"
     }
   },
   "links": {
