@@ -40,6 +40,9 @@ import { Badge } from '@/components/Badge/Badge';
 import { BadgeVariant } from '@/components/Badge/Badge.styles';
 import * as supportedLanguages from '@/i18n/translations';
 import MuiBadge from '@mui/material/Badge';
+import { useAccount } from '@lifi/wallet-management';
+import { useABTest } from '@/hooks/useABTest';
+import { AB_TEST_NAME } from '@/const/abtests';
 
 interface MenuLink {
   url: string;
@@ -393,6 +396,13 @@ export const useMenuItems = () => {
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
   const { supportModalUnreadCount } = useMenuStore((state) => state);
 
+  const { account } = useAccount();
+
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
+
   const {
     handleLearnClick,
     handleScanClick,
@@ -449,7 +459,10 @@ export const useMenuItems = () => {
 
     if (isTablet) {
       baseItems.push({
-        label: t('navbar.links.exchange'),
+        label:
+          tradeABTest.isEnabled && tradeABTest.value === 'test'
+            ? t('navbar.links.trade')
+            : t('navbar.links.exchange'),
         showMoreIcon: false,
         link: { url: AppPaths.Main },
         onClick: handleExchangeClick,
