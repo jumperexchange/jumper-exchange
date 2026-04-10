@@ -1,14 +1,14 @@
 import config from '@/config/env-config';
 import { getCustomRPCs, publicRPCList } from '@/const/rpcList';
-import { createClient, type SDKProvider } from '@lifi/sdk';
-import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
+import { createClient } from '@lifi/sdk';
 import { BitcoinProvider } from '@lifi/sdk-provider-bitcoin';
-import { SolanaProvider } from '@lifi/sdk-provider-solana';
+import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
 import { SuiProvider } from '@lifi/sdk-provider-sui';
 import { TronProvider } from '@lifi/sdk-provider-tron';
 import getApiUrl from '../getApiUrl';
 import { getPathname } from '../urls/getPathname';
 import { getPathBasedIntegrator } from '../widgets/getPathBasedIntegrator';
+import { JumperSolanaProvider } from './JumperSolanaProvider';
 
 export const GLOBAL_HEADERS = {
   Referer: config.NEXT_PUBLIC_SITE_URL,
@@ -23,6 +23,13 @@ function initClient() {
     _client = createClient({
       apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
       apiUrl: getApiUrl(),
+      providers: [
+        EthereumProvider(),
+        JumperSolanaProvider(),
+        BitcoinProvider(),
+        SuiProvider(),
+        TronProvider(),
+      ],
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR || 'jumper.exchange',
       rpcUrls: {
         ...getCustomRPCs(),
@@ -40,13 +47,6 @@ function initClient() {
         return request;
       },
     });
-    _client.setProviders([
-      EthereumProvider(),
-      SolanaProvider(),
-      BitcoinProvider(),
-      SuiProvider(),
-      TronProvider(),
-    ] as SDKProvider[]);
   }
   return _client;
 }
