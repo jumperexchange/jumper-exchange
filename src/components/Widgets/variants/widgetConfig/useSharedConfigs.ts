@@ -131,7 +131,10 @@ export function useSharedFormConfig(
  * Shared language configuration
  */
 export function useLanguageConfig(
-  context: WidgetContext & { useMainWidget: boolean; useTradeTitle: boolean },
+  context: WidgetContext & {
+    useMainWidget: boolean;
+    useSwapBridgeTitle: boolean;
+  },
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
   return useMemo(() => {
@@ -146,8 +149,8 @@ export function useLanguageConfig(
       };
 
       languageResourcesEN.header = {
-        exchange: context.useTradeTitle
-          ? deps.translation.t('widget.trade.title')
+        exchange: context.useSwapBridgeTitle
+          ? deps.translation.t('widget.swapBridge.title')
           : deps.translation.t('widget.exchange.title'),
       };
 

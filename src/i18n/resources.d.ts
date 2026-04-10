@@ -892,8 +892,8 @@ interface Resources {
       exchange: {
         title: 'Exchange';
       };
-      trade: {
-        title: 'Trade';
+      swapBridge: {
+        title: 'Swap & Bridge';
       };
       withdraw: {
         title: 'Withdraw';

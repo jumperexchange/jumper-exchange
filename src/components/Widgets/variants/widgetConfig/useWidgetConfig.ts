@@ -51,7 +51,7 @@ export function useWidgetConfig<T extends WidgetType>(
   const language = useLanguageConfig(
     {
       useMainWidget: type === 'main',
-      useTradeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
+      useSwapBridgeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
       ...context,
     },
     deps,
