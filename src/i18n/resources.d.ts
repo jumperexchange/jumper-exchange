@@ -590,6 +590,7 @@ interface Resources {
         missions: 'Missions';
         portfolio: 'Portfolio';
         refuel: 'Gas';
+        trade: 'Trade';
       };
       navbarMenu: {
         brandAssets: 'Brand Assets';
@@ -887,6 +888,12 @@ interface Resources {
       };
       earn: {
         depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
+      };
+      exchange: {
+        title: 'Exchange';
+      };
+      swapBridge: {
+        title: 'Swap & Bridge';
       };
       withdraw: {
         title: 'Withdraw';

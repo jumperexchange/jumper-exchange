@@ -152,9 +152,9 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
-  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+  const { config: widgetConfig, isReady } = useWidgetConfig('zap', enhancedCtx);
 
-  return isZapDataSuccess && toChainId && toTokenAddress ? (
+  return isZapDataSuccess && toChainId && toTokenAddress && isReady ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}
