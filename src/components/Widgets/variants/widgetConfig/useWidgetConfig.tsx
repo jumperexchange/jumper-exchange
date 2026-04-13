@@ -50,7 +50,7 @@ export function useWidgetConfig<T extends WidgetType>(
 
   const feeContributionABTest = useABTest({
     feature: AB_TEST_NAME.A_B_TEST_FEE_CONTRIBUTION_DISPLAY,
-    address: account.address ?? '',
+    address: account?.address ?? '',
   });
 
   // Language configuration
