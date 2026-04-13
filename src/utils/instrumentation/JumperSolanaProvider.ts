@@ -25,15 +25,12 @@ async function jumperGetBalance(
       tokens: tokens.map((t) => t.address),
     });
 
-    const tokensByAddress = new Map(responseTokens.map((t) => [t.address, t]));
-
-    return tokens.map((inputToken): TokenAmount => {
-      const match = tokensByAddress.get(inputToken.address);
-      return {
-        ...inputToken,
-        amount: match?.amount != null ? BigInt(match.amount) : 0n,
-      };
-    });
+    return responseTokens.map(
+      ({ amount, ...token }): TokenAmount => ({
+        ...token,
+        amount: amount != null ? BigInt(amount) : 0n,
+      }),
+    );
   } catch (error) {
     console.warn('jumperGetBalance failed, returning zero balances', error);
     return tokens.map((t): TokenAmount => ({ ...t, amount: 0n }));
