@@ -11,12 +11,14 @@ import { NotificationList } from './NotificationList';
 import { NotificationPaper } from './Notifications.style';
 
 interface NotificationPopoverProps {
+  id?: string;
   anchorEl: HTMLElement | null;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
 export const NotificationPopover: FC<NotificationPopoverProps> = ({
+  id,
   anchorEl,
   open,
   setOpen,
@@ -62,6 +64,7 @@ export const NotificationPopover: FC<NotificationPopoverProps> = ({
       }}
     >
       <MenuPopper
+        id={id}
         open={open}
         anchorEl={anchorEl}
         transition

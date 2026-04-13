@@ -69,6 +69,7 @@ export const NotificationBell = () => {
       {isDesktop ? (
         open && (
           <NotificationPopover
+            id="notifications-popover"
             anchorEl={anchorRef.current}
             open={open}
             setOpen={setOpen}
