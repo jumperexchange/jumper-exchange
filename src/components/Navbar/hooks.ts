@@ -8,7 +8,7 @@ import { useChains } from '@/hooks/useChains';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
-import { getConnectorIcon } from '@lifi/wallet-management';
+import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
 import type { Chain } from '@lifi/sdk';
 import type { Address } from 'viem';
 import { walletDigest } from 'src/utils/walletDigest';
@@ -19,6 +19,8 @@ import {
   isEarnFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from 'src/app/lib/getFeatureFlag';
+import { useABTest } from '@/hooks/useABTest';
+import { AB_TEST_NAME } from '@/const/abtests';
 
 export const useLevelDisplayData = () => {
   const activeAccount = useActiveAccountByChainType();
@@ -83,15 +85,24 @@ interface MainLink {
 export const useMainLinks = () => {
   const { t } = useTranslation();
   const pathname = usePathnameWithoutLocale();
+  const { account } = useAccount();
 
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
+
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
 
   const links = useMemo(() => {
     const _links: MainLink[] = [
       {
         value: AppPaths.Main,
-        label: t('navbar.links.exchange'),
+        label:
+          tradeABTest.isEnabled && tradeABTest.value === 'test'
+            ? t('navbar.links.trade')
+            : t('navbar.links.exchange'),
         subLinks: [AppPaths.Gas],
         testId: 'navbar-exchange-button',
       },
@@ -123,7 +134,7 @@ export const useMainLinks = () => {
     }
 
     return _links;
-  }, [t, isEarnEnabled, isPortfolioEnabled]);
+  }, [t, isEarnEnabled, isPortfolioEnabled, tradeABTest]);
 
   const activeLink = useMemo(
     () =>

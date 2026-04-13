@@ -116,9 +116,9 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
-  const widgetConfig = useWidgetConfig('zap', enhancedCtx);
+  const { config: widgetConfig, isReady } = useWidgetConfig('zap', enhancedCtx);
 
-  return fromChain && fromToken ? (
+  return fromChain && fromToken && isReady ? (
     <LiFiWidget
       formRef={formRef}
       config={widgetConfig}

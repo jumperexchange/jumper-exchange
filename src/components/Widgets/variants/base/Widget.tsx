@@ -6,7 +6,7 @@ import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
 import { ClientOnly } from '@/components/ClientOnly';
 
 export const Widget: FC<WidgetProps> = ({ ctx, type, formRef, feeConfig }) => {
-  const widgetConfig = useWidgetConfig(type, ctx);
+  const { config: widgetConfig, isReady } = useWidgetConfig(type, ctx);
 
   const config = useMemo(
     () => (feeConfig ? { ...widgetConfig, feeConfig } : widgetConfig),
@@ -15,11 +15,15 @@ export const Widget: FC<WidgetProps> = ({ ctx, type, formRef, feeConfig }) => {
 
   return (
     <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
-      <LiFiWidget
-        config={config}
-        integrator={config.integrator}
-        formRef={formRef}
-      />
+      {isReady ? (
+        <LiFiWidget
+          config={config}
+          integrator={config.integrator}
+          formRef={formRef}
+        />
+      ) : (
+        <LifiWidgetSkeleton config={config} />
+      )}
     </ClientOnly>
   );
 };
