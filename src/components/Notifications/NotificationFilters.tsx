@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import type { NotificationCategory } from '@/types/notifications';
-import type { DateFilter } from './NotificationPopover';
+import type { DateFilter } from '@/hooks/notifications/useFilteredNotifications';
 import { FilterRow } from './Notifications.style';
 
 const CATEGORY_KEYS = [
