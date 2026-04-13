@@ -240,10 +240,10 @@ test.describe('Analytics filters on Earn page', () => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn/hyperbeat-ultra-hype-on-hyperliquid');
     await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
     await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
-    await page.waitForLoadState('load');
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
   });
