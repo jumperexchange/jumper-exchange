@@ -20,6 +20,7 @@ import {
 } from './useSharedConfigs';
 import { useWidgetDependencies } from './useWidgetDependencies';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
+import FeeContribution from '../../FeeContribution/FeeContribution';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic
@@ -44,6 +45,11 @@ export function useWidgetConfig<T extends WidgetType>(
 
   const tradeABTest = useABTest({
     feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
+
+  const feeContributionABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_FEE_CONTRIBUTION_DISPLAY,
     address: account?.address ?? '',
   });
 
@@ -121,6 +127,18 @@ export function useWidgetConfig<T extends WidgetType>(
       ];
     }
 
+    if (
+      type === 'main' &&
+      feeContributionABTest.isEnabled &&
+      feeContributionABTest.value
+    ) {
+      baseConfig.feeConfig = {
+        _vcComponent: () => (
+          <FeeContribution translationFn={deps.translation.t} />
+        ),
+      };
+    }
+
     return baseConfig;
   }, [
     sharedBase,
@@ -131,12 +149,19 @@ export function useWidgetConfig<T extends WidgetType>(
     context.theme,
     context.disabledUI,
     context.hiddenUI,
+    deps.translation.t,
     priceImpactABTest.isEnabled,
     priceImpactABTest.value,
+    type,
+    feeContributionABTest.isEnabled,
+    feeContributionABTest.value,
   ]);
 
   return {
     config,
-    isReady: !tradeABTest.isLoading && !priceImpactABTest.isLoading,
+    isReady:
+      !tradeABTest.isLoading &&
+      !priceImpactABTest.isLoading &&
+      !feeContributionABTest.isLoading,
   };
 }

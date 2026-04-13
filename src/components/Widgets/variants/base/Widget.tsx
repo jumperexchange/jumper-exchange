@@ -1,17 +1,11 @@
 import type { FC } from 'react';
-import { useMemo } from 'react';
 import { LiFiWidget, WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import type { WidgetProps } from './Widget.types';
 import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
 import { ClientOnly } from '@/components/ClientOnly';
 
-export const Widget: FC<WidgetProps> = ({ ctx, type, formRef, feeConfig }) => {
-  const { config: widgetConfig, isReady } = useWidgetConfig(type, ctx);
-
-  const config = useMemo(
-    () => (feeConfig ? { ...widgetConfig, feeConfig } : widgetConfig),
-    [widgetConfig, feeConfig],
-  );
+export const Widget: FC<WidgetProps> = ({ ctx, type, formRef }) => {
+  const { config, isReady } = useWidgetConfig(type, ctx);
 
   return (
     <ClientOnly fallback={<LifiWidgetSkeleton config={config} />}>
