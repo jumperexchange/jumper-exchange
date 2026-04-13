@@ -26,6 +26,28 @@ test.describe('Landing page and navigation', () => {
   );
 
   test(
+    qase(
+      56,
+      'Should navigate to private tab, show correct widget title and call private API',
+    ),
+    async ({ page }) => {
+      const privateApiRequestPromise = page.waitForRequest(
+        (req) => req.url().includes('/private/'),
+        { timeout: 30_000 },
+      );
+
+      await navigateToTab(page, 2, 'Private Swap');
+      await expect(page).toHaveURL('/private');
+
+      const widgetTitle = page.getByText('Anonymous Swap');
+      await expect(widgetTitle).toBeVisible();
+
+      const privateApiRequest = await privateApiRequestPromise;
+      expect(privateApiRequest.url()).toContain('/private/');
+    },
+  );
+
+  test(
     qase(1, 'Should show again welcome screen when clicking jumper logo'),
     async ({ page }) => {
       const headerText = 'Find the best route';
