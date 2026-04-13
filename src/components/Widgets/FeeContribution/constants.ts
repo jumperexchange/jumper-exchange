@@ -1,5 +1,5 @@
 import { ChainId } from '@lifi/sdk';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 
 // Constants for contribution amounts based on transaction volume
 export const CONTRIBUTION_AMOUNTS = {
@@ -17,9 +17,6 @@ export const VOLUME_THRESHOLDS = {
 
 // Minimum USD amount required to show contribution
 export const MIN_CONTRIBUTION_USD = 10;
-
-// Percentage of users that should see the contribution (AB test)
-export const CONTRIBUTION_AB_TEST_PERCENTAGE = 0.1;
 
 export const USD_CURRENCY_SYMBOL = '$';
 

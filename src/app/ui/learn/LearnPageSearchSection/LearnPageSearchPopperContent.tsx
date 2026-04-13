@@ -139,15 +139,14 @@ export const LearnPageSearchPopperContent: FC<
               gap={1}
             >
               <Typography variant="bodyXSmallStrong" color="textHint">
-                {t(
-                  selectedTagId === TAG_ALL
-                    ? 'search.result'
-                    : 'search.filteredResult',
-                  {
-                    count: articles.length,
-                    filterCount: filteredArticles.length,
-                  },
-                )}
+                {selectedTagId === TAG_ALL
+                  ? t('search.result', {
+                      count: articles.length,
+                    })
+                  : t('search.filteredResult', {
+                      count: articles.length,
+                      filterCount: `${filteredArticles.length}`,
+                    })}
               </Typography>
               <Stack direction="row" flexWrap="wrap" gap={0.5}>
                 {tagOptions.map((tag) => (

@@ -240,6 +240,9 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                   paragraph: (theme) => ({
                     ...theme.typography.bodyLargeParagraph,
                     fontWeight: 400,
+                    '& + &': {
+                      marginTop: theme.typography.bodyLargeParagraph.lineHeight,
+                    },
                   }),
                 }}
                 trackingKeys={{
@@ -280,7 +283,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
                   background: (theme.vars || theme).palette.surface1Hover,
                 },
               })}
-              sx={{ width: '100%', maxWidth: '100% !important' }}
+              sx={{ width: '100%', maxWidth: '100% !important', paddingY: 2 }}
             />
           )}
           <Divider />

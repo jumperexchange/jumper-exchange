@@ -31,6 +31,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
   isLoading = false,
   isContentVisible = true,
   dataTestId,
+  addressOverride,
   // Main stack props
   size,
   limit,
@@ -110,21 +111,18 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
 
   // Show explorer link on hover when single chain + single address
   const hintOnHover = useMemo(() => {
-    if (
-      assetAddresses &&
-      assetAddresses.length === 1 &&
-      chainIds.length === 1
-    ) {
+    const resolvedAddress = addressOverride?.trim() || assetAddresses[0];
+    if (resolvedAddress && chainIds.length === 1) {
       return (
         <EntityExplorerLink
-          address={assetAddresses[0]}
+          address={resolvedAddress}
           chainId={chainIds[0]}
           hintVariant={content.hintVariant}
         />
       );
     }
     return null;
-  }, [assetAddresses, chainIds, content.hintVariant]);
+  }, [addressOverride, assetAddresses, chainIds, content.hintVariant]);
 
   // Loading state
   if (isLoading) {

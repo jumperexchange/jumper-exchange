@@ -1,4 +1,4 @@
-import type { EVMProvider, WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig, WidgetProvider } from '@lifi/widget';
 import type { StarterVariantType } from 'src/types/internal';
 import type {
   TaskWidgetInformationChainData,
@@ -84,7 +84,7 @@ export interface MissionWidgetContext extends CommonWidgetContext {
 export interface ZapWidgetContext extends MissionWidgetContext {
   taskType: TaskType.Zap;
   zapToAddress?: Hex;
-  zapProviders?: EVMProvider[];
+  zapProviders?: WidgetProvider[];
   zapPoolName?: string;
 }
 

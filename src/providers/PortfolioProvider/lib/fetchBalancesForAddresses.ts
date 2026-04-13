@@ -7,6 +7,7 @@ import {
 import type { Token, TokenAmount } from '@lifi/sdk';
 import { flatMap } from 'lodash';
 import { createBatchFetcher } from '@/utils/batches/fetcher';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import {
   createExtendedToken,
   createTokenBalance,
@@ -47,7 +48,7 @@ export interface FetchBalancesParams {
 
 /** Fetch tokens for EVM wallet (no batching needed) */
 export const fetchBalancesForEVMAddress = async (address: string) => {
-  const walletBalances = await getWalletBalances(address);
+  const walletBalances = await getWalletBalances(sdkClient, address);
   return createTokenBalancesFromPlainArray(flatMap(walletBalances));
 };
 
@@ -71,7 +72,9 @@ export const fetchBalancesForAddress = async ({
     return { balances, address };
   }
 
-  const tokensResponse = await getTokens({ chainTypes: [chainType] });
+  const tokensResponse = await getTokens(sdkClient, {
+    chainTypes: [chainType],
+  });
 
   let balances: TokenBalance[] = [];
 
@@ -82,7 +85,7 @@ export const fetchBalancesForAddress = async ({
       if (signal?.aborted) {
         throw new Error('Aborted');
       }
-      const balances = await getTokenBalances(address, tokenBatch);
+      const balances = await getTokenBalances(sdkClient, address, tokenBatch);
       return balances.filter((t) => t.amount && t.amount > BigInt(0));
     },
     {

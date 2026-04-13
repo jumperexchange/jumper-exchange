@@ -1,24 +1,20 @@
 'use client';
-import { defaultCoinbaseConfig } from '@/config/coinbase';
-import { defaultMetaMaskConfig } from '@/config/metaMask';
-import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking';
+import { useChains } from '@/hooks/useChains';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider/WalletManagementThemeProvider';
-import type {
-  WalletConnected,
-  WalletManagementConfig,
-} from '@lifi/wallet-management';
+import type { WalletConnected } from '@lifi/wallet-management';
 import {
   useWalletManagementEvents,
   WalletManagementEvent,
-  WalletManagementProvider,
+  WalletManagementProviders,
 } from '@lifi/wallet-management';
-import { type FC, type PropsWithChildren, useEffect, useMemo } from 'react';
+import type { ExtendedChain } from '@lifi/sdk';
+import { type FC, type PropsWithChildren, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SuiProvider } from './SuiProvider';
@@ -26,40 +22,53 @@ import { SVMProvider } from './SVMProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
+import { EthereumProvider as EthereumWidgetProvider } from '@lifi/widget-provider-ethereum';
+import { SolanaProvider as SolanaWidgetProvider } from '@lifi/widget-provider-solana';
+import { BitcoinProvider as BitcoinWidgetProvider } from '@lifi/widget-provider-bitcoin';
+import { SuiProvider as SuiWidgetProvider } from '@lifi/widget-provider-sui';
+import { defaultWalletConnectConfig } from '@/config/walletConnect';
+import { defaultCoinbaseConfig } from '@/config/coinbase';
+import { defaultMetaMaskConfig } from '@/config/metaMask';
+
+export const widgetProviders = [
+  EthereumWidgetProvider({
+    walletConnect: defaultWalletConnectConfig,
+    coinbase: defaultCoinbaseConfig,
+    metaMask: defaultMetaMaskConfig,
+    porto: true,
+    baseAccount: true,
+  }),
+  SolanaWidgetProvider(),
+  BitcoinWidgetProvider(),
+  SuiWidgetProvider(),
+];
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { i18n } = useTranslation();
+  const { chains } = useChains();
+
   return (
     <EVMProvider>
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
             <WalletManagementThemeProvider>
-              <WalletMenuProvider>
+              <WalletManagementProviders
+                config={{
+                  locale: i18n.resolvedLanguage as never,
+                  walletEcosystemsOrder: walletEcosystemsOrder,
+                }}
+                providers={widgetProviders}
+                isExternalContext={true}
+                chains={(chains ?? []) as ExtendedChain[]}
+              >
                 <WalletTrackingProvider>{children}</WalletTrackingProvider>
-              </WalletMenuProvider>
+              </WalletManagementProviders>
             </WalletManagementThemeProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>
     </EVMProvider>
-  );
-};
-
-const WalletMenuProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { i18n } = useTranslation();
-  const config: WalletManagementConfig = useMemo(() => {
-    return {
-      locale: i18n.resolvedLanguage as never,
-      metaMask: defaultMetaMaskConfig,
-      coinbase: defaultCoinbaseConfig,
-      walletConnect: defaultWalletConnectConfig,
-      walletEcosystemsOrder: walletEcosystemsOrder,
-    };
-  }, [i18n.resolvedLanguage]);
-  return (
-    <WalletManagementProvider config={config}>
-      {children}
-    </WalletManagementProvider>
   );
 };
 

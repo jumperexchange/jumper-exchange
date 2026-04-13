@@ -1,6 +1,7 @@
-import { ChainType, Route, StatusResponse } from '@lifi/sdk';
-import { Account } from '@lifi/wallet-management';
-import { Hex } from 'viem';
+import type { Route, StatusResponse } from '@lifi/sdk';
+import { ChainType } from '@lifi/sdk';
+import type { Account } from '@lifi/widget-provider';
+import type { Hex } from 'viem';
 import {
   CONTRIBUTION_AMOUNTS,
   MIN_CONTRIBUTION_USD,

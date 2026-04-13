@@ -1,4 +1,5 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import type { FC } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 
@@ -6,7 +7,7 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { PerksCard as PerksCardComponent } from 'src/components/Cards/PerksCard/PerksCard';
 import { useFormatDisplayPerkData } from 'src/hooks/perks/useFormatDisplayPerkData';
-import { PerksDataAttributes } from 'src/types/strapi';
+import type { PerksDataAttributes } from 'src/types/strapi';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useTranslation } from 'react-i18next';

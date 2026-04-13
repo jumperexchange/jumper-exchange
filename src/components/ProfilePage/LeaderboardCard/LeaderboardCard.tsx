@@ -48,7 +48,9 @@ export const LeaderboardCard = ({ address }: { address?: string }) => {
             }),
           })}
         >
-          {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
+          {position
+            ? t('format.decimal2Digit', { value: Number(position) })
+            : 'N/A'}
         </LeaderboardUserPositionButton>
         <CardButtonContainer
           href="/leaderboard"

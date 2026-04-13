@@ -48,7 +48,9 @@ export const RankCard: FC<RankCardProps> = () => {
           },
         })}
       >
-        {position ? t('format.decimal2Digit', { value: position }) : 'N/A'}
+        {position
+          ? t('format.decimal2Digit', { value: Number(position) })
+          : 'N/A'}
       </RankUserPosition>
     );
 

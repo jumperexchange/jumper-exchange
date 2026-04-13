@@ -3,8 +3,6 @@ import type { FC } from 'react';
 import { Trans } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { EntityChainStack } from 'src/components/composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from 'src/components/composite/EntityChainStack/EntityChainStack.types';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
 import {
   HeroEarnCardContainer,
@@ -20,6 +18,7 @@ import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backen
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 
 const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
   asset: {},
@@ -149,13 +148,12 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
         </HeroEarnCardContentContainer>
         <HeroEarnCardFooterContainer>
           <HeroEarnCardFooterContentContainer>
-            <EntityChainStack
-              variant={EntityChainStackVariant.Protocol}
-              address={lpToken?.address}
-              protocol={protocol}
-              chains={chains}
-              protocolSize={AvatarSize.XXL}
-              chainsSize={AvatarSize.SM}
+            <EntityStackWithBadge
+              addressOverride={lpToken?.address}
+              entities={[protocol]}
+              badgeEntities={chains}
+              size={AvatarSize.XXL}
+              badgeSize={AvatarSize.SM}
               content={{
                 title,
                 titleVariant: isMobile ? 'bodyLargeStrong' : 'titleXSmall',

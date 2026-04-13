@@ -11,10 +11,9 @@ import { formatUSD } from '../../utils/formatNumbers';
 import { SimpleToken } from '../../utils/Token';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
-import { EntityChainStack } from '../composite/EntityChainStack/EntityChainStack';
-import { EntityChainStackVariant } from '../composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from '../core/AvatarStack/AvatarStack.types';
 import { Tooltip } from '../core/Tooltip/Tooltip';
+import { EntityStackWithBadge } from '../composite/EntityStackWithBadge/EntityStackWithBadge';
 
 interface EarnDetailsActionsPositionProps {
   token: Token;
@@ -106,11 +105,11 @@ export const EarnDetailsActionsPosition: FC<
           placeholder="0"
           isClickable={false}
           startAdornment={
-            <EntityChainStack
-              variant={EntityChainStackVariant.Tokens}
-              tokens={[token]}
-              tokensSize={AvatarSize.XL}
-              chainsSize={AvatarSize.XXS}
+            <EntityStackWithBadge
+              entities={[token]}
+              badgeEntities={[token.chain]}
+              size={AvatarSize.XL}
+              badgeSize={AvatarSize.XXS}
               isContentVisible={false}
             />
           }

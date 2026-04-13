@@ -126,6 +126,7 @@ export default async function RootLayout({
     >
       <head>
         <script
+          id="theme-bootstrap"
           data-cfasync="false"
           dangerouslySetInnerHTML={{
             __html: `
@@ -177,9 +178,13 @@ export default async function RootLayout({
           }
 `}
         </style>
-        <script type="text/javascript">
-          {`window._env_ = ${JSON.stringify(getPublicEnvVars())};`}
-        </script>
+        <Script
+          id="env-config"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `window._env_ = ${JSON.stringify(getPublicEnvVars())};`,
+          }}
+        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <Script
           strategy="lazyOnload"

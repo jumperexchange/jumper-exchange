@@ -21,10 +21,7 @@ import {
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi';
-import {
-  CONTRIBUTION_AB_TEST_PERCENTAGE,
-  CONTRIBUTION_AMOUNTS,
-} from './constants';
+import { CONTRIBUTION_AMOUNTS } from './constants';
 import {
   getContributionAmounts,
   getContributionFeeAddress,
@@ -38,12 +35,6 @@ export const useContributionData = () => {
   const [contributionOptions, setContributionOptions] = useState<number[]>(
     CONTRIBUTION_AMOUNTS.DEFAULT,
   );
-
-  // AB test flag - show contribution for ~10% of users
-  // @TODO: use feature flag from PostHog
-  const isContributionAbEnabled = useMemo(() => {
-    return Math.random() < CONTRIBUTION_AB_TEST_PERCENTAGE;
-  }, []);
 
   const { setContributionDisplayed } = useContributionStore((state) => state);
   const { completedRoute } = useRouteStore((state) => state);
@@ -68,16 +59,12 @@ export const useContributionData = () => {
 
   // Check if contribution should be shown based on:
   // - Transaction history
-  // - AB test
   // - Transaction amount >= $10
   // - Chain type is EVM
   // - Same wallet tx with fromAddress === toAddress
   // - Valid contribution fee address exists for the chain
   useEffect(() => {
-    if (
-      !isContributionAbEnabled ||
-      !isEligibleForContribution(txHistoryData, completedRoute, account)
-    ) {
+    if (!isEligibleForContribution(txHistoryData, completedRoute, account)) {
       setContributionDisplayed(false);
       return;
     }
@@ -90,7 +77,6 @@ export const useContributionData = () => {
     txHistoryData?.transfers,
     completedRoute?.toAmountUSD,
     account?.chainType,
-    isContributionAbEnabled,
     completedRoute?.toChainId,
   ]);
 
