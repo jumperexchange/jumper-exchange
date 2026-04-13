@@ -75,6 +75,7 @@ vi.mock('@/hooks/userTracking/useUserTracking', () => ({
 }));
 
 vi.mock('@/hooks/images/useGetColorsFromImage', () => ({
+  useGetColorsFromImage: () => [],
   useDominantColorFromImage: () => null,
 }));
 
