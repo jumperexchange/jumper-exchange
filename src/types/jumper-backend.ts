@@ -850,6 +850,23 @@ export interface WalletPositions {
   )[];
 }
 
+export interface PostTokensDto {
+  /** Wallet address */
+  address: string;
+  /**
+   * Chain type for the wallet address
+   * @example "SVM"
+   */
+  chainType: 'EVM' | 'SVM' | 'MVM' | 'UTXO' | 'TVM';
+  /** List of proxy token addresses to query balances for */
+  tokens: string[];
+}
+
+export interface ProxyTokenBalances {
+  meta: MetadataWithUpdatedAt;
+  data: object[];
+}
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -1612,6 +1629,27 @@ export class JumperBackend<
         path: `/v1/earn/items/${slug}/analytics`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetProxyTokenBalancesV1
+     * @summary Get proxy token balances from DeFi positions
+     * @request POST:/v1/portfolio/tokens
+     */
+    portfolioControllerGetProxyTokenBalancesV1: (
+      data: PostTokensDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ProxyTokenBalances, any>({
+        path: `/v1/portfolio/tokens`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
