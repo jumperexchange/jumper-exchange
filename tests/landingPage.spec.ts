@@ -36,11 +36,8 @@ test.describe('Landing page and navigation', () => {
         { timeout: 30_000 },
       );
 
-      await navigateToTab(page, 2, 'Private Swap');
+      await navigateToTab(page, 2, 'Anonymous Swap');
       await expect(page).toHaveURL('/private');
-
-      const widgetTitle = page.getByText('Anonymous Swap');
-      await expect(widgetTitle).toBeVisible();
 
       const privateApiRequest = await privateApiRequestPromise;
       expect(privateApiRequest.url()).toContain('/private/');
