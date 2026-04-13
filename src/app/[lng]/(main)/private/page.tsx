@@ -4,15 +4,9 @@ import { Widgets } from '@/components/Widgets/Widgets';
 
 const Page = async () => {
   const variant = 'private';
-  const allowedExchanges = ['houdini'];
-  const allowBridges: string[] = ['houdini'];
   return (
     <MainWidgetContainer>
-      <Widget
-        starterVariant={variant}
-        allowExchanges={allowedExchanges}
-        allowBridges={allowBridges}
-      />
+      <Widget starterVariant={variant} />
       <Widgets widgetVariant={variant} />
     </MainWidgetContainer>
   );

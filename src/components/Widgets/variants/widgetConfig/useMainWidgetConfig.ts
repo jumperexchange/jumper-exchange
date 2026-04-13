@@ -34,30 +34,6 @@ export function useMainWidgetConfig(
       _tokens.allow = newAllowList;
     }
 
-    let allowBridges: { allow: string[] } | undefined;
-    if (deps.theme.configTheme?.allowedBridges) {
-      allowBridges = { allow: deps.theme.configTheme.allowedBridges };
-    }
-    if (context.allowBridges) {
-      const allowedSet = new Set(context.allowBridges);
-      if (allowBridges?.allow) {
-        allowedSet.intersection(new Set(allowBridges.allow));
-      }
-      allowBridges = { allow: [...allowedSet] };
-    }
-
-    let allowExchanges: { allow: string[] } | undefined;
-    if (deps.theme.configTheme?.allowedExchanges) {
-      allowExchanges = { allow: deps.theme.configTheme.allowedExchanges };
-    }
-    if (context.allowExchanges) {
-      const allowedSet = new Set(context.allowExchanges);
-      if (allowExchanges?.allow) {
-        allowedSet.intersection(new Set(allowExchanges.allow));
-      }
-      allowExchanges = { allow: [...allowedSet] };
-    }
-
     const config: Partial<WidgetConfig> = {
       keyPrefix: `jumper-${context.starterVariant}`,
       // Variant configuration
@@ -102,8 +78,12 @@ export function useMainWidgetConfig(
       tokens: _tokens,
 
       // Bridge and exchange configuration
-      bridges: allowBridges,
-      exchanges: allowExchanges,
+      bridges: deps.theme.configTheme?.allowedBridges
+        ? { allow: deps.theme.configTheme.allowedBridges }
+        : undefined,
+      exchanges: deps.theme.configTheme?.allowedExchanges
+        ? { allow: deps.theme.configTheme?.allowedExchanges }
+        : undefined,
 
       routeLabels: [
         generateRouteLabel(

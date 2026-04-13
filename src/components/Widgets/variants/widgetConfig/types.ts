@@ -63,8 +63,6 @@ export interface CommonWidgetContext {
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
   partnerName: string;
-  allowBridges?: string[] | null;
-  allowExchanges?: string[] | null;
   bridgeConditions?: {
     isAGWToNonABSChain?: boolean;
     isBridgeFromHypeToArbNativeUSDC?: boolean;

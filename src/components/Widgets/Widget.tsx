@@ -35,8 +35,6 @@ export function Widget({
   fromAmount,
   allowChains: allowFromChains,
   allowToChains,
-  allowBridges,
-  allowExchanges,
   widgetIntegrator,
   activeTheme,
   autoHeight,
@@ -68,7 +66,7 @@ export function Widget({
   );
 
   useEffect(() => {
-    const routes = [AppPaths.Main, AppPaths.Gas].filter(
+    const routes = [AppPaths.Main, AppPaths.Gas, AppPaths.Private].filter(
       (route) => route !== pathname,
     );
 
@@ -135,8 +133,6 @@ export function Widget({
       allowToChains,
       bridgeConditions,
       isConnectedAGW,
-      allowBridges,
-      allowExchanges,
     }),
     [
       starterVariant,
@@ -144,8 +140,6 @@ export function Widget({
       formParametersCtx,
       allowFromChains,
       allowToChains,
-      allowBridges,
-      allowExchanges,
       bridgeConditions,
       isConnectedAGW,
       integratorStringByType,

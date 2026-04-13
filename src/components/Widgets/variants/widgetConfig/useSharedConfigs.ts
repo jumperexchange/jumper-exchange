@@ -52,14 +52,21 @@ export function useSharedBaseConfig(
   );
 }
 
+interface ShareRpcConfigParams {
+  isPrivateVariant?: boolean;
+}
 /**
  * Shared RPC configuration that's common across all widget types
  */
-export function useSharedRPCConfig(): Partial<WidgetConfig> {
+export function useSharedRPCConfig(
+  params: ShareRpcConfigParams,
+): Partial<WidgetConfig> {
   return useMemo(
     () => ({
       sdkConfig: {
-        apiUrl: getApiUrl(),
+        apiUrl: getApiUrl({
+          isPrivateVariant: params.isPrivateVariant,
+        }),
         rpcUrls: {
           ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
           ...publicRPCList,
@@ -146,7 +153,7 @@ export function useLanguageConfig(
             ...(context.starterVariant === 'private'
               ? {
                   header: {
-                    exchange: 'Anonymous Echange',
+                    exchange: 'Anonymous Swap',
                   },
                 }
               : {}),

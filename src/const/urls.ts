@@ -33,6 +33,7 @@ export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
 export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
+export const JUMPER_PRIVATE_PATH = '/private';
 
 export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
 export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
@@ -66,4 +67,5 @@ export enum AppPaths {
   TermsOfBusiness = JUMPER_TERMS_OF_BUSINESS_PATH,
   Portfolio = JUMPER_PORTFOLIO_PATH,
   Newsletter = JUMPER_NEWSLETTER_PATH,
+  Private = JUMPER_PRIVATE_PATH,
 }

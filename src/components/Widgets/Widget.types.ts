@@ -19,8 +19,6 @@ export const ExtendedChainId = {
 export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   allowChains?: number[];
   allowToChains?: number[];
-  allowBridges?: string[] | null;
-  allowExchanges?: string[] | null;
   widgetIntegrator?: string;
   starterVariant: StarterVariantType;
   activeTheme?: string;
