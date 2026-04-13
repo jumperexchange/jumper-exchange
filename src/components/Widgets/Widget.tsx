@@ -5,7 +5,6 @@ import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
@@ -55,7 +54,6 @@ export function Widget({
 
   const router = useRouter();
   const pathname = usePathname();
-  const { t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
@@ -154,14 +152,7 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <BaseWidget
-        type="main"
-        ctx={context}
-        formRef={formRef}
-        feeConfig={{
-          _vcComponent: () => <FeeContribution translationFn={t} />,
-        }}
-      />
+      <BaseWidget type="main" ctx={context} formRef={formRef} />
       {isPrivateSwapModalOpen && (
         <PrivateSwapModal
           open={isPrivateSwapModalOpen}

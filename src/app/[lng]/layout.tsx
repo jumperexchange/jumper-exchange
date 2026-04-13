@@ -125,9 +125,8 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
-        <Script
+        <script
           id="theme-bootstrap"
-          strategy="beforeInteractive"
           data-cfasync="false"
           dangerouslySetInnerHTML={{
             __html: `

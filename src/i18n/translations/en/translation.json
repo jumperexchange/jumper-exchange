@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Exchange",
+      "trade": "Trade",
       "portfolio": "Portfolio",
       "missions": "Missions",
       "earn": "Earn",
@@ -751,6 +752,15 @@
     },
     "deposit": {
       "title": "Quick deposit"
+    },
+    "exchange": {
+      "title": "Exchange"
+    },
+    "private": {
+      "title": "Anonymous Swap"
+    },
+    "swapBridge": {
+      "title": "Swap & Bridge"
     }
   },
   "links": {

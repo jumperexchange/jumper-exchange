@@ -138,32 +138,39 @@ export function useSharedFormConfig(
  * Shared language configuration
  */
 export function useLanguageConfig(
-  context: WidgetContext & { useMainWidget: boolean },
+  context: WidgetContext & {
+    useMainWidget: boolean;
+    useSwapBridgeTitle: boolean;
+  },
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
   return useMemo(() => {
     if (!isMissionContext(context)) {
+      const languageResourcesEN: EnglishLanguageResource = {
+        warning: {
+          message: {
+            lowAddressActivity:
+              "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
+          },
+        },
+      };
+
+      languageResourcesEN.header = {
+        exchange:
+          context.starterVariant === 'private'
+            ? deps.translation.t('widget.private.title')
+            : context.useSwapBridgeTitle
+              ? deps.translation.t('widget.swapBridge.title')
+              : deps.translation.t('widget.exchange.title'),
+      };
+
       return {
         languages: {
           default: deps.translation.i18n.language as LanguageKey,
           allow: deps.translation.i18n.languages as LanguageKey[],
         },
         languageResources: {
-          en: {
-            ...(context.starterVariant === 'private'
-              ? {
-                  header: {
-                    exchange: 'Anonymous Swap',
-                  },
-                }
-              : {}),
-            warning: {
-              message: {
-                lowAddressActivity:
-                  "This address has low activity on this blockchain. Please verify above you're sending to the correct ADDRESS and network to prevent potential loss of funds. ABSTRACT WALLET WORKS ONLY ON ABSTRACT CHAIN, DO NOT SEND FUNDS TO ABSTRACT WALLET ON ANOTHER CHAIN.",
-              },
-            },
-          },
+          en: languageResourcesEN,
         },
       };
     }

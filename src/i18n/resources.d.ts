@@ -591,6 +591,7 @@ interface Resources {
         portfolio: 'Portfolio';
         private: 'Private Swap';
         refuel: 'Gas';
+        trade: 'Trade';
       };
       navbarMenu: {
         brandAssets: 'Brand Assets';
@@ -888,6 +889,15 @@ interface Resources {
       };
       earn: {
         depositSuccess: 'You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>';
+      };
+      exchange: {
+        title: 'Exchange';
+      };
+      private: {
+        title: 'Anonymous Swap';
+      };
+      swapBridge: {
+        title: 'Swap & Bridge';
       };
       withdraw: {
         title: 'Withdraw';

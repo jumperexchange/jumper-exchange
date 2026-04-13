@@ -4,18 +4,29 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { type SxProps, type Theme, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { AB_TEST_NAME } from '@/const/abtests';
+
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { useABTest } from '@/hooks/useABTest';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useAccount } from '@lifi/wallet-management';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const theme = useTheme();
   const router = useRouter();
   const { t } = useTranslation();
+
+  const { account } = useAccount();
+
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
 
   const handleClickTab = (tab: string) => () => {
     router.push(`/${tab}`);
@@ -32,7 +43,10 @@ export const useVerticalTabs = () => {
   const tabs = [
     {
       tab: '',
-      label: t('navbar.links.exchange'),
+      label:
+        tradeABTest.isEnabled && tradeABTest.value === 'test'
+          ? t('navbar.links.trade')
+          : t('navbar.links.exchange'),
       icon: SwapHorizIcon,
     },
     {
