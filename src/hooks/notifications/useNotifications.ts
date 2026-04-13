@@ -9,16 +9,17 @@ export const useNotifications = () => {
 
   return useQuery({
     queryKey: ['notifications', account?.address],
-    queryFn: async () => {
+    queryFn: async ({ signal }) => {
       const response = await fetch(
         `${config.NEXT_PUBLIC_NOTIFICATIONS_URL}/api/notifications/${account?.address}`,
+        { signal },
       );
       if (!response.ok) {
         throw new Error('Failed to fetch notifications');
       }
       return response.json() as Promise<Notification[]>;
     },
-    enabled: !!account?.address,
+    enabled: !!account?.address && !!config.NEXT_PUBLIC_NOTIFICATIONS_URL,
     refetchInterval: TWO_SECONDS_MS,
   });
 };

@@ -37,7 +37,20 @@ export const NotificationPopover: FC<NotificationPopoverProps> = ({
       mouseEvent="onMouseDown"
       onClickAway={(event) => {
         const target = event.target as HTMLElement | null;
-        if (target?.closest('[role="presentation"]')) {
+        if (!target) {
+          return;
+        }
+        if (anchorEl?.contains(target)) {
+          return;
+        }
+        // MUI Select/Menu portals render outside our DOM tree inside a Modal
+        // root with role="presentation".  Only suppress close when that portal
+        // actually contains an interactive widget (listbox or menu), which
+        // excludes plain Modal backdrops and Dialog overlays.
+        const presentationRoot = target.closest('[role="presentation"]');
+        if (
+          presentationRoot?.querySelector('[role="listbox"], [role="menu"]')
+        ) {
           return;
         }
         setTimeout(() => {

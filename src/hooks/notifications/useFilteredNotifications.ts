@@ -1,3 +1,4 @@
+import { useAccount } from '@lifi/wallet-management';
 import { useMemo, useState } from 'react';
 import { ONE_DAY_MS, ONE_WEEK_MS, THIRTY_DAYS_MS } from '@/const/time';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
@@ -7,14 +8,18 @@ import { useNotifications } from './useNotifications';
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
 
 export const useFilteredNotifications = () => {
+  const { account } = useAccount();
+  const address = account?.address ?? '';
+
   const [categoryFilter, setCategoryFilter] =
     useState<NotificationCategory | null>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
   const { data: notifications } = useNotifications();
-  const [readNotificationIds, deletedNotificationIds] = useNotificationStore(
-    (state) => [state.readNotificationIds, state.deletedNotificationIds],
-  );
+  const [readIds, deletedIds] = useNotificationStore((state) => [
+    state.readNotificationIdsByAccount[address] ?? [],
+    state.deletedNotificationIdsByAccount[address] ?? [],
+  ]);
 
   const visibleNotifications = useMemo(() => {
     if (!notifications) {
@@ -23,7 +28,7 @@ export const useFilteredNotifications = () => {
 
     const now = Date.now();
     return notifications.filter((n) => {
-      if (deletedNotificationIds.includes(n.id)) {
+      if (deletedIds.includes(n.id)) {
         return false;
       }
 
@@ -33,6 +38,9 @@ export const useFilteredNotifications = () => {
 
       if (dateFilter !== 'all') {
         const createdAt = new Date(n.createdAt).getTime();
+        if (!Number.isFinite(createdAt)) {
+          return false;
+        }
         const msAgo = now - createdAt;
         if (dateFilter === 'today' && msAgo > ONE_DAY_MS) {
           return false;
@@ -47,13 +55,11 @@ export const useFilteredNotifications = () => {
 
       return true;
     });
-  }, [notifications, deletedNotificationIds, categoryFilter, dateFilter]);
+  }, [notifications, deletedIds, categoryFilter, dateFilter]);
 
   const unreadCount = useMemo(
-    () =>
-      visibleNotifications.filter((n) => !readNotificationIds.includes(n.id))
-        .length,
-    [visibleNotifications, readNotificationIds],
+    () => visibleNotifications.filter((n) => !readIds.includes(n.id)).length,
+    [visibleNotifications, readIds],
   );
 
   return {

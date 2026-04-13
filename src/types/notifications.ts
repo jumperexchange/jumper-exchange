@@ -22,11 +22,14 @@ export interface Notification {
   userAddress: string;
 }
 
-export interface NotificationStoreState {
-  readNotificationIds: string[];
-  deletedNotificationIds: string[];
-  markAsRead: (id: string) => void;
-  deleteNotification: (id: string) => void;
-  isRead: (id: string) => boolean;
-  isDeleted: (id: string) => boolean;
+export interface NotificationStoreData {
+  readNotificationIdsByAccount: Record<string, string[]>;
+  deletedNotificationIdsByAccount: Record<string, string[]>;
+}
+
+export interface NotificationStoreState extends NotificationStoreData {
+  markAsRead: (account: string, id: string) => void;
+  deleteNotification: (account: string, id: string) => void;
+  isRead: (account: string, id: string) => boolean;
+  isDeleted: (account: string, id: string) => boolean;
 }

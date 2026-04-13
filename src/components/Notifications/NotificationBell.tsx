@@ -18,16 +18,16 @@ export const NotificationBell = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
 
+  const address = account?.address ?? '';
   const { data: notifications } = useNotifications();
-  const [readNotificationIds, deletedNotificationIds] = useNotificationStore(
-    (state) => [state.readNotificationIds, state.deletedNotificationIds],
-  );
+  const [readIds, deletedIds] = useNotificationStore((state) => [
+    state.readNotificationIdsByAccount[address] ?? [],
+    state.deletedNotificationIdsByAccount[address] ?? [],
+  ]);
 
   const unreadCount =
     notifications?.filter(
-      (n) =>
-        !readNotificationIds.includes(n.id) &&
-        !deletedNotificationIds.includes(n.id),
+      (n) => !readIds.includes(n.id) && !deletedIds.includes(n.id),
     ).length ?? 0;
 
   const handleToggle = (
@@ -54,9 +54,13 @@ export const NotificationBell = () => {
         <NavbarMenuToggleButton
           ref={anchorRef}
           aria-label={t('notifications.aria.openPanel')}
-          aria-controls="notifications-popover"
-          aria-expanded={open}
-          aria-haspopup="true"
+          {...(isDesktop
+            ? {
+                'aria-controls': 'notifications-popover',
+                'aria-expanded': open,
+                'aria-haspopup': 'true' as const,
+              }
+            : { 'aria-haspopup': 'dialog' as const })}
           onClick={handleToggle}
         >
           <BellIcon />

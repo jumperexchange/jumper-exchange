@@ -2,6 +2,7 @@
 
 import DeleteOutlineRounded from '@mui/icons-material/DeleteOutlineRounded';
 import OpenInNewRounded from '@mui/icons-material/OpenInNewRounded';
+import { useAccount } from '@lifi/wallet-management';
 import { Stack } from '@mui/material';
 import NextLink from 'next/link';
 import type { FC, MouseEvent } from 'react';
@@ -42,31 +43,34 @@ export const NotificationItem: FC<NotificationItemProps> = ({
   alwaysShowDelete,
 }) => {
   const { t } = useTranslation();
-  const [readNotificationIds, markAsRead, deleteNotification] =
-    useNotificationStore((state) => [
-      state.readNotificationIds,
-      state.markAsRead,
-      state.deleteNotification,
-    ]);
+  const { account } = useAccount();
+  const address = account?.address ?? '';
+  const [readIds, markAsRead, deleteNotif] = useNotificationStore((state) => [
+    state.readNotificationIdsByAccount[address] ?? [],
+    state.markAsRead,
+    state.deleteNotification,
+  ]);
 
-  const isRead = readNotificationIds.includes(notification.id);
-  const isInternal = notification.ctaUrl.startsWith('/');
+  const isRead = readIds.includes(notification.id);
+  const isInternal =
+    notification.ctaUrl.startsWith('/') &&
+    !notification.ctaUrl.startsWith('//');
 
   const handleClick = () => {
     if (!isRead) {
-      markAsRead(notification.id);
+      markAsRead(address, notification.id);
     }
   };
 
   const handleDelete = (e: MouseEvent) => {
     e.stopPropagation();
-    deleteNotification(notification.id);
+    deleteNotif(address, notification.id);
   };
 
   const handleCtaClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     if (!isRead) {
-      markAsRead(notification.id);
+      markAsRead(address, notification.id);
     }
     onCtaClick();
   };
