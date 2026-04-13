@@ -46,7 +46,7 @@ export const NotificationBell = () => {
     <>
       <NotificationBadge
         badgeContent={unreadCount}
-        color="error"
+        color="primary"
         invisible={unreadCount === 0}
         overlap="circular"
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}

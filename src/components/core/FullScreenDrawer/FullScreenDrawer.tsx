@@ -1,14 +1,15 @@
-import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
 import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import type { SxProps, Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import type { FC, PropsWithChildren } from 'react';
+import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import {
   StyledDrawerContent,
   StyledDrawerHeader,
 } from './FullScreenDrawer.styles';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import BackIcon from '@mui/icons-material/ArrowBack';
 
 interface FullScreenDrawerProps extends PropsWithChildren {
   isOpen: boolean;
@@ -18,6 +19,8 @@ interface FullScreenDrawerProps extends PropsWithChildren {
   onBack?: () => void;
   showBackButton?: boolean;
   title: string;
+  contentSx?: SxProps<Theme>;
+  headerSx?: SxProps<Theme>;
 }
 
 export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
@@ -27,6 +30,8 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
   onBack,
   showBackButton,
   title,
+  contentSx,
+  headerSx,
 }) => {
   return (
     <Drawer
@@ -49,8 +54,8 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
       }}
       sx={(theme) => ({ zIndex: theme.zIndex.modal + 1 })}
     >
-      <StyledDrawerContent>
-        <StyledDrawerHeader>
+      <StyledDrawerContent sx={contentSx}>
+        <StyledDrawerHeader sx={headerSx}>
           {showBackButton && (
             <IconButton
               onClick={onBack}

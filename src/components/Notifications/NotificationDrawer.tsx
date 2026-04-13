@@ -3,13 +3,14 @@
 import { type FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FullScreenDrawer } from '@/components/core/FullScreenDrawer/FullScreenDrawer';
+import { ONE_DAY_MS, ONE_WEEK_MS, THIRTY_DAYS_MS } from '@/const/time';
 import { useNotifications } from '@/hooks/notifications/useNotifications';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
-import { ONE_DAY_MS, ONE_WEEK_MS, THIRTY_DAYS_MS } from '@/const/time';
 import type { NotificationCategory } from '@/types/notifications';
 import { NotificationFilters } from './NotificationFilters';
 import { NotificationList } from './NotificationList';
 import type { DateFilter } from './NotificationPopover';
+import { NotificationHeaderSubtitle } from './Notifications.style';
 
 interface NotificationDrawerProps {
   open: boolean;
@@ -63,6 +64,13 @@ export const NotificationDrawer: FC<NotificationDrawerProps> = ({
     });
   }, [notifications, deletedNotificationIds, categoryFilter, dateFilter]);
 
+  const unreadCount = useMemo(
+    () =>
+      visibleNotifications.filter((n) => !readNotificationIds.includes(n.id))
+        .length,
+    [visibleNotifications, readNotificationIds],
+  );
+
   const handleClose = () => setOpen(false);
 
   return (
@@ -70,12 +78,18 @@ export const NotificationDrawer: FC<NotificationDrawerProps> = ({
       isOpen={open}
       onClose={handleClose}
       title={t('notifications.title')}
+      contentSx={{ gap: 0, pb: 0, px: 0 }}
+      headerSx={{ mx: (theme) => theme.spacing(2) }}
     >
+      <NotificationHeaderSubtitle sx={{ textAlign: 'center' }}>
+        {t('notifications.unread', { count: unreadCount })}
+      </NotificationHeaderSubtitle>
       <NotificationFilters
         categoryFilter={categoryFilter}
         setCategoryFilter={setCategoryFilter}
         dateFilter={dateFilter}
         setDateFilter={setDateFilter}
+        sx={{ mt: (theme) => theme.spacing(2), justifyContent: 'center' }}
       />
       <NotificationList
         notifications={visibleNotifications}

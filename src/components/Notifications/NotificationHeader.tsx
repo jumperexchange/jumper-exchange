@@ -2,8 +2,8 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   NotificationHeaderContainer,
-  NotificationHeaderTitle,
   NotificationHeaderSubtitle,
+  NotificationHeaderTitle,
 } from './Notifications.style';
 
 interface NotificationHeaderProps {

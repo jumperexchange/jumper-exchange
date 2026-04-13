@@ -1,12 +1,12 @@
 import MuiNotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneRounded';
 import MuiBadge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
 
 const getIconProps = (theme: Theme) => ({
   fontSize: '24px',
@@ -38,22 +38,21 @@ export const NotificationBadge = styled(MuiBadge)(() => ({
 export const NotificationPaper = styled(Paper)(({ theme }) => ({
   background: (theme.vars || theme).palette.surface1.main,
   border: getSurfaceBorder(theme, 'surface1'),
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: theme.shape.cardContainerBorderRadius,
   width: 400,
   maxHeight: 600,
   display: 'flex',
   flexDirection: 'column',
   boxShadow: theme.shadows[1],
-  marginTop: -2,
   overflow: 'hidden',
 }));
 
 export const NotificationHeaderContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2, 2.5, 0.5, 2.5),
+  padding: theme.spacing(3, 3, 0.5, 3),
 }));
 
 export const NotificationHeaderTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyLargeStrong,
+  ...theme.typography.bodyMediumStrong,
   color: (theme.vars || theme).palette.text.primary,
 }));
 
@@ -75,7 +74,13 @@ export const NotificationListContainer = styled(Box)(() => ({
   flex: 1,
 }));
 
-export const NotificationItemContainer = styled(Box)(({ theme }) => ({
+interface NotificationItemContainerProps {
+  isRead: boolean;
+}
+
+export const NotificationItemContainer = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'isRead',
+})<NotificationItemContainerProps>(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(1.5),
   padding: theme.spacing(2, 2.5),
@@ -92,6 +97,14 @@ export const NotificationItemContainer = styled(Box)(({ theme }) => ({
   '&:last-child': {
     borderBottom: 'none',
   },
+  variants: [
+    {
+      props: { isRead: false },
+      style: {
+        backgroundColor: (theme.vars || theme).palette.surface2.main,
+      },
+    },
+  ],
 }));
 
 export const UnreadDot = styled(Box)(({ theme }) => ({
@@ -104,9 +117,12 @@ export const UnreadDot = styled(Box)(({ theme }) => ({
 }));
 
 export const NotificationContent = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   flex: 1,
   minWidth: 0,
   paddingRight: theme.spacing(4.5),
+  gap: theme.spacing(0.5),
 }));
 
 export const NotificationTitleRow = styled(Box)(() => ({
@@ -117,7 +133,7 @@ export const NotificationTitleRow = styled(Box)(() => ({
 }));
 
 export const NotificationTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyMediumStrong,
+  ...theme.typography.bodySmallStrong,
   color: (theme.vars || theme).palette.text.primary,
   flex: 1,
   minWidth: 0,
@@ -134,11 +150,7 @@ export const NotificationBody = styled(Typography)(({ theme }) => ({
   ...theme.typography.bodySmall,
   color: (theme.vars || theme).palette.text.secondary,
   marginTop: theme.spacing(0.5),
-  display: '-webkit-box',
-  WebkitLineClamp: 2,
-  WebkitBoxOrient: 'vertical',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  ...getTextEllipsisStyles(2),
 }));
 
 export const NotificationFooter = styled(Box)(({ theme }) => ({
@@ -161,19 +173,6 @@ export const CtaLink = styled('a')(({ theme }) => ({
   },
   '& .MuiSvgIcon-root': {
     fontSize: 14,
-  },
-}));
-
-export const TrashButton = styled(IconButton)(({ theme }) => ({
-  position: 'absolute',
-  top: theme.spacing(1.5),
-  right: theme.spacing(1.5),
-  opacity: 0,
-  transition: 'opacity 0.15s ease',
-  padding: theme.spacing(0.5),
-  color: (theme.vars || theme).palette.text.secondary,
-  '&:hover': {
-    color: (theme.vars || theme).palette.text.primary,
   },
 }));
 

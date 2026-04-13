@@ -2,6 +2,7 @@
 
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import LocalOfferOutlined from '@mui/icons-material/LocalOfferOutlined';
+import type { SxProps, Theme } from '@mui/material/styles';
 import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/core/form/Select/Select';
@@ -27,6 +28,7 @@ interface NotificationFiltersProps {
   setCategoryFilter: (category: NotificationCategory | null) => void;
   dateFilter: DateFilter;
   setDateFilter: (date: DateFilter) => void;
+  sx?: SxProps<Theme>;
 }
 
 export const NotificationFilters: FC<NotificationFiltersProps> = ({
@@ -34,6 +36,7 @@ export const NotificationFilters: FC<NotificationFiltersProps> = ({
   setCategoryFilter,
   dateFilter,
   setDateFilter,
+  sx,
 }) => {
   const { t } = useTranslation();
 
@@ -58,7 +61,7 @@ export const NotificationFilters: FC<NotificationFiltersProps> = ({
   const categoryValue: CategoryFilterValue = categoryFilter ?? 'all';
 
   return (
-    <FilterRow>
+    <FilterRow sx={sx}>
       <Select
         options={categoryOptions}
         value={categoryValue}

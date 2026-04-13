@@ -2,30 +2,32 @@
 
 import DeleteOutlineRounded from '@mui/icons-material/DeleteOutlineRounded';
 import OpenInNewRounded from '@mui/icons-material/OpenInNewRounded';
+import { Stack } from '@mui/material';
 import NextLink from 'next/link';
 import type { FC, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
+import { Variant, Size } from '@/components/core/buttons/types';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { Notification, NotificationCategory } from '@/types/notifications';
 import {
   CtaLink,
   NotificationBody,
   NotificationContent,
-  NotificationDate,
   NotificationFooter,
   NotificationItemContainer,
   NotificationTitle,
-  TrashButton,
   UnreadDot,
 } from './Notifications.style';
 
+// TODO: Think about color mapping the categories
 const CATEGORY_BADGE_VARIANT: Record<NotificationCategory, BadgeVariant> = {
-  earn: BadgeVariant.Success,
-  product: BadgeVariant.Primary,
-  campaign: BadgeVariant.Tertiary,
-  portfolio: BadgeVariant.Warning,
+  earn: BadgeVariant.Secondary,
+  product: BadgeVariant.Secondary,
+  campaign: BadgeVariant.Secondary,
+  portfolio: BadgeVariant.Secondary,
 };
 
 interface NotificationItemProps {
@@ -70,27 +72,30 @@ export const NotificationItem: FC<NotificationItemProps> = ({
   };
 
   return (
-    <NotificationItemContainer onClick={handleClick}>
-      {!isRead ? <UnreadDot /> : <UnreadDot sx={{ visibility: 'hidden' }} />}
+    <NotificationItemContainer onClick={handleClick} isRead={isRead}>
+      <UnreadDot sx={{ visibility: isRead ? 'hidden' : 'visible' }} />
 
       <NotificationContent>
         <NotificationTitle>{notification.title}</NotificationTitle>
-        <NotificationDate>
-          {t('format.shortDate', {
-            value: new Date(notification.createdAt),
-          })}
-        </NotificationDate>
+        <Stack direction="row" gap={1}>
+          <Badge
+            label={t(`notifications.categories.${notification.category}`)}
+            variant={CATEGORY_BADGE_VARIANT[notification.category]}
+            size={BadgeSize.SM}
+          />
+          <Badge
+            variant={BadgeVariant.Alpha}
+            label={t('format.shortDate', {
+              value: new Date(notification.createdAt),
+            })}
+          />
+        </Stack>
 
         <NotificationBody title={notification.body}>
           {notification.body}
         </NotificationBody>
 
         <NotificationFooter>
-          <Badge
-            label={t(`notifications.categories.${notification.category}`)}
-            variant={CATEGORY_BADGE_VARIANT[notification.category]}
-            size={BadgeSize.SM}
-          />
           {notification.ctaUrl &&
             notification.ctaLabel &&
             (isInternal ? (
@@ -116,15 +121,22 @@ export const NotificationItem: FC<NotificationItemProps> = ({
         </NotificationFooter>
       </NotificationContent>
 
-      <TrashButton
+      <IconButton
         className="notification-trash"
+        variant={Variant.Borderless}
+        size={Size.SM}
         aria-label={t('notifications.aria.deleteNotification')}
         onClick={handleDelete}
-        size="small"
-        sx={alwaysShowDelete ? { opacity: 1 } : undefined}
+        sx={{
+          position: 'absolute',
+          top: (theme) => theme.spacing(1.5),
+          right: (theme) => theme.spacing(1.5),
+          opacity: alwaysShowDelete ? 1 : 0,
+          transition: 'opacity 0.15s ease',
+        }}
       >
-        <DeleteOutlineRounded fontSize="small" />
-      </TrashButton>
+        <DeleteOutlineRounded />
+      </IconButton>
     </NotificationItemContainer>
   );
 };
