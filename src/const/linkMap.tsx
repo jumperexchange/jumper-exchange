@@ -1,6 +1,7 @@
 export enum LinkMap {
-  Private = 'private',
+  Buy = 'buy',
   Exchange = 'exchange',
   Refuel = 'refuel',
   Gas = 'gas',
+  Private = 'private',
 }

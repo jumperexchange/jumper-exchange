@@ -29,6 +29,8 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
       if (Object.values(LinkMap).includes(url as LinkMap)) {
         if (TabsMap.Private.destination.filter((el) => el === url).length) {
           return TabsMap.Private.variant;
+        } else if (TabsMap.Buy.destination.filter((el) => el === url).length) {
+          return TabsMap.Buy.variant;
         } else if (
           TabsMap.Refuel.destination.filter((el) => el === url).length
         ) {
@@ -54,6 +56,9 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           break;
         case TabsMap.Private.variant:
           setActiveTab(TabsMap.Private.index);
+          break;
+        case TabsMap.Buy.variant:
+          setActiveTab(TabsMap.Buy.index);
           break;
         default:
           setActiveTab(TabsMap.Exchange.index);

@@ -6,7 +6,7 @@ import { LinkMap } from './linkMap';
 interface TabsMapType {
   [key: string]: {
     index: number;
-    variant: WidgetSubvariant | 'private';
+    variant: WidgetSubvariant | 'buy' | 'private';
     destination: string[];
   };
 }
@@ -26,5 +26,10 @@ export const TabsMap: TabsMapType = {
     index: 2,
     variant: 'private',
     destination: [LinkMap.Private],
+  },
+  Buy: {
+    index: 3,
+    variant: 'buy',
+    destination: [LinkMap.Buy],
   },
 };

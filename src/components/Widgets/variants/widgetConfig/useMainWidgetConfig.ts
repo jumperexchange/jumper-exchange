@@ -41,7 +41,9 @@ export function useMainWidgetConfig(
       buildUrl: true,
       useRelayerRoutes: true,
       subvariant:
-        context.starterVariant === 'private' || isMemecoins
+        context.starterVariant === 'buy' ||
+        context.starterVariant === 'private' ||
+        isMemecoins
           ? 'default'
           : context.starterVariant,
       subvariantOptions: {},

@@ -19,7 +19,7 @@ declare global {
   }
 }
 
-export type StarterVariantType = 'private' | WidgetSubvariant;
+export type StarterVariantType = 'buy' | 'private' | WidgetSubvariant;
 
 export interface MenuListItem {
   label: string;
