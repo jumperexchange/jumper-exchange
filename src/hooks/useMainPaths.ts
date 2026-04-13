@@ -1,4 +1,5 @@
 import {
+  AppPaths,
   JUMPER_BRIDGE_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_PROFILE_PATH,
@@ -15,8 +16,8 @@ interface useMainPathsProps {
 export const useMainPaths = (): useMainPathsProps => {
   const pathname = usePathname();
 
-  const isGas = pathname?.includes('/gas');
-  const isPrivate = pathname?.includes('/private');
+  const isGas = pathname?.includes(AppPaths.Gas);
+  const isPrivate = pathname?.includes(AppPaths.Private);
   //Todo: find better way to check
   const isExchange =
     !pathname?.includes(JUMPER_SWAP_PATH) &&
