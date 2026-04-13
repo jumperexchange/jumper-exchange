@@ -134,7 +134,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -281,7 +281,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -428,7 +428,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -575,7 +575,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
@@ -726,7 +726,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                   data-testid="entity-stack-hint"
-                  style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                  style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
                 </p>
@@ -917,7 +917,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
                 data-testid="entity-stack-hint"
-                style="position: absolute; -webkit-transform: none; transform: none; -webkit-transition: -webkit-transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
               </p>
