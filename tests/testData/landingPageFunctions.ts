@@ -55,7 +55,9 @@ export async function checkRoutesVisibility(
       }
       const relayLabel = page
         .getByText('Relay via LI.FI')
-        .or(page.getByAltText('Relay').first());
+        .filter({ visible: true })
+        .first()
+        .or(page.getByAltText('Relay').filter({ visible: true }).first());
       await expect(relayLabel).toBeVisible();
     }
   } else {
