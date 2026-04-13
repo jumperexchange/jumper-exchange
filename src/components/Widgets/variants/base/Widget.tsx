@@ -1,8 +1,8 @@
-import { LiFiWidget, WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import type { FC } from 'react';
-import { ClientOnly } from '@/components/ClientOnly';
-import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
+import { LiFiWidget, WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
 import type { WidgetProps } from './Widget.types';
+import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
+import { ClientOnly } from '@/components/ClientOnly';
 
 export const Widget: FC<WidgetProps> = ({ ctx, type, formRef }) => {
   const { config, isReady } = useWidgetConfig(type, ctx);
