@@ -25,9 +25,9 @@ type Story = StoryObj<typeof meta>;
 const defaultConfig = {
   titleVariant: 'bodyLargeStrong',
   descriptionVariant: 'bodyXSmall',
-  tokenSize: AvatarSize.LG,
-  chainsSize: AvatarSize.XXS,
-  inlineChainsSize: AvatarSize.XXS,
+  tokenSize: AvatarSize.XXL,
+  chainsSize: AvatarSize.SM,
+  inlineChainsSize: AvatarSize.XS,
   chainsLimit: 8,
   chainsSpacing: -0.5,
   infoContainerGap: 0.5,
