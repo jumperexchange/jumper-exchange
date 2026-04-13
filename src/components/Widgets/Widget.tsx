@@ -7,7 +7,6 @@ import type { FormState } from '@lifi/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
 import { useActiveTabStore } from 'src/stores/activeTab';
@@ -18,7 +17,6 @@ import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { useFormParameters } from './hooks';
 import { AppPaths } from '@/const/urls';
 import { Widget as BaseWidget } from './variants/base/Widget';
-import FeeContribution from './FeeContribution/FeeContribution';
 import dynamic from 'next/dynamic';
 
 const PrivateSwapModal = dynamic(() =>
@@ -55,7 +53,6 @@ export function Widget({
 
   const router = useRouter();
   const pathname = usePathname();
-  const { t } = useTranslation();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
 
@@ -154,14 +151,7 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <BaseWidget
-        type="main"
-        ctx={context}
-        formRef={formRef}
-        feeConfig={{
-          _vcComponent: () => <FeeContribution translationFn={t} />,
-        }}
-      />
+      <BaseWidget type="main" ctx={context} formRef={formRef} />
       {isPrivateSwapModalOpen && (
         <PrivateSwapModal
           open={isPrivateSwapModalOpen}
