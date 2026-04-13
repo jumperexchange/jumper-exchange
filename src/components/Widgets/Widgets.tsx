@@ -27,8 +27,8 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     } else {
       const url = window?.location.pathname.slice(1);
       if (Object.values(LinkMap).includes(url as LinkMap)) {
-        if (TabsMap.Buy.destination.filter((el) => el === url).length) {
-          return TabsMap.Buy.variant;
+        if (TabsMap.Private.destination.filter((el) => el === url).length) {
+          return TabsMap.Private.variant;
         } else if (
           TabsMap.Refuel.destination.filter((el) => el === url).length
         ) {

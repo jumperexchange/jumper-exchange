@@ -13,7 +13,6 @@ import envConfig from '@/config/env-config';
 import { TabsMap } from '@/const/tabsMap';
 import { AppPaths } from '@/const/urls';
 import { useThemeStore } from '@/stores/theme';
-import FeeContribution from './FeeContribution/FeeContribution';
 import { useFormParameters } from './hooks';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import type { MainWidgetContext } from './variants/widgetConfig/types';

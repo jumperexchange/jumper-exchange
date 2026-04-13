@@ -16,7 +16,7 @@ export const useMainPaths = (): useMainPathsProps => {
   const pathname = usePathname();
 
   const isGas = pathname?.includes('/gas');
-  const isBuy = pathname?.includes('/buy');
+  const isPrivate = pathname?.includes('/private');
   //Todo: find better way to check
   const isExchange =
     !pathname?.includes(JUMPER_SWAP_PATH) &&
@@ -31,6 +31,6 @@ export const useMainPaths = (): useMainPathsProps => {
       pathname?.split('/').length === 2);
 
   return {
-    isMainPaths: isGas || isBuy || isExchange,
+    isMainPaths: isGas || isPrivate || isExchange,
   };
 };

@@ -77,7 +77,7 @@ export function useSharedRPCConfig(
         },
       },
     }),
-    [],
+    [params.isPrivateVariant],
   );
 }
 

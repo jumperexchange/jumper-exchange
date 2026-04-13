@@ -1,7 +1,7 @@
 import { GppGood, PrivacyTip } from '@mui/icons-material';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { type SxProps, type Theme, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { AB_TEST_NAME } from '@/const/abtests';
