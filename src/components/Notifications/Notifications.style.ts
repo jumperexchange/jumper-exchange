@@ -28,10 +28,6 @@ export const NotificationBadge = styled(MuiBadge)(() => ({
     minWidth: 18,
     height: 18,
     padding: '0 4px',
-    top: '14%',
-    right: '14%',
-    transform: 'scale(1) translate(calc(50% - 2.5px), calc(-50% + 2.5px))',
-    transformOrigin: '100% 0%',
   },
 }));
 
