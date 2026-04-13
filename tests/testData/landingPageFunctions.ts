@@ -53,7 +53,11 @@ export async function checkRoutesVisibility(
           .locator('button.MuiIconButton-root.MuiIconButton-sizeSmall:has(svg)')
           .click();
       }
-      const relayLabel = page.getByText('Relay via LI.FI');
+      const relayLabel = page
+        .getByText('Relay via LI.FI')
+        .filter({ visible: true })
+        .first()
+        .or(page.getByAltText('Relay').filter({ visible: true }).first());
       await expect(relayLabel).toBeVisible();
     }
   } else {
