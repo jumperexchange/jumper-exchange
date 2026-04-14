@@ -1,6 +1,7 @@
 import type { ChainId } from '@lifi/sdk';
 import { ChainType, getChains } from '@lifi/sdk';
 import { getChainById } from '../tokenAndChain';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 
 export async function fetchChainData(chainId: ChainId | null) {
   if (!chainId) {
@@ -9,7 +10,7 @@ export async function fetchChainData(chainId: ChainId | null) {
   try {
     const formattedChainId =
       typeof chainId !== 'number' ? parseInt(chainId) : chainId;
-    const chainsData = await getChains({
+    const chainsData = await getChains(sdkClient, {
       chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
     });
     return getChainById(chainsData, formattedChainId as ChainId);

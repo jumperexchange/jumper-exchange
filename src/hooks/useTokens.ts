@@ -1,6 +1,7 @@
 import type { ChainId, TokensResponse } from '@lifi/sdk';
 import { ChainType, getTokens } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
+import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import assign from 'lodash/assign';
 import { useCallback } from 'react';
 import type { Address } from 'viem';
@@ -22,7 +23,7 @@ export const getTokensQuery = async (
   const { results } = createBatchFetcher<ChainType, TokensResponse>(
     tokensBatchesByChainType,
     async (_batchKey, chainTypes) => {
-      const data = await getTokens({ chainTypes: [...chainTypes] });
+      const data = await getTokens(sdkClient, { chainTypes: [...chainTypes] });
       return [data];
     },
     {},

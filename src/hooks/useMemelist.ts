@@ -18,16 +18,16 @@ export interface UseMemeProps {
 
 const STRAPI_CONTENT_TYPE = 'token-lists';
 export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
-  const apiBaseUrl = getStrapiBaseUrl();
-  const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
-  //filter url
-  apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');
-  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('status', 'draft');
-  const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess } = useQuery({
     queryKey: ['memelist'],
     queryFn: async () => {
+      const apiBaseUrl = getStrapiBaseUrl();
+      const apiUrl = new URL(`${apiBaseUrl}/api/${STRAPI_CONTENT_TYPE}`);
+      apiUrl.searchParams.set('filters[uid][$eq]', 'memecoins');
+      if (config.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
+        apiUrl.searchParams.set('status', 'draft');
+      }
+      const apiAccesToken = getStrapiApiAccessToken();
       const response = await fetch(decodeURIComponent(apiUrl.href), {
         headers: {
           Authorization: `Bearer ${apiAccesToken}`,

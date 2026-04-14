@@ -4,9 +4,9 @@ import { sdk } from '@farcaster/miniapp-sdk';
 import { farcasterMiniApp } from '@farcaster/miniapp-wagmi-connector';
 import type { ExtendedChain } from '@lifi/sdk';
 import {
-  createDefaultWagmiConfig,
   useSyncWagmiConfig,
-} from '@lifi/wallet-management';
+  createDefaultWagmiConfig,
+} from '@lifi/widget-provider-ethereum';
 import {
   type FC,
   type PropsWithChildren,

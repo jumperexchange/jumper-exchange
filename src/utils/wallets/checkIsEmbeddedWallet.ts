@@ -1,4 +1,4 @@
-import { Account } from '@lifi/wallet-management';
+import type { Account } from '@lifi/widget-provider';
 
 const EMBEDDED_WALLETS = [
   'magic',
@@ -16,7 +16,9 @@ const EMBEDDED_WALLETS = [
 ];
 
 export const checkIsEmbeddedWallet = (account: Account) => {
-  if (!account?.connector) return false;
+  if (!account?.connector) {
+    return false;
+  }
 
   const connector = account.connector as any;
 

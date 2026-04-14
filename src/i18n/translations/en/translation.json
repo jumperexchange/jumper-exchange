@@ -7,6 +7,7 @@
     },
     "links": {
       "exchange": "Exchange",
+      "trade": "Trade",
       "portfolio": "Portfolio",
       "missions": "Missions",
       "earn": "Earn",
@@ -104,6 +105,10 @@
     "shareX": "Share article on X",
     "shareLink": "Share the link",
     "updated": "Updated {{date}}",
+    "banner": {
+      "title": "Get the latest Jumper updates",
+      "description": "Subscribe to the <strong>Jumper Newsletter</strong> to get the latest updates from Jumper delivered to your inbox."
+    },
     "tableOfContents": {
       "title": "On this page"
     },
@@ -746,6 +751,12 @@
     },
     "deposit": {
       "title": "Quick deposit"
+    },
+    "exchange": {
+      "title": "Exchange"
+    },
+    "swapBridge": {
+      "title": "Swap & Bridge"
     }
   },
   "links": {

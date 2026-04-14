@@ -1,4 +1,3 @@
-import { PublicKey } from '@solana/web3.js';
 import { isAddress } from 'viem';
 import {
   isValidSolanaAddress,
@@ -42,12 +41,7 @@ export const sanitizeAddress = (address: string): string => {
 
   // Check if it's a valid Solana address - case sensitive!
   if (isValidSolanaAddress(trimmedAddress)) {
-    try {
-      const pubKey = new PublicKey(trimmedAddress);
-      return pubKey.toString();
-    } catch (e) {
-      throw new Error('Invalid Solana address');
-    }
+    return trimmedAddress;
   }
 
   // Generic error for other cases

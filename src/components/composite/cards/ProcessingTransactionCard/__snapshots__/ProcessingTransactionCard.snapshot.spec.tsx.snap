@@ -52,7 +52,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -72,7 +72,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -104,7 +104,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -124,7 +124,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -231,7 +231,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -251,7 +251,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -283,7 +283,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -303,7 +303,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -410,7 +410,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -430,7 +430,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -462,7 +462,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
@@ -482,7 +482,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"

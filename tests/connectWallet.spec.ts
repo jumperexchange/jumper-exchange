@@ -54,7 +54,7 @@ test.describe('Connect/disconnect Metamask with Jumper app and open /profile pag
         'xpath=//p[normalize-space(text())="No recent transactions"]',
       );
       const transactionHistoryButton = page.locator(
-        '//button[@aria-label="Transaction history"]',
+        '//button[@aria-label="Activities"]',
       );
       await clickOnJumperLogo(page);
       await transactionHistoryButton.click();

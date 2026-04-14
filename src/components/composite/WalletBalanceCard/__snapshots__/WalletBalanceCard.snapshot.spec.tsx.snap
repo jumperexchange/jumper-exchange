@@ -465,7 +465,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiStack-root css-54t7xt-MuiStack-root"
                                       >
                                         <div
-                                          class="MuiAvatar-root MuiAvatar-circular css-1xcstal-MuiAvatar-root"
+                                          class="MuiAvatar-root MuiAvatar-circular css-xq7m3c-MuiAvatar-root"
                                         >
                                           <img
                                             alt="USD Coin"
@@ -494,7 +494,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       class="MuiStack-root css-dnapf8-MuiStack-root"
                                     >
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1furbft-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -503,7 +503,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         </p>
                                       </div>
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1furbft-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -575,7 +575,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-54t7xt-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular css-o8tmub-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
                                               >
                                                 <img
                                                   alt="USD Coin"
@@ -597,7 +597,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nj5o1p-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -624,7 +624,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           <p
                                             class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
                                             data-testid="entity-stack-hint"
-                                            style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                                            style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                                           >
                                             Eth
                                           </p>
@@ -665,7 +665,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-54t7xt-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular css-o8tmub-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
                                               >
                                                 <img
                                                   alt="USD Coin"
@@ -687,7 +687,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nj5o1p-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -714,7 +714,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           <p
                                             class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
                                             data-testid="entity-stack-hint"
-                                            style="position: absolute; -webkit-transform: none; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
+                                            style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                                           >
                                             Pol
                                           </p>

@@ -7,6 +7,7 @@ import { urbanist } from 'src/fonts/fonts';
 import { IconButtonPrimary } from '../IconButton';
 import type { TableCellProps } from '@mui/material/TableCell';
 import TableCell from '@mui/material/TableCell';
+import { HeaderHeight } from '@/const/headerHeight';
 
 // Heading styles
 
@@ -18,6 +19,13 @@ export const Heading = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'level',
 })<HeadingProps>(({ theme }) => ({
   display: 'inline-block',
+  scrollMarginTop: HeaderHeight.MD,
+  [theme.breakpoints.down('md')]: {
+    scrollMarginTop: HeaderHeight.SM,
+  },
+  [theme.breakpoints.down('sm')]: {
+    scrollMarginTop: HeaderHeight.XS,
+  },
   color: (theme.vars || theme).palette.alpha800.main,
   a: {
     fontWeight: 600,

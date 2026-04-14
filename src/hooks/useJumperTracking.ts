@@ -31,8 +31,14 @@ interface JumperDataTrackEventProps {
 }
 
 const track = async (data: object, path: string) => {
+  const backendUrl = config.NEXT_PUBLIC_BACKEND_URL;
+  if (!backendUrl) {
+    return;
+  }
+
   try {
-    const response = await fetch(`${config.NEXT_PUBLIC_BACKEND_URL}${path}`, {
+    const url = `${backendUrl}${path}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +46,9 @@ const track = async (data: object, path: string) => {
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error(response.statusText);
+      throw new Error(
+        `Tracking request failed: ${response.status} ${response.statusText || '(no status text)'} - ${url}`,
+      );
     }
   } catch (error) {
     console.error(error);

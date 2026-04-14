@@ -47,9 +47,7 @@ export function useMainWidgetConfig(
           : context.starterVariant === 'buy'
             ? 'default'
             : context.starterVariant,
-      subvariantOptions: {
-        wide: { enableChainSidebar: true },
-      },
+      subvariantOptions: {},
 
       // UI configuration
       hiddenUI: [
