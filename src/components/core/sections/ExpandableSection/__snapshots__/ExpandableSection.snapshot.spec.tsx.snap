@@ -59,13 +59,16 @@ exports[`ExpandableSection snapshot > matches snapshot when detail rows are not 
               class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
             >
               <div
-                class="MuiStack-root css-t7rxh2-MuiStack-root"
+                class="MuiStack-root css-nen11g-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-1uu69q0-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1k1gloc-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -217,13 +220,16 @@ exports[`ExpandableSection snapshot > matches snapshot when initially expanded 1
               class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
             >
               <div
-                class="MuiStack-root css-t7rxh2-MuiStack-root"
+                class="MuiStack-root css-nen11g-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -301,12 +307,15 @@ exports[`ExpandableSection snapshot > matches snapshot with custom sx, detailsLi
             >
               <div
                 class="MuiStack-root css-pezam1-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-1batadp-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-d24zgb-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -428,13 +437,16 @@ exports[`ExpandableSection snapshot > matches snapshot with expanded end divider
               class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
             >
               <div
-                class="MuiStack-root css-t7rxh2-MuiStack-root"
+                class="MuiStack-root css-nen11g-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -514,13 +526,16 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple items 1`] =
               class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
             >
               <div
-                class="MuiStack-root css-t7rxh2-MuiStack-root"
+                class="MuiStack-root css-nen11g-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -529,7 +544,9 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple items 1`] =
                   </p>
                 </div>
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -538,7 +555,9 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple items 1`] =
                   </p>
                 </div>
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -600,13 +619,16 @@ exports[`ExpandableSection snapshot > matches snapshot without expand icon 1`] =
               class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
             >
               <div
-                class="MuiStack-root css-t7rxh2-MuiStack-root"
+                class="MuiStack-root css-nen11g-MuiStack-root"
+                gap="1"
               >
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
                 <div
-                  class="MuiStack-root css-59sucl-MuiStack-root"
+                  alignitems="center"
+                  class="MuiStack-root css-1ob762l-MuiStack-root"
+                  justifycontent="space-between"
                 >
                   <p
                     class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"

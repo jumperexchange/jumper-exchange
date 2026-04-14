@@ -3,7 +3,7 @@
 exports[`ExternalLink snapshot > external link matches snapshot 1`] = `
 <div>
   <a
-    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-a7vmzy-MuiTypography-root-MuiLink-root"
+    class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-vp0d46-MuiTypography-root-MuiLink-root"
     href="https://example.com"
     rel="noopener noreferrer nofollow"
     target="_blank"
