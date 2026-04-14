@@ -1,6 +1,6 @@
 'use client';
 
-import { PortfolioFilterBarTab } from '../../../app/ui/portfolio/PortfolioContentSection';
+import { PortfolioViewBarTab } from '../../../app/ui/portfolio/PortfolioContentSection';
 import type { HorizontalTabItem } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.style';
@@ -16,20 +16,26 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
   const { t } = useTranslation();
   const tabOptions: HorizontalTabItem[] = [
     {
-      value: PortfolioFilterBarTab.TOKENS,
-      label: t('portfolio.views.tokens'),
+      value: PortfolioViewBarTab.HOLDINGS,
+      label: t('portfolio.views.holdings'),
       disabled: isDisabled,
-      'data-testid': 'portfolio-filter-tab-tokens',
+      'data-testid': 'portfolio-filter-tab-holdings',
     },
     {
-      value: PortfolioFilterBarTab.DEFI_PROTOCOLS,
-      label: t('portfolio.views.defiProtocols'),
-      disabled: isDisabled,
-      'data-testid': 'portfolio-filter-tab-defi-protocols',
+      value: PortfolioViewBarTab.PERFORMANCE,
+      label: t('portfolio.views.performance'),
+      disabled: true,
+      'data-testid': 'portfolio-filter-tab-performance',
+    },
+    {
+      value: PortfolioViewBarTab.TRANSACTIONS,
+      label: t('portfolio.views.transactions'),
+      disabled: true,
+      'data-testid': 'portfolio-filter-tab-transactions',
     },
   ];
   const handleChange = (_: React.SyntheticEvent, value: string) => {
-    const _value = value as PortfolioFilterBarTab;
+    const _value = value as PortfolioViewBarTab;
     onChange(_value);
   };
   return (

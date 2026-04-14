@@ -8,15 +8,13 @@ import {
 } from 'nuqs';
 import { sortBy, orderBy, groupBy, sumBy, minBy } from 'lodash';
 import type {
-  BalancesFilteringParams,
-  BalancesFilter,
-  PositionsFilteringParams,
-  PositionsFilter,
+  HoldingsFilteringParams,
+  HoldingsFilter,
   SortByEnum,
   OrderEnum,
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
-import { DEFAULT_POSITIONS_MIN_VALUE } from './constants';
+import { DEFAULT_MIN_VALUE } from './constants';
 import type { PortfolioPosition } from '../types';
 import { balanceAccessors, positionAccessors } from '../utils';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
@@ -88,18 +86,18 @@ export const isWithinValueRange = (
   return meetsMin && meetsMax;
 };
 
-export const balancesSearchParamsParsers = {
-  balancesSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
+export const holdingsSearchParamsParsers = {
+  holdingsSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
   ),
-  balancesOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+  holdingsOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,
   ),
-  balancesWallets: parseAsArrayOf(parseAsString),
-  balancesChains: parseAsArrayOf(parseAsInteger),
-  balancesAssets: parseAsArrayOf(parseAsString),
-  balancesMinValue: parseAsFloat,
-  balancesMaxValue: parseAsFloat,
+  holdingsWallets: parseAsArrayOf(parseAsString),
+  holdingsChains: parseAsArrayOf(parseAsInteger),
+  holdingsAssets: parseAsArrayOf(parseAsString),
+  holdingsMinValue: parseAsFloat,
+  holdingsMaxValue: parseAsFloat,
 };
 
 export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
@@ -108,16 +106,12 @@ export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
   ) as T;
 };
 
-export const sanitizeBalancesFilter = (
-  filter: BalancesFilter,
-  stats: BalancesFilteringParams,
+export const sanitizeHoldingsFilter = (
+  filter: HoldingsFilter,
+  stats: HoldingsFilteringParams,
   shouldClampRangeFilter?: boolean,
-): Nullable<BalancesFilter> => {
-  if (
-    !stats.allWallets.length ||
-    !stats.allChains.length ||
-    !stats.allAssets.length
-  ) {
+): Nullable<HoldingsFilter> => {
+  if (!stats.allChains.length && !stats.allAssets.length) {
     return filter;
   }
 
@@ -151,7 +145,7 @@ export const filterSortBalancesData = (
     string,
     Record<string, PortfolioBalance<WalletToken>[]>
   >,
-  filter: BalancesFilter,
+  filter: HoldingsFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
 ): Record<string, PortfolioBalance<WalletToken>[]> => {
@@ -209,76 +203,9 @@ export const filterSortBalancesData = (
   return Object.fromEntries(sortedGroups);
 };
 
-export const positionsSearchParamsParsers = {
-  positionsSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
-    SortByOptions.VALUE,
-  ),
-  positionsOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
-    OrderOptions.DESC,
-  ),
-  positionsChains: parseAsArrayOf(parseAsInteger),
-  positionsProtocols: parseAsArrayOf(parseAsString),
-  positionsTypes: parseAsArrayOf(parseAsString),
-  positionsAssets: parseAsArrayOf(parseAsString),
-  positionsMinValue: parseAsFloat,
-  positionsMaxValue: parseAsFloat,
-};
-
-export const sanitizePositionsFilter = (
-  filter: PositionsFilter,
-  stats: PositionsFilteringParams,
-): Nullable<PositionsFilter> => {
-  if (
-    !stats.allChains.length ||
-    !stats.allProtocols.length ||
-    !stats.allTypes.length ||
-    !stats.allAssets.length
-  ) {
-    return filter;
-  }
-
-  const validChainIds = new Set(stats.allChains);
-  const validProtocols = new Set(
-    stats.allProtocols.map((protocol) => protocol.name),
-  );
-  const validTypes = new Set(stats.allTypes);
-  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
-  const { min: valueMin, max: valueMax } = stats.allValueRange;
-
-  return {
-    ...filter,
-    chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
-    protocols: filter.protocols?.filter((p) => validProtocols.has(p)) ?? null,
-    types: filter.types?.filter((t) => validTypes.has(t)) ?? null,
-    assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
-    minValue:
-      filter.minValue !== undefined
-        ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
-        : null,
-    maxValue:
-      filter.maxValue !== undefined
-        ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
-        : null,
-  };
-};
-
-export const getEffectiveValueRange = (
-  allValueRange: { min: number; max: number },
-  defaultMinValue: number = DEFAULT_POSITIONS_MIN_VALUE,
-) => {
-  if (allValueRange.max < defaultMinValue) {
-    return allValueRange;
-  }
-
-  return {
-    min: Math.max(defaultMinValue, allValueRange.min),
-    max: Math.max(defaultMinValue, allValueRange.max),
-  };
-};
-
 export const filterSortPositionsData = (
   positions: PortfolioPosition[],
-  filter: PositionsFilter,
+  filter: HoldingsFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
 ): Record<string, PortfolioPosition[]> => {
@@ -286,9 +213,8 @@ export const filterSortPositionsData = (
 
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     result = result.filter((position) => {
-      const value = position.netUsd;
       return isWithinValueRange(
-        sanitizeValue(value),
+        sanitizeValue(position.netUsd),
         filter.minValue,
         filter.maxValue,
       );
@@ -312,4 +238,18 @@ export const filterSortPositionsData = (
   );
 
   return Object.fromEntries(sortedGroups);
+};
+
+export const getEffectiveValueRange = (
+  allValueRange: { min: number; max: number },
+  defaultMinValue: number = DEFAULT_MIN_VALUE,
+) => {
+  if (allValueRange.max < defaultMinValue) {
+    return allValueRange;
+  }
+
+  return {
+    min: Math.max(defaultMinValue, allValueRange.min),
+    max: Math.max(defaultMinValue, allValueRange.max),
+  };
 };

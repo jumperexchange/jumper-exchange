@@ -1,7 +1,7 @@
 'use client';
 
 import { PortfolioAnimatedLayoutContainer } from '../components/PortfolioAnimatedLayoutContainer';
-import { usePositionsFilterCategories } from '../hooks';
+import { useHoldingsFilterCategories } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import { PortfolioFilterOptionsSkeleton } from './PortfolioFilterOptionsSkeleton';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -19,7 +19,7 @@ const FilterSortModal = dynamic(() =>
   ),
 );
 
-export const PortfolioFilterBarPositions = () => {
+export const PortfolioFilterBarHoldings = () => {
   const {
     isLoading,
     categories,
@@ -28,12 +28,12 @@ export const PortfolioFilterBarPositions = () => {
     clearAll,
     resetPending,
     hasPendingFiltersApplied,
-  } = usePositionsFilterCategories();
+  } = useHoldingsFilterCategories();
   const { t } = useTranslation();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   return (
-    <PortfolioAnimatedLayoutContainer useStackWrapper={false}>
+    <PortfolioAnimatedLayoutContainer>
       {isLoading ? (
         <PortfolioFilterOptionsSkeleton />
       ) : isTablet ? (

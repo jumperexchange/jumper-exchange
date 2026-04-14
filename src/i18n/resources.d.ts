@@ -965,8 +965,9 @@ export default interface Resources {
         totalValue: 'Total Value';
       };
       views: {
-        defiProtocols: 'DeFi Protocols';
-        tokens: 'Tokens';
+        holdings: 'Holdings';
+        performance: 'Performance';
+        transactions: 'Transactions';
         viewBy: 'View by';
       };
       welcome: {

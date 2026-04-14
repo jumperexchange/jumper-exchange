@@ -1,4 +1,4 @@
-import { useBalancesFiltering } from '@/providers/PortfolioProvider/filtering/BalancesFilteringContext';
+import { useHoldingsFiltering } from '@/providers/PortfolioProvider/filtering/HoldingsFilteringContext';
 import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
 import { TokenSummaryRow } from '@/components/composite/BalanceCard/components/TokenSummaryRow';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
@@ -17,7 +17,11 @@ interface PortfolioTokenHoldingsProps {
 export const PortfolioTokenHoldings: FC<PortfolioTokenHoldingsProps> = ({
   title,
 }) => {
-  const { data, isLoading, isEmpty } = useBalancesFiltering();
+  const {
+    balancesData: data,
+    balancesIsLoading: isLoading,
+    balancesIsEmpty: isEmpty,
+  } = useHoldingsFiltering();
   const { totalPortfolioUsd } = usePortfolioSummary();
 
   const balanceGroups = Object.entries(data);

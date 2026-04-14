@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { mapValues, pickBy } from 'lodash';
-import { usePositionsFiltering } from '@/providers/PortfolioProvider/filtering/PositionsFilteringContext';
+import { useHoldingsFiltering } from '@/providers/PortfolioProvider/filtering/HoldingsFilteringContext';
 import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
 import { hasPositionDataToDisplay } from '@/components/composite/PositionCard/utils';
 import { PositionSummaryRow } from '@/components/composite/PositionCard/components/PositionSummaryRow';
@@ -22,7 +22,11 @@ export const PortfolioPositionHoldings: FC<PortfolioPositionHoldingsProps> = ({
   title,
   filter,
 }) => {
-  const { data, isLoading, isEmpty } = usePositionsFiltering();
+  const {
+    positionsData: data,
+    positionsIsLoading: isLoading,
+    positionsIsEmpty: isEmpty,
+  } = useHoldingsFiltering();
   const { totalPortfolioUsd } = usePortfolioSummary();
 
   const positionGroups: PositionGroup[] = useMemo(() => {

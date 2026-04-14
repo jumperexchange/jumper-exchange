@@ -712,8 +712,9 @@
     },
     "views": {
       "viewBy": "View by",
-      "tokens": "Tokens",
-      "defiProtocols": "DeFi Protocols"
+      "holdings": "Holdings",
+      "performance": "Performance",
+      "transactions": "Transactions"
     },
     "dustConversion": {
       "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",
