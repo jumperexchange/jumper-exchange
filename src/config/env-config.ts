@@ -66,6 +66,8 @@ const clientBuildTimeEnv: RuntimeConfig = {
     process.env.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN ?? '',
   NEXT_PUBLIC_VERCEL_BRANCH_URL:
     process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ?? '',
+  NEXT_PUBLIC_NOTIFICATIONS_URL:
+    process.env.NEXT_PUBLIC_NOTIFICATIONS_URL ?? '',
 };
 
 // Initialize config based on environment

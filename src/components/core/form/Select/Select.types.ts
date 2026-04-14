@@ -35,6 +35,7 @@ export interface SelectBaseProps<T extends TData> {
   required?: boolean;
   debounceMs?: number;
   menuPlacementX?: 'left' | 'right';
+  menuSx?: SxProps<Theme>;
   'data-testid'?: string;
   disabled?: boolean;
 }
