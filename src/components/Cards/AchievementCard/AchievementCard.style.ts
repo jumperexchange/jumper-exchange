@@ -66,6 +66,13 @@ export const AchievementCardActionArea = styled(CardActionArea)(() => ({
   },
 }));
 
+export const AchievementCardHeaderBadgeWrapper = styled(Box)(({ theme }) => ({
+  pointerEvents: 'auto',
+  position: 'absolute',
+  right: theme.spacing(2),
+  top: theme.spacing(2),
+}));
+
 // Image
 
 export const StyledAchievementCardImage = styled(Image)(({ theme }) => ({

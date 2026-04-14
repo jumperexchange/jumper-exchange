@@ -798,6 +798,7 @@ interface Resources {
         cta: 'Start swapping';
         description: "No {{entity}} yet? Let's change that!";
       };
+      ongoing: 'Ongoing';
       open: 'Open {{tool}}';
       perks: 'Perks';
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
@@ -814,6 +815,7 @@ interface Resources {
       };
       shareProfile: 'Share profile';
       tooltips: {
+        ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
         unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
