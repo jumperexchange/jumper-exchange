@@ -10,12 +10,10 @@ import {
 } from '@lifi/widget';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
-
 import envConfig from '@/config/env-config';
 import { useMenuStore } from '@/stores/menu';
 import { TaskType } from '@/types/strapi';
 import type { ZapDataResponse } from '@/types/zaps';
-
 import type { ZapWidgetContext } from '../../widgetConfig/types';
 import { useWidgetConfig } from '../../widgetConfig/useWidgetConfig';
 import type { WidgetProps } from '../Widget.types';
@@ -116,6 +114,7 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
+  console.log('jumper w3');
   const { config: widgetConfig, isReady } = useWidgetConfig('zap', enhancedCtx);
 
   return fromChain && fromToken && isReady ? (

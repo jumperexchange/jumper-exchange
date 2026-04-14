@@ -25,6 +25,8 @@ async function jumperGetBalance(
       tokens: tokens.map((t) => t.address),
     });
 
+    console.log('jumper GetBalance responseTokens', responseTokens);
+
     return responseTokens.map(
       ({ amount, ...token }): TokenAmount => ({
         ...token,

@@ -152,6 +152,7 @@ export const ZapDepositBackendWidget: FC<ZapDepositBackendWidgetProps> = ({
     };
   }, [widgetEvents, refetchDepositToken, setSupportModalState]);
 
+  console.log('jumper w2');
   const { config: widgetConfig, isReady } = useWidgetConfig('zap', enhancedCtx);
 
   return isZapDataSuccess && toChainId && toTokenAddress && isReady ? (
