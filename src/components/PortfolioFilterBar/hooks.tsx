@@ -174,21 +174,6 @@ export const useHoldingsFilterCategories = () => {
   const usedMax = pendingValues.value[1] ?? valueMax;
 
   const categories = [
-    walletOptions.length > 1
-      ? createMultiSelectCategory({
-          id: 'wallet',
-          label: t('portfolio.filter.wallet'),
-          badgeLabel: countBadge(pendingValues.wallets.length),
-          value: pendingValues.wallets,
-          onChange: (v) => setPendingValue('wallets', v),
-          options: walletOptions,
-          searchable: true,
-          searchPlaceholder: t('portfolio.filter.search', {
-            filterBy: t('portfolio.filter.wallet').toLowerCase(),
-          }),
-          testId: 'portfolio-filter-wallet-select',
-        })
-      : null,
     chainOptions.length > 1
       ? createMultiSelectCategory({
           id: 'chain',
@@ -237,6 +222,21 @@ export const useHoldingsFilterCategories = () => {
           min: allValueRange.min,
           max: allValueRange.max,
           testId: 'portfolio-filter-value-select',
+        })
+      : null,
+    walletOptions.length > 1
+      ? createMultiSelectCategory({
+          id: 'wallet',
+          label: t('portfolio.filter.wallet'),
+          badgeLabel: countBadge(pendingValues.wallets.length),
+          value: pendingValues.wallets,
+          onChange: (v) => setPendingValue('wallets', v),
+          options: walletOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.wallet').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-wallet-select',
         })
       : null,
     sortByOptions.length > 1
