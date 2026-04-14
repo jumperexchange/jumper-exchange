@@ -1,9 +1,10 @@
-import { useAccount } from '@lifi/wallet-management';
-import { ChainType, HiddenUI, type WidgetConfig } from '@lifi/widget';
-import merge from 'lodash/merge';
-import { useMemo } from 'react';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
+import { makeProviders } from '@/utils/instrumentation/lifiSdkConfig';
+import { useAccount } from '@lifi/wallet-management';
+import { HiddenUI, type WidgetConfig } from '@lifi/widget';
+import merge from 'lodash/merge';
+import { useMemo } from 'react';
 import type {
   MainWidgetContext,
   MissionWidgetContext,
@@ -142,6 +143,13 @@ export function useWidgetConfig<T extends WidgetType>(
         ),
       };
     }
+
+    baseConfig.sdkConfig = {
+      ...(baseConfig.sdkConfig ?? {}),
+      providers: makeProviders(),
+    };
+
+    console.error('jumper init baseConfig', baseConfig);
 
     return baseConfig;
   }, [

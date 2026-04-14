@@ -18,18 +18,27 @@ export const GLOBAL_HEADERS = {
 // (injected by the layout <script> tag) is available when getApiUrl() runs.
 let _client: ReturnType<typeof createClient>;
 
+/**
+ * Define our custom providers in a function
+ * used by the widget and our jumper sdk client.
+ * This ensures the configuration is consistent accross the UI.
+ */
+export const makeProviders = () => {
+  return [
+    EthereumProvider(),
+    JumperSolanaProvider(),
+    BitcoinProvider(),
+    SuiProvider(),
+    TronProvider(),
+  ];
+};
+
 function initClient() {
   if (!_client) {
     _client = createClient({
       apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
       apiUrl: getApiUrl(),
-      providers: [
-        EthereumProvider(),
-        JumperSolanaProvider(),
-        BitcoinProvider(),
-        SuiProvider(),
-        TronProvider(),
-      ],
+      providers: makeProviders(),
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR || 'jumper.exchange',
       rpcUrls: {
         ...getCustomRPCs(),
