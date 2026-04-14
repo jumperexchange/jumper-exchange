@@ -23,10 +23,13 @@ export const BlogArticleSection = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6, 2, 0.25),
   position: 'relative',
   [theme.breakpoints.up('sm' as Breakpoint)]: {
-    padding: theme.spacing(6, 2, 0.25),
     paddingTop: theme.spacing(12),
   },
   [theme.breakpoints.up('md' as Breakpoint)]: {
+    padding: theme.spacing(8, 3, 0.25),
+    paddingTop: theme.spacing(12),
+  },
+  [theme.breakpoints.up('xl' as Breakpoint)]: {
     padding: theme.spacing(8, 0, 0.25),
     paddingTop: theme.spacing(12),
   },
