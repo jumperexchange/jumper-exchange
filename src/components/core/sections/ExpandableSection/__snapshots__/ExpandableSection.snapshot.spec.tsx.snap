@@ -1,22 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ExpandableSection snapshot > matches snapshot when expansion is disabled 1`] = `
+exports[`ExpandableSection snapshot > matches snapshot when detail rows are not clickable 1`] = `
 <div>
   <div
-    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded css-17b01ac-MuiPaper-root-MuiAccordion-root"
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded css-17b01ac-MuiPaper-root-MuiAccordion-root"
     style="--Paper-shadow: var(--jumper-shadows-1); --Paper-overlay: var(--jumper-overlays-1);"
   >
     <div
       class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
     >
       <button
-        aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        aria-expanded="true"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
         <span
-          class="MuiAccordionSummary-content css-18x5eyn-MuiAccordionSummary-content"
+          class="MuiAccordionSummary-content Mui-expanded css-18x5eyn-MuiAccordionSummary-content"
         >
           <p
             class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
@@ -25,7 +25,7 @@ exports[`ExpandableSection snapshot > matches snapshot when expansion is disable
           </p>
         </span>
         <span
-          class="MuiAccordionSummary-expandIconWrapper css-c8su3g-MuiAccordionSummary-expandIconWrapper"
+          class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-c8su3g-MuiAccordionSummary-expandIconWrapper"
         >
           <svg
             aria-hidden="true"
@@ -38,6 +38,74 @@ exports[`ExpandableSection snapshot > matches snapshot when expansion is disable
               d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
             />
           </svg>
+        </span>
+      </button>
+    </div>
+    <div
+      class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
+      style="min-height: 0px;"
+    >
+      <div
+        class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
+      >
+        <div
+          class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
+        >
+          <div
+            class="MuiAccordion-region css-at4ued-MuiAccordion-region"
+            role="region"
+          >
+            <div
+              class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
+            >
+              <div
+                class="MuiStack-root css-t7rxh2-MuiStack-root"
+              >
+                <hr
+                  class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
+                />
+                <div
+                  class="MuiStack-root css-1uu69q0-MuiStack-root"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Section Content
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ExpandableSection snapshot > matches snapshot when expansion is disabled 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded css-17b01ac-MuiPaper-root-MuiAccordion-root"
+    style="--Paper-shadow: var(--jumper-shadows-1); --Paper-overlay: var(--jumper-overlays-1);"
+  >
+    <div
+      class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
+    >
+      <button
+        aria-expanded="false"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-1ijiavb-MuiButtonBase-root-MuiAccordionSummary-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiAccordionSummary-content css-18x5eyn-MuiAccordionSummary-content"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+          >
+            Section Title
+          </p>
         </span>
       </button>
     </div>
@@ -56,7 +124,7 @@ exports[`ExpandableSection snapshot > matches snapshot when initially collapsed 
     >
       <button
         aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -101,7 +169,7 @@ exports[`ExpandableSection snapshot > matches snapshot when initially expanded 1
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -154,11 +222,98 @@ exports[`ExpandableSection snapshot > matches snapshot when initially expanded 1
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Section Content
-                </p>
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Section Content
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ExpandableSection snapshot > matches snapshot with custom sx, detailsListSx, and detailsItemSx 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded css-q7d0f-MuiPaper-root-MuiAccordion-root"
+    style="--Paper-shadow: var(--jumper-shadows-1); --Paper-overlay: var(--jumper-overlays-1);"
+  >
+    <div
+      class="MuiAccordion-heading css-cy7rkm-MuiAccordion-heading"
+    >
+      <button
+        aria-expanded="true"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiAccordionSummary-content Mui-expanded css-18x5eyn-MuiAccordionSummary-content"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+          >
+            Section Title
+          </p>
+        </span>
+        <span
+          class="MuiAccordionSummary-expandIconWrapper Mui-expanded css-c8su3g-MuiAccordionSummary-expandIconWrapper"
+        >
+          <svg
+            aria-hidden="true"
+            class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-4uxqju-MuiSvgIcon-root"
+            data-testid="ExpandMoreIcon"
+            focusable="false"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            />
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div
+      class="MuiCollapse-root MuiCollapse-vertical MuiCollapse-entered css-qr6njo-MuiCollapse-root"
+      style="min-height: 0px;"
+    >
+      <div
+        class="MuiCollapse-wrapper MuiCollapse-vertical css-1x6hinx-MuiCollapse-wrapper"
+      >
+        <div
+          class="MuiCollapse-wrapperInner MuiCollapse-vertical css-1i4ywhz-MuiCollapse-wrapperInner"
+        >
+          <div
+            class="MuiAccordion-region css-at4ued-MuiAccordion-region"
+            role="region"
+          >
+            <div
+              class="MuiAccordionDetails-root css-1dwkzq1-MuiAccordionDetails-root"
+            >
+              <div
+                class="MuiStack-root css-pezam1-MuiStack-root"
+              >
+                <hr
+                  class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
+                />
+                <div
+                  class="MuiStack-root css-1batadp-MuiStack-root"
+                >
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Section Content
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -180,7 +335,7 @@ exports[`ExpandableSection snapshot > matches snapshot with default props 1`] = 
     >
       <button
         aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -225,7 +380,7 @@ exports[`ExpandableSection snapshot > matches snapshot with expanded end divider
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -278,11 +433,15 @@ exports[`ExpandableSection snapshot > matches snapshot with expanded end divider
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Section Content
-                </p>
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Section Content
+                  </p>
+                </div>
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
@@ -296,7 +455,7 @@ exports[`ExpandableSection snapshot > matches snapshot with expanded end divider
 </div>
 `;
 
-exports[`ExpandableSection snapshot > matches snapshot with multiple children 1`] = `
+exports[`ExpandableSection snapshot > matches snapshot with multiple items 1`] = `
 <div>
   <div
     class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiAccordion-root MuiAccordion-rounded Mui-expanded css-17b01ac-MuiPaper-root-MuiAccordion-root"
@@ -307,7 +466,7 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple children 1`
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -360,21 +519,33 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple children 1`
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Child One
-                </p>
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Child One
+                  </p>
+                </div>
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Child Two
-                </p>
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Child Two
+                  </p>
+                </div>
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Child Three
-                </p>
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Child Three
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -396,7 +567,7 @@ exports[`ExpandableSection snapshot > matches snapshot without expand icon 1`] =
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-cridkk-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -434,11 +605,15 @@ exports[`ExpandableSection snapshot > matches snapshot without expand icon 1`] =
                 <hr
                   class="MuiDivider-root MuiDivider-fullWidth css-hmhetd-MuiDivider-root"
                 />
-                <p
-                  class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                <div
+                  class="MuiStack-root css-59sucl-MuiStack-root"
                 >
-                  Section Content
-                </p>
+                  <p
+                    class="MuiTypography-root MuiTypography-body1 css-8wbrmh-MuiTypography-root"
+                  >
+                    Section Content
+                  </p>
+                </div>
               </div>
             </div>
           </div>

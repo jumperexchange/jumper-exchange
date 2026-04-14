@@ -1,9 +1,14 @@
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import type { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import type { StackProps } from '@mui/material/Stack';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
+
+interface UseDefaultCursor {
+  useDefaultCursor: boolean;
+}
 
 export const StyledAccordion = styled(Accordion)(({}) => ({
   background: 'transparent',
@@ -16,7 +21,21 @@ export const StyledAccordion = styled(Accordion)(({}) => ({
   },
 }));
 
-export const StyledAccordionSummary = styled(AccordionSummary)(({ theme }) => ({
+type StyledAccordionSummaryProps = AccordionSummaryProps & UseDefaultCursor;
+
+export const StyledAccordionSummary = styled(AccordionSummary, {
+  shouldForwardProp: (prop) => prop !== 'useDefaultCursor',
+})<StyledAccordionSummaryProps>(({ theme, useDefaultCursor }) => ({
+  ...(useDefaultCursor
+    ? {
+        cursor: 'default',
+        '&:hover:not(.Mui-disabled)': {
+          cursor: 'default',
+        },
+      }
+    : {
+        cursor: 'pointer',
+      }),
   padding: theme.spacing(2, 1.5),
   '& .MuiAccordionSummary-content': {
     width: '100%',
@@ -44,17 +63,15 @@ export const StyledAccordionDetails = styled(AccordionDetails)({
   margin: 0,
 });
 
-interface StyledContentProps extends StackProps {
-  hideCursor: boolean;
-}
+type StyledContentProps = StackProps & UseDefaultCursor;
 
 export const StyledContent = styled(Stack, {
-  shouldForwardProp: (prop) => prop !== 'hideCursor',
-})<StyledContentProps>(({ theme, hideCursor }) => ({
+  shouldForwardProp: (prop) => prop !== 'useDefaultCursor',
+})<StyledContentProps>(({ theme, useDefaultCursor }) => ({
   padding: theme.spacing(1.5),
   width: '100%',
   overflow: 'hidden',
-  cursor: hideCursor ? 'default' : 'pointer',
+  cursor: useDefaultCursor ? 'default' : 'pointer',
   borderRadius: theme.shape.borderRadius,
   transition: 'background-color 300ms ease-in-out',
   '&:not(:has([data-hint-hover-active]))': {

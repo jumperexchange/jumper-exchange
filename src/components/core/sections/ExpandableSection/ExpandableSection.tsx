@@ -1,33 +1,46 @@
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 import {
   StyledAccordion,
   StyledAccordionDetails,
   StyledAccordionSummary,
+  StyledContent,
 } from './ExpandableSection.style';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { SxProps, Theme } from '@mui/material/styles';
 
-interface ExpandableSectionProps {
-  children: React.ReactNode;
-  renderHeader: () => React.ReactNode;
+interface ExpandableSectionProps<T> {
+  header: React.ReactNode;
+  items: T[];
+  renderItem: (item: T) => React.ReactNode;
+  onItemClick?: (item: T) => void;
   isExpanded?: boolean;
   showExpandedEndDivider?: boolean;
   showExpandIcon?: boolean;
   shouldExpand?: boolean;
+  isDetailsItemClickable?: boolean;
   sx?: SxProps<Theme>;
+  detailsListSx?: SxProps<Theme>;
+  detailsItemSx?: SxProps<Theme>;
+  dataTestId?: string;
 }
 
-export const ExpandableSection: FC<ExpandableSectionProps> = ({
-  children,
-  renderHeader,
+export const ExpandableSection = <T,>({
+  items,
+  renderItem,
+  onItemClick,
+  header,
   isExpanded: initialIsExpanded = false,
   showExpandedEndDivider,
   shouldExpand = true,
   showExpandIcon = true,
+  isDetailsItemClickable = true,
   sx,
-}) => {
+  detailsListSx,
+  detailsItemSx,
+  dataTestId,
+}: ExpandableSectionProps<T>) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(initialIsExpanded);
 
   const handleHeaderClick = () => {
@@ -46,21 +59,39 @@ export const ExpandableSection: FC<ExpandableSectionProps> = ({
         heading: { component: 'div' },
         transition: { unmountOnExit: true },
       }}
+      data-testid={dataTestId}
     >
       <StyledAccordionSummary
-        expandIcon={showExpandIcon ? <ExpandMoreIcon /> : undefined}
+        useDefaultCursor={!shouldExpand}
+        expandIcon={
+          showExpandIcon && shouldExpand ? <ExpandMoreIcon /> : undefined
+        }
         onClick={handleHeaderClick}
       >
-        {renderHeader()}
+        {header}
       </StyledAccordionSummary>
       <StyledAccordionDetails>
-        <Stack direction="column" useFlexGap gap={1}>
+        <Stack direction="column" useFlexGap gap={1} sx={detailsListSx}>
           <Divider
             sx={(theme) => ({
               borderColor: (theme.vars || theme).palette.alpha100.main,
             })}
           />
-          {children}
+          {items.map((item, index) => (
+            <StyledContent
+              useDefaultCursor={!isDetailsItemClickable}
+              direction="row"
+              spacing={2}
+              useFlexGap
+              justifyContent="space-between"
+              alignItems="center"
+              key={`ExpandableSectionItem-${index}`}
+              sx={detailsItemSx}
+              onClick={onItemClick ? () => onItemClick(item) : undefined}
+            >
+              {renderItem(item)}
+            </StyledContent>
+          ))}
           {isExpanded && showExpandedEndDivider && (
             <Divider
               sx={(theme) => ({
