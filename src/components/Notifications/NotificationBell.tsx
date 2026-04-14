@@ -60,7 +60,11 @@ export const NotificationBell = () => {
                 'aria-expanded': open,
                 'aria-haspopup': 'true' as const,
               }
-            : { 'aria-haspopup': 'dialog' as const })}
+            : {
+                'aria-controls': 'notifications-drawer',
+                'aria-expanded': open,
+                'aria-haspopup': 'dialog' as const,
+              })}
           onClick={handleToggle}
         >
           <BellIcon />

@@ -12,6 +12,7 @@ import {
 } from './FullScreenDrawer.styles';
 
 interface FullScreenDrawerProps extends PropsWithChildren {
+  id?: string;
   isOpen: boolean;
   externalOpen?: boolean;
   onOpen?: () => void;
@@ -24,6 +25,7 @@ interface FullScreenDrawerProps extends PropsWithChildren {
 }
 
 export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
+  id,
   isOpen,
   children,
   onClose,
@@ -35,6 +37,7 @@ export const FullScreenDrawer: FC<FullScreenDrawerProps> = ({
 }) => {
   return (
     <Drawer
+      id={id}
       anchor={showBackButton ? 'right' : 'bottom'}
       open={isOpen}
       onClose={onClose}

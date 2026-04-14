@@ -31,6 +31,7 @@ export const NotificationDrawer: FC<NotificationDrawerProps> = ({
 
   return (
     <FullScreenDrawer
+      id="notifications-drawer"
       isOpen={open}
       onClose={handleClose}
       title={t('notifications.title')}
