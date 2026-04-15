@@ -14,7 +14,6 @@ import {
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { AB_TEST_NAME, AbTests } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
-import { account } from 'node_modules/@base-org/account/dist/store/store';
 import { useAccount } from '@lifi/wallet-management';
 
 interface WidgetsProps {
