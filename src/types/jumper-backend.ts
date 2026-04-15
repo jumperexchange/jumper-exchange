@@ -654,6 +654,7 @@ export interface APYItem {
   base: number;
   reward: number;
   intrinsic: number;
+  jumperReward?: number;
   total: number;
 }
 
@@ -682,6 +683,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
@@ -946,6 +948,7 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
