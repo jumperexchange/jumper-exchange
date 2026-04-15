@@ -1,6 +1,6 @@
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { FC } from 'react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
 import { widgetStyle } from './constants';
 import { useDustBalances } from './hooks/useDustBalances';
@@ -24,6 +24,7 @@ import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButto
 import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
 import type { NavigationContextValue } from '../JumperWidget/context';
 import { buildApprovalCallsForQuote } from './utils';
+import { makeLifiComposerClient } from '@/app/lib/lifi-composer-client';
 
 interface DustModalProps {
   isOpen: boolean;
@@ -49,6 +50,15 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const { quotes, fetchQuotesAsync } = useDustQuotes();
 
   const isDustSelection = widgetNav?.currentViewId === 'form';
+
+  useEffect(() => {
+    if (
+      widgetNav?.currentViewId === 'summary' &&
+      (!dustSummary || !quotes?.length)
+    ) {
+      widgetNav.goToView('form');
+    }
+  }, [widgetNav, dustSummary, quotes]);
 
   const nativeTokenBalance = useMemo(() => {
     if (!dustSummary?.nativeToken) {
@@ -76,48 +86,76 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
       return undefined;
     }
 
-    if (!quotes) {
-      return { actions: [] };
-    }
+    const client = makeLifiComposerClient();
+    const chainId = dustSummary?.nativeToken.chainId ?? 1;
+    const signer = dustSummary?.address ?? '';
+    const balances = dustSummary?.selectedBalances ?? [];
+    const inputNames = balances.map((b) => b.token.symbol.toLowerCase());
 
-    console.log(
-      'Preparing call data with quotes:',
-      quotes,
-      'and dustSummary:',
-      dustSummary,
-    );
-
-    const calls = quotes
-      .filter(
-        (quote) =>
-          !!quote.transactionRequest?.to &&
-          !!quote.transactionRequest?.data &&
-          !!quote.transactionRequest?.chainId,
-      )
-      .flatMap((quote) => {
-        const approvalCalls = buildApprovalCallsForQuote(quote);
-        const txCall = {
-          chainId: nativeTokenChainId,
-          to: quote.transactionRequest!.to as Address,
-          data: quote.transactionRequest!.data as Hex,
-          value:
-            quote.transactionRequest!.value != null
-              ? quote.transactionRequest!.value
-              : undefined,
-        };
-        return [...approvalCalls, txCall];
-      });
-
-    console.log('Constructed calls for transaction:', calls);
-
-    const actions = calls.map((call) => ({
-      name: 'batch' as const,
-      tx: call,
-    }));
-
-    return { actions };
+    const { data } = await client.compose({
+      flow: {
+        version: 1,
+        id: 'dust-to-eth',
+        chainId,
+        inputs: balances.map((balance, i) => ({
+          name: inputNames[i],
+          resource: {
+            kind: 'erc20' as const,
+            token: balance.token.address,
+            chainId,
+          },
+        })),
+        nodes: balances.map((balance, i) => ({
+          id: `swap_${inputNames[i]}`,
+          op: 'lifi.swap' as const,
+          bind: { amountIn: { $ref: `input.${inputNames[i]}` } },
+          config: {
+            resourceOut: { kind: 'native' as const, chainId },
+            slippage: 0.01,
+          },
+        })),
+      },
+      run: {
+        inputs: Object.fromEntries(
+          balances.map((balance, i) => [
+            inputNames[i],
+            {
+              kind: 'directDeposit' as const,
+              amount: balance.amount.toString(),
+            },
+          ]),
+        ),
+        signer,
+        sweepTo: signer,
+        simulationPolicy: 'allow-revert',
+        checkOnChainAllowances: true,
+        maxPriceImpactBps: 1200,
+      },
+    });
+    console.log('Received response from composer backend:', data);
+    return {
+      actions: [
+        ...(data.approvals ?? []).map((approval) => ({
+          name: 'approve' as const,
+          tx: {
+            to: approval.transactionRequest.to,
+            data: approval.transactionRequest.data,
+            value: approval.transactionRequest.value,
+            chainId: nativeTokenChainId,
+          },
+        })),
+        {
+          name: 'composer' as const,
+          tx: {
+            to: data.transactionRequest.to,
+            data: data.transactionRequest.data,
+            value: data.transactionRequest.value,
+            chainId: nativeTokenChainId,
+          },
+        },
+      ],
+    };
   }, [
-    quotes,
     isDustSelection,
     widgetNav,
     dustSummary,
@@ -128,17 +166,17 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const transactionForm = useTransactionForm({
     chainId: nativeTokenChainId,
     requiresConfirmation: false,
-    executorType: 'batch',
+    executorType: 'single',
     fetchCallData,
     onSuccess: () => {
       refreshPortfolio();
-      setDustSummary(null);
     },
   });
 
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
+    onSuccess: () => setDustSummary(null),
   });
 
   const handleModalClose = () => {

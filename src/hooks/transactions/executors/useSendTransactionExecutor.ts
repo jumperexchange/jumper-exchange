@@ -25,6 +25,7 @@ export const useSendTransactionExecutor = (): TransactionExecutor => {
 
   const execute = useCallback(
     (action: TransactionAction, _allActions?: TransactionAction[]) => {
+      console.log('Executing action:', action);
       sendTransaction({
         to: action.tx.to as Hex,
         data: action.tx.data as Hex,
