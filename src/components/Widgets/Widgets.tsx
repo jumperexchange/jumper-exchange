@@ -12,6 +12,10 @@ import {
   TrackingEventDataAction,
 } from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
+import { AB_TEST_NAME, AbTests } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
+import { account } from 'node_modules/@base-org/account/dist/store/store';
+import { useAccount } from '@lifi/wallet-management';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -20,6 +24,12 @@ interface WidgetsProps {
 export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
+
+  const { account } = useAccount();
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -93,6 +103,20 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           routeExecutionUpdated: TrackingEventDataAction.ExecutionUpdated,
           routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
           routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
+        }}
+        trackingDataProperties={{
+          routeExecutionCompleted: {
+            abTestVariants: {
+              [AbTests[AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY].name]:
+                tradeABTest.value,
+            },
+          },
+          routeExecutionStarted: {
+            abTestVariants: {
+              [AbTests[AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY].name]:
+                tradeABTest.value,
+            },
+          },
         }}
       >
         <WidgetEvents />
