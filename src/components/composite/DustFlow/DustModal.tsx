@@ -32,7 +32,6 @@ interface DustModalProps {
 
 export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const accountAddress = useAccountAddress();
   const { refresh: refreshPortfolio } = usePortfolioState();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
   const fallbackNativeToken = useFallbackNativeToken(nativeExtendedTokens);
@@ -64,15 +63,13 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     [dustSummary?.nativeToken.chainId],
   );
 
-  const { supportsBatchTransactions } =
-    useWalletCapabilities(nativeTokenChainId);
-
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
       if (!dustSummary) {
         throw new Error('Missing fields');
       }
       const _quotes = await fetchQuotesAsync(buildDustQuoteParams(dustSummary));
+      console.log('Fetched quotes:', _quotes);
       if (_quotes.length > 0 && widgetNav) {
         widgetNav.goToView('summary');
       }
@@ -82,6 +79,13 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     if (!quotes) {
       return { actions: [] };
     }
+
+    console.log(
+      'Preparing call data with quotes:',
+      quotes,
+      'and dustSummary:',
+      dustSummary,
+    );
 
     const calls = quotes
       .filter(
@@ -104,6 +108,8 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         return [...approvalCalls, txCall];
       });
 
+    console.log('Constructed calls for transaction:', calls);
+
     const actions = calls.map((call) => ({
       name: 'batch' as const,
       tx: call,
@@ -123,13 +129,10 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     chainId: nativeTokenChainId,
     requiresConfirmation: false,
     executorType: 'batch',
-    validateBeforeExecute: () =>
-      !supportsBatchTransactions
-        ? TransactionErrorType.WalletDoesNotSupportBatchTransactions
-        : null,
     fetchCallData,
     onSuccess: () => {
       refreshPortfolio();
+      setDustSummary(null);
     },
   });
 
@@ -154,6 +157,8 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           const dustSummary = values.dustSummary as
             | DustSummaryValue
             | undefined;
+
+          console.log('Dust Summary on submit:', dustSummary);
 
           if (dustSummary) {
             setDustSummary(values.dustSummary as DustSummaryValue);

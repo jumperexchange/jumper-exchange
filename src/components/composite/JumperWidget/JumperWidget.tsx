@@ -322,9 +322,20 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
     },
   });
 
-  // Sync form state when defaultValues change (e.g. async data like lpTokenAmount loads)
+  // Sync form state when defaultValues change (e.g. async data like lpTokenAmount loads).
+  // Guard with shallow equality: parent re-renders can produce a new defaultValues object
+  // reference even when every key/value is identical, which would reset user input.
+  const prevDefaultValuesRef = useRef<Record<string, unknown> | null>(null);
   useEffect(() => {
-    form.reset(defaultValues);
+    const prev = prevDefaultValuesRef.current;
+    const same =
+      prev !== null &&
+      Object.keys(defaultValues).length === Object.keys(prev).length &&
+      Object.keys(defaultValues).every((k) => defaultValues[k] === prev[k]);
+    if (!same) {
+      prevDefaultValuesRef.current = defaultValues;
+      form.reset(defaultValues);
+    }
   }, [defaultValues, form]);
 
   const isSubmitting = useStore(form.store, (s) => s.isSubmitting) as boolean;

@@ -21,6 +21,8 @@ export const RouteOverview: FC<RouteOverviewProps> = ({ quotes }) => {
     (state) => state.values.dustSummary as DustSummaryValue | undefined,
   );
 
+  console.log('RouteOverview received quotes:', quotes, dustSummary);
+
   if (!dustSummary || !quotes) {
     return null;
   }
