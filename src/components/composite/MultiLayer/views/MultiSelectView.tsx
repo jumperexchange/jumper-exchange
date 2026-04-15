@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react';
 import { useState, useMemo } from 'react';
+import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
@@ -134,10 +135,18 @@ export const MultiSelectView = <TValue extends string | number>({
           />
         </StyledMultiSelectFiltersContainer>
       )}
-      <Stack
-        direction="column"
-        spacing={listSpacing}
-        sx={mergeSx({ flex: 1, overflowY: 'auto' }, slotProps?.listSx)}
+      <MenuList
+        disablePadding
+        sx={mergeSx(
+          {
+            flex: 1,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: listSpacing,
+          },
+          slotProps?.listSx,
+        )}
       >
         {filteredOptions.map((option) => {
           const isSelected = value.includes(option.value);
@@ -169,7 +178,7 @@ export const MultiSelectView = <TValue extends string | number>({
             </StyledMenuItem>
           );
         })}
-      </Stack>
+      </MenuList>
     </Stack>
   );
 };
