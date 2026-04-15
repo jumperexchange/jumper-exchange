@@ -9,7 +9,7 @@ export const connectButton = (page: Page) => {
   return page.locator('#connect-wallet-button').first();
 };
 export const selectWalletDialog = (page: Page) => {
-  return page.getByRole('dialog', { name: 'Select a wallet' });
+  return page.getByRole('dialog').filter({ hasText: 'Select a wallet' });
 };
 
 export const expectSelectWalletOptionToBeVisible = async (page: Page) => {
