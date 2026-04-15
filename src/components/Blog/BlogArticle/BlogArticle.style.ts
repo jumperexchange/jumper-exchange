@@ -83,8 +83,11 @@ export const BlogArticleContainer = styled(Container)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     maxWidth: `${theme.breakpoints.values.sm}px`,
   },
-  [theme.breakpoints.up('xl')]: {
+  [theme.breakpoints.up('lg')]: {
     maxWidth: `${theme.breakpoints.values.md}px`,
+  },
+  [theme.breakpoints.up('xl')]: {
+    maxWidth: `${theme.breakpoints.values.lg}px`,
   },
 }));
 
@@ -97,7 +100,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
   '& > img': {
     width: '100%',
   },
-  '& a': {
+  '& a:not(.MuiIconButton-root)': {
     color: (theme.vars || theme).palette.accent1Alt.main,
     ...theme.applyStyles('light', {
       color: (theme.vars || theme).palette.primary.main,
@@ -117,7 +120,7 @@ export const BlogArticleContentContainer = styled(Box)(({ theme }) => ({
     maxWidth: theme.breakpoints.values.md,
   },
   [theme.breakpoints.up('xl')]: {
-    maxWidth: theme.breakpoints.values.md,
+    maxWidth: theme.breakpoints.values.lg,
   },
 }));
 
@@ -139,11 +142,14 @@ export const BlogArticleImage = styled(Image)(({ theme }) => ({
   width: '100%',
   height: 'auto',
   borderRadius: theme.shape.cardBorderRadiusMedium,
-  maxWidth: theme.breakpoints.values.lg,
+  maxWidth: theme.breakpoints.values.md,
   aspectRatio: '16/12',
   objectFit: 'cover',
   [theme.breakpoints.up('sm')]: {
     aspectRatio: '15/8',
+  },
+  [theme.breakpoints.up('xl')]: {
+    maxWidth: theme.breakpoints.values.lg,
   },
 }));
 
@@ -246,8 +252,7 @@ export const BlogArticleTitleSkeleton = styled(BaseBlogArticleSkeleton)(
 );
 
 export const BlogArticleSubtitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.h3.fontSize,
-  lineHeight: theme.typography.h3.lineHeight,
+  ...theme.typography.h4,
   color: alpha(theme.palette.white.main, 0.88),
   marginTop: theme.spacing(8),
   marginBottom: theme.spacing(6),
