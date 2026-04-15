@@ -118,8 +118,8 @@ export const StackedAreaChart = ({
       data.map((point) => ({
         ...point,
         baseReward:
-          point.base != null && point.reward != null
-            ? point.base + point.reward
+          point.base != null || point.reward != null
+            ? (point.base ?? 0) + (point.reward ?? 0)
             : null,
       })),
     [data],
