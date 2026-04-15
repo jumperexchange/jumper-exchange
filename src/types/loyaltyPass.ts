@@ -22,6 +22,7 @@ export interface PDA {
   subValue: number;
   timestamp: Date;
   reward: Reward;
+  ongoing?: boolean;
 }
 
 export interface Trait {

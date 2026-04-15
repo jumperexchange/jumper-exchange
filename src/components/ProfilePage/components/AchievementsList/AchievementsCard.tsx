@@ -1,5 +1,5 @@
 import { Tooltip } from '@/components/core/Tooltip/Tooltip';
-import { format, isSameMonth, subMonths } from 'date-fns';
+import { format } from 'date-fns';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,18 +16,12 @@ export const AchievementsCard: FC<AchievementsCardProps> = ({ pda }) => {
   const { t } = useTranslation();
   const { title, description, imageUrl, points, showHeaderBadge } =
     useMemo(() => {
-      const now = new Date();
-      const previousMonthName = format(subMonths(now, 1), 'LLLL');
       return {
         title: pda.reward.name,
         description: format(pda.timestamp, `LLLL yyyy`),
         imageUrl: pda.reward.image,
         points: pda.points,
-        showHeaderBadge:
-          isSameMonth(pda.timestamp, now) &&
-          !pda.reward.name
-            .toLowerCase()
-            .includes(previousMonthName.toLowerCase()),
+        showHeaderBadge: !!pda.ongoing,
       };
     }, [pda]);
 
