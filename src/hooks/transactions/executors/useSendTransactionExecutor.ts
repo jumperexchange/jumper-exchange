@@ -29,10 +29,10 @@ export const useSendTransactionExecutor = (): TransactionExecutor => {
         to: action.tx.to as Hex,
         data: action.tx.data as Hex,
         chainId: action.tx.chainId,
-        gasPrice: action.tx.gasPrice,
+        // gasPrice: action.tx.gasPrice,
         maxFeePerGas: action.tx.maxFeePerGas,
         maxPriorityFeePerGas: action.tx.maxPriorityFeePerGas,
-      } as any);
+      });
     },
     [sendTransaction],
   );
