@@ -51,6 +51,7 @@ export const commonArgs = {
       apy: {
         base: 0.0558,
         reward: 0.0157,
+        intrinsic: 0,
         total: 0.07150000000000001,
       },
     },

@@ -72,13 +72,15 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
           amount: selectedClaim.assetAmount ?? '0',
         },
       );
-      return data.data;
+
+      return (data as any).data;
     }
-    const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
+    const { data } = await client.v1.earnControllerGetRequestRedeemCalldataV1(
       earnOpportunity.slug,
       { address: accountAddress as Hex, amount },
     );
-    return data.data;
+
+    return (data as any).data;
   }, [
     isClaimFlow,
     earnOpportunity.slug,
