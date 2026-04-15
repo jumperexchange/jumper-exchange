@@ -11,7 +11,7 @@ import {
   MultiLayerDrawerIconButton,
   MultiLayerDrawerPrimaryButton,
 } from '../MultiLayer/MultiLayer.styles';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { useMultiLayerNavigation } from '../MultiLayer/hooks';
 import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
@@ -89,13 +89,23 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
       {triggerButton ? (
         triggerButton
       ) : (
-        <Stack direction="row" gap={1} sx={defaultTriggerSx}>
+        <Stack
+          direction="row"
+          sx={[
+            {
+              gap: 1,
+            },
+            ...(Array.isArray(defaultTriggerSx)
+              ? defaultTriggerSx
+              : [defaultTriggerSx]),
+          ]}
+        >
           {hasFilterApplied && (
             <MultiLayerDrawerIconButton
               onClick={onClear}
               data-testid={`${testId}-clear-button`}
             >
-              <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+              <DeleteOutlinedIcon sx={{ height: 22, width: 22 }} />
             </MultiLayerDrawerIconButton>
           )}
           <MultiLayerDrawerIconButton
@@ -109,7 +119,6 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
           </MultiLayerDrawerIconButton>
         </Stack>
       )}
-
       <FullScreenDrawer
         isOpen={isOpen}
         onClose={handleClose}
@@ -118,7 +127,14 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
         onBack={goBack}
       >
         {/* Main content area */}
-        <Stack direction="column" width="100%" gap={2} sx={{ flex: 1 }}>
+        <Stack
+          direction="column"
+          sx={{
+            width: '100%',
+            gap: 2,
+            flex: 1,
+          }}
+        >
           {currentLeafCategory ? (
             // Render leaf category content
             <LeafCategoryRenderer category={currentLeafCategory} />
@@ -136,9 +152,19 @@ export const MultiLayerDrawer: React.FC<MultiLayerProps> = ({
 
         {/* Footer buttons - only show at root level */}
         {isRootLevel && showFooter && (
-          <Stack direction="column" gap={2}>
+          <Stack
+            direction="column"
+            sx={{
+              gap: 2,
+            }}
+          >
             <MultiLayerDrawerDivider />
-            <Stack direction="row" gap={1}>
+            <Stack
+              direction="row"
+              sx={{
+                gap: 1,
+              }}
+            >
               <MultiLayerDrawerAlphaButton
                 fullWidth
                 disabled={disableClear}

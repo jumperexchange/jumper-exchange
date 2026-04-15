@@ -10,9 +10,11 @@ export const LearnPageArticlesSectionSkeleton = () => {
     <SectionCard>
       <Stack
         direction="column"
-        gap={{
-          xs: 2,
-          md: 3,
+        sx={{
+          gap: {
+            xs: 2,
+            md: 3,
+          },
         }}
       >
         <LearnPageArticlesFilteringBarSkeleton />

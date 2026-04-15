@@ -72,7 +72,7 @@ exports[`ProtocolCard snapshot > protocol card matches snapshot 1`] = `
 Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
          
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-8ftas7-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -169,7 +169,7 @@ exports[`ProtocolCard snapshot > protocol card with badge matches snapshot 1`] =
 Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
          
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-8ftas7-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -285,7 +285,7 @@ exports[`ProtocolCard snapshot > protocol card with long title matches snapshot 
 Lenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://a...
          
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-xtrp8g-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-8ftas7-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >

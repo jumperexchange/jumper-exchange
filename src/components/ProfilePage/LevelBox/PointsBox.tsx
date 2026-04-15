@@ -29,7 +29,12 @@ export const PointsBox = ({ points }: PointsBoxProps) => {
           icon={<XPIcon />}
         />
       )}
-      <Box display="flex" alignItems="center">
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <PointsDisplay points={points} />
       </Box>
     </Box>

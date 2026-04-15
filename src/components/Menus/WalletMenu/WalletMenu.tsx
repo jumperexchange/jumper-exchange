@@ -82,7 +82,12 @@ export const WalletMenu = () => {
       }}
       slotProps={{ backdrop: { sx: { backdropFilter: 'blur(8px)' } } }}
     >
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
         <IconButton
           aria-label="close"
           onClick={() => setWalletMenuState(false)}

@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { SxProps, Theme } from '@mui/material/styles';
-import { FC, ReactNode } from 'react';
+import type { SxProps, Theme } from '@mui/material/styles';
+import type { FC, ReactNode } from 'react';
 import {
   OverviewEarnCardItemContentContainer,
   OverviewEarnCardItemHeaderContainer,
@@ -36,7 +36,12 @@ export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
   return (
     <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }} data-testid={dataTestId}>
       <OverviewEarnCardItemHeaderContainer sx={{ display: 'flex', gap: 1 }}>
-        <Typography variant="bodyXSmall" color="text.secondary">
+        <Typography
+          variant="bodyXSmall"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {title}
         </Typography>
         <Tooltip title={tooltip} placement={'top'} enterTouchDelay={0} arrow>

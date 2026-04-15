@@ -81,7 +81,13 @@ export const MultiSelectView = <TValue extends string | number>({
   const isValueSelected = value.length > 0;
 
   return (
-    <Stack direction="column" width="100%" gap={2}>
+    <Stack
+      direction="column"
+      sx={{
+        width: '100%',
+        gap: 2,
+      }}
+    >
       <StyledMultiSelectFiltersContainer sx={{ padding: 0, marginBottom: 0 }}>
         <Typography variant="bodyMediumStrong">
           {t('earn.filter.selected', { count: value.length })}
@@ -95,7 +101,6 @@ export const MultiSelectView = <TValue extends string | number>({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
-
       {isSearchable && (
         <StyledMultiSelectFiltersContainer
           size={searchSize}
@@ -129,7 +134,6 @@ export const MultiSelectView = <TValue extends string | number>({
           />
         </StyledMultiSelectFiltersContainer>
       )}
-
       <Stack
         direction="column"
         spacing={listSpacing}

@@ -6,7 +6,7 @@ import {
   EarnFilterBarClearFiltersButton,
   EarnFilterBarContentContainer,
 } from '../EarnFilterBar.styles';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useEarnFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
@@ -137,7 +137,7 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             onClick={handleClearAllFilters}
             data-testid="earn-filter-clear-filters-button"
           >
-            <DeleteOutlineIcon sx={{ height: 22, width: 22 }} />
+            <DeleteOutlinedIcon sx={{ height: 22, width: 22 }} />
           </EarnFilterBarClearFiltersButton>
         )}
       </EarnAnimatedLayoutContainer>

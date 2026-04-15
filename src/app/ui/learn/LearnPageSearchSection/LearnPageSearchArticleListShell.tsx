@@ -29,9 +29,13 @@ export const LearnPageSearchArticleListShell: FC<
     variants={listVariants}
     initial="initial"
     animate="animate"
-    gap={1}
-    sx={{ listStyle: 'none', m: 0, p: 0 }}
     key={listKey}
+    sx={{
+      gap: 1,
+      listStyle: 'none',
+      m: 0,
+      p: 0,
+    }}
   >
     {Children.map(children, (child) => (
       <motion.li

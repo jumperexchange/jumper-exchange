@@ -36,7 +36,9 @@ export const CompactEarnCardMissingPosition = () => {
               <Typography
                 variant="bodySmall"
                 color="textSecondary"
-                textAlign="center"
+                sx={{
+                  textAlign: 'center',
+                }}
               >
                 {t('earn.missingPosition.description')}
               </Typography>

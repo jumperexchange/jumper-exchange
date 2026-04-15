@@ -67,10 +67,7 @@ export const InfoAlertClickable = ({
               />
             </InfoAlertButton>
             <InfoMessageCardTitle
-              display="flex"
-              alignItems="center"
-              px={2}
-              pt={2}
+              sx={{ display: 'flex', alignItems: 'center', px: 2, pt: 2 }}
             >
               <InfoIcon
                 sx={{
@@ -79,7 +76,12 @@ export const InfoAlertClickable = ({
               />
               <Typography variant={'headerXSmall'}>{title}</Typography>
             </InfoMessageCardTitle>
-            <Typography variant={'bodySmall'} pt={theme.spacing(1.5)}>
+            <Typography
+              variant={'bodySmall'}
+              sx={{
+                pt: theme.spacing(1.5),
+              }}
+            >
               {subtitle}
             </Typography>
             <ButtonInfoAlertClickable size="small">

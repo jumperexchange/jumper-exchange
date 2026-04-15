@@ -37,12 +37,9 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
       easing={'cubic-bezier(0.32, 0, 0.67, 0)'}
     >
       <InfoAlertContainer>
-        <InfoMessageCard mt={theme.spacing(4)} mb={theme.spacing(4)}>
+        <InfoMessageCard sx={{ mt: theme.spacing(4), mb: theme.spacing(4) }}>
           <InfoMessageCardTitle
-            display="flex"
-            alignItems="center"
-            px={2}
-            pt={2}
+            sx={{ display: 'flex', alignItems: 'center', px: 2, pt: 2 }}
           >
             <InfoIcon
               sx={{
@@ -51,7 +48,12 @@ export const InfoAlert = ({ title, subtitle, active }: InfoAlertProps) => {
             />
             <Typography variant={'headerXSmall'}>{title}</Typography>
           </InfoMessageCardTitle>
-          <Typography variant={'bodySmall'} pt={theme.spacing(1.5)}>
+          <Typography
+            variant={'bodySmall'}
+            sx={{
+              pt: theme.spacing(1.5),
+            }}
+          >
             {subtitle}
           </Typography>
         </InfoMessageCard>

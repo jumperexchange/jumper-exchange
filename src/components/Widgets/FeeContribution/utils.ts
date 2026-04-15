@@ -95,8 +95,10 @@ export const isEligibleForContribution = (
   );
 
   return (
+    // check if valid contribution fee address exists for the chain
+    // check if transaction amount is eligible with MIN_CONTRIBUTION_USD === 10
     isContributionEnabledByTxHistory && // check if last tx was first or every third
-    isTransactionAmountEligible(completedRoute.toAmountUSD) && // check if transaction amount is eligible with MIN_CONTRIBUTION_USD === 10
-    hasValidContributionFeeAddress(completedRoute.toChainId) // check if valid contribution fee address exists for the chain
+    isTransactionAmountEligible(completedRoute.toAmountUSD) &&
+    hasValidContributionFeeAddress(completedRoute.toChainId)
   );
 };

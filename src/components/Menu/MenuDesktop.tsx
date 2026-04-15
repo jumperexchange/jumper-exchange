@@ -91,10 +91,12 @@ export const MenuDesktop = ({
                     <MenuHeaderAppBar component="div" elevation={0}>
                       <Typography
                         variant={'bodyMediumStrong'}
-                        width={'100%'}
                         align={'center'}
-                        flex={1}
                         noWrap
+                        sx={{
+                          width: '100%',
+                          flex: 1,
+                        }}
                       >
                         {label}
                       </Typography>

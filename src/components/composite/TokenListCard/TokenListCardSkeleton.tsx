@@ -23,9 +23,12 @@ export const TokenListCardSkeleton: FC<TokenListCardSkeletonProps> = ({
       direction="row"
       spacing={2}
       useFlexGap
-      justifyContent="space-between"
-      width="100%"
-      sx={config.primary.itemSx}
+      sx={[
+        { justifyContent: 'space-between', width: '100%' },
+        ...(Array.isArray(config.primary.itemSx)
+          ? config.primary.itemSx
+          : [config.primary.itemSx]),
+      ]}
     >
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}
@@ -37,7 +40,6 @@ export const TokenListCardSkeleton: FC<TokenListCardSkeletonProps> = ({
         }}
         isLoading
       />
-
       <TitleWithHintSkeleton />
     </Stack>
   );

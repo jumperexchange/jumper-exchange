@@ -69,33 +69,37 @@ export const NiceTryLayout = ({
         </CloseButton>
         <StyledTypography
           variant="h4"
-          textAlign="left"
-          marginY={2}
-          color="white"
-          fontSize={isMobile ? '42px' : '62px'}
-          lineHeight={isMobile ? '42px' : '62px'}
-          maxWidth={'600px'}
-          textTransform={'uppercase'}
-          fontWeight={'extra-bold'}
-          marginTop={'80px'}
-          marginLeft={isMobile ? '16px' : '40px'}
+          sx={{
+            textAlign: 'left',
+            marginY: 2,
+            color: 'white',
+            fontSize: isMobile ? '42px' : '62px',
+            lineHeight: isMobile ? '42px' : '62px',
+            maxWidth: '600px',
+            textTransform: 'uppercase',
+            fontWeight: 'extra-bold',
+            marginTop: '80px',
+            marginLeft: isMobile ? '16px' : '40px',
+          }}
         >
           Nice try! You were close.
         </StyledTypography>
 
         <StyledTypography
           variant="h4"
-          textAlign="left"
-          marginY={2}
-          color="white"
-          fontSize={isMobile ? '18px' : '24px'}
-          lineHeight={isMobile ? '24px' : '32px'}
-          maxWidth={'600px'}
-          fontWeight={'normal'}
-          marginTop={'24px'}
-          marginLeft={isMobile ? '16px' : '40px'}
-          fontFamily={interTight.style.fontFamily}
-          sx={{ textTransform: 'none' }}
+          sx={{
+            textAlign: 'left',
+            marginY: 2,
+            color: 'white',
+            fontSize: isMobile ? '18px' : '24px',
+            lineHeight: isMobile ? '24px' : '32px',
+            maxWidth: '600px',
+            fontWeight: 'normal',
+            marginTop: '24px',
+            marginLeft: isMobile ? '16px' : '40px',
+            fontFamily: interTight.style.fontFamily,
+            textTransform: 'none',
+          }}
         >
           You were #{position} in line for the golden route. Keep trading to
           increase your chances of winning next time!

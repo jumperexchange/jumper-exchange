@@ -16,12 +16,12 @@ exports[`MultiViewCard snapshot > matches snapshot 1`] = `
           style="overflow: hidden; margin-bottom: 0px;"
         >
           <div
-            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            class="MuiTabs-list css-vusvyn-MuiTabs-list"
             role="tablist"
           >
             <button
               aria-selected="true"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-positions"
               role="tab"
               tabindex="0"
@@ -31,7 +31,7 @@ exports[`MultiViewCard snapshot > matches snapshot 1`] = `
             </button>
             <button
               aria-selected="false"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-yield"
               role="tab"
               tabindex="-1"
@@ -67,12 +67,12 @@ exports[`MultiViewCard snapshot > matches snapshot with content 1`] = `
           style="overflow: hidden; margin-bottom: 0px;"
         >
           <div
-            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            class="MuiTabs-list css-vusvyn-MuiTabs-list"
             role="tablist"
           >
             <button
               aria-selected="true"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-positions"
               role="tab"
               tabindex="0"
@@ -82,7 +82,7 @@ exports[`MultiViewCard snapshot > matches snapshot with content 1`] = `
             </button>
             <button
               aria-selected="false"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-yield"
               role="tab"
               tabindex="-1"
@@ -123,12 +123,12 @@ exports[`MultiViewCard snapshot > matches snapshot with header 1`] = `
           style="overflow: hidden; margin-bottom: 0px;"
         >
           <div
-            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            class="MuiTabs-list css-vusvyn-MuiTabs-list"
             role="tablist"
           >
             <button
               aria-selected="true"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-positions"
               role="tab"
               tabindex="0"
@@ -138,7 +138,7 @@ exports[`MultiViewCard snapshot > matches snapshot with header 1`] = `
             </button>
             <button
               aria-selected="false"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-yield"
               role="tab"
               tabindex="-1"
@@ -191,12 +191,12 @@ exports[`MultiViewCard snapshot > matches snapshot with header and content 1`] =
           style="overflow: hidden; margin-bottom: 0px;"
         >
           <div
-            class="MuiTabs-list MuiTabs-flexContainer css-m9849h-MuiTabs-list"
+            class="MuiTabs-list css-vusvyn-MuiTabs-list"
             role="tablist"
           >
             <button
               aria-selected="true"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary Mui-selected css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-positions"
               role="tab"
               tabindex="0"
@@ -206,7 +206,7 @@ exports[`MultiViewCard snapshot > matches snapshot with header and content 1`] =
             </button>
             <button
               aria-selected="false"
-              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1itz36l-MuiButtonBase-root-MuiTab-root"
+              class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary css-1ldyjvo-MuiButtonBase-root-MuiTab-root"
               id="undefined-yield"
               role="tab"
               tabindex="-1"

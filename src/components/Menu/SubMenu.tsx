@@ -155,7 +155,9 @@ export const SubMenu = ({
                   variant={'bodyMedium'}
                   isPrefixIcon={!!el.prefixIcon}
                   isSuffixIcon={!!el.suffixIcon}
-                  ml={!!el.prefixIcon ? theme.spacing(1.5) : 'inherit'}
+                  sx={{
+                    ml: !!el.prefixIcon ? theme.spacing(1.5) : 'inherit',
+                  }}
                 >
                   {`${el.label || ' '}`}
                 </SubMenuLabel>
@@ -168,7 +170,12 @@ export const SubMenu = ({
           ),
         )
       ) : (
-        <Box textAlign={'center'} mt={theme.spacing(1)}>
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: theme.spacing(1),
+          }}
+        >
           <CircularProgress />
         </Box>
       )}

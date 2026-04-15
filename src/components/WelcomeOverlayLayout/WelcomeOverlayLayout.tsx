@@ -71,11 +71,13 @@ export const WelcomeOverlayLayout = ({
         </Box>
       </Slide>
       <Stack
-        display="flex"
         direction="row"
-        justifyContent="center"
-        alignItems="start"
         sx={[
+          {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'start',
+          },
           {
             height: !isOverlayOpen ? '100%' : 'auto',
             overflow: {

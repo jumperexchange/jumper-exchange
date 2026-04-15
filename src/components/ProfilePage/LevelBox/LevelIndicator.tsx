@@ -16,9 +16,8 @@ export const LevelIndicator = ({ level, bound }: LevelButtonProps) => {
   return (
     <LevelButton aria-label="XP Level" size="medium">
       <NoSelectTypography
-        sx={{ color: 'inherit' }}
+        sx={{ color: 'inherit', marginRight: '8px' }}
         variant="bodyXSmallStrong"
-        marginRight="8px"
       >
         {t('profile_page.level')} {level} • {bound}
       </NoSelectTypography>

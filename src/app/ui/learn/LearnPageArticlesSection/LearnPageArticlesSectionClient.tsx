@@ -20,9 +20,11 @@ export const LearnPageArticlesSectionClient: FC<
       <SectionCard>
         <Stack
           direction="column"
-          gap={{
-            xs: 2,
-            md: 3,
+          sx={{
+            gap: {
+              xs: 2,
+              md: 3,
+            },
           }}
         >
           <LearnPageArticlesFilteringBar />

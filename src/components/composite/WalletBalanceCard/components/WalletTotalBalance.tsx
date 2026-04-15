@@ -56,8 +56,11 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
         <Typography variant="bodyXSmallStrong" color="textSecondary">
           {t('navbar.walletMenu.walletBalance')}
         </Typography>
-        <Stack {...sharedStackProps} gap={2} justifyContent="space-between">
-          <Stack {...sharedStackProps} gap={1}>
+        <Stack
+          {...sharedStackProps}
+          sx={{ gap: 2, justifyContent: 'space-between' }}
+        >
+          <Stack {...sharedStackProps} sx={{ gap: 1 }}>
             <WalletTotalBalanceValue as="div">
               <>
                 {prefix}

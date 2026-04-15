@@ -166,7 +166,6 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
           </StyledTagsRow>
         </StyledSummaryContent>
       </StyledAccordionSummary>
-
       <StyledAccordionDetails>
         <StyledDetailsContainer>
           {positionGroups.map((positionGroup, index) => {

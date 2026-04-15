@@ -77,12 +77,22 @@ const ColorSwatch = ({ name, color, description }: ColorSwatchProps) => {
     <Tooltip
       title={
         <Box>
-          <Typography variant="body2" fontWeight="bold">
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {name}
           </Typography>
           <Typography variant="caption">{color}</Typography>
           {description && (
-            <Typography variant="caption" display="block">
+            <Typography
+              variant="caption"
+              sx={{
+                display: 'block',
+              }}
+            >
               {description}
             </Typography>
           )}
@@ -108,8 +118,8 @@ const ColorSwatch = ({ name, color, description }: ColorSwatchProps) => {
         <Box sx={{ px: 2, pt: 1, pb: 2 }}>
           <Typography
             variant="subtitle2"
-            fontWeight="bold"
             sx={{
+              fontWeight: 'bold',
               width: '100%',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -118,11 +128,27 @@ const ColorSwatch = ({ name, color, description }: ColorSwatchProps) => {
           >
             {name}
           </Typography>
-          <Stack direction="column" spacing={0.5} mt={2}>
-            <Typography variant="caption" color="text.secondary">
+          <Stack
+            direction="column"
+            spacing={0.5}
+            sx={{
+              mt: 2,
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {color}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {getRGBAFromHex(color)}
             </Typography>
           </Stack>
@@ -201,7 +227,14 @@ const renderColorSection = (
       <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
         {title}
       </Typography>
-      <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+      <Stack
+        direction="row"
+        spacing={2}
+        useFlexGap
+        sx={{
+          flexWrap: 'wrap',
+        }}
+      >
         {colors.map(({ name, color }) => (
           <ColorSwatch key={name} name={name} color={color} />
         ))}
@@ -216,7 +249,14 @@ const renderColorObject = (name: string, colorObj: any) => {
       <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
         {name.charAt(0).toUpperCase() + name.slice(1)}
       </Typography>
-      <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+      <Stack
+        direction="row"
+        spacing={2}
+        useFlexGap
+        sx={{
+          flexWrap: 'wrap',
+        }}
+      >
         {Object.entries(colorObj).map(([variant, color]) => (
           <ColorSwatch
             key={variant}

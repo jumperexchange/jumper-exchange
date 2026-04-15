@@ -91,7 +91,11 @@ export const LearnPageSearchPopperContent: FC<
   }
 
   const popularPostsSection = (
-    <Stack gap={1.5}>
+    <Stack
+      sx={{
+        gap: 1.5,
+      }}
+    >
       <Typography variant="bodyXSmallStrong" color="textHint" sx={{ my: 0.75 }}>
         {t('blog.popularPosts')}
       </Typography>
@@ -107,7 +111,11 @@ export const LearnPageSearchPopperContent: FC<
         {contentKey === 'popular' && popularPostsSection}
 
         {contentKey === 'loading' && (
-          <Stack gap={1.5}>
+          <Stack
+            sx={{
+              gap: 1.5,
+            }}
+          >
             <BaseSurfaceSkeleton
               variant="text"
               sx={{ height: 16, width: '30%', my: 0.75 }}
@@ -117,7 +125,11 @@ export const LearnPageSearchPopperContent: FC<
         )}
 
         {contentKey === 'empty' && (
-          <Stack gap={2}>
+          <Stack
+            sx={{
+              gap: 2,
+            }}
+          >
             <Typography
               variant="bodyXSmallStrong"
               color="textHint"
@@ -130,13 +142,19 @@ export const LearnPageSearchPopperContent: FC<
         )}
 
         {contentKey === 'results' && (
-          <Stack gap={1.5}>
+          <Stack
+            sx={{
+              gap: 1.5,
+            }}
+          >
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              gap={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 1,
+              }}
             >
               <Typography variant="bodyXSmallStrong" color="textHint">
                 {selectedTagId === TAG_ALL
@@ -148,7 +166,13 @@ export const LearnPageSearchPopperContent: FC<
                       filterCount: `${filteredArticles.length}`,
                     })}
               </Typography>
-              <Stack direction="row" flexWrap="wrap" gap={0.5}>
+              <Stack
+                direction="row"
+                sx={{
+                  flexWrap: 'wrap',
+                  gap: 0.5,
+                }}
+              >
                 {tagOptions.map((tag) => (
                   <Badge
                     key={tag.id}

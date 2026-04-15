@@ -172,8 +172,8 @@ const StepsExplainerSection = ({
     <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
-        marginY={2}
         sx={{
+          marginY: 2,
           color: (theme.vars || theme).palette.text.primary,
           fontSize: '36px',
         }}
@@ -188,7 +188,6 @@ const StepsExplainerSection = ({
         transferring your assets from {sourceToken?.name} on {sourceChain?.name}{' '}
         to {destinationToken?.name} on {destinationChain?.name}.
       </Typography>
-
       {steps.map((step, index) => (
         <Fragment key={index}>
           <Divider />

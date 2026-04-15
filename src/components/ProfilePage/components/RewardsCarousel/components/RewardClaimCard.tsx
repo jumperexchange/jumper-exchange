@@ -106,7 +106,7 @@ export const RewardClaimCard: FC<RewardClaimCardProps> = ({
   }
 
   return (
-    <RewardCardContainer gap={2}>
+    <RewardCardContainer sx={{ gap: 2 }}>
       <BalanceStackItem
         balance={balance}
         config={REWARD_CLAIM_CARD_CONFIG}
