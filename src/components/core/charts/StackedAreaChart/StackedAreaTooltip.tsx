@@ -41,12 +41,7 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
     return value.toFixed(2);
   };
 
-  const total =
-    payload.total != null
-      ? payload.total
-      : payload.base != null && payload.reward != null
-        ? payload.base + payload.reward
-        : null;
+  const { total } = payload;
 
   return (
     <Box
@@ -95,6 +90,14 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
         })}
       >
         Reward: {formatValue(payload.reward)}
+      </Typography>
+      <Typography
+        variant="bodyXSmall"
+        sx={(theme) => ({
+          color: (theme.vars || theme).palette.text.secondary,
+        })}
+      >
+        Intrinsic: {formatValue(payload.intrinsic)}
       </Typography>
     </Box>
   );

@@ -1,11 +1,14 @@
 import { APY_FORMAT_CONFIG } from '@/utils/numbers/apy';
-import { useColorScheme, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import type {
   ApyAnalyticsHistory,
   EarnOpportunityHistory,
 } from 'src/types/jumper-backend';
-import type { LineChartProps } from '../core/charts/LineChart/LineChart';
+import type {
+  ChartDataPoint,
+  LineChartProps,
+} from '../core/charts/LineChart/LineChart';
 import type { StackedAreaChartProps } from '../core/charts/StackedAreaChart/StackedAreaChart';
 import { AnalyticsRangeFieldEnum } from './types';
 
@@ -36,7 +39,10 @@ export const useSimpleAnalyticsChartConfig = (
         // Normalize potential nulls to undefined to match chart value typings
         value: point.v ?? undefined,
       })) ?? [];
-    return trimLeadingNulls(mapped, (item) => item.value != null);
+    return trimLeadingNulls(
+      mapped,
+      (item) => item.value != null,
+    ) as ChartDataPoint<string | number>[];
   }, [rawData]);
 
   const dateFormat = useDefaultDateFormat(range);
@@ -58,13 +64,8 @@ export const useApyAnalyticsChartConfig = (
   const data = useMemo(() => {
     const mapped =
       rawData?.points.map((point) => ({
+        ...point,
         date: new Date(point.t).toISOString(),
-        base: point.base,
-        reward: point.reward,
-        total:
-          point.base != null && point.reward != null
-            ? point.base + point.reward
-            : null,
       })) ?? [];
     return trimLeadingNulls(mapped, (item) => item.total != null);
   }, [rawData]);
@@ -85,7 +86,6 @@ export const useApyAnalyticsChartConfig = (
 
 export const useBaseChartTheme = (): LineChartProps['theme'] => {
   const theme = useTheme();
-  const isLightTheme = useIsLightTheme();
 
   return {
     areaTopColor: (theme.vars || theme).palette.surfaceAccent2Bg,
@@ -97,34 +97,20 @@ export const useBaseChartTheme = (): LineChartProps['theme'] => {
 
 export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {
   const theme = useTheme();
-  const isLightTheme = useIsLightTheme();
+
+  const surface1 = (theme.vars || theme).palette.surface1.main;
+  const accent2 = (theme.vars || theme).palette.accent2.main;
 
   return {
     baseLineColor: (theme.vars || theme).palette.textAccent2,
     baseAreaTopColor: (theme.vars || theme).palette.surfaceAccent2Bg,
-    baseAreaBottomColor: (theme.vars || theme).palette.surface1.main,
+    baseAreaBottomColor: surface1,
     rewardLineColor: (theme.vars || theme).palette.textAccent2,
     rewardAreaTopColor: (theme.vars || theme).palette.surfaceAccent1Bg,
-    rewardAreaBottomColor: (theme.vars || theme).palette.surface1.main,
+    rewardAreaBottomColor: surface1,
+    intrinsicLineColor: (theme.vars || theme).palette.textAccent2,
+    intrinsicAreaTopColor: `color-mix(in srgb, ${accent2} 30%, ${surface1})`,
+    intrinsicAreaBottomColor: surface1,
     pointColor: (theme.vars || theme).palette.accent1.main,
   };
-};
-
-/**
- * Resolve the color scheme the app should used, base on active theme, system mode, etc.
- * @returns 'light' | 'dark'
- */
-const useResolvedColorScheme = (): 'light' | 'dark' => {
-  const { mode, systemMode } = useColorScheme();
-
-  if (mode === 'system') {
-    return systemMode ?? 'light';
-  }
-
-  return mode ?? 'light';
-};
-
-const useIsLightTheme = (): boolean => {
-  const resolvedColorScheme = useResolvedColorScheme();
-  return resolvedColorScheme === 'light';
 };
