@@ -298,8 +298,10 @@
     "achievements": "Achievements",
     "unlocked": "Unlocked",
     "levelWithValue": "Level {{level}}",
+    "ongoing": "Ongoing",
     "tooltips": {
-      "unlockAtLevel": "Unlocked at Level {{level}}"
+      "unlockAtLevel": "Unlocked at Level {{level}}",
+      "ongoingAchievement": "This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month."
     },
     "noData": {
       "description": "No {{entity}} yet? Let's change that!",
