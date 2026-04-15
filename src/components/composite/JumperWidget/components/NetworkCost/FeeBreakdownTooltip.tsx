@@ -68,7 +68,7 @@ const getFeeBreakdownTypography = (fees: CostBreakdown[], t: TFunction) =>
     >
       {t('format.currency', { value: fee.amountUSD })} (
       {t('format.decimal', {
-        value: fee.amount,
+        value: Number(fee.amount),
       })}{' '}
       {fee.token.symbol})
     </Typography>

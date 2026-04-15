@@ -138,7 +138,7 @@ export const multicallAbi = [
 
 export const MULTICALL3_ADDRESS = '0xca11bde05977b3631167028862be2a173976ca11';
 
-export const ERC20_ABI = [
+export const APPROVE_ABI = [
   {
     inputs: [
       { name: 'spender', type: 'address' },
@@ -148,15 +148,5 @@ export const ERC20_ABI = [
     outputs: [{ type: 'bool' }],
     stateMutability: 'nonpayable',
     type: 'function',
-  },
-  {
-    name: 'allowance',
-    type: 'function',
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-    ],
-    outputs: [{ name: '', type: 'uint256' }],
-    stateMutability: 'view',
   },
 ] as const;

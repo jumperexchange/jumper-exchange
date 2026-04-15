@@ -3,26 +3,25 @@ import type { FC } from 'react';
 import { useWidgetStore } from '@/components/composite/JumperWidget/store';
 import { Summary } from '@/components/composite/JumperWidget/components/Summary';
 import type { DustSummaryValue } from '../hooks/useDustFormFields';
-import type { OdosQuoteResponse } from '../api/odos';
+import type { LiFiStep } from '@lifi/sdk';
 import Box from '@mui/material/Box';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
 import Typography from '@mui/material/Typography';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import { OdosNetworkCost } from '../../JumperWidget/components/NetworkCost/OdosNetworkCost';
-import { SLIPPAGE_LIMIT_PERCENT } from '../hooks/useDustQuotes';
+import { NetworkCost } from '../../JumperWidget/components/NetworkCost/NetworkCost';
 
 const fieldSx = { background: 'transparent', boxShadow: 'none', padding: 0 };
 
 interface RouteOverviewProps {
-  quote?: OdosQuoteResponse | null;
+  quotes?: LiFiStep[];
 }
 
-export const RouteOverview: FC<RouteOverviewProps> = ({ quote }) => {
+export const RouteOverview: FC<RouteOverviewProps> = ({ quotes }) => {
   const dustSummary = useWidgetStore(
     (state) => state.values.dustSummary as DustSummaryValue | undefined,
   );
 
-  if (!dustSummary || !quote?.pathId) {
+  if (!dustSummary || !quotes) {
     return null;
   }
 
@@ -46,19 +45,15 @@ export const RouteOverview: FC<RouteOverviewProps> = ({ quote }) => {
           <AvatarItem
             avatar={{
               src: 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/protocols/wrapper.svg',
-              alt: 'Odos',
-              id: 'odos',
+              alt: 'Wrapper',
+              id: 'step',
             }}
             size={AvatarSize.XL}
           />
-          <Typography variant="bodySmallStrong">Odos</Typography>
+          <Typography variant="bodySmallStrong">Wrapper via Li.Fi</Typography>
         </Box>
       </Summary>
-      <OdosNetworkCost
-        quote={quote}
-        outputToken={dustSummary.nativeToken}
-        slippagePercent={SLIPPAGE_LIMIT_PERCENT}
-      />
+      <NetworkCost steps={quotes} />
     </>
   );
 };

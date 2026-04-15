@@ -10,17 +10,20 @@ import { useDustFormFields } from './hooks/useDustFormFields';
 import type { ViewSubmitContext } from '../JumperWidget/types';
 import { RouteOverview } from './components/RouteOverview';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
+import { useWalletCapabilities } from '@/hooks/transactions/useWalletCapabilities';
+import { TransactionErrorType } from '@/hooks/transactions/types';
 import { useDustConversionStatusSheet } from './hooks/useDustConversionStatusSheet';
 import { createTokenBalance } from '@/types/tokens';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
-import { fetchOdosAssemble, fetchOdosRouter } from './api/odos';
-import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
-import type { NavigationContextValue } from '../JumperWidget/context';
+import type { Address } from 'viem';
+import { type Hex } from 'viem';
+import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useTranslation } from 'react-i18next';
 import { ConvertDustSubmitButton } from './components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButton';
-import { useApproveTokens } from './hooks/useApproveTokens';
-import type { Address, Hex } from 'viem';
+import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
+import type { NavigationContextValue } from '../JumperWidget/context';
+import { buildApprovalCallsForQuote } from './utils';
 
 interface DustModalProps {
   isOpen: boolean;
@@ -29,8 +32,8 @@ interface DustModalProps {
 
 export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
+  const accountAddress = useAccountAddress();
   const { refresh: refreshPortfolio } = usePortfolioState();
-  const approveTokens = useApproveTokens();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
   const fallbackNativeToken = useFallbackNativeToken(nativeExtendedTokens);
   const formFields = useDustFormFields({
@@ -44,7 +47,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
-  const { quote, fetchQuotesAsync } = useDustQuotes();
+  const { quotes, fetchQuotesAsync } = useDustQuotes();
 
   const isDustSelection = widgetNav?.currentViewId === 'form';
 
@@ -61,81 +64,69 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     [dustSummary?.nativeToken.chainId],
   );
 
+  const { supportsBatchTransactions } =
+    useWalletCapabilities(nativeTokenChainId);
+
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
       if (!dustSummary) {
         throw new Error('Missing fields');
       }
-      const odosQuote = await fetchQuotesAsync(
-        buildDustQuoteParams(dustSummary),
-      );
-      if (odosQuote?.pathId && widgetNav) {
+      const _quotes = await fetchQuotesAsync(buildDustQuoteParams(dustSummary));
+      if (_quotes.length > 0 && widgetNav) {
         widgetNav.goToView('summary');
       }
       return undefined;
     }
 
-    if (!dustSummary) {
-      throw new Error('Missing dust summary');
+    if (!quotes) {
+      return { actions: [] };
     }
 
-    const [odosQuote, odosRouter] = await Promise.all([
-      fetchQuotesAsync(buildDustQuoteParams(dustSummary)),
-      fetchOdosRouter(dustSummary.nativeToken.chainId),
-    ]);
-    if (!odosQuote?.pathId) {
-      throw new Error('No Odos quote pathId');
-    }
+    const calls = quotes
+      .filter(
+        (quote) =>
+          !!quote.transactionRequest?.to &&
+          !!quote.transactionRequest?.data &&
+          !!quote.transactionRequest?.chainId,
+      )
+      .flatMap((quote) => {
+        const approvalCalls = buildApprovalCallsForQuote(quote);
+        const txCall = {
+          chainId: nativeTokenChainId,
+          to: quote.transactionRequest!.to as Address,
+          data: quote.transactionRequest!.data as Hex,
+          value:
+            quote.transactionRequest!.value != null
+              ? quote.transactionRequest!.value
+              : undefined,
+        };
+        return [...approvalCalls, txCall];
+      });
 
-    await approveTokens(
-      dustSummary.selectedBalances.map((balance) => ({
-        address: balance.token.address as Hex,
-        amount: balance.amount,
-      })),
-      dustSummary.nativeToken.chainId,
-      dustSummary.address as Address,
-      odosRouter.address as Address,
-    );
+    const actions = calls.map((call) => ({
+      name: 'batch' as const,
+      tx: call,
+    }));
 
-    const assembled = await fetchOdosAssemble({
-      pathId: odosQuote.pathId,
-      userAddr: dustSummary.address,
-    });
-
-    if (assembled.simulation && !assembled.simulation.isSuccess) {
-      throw new Error(assembled.simulation.simulationError.errorMessage);
-    }
-
-    const tx = assembled.transaction;
-    if (!tx?.to || !tx?.data) {
-      throw new Error('Invalid Odos assemble response');
-    }
-
-    return {
-      actions: [
-        {
-          name: 'sendTransaction',
-          tx: {
-            chainId: tx.chainId,
-            to: tx.to,
-            data: tx.data,
-            value: tx.value ?? '0',
-          },
-        },
-      ],
-    };
+    return { actions };
   }, [
+    quotes,
     isDustSelection,
     widgetNav,
     dustSummary,
+    nativeTokenChainId,
     fetchQuotesAsync,
-    approveTokens,
   ]);
 
   const transactionForm = useTransactionForm({
     chainId: nativeTokenChainId,
     requiresConfirmation: false,
-    executorType: 'single',
+    executorType: 'batch',
+    validateBeforeExecute: () =>
+      !supportsBatchTransactions
+        ? TransactionErrorType.WalletDoesNotSupportBatchTransactions
+        : null,
     fetchCallData,
     onSuccess: () => {
       refreshPortfolio();
@@ -151,8 +142,6 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     onClose();
     transactionForm.resetForm();
   };
-
-  console.log(quote);
 
   const views = useMemo(
     () => [
@@ -182,7 +171,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         type: 'custom' as const,
         id: 'summary',
         title: t('portfolio.dustConversion.title'),
-        content: <RouteOverview quote={quote} />,
+        content: <RouteOverview quotes={quotes} />,
         onSubmit: async ({ goToView }: ViewSubmitContext) => {
           transactionForm.handleSubmit();
         },
@@ -193,7 +182,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         ),
       },
     ],
-    [quote, formFields, transactionForm, t],
+    [quotes, formFields, transactionForm, t],
   );
 
   return (

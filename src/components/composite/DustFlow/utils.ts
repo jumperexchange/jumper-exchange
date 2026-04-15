@@ -3,7 +3,7 @@ import type { LiFiStep } from '@lifi/sdk';
 import { ChainId } from '@lifi/sdk';
 import type { Address, Hex } from 'viem';
 import { encodeFunctionData, zeroAddress } from 'viem';
-import { ERC20_ABI } from './constants';
+import { APPROVE_ABI } from './constants';
 
 export const getChainMinUsdThreshold = (chainId: number) => {
   if (chainId === ChainId.ETH) {
@@ -57,7 +57,7 @@ export const buildApprovalCallsForQuote = (
       chainId,
       to: tokenAddress,
       data: encodeFunctionData({
-        abi: ERC20_ABI,
+        abi: APPROVE_ABI,
         functionName: 'approve',
         args: [spender, 0n],
       }),
@@ -68,7 +68,7 @@ export const buildApprovalCallsForQuote = (
     chainId,
     to: tokenAddress,
     data: encodeFunctionData({
-      abi: ERC20_ABI,
+      abi: APPROVE_ABI,
       functionName: 'approve',
       args: [spender, fromAmount],
     }),
