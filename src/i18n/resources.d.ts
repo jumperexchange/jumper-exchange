@@ -88,12 +88,14 @@ interface Resources {
     };
     buttons: {
       close: 'Close';
+      convertDust: 'Convert dust';
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
       requestRedeemButtonLabel: 'Request redeem';
       requestWithdraw: 'Request withdraw';
+      reviewConversion: 'Review conversion';
       withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
     };
@@ -317,6 +319,9 @@ interface Resources {
     form: {
       labels: {
         amount: 'Amount';
+        chain: 'Chain';
+        convert: 'Convert';
+        dustThreshold: 'Dust threshold';
         received: 'Received';
         requested: 'Requested';
         swap: 'Swap';
@@ -346,6 +351,10 @@ interface Resources {
         notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
       };
       title: 'Welcome to {{pageTitle}}!';
+    };
+    headers: {
+      chains: 'Chains';
+      tokens: 'Tokens';
     };
     jumperWidget: {
       emptyList: 'No {{itemsName}} available for selection';
@@ -744,6 +753,46 @@ interface Resources {
             info: 'View earn detail';
           };
         };
+      };
+      dustConversion: {
+        error: {
+          chainSwitchFailed: {
+            close: 'Close';
+            description: 'Could not switch to the required network. Please switch manually in your wallet.';
+            title: 'Failed to switch network';
+          };
+          fetchCallDataFailed: {
+            description: 'We could not prepare your transaction. Please try again.';
+            title: 'Failed to prepare transaction';
+            tryAgain: 'Try again';
+          };
+          insufficientBalance: {
+            close: 'Close';
+            description: 'You do not have enough balance to complete this transaction.';
+            title: 'Insufficient balance';
+          };
+          transactionFailed: {
+            description: 'The transaction failed to complete. Please try again.';
+            title: 'Transaction failed';
+            tryAgain: 'Try again';
+          };
+          transactionRejected: {
+            description: 'You rejected the transaction in your wallet. Please try again.';
+            title: 'Transaction rejected';
+            tryAgain: 'Try again';
+          };
+          unknown: {
+            description: 'An unexpected error occurred. Please try again.';
+            title: 'Error';
+            tryAgain: 'Try again';
+          };
+        };
+        success: {
+          done: 'Done';
+          seeDetails: 'See details';
+          title: 'Conversion complete';
+        };
+        title: 'Convert dust';
       };
       emptyList: {
         clearFilters: 'Clear filters';
