@@ -21,6 +21,10 @@ function trimLeadingNulls<T>(data: T[], hasValue: (item: T) => boolean): T[] {
   return firstValidIndex === -1 ? [] : data.slice(firstValidIndex);
 }
 
+const hasDefinedValue = (
+  item: ChartDataPoint<string | number | undefined>,
+): item is ChartDataPoint<string | number> => item.value != null;
+
 const useDefaultDateFormat = (range: AnalyticsRangeFieldEnum) => {
   return range === AnalyticsRangeFieldEnum.WEEK ||
     range === AnalyticsRangeFieldEnum.MONTH
@@ -39,10 +43,9 @@ export const useSimpleAnalyticsChartConfig = (
         // Normalize potential nulls to undefined to match chart value typings
         value: point.v ?? undefined,
       })) ?? [];
-    return trimLeadingNulls(
-      mapped,
-      (item) => item.value != null,
-    ) as ChartDataPoint<string | number>[];
+    return trimLeadingNulls(mapped, (item) => item.value != null).filter(
+      hasDefinedValue,
+    );
   }, [rawData]);
 
   const dateFormat = useDefaultDateFormat(range);
