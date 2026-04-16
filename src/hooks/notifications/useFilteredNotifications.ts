@@ -7,7 +7,13 @@ import { useNotifications } from './useNotifications';
 
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
 
-export const useFilteredNotifications = () => {
+interface UseFilteredNotificationsParams {
+  enabled?: boolean;
+}
+
+export const useFilteredNotifications = ({
+  enabled = true,
+}: UseFilteredNotificationsParams = {}) => {
   const { account } = useAccount();
   const address = account?.address ?? '';
 
@@ -15,7 +21,8 @@ export const useFilteredNotifications = () => {
     useState<NotificationCategory | null>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
-  const { data: notifications } = useNotifications();
+  const { data: notifications } = useNotifications({ enabled });
+
   const [readIds, deletedIds] = useNotificationStore((state) => [
     state.readNotificationIdsByAccount[address] ?? [],
     state.deletedNotificationIdsByAccount[address] ?? [],

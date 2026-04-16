@@ -2,13 +2,17 @@ import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import type { Notification } from '@/types/notifications';
-import { TWO_SECONDS_MS } from 'src/const/time';
 
-export const useNotifications = () => {
+export const notificationsQueryKey = (address?: string) =>
+  ['notifications', address] as const;
+
+export const useNotifications = ({
+  enabled = true,
+}: { enabled?: boolean } = {}) => {
   const { account } = useAccount();
 
   return useQuery({
-    queryKey: ['notifications', account?.address],
+    queryKey: notificationsQueryKey(account?.address),
     queryFn: async ({ signal }) => {
       const response = await fetch(
         `${config.NEXT_PUBLIC_NOTIFICATIONS_URL}/api/notifications/${account?.address}`,
@@ -19,7 +23,8 @@ export const useNotifications = () => {
       }
       return response.json() as Promise<Notification[]>;
     },
-    enabled: !!account?.address && !!config.NEXT_PUBLIC_NOTIFICATIONS_URL,
-    refetchInterval: TWO_SECONDS_MS,
+    staleTime: 10_000,
+    enabled:
+      enabled && !!account?.address && !!config.NEXT_PUBLIC_NOTIFICATIONS_URL,
   });
 };

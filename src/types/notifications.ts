@@ -22,6 +22,11 @@ export interface Notification {
   userAddress: string;
 }
 
+export interface NotificationSummary {
+  count: number;
+  latestCreatedAt: string | null;
+}
+
 export interface NotificationStoreData {
   readNotificationIdsByAccount: Record<string, string[]>;
   deletedNotificationIdsByAccount: Record<string, string[]>;

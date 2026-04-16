@@ -15,6 +15,7 @@ interface NotificationPopoverProps {
   anchorEl: HTMLElement | null;
   open: boolean;
   setOpen: (open: boolean) => void;
+  latestCreatedAt?: string | null;
 }
 
 export const NotificationPopover: FC<NotificationPopoverProps> = ({
@@ -22,6 +23,7 @@ export const NotificationPopover: FC<NotificationPopoverProps> = ({
   anchorEl,
   open,
   setOpen,
+  latestCreatedAt: _latestCreatedAt,
 }) => {
   const handleClose = () => setOpen(false);
   const {

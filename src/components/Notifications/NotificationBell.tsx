@@ -1,11 +1,16 @@
 'use client';
 
 import { useAccount } from '@lifi/wallet-management';
+import { useQueryClient } from '@tanstack/react-query';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { NavbarMenuToggleButton } from '@/components/Navbar/components/Buttons/Buttons.style';
-import { useNotifications } from '@/hooks/notifications/useNotifications';
+import { notificationsQueryKey } from '@/hooks/notifications/useNotifications';
+import {
+  notificationsSummaryQueryKey,
+  useNotificationsSummary,
+} from '@/hooks/notifications/useNotificationsSummary';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import { NotificationDrawer } from './NotificationDrawer';
 import { NotificationPopover } from './NotificationPopover';
@@ -16,19 +21,45 @@ export const NotificationBell = () => {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const anchorRef = useRef<HTMLButtonElement>(null);
+  const previousAddressRef = useRef<string | undefined>(undefined);
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
 
   const address = account?.address ?? '';
-  const { data: notifications } = useNotifications();
+  const { data: summary, isLoading: isSummaryLoading } =
+    useNotificationsSummary();
   const [readIds, deletedIds] = useNotificationStore((state) => [
     state.readNotificationIdsByAccount[address] ?? [],
     state.deletedNotificationIdsByAccount[address] ?? [],
   ]);
 
-  const unreadCount =
-    notifications?.filter(
-      (n) => !readIds.includes(n.id) && !deletedIds.includes(n.id),
-    ).length ?? 0;
+  // Clear all notification caches when the wallet disconnects so the badge
+  // doesn't show a stale count for the next connected account.
+  useEffect(() => {
+    if (address) {
+      previousAddressRef.current = address;
+      return;
+    }
+
+    const previousAddress = previousAddressRef.current;
+    if (!previousAddress) {
+      return;
+    }
+
+    queryClient.removeQueries({
+      queryKey: notificationsSummaryQueryKey(previousAddress),
+    });
+    queryClient.removeQueries({
+      queryKey: notificationsQueryKey(previousAddress),
+    });
+    previousAddressRef.current = undefined;
+  }, [address, queryClient]);
+
+  const badgeContent = Math.max(
+    0,
+    (summary?.count ?? 0) - readIds.length - deletedIds.length,
+  );
+  const shouldHideBadge = isSummaryLoading || badgeContent === 0;
 
   const handleToggle = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -45,9 +76,9 @@ export const NotificationBell = () => {
   return (
     <>
       <NotificationBadge
-        badgeContent={unreadCount}
+        badgeContent={badgeContent}
         color="primary"
-        invisible={unreadCount === 0}
+        invisible={shouldHideBadge}
         overlap="circular"
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
@@ -77,10 +108,15 @@ export const NotificationBell = () => {
             anchorEl={anchorRef.current}
             open={open}
             setOpen={setOpen}
+            latestCreatedAt={summary?.latestCreatedAt}
           />
         )
       ) : (
-        <NotificationDrawer open={open} setOpen={setOpen} />
+        <NotificationDrawer
+          open={open}
+          setOpen={setOpen}
+          latestCreatedAt={summary?.latestCreatedAt}
+        />
       )}
     </>
   );
