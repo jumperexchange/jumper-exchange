@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { HeightAnimatedContainer } from '@/components/core/HeightAnimatedContainer/HeightAnimatedContainer';
 import Box from '@mui/material/Box';
@@ -30,7 +31,6 @@ import {
 import type {
   AnyFieldDefinition,
   JumperWidgetStatusSheetProp,
-  SanitizeListener,
   WidgetView,
 } from './types';
 import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
@@ -328,11 +328,7 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
   const prevDefaultValuesRef = useRef<Record<string, unknown> | null>(null);
   useEffect(() => {
     const prev = prevDefaultValuesRef.current;
-    const same =
-      prev !== null &&
-      Object.keys(defaultValues).length === Object.keys(prev).length &&
-      Object.keys(defaultValues).every((k) => defaultValues[k] === prev[k]);
-    if (!same) {
+    if (!isEqual(prev, defaultValues)) {
       prevDefaultValuesRef.current = defaultValues;
       form.reset(defaultValues);
     }

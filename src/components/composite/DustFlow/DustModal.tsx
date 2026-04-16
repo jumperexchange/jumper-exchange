@@ -10,20 +10,14 @@ import { useDustFormFields } from './hooks/useDustFormFields';
 import type { ViewSubmitContext } from '../JumperWidget/types';
 import { RouteOverview } from './components/RouteOverview';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
-import { useWalletCapabilities } from '@/hooks/transactions/useWalletCapabilities';
-import { TransactionErrorType } from '@/hooks/transactions/types';
 import { useDustConversionStatusSheet } from './hooks/useDustConversionStatusSheet';
 import { createTokenBalance } from '@/types/tokens';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
-import type { Address } from 'viem';
-import { type Hex } from 'viem';
-import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useTranslation } from 'react-i18next';
 import { ConvertDustSubmitButton } from './components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButton';
 import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
 import type { NavigationContextValue } from '../JumperWidget/context';
-import { buildApprovalCallsForQuote } from './utils';
 import { makeLifiComposerClient } from '@/app/lib/lifi-composer-client';
 
 interface DustModalProps {
@@ -79,7 +73,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         throw new Error('Missing fields');
       }
       const _quotes = await fetchQuotesAsync(buildDustQuoteParams(dustSummary));
-      console.log('Fetched quotes:', _quotes);
+
       if (_quotes.length > 0 && widgetNav) {
         widgetNav.goToView('summary');
       }
@@ -129,10 +123,9 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         sweepTo: signer,
         simulationPolicy: 'allow-revert',
         checkOnChainAllowances: true,
-        maxPriceImpactBps: 1200,
+        maxPriceImpactBps: 1200, // @TODO - consider making this configurable by the user
       },
     });
-    console.log('Received response from composer backend:', data);
     return {
       actions: [
         ...(data.approvals ?? []).map((approval) => ({
@@ -195,8 +188,6 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           const dustSummary = values.dustSummary as
             | DustSummaryValue
             | undefined;
-
-          console.log('Dust Summary on submit:', dustSummary);
 
           if (dustSummary) {
             setDustSummary(values.dustSummary as DustSummaryValue);
