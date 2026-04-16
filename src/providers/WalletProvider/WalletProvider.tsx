@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { EVMProvider } from './EVMProvider';
 import { SuiProvider } from './SuiProvider';
 import { SVMProvider } from './SVMProvider';
+import { TronProvider } from './TronProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
@@ -26,6 +27,7 @@ import { EthereumProvider as EthereumWidgetProvider } from '@lifi/widget-provide
 import { SolanaProvider as SolanaWidgetProvider } from '@lifi/widget-provider-solana';
 import { BitcoinProvider as BitcoinWidgetProvider } from '@lifi/widget-provider-bitcoin';
 import { SuiProvider as SuiWidgetProvider } from '@lifi/widget-provider-sui';
+import { TronProvider as TronWidgetProvider } from '@lifi/widget-provider-tron';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
@@ -41,6 +43,9 @@ export const widgetProviders = [
   SolanaWidgetProvider(),
   BitcoinWidgetProvider(),
   SuiWidgetProvider(),
+  TronWidgetProvider({
+    walletConnect: true,
+  }),
 ];
 
 export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -52,7 +57,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
       <UTXOProvider>
         <SVMProvider>
           <SuiProvider>
-            <WalletManagementThemeProvider>
+            <TronProvider>
+              <WalletManagementThemeProvider>
               <WalletManagementProviders
                 config={{
                   locale: i18n.resolvedLanguage as never,
@@ -64,7 +70,8 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
               >
                 <WalletTrackingProvider>{children}</WalletTrackingProvider>
               </WalletManagementProviders>
-            </WalletManagementThemeProvider>
+              </WalletManagementThemeProvider>
+            </TronProvider>
           </SuiProvider>
         </SVMProvider>
       </UTXOProvider>
