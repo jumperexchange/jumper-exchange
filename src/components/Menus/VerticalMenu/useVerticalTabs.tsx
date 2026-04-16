@@ -1,11 +1,12 @@
-import { GppGood, PrivacyTip } from '@mui/icons-material';
+import { useAccount } from '@lifi/wallet-management';
+import { GppGood } from '@mui/icons-material';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { isAnonymousSwapEnabled } from '@/app/lib/getFeatureFlag';
 import { AB_TEST_NAME } from '@/const/abtests';
-
 import {
   TrackingAction,
   TrackingCategory,
@@ -13,7 +14,6 @@ import {
 } from '@/const/trackingKeys';
 import { useABTest } from '@/hooks/useABTest';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useAccount } from '@lifi/wallet-management';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
@@ -54,11 +54,15 @@ export const useVerticalTabs = () => {
       label: t('navbar.links.refuel'),
       icon: EvStationOutlinedIcon,
     },
-    {
-      tab: 'private/',
-      label: t('navbar.links.private'),
-      icon: GppGood,
-    },
+    ...(isAnonymousSwapEnabled()
+      ? [
+          {
+            tab: 'private/',
+            label: t('navbar.links.private'),
+            icon: GppGood,
+          },
+        ]
+      : []),
   ];
 
   const output = tabs.map(({ tab, label, icon: Icon }, index) => ({
