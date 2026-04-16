@@ -32,7 +32,7 @@ export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
 
       <SecondaryLinksContainer>
         {secondaryButtons}
-        {isProduction && <NotificationBell />}
+        {!isProduction && <NotificationBell />}
         <MainMenuToggle />
       </SecondaryLinksContainer>
     </>

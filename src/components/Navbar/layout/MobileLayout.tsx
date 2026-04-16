@@ -12,7 +12,7 @@ export const MobileLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   return (
     <SecondaryLinksContainer>
       {secondaryButtons}
-      {isProduction && <NotificationBell />}
+      {!isProduction && <NotificationBell />}
       <MainMenuToggle />
     </SecondaryLinksContainer>
   );
