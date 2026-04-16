@@ -1,27 +1,48 @@
-import { createTokenBalance } from '@/types/tokens';
+import type { Balance, ExtendedToken } from '@/types/tokens';
 import type { FC } from 'react';
-import { useWidgetStore } from '@/components/composite/JumperWidget/store';
+import { useMemo } from 'react';
+import { usePortfolioBalances } from '@/providers/PortfolioProvider/PortfolioContext';
 import { Summary } from '@/components/composite/JumperWidget/components/Summary';
-import type { DustSummaryValue } from '../hooks/useDustFormFields';
-import type { LiFiStep } from '@lifi/sdk';
+import type { ComposeResponseData } from '@/app/lib/lifi-composer-client';
 import Box from '@mui/material/Box';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
 import Typography from '@mui/material/Typography';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import { NetworkCost } from '../../JumperWidget/components/NetworkCost/NetworkCost';
+import { ComposerNetworkCost } from '../../JumperWidget/components/NetworkCost/ComposerNetworkCost';
 
 const fieldSx = { background: 'transparent', boxShadow: 'none', padding: 0 };
 
 interface RouteOverviewProps {
-  quotes?: LiFiStep[];
+  composerQuote?: ComposeResponseData;
+  nativeTokenBalance?: Balance<ExtendedToken>;
+  slippage: number;
 }
 
-export const RouteOverview: FC<RouteOverviewProps> = ({ quotes }) => {
-  const dustSummary = useWidgetStore(
-    (state) => state.values.dustSummary as DustSummaryValue | undefined,
+export const RouteOverview: FC<RouteOverviewProps> = ({
+  composerQuote,
+  nativeTokenBalance,
+  slippage,
+}) => {
+  const { balances: portfolioBalances } = usePortfolioBalances();
+
+  const flatBalances = useMemo(
+    () => Object.values(portfolioBalances ?? {}).flat(),
+    [portfolioBalances],
   );
 
-  if (!dustSummary || !quotes) {
+  const fromBalances = useMemo(() => {
+    if (!composerQuote) {
+      return [];
+    }
+    const approvalAddresses = new Set(
+      composerQuote.approvals.map((a) => a.token.toLowerCase()),
+    );
+    return flatBalances.filter((b) =>
+      approvalAddresses.has(b.token.address.toLowerCase()),
+    );
+  }, [flatBalances, composerQuote]);
+
+  if (!composerQuote || fromBalances.length === 0 || !nativeTokenBalance) {
     return null;
   }
 
@@ -29,9 +50,9 @@ export const RouteOverview: FC<RouteOverviewProps> = ({ quotes }) => {
     <>
       <Summary
         label="Convert"
-        from={dustSummary.selectedBalances}
-        amountUSD={dustSummary.amountUSD}
-        to={createTokenBalance(dustSummary.nativeToken, dustSummary.amount)}
+        from={fromBalances}
+        amountUSD={composerQuote.priceImpact.inputValueUsd}
+        to={nativeTokenBalance}
         fieldSx={fieldSx}
       >
         <Box
@@ -45,15 +66,19 @@ export const RouteOverview: FC<RouteOverviewProps> = ({ quotes }) => {
           <AvatarItem
             avatar={{
               src: 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/protocols/wrapper.svg',
-              alt: 'Wrapper',
+              alt: 'Composer',
               id: 'step',
             }}
             size={AvatarSize.XL}
           />
-          <Typography variant="bodySmallStrong">Wrapper via Li.Fi</Typography>
+          <Typography variant="bodySmallStrong">Composer via Li.Fi</Typography>
         </Box>
       </Summary>
-      <NetworkCost steps={quotes} />
+      <ComposerNetworkCost
+        composerQuote={composerQuote}
+        outputToken={nativeTokenBalance.token}
+        slippage={slippage}
+      />
     </>
   );
 };

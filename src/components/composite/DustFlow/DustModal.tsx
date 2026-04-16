@@ -16,9 +16,9 @@ import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContex
 import { useTranslation } from 'react-i18next';
 import { ConvertDustSubmitButton } from './components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from './components/RouteOverviewSubmitButton';
-import { buildDustQuoteParams, useDustQuotes } from './hooks/useDustQuotes';
+import { useDustComposerQuote } from './hooks/useDustComposerQuote';
 import type { NavigationContextValue } from '../JumperWidget/context';
-import { makeLifiComposerClient } from '@/app/lib/lifi-composer-client';
+import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 
 interface DustModalProps {
   isOpen: boolean;
@@ -38,29 +38,38 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   });
 
   const [dustSummary, setDustSummary] = useState<DustSummaryValue | null>(null);
+  const [slippage, _setSlippage] = useState(0.01);
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
-  const { quotes, fetchQuotesAsync } = useDustQuotes();
+  const { composerQuote, fetchComposerQuoteAsync } = useDustComposerQuote();
+  const { toAmountFromPrice, toRawAmount } = useTokenAmountInput();
 
   const isDustSelection = widgetNav?.currentViewId === 'form';
 
   useEffect(() => {
     if (
       widgetNav?.currentViewId === 'summary' &&
-      (!dustSummary || !quotes?.length)
+      (!dustSummary || !composerQuote)
     ) {
       widgetNav.goToView('form');
     }
-  }, [widgetNav, dustSummary, quotes]);
+  }, [widgetNav, dustSummary, composerQuote]);
 
   const nativeTokenBalance = useMemo(() => {
-    if (!dustSummary?.nativeToken) {
+    if (!dustSummary?.nativeToken || !composerQuote) {
       return undefined;
     }
 
-    return createTokenBalance(dustSummary.nativeToken, dustSummary.amount);
-  }, [dustSummary?.nativeToken, dustSummary?.amount]);
+    const { nativeToken } = dustSummary;
+    const tokenAmountString = toAmountFromPrice(
+      composerQuote.priceImpact.outputValueUsd.toString(),
+      nativeToken.priceUSD,
+    );
+    const amountRaw = toRawAmount(tokenAmountString, nativeToken.decimals);
+
+    return createTokenBalance(nativeToken, amountRaw.toString());
+  }, [dustSummary, composerQuote, toAmountFromPrice, toRawAmount]);
 
   const nativeTokenChainId = useMemo(
     () => dustSummary?.nativeToken.chainId ?? 1,
@@ -72,63 +81,21 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
       if (!dustSummary) {
         throw new Error('Missing fields');
       }
-      const _quotes = await fetchQuotesAsync(buildDustQuoteParams(dustSummary));
+      await fetchComposerQuoteAsync(dustSummary, slippage);
 
-      if (_quotes.length > 0 && widgetNav) {
+      if (widgetNav) {
         widgetNav.goToView('summary');
       }
       return undefined;
     }
 
-    const client = makeLifiComposerClient();
-    const chainId = dustSummary?.nativeToken.chainId ?? 1;
-    const signer = dustSummary?.address ?? '';
-    const balances = dustSummary?.selectedBalances ?? [];
-    const inputNames = balances.map((b) => b.token.symbol.toLowerCase());
+    if (!composerQuote) {
+      throw new Error('Missing composer quote');
+    }
 
-    const { data } = await client.compose({
-      flow: {
-        version: 1,
-        id: 'dust-to-eth',
-        chainId,
-        inputs: balances.map((balance, i) => ({
-          name: inputNames[i],
-          resource: {
-            kind: 'erc20' as const,
-            token: balance.token.address,
-            chainId,
-          },
-        })),
-        nodes: balances.map((balance, i) => ({
-          id: `swap_${inputNames[i]}`,
-          op: 'lifi.swap' as const,
-          bind: { amountIn: { $ref: `input.${inputNames[i]}` } },
-          config: {
-            resourceOut: { kind: 'native' as const, chainId },
-            slippage: 0.01,
-          },
-        })),
-      },
-      run: {
-        inputs: Object.fromEntries(
-          balances.map((balance, i) => [
-            inputNames[i],
-            {
-              kind: 'directDeposit' as const,
-              amount: balance.amount.toString(),
-            },
-          ]),
-        ),
-        signer,
-        sweepTo: signer,
-        simulationPolicy: 'allow-revert',
-        checkOnChainAllowances: true,
-        maxPriceImpactBps: 1200, // @TODO - consider making this configurable by the user
-      },
-    });
     return {
       actions: [
-        ...(data.approvals ?? []).map((approval) => ({
+        ...(composerQuote.approvals ?? []).map((approval) => ({
           name: 'approve' as const,
           tx: {
             to: approval.transactionRequest.to,
@@ -140,9 +107,9 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         {
           name: 'composer' as const,
           tx: {
-            to: data.transactionRequest.to,
-            data: data.transactionRequest.data,
-            value: data.transactionRequest.value,
+            to: composerQuote.transactionRequest.to,
+            data: composerQuote.transactionRequest.data,
+            value: composerQuote.transactionRequest.value,
             chainId: nativeTokenChainId,
           },
         },
@@ -152,8 +119,10 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     isDustSelection,
     widgetNav,
     dustSummary,
+    slippage,
+    composerQuote,
     nativeTokenChainId,
-    fetchQuotesAsync,
+    fetchComposerQuoteAsync,
   ]);
 
   const transactionForm = useTransactionForm({
@@ -184,7 +153,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         id: 'form',
         title: t('portfolio.dustConversion.title'),
         fields: formFields,
-        onSubmit: async ({ goToView, values }: ViewSubmitContext) => {
+        onSubmit: async ({ values }: ViewSubmitContext) => {
           const dustSummary = values.dustSummary as
             | DustSummaryValue
             | undefined;
@@ -205,8 +174,14 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         type: 'custom' as const,
         id: 'summary',
         title: t('portfolio.dustConversion.title'),
-        content: <RouteOverview quotes={quotes} />,
-        onSubmit: async ({ goToView }: ViewSubmitContext) => {
+        content: (
+          <RouteOverview
+            composerQuote={composerQuote ?? undefined}
+            nativeTokenBalance={nativeTokenBalance}
+            slippage={slippage}
+          />
+        ),
+        onSubmit: async () => {
           transactionForm.handleSubmit();
         },
         actions: (
@@ -216,7 +191,14 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
         ),
       },
     ],
-    [quotes, formFields, transactionForm, t],
+    [
+      composerQuote,
+      slippage,
+      nativeTokenBalance,
+      formFields,
+      transactionForm,
+      t,
+    ],
   );
 
   return (

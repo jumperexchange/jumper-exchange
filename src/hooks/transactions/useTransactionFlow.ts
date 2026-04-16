@@ -35,7 +35,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
   const executeAction = useCallback(
     async (action: TransactionAction, allActions?: TransactionAction[]) => {
       try {
-        console.log('Executing action:', action);
         if (account?.chainId !== action.tx.chainId) {
           await switchChainAsync({ chainId: action.tx.chainId });
         }
@@ -47,8 +46,6 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
             ? 'approving'
             : 'executing',
         );
-
-        console.log('Calling executor with action:', action);
 
         executor.execute(action, allActions);
       } catch (e: unknown) {

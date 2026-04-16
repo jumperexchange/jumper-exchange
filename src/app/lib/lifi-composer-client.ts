@@ -70,9 +70,33 @@ interface ApprovalItem {
   transactionRequest: TransactionRequest;
 }
 
-interface ComposeResponseData {
+export interface ProducedResourceSimulated {
+  amountOut: string;
+  amountOutMin: string;
+}
+
+export interface ProducedResource {
+  kind: 'native' | 'erc20';
+  chainId: number;
+  availability: string;
+  owner: string;
+  simulated: ProducedResourceSimulated;
+}
+
+export interface PriceImpact {
+  inputValueUsd: number;
+  outputValueUsd: number;
+  impactBps: number;
+  unpricedInputs: string[];
+  unpricedOutputs: string[];
+}
+
+export interface ComposeResponseData {
+  producedResources: Record<string, ProducedResource>;
   transactionRequest: TransactionRequest;
+  userProxy: string;
   approvals: ApprovalItem[];
+  priceImpact: PriceImpact;
 }
 
 interface ComposeResponse {
