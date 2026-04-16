@@ -15,10 +15,10 @@ import type {
   ExtendedToken,
 } from '@/types/tokens';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
-import { ChainId, type ExtendedChain } from '@lifi/sdk';
+import { type ExtendedChain } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
-import { INITIAL_MAX_THRESHOLD_USD } from '../constants';
+import { INITIAL_MAX_THRESHOLD_USD, MAX_SELECTABLE_TOKENS } from '../constants';
 import { useAccount } from '@lifi/wallet-management';
 import { checkBalanceWithinRange, getChainMinUsdThreshold } from '../utils';
 
@@ -126,6 +126,53 @@ export const useDustFormFields = ({
     ],
   );
 
+  const defaultChainAndBalances = useMemo(() => {
+    const chainBalanceSums = new Map<number, number>();
+    const chainBalances = new Map<number, typeof nonNativeBalances>();
+
+    let maxChainId: number | undefined;
+    let maxSum = -Infinity;
+
+    for (const balance of nonNativeBalances) {
+      const { chainId } = balance.token;
+
+      if (
+        !checkBalanceWithinRange(
+          balance,
+          INITIAL_MAX_THRESHOLD_USD,
+          getChainMinUsdThreshold(chainId),
+        )
+      ) {
+        continue;
+      }
+
+      const newSum = (chainBalanceSums.get(chainId) ?? 0) + balance.amountUSD;
+      chainBalanceSums.set(chainId, newSum);
+
+      const list = chainBalances.get(chainId) ?? [];
+      list.push(balance);
+      chainBalances.set(chainId, list);
+
+      if (newSum > maxSum) {
+        maxSum = newSum;
+        maxChainId = chainId;
+      }
+    }
+
+    if (maxChainId == null) {
+      return { chainId: undefined, addresses: [] };
+    }
+
+    const topBalances = (chainBalances.get(maxChainId) ?? [])
+      .sort((a, b) => b.amountUSD - a.amountUSD)
+      .slice(0, MAX_SELECTABLE_TOKENS);
+
+    return {
+      chainId: maxChainId,
+      addresses: topBalances.map((b) => b.token.address),
+    };
+  }, [nonNativeBalances]);
+
   const computeAccountAddress = useCallback(
     (chainId: number) => {
       const selectedChain = chains.find((c) => c.id === chainId);
@@ -168,20 +215,12 @@ export const useDustFormFields = ({
       const selectedBalances = filteredBalances.filter((b) =>
         selectedAddresses.includes(b.token.address),
       );
-      const amountUSD = selectedBalances.reduce(
-        (acc, b) => acc + b.amountUSD,
-        0,
+      const amountUSD = toAggregatedAmountUSD(selectedBalances);
+      const { amount } = computeAmounts(
+        filteredBalances,
+        selectedAddresses,
+        token,
       );
-
-      const toTokenStr = (usd: number) =>
-        toAmountFromPrice(
-          toInputAmount(usd.toString(), usdDecimals),
-          token.priceUSD,
-        );
-      const amount = toRawAmount(
-        toTokenStr(amountUSD),
-        token.decimals,
-      ).toString();
 
       const next: DustSummaryValue = {
         selectedBalances,
@@ -211,10 +250,8 @@ export const useDustFormFields = ({
       fallbackNativeToken,
       getFilteredBalances,
       computeAccountAddress,
-      toAmountFromPrice,
-      toInputAmount,
-      toRawAmount,
-      usdDecimals,
+      computeAmounts,
+      toAggregatedAmountUSD,
     ],
   );
 
@@ -233,7 +270,14 @@ export const useDustFormFields = ({
       defineChainSingleSelectField({
         t,
         fieldKey: 'chain',
-        fieldProps: { availableChains: chains, label: t('form.labels.chain') },
+        defaultValue:
+          defaultChainAndBalances.chainId != null
+            ? { selectedChain: defaultChainAndBalances.chainId }
+            : undefined,
+        fieldProps: {
+          availableChains: chains,
+          label: t('form.labels.chain'),
+        },
         sidePanelProps: {
           availableChains: chains,
           header: t('headers.chains'),
@@ -256,6 +300,10 @@ export const useDustFormFields = ({
       defineBalancesMultiSelectField({
         t,
         fieldKey: 'balances',
+        defaultValue:
+          defaultChainAndBalances.addresses.length > 0
+            ? { selectedAddresses: defaultChainAndBalances.addresses }
+            : undefined,
         fieldProps: {
           availableBalances: nonNativeBalances,
           label: t('form.labels.convert'),
@@ -265,7 +313,7 @@ export const useDustFormFields = ({
           header: t('headers.tokens'),
         },
         schemaOptions: {
-          max: 10,
+          max: MAX_SELECTABLE_TOKENS,
         },
         deriveProps: (getValue) => {
           const { threshold, chainId, isValid } =
@@ -331,6 +379,7 @@ export const useDustFormFields = ({
       nonNativeBalances,
       nativeExtendedTokens,
       fallbackNativeToken,
+      defaultChainAndBalances,
       checkChainHasBalancesBelowThreshold,
       getFilteredBalances,
       computeAmounts,
