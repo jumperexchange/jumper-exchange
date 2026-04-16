@@ -90,7 +90,7 @@ export function filterOpportunities(
     }
 
     // Rewards APY filter (exclusive min to filter out 0 rewards)
-    const rewardsApy = item.rewardsApy;
+    const rewardsApy = item.latest.apy.jumperReward;
     if (
       minRewardsAPY !== undefined &&
       (rewardsApy === undefined || rewardsApy <= minRewardsAPY)
@@ -164,7 +164,7 @@ export const extractFilteringParams = (
 
   const withRewards = some(
     data,
-    (item) => item.rewardsApy && item.rewardsApy > 0,
+    (item) => item.latest.apy.jumperReward && item.latest.apy.jumperReward > 0,
   );
 
   const allRewardsOptions = withRewards ? [RewardsAPYOptions.WITH_REWARDS] : [];

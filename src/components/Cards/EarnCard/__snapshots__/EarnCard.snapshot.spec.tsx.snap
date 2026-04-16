@@ -97,7 +97,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -419,7 +419,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -745,7 +745,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
           class="MuiStack-root css-4e6rn7-MuiStack-root"
         >
           <div
-            class="MuiBox-root css-1lz6fjj"
+            class="MuiBox-root css-1hq6w3b"
           >
             <div
               class="MuiBox-root css-wioyy2"
@@ -1026,7 +1026,7 @@ exports[`EarnCard snapshot > compact card with loading matches snapshot 1`] = `
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lr3mj0"
+          class="MuiBox-root css-bcpzx5"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-ylkla6-MuiSkeleton-root"
@@ -1125,7 +1125,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -1447,7 +1447,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -1764,7 +1764,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -2112,7 +2112,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -2460,7 +2460,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
         class="MuiStack-root css-4e6rn7-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -2651,7 +2651,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -2885,7 +2885,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -3097,7 +3097,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
           class="MuiStack-root css-ksl325-MuiStack-root"
         >
           <div
-            class="MuiBox-root css-1lz6fjj"
+            class="MuiBox-root css-1hq6w3b"
           >
             <div
               class="MuiBox-root css-wioyy2"
@@ -3306,7 +3306,7 @@ exports[`EarnCard snapshot > list item card with loading matches snapshot 1`] = 
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lr3mj0"
+          class="MuiBox-root css-bcpzx5"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-kqkmxp-MuiSkeleton-root"
@@ -3368,7 +3368,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -3576,7 +3576,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -3784,7 +3784,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -3987,7 +3987,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
         class="MuiStack-root css-ksl325-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -4348,7 +4348,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -4500,7 +4500,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -4732,7 +4732,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -4884,7 +4884,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -5113,7 +5113,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -5265,7 +5265,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -5528,7 +5528,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -5680,7 +5680,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -5909,7 +5909,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"
@@ -6061,7 +6061,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
               class="MuiBox-root css-1xdhyk6"
             >
               <div
-                class="MuiBox-root css-ex4fx8"
+                class="MuiBox-root css-1i97kwt"
               >
                 <div
                   class="MuiBox-root css-wioyy2"

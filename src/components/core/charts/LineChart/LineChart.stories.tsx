@@ -42,7 +42,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const DefaultRenderer = <
-  V extends number | string,
+  V extends number | string | null,
   T extends ChartDataPoint<V>,
 >(
   args: LineChartProps<V, T>,

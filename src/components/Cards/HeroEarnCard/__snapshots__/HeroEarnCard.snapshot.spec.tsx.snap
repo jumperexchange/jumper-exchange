@@ -70,7 +70,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -217,7 +217,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -364,7 +364,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -511,7 +511,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -662,7 +662,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
           class="MuiStack-root css-4n2h5n-MuiStack-root"
         >
           <div
-            class="MuiBox-root css-1lz6fjj"
+            class="MuiBox-root css-1hq6w3b"
           >
             <div
               class="MuiBox-root css-wioyy2"
@@ -768,7 +768,7 @@ exports[`HeroEarnCard snapshot > hero card with loading matches snapshot 1`] = `
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lr3mj0"
+          class="MuiBox-root css-bcpzx5"
         >
           <span
             class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-kqkmxp-MuiSkeleton-root"
@@ -853,7 +853,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1lz6fjj"
+          class="MuiBox-root css-1hq6w3b"
         >
           <div
             class="MuiBox-root css-wioyy2"

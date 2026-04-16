@@ -237,7 +237,7 @@ export const useFormatDisplayEarnOpportunityData = (
     const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
-    const rewardsApy = earnOpportunity?.rewardsApy;
+    const rewardsApy = earnOpportunity?.latest.apy.jumperReward;
 
     const chains = uniqBy(
       assets.map((asset) => asset.chain),
