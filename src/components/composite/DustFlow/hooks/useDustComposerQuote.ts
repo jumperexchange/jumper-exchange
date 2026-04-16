@@ -35,7 +35,7 @@ async function fetchComposerQuote(
   const balances = dustSummary.selectedBalances;
   const inputNames = balances.map((b) => b.token.symbol.toLowerCase());
 
-  const { data } = await client.compose({
+  const { data, success, error } = await client.compose({
     flow: {
       version: 1,
       id: 'dust-to-eth',
@@ -75,6 +75,10 @@ async function fetchComposerQuote(
       maxPriceImpactBps: 1200,
     },
   });
+
+  if (!success) {
+    throw new Error(error?.message || 'Failed to fetch composer quote');
+  }
 
   return data;
 }

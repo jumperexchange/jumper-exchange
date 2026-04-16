@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwitchChain } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
+import type { Hex } from 'viem';
 import { type TransactionAction, type ExecutorType } from './executors/types';
 import { useTransactionExecutor } from './executors/useTransactionExecutor';
 
@@ -30,6 +31,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     'idle' | 'approving' | 'executing' | 'confirming' | 'success'
   >('idle');
   const [error, setError] = useState<Error | null>(null);
+  const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
   const flowLockedRef = useRef(false);
 
   const executeAction = useCallback(
@@ -88,6 +90,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       setIsExecuting(false);
       setCurrentActionIndex(0);
       setCurrentStep('success');
+      setTxHash(executor.txHash);
       setCallData(null);
       executor.reset();
       options.onSuccess?.();
@@ -148,6 +151,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     setCurrentActionIndex(0);
     setCurrentStep('idle');
     setError(null);
+    setTxHash(undefined);
     executor.reset();
   }, [executor]);
 
@@ -158,7 +162,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     isPending: executor.isPending,
     isConfirming: executor.isConfirming,
     error: error ?? executor.error,
-    txHash: executor.txHash,
+    txHash: currentStep === 'success' ? txHash : executor.txHash,
     executeFlow,
     retryCurrentAction,
     resetFlow,

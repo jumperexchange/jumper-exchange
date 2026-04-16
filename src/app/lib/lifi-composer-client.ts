@@ -101,6 +101,11 @@ export interface ComposeResponseData {
 
 interface ComposeResponse {
   data: ComposeResponseData;
+  success: boolean;
+  error?: {
+    message: string;
+    kind: string;
+  };
 }
 
 class LifiComposerClient {
