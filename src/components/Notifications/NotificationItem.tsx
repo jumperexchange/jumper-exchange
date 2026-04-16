@@ -78,10 +78,14 @@ export const NotificationItem: FC<NotificationItemProps> = ({
   return (
     <NotificationItemContainer onClick={handleClick} isRead={isRead}>
       <UnreadDot sx={{ visibility: isRead ? 'hidden' : 'visible' }} />
-
       <NotificationContent>
         <NotificationTitle>{notification.title}</NotificationTitle>
-        <Stack direction="row" gap={1}>
+        <Stack
+          direction="row"
+          sx={{
+            gap: 1,
+          }}
+        >
           <Badge
             label={t(`notifications.categories.${notification.category}`)}
             variant={CATEGORY_BADGE_VARIANT[notification.category]}
@@ -124,7 +128,6 @@ export const NotificationItem: FC<NotificationItemProps> = ({
             ))}
         </NotificationFooter>
       </NotificationContent>
-
       <IconButton
         className="notification-trash"
         variant={Variant.Borderless}

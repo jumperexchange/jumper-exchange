@@ -106,7 +106,13 @@ const columnsWithActions: ColumnDefinition<Person>[] = [
     id: 'actions',
     hideHeader: true,
     render: (row) => (
-      <Stack direction="row" spacing={1} justifyContent="flex-end">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          justifyContent: 'flex-end',
+        }}
+      >
         <Button size="small" variant="outlined">
           Edit
         </Button>
@@ -239,9 +245,11 @@ const complexColumns: ColumnDefinition<Person>[] = [
       <Stack
         direction="row"
         spacing={1}
-        justifyContent="flex-end"
-        alignItems="center"
-        sx={{ height: '100%' }}
+        sx={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          height: '100%',
+        }}
       >
         <Button size="small" variant="outlined">
           Edit
@@ -283,7 +291,13 @@ const columnsWithEmpty: ColumnDefinition<Person>[] = [
     id: 'actions',
     hideHeader: true,
     render: () => (
-      <Stack direction="row" spacing={1} justifyContent="flex-end">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          justifyContent: 'flex-end',
+        }}
+      >
         <Button size="small" variant="contained">
           View
         </Button>

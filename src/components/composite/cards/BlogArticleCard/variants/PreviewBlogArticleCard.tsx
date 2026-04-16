@@ -56,7 +56,7 @@ export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
           draggable={false}
         />
       )}
-      <BlogArticleCardContentContainer gap={0.5}>
+      <BlogArticleCardContentContainer sx={{ gap: 0.5 }}>
         <BlogArticleCardHighlightText variant="titleXSmall">
           {highlightText(title, highlight)}
         </BlogArticleCardHighlightText>

@@ -90,7 +90,7 @@ export const BaseChainStack: FC<BaseChainStackProps> = ({
 
   return (
     <EntityChainContainer
-      gap={spacing.containerGap}
+      sx={{ gap: spacing.containerGap }}
       data-testid={dataTestId}
       isContentVisible={isContentVisible}
     >

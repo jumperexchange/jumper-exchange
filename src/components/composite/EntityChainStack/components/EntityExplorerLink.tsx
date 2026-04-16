@@ -31,12 +31,20 @@ export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
       rel="noopener noreferrer"
       direction="row"
       spacing={0.5}
-      alignItems="center"
       aria-label={`View on blockchain explorer for ${address}`}
       onClick={(e: React.MouseEvent) => e.stopPropagation()}
-      sx={{ cursor: 'pointer', textDecoration: 'none' }}
+      sx={{
+        alignItems: 'center',
+        cursor: 'pointer',
+        textDecoration: 'none',
+      }}
     >
-      <Typography variant={hintVariant} color="text.secondary">
+      <Typography
+        variant={hintVariant}
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         {truncateAddress(address, 5, 3)}
       </Typography>
       <OpenInNewRoundedIcon sx={{ width: 12, height: 12, color: 'iconHint' }} />

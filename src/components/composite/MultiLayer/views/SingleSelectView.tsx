@@ -1,4 +1,4 @@
-import Stack from '@mui/material/Stack';
+import MenuList from '@mui/material/MenuList';
 import CheckIcon from '@mui/icons-material/Check';
 import type {
   RendererSlotProps,
@@ -35,10 +35,18 @@ export const SingleSelectView = <TValue extends string | number>({
   };
 
   return (
-    <Stack
-      direction="column"
-      spacing={listSpacing}
-      sx={mergeSx({ flex: 1, overflowY: 'auto' }, slotProps?.listSx)}
+    <MenuList
+      disablePadding
+      sx={mergeSx(
+        {
+          flex: 1,
+          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: listSpacing,
+        },
+        slotProps?.listSx,
+      )}
     >
       {options.map((option) => {
         const isSelected = value === option.value;
@@ -71,6 +79,6 @@ export const SingleSelectView = <TValue extends string | number>({
           </StyledMenuItem>
         );
       })}
-    </Stack>
+    </MenuList>
   );
 };

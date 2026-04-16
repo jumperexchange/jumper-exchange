@@ -160,7 +160,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
 
   return (
     <EntityStackContainer
-      gap={spacing.containerGap}
+      sx={{ gap: spacing.containerGap }}
       data-testid={dataTestId}
       isContentVisible={isContentVisible}
     >

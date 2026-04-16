@@ -94,7 +94,13 @@ export const NumericSelectField: FC<NumericSelectFieldProps> = ({
         })}
       </Box>
       {field.isTouched && field.errors.length > 0 ? (
-        <Typography variant="bodyXXSmallStrong" color="error" mt={0.5}>
+        <Typography
+          variant="bodyXXSmallStrong"
+          color="error"
+          sx={{
+            mt: 0.5,
+          }}
+        >
           {field.errors[0]}
         </Typography>
       ) : null}

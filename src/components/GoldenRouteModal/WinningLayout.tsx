@@ -80,16 +80,18 @@ export const WinningLayout = ({
         <TextContainer>
           <StyledTypography
             variant="h4"
-            textAlign="left"
-            marginY={2}
-            color="white"
-            fontSize={isMobile ? '42px' : '62px'}
-            lineHeight={isMobile ? '42px' : '62px'}
-            maxWidth={'600px'}
-            textTransform={'uppercase'}
-            fontWeight={'extra-bold'}
-            marginTop={isMobile ? '40px' : '80px'}
-            marginLeft={isMobile ? '16px' : '40px'}
+            sx={{
+              textAlign: 'left',
+              marginY: 2,
+              color: 'white',
+              fontSize: isMobile ? '42px' : '62px',
+              lineHeight: isMobile ? '42px' : '62px',
+              maxWidth: '600px',
+              textTransform: 'uppercase',
+              fontWeight: 'extra-bold',
+              marginTop: isMobile ? '40px' : '80px',
+              marginLeft: isMobile ? '16px' : '40px',
+            }}
           >
             WOW! it's a golden route!
           </StyledTypography>

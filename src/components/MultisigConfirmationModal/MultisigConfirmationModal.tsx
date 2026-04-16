@@ -21,10 +21,10 @@ export const MultisigConfirmationModal: React.FC<{
           <MultisigConfirmationModalIcon />
         </MultisigConfirmationModalIconContainer>
         <Typography
-          fontWeight={700}
-          textAlign={'center'}
-          marginY={4}
           sx={{
+            fontWeight: 700,
+            textAlign: 'center',
+            marginY: 4,
             color: 'inherit',
             fontSize: '1.125rem',
           }}
@@ -32,9 +32,9 @@ export const MultisigConfirmationModal: React.FC<{
           {t('multisig.transactionInitiated.title')}
         </Typography>
         <Typography
-          fontSize={'1.125 rem'}
-          marginY={4}
           sx={{
+            fontSize: '1.125 rem',
+            marginY: 4,
             color: 'inherit',
           }}
         >

@@ -28,13 +28,19 @@ const BridgePage = ({
 }: BridgePageProps) => {
   return (
     <Container>
-      <Stack display="flex" alignItems="center" direction="column">
+      <Stack
+        direction="column"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <Typography
           variant="h1"
-          marginY={2}
-          textAlign="center"
-          color="text.primary"
           sx={{
+            marginY: 2,
+            textAlign: 'center',
+            color: 'text.primary',
             fontSize: { xs: '40px', sm: '40px' },
           }}
         >
@@ -59,9 +65,11 @@ const BridgePage = ({
 
         <Stack
           direction="row"
-          justifyContent="space-between"
-          width="100%"
-          flexWrap="wrap"
+          sx={{
+            justifyContent: 'space-between',
+            width: '100%',
+            flexWrap: 'wrap',
+          }}
         >
           {[sourceChain, destinationChain].map((chain, index) => (
             <ChainInformationCard key={`${chain.id}-${index}`} chain={chain} />
