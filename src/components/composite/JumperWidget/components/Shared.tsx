@@ -6,7 +6,6 @@ import {
   type PropsWithChildren,
   type ReactNode,
 } from 'react';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
@@ -25,6 +24,7 @@ import { GoBackHeader } from './Headers';
 import { useTranslation } from 'react-i18next';
 import Collapse from '@mui/material/Collapse';
 import { Stack } from '@mui/system';
+import { MenuList } from '@mui/material';
 
 export interface OptionIconProps {
   logoURI?: string;
@@ -70,49 +70,51 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
     <>
       {header && <GoBackHeader header={header} onBack={onClose} />}
       <ContentContainer sx={{ gap: 0 }}>
-        {options.length ? (
-          options.map((option) => {
-            const selected = isSelected(option.key);
-            return (
-              <MenuItemWrapper
-                key={option.key}
-                disableRipple
-                onClick={() => onSelect(option.key)}
-                selected={selected}
-              >
-                <OptionIcon
-                  logoURI={option.logoURI}
-                  name={option.name}
-                  id={option.key}
-                />
-                <Stack direction="column" spacing={0.5}>
-                  <MenuItemLabel
-                    sx={option.description ? { fontWeight: 700 } : {}}
-                  >
-                    {option.name}
-                  </MenuItemLabel>
-                  {option.description && (
-                    <Typography variant="bodyXSmall" color="text.secondary">
-                      {option.description}
-                    </Typography>
-                  )}
-                </Stack>
-                {selected && (
-                  <CheckIcon
-                    sx={{ marginLeft: 'auto', height: 24, width: 24 }}
+        <MenuList sx={{ padding: 0, margin: 0 }}>
+          {options.length ? (
+            options.map((option) => {
+              const selected = isSelected(option.key);
+              return (
+                <MenuItemWrapper
+                  key={option.key}
+                  disableRipple
+                  onClick={() => onSelect(option.key)}
+                  selected={selected}
+                >
+                  <OptionIcon
+                    logoURI={option.logoURI}
+                    name={option.name}
+                    id={option.key}
                   />
-                )}
-              </MenuItemWrapper>
-            );
-          })
-        ) : (
-          <Label>
-            {t('jumperWidget.emptyList', {
-              itemsName: header?.toLowerCase() || t('jumperWidget.items'),
-            })}
-          </Label>
-        )}
-        {children}
+                  <Stack direction="column" spacing={0.5}>
+                    <MenuItemLabel
+                      sx={option.description ? { fontWeight: 700 } : {}}
+                    >
+                      {option.name}
+                    </MenuItemLabel>
+                    {option.description && (
+                      <Typography variant="bodyXSmall" color="text.secondary">
+                        {option.description}
+                      </Typography>
+                    )}
+                  </Stack>
+                  {selected && (
+                    <CheckIcon
+                      sx={{ marginLeft: 'auto', height: 24, width: 24 }}
+                    />
+                  )}
+                </MenuItemWrapper>
+              );
+            })
+          ) : (
+            <Label>
+              {t('jumperWidget.emptyList', {
+                itemsName: header?.toLowerCase() || t('jumperWidget.items'),
+              })}
+            </Label>
+          )}
+          {children}
+        </MenuList>
       </ContentContainer>
     </>
   );
