@@ -454,7 +454,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                               class="MuiStack-root css-1whz3z4-MuiStack-root"
                             >
                               <div
-                                class="MuiBox-root css-1lz6fjj"
+                                class="MuiBox-root css-1lgqa3s"
                               >
                                 <div
                                   class="MuiBox-root css-wioyy2"
@@ -564,7 +564,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-1lz6fjj"
+                                      class="MuiBox-root css-1lgqa3s"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
@@ -654,7 +654,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-1lz6fjj"
+                                      class="MuiBox-root css-1lgqa3s"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
