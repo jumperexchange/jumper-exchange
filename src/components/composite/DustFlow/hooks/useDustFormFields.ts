@@ -362,6 +362,25 @@ export const useDustFormFields = ({
             },
           };
         },
+        sanitizeOn: [
+          {
+            watchKey: 'chain',
+            sanitize: ({ getValue }) => {
+              const { threshold, chainId, isValid } =
+                createDustFieldDerive(getValue);
+              if (!isValid || threshold == null || chainId == null) {
+                return undefined;
+              }
+              const addresses = getFilteredBalances(chainId, threshold)
+                .sort((a, b) => b.amountUSD - a.amountUSD)
+                .slice(0, MAX_SELECTABLE_TOKENS)
+                .map((b) => b.token.address);
+              return addresses.length > 0
+                ? { selectedAddresses: addresses }
+                : undefined;
+            },
+          },
+        ],
       }),
 
       defineDisplayAmountField({
