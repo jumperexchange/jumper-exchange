@@ -41,6 +41,8 @@ export interface NavigationContextValue {
   isSubmitting: boolean;
   error: Error | null;
   clearError: () => void;
+  resetForm: () => void;
+  closeSidePanel: () => void;
 }
 
 export const NavigationContext = createContext<NavigationContextValue | null>(

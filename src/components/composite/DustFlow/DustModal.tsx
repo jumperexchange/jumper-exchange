@@ -1,6 +1,6 @@
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import type { FC } from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { JumperWidget } from '@/components/composite/JumperWidget/JumperWidget';
 import { widgetStyle } from './constants';
 import { useDustBalances } from './hooks/useDustBalances';
@@ -46,15 +46,6 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   const { toAmountFromPrice, toRawAmount } = useTokenAmountInput();
 
   const isDustSelection = widgetNav?.currentViewId === 'form';
-
-  useEffect(() => {
-    if (
-      widgetNav?.currentViewId === 'summary' &&
-      (!dustSummary || !composerQuote)
-    ) {
-      widgetNav.goToView('form');
-    }
-  }, [widgetNav, dustSummary, composerQuote]);
 
   const nativeTokenBalance = useMemo(() => {
     if (!dustSummary?.nativeToken || !composerQuote) {
@@ -130,20 +121,22 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     requiresConfirmation: false,
     executorType: 'single',
     fetchCallData,
-    onSuccess: () => {
-      refreshPortfolio();
-    },
   });
 
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
-    onSuccess: () => setDustSummary(null),
+    onSuccess: () => {
+      setDustSummary(null);
+      refreshPortfolio();
+      widgetNav?.resetForm();
+    },
   });
 
   const handleModalClose = () => {
     onClose();
     transactionForm.resetForm();
+    refreshPortfolio();
   };
 
   const views = useMemo(
@@ -161,6 +154,8 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           if (dustSummary) {
             setDustSummary(values.dustSummary as DustSummaryValue);
           }
+
+          widgetNav?.closeSidePanel();
 
           transactionForm.handleSubmit();
         },
@@ -197,6 +192,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
       nativeTokenBalance,
       formFields,
       transactionForm,
+      widgetNav,
       t,
     ],
   );

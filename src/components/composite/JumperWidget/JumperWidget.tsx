@@ -334,11 +334,29 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
     }
   }, [defaultValues, form]);
 
+  // Kept as a ref so resetForm doesn't need them as useCallback deps,
+  // which would make navigationContext unstable on every render.
+  const defaultValuesRef = useRef(defaultValues);
+  defaultValuesRef.current = defaultValues;
+  const firstViewIdRef = useRef(views[0].id);
+  firstViewIdRef.current = views[0].id;
+
   const isSubmitting = useStore(form.store, (s) => s.isSubmitting) as boolean;
 
   const submit = useCallback(() => {
     void form.handleSubmit();
   }, [form]);
+
+  const resetForm = useCallback(() => {
+    form.reset(defaultValuesRef.current);
+    setCurrentViewId(firstViewIdRef.current);
+    setError(null);
+    uiStoreRef.current!.getState().setActiveField(null);
+  }, [form]);
+
+  const closeSidePanel = useCallback(() => {
+    uiStoreRef.current!.getState().setActiveField(null);
+  }, []);
 
   const navigationContext = useMemo(
     () => ({
@@ -348,8 +366,19 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
       isSubmitting,
       error,
       clearError,
+      resetForm,
+      closeSidePanel,
     }),
-    [currentViewId, goToView, submit, isSubmitting, error, clearError],
+    [
+      currentViewId,
+      goToView,
+      submit,
+      isSubmitting,
+      error,
+      clearError,
+      resetForm,
+      closeSidePanel,
+    ],
   );
 
   useEffect(() => {
