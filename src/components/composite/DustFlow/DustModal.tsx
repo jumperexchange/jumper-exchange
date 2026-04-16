@@ -38,7 +38,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   });
 
   const [dustSummary, setDustSummary] = useState<DustSummaryValue | null>(null);
-  const [slippage, _setSlippage] = useState(0.01);
+  const [slippage, _setSlippage] = useState(0.03);
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
