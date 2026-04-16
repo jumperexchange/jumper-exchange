@@ -1,4 +1,5 @@
 'use client';
+import { useAccount } from '@lifi/wallet-management';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import {
   TrackingAction,
@@ -6,8 +7,10 @@ import {
 } from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { ChainAlert } from '@/components/Alerts';
+import { AB_TEST_NAME, AbTests } from '@/const/abtests';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
+import { useABTest } from '@/hooks/useABTest';
 import { useActiveTabStore } from '@/stores/activeTab';
 import type { StarterVariantType } from '@/types/internal';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
@@ -20,6 +23,12 @@ interface WidgetsProps {
 export function Widgets({ widgetVariant }: WidgetsProps) {
   const { activeTab, setActiveTab } = useActiveTabStore();
   const [starterVariantUsed, setStarterVariantUsed] = useState(false);
+
+  const { account } = useAccount();
+  const tradeABTest = useABTest({
+    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
+    address: account?.address ?? '',
+  });
 
   const starterVariant: StarterVariantType = useMemo(() => {
     if (widgetVariant) {
@@ -98,6 +107,20 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           routeExecutionUpdated: TrackingEventDataAction.ExecutionUpdated,
           routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
           routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
+        }}
+        trackingDataProperties={{
+          routeExecutionCompleted: {
+            abTestVariants: {
+              [AbTests[AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY].name]:
+                tradeABTest.value,
+            },
+          },
+          routeExecutionStarted: {
+            abTestVariants: {
+              [AbTests[AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY].name]:
+                tradeABTest.value,
+            },
+          },
         }}
       >
         <WidgetEvents />

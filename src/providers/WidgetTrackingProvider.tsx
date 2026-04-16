@@ -1,3 +1,4 @@
+import type { JumperEventData } from '@/hooks/useJumperTracking';
 import type {
   ChainTokenSelected,
   FormFieldChanged,
@@ -81,6 +82,10 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
     routeExecutionFailed: TrackingEventDataAction;
     routeExecutionUpdated?: TrackingEventDataAction;
   };
+  trackingDataProperties?: {
+    routeExecutionCompleted?: JumperEventData;
+    routeExecutionStarted?: JumperEventData;
+  };
 }
 
 export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
@@ -105,6 +110,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
     routeExecutionFailed: TrackingEventDataAction.ExecutionFailedZap,
     routeExecutionUpdated: '',
   },
+  trackingDataProperties,
 }) => {
   const { trackTransaction, trackEvent } = useUserTracking();
   const sourceChainToken = useRef<ChainTokenSelected | null>(null);
@@ -226,6 +232,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.Action]:
             trackingDataActionKeys.routeExecutionStarted,
           [TrackingEventParameter.TransactionStatus]: 'STARTED',
+          ...(trackingDataProperties?.routeExecutionStarted || {}),
         });
 
         trackedRoutesData.current[route.id] = routeData;
@@ -243,6 +250,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       trackTransaction,
       trackingActionKeys.routeExecutionStarted,
       trackingDataActionKeys.routeExecutionStarted,
+      trackingDataProperties?.routeExecutionStarted,
     ],
   );
 
@@ -304,6 +312,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
           [TrackingEventParameter.Action]:
             trackingDataActionKeys.routeExecutionCompleted,
           [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
+          ...(trackingDataProperties?.routeExecutionCompleted || {}),
         }),
         enableAddressable: true,
         isConversion: true,
@@ -313,6 +322,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       trackTransaction,
       trackingActionKeys.routeExecutionCompleted,
       trackingDataActionKeys.routeExecutionCompleted,
+      trackingDataProperties?.routeExecutionCompleted,
     ],
   );
 

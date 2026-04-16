@@ -1,11 +1,13 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 
 import Box from '@mui/material/Box';
 import { MainLinksContainer, SecondaryLinksContainer } from './Layout.styles';
 import { useMainLinks } from '../hooks';
 import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
-import { LayoutVariantProps } from './Layout.types';
+import type { LayoutVariantProps } from './Layout.types';
+import { NotificationBell } from '@/components/Notifications/NotificationBell';
+import { isProduction } from '@/utils/isProduction';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
@@ -30,6 +32,7 @@ export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
 
       <SecondaryLinksContainer>
         {secondaryButtons}
+        {!isProduction && <NotificationBell />}
         <MainMenuToggle />
       </SecondaryLinksContainer>
     </>
