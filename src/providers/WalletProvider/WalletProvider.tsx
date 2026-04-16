@@ -59,17 +59,17 @@ export const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
           <SuiProvider>
             <TronProvider>
               <WalletManagementThemeProvider>
-              <WalletManagementProviders
-                config={{
-                  locale: i18n.resolvedLanguage as never,
-                  walletEcosystemsOrder: walletEcosystemsOrder,
-                }}
-                providers={widgetProviders}
-                isExternalContext={true}
-                chains={(chains ?? []) as ExtendedChain[]}
-              >
-                <WalletTrackingProvider>{children}</WalletTrackingProvider>
-              </WalletManagementProviders>
+                <WalletManagementProviders
+                  config={{
+                    locale: i18n.resolvedLanguage as never,
+                    walletEcosystemsOrder: walletEcosystemsOrder,
+                  }}
+                  providers={widgetProviders}
+                  isExternalContext={true}
+                  chains={(chains ?? []) as ExtendedChain[]}
+                >
+                  <WalletTrackingProvider>{children}</WalletTrackingProvider>
+                </WalletManagementProviders>
               </WalletManagementThemeProvider>
             </TronProvider>
           </SuiProvider>
