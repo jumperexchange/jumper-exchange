@@ -37,6 +37,14 @@ interface DustFieldDeriveResult {
   isValid: boolean;
 }
 
+const selectTopAddresses = (
+  balances: PortfolioBalance<WalletToken>[],
+): string[] =>
+  [...balances]
+    .sort((a, b) => b.amountUSD - a.amountUSD)
+    .slice(0, MAX_SELECTABLE_TOKENS)
+    .map((b) => b.token.address);
+
 const createDustFieldDerive = (
   getValue: (key: string) => unknown,
 ): DustFieldDeriveResult => {
@@ -166,13 +174,9 @@ export const useDustFormFields = ({
       return { chainId: undefined, addresses: [] };
     }
 
-    const topBalances = (chainBalances.get(maxChainId) ?? [])
-      .sort((a, b) => b.amountUSD - a.amountUSD)
-      .slice(0, MAX_SELECTABLE_TOKENS);
-
     return {
       chainId: maxChainId,
-      addresses: topBalances.map((b) => b.token.address),
+      addresses: selectTopAddresses(chainBalances.get(maxChainId) ?? []),
     };
   }, [nonNativeBalances]);
 
@@ -294,24 +298,19 @@ export const useDustFormFields = ({
             checkChainHasBalancesBelowThreshold(c.id, threshold),
           );
 
-          let description: string | undefined;
-          if (chainId != null) {
-            const filteredBalances = getFilteredBalances(chainId, threshold);
-            if (filteredBalances.length > 0) {
-              const count = filteredBalances.length;
-              const amount = toDisplayAggregatedAmountUSD(filteredBalances);
-              description = t('form.descriptions.chainAvailable', {
-                count,
-                amount,
-              });
-            }
-          }
-
           const chainAmounts: Record<number, string> = {};
+          let description: string | undefined;
           for (const chain of filteredChains) {
             const balances = getFilteredBalances(chain.id, threshold);
-            if (balances.length > 0) {
-              chainAmounts[chain.id] = toDisplayAggregatedAmountUSD(balances);
+            if (balances.length === 0) {
+              continue;
+            }
+            chainAmounts[chain.id] = toDisplayAggregatedAmountUSD(balances);
+            if (chain.id === chainId) {
+              description = t('form.descriptions.chainAvailable', {
+                count: balances.length,
+                amount: chainAmounts[chain.id],
+              });
             }
           }
 
@@ -371,10 +370,9 @@ export const useDustFormFields = ({
               if (!isValid || threshold == null || chainId == null) {
                 return undefined;
               }
-              const addresses = getFilteredBalances(chainId, threshold)
-                .sort((a, b) => b.amountUSD - a.amountUSD)
-                .slice(0, MAX_SELECTABLE_TOKENS)
-                .map((b) => b.token.address);
+              const addresses = selectTopAddresses(
+                getFilteredBalances(chainId, threshold),
+              );
               return addresses.length > 0
                 ? { selectedAddresses: addresses }
                 : undefined;
@@ -434,6 +432,7 @@ export const useDustFormFields = ({
       checkChainHasBalancesBelowThreshold,
       getFilteredBalances,
       toDisplayAggregatedAmountUSD,
+      toDisplayAmountUSD,
       computeAmounts,
       computeDustSummary,
       t,
