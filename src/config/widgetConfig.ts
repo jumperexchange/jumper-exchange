@@ -57,6 +57,10 @@ export const getDefaultWidgetTheme = (
         },
         shape: {
           borderRadius: 12,
+<<<<<<< feat/tron-support
+=======
+          // @ts-ignore borderRadiusSecondary is a Jumper theme extension the widget accepts at runtime
+>>>>>>> develop
           borderRadiusSecondary: 24,
         },
         palette: {
