@@ -13,7 +13,7 @@ export const widgetStyle = {
     borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
     // boxShadow: theme.shadows[3],
     maxWidth: 400,
-    width: 400,
+    width: '100%',
     [theme.breakpoints.up('md')]: {
       width: 'fit-content',
       maxWidth: 'fit-content',
