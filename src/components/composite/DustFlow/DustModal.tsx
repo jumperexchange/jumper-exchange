@@ -7,7 +7,10 @@ import { useDustBalances } from './hooks/useDustBalances';
 import { useFallbackNativeToken } from './hooks/useFallbackNativeToken';
 import type { DustSummaryValue } from './hooks/useDustFormFields';
 import { useDustFormFields } from './hooks/useDustFormFields';
-import type { ViewSubmitContext } from '../JumperWidget/types';
+import type {
+  JumperWidgetSettings,
+  ViewSubmitContext,
+} from '../JumperWidget/types';
 import { RouteOverview } from './components/RouteOverview';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { useDustConversionStatusSheet } from './hooks/useDustConversionStatusSheet';
@@ -38,7 +41,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
   });
 
   const [dustSummary, setDustSummary] = useState<DustSummaryValue | null>(null);
-  const [slippage, _setSlippage] = useState(0.03);
+  const [slippage, setSlippage] = useState(0.03);
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
@@ -187,14 +190,26 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
       },
     ],
     [
-      composerQuote,
       slippage,
+      composerQuote,
       nativeTokenBalance,
       formFields,
       transactionForm,
       widgetNav,
       t,
     ],
+  );
+
+  const widgetSettings = useMemo<JumperWidgetSettings>(
+    () => ({
+      slippage: {
+        value: slippage,
+        defaultValue: 0.03,
+        onChange: setSlippage,
+        showWarning: false,
+      },
+    }),
+    [slippage, setSlippage],
   );
 
   return (
@@ -205,6 +220,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           statusSheet={statusSheet}
           style={widgetStyle}
           onNavigation={setWidgetNav}
+          settings={widgetSettings}
         />
       ) : null}
     </ModalContainer>

@@ -124,3 +124,14 @@ export interface JumperWidgetStatusSheetProp {
   onClose: () => void;
   children?: ReactNode;
 }
+
+export const INTERNAL_SETTINGS_VIEW_ID = '__widget_settings__';
+
+export interface JumperWidgetSettings {
+  slippage?: {
+    value: number;
+    defaultValue: number;
+    onChange: (value: number) => void;
+    showWarning?: boolean;
+  };
+}

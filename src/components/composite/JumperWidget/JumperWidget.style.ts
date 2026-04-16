@@ -1,6 +1,7 @@
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
 import Box from '@mui/material/Box';
+import ButtonBase from '@mui/material/ButtonBase';
 import MenuItem from '@mui/material/MenuItem';
 import type { Theme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
@@ -82,3 +83,32 @@ export const TokenRateTypography = styled(Typography)(({ theme }) => ({
     easing: theme.transitions.easing.easeOut,
   }),
 }));
+
+export const CardRowButton: React.FC<React.ComponentProps<typeof ButtonBase>> =
+  styled(ButtonBase)(({ theme }) => ({
+    background: 'none',
+    color: 'inherit',
+    border: 'none',
+    font: 'inherit',
+    cursor: 'pointer',
+    outline: 'inherit',
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: theme.spacing(2),
+    borderRadius: theme.vars.shape.borderRadius,
+  }));
+
+export const CardValue: React.FC<React.ComponentProps<typeof Typography>> =
+  styled(Typography)({
+    lineHeight: '1.25',
+    fontWeight: 500,
+  });
+
+export const CardTitleContainer: React.FC<React.ComponentProps<typeof Box>> =
+  styled(Box)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1.5),
+  }));

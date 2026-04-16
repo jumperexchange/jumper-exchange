@@ -1,15 +1,27 @@
-import type { FC, PropsWithChildren } from 'react';
+import {
+  useId,
+  useRef,
+  useState,
+  type FC,
+  type PropsWithChildren,
+  type ReactNode,
+} from 'react';
 import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import CheckIcon from '@mui/icons-material/Check';
 import {
+  CardRowButton,
+  CardTitleContainer,
+  CardValue,
   ContentContainer,
+  FieldWrapper,
   Label,
   MenuItemLabel,
   MenuItemWrapper,
 } from '../JumperWidget.style';
 import { GoBackHeader } from './Headers';
 import { useTranslation } from 'react-i18next';
+import Collapse from '@mui/material/Collapse';
 
 export interface OptionIconProps {
   logoURI?: string;
@@ -88,5 +100,65 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
         {children}
       </ContentContainer>
     </>
+  );
+};
+
+interface SettingCardExpandableProps extends PropsWithChildren {
+  icon: ReactNode;
+  title: ReactNode;
+  value: ReactNode;
+  disabled?: boolean;
+  keepValueVisible?: boolean;
+  onEntered?: () => void;
+}
+
+export const SettingCardExpandable: FC<SettingCardExpandableProps> = ({
+  icon,
+  title,
+  value,
+  children,
+  disabled,
+  keepValueVisible,
+  onEntered,
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const buttonId = useId();
+  const collapseId = useId();
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const toggleExpanded = (forceExpanded?: boolean) => {
+    const newExpanded = forceExpanded ?? !expanded;
+    setExpanded(newExpanded);
+  };
+
+  return (
+    <FieldWrapper sx={{ p: 1 }}>
+      <CardRowButton
+        ref={buttonRef}
+        id={buttonId}
+        aria-expanded={expanded}
+        aria-controls={collapseId}
+        onClick={disabled ? undefined : () => toggleExpanded()}
+        disableRipple
+        sx={{ p: 1, cursor: disabled ? 'default' : 'pointer' }}
+      >
+        <CardTitleContainer>
+          {icon}
+          <CardValue>{title}</CardValue>
+        </CardTitleContainer>
+        {(!expanded || keepValueVisible) && value}
+      </CardRowButton>
+      <Collapse
+        id={collapseId}
+        role="region"
+        aria-labelledby={buttonId}
+        in={expanded}
+        mountOnEnter
+        unmountOnExit
+        onEntered={onEntered}
+      >
+        {children}
+      </Collapse>
+    </FieldWrapper>
   );
 };

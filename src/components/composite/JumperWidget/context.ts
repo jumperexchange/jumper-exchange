@@ -43,6 +43,9 @@ export interface NavigationContextValue {
   clearError: () => void;
   resetForm: () => void;
   closeSidePanel: () => void;
+  settingsViewId?: string;
+  goToSettings?: () => void;
+  returnFromSettings?: () => void;
 }
 
 export const NavigationContext = createContext<NavigationContextValue | null>(

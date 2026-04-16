@@ -16,6 +16,7 @@ import {
 } from 'react';
 import { useForm, useStore } from '@tanstack/react-form';
 import { useStore as useZustandStore } from 'zustand';
+import { useTranslation } from 'react-i18next';
 import {
   type NavigationContextValue,
   FormContext,
@@ -28,10 +29,12 @@ import {
   createWidgetStore,
   useWidgetStoreInstance,
 } from './store';
-import type {
-  AnyFieldDefinition,
-  JumperWidgetStatusSheetProp,
-  WidgetView,
+import type { JumperWidgetSettings } from './types';
+import {
+  INTERNAL_SETTINGS_VIEW_ID,
+  type AnyFieldDefinition,
+  type JumperWidgetStatusSheetProp,
+  type WidgetView,
 } from './types';
 import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { GoBackHeader, MainHeader } from './components/Headers';
@@ -39,6 +42,7 @@ import { ContentContainer } from './JumperWidget.style';
 import { mergeSx } from '@/utils/theme/mergeSx';
 import type { FieldApiLike } from './utils';
 import { buildFieldListeners, buildFieldValidators } from './utils';
+import { SlippageSettings } from './components/SlippageSettings/SlippageSettings';
 import z from 'zod';
 
 const JUMPER_WIDGET_CONTAINER_ID = 'jumper-widget-container-id';
@@ -123,11 +127,20 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
   // Subscribe to all values so the side panel's deriveProps stays reactive
   const values = useStore(form.store, (s) => s.values);
 
-  const { currentViewId, goToView, submit } = useWidgetNavigation();
+  const {
+    currentViewId,
+    goToView,
+    submit,
+    settingsViewId,
+    goToSettings,
+    returnFromSettings,
+  } = useWidgetNavigation();
   const foundIndex = views.findIndex((v) => v.id === currentViewId);
   const activeViewIndex = foundIndex === -1 ? 0 : foundIndex;
   const activeView = views[activeViewIndex];
-  const isFirstViewActive = activeViewIndex === 0;
+  const isSettingsViewActive =
+    !!settingsViewId && currentViewId === settingsViewId;
+  const isFirstViewActive = activeViewIndex === 0 && !isSettingsViewActive;
 
   const handleGoBack = () => {
     if (activeViewIndex === 0) {
@@ -180,8 +193,16 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
               <Box component="form" onSubmit={handleSubmit}>
                 <SectionCard sx={style?.mainView}>
                   {activeView.title &&
-                    (isFirstViewActive ? (
-                      <MainHeader header={activeView.title} />
+                    (isSettingsViewActive ? (
+                      <GoBackHeader
+                        header={activeView.title}
+                        onBack={returnFromSettings ?? handleGoBack}
+                      />
+                    ) : isFirstViewActive ? (
+                      <MainHeader
+                        header={activeView.title}
+                        onSettingsClick={goToSettings}
+                      />
                     ) : (
                       <GoBackHeader
                         header={activeView.title}
@@ -269,6 +290,13 @@ interface JumperWidgetProps {
     sideView?: SxProps<Theme>;
   };
   onNavigation?: (context: NavigationContextValue) => void;
+  /**
+   * Configures which built-in settings are shown in the auto-generated settings panel.
+   * When provided, a settings icon appears in the main header.
+   */
+  settings?: JumperWidgetSettings;
+  /** ID of a custom view to use as the settings panel. Use `settings` prop instead for built-in settings. */
+  settingsViewId?: string;
 }
 
 export const JumperWidget: FC<JumperWidgetProps> = ({
@@ -276,13 +304,48 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
   statusSheet,
   style,
   onNavigation,
+  settings,
+  settingsViewId: externalSettingsViewId,
 }) => {
+  const { t } = useTranslation();
+
+  const resolvedSettingsViewId = settings
+    ? INTERNAL_SETTINGS_VIEW_ID
+    : externalSettingsViewId;
+
+  const allViews = useMemo(() => {
+    if (!settings) {
+      return views;
+    }
+    const settingsView: WidgetView = {
+      type: 'custom',
+      id: INTERNAL_SETTINGS_VIEW_ID,
+      title: t('jumperWidget.settings.title'),
+      content: (
+        <>
+          {settings.slippage && (
+            <SlippageSettings
+              value={settings.slippage.value}
+              defaultValue={settings.slippage.defaultValue}
+              onChange={settings.slippage.onChange}
+              showWarning={settings.slippage.showWarning}
+            />
+          )}
+        </>
+      ),
+    };
+    return [...views, settingsView];
+  }, [views, settings, t]);
+
   const uiStoreRef = useRef<ReturnType<typeof createWidgetStore> | null>(null);
   if (!uiStoreRef.current) {
     uiStoreRef.current = createWidgetStore();
   }
 
   const [currentViewId, setCurrentViewId] = useState(views[0].id);
+  const [settingsReturnViewId, setSettingsReturnViewId] = useState<
+    string | null
+  >(null);
   const [error, setError] = useState<Error | null>(null);
 
   const allFields = useMemo(
@@ -308,7 +371,8 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
 
   const clearError = useCallback(() => setError(null), []);
 
-  const activeView = views.find((v) => v.id === currentViewId) ?? views[0];
+  const activeView =
+    allViews.find((v) => v.id === currentViewId) ?? allViews[0];
 
   const form = useForm({
     defaultValues,
@@ -358,6 +422,23 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
     uiStoreRef.current!.getState().setActiveField(null);
   }, []);
 
+  const goToSettings = useCallback(() => {
+    if (!resolvedSettingsViewId) {
+      return;
+    }
+    setSettingsReturnViewId(currentViewId);
+    setCurrentViewId(resolvedSettingsViewId);
+    setError(null);
+    uiStoreRef.current!.getState().setActiveField(null);
+  }, [currentViewId, resolvedSettingsViewId]);
+
+  const returnFromSettings = useCallback(() => {
+    setCurrentViewId(settingsReturnViewId ?? firstViewIdRef.current);
+    setSettingsReturnViewId(null);
+    setError(null);
+    uiStoreRef.current!.getState().setActiveField(null);
+  }, [settingsReturnViewId]);
+
   const navigationContext = useMemo(
     () => ({
       currentViewId,
@@ -368,6 +449,11 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
       clearError,
       resetForm,
       closeSidePanel,
+      ...(resolvedSettingsViewId && {
+        settingsViewId: resolvedSettingsViewId,
+        goToSettings,
+        returnFromSettings,
+      }),
     }),
     [
       currentViewId,
@@ -378,6 +464,9 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
       clearError,
       resetForm,
       closeSidePanel,
+      resolvedSettingsViewId,
+      goToSettings,
+      returnFromSettings,
     ],
   );
 
@@ -390,7 +479,7 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
       <FormContext.Provider value={form}>
         <NavigationContext.Provider value={navigationContext}>
           <JumperWidgetInner
-            views={views}
+            views={allViews}
             statusSheet={statusSheet}
             style={style}
           />

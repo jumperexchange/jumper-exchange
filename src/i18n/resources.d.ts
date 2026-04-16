@@ -412,6 +412,14 @@ interface Resources {
         tokenMultiSelect: 'Select tokens';
         tokenSingleSelect: 'Select token';
       };
+      settings: {
+        auto: 'Auto';
+        slippage: 'Max. slippage';
+        slippageCustom: 'Custom';
+        slippageHighWarning: 'High slippage may indicate a risky trade. Please review your settings before confirming the transaction.';
+        slippageLowWarning: 'Low slippage may result in failed transactions.';
+        title: 'Settings';
+      };
     };
     labels: {
       apy: 'APY';
