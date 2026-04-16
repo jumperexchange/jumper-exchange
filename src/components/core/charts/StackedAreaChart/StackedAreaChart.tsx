@@ -48,6 +48,7 @@ export interface StackedChartDataPoint {
   date: string;
   base: number | null;
   reward: number | null;
+  intrinsic: number | null;
   total: number | null;
 }
 
@@ -60,6 +61,9 @@ export interface StackedAreaChartProps extends HTMLAttributes<HTMLDivElement> {
     rewardLineColor?: string;
     rewardAreaTopColor?: string;
     rewardAreaBottomColor?: string;
+    intrinsicLineColor?: string;
+    intrinsicAreaTopColor?: string;
+    intrinsicAreaBottomColor?: string;
     pointColor?: string;
   };
   dateFormat?: string;
@@ -101,12 +105,25 @@ export const StackedAreaChart = ({
   const muiTheme = useTheme();
   const baseGradientId = useId();
   const rewardGradientId = useId();
+  const intrinsicGradientId = useId();
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState<{
     cx: number;
     cy: number;
     payload: StackedChartDataPoint;
   } | null>(null);
+
+  const enrichedData = useMemo(
+    () =>
+      data.map((point) => ({
+        ...point,
+        baseReward:
+          point.base != null || point.reward != null
+            ? (point.base ?? 0) + (point.reward ?? 0)
+            : null,
+      })),
+    [data],
+  );
 
   const { minValue, maxValue, minValueWithOffset, maxValueWithOffset } =
     calculateStackedVisibleYRange(data);
@@ -141,16 +158,17 @@ export const StackedAreaChart = ({
 
   const xAxisTicks = useMemo(() => {
     // Adapt the data format for calculateEvenXAxisTicks
-    const adaptedData = data
+    const adaptedData = enrichedData
       .filter(
-        (d): d is StackedChartDataPoint & { total: number } => d.total != null,
+        (d): d is (typeof enrichedData)[number] & { total: number } =>
+          d.total != null,
       )
       .map((d) => ({
         date: d.date,
         value: d.total,
       }));
     return calculateEvenXAxisTicks(adaptedData, dateFormatter);
-  }, [data, dateFormatter]);
+  }, [enrichedData, dateFormatter]);
 
   const handleMouseLeave = useCallback(() => {
     setActiveDot(null);
@@ -184,7 +202,8 @@ export const StackedAreaChart = ({
         if (
           prev?.payload.date === payload.date &&
           prev?.payload.base === payload.base &&
-          prev?.payload.reward === payload.reward
+          prev?.payload.reward === payload.reward &&
+          prev?.payload.intrinsic === payload.intrinsic
         ) {
           return prev;
         }
@@ -222,7 +241,7 @@ export const StackedAreaChart = ({
         {...props}
       >
         <AreaChart
-          data={data}
+          data={enrichedData}
           accessibilityLayer={false}
           onMouseLeave={handleMouseLeave}
         >
@@ -248,6 +267,24 @@ export const StackedAreaChart = ({
               <stop
                 offset="100%"
                 stopColor={theme.rewardAreaBottomColor}
+                stopOpacity={1}
+              />
+            </linearGradient>
+            <linearGradient
+              id={intrinsicGradientId}
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="1"
+            >
+              <stop
+                offset="0%"
+                stopColor={theme.intrinsicAreaTopColor}
+                stopOpacity={1}
+              />
+              <stop
+                offset="100%"
+                stopColor={theme.intrinsicAreaBottomColor}
                 stopOpacity={1}
               />
             </linearGradient>
@@ -296,16 +333,44 @@ export const StackedAreaChart = ({
               tickFormatter={valueFormatter}
             />
           )}
-          {/* Total area (reward gradient) - rendered first as background */}
+          {/* Total area (intrinsic gradient) - rendered first as full-stack background */}
           <Area
             type="monotone"
             dataKey="total"
-            stroke={theme.rewardLineColor}
+            stroke={theme.intrinsicLineColor}
+            connectNulls={true}
+            fillOpacity={1}
+            fill={`url(#${intrinsicGradientId})`}
+            isAnimationActive
+            activeDot={enableCrosshair ? handleActiveDot : false}
+            style={{
+              transform: AREA_CONFIG.TRANSFORM,
+            }}
+          />
+          {/* Base+reward area (reward gradient) - overlays up to reward boundary */}
+          <Area
+            type="monotone"
+            dataKey="baseReward"
+            stroke="transparent"
             connectNulls={true}
             fillOpacity={1}
             fill={`url(#${rewardGradientId})`}
             isAnimationActive
-            activeDot={enableCrosshair ? handleActiveDot : false}
+            activeDot={false}
+            style={{
+              transform: AREA_CONFIG.TRANSFORM,
+            }}
+          />
+          {/* Base+reward divider line (separates reward from intrinsic) */}
+          <Area
+            type="monotone"
+            dataKey="baseReward"
+            stroke={theme.rewardLineColor}
+            connectNulls={true}
+            fillOpacity={0}
+            fill="transparent"
+            isAnimationActive
+            activeDot={false}
             style={{
               transform: AREA_CONFIG.TRANSFORM,
             }}

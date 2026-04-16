@@ -23,6 +23,7 @@ export const aavePositions: DefiPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },
@@ -73,6 +74,7 @@ export const aavePositions: DefiPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },
@@ -143,6 +145,7 @@ export const morphoPositions: DefiPosition[] = [
       apy: {
         base: 8.5,
         reward: 0,
+        intrinsic: 0,
         total: 8.5,
       },
     },
@@ -193,6 +196,7 @@ export const morphoPositions: DefiPosition[] = [
       apy: {
         base: 7.2,
         reward: 0,
+        intrinsic: 0,
         total: 7.2,
       },
     },
@@ -244,6 +248,7 @@ export const morphoPositions: DefiPosition[] = [
       apy: {
         base: 9.1,
         reward: 0,
+        intrinsic: 0,
         total: 9.1,
       },
     },
@@ -294,6 +299,7 @@ export const morphoPositions: DefiPosition[] = [
       apy: {
         base: 6.8,
         reward: 1.2,
+        intrinsic: 0,
         total: 8.0,
       },
     },
@@ -346,6 +352,7 @@ export const gauntletPositions: DefiPosition[] = [
       apy: {
         base: 0.0676,
         reward: 0,
+        intrinsic: 0,
         total: 0.0676,
       },
     },
@@ -402,6 +409,7 @@ export const merklPositions: DefiPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },
