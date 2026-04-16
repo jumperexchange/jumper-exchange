@@ -37,7 +37,7 @@ export const calculateTooltipPosition = (
  * - Proportional to data variation
  */
 export const calculateVisibleYRangeOld = <
-  V extends number | string,
+  V extends number | string | null,
   T extends ChartDataPoint<V>,
 >(
   data: T[],
@@ -99,7 +99,7 @@ export const calculateVisibleYRangeOld = <
  * - When all values are identical, ensures a reasonable range (min -1 to 0 for negatives, 0 to 1 for small positives)
  */
 export const calculateVisibleYRange = <
-  V extends number | string,
+  V extends number | string | null,
   T extends ChartDataPoint<V>,
 >(
   data: T[],
@@ -150,7 +150,7 @@ export const calculateVisibleYRange = <
  * This ensures one tick per unique formatted date (e.g., one per month if using 'MMM yyyy')
  */
 export const calculateEvenXAxisTicks = <
-  V extends number | string,
+  V extends number | string | null,
   T extends ChartDataPoint<V>,
 >(
   data: T[],

@@ -1,4 +1,5 @@
 import { APY_FORMAT_CONFIG } from '@/utils/numbers/apy';
+import { dropWhile, negate } from 'lodash';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import type {
@@ -12,18 +13,12 @@ import type {
 import type { StackedAreaChartProps } from '../core/charts/StackedAreaChart/StackedAreaChart';
 import { AnalyticsRangeFieldEnum } from './types';
 
-/**
- * Trims leading entries from an array where the predicate returns false.
- * Returns the array starting from the first element where hasValue returns true.
- */
-function trimLeadingNulls<T>(data: T[], hasValue: (item: T) => boolean): T[] {
-  const firstValidIndex = data.findIndex(hasValue);
-  return firstValidIndex === -1 ? [] : data.slice(firstValidIndex);
-}
+const dropUntil = <T>(data: T[], predicate: (item: T) => boolean): T[] =>
+  dropWhile(data, negate(predicate));
 
 const hasDefinedValue = (
-  item: ChartDataPoint<string | number | undefined>,
-): item is ChartDataPoint<string | number> => item.value != null;
+  item: ChartDataPoint<string | number | null>,
+): boolean => item.value != null;
 
 const useDefaultDateFormat = (range: AnalyticsRangeFieldEnum) => {
   return range === AnalyticsRangeFieldEnum.WEEK ||
@@ -40,12 +35,9 @@ export const useSimpleAnalyticsChartConfig = (
     const mapped =
       rawData?.points.map((point) => ({
         date: new Date(point.t).toISOString(),
-        // Normalize potential nulls to undefined to match chart value typings
-        value: point.v ?? undefined,
+        value: point.v,
       })) ?? [];
-    return trimLeadingNulls(mapped, (item) => item.value != null).filter(
-      hasDefinedValue,
-    );
+    return dropUntil(mapped, hasDefinedValue);
   }, [rawData]);
 
   const dateFormat = useDefaultDateFormat(range);
@@ -70,7 +62,7 @@ export const useApyAnalyticsChartConfig = (
         ...point,
         date: new Date(point.t).toISOString(),
       })) ?? [];
-    return trimLeadingNulls(mapped, (item) => item.total != null);
+    return dropUntil(mapped, (item) => item.total != null);
   }, [rawData]);
 
   const theme = useRewardChartTheme();
