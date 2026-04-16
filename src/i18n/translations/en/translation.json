@@ -851,6 +851,10 @@
       "dustThreshold": "Tokens less than",
       "chain": "Chain",
       "convert": "Convert"
+    },
+    "descriptions": {
+      "chainAvailable_one": "{{count}} token · {{amount}} available",
+      "chainAvailable_other": "{{count}} tokens · {{amount}} available"
     }
   },
   "headers": {

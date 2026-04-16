@@ -50,6 +50,7 @@ export interface BalancesMultiSelectFieldProps<
   placeholder?: string;
   header?: string;
   availableBalances: Balance<T>[];
+  balanceAmounts?: Record<string, string>;
 }
 
 export const BalancesMultiSelectField = <T extends PricedToken = PricedToken>({
@@ -105,6 +106,7 @@ export const BalancesMultiSelectSidePanel = <
   fieldKey,
   availableBalances,
   header,
+  balanceAmounts,
 }: BalancesMultiSelectFieldProps<T>) => {
   const field = useField<BalancesMultiSelectValue>(fieldKey);
   const selectedAddresses = field.value?.selectedAddresses ?? [];
@@ -117,6 +119,7 @@ export const BalancesMultiSelectSidePanel = <
         key: balance.token.address,
         logoURI: balance.token.logoURI,
         name: balance.token.name,
+        description: balanceAmounts?.[balance.token.address],
       }))}
       isSelected={(key) => selectedAddresses.includes(key)}
       onSelect={(key) => {

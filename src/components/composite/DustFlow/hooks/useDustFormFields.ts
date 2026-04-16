@@ -21,6 +21,7 @@ import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { INITIAL_MAX_THRESHOLD_USD, MAX_SELECTABLE_TOKENS } from '../constants';
 import { useAccount } from '@lifi/wallet-management';
 import { checkBalanceWithinRange, getChainMinUsdThreshold } from '../utils';
+import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 
 export interface DustSummaryValue {
   selectedBalances: PortfolioBalance<WalletToken>[];
@@ -68,7 +69,9 @@ export const useDustFormFields = ({
   const { accounts } = useAccount();
   const { toInputAmount, toAmountFromPrice, toRawAmount, usdDecimals } =
     useTokenAmountInput();
-  const { toAggregatedAmountUSD } = usePortfolioFormatters();
+  const { toAggregatedAmountUSD, toDisplayAggregatedAmountUSD } =
+    usePortfolioFormatters();
+  const { toDisplayAmountUSD } = useTokenFormatters();
 
   const checkChainHasBalancesBelowThreshold = useCallback(
     (chainId: number, maxUsd: number): boolean =>
@@ -283,16 +286,38 @@ export const useDustFormFields = ({
           header: t('headers.chains'),
         },
         deriveProps: (getValue) => {
-          const { threshold } = createDustFieldDerive(getValue);
+          const { threshold, chainId } = createDustFieldDerive(getValue);
           if (threshold == null) {
             return {};
           }
           const filteredChains = chains.filter((c) =>
             checkChainHasBalancesBelowThreshold(c.id, threshold),
           );
+
+          let description: string | undefined;
+          if (chainId != null) {
+            const filteredBalances = getFilteredBalances(chainId, threshold);
+            if (filteredBalances.length > 0) {
+              const count = filteredBalances.length;
+              const amount = toDisplayAggregatedAmountUSD(filteredBalances);
+              description = t('form.descriptions.chainAvailable', {
+                count,
+                amount,
+              });
+            }
+          }
+
+          const chainAmounts: Record<number, string> = {};
+          for (const chain of filteredChains) {
+            const balances = getFilteredBalances(chain.id, threshold);
+            if (balances.length > 0) {
+              chainAmounts[chain.id] = toDisplayAggregatedAmountUSD(balances);
+            }
+          }
+
           return {
-            fieldProps: { availableChains: filteredChains },
-            sidePanelProps: { availableChains: filteredChains },
+            fieldProps: { availableChains: filteredChains, description },
+            sidePanelProps: { availableChains: filteredChains, chainAmounts },
           };
         },
       }),
@@ -325,9 +350,16 @@ export const useDustFormFields = ({
             };
           }
           const filteredBalances = getFilteredBalances(chainId, threshold);
+          const balanceAmounts: Record<string, string> = {};
+          for (const balance of filteredBalances) {
+            balanceAmounts[balance.token.address] = toDisplayAmountUSD(balance);
+          }
           return {
             fieldProps: { availableBalances: filteredBalances },
-            sidePanelProps: { availableBalances: filteredBalances },
+            sidePanelProps: {
+              availableBalances: filteredBalances,
+              balanceAmounts,
+            },
           };
         },
       }),
@@ -382,6 +414,7 @@ export const useDustFormFields = ({
       defaultChainAndBalances,
       checkChainHasBalancesBelowThreshold,
       getFilteredBalances,
+      toDisplayAggregatedAmountUSD,
       computeAmounts,
       computeDustSummary,
       t,

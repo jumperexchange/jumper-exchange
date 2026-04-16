@@ -48,12 +48,15 @@ export interface ChainSingleSelectFieldProps extends BaseFieldProps {
   label?: string;
   header?: string;
   placeholder?: string;
+  description?: string;
+  chainAmounts?: Record<number, string>;
   availableChains: ExtendedChain[];
 }
 
 export const ChainSingleSelectField: FC<ChainSingleSelectFieldProps> = ({
   label,
   placeholder,
+  description,
   fieldKey,
   availableChains,
 }) => {
@@ -74,6 +77,7 @@ export const ChainSingleSelectField: FC<ChainSingleSelectFieldProps> = ({
         placeholder ?? t('jumperWidget.placeholder.chainSingleSelect')
       }
       placeholderVariant="bodyLarge"
+      description={selectedChain ? description : undefined}
       startAdornment={
         selectedChain ? (
           <OptionIcon
@@ -95,6 +99,7 @@ export const ChainSingleSelectSidePanel: FC<ChainSingleSelectFieldProps> = ({
   fieldKey,
   header,
   availableChains,
+  chainAmounts,
 }) => {
   const field = useField<ChainSingleSelectValue>(fieldKey);
 
@@ -106,6 +111,7 @@ export const ChainSingleSelectSidePanel: FC<ChainSingleSelectFieldProps> = ({
         key: c.id.toString(),
         logoURI: c.logoURI,
         name: c.name,
+        description: chainAmounts?.[c.id],
       }))}
       isSelected={(key) => field.value?.selectedChain === Number(key)}
       onSelect={(key) => {

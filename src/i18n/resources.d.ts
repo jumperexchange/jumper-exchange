@@ -327,6 +327,10 @@ interface Resources {
         swap: 'Swap';
         withdrawTo: 'Withdraw to';
       };
+      descriptions: {
+        chainAvailable_one: '{{count, number}} token · {{amount}} available';
+        chainAvailable_other: '{{count, number}} tokens · {{amount}} available';
+      };
     };
     format: {
       currency: '{{value, currencyExt(currency: USD)}}';
