@@ -2,10 +2,12 @@
 
 import './extensionDetectionRegister';
 
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useStore } from 'zustand';
 import { extensionDetectionStore } from './extensionDetectionSingletonStore';
 import {
+  DEFAULT_EXTENSION_STATUS,
+  type ExtensionDetectionStore,
   ExtensionDetectionStoreContext,
   useExtensionDetectionStore,
 } from './store';
@@ -63,20 +65,26 @@ export function ExtensionDetectionProvider({
 
 export function useExtension(name: string): ExtensionStatus {
   const store = useExtensionDetectionStore();
-  return useStore(
-    store,
-    (state) =>
-      state.statusMap[name.toLowerCase()] ?? {
-        detected: false,
-        loading: true,
-        error: null,
-      },
+  const key = name.toLowerCase();
+  const selectStatus = useCallback(
+    (state: ExtensionDetectionStore) =>
+      state.statusMap[key] ?? DEFAULT_EXTENSION_STATUS,
+    [key],
   );
+  return useStore(store, selectStatus);
 }
 
 export function useExtensionDetection() {
   const store = useExtensionDetectionStore();
-  const recheck = useStore(store, (s) => s.runCheck);
-  const register = useStore(store, (s) => s.register);
+  const selectRunCheck = useCallback(
+    (s: ExtensionDetectionStore) => s.runCheck,
+    [],
+  );
+  const selectRegister = useCallback(
+    (s: ExtensionDetectionStore) => s.register,
+    [],
+  );
+  const recheck = useStore(store, selectRunCheck);
+  const register = useStore(store, selectRegister);
   return { recheck, register };
 }

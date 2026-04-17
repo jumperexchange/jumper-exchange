@@ -1,6 +1,7 @@
 import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
 import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
 import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
 import { type FC } from 'react';
 
 import { useExtension } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
@@ -13,30 +14,28 @@ export const AlertBannerWrapper: FC = ({}) => {
   const { detected } = useExtension(POCKET_UNIVERSE_EXTENSION);
   const { account } = useAccount();
 
-  if (!detected || !account?.isConnected) {
-    return null;
-  }
-
   return (
-    <Box
-      sx={{
-        marginTop: 2,
-        maxWidth: {
-          xs: '100%',
-          sm: 420,
-        },
-      }}
-    >
-      <BaseAlert
-        title={t('alerts.extension', {
-          extensionName: 'Pocket Universe',
-          fee: 0.8,
-        })}
-        variant={BaseAlertVariant.Warning}
+    <Fade in={detected && !!account?.isConnected} timeout={400}>
+      <Box
         sx={{
-          '.MuiTypography-root': { fontWeight: 500 },
+          marginTop: 2,
+          maxWidth: {
+            xs: '100%',
+            sm: 420,
+          },
         }}
-      />
-    </Box>
+      >
+        <BaseAlert
+          title={t('alerts.extension', {
+            extensionName: 'Pocket Universe',
+            fee: 0.8,
+          })}
+          variant={BaseAlertVariant.Warning}
+          sx={{
+            '.MuiTypography-root': { fontWeight: 500 },
+          }}
+        />
+      </Box>
+    </Fade>
   );
 };

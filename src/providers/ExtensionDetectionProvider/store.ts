@@ -17,6 +17,13 @@ export interface ExtensionDetectionStore {
   register: (definition: ExtensionDefinition) => void;
 }
 
+/** Stable fallback for selectors; avoid new object each snapshot (Zustand `useSyncExternalStore`). */
+export const DEFAULT_EXTENSION_STATUS: ExtensionStatus = {
+  detected: false,
+  loading: true,
+  error: null,
+};
+
 export function createExtensionDetectionStore(): StoreApi<ExtensionDetectionStore> {
   return createStore<ExtensionDetectionStore>((set, get) => ({
     statusMap: {},
@@ -29,16 +36,11 @@ export function createExtensionDetectionStore(): StoreApi<ExtensionDetectionStor
     },
 
     updateStatus: (name, patch) => {
-      const defaultStatus: ExtensionStatus = {
-        detected: false,
-        loading: true,
-        error: null,
-      };
       set((state) => ({
         statusMap: {
           ...state.statusMap,
           [name]: {
-            ...defaultStatus,
+            ...DEFAULT_EXTENSION_STATUS,
             ...state.statusMap[name],
             ...patch,
           },
