@@ -108,28 +108,28 @@ export function messageHandshakeDetector(
     timeout: timeoutMs + 100,
     detect: () =>
       new Promise<boolean>((resolve) => {
-        const timer = setTimeout(() => {
-          window.removeEventListener('message', handler);
-          resolve(false);
-        }, timeoutMs);
+        // const timer = setTimeout(() => {
+        //   window.removeEventListener('message', handler, true);
+        //   resolve(false);
+        // }, timeoutMs);
 
         function handler(event: MessageEvent) {
           if (!messageHandshakeMatchesReply(event.data, expectedReplyType)) {
             return;
           }
-          if (process.env.NODE_ENV === 'development') {
-            console.log('[extension-detection:messageHandshake]', {
-              data: event.data,
-              origin: event.origin,
-              expectedReplyType,
-            });
-          }
-          clearTimeout(timer);
-          window.removeEventListener('message', handler);
-          resolve(true);
+          //   if (process.env.NODE_ENV === 'development') {
+          console.log('[extension-detection:messageHandshake]', {
+            data: event.data,
+            origin: event.origin,
+            expectedReplyType,
+          });
+          //   }
+          //   clearTimeout(timer);
+          //   window.removeEventListener('message', handler, true);
+          //   resolve(true);
         }
 
-        window.addEventListener('message', handler);
+        window.addEventListener('message', handler, true);
         window.postMessage(outgoing, '*');
       }),
   };
