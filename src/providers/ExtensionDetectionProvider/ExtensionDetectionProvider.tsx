@@ -22,6 +22,7 @@ export {
   globalVariableDetector,
   messageHandshakeDetector,
   mutationObserverDetector,
+  pocketUniverseDatasetCsnDetector,
   resourceFetchDetector,
   stylesheetDetector,
 } from './utils';

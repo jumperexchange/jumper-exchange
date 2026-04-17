@@ -6,6 +6,7 @@ import { useEffect, type FC } from 'react';
 import {
   chromeExtensionInjectedDetector,
   eip6963AnnounceProviderDetector,
+  pocketUniverseDatasetCsnDetector,
   useExtensionDetection,
   useExtension,
 } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
@@ -13,12 +14,12 @@ import { useTranslation } from 'react-i18next';
 import { useAccount } from '@lifi/wallet-management';
 
 const POCKET_UNIVERSE_EXTENSION = 'pocket';
-
 const POCKET_UNIVERSE_EXTENSION_ID = 'gacgndbocaddlemdiaadajmlggabdeod';
 
 const pocketUniverseDetectors = [
   chromeExtensionInjectedDetector(POCKET_UNIVERSE_EXTENSION_ID),
   eip6963AnnounceProviderDetector({ nameIncludes: 'Pocket Universe' }, 8000),
+  pocketUniverseDatasetCsnDetector(100),
 ];
 
 export const AlertBannerWrapper: FC = ({}) => {

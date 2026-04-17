@@ -9,6 +9,7 @@ import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import dynamic from 'next/dynamic';
+import { AlertBannerWrapper } from './AlertBannerWrapper';
 
 const AnnouncementBannerWrapper = dynamic(() =>
   import('./AnnouncementBannerWrapper').then(
@@ -18,10 +19,6 @@ const AnnouncementBannerWrapper = dynamic(() =>
 
 const VerticalTabsWrapper = dynamic(() =>
   import('./VerticalTabsWrapper').then((mod) => mod.VerticalTabsWrapper),
-);
-
-const AlertBannerWrapper = dynamic(() =>
-  import('./AlertBannerWrapper').then((mod) => mod.AlertBannerWrapper),
 );
 
 export interface AppProps {
@@ -90,7 +87,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
-      {welcomeScreenClosed && <AlertBannerWrapper />}
+      <AlertBannerWrapper />
     </WelcomeOverlayLayout>
   );
 };

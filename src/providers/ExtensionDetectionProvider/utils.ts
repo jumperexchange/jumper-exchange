@@ -57,12 +57,6 @@ export function stylesheetDetector(hrefSubstring: string): ExtensionDetector {
   };
 }
 
-/**
- * True when the page loads any asset from `chrome-extension://<extensionId>/…`
- * (stylesheet, script, iframe, img). This is the most reliable page-level
- * signal for “this extension injected something here” without needing
- * `postMessage` types from minified bundles.
- */
 export function chromeExtensionInjectedDetector(
   extensionId: string,
 ): ExtensionDetector {
@@ -262,6 +256,17 @@ export function mutationObserverDetector(
           resolve(false);
         }, observeMs);
       }),
+  };
+}
+
+export function pocketUniverseDatasetCsnDetector(
+  observeMs = 100,
+): ExtensionDetector {
+  const inner = mutationObserverDetector('html[data-csn]', observeMs);
+  return {
+    strategy: 'pocket:documentElement-data-csn',
+    timeout: inner.timeout,
+    detect: inner.detect,
   };
 }
 
