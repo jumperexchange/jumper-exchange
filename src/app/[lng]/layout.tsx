@@ -154,6 +154,13 @@ export default async function RootLayout({
           `,
           }}
         />
+        <script
+          id="pocket-universe-html-data-csn-snapshot"
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
+          }}
+        />
         <meta name="base:app_id" content={appId} />
         <style>
           {`
@@ -184,13 +191,6 @@ export default async function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `window._env_ = ${JSON.stringify(getPublicEnvVars())};`,
-          }}
-        />
-        <Script
-          id="pocket-universe-html-data-csn-snapshot"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
           }}
         />
         <link rel="icon" href="/favicon.ico" sizes="any" />
