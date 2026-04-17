@@ -259,6 +259,28 @@ export function mutationObserverDetector(
   };
 }
 
+/**
+ * Pocket may set `data-csn` on `<html>` very early, then remove it before
+ * Next.js client chunks run. Snapshot in a `beforeInteractive` script and read
+ * that flag from detectors instead of relying on the DOM alone.
+ */
+export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY =
+  '__jumperExtPocketHtmlDataCsn' as const;
+
+export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
+  return {
+    strategy: 'pocket:html-data-csn-beforeInteractive-snapshot',
+    detect: async () =>
+      Reflect.get(window, POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY) === true,
+  };
+}
+
+/** Inline script body for {@link pocketUniverseHtmlDataCsnSnapshotDetector}. */
+export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (): string => {
+  const k = JSON.stringify(POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY);
+  return `(function(){try{var w=window;var k=${k};var el=document.documentElement;w[k]=!!(el&&el.hasAttribute("data-csn"));}catch(e){window[${k}]=false;}})();`;
+};
+
 export function pocketUniverseDatasetCsnDetector(
   observeMs = 100,
 ): ExtensionDetector {

@@ -35,6 +35,7 @@ import {
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
 import { ExtensionDetectionRoot } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionRoot';
+import { getPocketUniverseHtmlDataCsnSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/utils';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -183,6 +184,13 @@ export default async function RootLayout({
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `window._env_ = ${JSON.stringify(getPublicEnvVars())};`,
+          }}
+        />
+        <Script
+          id="pocket-universe-html-data-csn-snapshot"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
           }}
         />
         <link rel="icon" href="/favicon.ico" sizes="any" />

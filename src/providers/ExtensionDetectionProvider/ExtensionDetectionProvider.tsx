@@ -27,6 +27,7 @@ export {
   messageHandshakeDetector,
   mutationObserverDetector,
   pocketUniverseDatasetCsnDetector,
+  pocketUniverseHtmlDataCsnSnapshotDetector,
   resourceFetchDetector,
   stylesheetDetector,
 } from './utils';
