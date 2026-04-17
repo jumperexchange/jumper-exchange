@@ -268,7 +268,7 @@ export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY =
   '__jumperExtPocketHtmlDataCsn' as const;
 
 /** Same window as {@link pocketUniverseDatasetCsnDetector} (mutation path). */
-export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS = 100;
+export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS = 2000;
 
 export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
   return {
