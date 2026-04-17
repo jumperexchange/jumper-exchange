@@ -267,6 +267,9 @@ export function mutationObserverDetector(
 export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY =
   '__jumperExtPocketHtmlDataCsn' as const;
 
+/** Same window as {@link pocketUniverseDatasetCsnDetector} (mutation path). */
+export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS = 100;
+
 export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
   return {
     strategy: 'pocket:html-data-csn-beforeInteractive-snapshot',
@@ -275,14 +278,20 @@ export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
   };
 }
 
-/** Inline script body for {@link pocketUniverseHtmlDataCsnSnapshotDetector}. */
-export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (): string => {
+/**
+ * Inline script for {@link pocketUniverseHtmlDataCsnSnapshotDetector}: sync
+ * check plus MutationObserver on `document.documentElement` for `data-csn`
+ * (same idea as {@link mutationObserverDetector}), capped by `observeMs`.
+ */
+export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (
+  observeMs: number = POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS,
+): string => {
   const k = JSON.stringify(POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY);
-  return `(function(){try{var w=window;var k=${k};var el=document.documentElement;w[k]=!!(el&&el.hasAttribute("data-csn"));}catch(e){window[${k}]=false;}})();`;
+  return `(function(){try{var w=window;var k=${k};var ms=${observeMs};function hasCsn(){var e=document.documentElement;return !!(e&&e.hasAttribute("data-csn"));}var el=document.documentElement;if(!el){w[k]=false;return;}if(hasCsn()){w[k]=true;return;}w[k]=false;var obs,t;function finish(){if(obs){obs.disconnect();obs=null;}if(t){clearTimeout(t);t=0;}}obs=new MutationObserver(function(){if(hasCsn()){w[k]=true;finish();}});t=setTimeout(finish,ms);obs.observe(el,{attributes:true,attributeFilter:["data-csn"]});}catch(e){window[${k}]=false;}})();`;
 };
 
 export function pocketUniverseDatasetCsnDetector(
-  observeMs = 100,
+  observeMs = POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS,
 ): ExtensionDetector {
   const inner = mutationObserverDetector('html[data-csn]', observeMs);
   return {
