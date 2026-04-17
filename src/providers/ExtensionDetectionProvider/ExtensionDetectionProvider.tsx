@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import './extensionDetectionRegister';
+
+import React, { useEffect } from 'react';
 import { useStore } from 'zustand';
+import { extensionDetectionStore } from './extensionDetectionSingletonStore';
 import {
-  createExtensionDetectionStore,
   ExtensionDetectionStoreContext,
   useExtensionDetectionStore,
 } from './store';
-import type { ExtensionDefinition, ExtensionStatus } from './utils';
+import type { ExtensionStatus } from './utils';
 
 export type {
   Eip6963AnnounceProviderMatch,
@@ -15,6 +17,8 @@ export type {
   ExtensionDetector,
   ExtensionStatus,
 } from './utils';
+
+export { extensionDetectionStore } from './extensionDetectionSingletonStore';
 export {
   chromeExtensionInjectedDetector,
   domElementDetector,
@@ -29,28 +33,14 @@ export {
 
 export interface ExtensionDetectionProviderProps {
   children: React.ReactNode;
-  detectors?: ExtensionDefinition[];
   pollingInterval?: number;
 }
 
 export function ExtensionDetectionProvider({
   children,
-  detectors: propDetectors,
   pollingInterval,
 }: ExtensionDetectionProviderProps) {
-  const storeRef = useRef<
-    ReturnType<typeof createExtensionDetectionStore> | undefined
-  >(undefined);
-  if (!storeRef.current) {
-    storeRef.current = createExtensionDetectionStore();
-  }
-  const store = storeRef.current;
-
-  useEffect(() => {
-    const { initRegistry, runCheck, registry } = store.getState();
-    initRegistry(propDetectors);
-    Array.from(registry.keys()).forEach(runCheck);
-  }, [store, propDetectors]);
+  const store = extensionDetectionStore;
 
   useEffect(() => {
     if (!pollingInterval) {
