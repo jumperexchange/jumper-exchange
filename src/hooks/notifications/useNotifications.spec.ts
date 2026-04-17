@@ -4,12 +4,13 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { NotificationCategory } from '@/types/notifications';
 import { notificationsQueryKey, useNotifications } from './useNotifications';
 
+const ADDRESS = '0x1111111111111111111111111111111111111111';
+
 const accountState: { account?: { address: string } } = {
-  account: {
-    address: '0x1111111111111111111111111111111111111111',
-  },
+  account: { address: ADDRESS },
 };
 
 vi.mock('@lifi/wallet-management', () => ({
@@ -29,9 +30,7 @@ const createWrapper = (queryClient: QueryClient) => {
 
 describe('useNotifications', () => {
   beforeEach(() => {
-    accountState.account = {
-      address: '0x1111111111111111111111111111111111111111',
-    };
+    accountState.account = { address: ADDRESS };
     vi.stubGlobal('fetch', vi.fn());
   });
 
@@ -56,9 +55,7 @@ describe('useNotifications', () => {
     await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
 
     const query = queryClient.getQueryCache().find({
-      queryKey: notificationsQueryKey(
-        '0x1111111111111111111111111111111111111111',
-      ),
+      queryKey: notificationsQueryKey(ADDRESS),
     });
     expect(
       (query?.options as { refetchInterval?: unknown }).refetchInterval,
@@ -76,5 +73,95 @@ describe('useNotifications', () => {
 
     await new Promise<void>((resolve) => setTimeout(resolve, 50));
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it('fetches without query string when no filters are provided', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    } as Response);
+
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    renderHook(() => useNotifications(), {
+      wrapper: createWrapper(queryClient),
+    });
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+
+    const calledUrl = vi.mocked(fetch).mock.calls[0][0] as string;
+    expect(calledUrl).toBe(
+      `https://notifications.test/api/notifications/${ADDRESS}`,
+    );
+  });
+
+  it('appends category and createdAfter to the URL when provided', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    } as Response);
+
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    const createdAfter = '2026-01-01T00:00:00.000Z';
+
+    renderHook(
+      () =>
+        useNotifications({
+          category: NotificationCategory.Campaign,
+          createdAfter,
+        }),
+      { wrapper: createWrapper(queryClient) },
+    );
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
+
+    const calledUrl = vi.mocked(fetch).mock.calls[0][0] as string;
+    const url = new URL(calledUrl);
+    expect(url.searchParams.get('category')).toBe('campaign');
+    expect(url.searchParams.get('createdAfter')).toBe(createdAfter);
+  });
+
+  it('uses separate cache entries for different filter combinations', async () => {
+    vi.mocked(fetch).mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    } as Response);
+
+    const queryClient = new QueryClient({
+      defaultOptions: { queries: { retry: false } },
+    });
+
+    const createdAfter = '2026-01-01T00:00:00.000Z';
+
+    renderHook(() => useNotifications(), {
+      wrapper: createWrapper(queryClient),
+    });
+    renderHook(
+      () =>
+        useNotifications({
+          category: NotificationCategory.Campaign,
+          createdAfter,
+        }),
+      { wrapper: createWrapper(queryClient) },
+    );
+
+    await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+
+    const noFilterKey = notificationsQueryKey(ADDRESS, {});
+    const withFilterKey = notificationsQueryKey(ADDRESS, {
+      category: NotificationCategory.Campaign,
+      createdAfter,
+    });
+    expect(
+      queryClient.getQueryCache().find({ queryKey: noFilterKey }),
+    ).toBeDefined();
+    expect(
+      queryClient.getQueryCache().find({ queryKey: withFilterKey }),
+    ).toBeDefined();
   });
 });

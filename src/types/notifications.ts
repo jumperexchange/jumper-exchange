@@ -1,8 +1,10 @@
-export type NotificationCategory =
-  | 'earn'
-  | 'product'
-  | 'campaign'
-  | 'portfolio';
+// TODO(JUM-592): Use shared type for this payload
+export enum NotificationCategory {
+  Earn = 'earn',
+  Product = 'product',
+  Campaign = 'campaign',
+  Portfolio = 'portfolio',
+}
 
 export interface Notification {
   id: string;
