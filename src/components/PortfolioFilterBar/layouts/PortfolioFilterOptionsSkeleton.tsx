@@ -7,10 +7,14 @@ export const PortfolioFilterOptionsSkeleton = () => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="flex-end"
-      sx={(theme) => ({ gap: theme.spacing(2) })}
       data-testid="portfolio-filter-bar-skeleton"
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        },
+        (theme) => ({ gap: theme.spacing(2) }),
+      ]}
     >
       <BaseSurfaceSkeleton
         variant="rounded"

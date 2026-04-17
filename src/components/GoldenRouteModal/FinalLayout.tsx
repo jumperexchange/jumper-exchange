@@ -68,33 +68,37 @@ export default function FinalLayout({
         </CloseButton>
         <StyledTypography
           variant="h4"
-          textAlign="left"
-          marginY={2}
-          color="white"
-          fontSize={isMobile ? '42px' : '62px'}
-          lineHeight={isMobile ? '42px' : '62px'}
-          maxWidth={'600px'}
-          textTransform={'uppercase'}
-          fontWeight={'extra-bold'}
-          marginTop={'80px'}
-          marginLeft={isMobile ? '16px' : '40px'}
+          sx={{
+            textAlign: 'left',
+            marginY: 2,
+            color: 'white',
+            fontSize: isMobile ? '42px' : '62px',
+            lineHeight: isMobile ? '42px' : '62px',
+            maxWidth: '600px',
+            textTransform: 'uppercase',
+            fontWeight: 'extra-bold',
+            marginTop: '80px',
+            marginLeft: isMobile ? '16px' : '40px',
+          }}
         >
           Thank you!
         </StyledTypography>
 
         <StyledTypography
           variant="h4"
-          marginY={2}
-          color="white"
-          fontSize={isMobile ? '18px' : '24px'}
-          lineHeight={isMobile ? '24px' : '32px'}
-          maxWidth={'600px'}
-          fontWeight={'normal'}
-          marginTop={'24px'}
-          marginLeft={isMobile ? '16px' : '40px'}
-          fontFamily={interTight.style.fontFamily}
-          sx={{ textTransform: 'none' }}
-          textAlign={'center'}
+          sx={{
+            marginY: 2,
+            color: 'white',
+            fontSize: isMobile ? '18px' : '24px',
+            lineHeight: isMobile ? '24px' : '32px',
+            maxWidth: '600px',
+            fontWeight: 'normal',
+            marginTop: '24px',
+            marginLeft: isMobile ? '16px' : '40px',
+            fontFamily: interTight.style.fontFamily,
+            textTransform: 'none',
+            textAlign: 'center',
+          }}
         >
           The Jumper team will contact you shortly.
         </StyledTypography>

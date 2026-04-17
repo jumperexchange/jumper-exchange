@@ -156,7 +156,12 @@ export const EarnDetailsActions = ({
     if (areActionsDisabled) {
       return (
         <EarnDetailsActionsButtonsFallbackContainer>
-          <Typography variant="bodyMediumParagraph" color="text.secondary">
+          <Typography
+            variant="bodyMediumParagraph"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             <Trans
               i18nKey="earn.position.disabled"
               values={{ protocolName: earnOpportunity.protocol.name }}

@@ -41,12 +41,7 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
     return value.toFixed(2);
   };
 
-  const total =
-    payload.total != null
-      ? payload.total
-      : payload.base != null && payload.reward != null
-        ? payload.base + payload.reward
-        : null;
+  const { total } = payload;
 
   return (
     <Box
@@ -80,22 +75,36 @@ export const StackedAreaTooltip: FC<StackedAreaTooltipProps> = ({
       <Typography variant="bodySmall">
         Total: {formatValue(total)} <strong>APY</strong>
       </Typography>
-      <Typography
-        variant="bodyXSmall"
-        sx={(theme) => ({
-          color: (theme.vars || theme).palette.text.secondary,
-        })}
-      >
-        Base: {formatValue(payload.base)}
-      </Typography>
-      <Typography
-        variant="bodyXSmall"
-        sx={(theme) => ({
-          color: (theme.vars || theme).palette.text.secondary,
-        })}
-      >
-        Reward: {formatValue(payload.reward)}
-      </Typography>
+      {payload.base != null && payload.base !== 0 && (
+        <Typography
+          variant="bodyXSmall"
+          sx={(theme) => ({
+            color: (theme.vars || theme).palette.text.secondary,
+          })}
+        >
+          Base: {formatValue(payload.base)}
+        </Typography>
+      )}
+      {payload.reward != null && payload.reward !== 0 && (
+        <Typography
+          variant="bodyXSmall"
+          sx={(theme) => ({
+            color: (theme.vars || theme).palette.text.secondary,
+          })}
+        >
+          Reward: {formatValue(payload.reward)}
+        </Typography>
+      )}
+      {payload.intrinsic != null && payload.intrinsic !== 0 && (
+        <Typography
+          variant="bodyXSmall"
+          sx={(theme) => ({
+            color: (theme.vars || theme).palette.text.secondary,
+          })}
+        >
+          Intrinsic: {formatValue(payload.intrinsic)}
+        </Typography>
+      )}
     </Box>
   );
 };

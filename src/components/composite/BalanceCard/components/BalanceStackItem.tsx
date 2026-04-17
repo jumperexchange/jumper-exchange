@@ -28,10 +28,11 @@ export const BalanceStackItem: FC<BalanceStackItemProps> = ({
       direction="row"
       spacing={2}
       useFlexGap
-      justifyContent="space-between"
-      alignItems="center"
       onClick={onClick}
-      sx={config.itemSx}
+      sx={[
+        { justifyContent: 'space-between', alignItems: 'center' },
+        ...(Array.isArray(config.itemSx) ? config.itemSx : [config.itemSx]),
+      ]}
     >
       <EntityStackWithBadge
         entities={[balance.token]}

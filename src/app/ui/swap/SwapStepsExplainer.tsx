@@ -140,9 +140,11 @@ const SwapStepsExplainerSection = ({
           <li>
             Go to your{' '}
             <MuiLink
-              color="text.primary"
               component={Link}
               href={`${JUMPER_URL}/scan`}
+              sx={{
+                color: 'text.primary',
+              }}
             >
               {`${JUMPER_URL}/scan`}
             </MuiLink>{' '}
@@ -171,9 +173,11 @@ const SwapStepsExplainerSection = ({
     <DynamicPagesContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Typography
         variant="h2"
-        color="text.primary"
-        marginY={2}
-        sx={{ fontSize: '36px!important' }}
+        sx={{
+          color: 'text.primary',
+          marginY: 2,
+          fontSize: '36px!important',
+        }}
       >
         Steps to Swap tokens on {sourceChain.name}
       </Typography>

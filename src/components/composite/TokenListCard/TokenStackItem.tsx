@@ -40,9 +40,11 @@ export const TokenStackItem: FC<TokenStackItemProps> = ({
       direction="row"
       spacing={2}
       useFlexGap
-      justifyContent="space-between"
       onClick={onClick}
-      sx={config.itemSx}
+      sx={[
+        { justifyContent: 'space-between' },
+        ...(Array.isArray(config.itemSx) ? config.itemSx : [config.itemSx]),
+      ]}
     >
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}

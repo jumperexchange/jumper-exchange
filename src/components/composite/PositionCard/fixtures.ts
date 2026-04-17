@@ -79,6 +79,7 @@ export const aavePositions: ChainPortfolioPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },
@@ -110,6 +111,7 @@ export const aavePositions: ChainPortfolioPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },
@@ -169,6 +171,7 @@ export const morphoPositions: ChainPortfolioPosition[] = [
       apy: {
         base: 8.5,
         reward: 0,
+        intrinsic: 0,
         total: 8.5,
       },
     },
@@ -203,6 +206,7 @@ export const morphoPositions: ChainPortfolioPosition[] = [
       apy: {
         base: 9.1,
         reward: 0,
+        intrinsic: 0,
         total: 9.1,
       },
     },
@@ -249,6 +253,7 @@ export const gauntletPositions: ChainPortfolioPosition[] = [
       apy: {
         base: 0.0676,
         reward: 0,
+        intrinsic: 0,
         total: 0.0676,
       },
     },
@@ -299,6 +304,7 @@ export const merklPositions: ChainPortfolioPosition[] = [
       apy: {
         base: 2.8,
         reward: 0.5,
+        intrinsic: 0,
         total: 3.3,
       },
     },

@@ -181,7 +181,13 @@ const EarnFiltersTemplate = () => {
   ];
 
   return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
+    <Stack
+      sx={{
+        gap: 2,
+        width: 400,
+        padding: 3,
+      }}
+    >
       <MultiLayerDrawer
         categories={categories}
         title="Filter & Sort"
@@ -258,7 +264,13 @@ const NestedFiltersTemplate = () => {
   };
 
   return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
+    <Stack
+      sx={{
+        gap: 2,
+        width: 400,
+        padding: 3,
+      }}
+    >
       <MultiLayerDrawer
         categories={categories}
         title="Network Filters"
@@ -352,7 +364,13 @@ const MainMenuTemplate = () => {
   ];
 
   return (
-    <Stack gap={2} sx={{ width: 400, padding: 3 }}>
+    <Stack
+      sx={{
+        gap: 2,
+        width: 400,
+        padding: 3,
+      }}
+    >
       <MultiLayerDrawer
         categories={categories}
         title="Main Menu"

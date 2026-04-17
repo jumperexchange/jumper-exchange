@@ -61,7 +61,12 @@ export const PrivateSwapModal: FC<PrivateSwapModalProps> = ({
   return (
     <ModalContainer isOpen={open} onClose={onClose}>
       <PrivateSwapModalCard>
-        <Typography variant="titleSmall" fontWeight={700}>
+        <Typography
+          variant="titleSmall"
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           {t('modal.privateSwap.title')}
         </Typography>
 

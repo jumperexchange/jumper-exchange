@@ -89,24 +89,24 @@ export const SelectBase = <T extends TData>({
             disableEnforceFocus: true,
             disableRestoreFocus: true,
           },
-        },
-        MenuListProps: {
-          autoFocusItem: false,
-        },
-        PaperProps: {
-          sx: (theme) => ({
-            backgroundColor: (theme.vars || theme).palette.surface1.main,
-            border: getSurfaceBorder(theme, 'surface1'),
-            borderRadius: `${theme.shape.cardBorderRadiusMedium}px`,
-            boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
-            marginTop: theme.spacing(1),
-            '& .MuiList-root': {
-              margin: theme.spacing(1),
-              padding: 0,
-              minWidth: '264px',
-              maxHeight: '300px',
-            },
-          }),
+          list: {
+            autoFocusItem: false,
+          },
+          paper: {
+            sx: (theme) => ({
+              backgroundColor: (theme.vars || theme).palette.surface1.main,
+              border: getSurfaceBorder(theme, 'surface1'),
+              borderRadius: `${theme.shape.cardBorderRadiusMedium}px`,
+              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.08)',
+              marginTop: theme.spacing(1),
+              '& .MuiList-root': {
+                margin: theme.spacing(1),
+                padding: 0,
+                minWidth: '264px',
+                maxHeight: '300px',
+              },
+            }),
+          },
         },
       }}
     >

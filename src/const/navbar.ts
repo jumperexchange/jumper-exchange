@@ -1,3 +1,5 @@
-import type { UseScrollTriggerOptions } from 'node_modules/@mui/material/esm/useScrollTrigger/useScrollTrigger';
+import type useScrollTrigger from '@mui/material/useScrollTrigger';
 
-export const navbarHideOnScrollTriggerOptions: UseScrollTriggerOptions = {};
+export const navbarHideOnScrollTriggerOptions: Parameters<
+  typeof useScrollTrigger
+>[0] = {};

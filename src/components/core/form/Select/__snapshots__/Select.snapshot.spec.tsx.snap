@@ -45,6 +45,7 @@ exports[`Select snapshot > matches snapshot 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_2_"
       tabindex="-1"
       value=""
     />
@@ -97,6 +98,7 @@ exports[`Select snapshot > matches snapshot with filter 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_5_"
       tabindex="-1"
       value=""
     />
@@ -149,6 +151,7 @@ exports[`Select snapshot > matches snapshot with icons 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_8_"
       tabindex="-1"
       value=""
     />
@@ -184,7 +187,7 @@ exports[`Select snapshot > matches snapshot with selected value 1`] = `
             </p>
           </div>
           <div
-            class="badge-container MuiBox-root css-2fw1xw"
+            class="badge-container MuiBox-root css-x0aky2"
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
@@ -210,6 +213,7 @@ exports[`Select snapshot > matches snapshot with selected value 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_b_"
       tabindex="-1"
       value="chain1"
     />
@@ -262,6 +266,7 @@ exports[`Select snapshot > matches snapshot with single select 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_e_"
       tabindex="-1"
       value="popularity"
     />
@@ -314,6 +319,7 @@ exports[`Select snapshot > matches snapshot with slider select 1`] = `
       aria-hidden="true"
       aria-invalid="false"
       class="MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput"
+      id="_r_h_"
       tabindex="-1"
       value=""
     />

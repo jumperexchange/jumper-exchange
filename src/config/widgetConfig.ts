@@ -57,6 +57,7 @@ export const getDefaultWidgetTheme = (
         },
         shape: {
           borderRadius: 12,
+          // @ts-ignore borderRadiusSecondary is a Jumper theme extension the widget accepts at runtime
           borderRadiusSecondary: 24,
         },
         palette: {

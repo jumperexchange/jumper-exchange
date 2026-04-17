@@ -8,7 +8,7 @@ export const PreviewBlogArticleCardSkeleton = () => {
   return (
     <BlogArticleCardContainer>
       <BaseSurfaceSkeleton variant="rounded" sx={{ width: 116, height: 72 }} />
-      <BlogArticleCardContentContainer gap={0.5}>
+      <BlogArticleCardContentContainer sx={{ gap: 0.5 }}>
         <BaseSurfaceSkeleton variant="rounded" sx={{ width: 80, height: 24 }} />
         <BaseSurfaceSkeleton
           variant="rounded"

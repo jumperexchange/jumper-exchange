@@ -22,13 +22,21 @@ const SwapPage = ({
 }: SwapPageProps) => {
   return (
     <Container>
-      <Stack display="flex" alignItems="center" direction="column">
+      <Stack
+        direction="column"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <Typography
           variant="h1"
-          color="text.primary"
-          marginY={2}
-          textAlign="center"
-          sx={{ fontSize: '40px!important' }}
+          sx={{
+            color: 'text.primary',
+            marginY: 2,
+            textAlign: 'center',
+            fontSize: '40px!important',
+          }}
         >
           Swap tokens on {sourceChain.name}
         </Typography>
@@ -49,9 +57,11 @@ const SwapPage = ({
 
         <Stack
           direction="row"
-          justifyContent="space-between"
-          width="100%"
-          flexWrap="wrap"
+          sx={{
+            justifyContent: 'space-between',
+            width: '100%',
+            flexWrap: 'wrap',
+          }}
         >
           <ChainInformationCard chain={sourceChain} fullWidth={true} />
         </Stack>

@@ -69,7 +69,13 @@ export const SliderView: React.FC<SliderViewProps> = ({
   };
 
   return (
-    <Stack direction="column" width="100%" gap={1}>
+    <Stack
+      direction="column"
+      sx={{
+        width: '100%',
+        gap: 1,
+      }}
+    >
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyMediumStrong">{renderHeader()}</Typography>
         <StyledMultiSelectFiltersClearButton
@@ -81,7 +87,6 @@ export const SliderView: React.FC<SliderViewProps> = ({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
-
       <StyledMultiSelectFiltersContainer
         sx={{ height: 'auto', padding: (theme) => theme.spacing(2) }}
       >

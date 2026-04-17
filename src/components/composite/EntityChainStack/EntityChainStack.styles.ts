@@ -11,7 +11,7 @@ export const EntityChainContainer = styled(Box, {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: 16,
+  gap: theme.spacing(2),
   ...(isContentVisible && {
     minWidth: 0,
     overflow: 'hidden',

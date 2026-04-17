@@ -14,7 +14,7 @@ export const EntityStackWithBadgeSkeleton: FC<
   EntityStackWithBadgeSkeletonProps
 > = ({ gap, size, isContentVisible }) => {
   return (
-    <EntityStackContainer gap={gap} isContentVisible={isContentVisible}>
+    <EntityStackContainer sx={{ gap }} isContentVisible={isContentVisible}>
       <AvatarSkeleton size={size} variant="circular" />
       {isContentVisible && <TitleWithHintSkeleton />}
     </EntityStackContainer>

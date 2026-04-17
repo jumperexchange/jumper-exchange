@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { AvailableSteps, BaseStepperProps } from '../ClaimPerkModal.types';
+import type { BaseStepperProps } from '../ClaimPerkModal.types';
+import { AvailableSteps } from '../ClaimPerkModal.types';
 import { useTranslation } from 'react-i18next';
 
 export const STEP_ORDER: AvailableSteps[] = [
@@ -26,10 +27,12 @@ export const useClaimPerkSteps = ({
           title: t('modal.perks.stepper.steps.username.title'),
           id: 'username',
         },
+
         [AvailableSteps.Email]: {
           title: t('modal.perks.stepper.steps.email.title'),
           id: 'email',
         },
+
         [AvailableSteps.Wallet]: {
           title: t('modal.perks.stepper.steps.wallet.title'),
           id: 'wallet',

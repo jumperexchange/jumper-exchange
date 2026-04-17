@@ -106,7 +106,6 @@ export const BottomSheet = forwardRef<BottomSheetBase, BottomSheetProps>(
         transitionDuration={transitionDuration}
         slotProps={{
           transition: {
-            direction: 'up',
             appear: true,
           },
           paper: {

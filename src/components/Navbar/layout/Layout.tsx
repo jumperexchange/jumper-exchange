@@ -25,7 +25,13 @@ export const Layout = () => {
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('lg'));
 
   const secondaryButtons = (
-    <Box display="flex" flexDirection="row" gap={1}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 1,
+      }}
+    >
       <WalletButtons />
     </Box>
   );

@@ -17,7 +17,6 @@ import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 
 const sharedStackProps = {
   direction: 'row',
-  alignItems: 'center',
   useFlexGap: true,
 } as const;
 
@@ -56,8 +55,11 @@ export const WalletTotalBalance: FC<WalletTotalBalanceProps> = ({
         <Typography variant="bodyXSmallStrong" color="textSecondary">
           {t('navbar.walletMenu.walletBalance')}
         </Typography>
-        <Stack {...sharedStackProps} gap={2} justifyContent="space-between">
-          <Stack {...sharedStackProps} gap={1}>
+        <Stack
+          {...sharedStackProps}
+          sx={{ gap: 2, justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <Stack {...sharedStackProps} sx={{ gap: 1, alignItems: 'center' }}>
             <WalletTotalBalanceValue as="div">
               <>
                 {prefix}

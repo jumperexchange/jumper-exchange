@@ -39,7 +39,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -91,7 +91,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div
@@ -218,7 +218,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -270,7 +270,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div
@@ -397,7 +397,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -449,7 +449,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div

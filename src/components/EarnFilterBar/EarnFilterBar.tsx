@@ -61,7 +61,14 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
       </EarnFilterBarHeaderContainer>
       {!isTablet && (
         <EarnFilterBarContent>
-          <Stack direction="row" gap={1} alignItems="center" flexShrink={0}>
+          <Stack
+            direction="row"
+            sx={{
+              gap: 1,
+              alignItems: 'center',
+              flexShrink: 0,
+            }}
+          >
             <EarnListMode variant={variant} setVariant={setVariant} />
             {!isForYouTab && <EarnFilterSort />}
           </Stack>

@@ -12,11 +12,11 @@ interface EntityStackContainerProps {
  */
 export const EntityStackContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'isContentVisible',
-})<EntityStackContainerProps>(({ isContentVisible }) => ({
+})<EntityStackContainerProps>(({ theme, isContentVisible }) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
-  gap: 16,
+  gap: theme.spacing(2),
   ...(isContentVisible && {
     minWidth: 0,
   }),

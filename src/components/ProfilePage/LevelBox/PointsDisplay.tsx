@@ -13,7 +13,12 @@ export const PointsDisplay = ({
 }: PointsDisplayProps) => {
   const { t } = useTranslation();
   return (
-    <Box display="flex" justifyContent="end">
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'end',
+      }}
+    >
       <TierboxInfoTitles variant="headerLarge">
         {t('format.decimal2Digit', { value: points || defaultPoints || 0 })}
       </TierboxInfoTitles>

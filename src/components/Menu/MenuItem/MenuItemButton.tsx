@@ -12,20 +12,24 @@ export const MenuItemButton = ({
     <Typography
       variant="bodyMediumStrong"
       component="span"
-      ml={prefixIcon ? '9.5px' : undefined}
-      mr={prefixIcon ? '9.5px' : undefined}
-      sx={(theme) => ({
-        color: (theme.vars || theme).palette.white.main,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        maxWidth: 208,
-        [theme.breakpoints.up('sm')]: {
-          maxWidth: 168,
+      sx={[
+        {
+          ml: prefixIcon ? '9.5px' : undefined,
+          mr: prefixIcon ? '9.5px' : undefined,
         },
-        ...theme.applyStyles('light', {
-          color: (theme.vars || theme).palette.primary.main,
+        (theme) => ({
+          color: (theme.vars || theme).palette.white.main,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: 208,
+          [theme.breakpoints.up('sm')]: {
+            maxWidth: 168,
+          },
+          ...theme.applyStyles('light', {
+            color: (theme.vars || theme).palette.primary.main,
+          }),
         }),
-      })}
+      ]}
     >
       {label}
     </Typography>

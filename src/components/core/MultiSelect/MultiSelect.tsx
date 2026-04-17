@@ -1,6 +1,6 @@
 import CheckIcon from '@mui/icons-material/Check';
 import ListItemText from '@mui/material/ListItemText';
-import { FC } from 'react';
+import type { FC } from 'react';
 import {
   ChipContainer,
   IconWrapper,
@@ -10,7 +10,7 @@ import {
   StyledMenuItem,
   StyledSelect,
 } from './MultiSelect.styles';
-import { MultiSelectProps } from './MultiSelect.types';
+import type { MultiSelectProps } from './MultiSelect.types';
 
 export const MultiSelect: FC<MultiSelectProps> = ({
   options,
@@ -33,7 +33,9 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   'data-testid': dataTestId,
 }) => {
   const handleChange = (event: any) => {
-    if (!onChange) return;
+    if (!onChange) {
+      return;
+    }
     if (multiple === false) {
       // For single select, wrap the single value in an array
       const singleValue = event.target.value as string;
@@ -46,7 +48,9 @@ export const MultiSelect: FC<MultiSelectProps> = ({
   };
 
   const handleDelete = (chipValue: string) => {
-    if (!onChange) return;
+    if (!onChange) {
+      return;
+    }
 
     onChange(value.filter((v) => v !== chipValue));
   };
@@ -132,10 +136,12 @@ export const MultiSelect: FC<MultiSelectProps> = ({
           'aria-label': label || placeholder,
         }}
         MenuProps={{
-          PaperProps: {
-            style: {
-              maxHeight: maxHeight,
-              marginTop: 8,
+          slotProps: {
+            paper: {
+              style: {
+                maxHeight: maxHeight,
+                marginTop: 8,
+              },
             },
           },
         }}

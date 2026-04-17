@@ -26,13 +26,23 @@ export const BlogArticleBanner = () => {
         },
       })}
     >
-      <Stack gap={3}>
-        <Stack gap={1}>
+      <Stack
+        sx={{
+          gap: 3,
+        }}
+      >
+        <Stack
+          sx={{
+            gap: 1,
+          }}
+        >
           <Stack
-            gap={1}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
+            sx={{
+              gap: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
           >
             <Typography variant="titleLarge">
               <Trans i18nKey={'blog.banner.title'} />
@@ -47,8 +57,8 @@ export const BlogArticleBanner = () => {
         </Stack>
         <Box sx={{ maxWidth: '40%' }}></Box>
         <Stack
-          gap={1.5}
           sx={{
+            gap: 1.5,
             width: '100%',
             alignSelf: 'stretch',
             '& > form': { maxWidth: '100%' },
