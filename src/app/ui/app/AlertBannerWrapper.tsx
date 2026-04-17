@@ -57,7 +57,7 @@ export const AlertBannerWrapper: FC = ({}) => {
     >
       <BaseAlert
         title={t('alerts.extension', {
-          extensionName: 'Example Extension',
+          extensionName: 'Pocket Universe',
           fee: 0.8,
         })}
         variant={BaseAlertVariant.Warning}

@@ -117,6 +117,13 @@ export function messageHandshakeDetector(
           if (!messageHandshakeMatchesReply(event.data, expectedReplyType)) {
             return;
           }
+          if (process.env.NODE_ENV === 'development') {
+            console.log('[extension-detection:messageHandshake]', {
+              data: event.data,
+              origin: event.origin,
+              expectedReplyType,
+            });
+          }
           clearTimeout(timer);
           window.removeEventListener('message', handler);
           resolve(true);
