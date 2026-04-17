@@ -10,6 +10,7 @@ import {
 import type { ExtensionDefinition, ExtensionStatus } from './utils';
 
 export type {
+  Eip6963AnnounceProviderMatch,
   ExtensionDefinition,
   ExtensionDetector,
   ExtensionStatus,
@@ -17,6 +18,7 @@ export type {
 export {
   chromeExtensionInjectedDetector,
   domElementDetector,
+  eip6963AnnounceProviderDetector,
   globalVariableDetector,
   messageHandshakeDetector,
   mutationObserverDetector,

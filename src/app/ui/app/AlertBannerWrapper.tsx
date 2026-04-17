@@ -5,30 +5,27 @@ import { useEffect, type FC } from 'react';
 
 import {
   chromeExtensionInjectedDetector,
-  messageHandshakeDetector,
+  eip6963AnnounceProviderDetector,
   useExtensionDetection,
   useExtension,
 } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
 import { useTranslation } from 'react-i18next';
+import { useAccount } from '@lifi/wallet-management';
 
 const POCKET_UNIVERSE_EXTENSION = 'pocket';
 
-/** Chrome Web Store ID — appears in `chrome-extension://…` URLs for injected assets. */
 const POCKET_UNIVERSE_EXTENSION_ID = 'gacgndbocaddlemdiaadajmlggabdeod';
 
 const pocketUniverseDetectors = [
   chromeExtensionInjectedDetector(POCKET_UNIVERSE_EXTENSION_ID),
-  messageHandshakeDetector(
-    { type: 'jumper-extension-detection', action: 'probe' },
-    '*',
-    1000,
-  ),
+  eip6963AnnounceProviderDetector({ nameIncludes: 'Pocket Universe' }, 8000),
 ];
 
 export const AlertBannerWrapper: FC = ({}) => {
   const { t } = useTranslation();
   const { register } = useExtensionDetection();
   const { detected } = useExtension(POCKET_UNIVERSE_EXTENSION);
+  const { account } = useAccount();
 
   useEffect(() => {
     if (detected) {
@@ -41,7 +38,7 @@ export const AlertBannerWrapper: FC = ({}) => {
     });
   }, [register, detected]);
 
-  if (!detected) {
+  if (!detected || !account?.isConnected) {
     return null;
   }
 
