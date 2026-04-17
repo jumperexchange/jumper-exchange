@@ -127,6 +127,13 @@ export default async function RootLayout({
     >
       <head>
         <script
+          id="pocket-universe-html-data-csn-snapshot"
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
+          }}
+        />
+        <script
           id="theme-bootstrap"
           data-cfasync="false"
           dangerouslySetInnerHTML={{
@@ -152,13 +159,6 @@ export default async function RootLayout({
               } catch (e) {}
             })();
           `,
-          }}
-        />
-        <script
-          id="pocket-universe-html-data-csn-snapshot"
-          data-cfasync="false"
-          dangerouslySetInnerHTML={{
-            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
           }}
         />
         <meta name="base:app_id" content={appId} />
