@@ -20,6 +20,10 @@ const VerticalTabsWrapper = dynamic(() =>
   import('./VerticalTabsWrapper').then((mod) => mod.VerticalTabsWrapper),
 );
 
+const AlertBannerWrapper = dynamic(() =>
+  import('./AlertBannerWrapper').then((mod) => mod.AlertBannerWrapper),
+);
+
 export interface AppProps {
   children: React.ReactNode;
 }
@@ -86,6 +90,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
+      {welcomeScreenClosed && <AlertBannerWrapper />}
     </WelcomeOverlayLayout>
   );
 };

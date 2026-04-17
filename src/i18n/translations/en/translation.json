@@ -1058,5 +1058,8 @@
       "openPanel": "Notifications",
       "deleteNotification": "Delete notification"
     }
+  },
+  "alerts": {
+    "extension": "We detect that you're using {{extensionName}}. This extension can overwrite transactions on top of Jumper and charge a {{fee, number}}% fee on top."
   }
 }

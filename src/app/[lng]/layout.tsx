@@ -34,6 +34,7 @@ import {
   THEME_COLOR_SCHEME_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
+import { ExtensionDetectionProvider } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -233,13 +234,15 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
-                          <Suspense>
-                            <ReferrerCapture />
+                          <ExtensionDetectionProvider>
+                            <Suspense>
+                              <ReferrerCapture />
                             <FeatureFlagsBootstrap />
-                          </Suspense>
-                          <NavbarWrapper />
-                          <IntercomProvider />
-                          <main>{children}</main>
+                            </Suspense>
+                            <NavbarWrapper />
+                            <IntercomProvider />
+                            <main>{children}</main>
+                          </ExtensionDetectionProvider>
                         </PortfolioProvider>
                       </NuqsAdapter>
                     </SettingsStoreProvider>

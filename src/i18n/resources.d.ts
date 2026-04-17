@@ -11,6 +11,9 @@ export default interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    alerts: {
+      extension: "We detect that you're using {{extensionName}}. This extension can overwrite transactions on top of Jumper and charge a {{fee, number}}% fee on top.";
+    };
     badge: {
       updated: 'Updated {{time}} ago';
     };
@@ -805,7 +808,7 @@ export default interface Resources {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
         chainValidationError: {
           cancel: 'Cancel';
-          description: "Currently chain {{chain}} can't support this operation, but we're actively working on it.";
+          description: "Currently {{chain}} chain can't support this operation, but we're actively working on it.";
           title: 'Chain not supported';
         };
         error: {
