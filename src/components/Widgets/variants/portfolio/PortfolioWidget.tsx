@@ -175,10 +175,13 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
     const widgetRoot = document.querySelector(
       '[id^="widget-app-expanded-container"]',
     );
+    // Fall back to document.body on initial render when the widget root hasn't
+    // mounted yet; the body observer catches the widget appearing in the DOM.
     const observer = new MutationObserver(reposition);
-    if (widgetRoot) {
-      observer.observe(widgetRoot, { childList: true, subtree: true });
-    }
+    observer.observe(widgetRoot ?? document.body, {
+      childList: true,
+      subtree: true,
+    });
     reposition();
 
     return () => {
