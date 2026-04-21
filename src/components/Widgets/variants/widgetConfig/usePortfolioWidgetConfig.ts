@@ -122,7 +122,7 @@ export function usePortfolioWidgetConfig(
   }, [variant, earnOpportunity, position, minFromAmountUSD]);
 
   // Cast needed: TS cannot narrow the conditional type param at call site
-  const config = useWidgetConfig(
+  const { config, isReady } = useWidgetConfig(
     widgetType,
     widgetContext as MainWidgetContext & ZapWidgetContext,
   );
