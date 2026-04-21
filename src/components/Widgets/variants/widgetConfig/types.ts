@@ -75,7 +75,7 @@ export interface MainWidgetContext extends CommonWidgetContext {
 
 export interface MissionWidgetContext extends CommonWidgetContext {
   taskType?: TaskType;
-  subTaskType?: 'withdraw' | 'deposit';
+  subTaskType?: 'withdraw' | 'deposit' | 'borrow';
   allowBridge?: string | null;
   allowExchange?: string | null;
   overrideHeader?: string;

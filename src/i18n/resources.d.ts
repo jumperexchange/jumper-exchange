@@ -96,6 +96,8 @@ interface Resources {
       requestWithdraw: 'Request withdraw';
       withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
+      borrowButtonLabel: 'Borrow';
+      reviewBorrowButtonLabel: 'Review borrow';
     };
     campaign: {
       missions: {

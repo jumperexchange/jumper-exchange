@@ -768,6 +768,8 @@
     "depositButtonLabel": "Quick deposit",
     "requestRedeemButtonLabel": "Request redeem",
     "withdrawButtonLabel": "Withdraw",
+    "borrowButtonLabel": "Borrow",
+    "reviewBorrowButtonLabel": "Review borrow",
     "managePositionsButtonLabel": "Manage positions",
     "deposit": "Deposit",
     "depositNow": "Deposit now",

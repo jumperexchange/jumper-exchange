@@ -1,10 +1,13 @@
-import type { PortfolioPosition } from '@/providers/PortfolioProvider/types';
-import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 import { PortfolioWidget } from './PortfolioWidget';
 import { PortfolioWidgetVariants } from './types';
-import { mockEarnOpportunity, mockPortfolioPosition } from './fixtures';
+import {
+  BORROW_MARKET_ID,
+  mockBorrowEarnOpportunity,
+  mockEarnOpportunity,
+  mockPortfolioPosition,
+} from './fixtures';
 
 const meta = {
   component: PortfolioWidget,
@@ -50,8 +53,8 @@ export const Withdraw: Story = {
 export const Borrow: Story = {
   args: {
     widgetVariants: [PortfolioWidgetVariants.Borrow],
-    earnOpportunities: [mockEarnOpportunity],
-    minFromAmountUSD: 10,
+    earnOpportunities: [mockBorrowEarnOpportunity],
+    marketId: BORROW_MARKET_ID,
   },
 };
 

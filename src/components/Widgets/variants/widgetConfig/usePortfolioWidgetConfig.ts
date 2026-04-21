@@ -85,6 +85,7 @@ function buildBorrowContext(
 ): ZapWidgetContext {
   return {
     taskType: TaskType.Zap,
+    subTaskType: 'borrow',
     zapPoolName: opportunity
       ? `${opportunity.protocol.name} ${opportunity.asset.symbol.toUpperCase()} Pool`
       : undefined,
@@ -162,7 +163,11 @@ export function usePortfolioWidgetConfig(
   );
 
   const depositContractProps = useMemo((): DepositContractProps | null => {
-    if (variant !== PortfolioWidgetVariants.Deposit || !earnOpportunity) {
+    if (
+      (variant !== PortfolioWidgetVariants.Deposit &&
+        variant !== PortfolioWidgetVariants.Borrow) ||
+      !earnOpportunity
+    ) {
       return null;
     }
     return {

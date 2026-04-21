@@ -591,6 +591,7 @@ export interface CreateWalletTransactionDto {
   pathname?: string;
   referrer?: string;
   abtests?: object;
+  abTestVariants?: object;
   /** @format date-time */
   timestamp: string;
 }
@@ -856,6 +857,171 @@ export interface WalletPositions {
         source: 'app';
       } & AppDefiPosition)
   )[];
+}
+
+export interface LoopoorToken {
+  /** @example "0x4200000000000000000000000000000000000006" */
+  address: string;
+  /** @example "WETH" */
+  symbol: string;
+  /** @example 18 */
+  decimals: number;
+}
+
+export interface LoopoorMarketReward {
+  /** @example 0 */
+  supplyApr: number | null;
+  /** @example 0.0012 */
+  borrowApr: number | null;
+  /** @example {"address":"0x58D97B57BB95320F9a05dC918Aef65434969c2B2","symbol":"MORPHO"} */
+  asset: object;
+}
+
+export interface LoopoorMarketState {
+  /** @example "1234567890000000000000000000000000000" */
+  price: string;
+  /**
+   * Borrow APY as a fraction
+   * @example 0.0421
+   */
+  borrowApy: number;
+  /**
+   * Morpho loan-asset supply APY. NOT the collateral yield — not relevant for looping.
+   * @example 0.0315
+   */
+  supplyApy: number;
+  /**
+   * Utilization as a fraction
+   * @example 0.83
+   */
+  utilization: number;
+  /** @example "12345678900000000000000" */
+  borrowAssets: string;
+  /** @example "14583453000000000000000" */
+  supplyAssets: string;
+  /** @example "25000000000000000000000" */
+  collateralAssets: string;
+  rewards: LoopoorMarketReward[];
+}
+
+export interface LoopoorMarket {
+  /** @example 8453 */
+  chainId: number;
+  /** @example "0xffd35206a772174c04f599e4034a2f132fc3f7a462ca732affcea92136716573" */
+  marketId: string;
+  label?: string;
+  loanToken: LoopoorToken;
+  collateralToken: LoopoorToken;
+  /** @example "0x..." */
+  oracle: string;
+  /** @example "0x..." */
+  irm: string;
+  /**
+   * LLTV, 1e18
+   * @example "945000000000000000"
+   */
+  lltv: string;
+  state: LoopoorMarketState;
+}
+
+export interface LoopoorMaxLeverageResponse {
+  /** @example 8453 */
+  chainId: number;
+  marketId: string;
+  /** @example "945000000000000000" */
+  lltv: string;
+  /**
+   * Safety buffer applied to LLTV
+   * @example 0.95
+   */
+  safetyBuffer: number;
+  /** @example 0.005 */
+  slippage: number;
+  /**
+   * targetLtv = (lltv / 1e18) * safetyBuffer
+   * @example 0.89775
+   */
+  targetLtv: number;
+  /**
+   * Maximum safe leverage factor given slippage and safety buffer
+   * @example 8.78
+   */
+  maxLeverageFactor: number;
+}
+
+export interface LoopoorStatsResponse {
+  /** @example 8453 */
+  chainId: number;
+  marketId: string;
+  /**
+   * Leverage factor requested by the caller.
+   * @example 3
+   */
+  requestedLeverageFactor: number;
+  /**
+   * Leverage factor actually used (clamped to the max safe leverage).
+   * @example 3
+   */
+  leverageFactor: number;
+  /** @example 0.005 */
+  slippage: number;
+  /** @example 0.95 */
+  safetyBuffer: number;
+  /**
+   * Market LLTV as a fraction (lltv / 1e18).
+   * @example 0.945
+   */
+  lltv: number;
+  /**
+   * Post-slippage effective LTV of the resulting position: (L-1) / (1 + (L-1)·(1-slippage)).
+   * @example 0.6687
+   */
+  ltv: number;
+  /**
+   * Collateral-side yield used in the loop math — the collateral token’s native APR (e.g. wstETH staking yield). Sourced from vaults.fyi.
+   * @example 0.0266
+   */
+  depositApy: number;
+  /**
+   * Raw Morpho borrow APY (interest paid by borrowers, before rewards).
+   * @example 0.015
+   */
+  borrowApy: number;
+  /**
+   * Borrow-side rewards APR (sum across all reward programs). Subtracted from borrowApy to get the effective borrow cost.
+   * @example 0.0159
+   */
+  borrowRewardsApy: number;
+  /**
+   * Effective borrow APY net of rewards: borrowApy − borrowRewardsApy. Negative when rewards exceed interest.
+   * @example -0.0009
+   */
+  borrowApyNet: number;
+  /**
+   * Estimated net APY for the leveraged position: L · depositApy − (L − 1) · borrowApyNet.
+   * @example 0.499
+   */
+  netApy: number;
+  /**
+   * Echoes the `amount` query param (initial collateral, smallest unit).
+   * @example "1000000000000000000"
+   */
+  amount?: string;
+  /**
+   * Effective collateral in the position after swap slippage, in the collateral token's smallest unit. Only present when `amount` is provided.
+   * @example "2990000000000000000"
+   */
+  effectiveCollateral?: string;
+  /**
+   * Flash loan amount in the loan token's smallest unit (equals the resulting borrow). Only present when `amount` is provided.
+   * @example "4000000000"
+   */
+  flashLoanAmount?: string;
+  /**
+   * Estimated yearly yield in the collateral token's smallest unit (netApy · effectiveCollateral). Only present when `amount` is provided.
+   * @example "30797000000000000"
+   */
+  yearlyYield?: string;
 }
 
 export interface TaskVerificationDto {
@@ -1755,6 +1921,124 @@ export class JumperBackend<
     ) =>
       this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Loopoor, Public
+     * @name LoopoorControllerListMarketsV1
+     * @summary List whitelisted loopoor markets
+     * @request GET:/v1/loopoor/markets
+     */
+    loopoorControllerListMarketsV1: (
+      query: {
+        chainId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<LoopoorMarket[], any>({
+        path: `/v1/loopoor/markets`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Loopoor, Public
+     * @name LoopoorControllerGetMarketV1
+     * @summary Get a single loopoor market
+     * @request GET:/v1/loopoor/markets/{chainId}/{marketId}
+     */
+    loopoorControllerGetMarketV1: (
+      chainId: number,
+      marketId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<LoopoorMarket, any>({
+        path: `/v1/loopoor/markets/${chainId}/${marketId}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Loopoor, Public
+     * @name LoopoorControllerGetMaxLeverageV1
+     * @summary Compute the max safe leverage factor for a market
+     * @request GET:/v1/loopoor/markets/{chainId}/{marketId}/max-leverage
+     */
+    loopoorControllerGetMaxLeverageV1: (
+      chainId: number,
+      marketId: string,
+      query?: {
+        /**
+         * Swap slippage allowance as a fraction (default 0.005)
+         * @example 0.005
+         */
+        slippage?: number;
+        /**
+         * Safety buffer applied to LLTV (default 0.95)
+         * @example 0.95
+         */
+        safetyBuffer?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<LoopoorMaxLeverageResponse, any>({
+        path: `/v1/loopoor/markets/${chainId}/${marketId}/max-leverage`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Loopoor, Public
+     * @name LoopoorControllerGetStatsV1
+     * @summary Get position stats (net APY, yearly yield, LTV/LLTV, deposit/borrow APY) for a selected leverage factor
+     * @request GET:/v1/loopoor/markets/{chainId}/{marketId}/stats
+     */
+    loopoorControllerGetStatsV1: (
+      chainId: number,
+      marketId: string,
+      query: {
+        /**
+         * Selected leverage factor (>1).
+         * @example 3
+         */
+        leverageFactor: number;
+        /**
+         * Initial collateral amount in the collateral token's smallest unit. If provided, the response includes absolute figures (flash loan size, leveraged collateral, yearly yield).
+         * @example "1000000000000000000"
+         */
+        amount?: string;
+        /**
+         * Swap slippage allowance as a fraction (default 0.005).
+         * @example 0.005
+         */
+        slippage?: number;
+        /**
+         * Safety buffer applied to LLTV (default 0.95).
+         * @example 0.95
+         */
+        safetyBuffer?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<LoopoorStatsResponse, any>({
+        path: `/v1/loopoor/markets/${chainId}/${marketId}/stats`,
         method: 'GET',
         query: query,
         format: 'json',
