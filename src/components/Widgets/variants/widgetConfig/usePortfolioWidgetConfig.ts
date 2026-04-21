@@ -79,6 +79,35 @@ function buildWithdrawContext(
   };
 }
 
+function buildBorrowContext(
+  opportunity: EarnOpportunityWithLatestAnalytics | null,
+  minFromAmountUSD?: number,
+): ZapWidgetContext {
+  return {
+    taskType: TaskType.Zap,
+    zapPoolName: opportunity
+      ? `${opportunity.protocol.name} ${opportunity.asset.symbol.toUpperCase()} Pool`
+      : undefined,
+    integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_BORROW,
+    keyPrefix: 'zap.backend',
+    formData: {
+      minFromAmountUSD,
+      sourceToken: opportunity
+        ? {
+            tokenAddress: opportunity.asset.address,
+            tokenSymbol: opportunity.asset.symbol,
+          }
+        : undefined,
+      sourceChain: opportunity
+        ? {
+            chainId: opportunity.asset.chain.chainId.toString(),
+            chainKey: opportunity.asset.chain.chainKey,
+          }
+        : undefined,
+    },
+  };
+}
+
 function buildSwapBuyContext(
   variant: PortfolioWidgetVariants,
 ): MainWidgetContext {
@@ -112,6 +141,11 @@ export function usePortfolioWidgetConfig(
         return {
           widgetType: 'zap' as const,
           widgetContext: buildWithdrawContext(position),
+        };
+      case PortfolioWidgetVariants.Borrow:
+        return {
+          widgetType: 'zap' as const,
+          widgetContext: buildBorrowContext(earnOpportunity, minFromAmountUSD),
         };
       default:
         return {

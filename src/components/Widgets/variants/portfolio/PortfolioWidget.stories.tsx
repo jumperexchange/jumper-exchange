@@ -47,6 +47,14 @@ export const Withdraw: Story = {
   },
 };
 
+export const Borrow: Story = {
+  args: {
+    widgetVariants: [PortfolioWidgetVariants.Borrow],
+    earnOpportunities: [mockEarnOpportunity],
+    minFromAmountUSD: 10,
+  },
+};
+
 export const AllVariants: Story = {
   args: {
     widgetVariants: [

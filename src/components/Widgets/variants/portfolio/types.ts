@@ -13,4 +13,5 @@ export enum PortfolioWidgetVariants {
   Compound = 'compound', // will be implemented later
   Switch = 'switch', // will be implemented later
   Repay = 'repay', // will be implemented later
+  Borrow = 'borrow',
 }
