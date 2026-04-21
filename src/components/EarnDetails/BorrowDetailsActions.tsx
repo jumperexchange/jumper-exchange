@@ -1,9 +1,7 @@
 'use client';
 
-import { ClientOnly } from '@/components/ClientOnly';
-import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
-import { PortfolioWidget } from '@/components/Widgets/variants/portfolio/PortfolioWidget';
-import { PortfolioWidgetVariants } from '@/components/Widgets/variants/portfolio/types';
+import { BorrowModal } from '@/components/composite/BorrowModal/BorrowModal';
+import { useLoopoorMarkets } from '@/hooks/loopoor/useLoopoorMarkets';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
@@ -27,38 +25,34 @@ export function BorrowDetailsActions({
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
+  const chainId = opportunity.asset.chain.chainId;
+  const { data: markets } = useLoopoorMarkets({ chainId });
+  const market = markets?.find((m) => m.marketId === marketId);
+
   return (
     <EarnDetailsActionsContainer>
-      <EarnDetailsActionsHeaderContainer>
+      {/* <EarnDetailsActionsHeaderContainer>
         <Typography variant="bodyXSmall" color="textSecondary">
           {t('earn.position.label')}
         </Typography>
-      </EarnDetailsActionsHeaderContainer>
+      </EarnDetailsActionsHeaderContainer> */}
       <EarnDetailsActionsButtonsContainer>
         <ButtonPrimary
           onClick={() => setIsOpen(true)}
           size="large"
           sx={{ flex: 1 }}
+          disabled={!market}
         >
-          {t('buttons.borrow', 'Borrow')}
+          Leverage
         </ButtonPrimary>
       </EarnDetailsActionsButtonsContainer>
-      <ModalContainer isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ClientOnly>
-          <PortfolioWidget
-            widgetVariants={[PortfolioWidgetVariants.Borrow]}
-            disabledWidgetVariants={[]}
-            earnOpportunities={[opportunity]}
-            marketId={marketId}
-            sx={(theme) => ({
-              maxHeight: 'calc(100vh - 12rem)',
-              overflowY: 'auto',
-              width: '100%',
-              [theme.breakpoints.up('sm')]: { maxWidth: 436 },
-            })}
-          />
-        </ClientOnly>
-      </ModalContainer>
+      {market && (
+        <BorrowModal
+          market={market}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </EarnDetailsActionsContainer>
   );
 }

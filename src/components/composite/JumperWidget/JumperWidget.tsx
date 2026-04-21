@@ -37,6 +37,7 @@ import { GoBackHeader, MainHeader } from './components/Headers';
 import { ContentContainer } from './JumperWidget.style';
 import { mergeSx } from '@/utils/theme/mergeSx';
 import { buildFieldListeners } from './utils';
+import { isEqual } from 'lodash';
 
 const JUMPER_WIDGET_CONTAINER_ID = 'jumper-widget-container-id';
 const JUMPER_WIDGET_SIDE_CONTAINER_ID = 'jumper-widget-side-container-id';
@@ -295,9 +296,14 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
     },
   });
 
-  // Sync form state when defaultValues change (e.g. async data like lpTokenAmount loads)
+  const prevDefaultValuesRef = useRef<Record<string, unknown> | null>(null);
   useEffect(() => {
     form.reset(defaultValues);
+    const prev = prevDefaultValuesRef.current;
+    if (!isEqual(prev, defaultValues)) {
+      prevDefaultValuesRef.current = defaultValues;
+      form.reset(defaultValues);
+    }
   }, [defaultValues, form]);
 
   const isSubmitting = useStore(form.store, (s) => s.isSubmitting) as boolean;
