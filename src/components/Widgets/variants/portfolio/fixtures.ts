@@ -39,7 +39,7 @@ export const mockEarnOpportunity: EarnOpportunityWithLatestAnalytics = {
     date: '2024-01-01',
     tvlUsd: '10000000',
     tvlNative: '10000000',
-    apy: { base: 5.5, reward: 1.2, total: 6.7 },
+    apy: { base: 5.5, reward: 1.2, total: 6.7, intrinsic: 3 },
   },
   interactionFlags: {
     canDeposit: true,
