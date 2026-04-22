@@ -274,7 +274,7 @@ export function LoopoorMarketBanner() {
                 variant={BadgeVariant.Secondary}
                 size={BadgeSize.MD}
                 startIcon={<TrendingUpIcon />}
-                label={t('earn.borrow.upToApy', 'Up to {{apy}}% APY', {
+                label={t('earn.borrow.upToApy', 'Up to {{apy}} APY', {
                   apy: t('format.percent', { value: apyPct }),
                 })}
               />
