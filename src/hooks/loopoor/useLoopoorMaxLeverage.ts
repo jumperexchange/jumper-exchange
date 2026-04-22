@@ -25,7 +25,8 @@ export function useLoopoorMaxLeverage({
       if (!result.ok) {
         throw result.error;
       }
-      return result.data;
+      // @ts-expect-error - nested data shape not reflected in type
+      return result.data.data as LoopoorMaxLeverageResponse;
     },
     enabled: chainId !== undefined && !!marketId,
     refetchInterval: FIVE_MINUTES_MS,

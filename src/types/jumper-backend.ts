@@ -924,6 +924,21 @@ export interface LoopoorMarket {
   state: LoopoorMarketState;
 }
 
+export interface LoopoorMarketHistoryDataPoint {
+  /** Unix timestamp in seconds */
+  x: number;
+  y: number | string;
+}
+
+export interface LoopoorMarketHistory {
+  borrowApy: LoopoorMarketHistoryDataPoint[];
+  supplyApy: LoopoorMarketHistoryDataPoint[];
+  utilization: LoopoorMarketHistoryDataPoint[];
+  borrowAssets: LoopoorMarketHistoryDataPoint[];
+  supplyAssets: LoopoorMarketHistoryDataPoint[];
+  collateralAssets: LoopoorMarketHistoryDataPoint[];
+}
+
 export interface LoopoorMaxLeverageResponse {
   /** @example 8453 */
   chainId: number;
@@ -1998,6 +2013,26 @@ export class JumperBackend<
         path: `/v1/loopoor/markets/${chainId}/${marketId}/max-leverage`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Loopoor, Public
+     * @name LoopoorControllerGetMarketHistoryV1
+     * @summary Get all historical data points for a market
+     * @request GET:/v1/loopoor/markets/{chainId}/{marketId}/history
+     */
+    loopoorControllerGetMarketHistoryV1: (
+      chainId: number,
+      marketId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<LoopoorMarketHistory, any>({
+        path: `/v1/loopoor/markets/${chainId}/${marketId}/history`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),

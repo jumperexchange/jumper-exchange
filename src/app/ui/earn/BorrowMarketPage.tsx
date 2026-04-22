@@ -39,6 +39,10 @@ export const BorrowMarketPage: FC<BorrowMarketPageProps> = async ({
     //@ts-ignore - TODO: LF-14853: type this properly
     result.data.data,
     chainKey,
+    {
+      name: 'Morpho',
+      logo: 'https://strapi-staging.jumper.exchange/uploads/protocols_morpho_22aad9e9df.png',
+    },
   );
 
   return (
@@ -46,7 +50,7 @@ export const BorrowMarketPage: FC<BorrowMarketPageProps> = async ({
       <EarnDetailsSection>
         <GoBack path={AppPaths.Earn} dataTestId="borrow-back-button" />
         <BorrowDetailsIntro opportunity={opportunity} marketId={marketId} />
-        <BorrowDetailsChart />
+        <BorrowDetailsChart chainId={chainId} marketId={marketId} />
       </EarnDetailsSection>
     </>
   );

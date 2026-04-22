@@ -47,7 +47,7 @@ export function transformLoopoorMarketToOpportunity(
     name,
     slug: market.marketId,
     description: '',
-    tags: ['borrow', 'leverage'],
+    tags: ['Borrow', 'Leverage'],
     featured: false,
     forYou: false,
     isRedeemable: false,

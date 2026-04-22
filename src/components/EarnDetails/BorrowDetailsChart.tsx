@@ -1,7 +1,6 @@
 'use client';
 
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { useState } from 'react';
 import {
   EarnDetailsAnalyticsContainer,
   EarnDetailsAnalyticsHeaderContainer,
@@ -9,14 +8,47 @@ import {
   EarnDetailsAnalyticsButton,
   EarnDetailsAnalyticsLineChartContainer,
 } from './EarnDetails.styles';
-import { useState } from 'react';
-import { AnalyticsRangeFieldEnum } from './types';
+import {
+  AnalyticsRangeFieldEnum,
+  BorrowAnalyticsValueFieldEnum,
+} from './types';
 import { capitalizeString } from '@/utils/capitalizeString';
+import { useLoopoorMarketHistory } from 'src/hooks/loopoor/useLoopoorMarketHistory';
+import { useBorrowAnalyticsChartConfig } from './hooks';
+import { LineChart } from '../core/charts/LineChart/LineChart';
+import { APY_FORMAT_CONFIG } from '@/utils/numbers/apy';
+import type { ValueFormatConfig } from 'src/utils/formatNumbers';
 
-export function BorrowDetailsChart() {
+interface BorrowDetailsChartProps {
+  chainId: number;
+  marketId: string;
+}
+
+const VALUE_LABELS: Record<BorrowAnalyticsValueFieldEnum, string> = {
+  [BorrowAnalyticsValueFieldEnum.BORROW_APY]: 'Borrow APY',
+  [BorrowAnalyticsValueFieldEnum.SUPPLY_APY]: 'Supply APY',
+  [BorrowAnalyticsValueFieldEnum.UTILIZATION]: 'Utilization',
+};
+
+const VALUE_FORMAT: Record<BorrowAnalyticsValueFieldEnum, ValueFormatConfig> = {
+  [BorrowAnalyticsValueFieldEnum.BORROW_APY]: APY_FORMAT_CONFIG,
+  [BorrowAnalyticsValueFieldEnum.SUPPLY_APY]: APY_FORMAT_CONFIG,
+  [BorrowAnalyticsValueFieldEnum.UTILIZATION]: APY_FORMAT_CONFIG,
+};
+
+export function BorrowDetailsChart({
+  chainId,
+  marketId,
+}: BorrowDetailsChartProps) {
   const [range, setRange] = useState<AnalyticsRangeFieldEnum>(
     AnalyticsRangeFieldEnum.WEEK,
   );
+  const [valueField, setValueField] = useState<BorrowAnalyticsValueFieldEnum>(
+    BorrowAnalyticsValueFieldEnum.BORROW_APY,
+  );
+
+  const { isLoading, data } = useLoopoorMarketHistory({ chainId, marketId });
+  const config = useBorrowAnalyticsChartConfig(data, range, valueField);
 
   return (
     <EarnDetailsAnalyticsContainer>
@@ -33,20 +65,27 @@ export function BorrowDetailsChart() {
             </EarnDetailsAnalyticsButton>
           ))}
         </EarnDetailsAnalyticsButtonsContainer>
+        <EarnDetailsAnalyticsButtonsContainer direction="row">
+          {Object.values(BorrowAnalyticsValueFieldEnum).map((v) => (
+            <EarnDetailsAnalyticsButton
+              key={v}
+              isActive={v === valueField}
+              onClick={() => setValueField(v)}
+              size="small"
+            >
+              {VALUE_LABELS[v]}
+            </EarnDetailsAnalyticsButton>
+          ))}
+        </EarnDetailsAnalyticsButtonsContainer>
       </EarnDetailsAnalyticsHeaderContainer>
       <EarnDetailsAnalyticsLineChartContainer>
-        <Box
-          sx={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Typography variant="bodySmall" color="text.secondary">
-            Chart coming soon
-          </Typography>
-        </Box>
+        <LineChart
+          isLoading={isLoading}
+          dataSetId={valueField}
+          data-testid="borrow-analytics-chart"
+          valueFormatConfig={VALUE_FORMAT[valueField]}
+          {...config}
+        />
       </EarnDetailsAnalyticsLineChartContainer>
     </EarnDetailsAnalyticsContainer>
   );
