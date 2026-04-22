@@ -36,7 +36,7 @@ export function BorrowDetailsActions({
         </Typography>
       </EarnDetailsActionsHeaderContainer> */}
       <EarnDetailsActionsButtonsContainer>
-        <LoopoorDemoButton />
+        {/* <LoopoorDemoButton /> */}
         <ButtonPrimary
           onClick={() => setIsOpen(true)}
           size="large"

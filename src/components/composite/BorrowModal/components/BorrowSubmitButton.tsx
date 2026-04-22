@@ -8,16 +8,22 @@ import { Size, Variant } from '@/components/core/buttons/types';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useLeverageContext } from '../context';
 
-export function BorrowSubmitButton() {
+export function BorrowSubmitButton({
+  isFormSubmitting,
+}: {
+  isFormSubmitting: boolean;
+}) {
   const accountAddress = useAccountAddress();
   const { isTransactionSubmitting } = useLeverageContext();
   const amountValue = useWidgetStore((s) => s.values['amount']) as
     | AmountValue
     | undefined;
   const { isSubmitting } = useWidgetSubmit();
+  const isLoading = isFormSubmitting || isSubmitting;
 
   const isDisabled =
     isTransactionSubmitting ||
+    isFormSubmitting ||
     isSubmitting ||
     !accountAddress ||
     !amountValue?.amount ||
@@ -30,7 +36,7 @@ export function BorrowSubmitButton() {
       fullWidth
       type="submit"
       disabled={isDisabled}
-      loading={isTransactionSubmitting || isSubmitting}
+      loading={isTransactionSubmitting || isSubmitting || isFormSubmitting}
     >
       Leverage
     </Button>
