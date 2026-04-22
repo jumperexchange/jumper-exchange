@@ -31,6 +31,7 @@ import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalCon
 import type { ModalContainerProps } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
 import { useLoopoorMaxLeverage } from '@/hooks/loopoor/useLoopoorMaxLeverage';
+import { useGetTokenBalance } from '@/hooks/useGetTokenBalance';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { useTransactionStatusContent } from '@/hooks/transactions/useTransactionStatusContent';
 import { useToken } from '@/hooks/useToken';
@@ -57,7 +58,7 @@ import { BORROW_STATUS_KEYS, widgetStyle } from './constants';
 import { LeverageContext, useLeverageContext } from './context';
 import { BorrowModalView } from './types';
 
-const SLIPPAGE = 0.005;
+const SLIPPAGE = 0.05;
 const SAFETY_BUFFER = 0.95;
 const SIGNATURE_TTL_SECONDS = 3600;
 
@@ -151,6 +152,12 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     () => [collateralToken, loanToken],
     [collateralToken, loanToken],
   );
+
+  const { data: collateralBalanceData } = useGetTokenBalance(
+    accountAddress,
+    collateralToken as any,
+  );
+  const collateralMaxAmount = collateralBalanceData?.amount?.toString();
 
   const fetchCallData = useCallback(async () => {
     if (!accountAddress) {
@@ -358,7 +365,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
       }),
       defineAmountField({
         fieldKey: 'amount',
-        defaultValue: { amount: '0', maxAmount: undefined },
+        defaultValue: { amount: '0', maxAmount: collateralMaxAmount },
         fieldProps: {
           token: collateralToken,
           label: t('form.labels.amount'),
@@ -367,7 +374,7 @@ export const BorrowModal: FC<BorrowModalProps> = ({
         t,
       }),
     ],
-    [availableTokens, collateralToken, t],
+    [availableTokens, collateralToken, collateralMaxAmount, t],
   );
 
   // views is stable: leverage/transaction state flow through LeverageContext,
