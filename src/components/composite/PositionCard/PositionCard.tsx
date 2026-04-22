@@ -99,10 +99,31 @@ export const PositionCard: FC<PositionCardProps> = ({
     firstPosition && isChainPortfolioPosition(firstPosition)
       ? firstPosition.chain.chainId
       : undefined;
+
+  const netTokenAmount = isLending
+    ? (() => {
+        const supply =
+          positions?.reduce(
+            (sum, pos) =>
+              sum + pos.supplyTokens.reduce((s, t) => s + BigInt(t.amount), 0n),
+            0n,
+          ) ?? 0n;
+        const borrow =
+          positions?.reduce(
+            (sum, pos) =>
+              sum + pos.borrowTokens.reduce((s, t) => s + BigInt(t.amount), 0n),
+            0n,
+          ) ?? 0n;
+        const net = supply - borrow;
+        return net > 0n ? net.toString() : undefined;
+      })()
+    : undefined;
+
   const { data: loopoorStats } = useLoopoorStats({
     chainId: isLending ? firstChainId : undefined,
     marketId: isLending ? firstPosition?.address : undefined,
     leverageFactor,
+    amount: netTokenAmount,
   });
 
   if (isLoading || !firstPosition) {

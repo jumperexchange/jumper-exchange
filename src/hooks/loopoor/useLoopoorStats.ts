@@ -35,7 +35,7 @@ export function useLoopoorStats({
       //@ts-ignore
       return result.data.data;
     },
-    enabled: !!chainId && !!marketId && leverageFactor > 1,
+    enabled: !!chainId && !!marketId && leverageFactor > 1 && !!amount,
     refetchInterval: FIVE_MINUTES_MS,
     placeholderData: (previousData) => previousData,
   });
