@@ -39,6 +39,8 @@ import { openInNewTab } from '@/utils/openInNewTab';
 import { AppPaths } from '@/const/urls';
 import type { DisplayableEntity } from '../EntityAvatar/types';
 import { PositionCardSkeleton } from './components/PositionCardSkeleton';
+import { useLoopoorStats } from '@/hooks/loopoor/useLoopoorStats';
+import { formatApy } from '@/utils/numbers/apy';
 
 export const PositionCard: FC<PositionCardProps> = ({
   positions,
@@ -87,6 +89,21 @@ export const PositionCard: FC<PositionCardProps> = ({
   const hasRewards = positionGroups.some((group) =>
     group.sections.some((section) => section.type === 'rewards'),
   );
+  const isLending = firstPosition?.type.toLowerCase() === 'lending';
+  const totalSupplyUsd = isLending
+    ? (positions?.reduce((sum, pos) => sum + pos.assetUsd, 0) ?? 0)
+    : 0;
+  const leverageFactor =
+    isLending && totalNetUsd > 0 ? totalSupplyUsd / totalNetUsd : 0;
+  const firstChainId =
+    firstPosition && isChainPortfolioPosition(firstPosition)
+      ? firstPosition.chain.chainId
+      : undefined;
+  const { data: loopoorStats } = useLoopoorStats({
+    chainId: isLending ? firstChainId : undefined,
+    marketId: isLending ? firstPosition?.address : undefined,
+    leverageFactor,
+  });
 
   if (isLoading || !firstPosition) {
     return <PositionCardSkeleton />;
@@ -131,6 +148,24 @@ export const PositionCard: FC<PositionCardProps> = ({
               label={firstPosition.type}
               data-testid={`earn-card-tag-${firstPosition.type.toLowerCase().replace(/\s+/g, '-')}`}
             />
+            {isLending && (
+              <Badge
+                variant={BadgeVariant.Secondary}
+                size={BadgeSize.MD}
+                label={`${t('format.decimal', {
+                  value: totalSupplyUsd / totalNetUsd,
+                })} Leverage`}
+                data-testid="earn-card-tag-supply-net-ratio"
+              />
+            )}
+            {isLending && loopoorStats?.netApy !== undefined && (
+              <Badge
+                variant={BadgeVariant.Secondary}
+                size={BadgeSize.MD}
+                label={`${formatApy(loopoorStats.netApy)} APY`}
+                data-testid="earn-card-tag-loopoor-apy"
+              />
+            )}
             {hasRewards && (
               <Badge
                 variant={BadgeVariant.Alpha}
