@@ -1,16 +1,15 @@
 'use client';
 
-import { BorrowModal } from '@/components/composite/BorrowModal/BorrowModal';
-import { useLoopoorMarkets } from '@/hooks/loopoor/useLoopoorMarkets';
-import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BorrowModal } from '@/components/composite/BorrowModal/BorrowModal';
+import { LoopoorDemoButton } from '@/components/Widgets/variants/portfolio/loopoor/LoopoorDemoButton';
+import { useLoopoorMarkets } from '@/hooks/loopoor/useLoopoorMarkets';
+import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { ButtonPrimary } from '../Button';
 import {
   EarnDetailsActionsButtonsContainer,
   EarnDetailsActionsContainer,
-  EarnDetailsActionsHeaderContainer,
 } from './EarnDetails.styles';
 
 interface BorrowDetailsActionsProps {
@@ -37,6 +36,7 @@ export function BorrowDetailsActions({
         </Typography>
       </EarnDetailsActionsHeaderContainer> */}
       <EarnDetailsActionsButtonsContainer>
+        <LoopoorDemoButton />
         <ButtonPrimary
           onClick={() => setIsOpen(true)}
           size="large"
