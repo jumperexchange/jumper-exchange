@@ -39,7 +39,7 @@ import type { LoopoorMarket } from '@/types/jumper-backend';
 import type { ExtendedToken } from '@/types/tokens';
 import type { ChainId } from '@lifi/sdk';
 import type { Address, Hex } from 'viem';
-import { encodeFunctionData, parseUnits } from 'viem';
+import { encodeFunctionData } from 'viem';
 import { PortfolioLeverageField } from '@/components/Widgets/variants/portfolio/PortfolioLeverageField';
 import debounce from 'lodash/debounce';
 import {
@@ -168,10 +168,10 @@ export const BorrowModal: FC<BorrowModalProps> = ({
     }
 
     const chainConfig = getLoopoorChainConfig(market.chainId);
-    const parsedAmount = parseUnits(
-      amount || '0',
-      market.collateralToken.decimals,
-    );
+    // `amount` is already raw wei — see Amount.tsx's handleFormattedAmountChange,
+    // which runs parseUnits() before storing. Re-parsing it here would multiply by
+    // 10^decimals a second time and blow up flashLoanAmount + the Permit2 signature.
+    const parsedAmount = BigInt(amount || '0');
 
     const marketRes = await getLoopoorMarket(market.chainId, market.marketId);
     // @ts-expect-error backend envelope
