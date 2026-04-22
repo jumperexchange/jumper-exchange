@@ -85,7 +85,8 @@ export function LoopoorDemoButton() {
 
       setStatus({ kind: 'running', step: 'Loading market data…' });
       const marketRes = await getLoopoorMarket(CHAIN_ID, MARKET_ID);
-      const market = marketRes.data;
+      // @ts-expect-error
+      const market = marketRes.data.data;
       if (!market) {
         throw new Error('Failed to load market');
       }
@@ -100,7 +101,8 @@ export function LoopoorDemoButton() {
         slippage: SLIPPAGE,
         safetyBuffer: SAFETY_BUFFER,
       });
-      const stats = statsRes.data;
+      // @ts-expect-error
+      const stats = statsRes.data.data;
       if (!stats?.flashLoanAmount) {
         throw new Error('Stats endpoint returned no flashLoanAmount');
       }
