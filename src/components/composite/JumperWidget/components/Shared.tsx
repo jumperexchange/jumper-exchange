@@ -86,7 +86,7 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
                     name={option.name}
                     id={option.key}
                   />
-                  <Stack direction="column" spacing={0.5}>
+                  <Stack direction="column" spacing={0.5} sx={{ minWidth: 0 }}>
                     <MenuItemLabel
                       sx={option.description ? { fontWeight: 700 } : {}}
                     >

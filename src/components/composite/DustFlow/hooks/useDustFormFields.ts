@@ -37,11 +37,16 @@ interface DustFieldDeriveResult {
   isValid: boolean;
 }
 
+const sortByAmountDesc = (
+  a: PortfolioBalance<WalletToken>,
+  b: PortfolioBalance<WalletToken>,
+) => b.amountUSD - a.amountUSD;
+
 const selectTopAddresses = (
   balances: PortfolioBalance<WalletToken>[],
 ): string[] =>
   [...balances]
-    .sort((a, b) => b.amountUSD - a.amountUSD)
+    .sort(sortByAmountDesc)
     .slice(0, MAX_SELECTABLE_TOKENS)
     .map((b) => b.token.address);
 
@@ -329,11 +334,11 @@ export const useDustFormFields = ({
             ? { selectedAddresses: defaultChainAndBalances.addresses }
             : undefined,
         fieldProps: {
-          availableBalances: nonNativeBalances,
+          availableBalances: [...nonNativeBalances].sort(sortByAmountDesc),
           label: t('form.labels.convert'),
         },
         sidePanelProps: {
-          availableBalances: nonNativeBalances,
+          availableBalances: [...nonNativeBalances].sort(sortByAmountDesc),
           header: t('headers.tokens'),
         },
         schemaOptions: {
@@ -389,6 +394,7 @@ export const useDustFormFields = ({
           maxAmount: '0',
           token: fallbackNativeToken,
           enableSwapButton: false,
+          enableMaxIndicator: false,
           primaryDisplay: 'amount',
         },
         deriveProps: (getValue) => {
