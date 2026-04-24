@@ -18,7 +18,7 @@ export interface TableRendererProps {
 }
 
 export const TableRenderer: FC<TableRendererProps> = ({ headers, rows }) => (
-  <StyledTableContainer>
+  <StyledTableContainer sx={{ '& a': { marginLeft: 0 } }}>
     <Table size="small">
       <TableHead>
         <TableRow>
