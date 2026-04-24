@@ -114,6 +114,8 @@ const WalletTrackingClient = () => {
     };
     const handleWalletDisconnected = () => {
       setUser(null);
+      setTag('wallet.chainType', undefined);
+      setTag('wallet.chainId', undefined);
     };
     walletManagementEvents.on(
       WalletManagementEvent.WalletConnected,
