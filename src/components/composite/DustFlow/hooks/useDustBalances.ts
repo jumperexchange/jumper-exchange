@@ -3,6 +3,7 @@ import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
 import { usePortfolioBalances } from '@/providers/PortfolioProvider/PortfolioContext';
 import { createExtendedToken } from '@/types/tokens';
+import { sortChainsByTotalNonNativeUsdDesc } from '../dustDomain';
 
 export const useDustBalances = () => {
   const { balances: portfolioBalances } = usePortfolioBalances();
@@ -33,13 +34,12 @@ export const useDustBalances = () => {
     );
   }, [flatBalances, allChains, allTokens]);
 
-  const chains = useMemo(
-    () =>
-      allChains.filter((chain) =>
-        nonNativeBalances.some((b) => b.token.chainId === chain.id),
-      ),
-    [allChains, nonNativeBalances],
-  );
+  const chains = useMemo(() => {
+    const withDust = allChains.filter((chain) =>
+      nonNativeBalances.some((b) => b.token.chainId === chain.id),
+    );
+    return sortChainsByTotalNonNativeUsdDesc(withDust, nonNativeBalances);
+  }, [allChains, nonNativeBalances]);
 
   const nativeExtendedTokens = useMemo(() => {
     if (!allTokens) {

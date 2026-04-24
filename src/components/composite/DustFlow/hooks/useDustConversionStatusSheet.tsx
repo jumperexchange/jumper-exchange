@@ -5,15 +5,15 @@ import { DUST_CONVERSION_STATUS_KEYS } from '../constants';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { useTranslation } from 'react-i18next';
-import { type useTransactionForm } from '@/hooks/transactions/useTransactionForm';
 import { type Balance, type ExtendedToken } from '@/types/tokens';
+import type { TransactionFormForDustStatusSheet } from '../dustTransactionFormForStatusSheet';
 
 export const useDustConversionStatusSheet = ({
   transactionForm,
   toTokenBalance,
   onSuccess,
 }: {
-  transactionForm: ReturnType<typeof useTransactionForm>;
+  transactionForm: TransactionFormForDustStatusSheet;
   toTokenBalance?: Balance<ExtendedToken>;
   onSuccess: () => void;
 }) => {

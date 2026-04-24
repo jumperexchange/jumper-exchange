@@ -19,6 +19,7 @@ import { useStore as useZustandStore } from 'zustand';
 import { useTranslation } from 'react-i18next';
 import {
   type NavigationContextValue,
+  type WidgetFormApi,
   FormContext,
   NavigationContext,
   useFormContext,
@@ -44,6 +45,7 @@ import type { FieldApiLike } from './utils';
 import { buildFieldListeners, buildFieldValidators } from './utils';
 import { SlippageSettings } from './components/SlippageSettings/SlippageSettings';
 import z from 'zod';
+import SuperJSON from 'superjson';
 
 const JUMPER_WIDGET_CONTAINER_ID = 'jumper-widget-container-id';
 const JUMPER_WIDGET_SIDE_CONTAINER_ID = 'jumper-widget-side-container-id';
@@ -51,13 +53,37 @@ const BOTTOM_SHEET_TOP_OFFSET = 24;
 const ANIMATION_DURATION_SECONDS = 0.3;
 const ANIMATION_DURATION_MS = 0.3 * 1_000;
 
+/**
+ * Re-subscribe whenever any part of `values` changes. useStore with selector
+ * `(s) => s.values` and default referential comparison can miss updates when
+ * the store mutates a nested field while keeping the same `values` object
+ * reference—so cross-field `deriveProps` (e.g. after threshold change) do not
+ * re-run.
+ */
+const useFormValuesForDerivation = (form: WidgetFormApi) => {
+  const snapshot = useStore(form.store, (s) =>
+    SuperJSON.stringify(s.values ?? null),
+  );
+  return useMemo(() => {
+    try {
+      const parsed = SuperJSON.parse(snapshot) as Record<
+        string,
+        unknown
+      > | null;
+      return parsed ?? {};
+    } catch {
+      return {};
+    }
+  }, [snapshot]);
+};
+
 interface JumperFormViewProps {
   fields: AnyFieldDefinition[];
 }
 
 const JumperFormView: FC<JumperFormViewProps> = ({ fields }) => {
   const form = useFormContext();
-  const values = useStore(form.store, (s) => s.values);
+  const values = useFormValuesForDerivation(form);
 
   return (
     <>
@@ -124,8 +150,7 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
     theme.breakpoints.down('md'),
   );
   const isAnySheetOpen = statusSheet?.isOpen ?? false;
-  // Subscribe to all values so the side panel's deriveProps stays reactive
-  const values = useStore(form.store, (s) => s.values);
+  const values = useFormValuesForDerivation(form);
 
   const {
     currentViewId,
@@ -168,6 +193,12 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
   }, [activeView, activeField, values]);
 
   const showSidePanel = activeField && activeSidePanel && !isAnySheetOpen;
+  // On small screens, keep the main form mounted while a field side panel is
+  // open. Unmounting <JumperFormView> removed all `form.Field` nodes, so
+  // dependent-field listeners (e.g. balances `onChangeListenTo: ['chain']`)
+  // never ran when the user changed chain from the side panel, leaving
+  // derived token lists empty.
+  const hideMainViewForMobileSidePanel = isMobile && showSidePanel;
 
   return (
     <Box
@@ -181,7 +212,9 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
       })}
       id={JUMPER_WIDGET_CONTAINER_ID}
     >
-      {(!isMobile || !showSidePanel) && (
+      <Box
+        sx={hideMainViewForMobileSidePanel ? { display: 'none' } : undefined}
+      >
         <HeightAnimatedContainer
           isOpen={isAnySheetOpen}
           offsetHeight={BOTTOM_SHEET_TOP_OFFSET}
@@ -251,7 +284,7 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
             </motion.div>
           )}
         </HeightAnimatedContainer>
-      )}
+      </Box>
 
       <AnimatePresence mode="popLayout">
         {showSidePanel && (
