@@ -54,22 +54,13 @@ export const useDustFormFields = ({
     usePortfolioFormatters();
   const { toDisplayAmountUSD } = useTokenFormatters();
 
-  const amountConverters: DustAmountConverters = useMemo(
-    () => ({
-      toAmountFromPrice,
-      toInputAmount,
-      toRawAmount,
-      toAggregatedAmountUSD,
-      usdDecimals,
-    }),
-    [
-      toAmountFromPrice,
-      toInputAmount,
-      toRawAmount,
-      toAggregatedAmountUSD,
-      usdDecimals,
-    ],
-  );
+  const amountConverters: DustAmountConverters = {
+    toAmountFromPrice,
+    toInputAmount,
+    toRawAmount,
+    toAggregatedAmountUSD,
+    usdDecimals,
+  };
 
   const checkChainHasBalances = useCallback(
     (chainId: number, maxUsd: number): boolean =>
