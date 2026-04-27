@@ -52,7 +52,6 @@ export const DustBanner: FC<DustBannerProps> = ({
     );
   }, [filteredBalances]);
 
-  console.log('filteredBalances', filteredBalances, nonNativeBalances);
 
   const totalUSD = toDisplayAggregatedAmountUSD(filteredBalances);
 
