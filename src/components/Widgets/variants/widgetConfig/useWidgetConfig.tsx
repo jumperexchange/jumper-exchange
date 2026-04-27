@@ -35,7 +35,11 @@ export function useWidgetConfig<T extends WidgetType>(
 ): { config: WidgetConfig; isReady: boolean } {
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
-  const sharedRPC = useSharedRPCConfig();
+  const sharedRPC = useSharedRPCConfig(
+    'starterVariant' in context
+      ? { isPrivateVariant: context.starterVariant === 'private' }
+      : {},
+  );
   const sharedForm = useSharedFormConfig(context.formData);
   const { account } = useAccount();
   const priceImpactABTest = useABTest({

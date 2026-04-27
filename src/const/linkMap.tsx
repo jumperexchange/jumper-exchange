@@ -3,4 +3,5 @@ export enum LinkMap {
   Exchange = 'exchange',
   Refuel = 'refuel',
   Gas = 'gas',
+  Private = 'private',
 }

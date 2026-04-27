@@ -589,6 +589,7 @@ interface Resources {
         exchange: 'Exchange';
         missions: 'Missions';
         portfolio: 'Portfolio';
+        private: 'Private Swap';
         refuel: 'Gas';
         trade: 'Trade';
       };
@@ -893,6 +894,9 @@ interface Resources {
       };
       exchange: {
         title: 'Exchange';
+      };
+      private: {
+        title: 'Anonymous Swap';
       };
       swapBridge: {
         title: 'Swap & Bridge';

@@ -33,3 +33,10 @@ export const isPortfolioFeatureEnabled = () => {
 export const isNewsletterFeatureEnabled = () => {
   return true;
 };
+
+export const isAnonymousSwapEnabled = () => {
+  if (isProduction) {
+    return false;
+  }
+  return true;
+};

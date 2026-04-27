@@ -13,6 +13,7 @@
       "earn": "Earn",
       "dashboard": "Dashboard",
       "refuel": "Gas",
+      "private": "Private Swap",
       "buy": "Buy",
       "back": "Back"
     },
@@ -297,10 +298,10 @@
     "perks": "Perks",
     "achievements": "Achievements",
     "unlocked": "Unlocked",
-    "levelWithValue": "Level {{level}}",
+    "levelWithValue": "Level {{level, number}}",
     "ongoing": "Ongoing",
     "tooltips": {
-      "unlockAtLevel": "Unlocked at Level {{level}}",
+      "unlockAtLevel": "Unlocked at Level {{level, number}}",
       "ongoingAchievement": "This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month."
     },
     "noData": {
@@ -367,7 +368,7 @@
     "rewardsApy": "Expected yearly return rate distributed in reward token.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
-    "boostedApy": "{{baseApy}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
+    "boostedApy": "{{baseApy, number}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy, number}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.",
     "lockupPeriod": "Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.",
     "manageYourPosition": "You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button",
     "assets_one": "The asset you will earn from",
@@ -757,6 +758,9 @@
     "exchange": {
       "title": "Exchange"
     },
+    "private": {
+      "title": "Anonymous Swap"
+    },
     "swapBridge": {
       "title": "Swap & Bridge"
     }
@@ -873,8 +877,8 @@
     "emptyList": "No {{itemsName}} available for selection",
     "fieldErrors": {
       "numericSelect": {
-        "min": "Value must be at least {{min}}",
-        "max": "Value must be at most {{max}}"
+        "min": "Value must be at least {{min, number}}",
+        "max": "Value must be at most {{max, number}}"
       },
       "tokenChain": {
         "notSupported": "Token is not on a supported chain"
