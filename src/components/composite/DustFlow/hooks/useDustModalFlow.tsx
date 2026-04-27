@@ -13,6 +13,7 @@ import { widgetStyle } from '../constants';
 import { useDustBalances } from './useDustBalances';
 import { useFallbackNativeToken } from './useFallbackNativeToken';
 import { useDustFormFields } from './useDustFormFields';
+import { DustFieldsSync } from '../components/DustFieldsSync';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
 import { RouteOverview } from '../components/RouteOverview';
@@ -150,6 +151,12 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
         type: 'form' as const,
         id: 'form',
         title: t('portfolio.dustConversion.title'),
+        content: (
+          <DustFieldsSync
+            chains={chains}
+            nonNativeBalances={nonNativeBalances}
+          />
+        ),
         fields: formFields,
         onSubmit: async ({ values }: ViewSubmitContext) => {
           const summary = values.dustSummary as DustSummaryValue | undefined;
@@ -190,6 +197,8 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
       },
     ],
     [
+      chains,
+      nonNativeBalances,
       composerQuote,
       nativeTokenBalance,
       dustSummary,

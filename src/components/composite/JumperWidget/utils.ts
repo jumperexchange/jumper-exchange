@@ -59,6 +59,7 @@ import type {
 import { DisplayAmount } from './components/DisplayAmount';
 import { createElement } from 'react';
 import type { TFunction } from 'i18next';
+import isEqual from 'lodash/isEqual';
 
 /**
  * Creates a typed field definition from a config object.
@@ -329,11 +330,11 @@ const createSanitizeHandler =
         currentValue: current,
         getValue: (key) => fieldApi.form.getFieldValue(key),
       });
-      if (next !== current) {
+      if (!isEqual(next, current)) {
         current = next;
       }
     }
-    if (current !== value) {
+    if (!isEqual(current, value)) {
       fieldApi.setValue(current, setValueOptions);
     }
     return undefined;

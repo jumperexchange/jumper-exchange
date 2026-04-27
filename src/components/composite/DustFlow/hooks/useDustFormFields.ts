@@ -26,7 +26,6 @@ import {
   getFilteredBalances,
   resolveAccountAddress,
   resolveNativeTokenForChain,
-  selectTopAddresses,
   sortByAmountDesc,
   sortChainsByFilteredDustUsdDesc,
   type DustAmountConverters,
@@ -139,18 +138,6 @@ export const useDustFormFields = ({
     ],
   );
 
-  const sanitizeBalancesAfterChainOrThreshold = useCallback(
-    ({ getValue }: { getValue: (key: string) => unknown }) => {
-      const { threshold, chainId, isValid } = createDustFieldDerive(getValue);
-      if (!isValid || isNil(threshold) || isNil(chainId)) {
-        return undefined;
-      }
-      const addresses = selectTopAddresses(getFiltered(chainId, threshold));
-      return { selectedAddresses: addresses };
-    },
-    [getFiltered],
-  );
-
   return useMemo(
     () => [
       defineNumericSelectField({
@@ -251,16 +238,6 @@ export const useDustFormFields = ({
             },
           };
         },
-        sanitizeOn: [
-          {
-            watchKey: 'chain',
-            sanitize: sanitizeBalancesAfterChainOrThreshold,
-          },
-          {
-            watchKey: 'amountThreshold',
-            sanitize: sanitizeBalancesAfterChainOrThreshold,
-          },
-        ],
       }),
 
       defineDisplayAmountField({
@@ -319,7 +296,6 @@ export const useDustFormFields = ({
       toDisplayAmountUSD,
       amountConverters,
       computeDustSummary,
-      sanitizeBalancesAfterChainOrThreshold,
       t,
     ],
   );

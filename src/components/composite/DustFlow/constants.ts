@@ -42,6 +42,7 @@ export const widgetStyle = {
     flexDirection: 'column',
     [theme.breakpoints.up('md')]: {
       width: 256,
+      maxHeight: 598,
       height: 'stretch',
       overflow: 'hidden',
     },
