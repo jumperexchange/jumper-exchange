@@ -19,14 +19,12 @@ interface RouteOverviewProps {
   nativeTokenBalance?: Balance<ExtendedToken>;
   /** Tokens the user selected to convert (not merely tokens needing a new approval). */
   selectedInputBalances: PortfolioBalance<WalletToken>[];
-  slippage: number;
 }
 
 export const RouteOverview: FC<RouteOverviewProps> = ({
   composerQuote,
   nativeTokenBalance,
   selectedInputBalances,
-  slippage,
 }) => {
   const { t } = useTranslation();
   const fromBalances = selectedInputBalances;
@@ -65,11 +63,6 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
           </Typography>
         </Box>
       </Summary>
-      <ComposerNetworkCost
-        composerQuote={composerQuote}
-        outputToken={nativeTokenBalance.token}
-        slippage={slippage}
-      />
     </>
   );
 };

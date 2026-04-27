@@ -177,7 +177,6 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
             composerQuote={composerQuote ?? undefined}
             nativeTokenBalance={nativeTokenBalance}
             selectedInputBalances={dustSummary?.selectedBalances ?? []}
-            slippage={slippage}
           />
         ),
         onSubmit: async () => {
@@ -191,7 +190,6 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
       },
     ],
     [
-      slippage,
       composerQuote,
       nativeTokenBalance,
       dustSummary,
