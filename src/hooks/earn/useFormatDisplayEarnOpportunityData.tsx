@@ -15,6 +15,7 @@ import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.typ
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import type { TFunction } from 'i18next';
+import { useMerklApysByLinks } from '@/hooks/useMerklApysByLinks';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { formatCapInDollar } from '@/utils/numbers/capInDollar';
@@ -46,6 +47,25 @@ const buildApyItem = (
     label: t('labels.apy'),
     value: formatted,
     tooltip: t('tooltips.apy'),
+  };
+};
+
+const buildAprItem = (
+  apr: number | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem | null => {
+  if (!apr || isZeroApprox(apr)) {
+    return null;
+  }
+
+  const formatted = formatApy(apr / 100);
+  return {
+    key: 'apr',
+    dataTestId: `apr-${apr}`,
+    label: t('labels.apr'),
+    value: formatted,
+    tooltip: t('tooltips.apr'),
   };
 };
 
@@ -231,6 +251,9 @@ export const useFormatDisplayEarnOpportunityData = (
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
+  const { apy: computedRewardApy } = useMerklApysByLinks(
+    earnOpportunity?.rewardApiLinks,
+  );
 
   return useMemo(() => {
     const lockupMonths = earnOpportunity?.lockupMonths;
@@ -246,9 +269,14 @@ export const useFormatDisplayEarnOpportunityData = (
 
     const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
 
+    const apyItem =
+      computedRewardApy > 0
+        ? buildAprItem(computedRewardApy, variant, t)
+        : buildApyItem(apy, variant, t);
+
     // Build all items, passing variant to each builder
     const overviewItems = [
-      buildApyItem(apy, variant, t),
+      apyItem,
       lockupMonths
         ? buildLockupItem(lockupMonths, variant, t)
         : capInDollar
@@ -266,5 +294,5 @@ export const useFormatDisplayEarnOpportunityData = (
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t, getChainById]);
+  }, [earnOpportunity, variant, t, getChainById, computedRewardApy]);
 };

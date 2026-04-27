@@ -5,6 +5,7 @@ import { MissionsSection } from './MissionsSection/MissionsSection';
 import { MissionsList } from './MissionsSection/MissionsList';
 import { GridContainer } from '../Containers/GridContainer';
 import { PageContainer } from '../Containers/PageContainer';
+import { RewardsSection } from '../ProfilePage/sections/RewardsSection';
 
 interface CampaignPageContentProps {
   campaign: CampaignData;
@@ -15,9 +16,13 @@ export const CampaignPageContent = ({
   campaign,
   quests,
 }: CampaignPageContentProps) => {
+  const merklRewards = campaign.merkl_rewards;
+
   return (
     <PageContainer>
       <CampaignHero campaign={campaign} />
+
+      <RewardsSection merklRewards={merklRewards} />
 
       {!!quests.length && (
         <MissionsSection>

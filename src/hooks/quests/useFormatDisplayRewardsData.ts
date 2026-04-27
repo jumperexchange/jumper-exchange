@@ -1,36 +1,27 @@
-import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
-import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
+import type { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
+import type { RewardApiLink } from 'src/types/strapi';
+import type { RewardsInterface } from 'src/types/questDetails';
 import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { RewardsInterface } from 'src/types/questDetails';
+import { useMerklApysByLinks } from '../useMerklApysByLinks';
 
 export const useFormatDisplayRewardsData = (
   customInformation?: CustomInformation,
   pointsFallback?: number,
+  rewardApiLinks?: RewardApiLink[],
 ) => {
-  const {
-    tokenRewards,
-    rewardType,
-    rewardRange,
-    rewardsIds,
-    chains,
-    genericRewards,
-  } = useMemo(() => {
-    return {
-      tokenRewards: customInformation?.['tokenRewards'],
-      rewardType: customInformation?.['rewardType'],
-      rewardRange: customInformation?.['rewardRange'],
-      rewardsIds: customInformation?.['rewardsIds'],
-      chains: customInformation?.['chains'],
-      genericRewards: customInformation?.['genericRewards'] ?? [],
-    };
-  }, [customInformation]);
+  const { tokenRewards, rewardType, rewardRange, chains, genericRewards } =
+    useMemo(() => {
+      return {
+        tokenRewards: customInformation?.['tokenRewards'],
+        rewardType: customInformation?.['rewardType'],
+        rewardRange: customInformation?.['rewardRange'],
+        chains: customInformation?.['chains'],
+        genericRewards: customInformation?.['genericRewards'] ?? [],
+      };
+    }, [customInformation]);
 
-  const chainIds = (chains ?? [])
-    .map((chain) => chain.chainId)
-    .filter((chainId) => chainId !== undefined);
-
-  const { apy: apyValue } = useMissionsMaxAPY(rewardsIds, chainIds);
+  const { apy: apyValue } = useMerklApysByLinks(rewardApiLinks);
 
   const apyRewards = useMemo(() => {
     if (apyValue) {

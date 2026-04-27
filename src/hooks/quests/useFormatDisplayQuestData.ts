@@ -59,6 +59,7 @@ export function useFormatDisplayQuestData(
   const rewardGroups = useFormatDisplayRewardsData(
     quest.CustomInformation,
     quest.Points ?? undefined,
+    quest.rewardApiLinks,
   );
 
   return useMemo(() => {

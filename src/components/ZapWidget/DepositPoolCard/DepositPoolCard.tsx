@@ -2,7 +2,7 @@ import {
   DepositPoolCardContainer,
   DepositPoolHeaderContainer,
 } from './DepositPoolCard.style';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
+import { useMerklApysByLinks } from 'src/hooks/useMerklApysByLinks';
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { CustomInformation } from 'src/types/loyaltyPass';
@@ -22,9 +22,11 @@ import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
 import Tooltip from '@mui/material/Tooltip';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import type { ZapDataResponse } from '@/types/zaps';
+import type { RewardApiLink } from 'src/types/strapi';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
+  rewardsApiLinks?: RewardApiLink[];
   zapData?: ZapDataResponse | null;
   isZapDataSuccess: boolean;
   depositTokenData?: bigint | number;
@@ -34,6 +36,7 @@ interface DepositPoolCardProps {
 
 export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
+  rewardsApiLinks,
   zapData,
   isZapDataSuccess,
   depositTokenData,
@@ -44,10 +47,6 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   const projectData: ProjectData = useMemo(() => {
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
-
-  const claimingIds = useMemo(() => {
-    return customInformation?.claimingIds;
-  }, [customInformation?.claimingIds]);
 
   const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
 
@@ -86,9 +85,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [isZapDataSuccess, zapData],
   );
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [
-    token?.chainId ?? 0,
-  ]);
+  const { apy: boostedAPY } = useMerklApysByLinks(rewardsApiLinks);
   const formattedLockupPeriod = formatLockupPeriod(
     analytics?.lockup_period ?? 0,
   );

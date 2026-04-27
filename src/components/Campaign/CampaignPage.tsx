@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
-import { fetchQuestOpportunitiesByRewardsIds } from 'src/utils/merkl/fetchQuestOpportunities';
+import { fetchQuestOpportunitiesByMerklLinks } from 'src/utils/merkl/fetchQuestOpportunities';
 import { CampaignPageContent } from './CampaignPageContent';
 
 interface CampaignPageProps {
@@ -14,7 +14,7 @@ export async function CampaignPage({ slug }: CampaignPageProps) {
     notFound();
   }
 
-  const extendedQuests = await fetchQuestOpportunitiesByRewardsIds(
+  const extendedQuests = await fetchQuestOpportunitiesByMerklLinks(
     campaign.data[0].quests,
   );
 

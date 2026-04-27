@@ -1,10 +1,12 @@
-import { flatMap, uniq } from 'lodash';
+import { flatMap, uniq, maxBy } from 'lodash';
 import type { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import type {
   MerklUserRewards,
   MerklUserRewardsData,
 } from 'src/app/lib/getMerklUserRewards';
 import type { MerklReward, RewardFilterCriteria } from 'src/types/rewards';
+import type { RewardApiLink } from 'src/types/jumper-backend';
+
 import {
   buildRewardFilter,
   isRewardAllowed,
@@ -63,41 +65,4 @@ export const processRewardsData = (
   );
 
   return { rewardsToClaim, pastCampaigns, chainsWithClaimableRewards };
-};
-
-export const filterUniqueByIdentifier = (
-  array: MerklOpportunity[],
-): MerklOpportunity[] => {
-  return array.reduce<MerklOpportunity[]>((acc, item) => {
-    if (!item.identifier) {
-      acc.push(item);
-      return acc;
-    }
-    const exists = acc.some(
-      (existing) => existing.identifier === item.identifier,
-    );
-    if (!exists) {
-      acc.push(item);
-    }
-    return acc;
-  }, []);
-};
-
-export const calculateMaxApy = (opportunities: MerklOpportunity[]): number => {
-  let currentMax = 0;
-  for (const opportunity of opportunities) {
-    if (!opportunity?.aprRecord) {
-      continue;
-    }
-    for (const breakdown of opportunity.aprRecord.breakdowns) {
-      if (breakdown.value > currentMax) {
-        currentMax = breakdown.value;
-      }
-    }
-  }
-  return currentMax;
-};
-
-export const sanitizeSearchQuery = (query: string): string => {
-  return query.includes('_') ? query.split('_')[1] : query;
 };
