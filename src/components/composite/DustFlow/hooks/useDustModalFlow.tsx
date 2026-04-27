@@ -176,6 +176,7 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
           <RouteOverview
             composerQuote={composerQuote ?? undefined}
             nativeTokenBalance={nativeTokenBalance}
+            selectedInputBalances={dustSummary?.selectedBalances ?? []}
             slippage={slippage}
           />
         ),
@@ -193,6 +194,7 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
       slippage,
       composerQuote,
       nativeTokenBalance,
+      dustSummary,
       formFields,
       transactionForm,
       widgetNav,

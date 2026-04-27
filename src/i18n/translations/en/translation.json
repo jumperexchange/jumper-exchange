@@ -707,6 +707,10 @@
     "dustConversion": {
       "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",
       "title": "Convert dust",
+      "routeOverview": {
+        "composerAlt": "Composer",
+        "composerViaLifi": "Composer via Li.Fi"
+      },
       "error": {
         "transactionRejected": {
           "title": "Transaction rejected",

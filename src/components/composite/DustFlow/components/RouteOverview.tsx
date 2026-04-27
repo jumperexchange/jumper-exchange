@@ -1,7 +1,11 @@
-import type { Balance, ExtendedToken } from '@/types/tokens';
+import type {
+  Balance,
+  ExtendedToken,
+  PortfolioBalance,
+  WalletToken,
+} from '@/types/tokens';
 import type { FC } from 'react';
-import { useMemo } from 'react';
-import { usePortfolioBalances } from '@/providers/PortfolioProvider/PortfolioContext';
+import { useTranslation } from 'react-i18next';
 import { Summary } from '@/components/composite/JumperWidget/components/Summary';
 import type { ComposeResponseData } from '@/app/lib/lifi-composer-client';
 import Box from '@mui/material/Box';
@@ -15,32 +19,19 @@ const fieldSx = { background: 'transparent', boxShadow: 'none', padding: 0 };
 interface RouteOverviewProps {
   composerQuote?: ComposeResponseData;
   nativeTokenBalance?: Balance<ExtendedToken>;
+  /** Tokens the user selected to convert (not merely tokens needing a new approval). */
+  selectedInputBalances: PortfolioBalance<WalletToken>[];
   slippage: number;
 }
 
 export const RouteOverview: FC<RouteOverviewProps> = ({
   composerQuote,
   nativeTokenBalance,
+  selectedInputBalances,
   slippage,
 }) => {
-  const { balances: portfolioBalances } = usePortfolioBalances();
-
-  const flatBalances = useMemo(
-    () => Object.values(portfolioBalances ?? {}).flat(),
-    [portfolioBalances],
-  );
-
-  const fromBalances = useMemo(() => {
-    if (!composerQuote) {
-      return [];
-    }
-    const approvalAddresses = new Set(
-      composerQuote.approvals.map((a) => a.token.toLowerCase()),
-    );
-    return flatBalances.filter((b) =>
-      approvalAddresses.has(b.token.address.toLowerCase()),
-    );
-  }, [flatBalances, composerQuote]);
+  const { t } = useTranslation();
+  const fromBalances = selectedInputBalances;
 
   if (!composerQuote || fromBalances.length === 0 || !nativeTokenBalance) {
     return null;
@@ -49,7 +40,7 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
   return (
     <>
       <Summary
-        label="Convert"
+        label={t('form.labels.convert')}
         from={fromBalances}
         amountUSD={composerQuote.priceImpact.inputValueUsd}
         to={nativeTokenBalance}
@@ -66,12 +57,14 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
           <AvatarItem
             avatar={{
               src: 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/protocols/wrapper.svg',
-              alt: 'Composer',
+              alt: t('portfolio.dustConversion.routeOverview.composerAlt'),
               id: 'step',
             }}
             size={AvatarSize.XL}
           />
-          <Typography variant="bodySmallStrong">Composer via Li.Fi</Typography>
+          <Typography variant="bodySmallStrong">
+            {t('portfolio.dustConversion.routeOverview.composerViaLifi')}
+          </Typography>
         </Box>
       </Summary>
       <ComposerNetworkCost

@@ -779,6 +779,10 @@ interface Resources {
       };
       dustConversion: {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
+        routeOverview: {
+          composerAlt: 'Composer';
+          composerViaLifi: 'Composer via Li.Fi';
+        };
         error: {
           chainSwitchFailed: {
             close: 'Close';

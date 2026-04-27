@@ -69,7 +69,7 @@ export const SelectSidePanel: FC<SelectSidePanelProps> = ({
   return (
     <>
       {header && <GoBackHeader header={header} onBack={onClose} />}
-      <ContentContainer sx={{ gap: 0 }}>
+      <ContentContainer sx={{ gap: 0, overflow: 'auto', flex: 1 }}>
         <MenuList sx={{ padding: 0, margin: 0 }}>
           {options.length ? (
             options.map((option) => {
@@ -153,6 +153,7 @@ export const SettingCardExpandable: FC<SettingCardExpandableProps> = ({
       <CardRowButton
         ref={buttonRef}
         id={buttonId}
+        disabled={disabled}
         aria-expanded={expanded}
         aria-controls={collapseId}
         onClick={disabled ? undefined : () => toggleExpanded()}

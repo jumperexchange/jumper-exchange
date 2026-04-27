@@ -154,9 +154,7 @@ export const useDustFormFields = ({
         return undefined;
       }
       const addresses = selectTopAddresses(getFiltered(chainId, threshold));
-      return addresses.length > 0
-        ? { selectedAddresses: addresses }
-        : undefined;
+      return { selectedAddresses: addresses };
     },
     [getFiltered],
   );

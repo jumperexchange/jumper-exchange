@@ -198,7 +198,7 @@ export function computeDustAmounts(
 ) {
   const toTokenStr = (usd: number) =>
     c.toAmountFromPrice(
-      c.toInputAmount(usd.toLocaleString('fullwide'), c.usdDecimals),
+      c.toInputAmount(usd.toFixed(c.usdDecimals), c.usdDecimals),
       token.priceUSD,
     );
 
@@ -220,6 +220,7 @@ export function dustSummaryContentEqual(
   next: DustSummaryValue,
 ): boolean {
   return (
+    prev.address === next.address &&
     prev.amount === next.amount &&
     prev.amountUSD === next.amountUSD &&
     prev.nativeToken.chainId === next.nativeToken.chainId &&

@@ -37,7 +37,14 @@ export const widgetStyle = {
     padding: 0,
     width: 'calc(100vw - 2rem)',
     maxWidth: 400,
-    [theme.breakpoints.up('md')]: { width: 256 },
+    maxHeight: 'calc(100vh - 12rem)',
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.up('md')]: {
+      width: 256,
+      height: 'stretch',
+      overflow: 'hidden',
+    },
   }),
 } as const;
 
