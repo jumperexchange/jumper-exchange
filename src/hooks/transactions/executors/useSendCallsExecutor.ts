@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSendCalls, useWaitForCallsStatus } from 'wagmi';
+import { type GetCallsStatusReturnType } from 'viem/actions';
 import { type Hex } from 'viem';
 import type { TransactionAction, TransactionExecutor } from './types';
+
+type CallBatchReceipt = NonNullable<
+  GetCallsStatusReturnType['receipts']
+>[number];
 
 /**
  * Executor that uses EIP-5792 wallet_sendCalls to batch multiple transactions
@@ -61,9 +66,11 @@ export const useSendCallsExecutor = (): TransactionExecutor => {
     if (callsStatusData?.status === 'success') {
       if (
         !callsStatusData.receipts?.length ||
-        !callsStatusData.receipts.every((receipt) => receipt.transactionHash) ||
+        !callsStatusData.receipts.every(
+          (receipt: CallBatchReceipt) => receipt.transactionHash,
+        ) ||
         callsStatusData.receipts.some(
-          (receipt) => receipt.status === 'reverted',
+          (receipt: CallBatchReceipt) => receipt.status === 'reverted',
         )
       ) {
         setError(new Error('Transaction was reverted.'));

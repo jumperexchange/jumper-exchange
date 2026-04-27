@@ -5,6 +5,7 @@ import type {
   ViewSubmitContext,
 } from '../../JumperWidget/types';
 import { useTransactionForm } from '@/hooks/transactions/useTransactionForm';
+import { useWalletCapabilities } from '@/hooks/transactions/useWalletCapabilities';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { createTokenBalance } from '@/types/tokens';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
@@ -68,6 +69,9 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
     [dustSummary?.nativeToken.chainId],
   );
 
+  const { supportsBatchTransactions } =
+    useWalletCapabilities(nativeTokenChainId);
+
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
       if (!dustSummary) {
@@ -120,7 +124,7 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
   const transactionForm = useTransactionForm({
     chainId: nativeTokenChainId,
     requiresConfirmation: false,
-    executorType: 'single',
+    executorType: supportsBatchTransactions ? 'batch' : 'single',
     fetchCallData,
   });
 
