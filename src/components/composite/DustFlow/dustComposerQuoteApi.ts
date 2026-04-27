@@ -1,7 +1,7 @@
 import SuperJSON from 'superjson';
 import { makeLifiComposerClient } from '@/app/lib/lifi-composer-client';
 import type { ComposeResponseData } from '@/app/lib/lifi-composer-client';
-import type { DustSummaryValue } from './dustTypes';
+import type { DustSummaryValue } from './types';
 
 export const DUST_COMPOSER_QUOTE_STALE_MS = 2 * 60 * 1000; // 2 minutes
 

@@ -3,7 +3,7 @@ import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
 import { usePortfolioBalances } from '@/providers/PortfolioProvider/PortfolioContext';
 import { createExtendedToken } from '@/types/tokens';
-import { sortChainsByTotalNonNativeUsdDesc } from '../dustDomain';
+import { sortChainsByTotalNonNativeUsdDesc } from '../utils';
 
 export const useDustBalances = () => {
   const { balances: portfolioBalances } = usePortfolioBalances();

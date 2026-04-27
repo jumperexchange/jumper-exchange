@@ -52,7 +52,6 @@ export const DustBanner: FC<DustBannerProps> = ({
     );
   }, [filteredBalances]);
 
-
   const totalUSD = toDisplayAggregatedAmountUSD(filteredBalances);
 
   if (!tokens.length && !forceDisplay) {

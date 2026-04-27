@@ -19,7 +19,7 @@ import { RouteOverview } from '../components/RouteOverview';
 import { ConvertDustSubmitButton } from '../components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from '../components/RouteOverviewSubmitButton';
 import type { NavigationContextValue } from '../../JumperWidget/context';
-import type { DustSummaryValue } from '../dustTypes';
+import type { DustSummaryValue } from '../types';
 
 const widgetStyleMemo = widgetStyle;
 

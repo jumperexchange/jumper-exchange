@@ -15,6 +15,7 @@ import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { INITIAL_MAX_THRESHOLD_USD, MAX_SELECTABLE_TOKENS } from '../constants';
 import { useAccount } from '@lifi/wallet-management';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
+import { isNil } from '@/utils/isNil';
 import {
   checkChainHasBalancesBelowThreshold,
   computeDustAmounts,
@@ -29,8 +30,8 @@ import {
   sortByAmountDesc,
   sortChainsByFilteredDustUsdDesc,
   type DustAmountConverters,
-} from '../dustDomain';
-import type { DustSummaryValue } from '../dustTypes';
+} from '../utils';
+import type { DustSummaryValue } from '../types';
 
 interface UseDustFormFieldsParams {
   chains: ExtendedChain[];
@@ -91,7 +92,7 @@ export const useDustFormFields = ({
     (getValue: (key: string) => unknown): DustSummaryValue | undefined => {
       const { threshold, chainId, isValid } = createDustFieldDerive(getValue);
 
-      if (!isValid || threshold == null || chainId == null) {
+      if (!isValid || isNil(threshold) || isNil(chainId)) {
         return undefined;
       }
 
@@ -150,7 +151,7 @@ export const useDustFormFields = ({
   const sanitizeBalancesAfterChainOrThreshold = useCallback(
     ({ getValue }: { getValue: (key: string) => unknown }) => {
       const { threshold, chainId, isValid } = createDustFieldDerive(getValue);
-      if (!isValid || threshold == null || chainId == null) {
+      if (!isValid || isNil(threshold) || isNil(chainId)) {
         return undefined;
       }
       const addresses = selectTopAddresses(getFiltered(chainId, threshold));
@@ -174,10 +175,9 @@ export const useDustFormFields = ({
       defineChainSingleSelectField({
         t,
         fieldKey: 'chain',
-        defaultValue:
-          defaultChainAndBalances.chainId != null
-            ? { selectedChain: defaultChainAndBalances.chainId }
-            : undefined,
+        defaultValue: !isNil(defaultChainAndBalances.chainId)
+          ? { selectedChain: defaultChainAndBalances.chainId }
+          : undefined,
         fieldProps: {
           availableChains: chains,
           label: t('form.labels.chain'),
@@ -188,7 +188,7 @@ export const useDustFormFields = ({
         },
         deriveProps: (getValue) => {
           const { threshold, chainId } = createDustFieldDerive(getValue);
-          if (threshold == null) {
+          if (isNil(threshold)) {
             return {};
           }
           const filteredChains = sortChainsByFilteredDustUsdDesc(
@@ -241,7 +241,7 @@ export const useDustFormFields = ({
         deriveProps: (getValue) => {
           const { threshold, chainId, isValid } =
             createDustFieldDerive(getValue);
-          if (!isValid || threshold == null || chainId == null) {
+          if (!isValid || isNil(threshold) || isNil(chainId)) {
             return {
               fieldProps: { availableBalances: [] },
               sidePanelProps: { availableBalances: [] },
@@ -286,7 +286,7 @@ export const useDustFormFields = ({
         deriveProps: (getValue) => {
           const { threshold, chainId, isValid } =
             createDustFieldDerive(getValue);
-          if (!isValid || threshold == null || chainId == null) {
+          if (!isValid || isNil(threshold) || isNil(chainId)) {
             return {};
           }
 

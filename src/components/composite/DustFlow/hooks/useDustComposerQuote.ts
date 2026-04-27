@@ -8,7 +8,7 @@ import {
   type DustComposerQuoteParams,
   serializeDustComposerQuoteParams,
 } from '../dustComposerQuoteApi';
-import type { DustSummaryValue } from '../dustTypes';
+import type { DustSummaryValue } from '../types';
 
 export const useDustComposerQuote = () => {
   const queryClient = useQueryClient();

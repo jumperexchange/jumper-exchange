@@ -14,8 +14,6 @@ import Typography from '@mui/material/Typography';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { ComposerNetworkCost } from '../../JumperWidget/components/NetworkCost/ComposerNetworkCost';
 
-const fieldSx = { background: 'transparent', boxShadow: 'none', padding: 0 };
-
 interface RouteOverviewProps {
   composerQuote?: ComposeResponseData;
   nativeTokenBalance?: Balance<ExtendedToken>;
@@ -44,7 +42,7 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
         from={fromBalances}
         amountUSD={composerQuote.priceImpact.inputValueUsd}
         to={nativeTokenBalance}
-        fieldSx={fieldSx}
+        fieldSx={{ background: 'transparent', boxShadow: 'none', padding: 0 }}
       >
         <Box
           sx={{

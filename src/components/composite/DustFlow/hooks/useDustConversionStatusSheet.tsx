@@ -6,7 +6,7 @@ import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles'
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { useTranslation } from 'react-i18next';
 import { type Balance, type ExtendedToken } from '@/types/tokens';
-import type { TransactionFormForDustStatusSheet } from '../dustTransactionFormForStatusSheet';
+import type { TransactionFormForDustStatusSheet } from '../types';
 
 export const useDustConversionStatusSheet = ({
   transactionForm,

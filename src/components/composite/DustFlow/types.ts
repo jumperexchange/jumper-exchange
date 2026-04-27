@@ -1,9 +1,25 @@
+import type {
+  PortfolioBalance,
+  WalletToken,
+  ExtendedToken,
+} from '@/types/tokens';
+
 import type { TransactionErrorType } from '@/hooks/transactions/types';
 
-/**
- * Subset of {@link useTransactionForm} API required by the dust conversion status sheet
- * (interface segregation).
- */
+export interface DustSummaryValue {
+  selectedBalances: PortfolioBalance<WalletToken>[];
+  nativeToken: ExtendedToken;
+  amount: string;
+  amountUSD: number;
+  address: string;
+}
+
+export interface DustFieldDeriveResult {
+  threshold: number | undefined;
+  chainId: number | undefined;
+  isValid: boolean;
+}
+
 export interface TransactionFormForDustStatusSheet {
   showConfirmationSheet: boolean;
   showErrorBottomSheet: boolean;
