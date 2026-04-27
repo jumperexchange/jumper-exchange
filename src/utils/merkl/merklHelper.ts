@@ -1,5 +1,4 @@
-import { flatMap, uniq, maxBy } from 'lodash';
-import type { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
+import { flatMap, uniq } from 'lodash';
 import type {
   MerklUserRewards,
   MerklUserRewardsData,

@@ -1,14 +1,13 @@
 import { useMemo } from 'react';
 import type { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
-import type { RewardApiLink } from 'src/types/strapi';
 import type { RewardsInterface } from 'src/types/questDetails';
 import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { useMerklApysByLinks } from '../useMerklApysByLinks';
+import { useMissionApy } from '../useMissionApy';
 
 export const useFormatDisplayRewardsData = (
+  slug: string,
   customInformation?: CustomInformation,
   pointsFallback?: number,
-  rewardApiLinks?: RewardApiLink[],
 ) => {
   const { tokenRewards, rewardType, rewardRange, chains, genericRewards } =
     useMemo(() => {
@@ -21,14 +20,15 @@ export const useFormatDisplayRewardsData = (
       };
     }, [customInformation]);
 
-  const { apy: apyValue } = useMerklApysByLinks(rewardApiLinks);
+  const { data } = useMissionApy(slug);
+  const apyValue = data?.total;
 
   const apyRewards = useMemo(() => {
     if (apyValue) {
       return [
         {
           value: `${toFixedFractionDigits(apyValue, 0, 2)}%`,
-          label: 'APY',
+          label: 'APR',
         },
       ];
     }

@@ -1,5 +1,4 @@
-import type { QuestDataExtended } from 'src/types/merkl';
-import type { CampaignData } from 'src/types/strapi';
+import type { CampaignData, QuestData } from 'src/types/strapi';
 import { CampaignHero } from './CampaignHero/CampaignHero';
 import { MissionsSection } from './MissionsSection/MissionsSection';
 import { MissionsList } from './MissionsSection/MissionsList';
@@ -9,7 +8,7 @@ import { RewardsSection } from '../ProfilePage/sections/RewardsSection';
 
 interface CampaignPageContentProps {
   campaign: CampaignData;
-  quests: QuestDataExtended[];
+  quests: QuestData[];
 }
 
 export const CampaignPageContent = ({

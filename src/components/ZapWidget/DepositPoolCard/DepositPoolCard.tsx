@@ -2,7 +2,6 @@ import {
   DepositPoolCardContainer,
   DepositPoolHeaderContainer,
 } from './DepositPoolCard.style';
-import { useMerklApysByLinks } from 'src/hooks/useMerklApysByLinks';
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { CustomInformation } from 'src/types/loyaltyPass';
@@ -22,11 +21,9 @@ import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
 import Tooltip from '@mui/material/Tooltip';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import type { ZapDataResponse } from '@/types/zaps';
-import type { RewardApiLink } from 'src/types/strapi';
 
 interface DepositPoolCardProps {
   customInformation?: CustomInformation;
-  rewardsApiLinks?: RewardApiLink[];
   zapData?: ZapDataResponse | null;
   isZapDataSuccess: boolean;
   depositTokenData?: bigint | number;
@@ -36,7 +33,6 @@ interface DepositPoolCardProps {
 
 export const DepositPoolCard: FC<DepositPoolCardProps> = ({
   customInformation,
-  rewardsApiLinks,
   zapData,
   isZapDataSuccess,
   depositTokenData,
@@ -85,7 +81,6 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [isZapDataSuccess, zapData],
   );
 
-  const { apy: boostedAPY } = useMerklApysByLinks(rewardsApiLinks);
   const formattedLockupPeriod = formatLockupPeriod(
     analytics?.lockup_period ?? 0,
   );
@@ -113,7 +108,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
       value: analyticsBaseApy,
       label: t('widget.depositCard.apy'),
     };
-  }, [analytics?.boosted_apy, analytics?.base_apy, boostedAPY, t]);
+  }, [analytics?.boosted_apy, analytics?.base_apy, t]);
 
   if (!zapData || !token) {
     return <DepositPoolCardSkeleton />;

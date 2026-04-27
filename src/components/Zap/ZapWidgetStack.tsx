@@ -79,7 +79,6 @@ export const ZapWidgetStack: FC<ZapWidgetStackProps> = ({
       >
         <DepositPoolCard
           customInformation={customInformation}
-          rewardsApiLinks={market?.rewardApiLinks}
           zapData={zapData}
           isZapDataSuccess={isZapDataSuccess}
           depositTokenData={depositTokenData}

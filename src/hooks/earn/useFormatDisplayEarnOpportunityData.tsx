@@ -15,7 +15,6 @@ import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.typ
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import type { TFunction } from 'i18next';
-import { useMerklApysByLinks } from '@/hooks/useMerklApysByLinks';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { formatCapInDollar } from '@/utils/numbers/capInDollar';
@@ -251,9 +250,6 @@ export const useFormatDisplayEarnOpportunityData = (
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
-  const { apy: computedRewardApy } = useMerklApysByLinks(
-    earnOpportunity?.rewardApiLinks,
-  );
 
   return useMemo(() => {
     const lockupMonths = earnOpportunity?.lockupMonths;
@@ -270,8 +266,8 @@ export const useFormatDisplayEarnOpportunityData = (
     const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
 
     const apyItem =
-      computedRewardApy > 0
-        ? buildAprItem(computedRewardApy, variant, t)
+      !!apy?.apiReward && apy.apiReward > 0
+        ? buildAprItem(apy.apiReward, variant, t)
         : buildApyItem(apy, variant, t);
 
     // Build all items, passing variant to each builder
@@ -294,5 +290,5 @@ export const useFormatDisplayEarnOpportunityData = (
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t, getChainById, computedRewardApy]);
+  }, [earnOpportunity, variant, t, getChainById]);
 };

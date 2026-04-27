@@ -3,7 +3,6 @@ import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 import type { CreateJumperThemeOptions } from 'src/theme/theme';
-import type { RewardApiLink as JumperBackendRewardApiLink } from './jumper-backend';
 
 /* Strapi */
 export interface ImageData<T> {
@@ -364,7 +363,6 @@ export interface QuestData {
   Subtitle: string | null;
   tasks_verification?: TaskVerification[];
   campaign?: CampaignData; // Relation with Campaign
-  rewardApiLinks?: RewardApiLink[];
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -530,9 +528,4 @@ export interface MultiSelect<T> {
     value: T;
   }[];
   selectedValues: T[];
-}
-
-export interface RewardApiLink extends JumperBackendRewardApiLink {
-  id: number;
-  documentId: string;
 }

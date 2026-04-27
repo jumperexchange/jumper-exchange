@@ -653,6 +653,7 @@ export interface APYItem {
   reward: number;
   intrinsic: number;
   jumperReward?: number;
+  apiReward?: number;
   total: number;
 }
 
@@ -1067,6 +1068,13 @@ export interface FeatureFlagResponseDto {
   events?: string[];
   /** @example 639768 */
   posthogFlagId?: number;
+}
+
+export interface MissionApyResponse {
+  /** APY contributed by each reward link, keyed by identifier. */
+  apy: Record<string, number>;
+  /** Sum of all reward APY contributions. */
+  total: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1866,6 +1874,42 @@ export class JumperBackend<
         path: `/v1/recommendation/all`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Mission, Public
+     * @name MissionControllerGetApyV1
+     * @summary Get reward APY breakdown for a mission
+     * @request GET:/v1/mission/{slug}/apy
+     */
+    missionControllerGetApyV1: (slug: string, params: RequestParams = {}) =>
+      this.request<MissionApyResponse, any>({
+        path: `/v1/mission/${slug}/apy`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Mission, Public
+     * @name MissionControllerGetTaskApyV1
+     * @summary Get reward APY breakdown for a single task within a mission
+     * @request GET:/v1/mission/{slug}/task/{identifier}/apy
+     */
+    missionControllerGetTaskApyV1: (
+      slug: string,
+      identifier: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<MissionApyResponse, any>({
+        path: `/v1/mission/${slug}/task/${identifier}/apy`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),

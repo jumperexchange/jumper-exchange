@@ -2,7 +2,6 @@ import type { QuestDetails } from '@/types/questDetails';
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type {
   CampaignData,
-  RewardApiLink,
   StrapiMediaData,
   TaskType,
   TaskWidgetInformationData,
@@ -111,7 +110,6 @@ export type QuestAttributes = {
   BannerImage: BannerImageData[];
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];
-  rewardApiLinks?: RewardApiLink[];
 };
 
 export interface RewardGroup {
@@ -133,7 +131,6 @@ export interface TaskVerification {
   CTALink?: string;
   CTAText?: string;
   CampaignId?: string;
-  rewardApiLinks?: RewardApiLink[];
   uuid: string;
   hasTask: boolean;
   isRequired?: boolean;
@@ -143,7 +140,7 @@ export interface TaskVerification {
 }
 
 export interface TaskVerificationWithApy extends TaskVerification {
-  maxApy?: number;
+  apy?: number;
 }
 
 export interface Quest extends QuestAttributes {
