@@ -1,5 +1,4 @@
 import config from '@/config/env-config';
-import { isProduction } from '@/utils/isProduction';
 
 const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
@@ -35,8 +34,5 @@ export const isNewsletterFeatureEnabled = () => {
 };
 
 export const isAnonymousSwapEnabled = () => {
-  if (isProduction) {
-    return false;
-  }
-  return true;
+  return config.NEXT_PUBLIC_ENVIRONMENT !== 'production';
 };
