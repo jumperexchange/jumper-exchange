@@ -54,6 +54,16 @@ export const TokenRate: React.FC<TokenRateProps> = ({
   );
   const totalTo = parseFloat(toAmount({ amount: toAmountRaw, token: toToken }));
 
+  const hasValidRateInputs =
+    Number.isFinite(totalFrom) &&
+    Number.isFinite(totalTo) &&
+    totalFrom > 0 &&
+    totalTo > 0;
+
+  if (!hasValidRateInputs) {
+    return null;
+  }
+
   const forwardRate = totalTo / totalFrom;
   const inverseRate = totalFrom / totalTo;
 

@@ -5,6 +5,14 @@ import type { FeeCost, GasCost, LiFiStep, RouteExtended } from '@lifi/sdk';
 import { getPriceImpact } from '@lifi/widget';
 import { groupBy, map, maxBy, sum, sumBy } from 'lodash';
 
+const isRouteExtended = (
+  from: RouteExtended | LiFiStep[],
+): from is RouteExtended =>
+  !Array.isArray(from) &&
+  from !== null &&
+  typeof from === 'object' &&
+  'steps' in from;
+
 export const useFeeCostsBreakdown = (
   from: RouteExtended | LiFiStep[],
   includedFeesFlag = false,
@@ -14,7 +22,7 @@ export const useFeeCostsBreakdown = (
 
   let stepsFeesSource;
 
-  if ('steps' in from) {
+  if (isRouteExtended(from)) {
     stepsFeesSource = map(
       from.steps,
       (step) => step.execution ?? step.estimate,
@@ -86,7 +94,7 @@ export const useFeeCostsBreakdown = (
 };
 
 export const usePriceImpact = (from: RouteExtended | LiFiStep[]) => {
-  if ('steps' in from) {
+  if (isRouteExtended(from)) {
     return getPriceImpact({
       fromAmount: BigInt(from.fromAmount),
       toAmount: BigInt(from.toAmount),
@@ -108,18 +116,17 @@ export const usePriceImpact = (from: RouteExtended | LiFiStep[]) => {
 };
 
 export const useSlippage = (from: RouteExtended | LiFiStep[]) => {
-  if ('steps' in from) {
-    return from.steps[0].action.slippage;
-  } else {
-    return maxBy(map(from, (step) => step.action.slippage));
+  if (isRouteExtended(from)) {
+    return from.steps[0]?.action.slippage;
   }
+  return maxBy(map(from, (step) => step.action.slippage));
 };
 
 export const useMinReceivedAmount = (from: RouteExtended | LiFiStep[]) => {
   const { toDisplayAmount } = useTokenFormatters();
   const { toDisplayAggregatedAmount } = usePortfolioFormatters();
 
-  if ('steps' in from) {
+  if (isRouteExtended(from)) {
     const balance = createTokenBalance(
       createExtendedToken(from.toToken),
       from.toAmountMin,
@@ -128,17 +135,17 @@ export const useMinReceivedAmount = (from: RouteExtended | LiFiStep[]) => {
     return toDisplayAmount(balance, balance.token.symbol, {
       maximumFractionDigits: 6,
     });
-  } else {
-    const balances = map(from, (step) => {
-      return {
-        ...createTokenBalance(
-          createExtendedToken(step.action.toToken),
-          step.estimate.toAmountMin,
-        ),
-        amountUSD: 0,
-      };
-    });
-
-    return toDisplayAggregatedAmount(balances);
   }
+
+  const balances = map(from, (step) => {
+    return {
+      ...createTokenBalance(
+        createExtendedToken(step.action.toToken),
+        step.estimate.toAmountMin,
+      ),
+      amountUSD: 0,
+    };
+  });
+
+  return toDisplayAggregatedAmount(balances);
 };
