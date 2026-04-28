@@ -35,7 +35,8 @@ interface JumperDataTrackEventProps {
   walletAddress?: string;
   walletProvider?: string;
   referrer?: string;
-  abtests?: { [key: string]: boolean }; // Add this line
+  abtests?: { [key: string]: boolean };
+  abTestVariants?: Record<string, string | boolean>;
 }
 
 const track = async (data: object, path: string) => {
@@ -136,6 +137,8 @@ export const useJumperTracking = () => {
         walletProvider: data.walletProvider,
         referrer: data.referrer,
         abtests: data.abtests,
+
+        ...(data.abTestVariants && { abTestVariants: data.abTestVariants }),
       },
       JUMPER_ANALYTICS_EVENT,
     );

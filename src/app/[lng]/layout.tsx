@@ -5,6 +5,7 @@ import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Suspense, type ReactNode } from 'react';
+import { FeatureFlagsBootstrap } from 'src/components/FeatureFlagsBootstrap/FeatureFlagsBootstrap';
 import { ReferrerCapture } from 'src/components/ReferrerCapture/ReferrerCapture';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
@@ -234,6 +235,7 @@ export default async function RootLayout({
                         <PortfolioProvider>
                           <Suspense>
                             <ReferrerCapture />
+                            <FeatureFlagsBootstrap />
                           </Suspense>
                           <NavbarWrapper />
                           <IntercomProvider />

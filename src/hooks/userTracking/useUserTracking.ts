@@ -15,6 +15,7 @@ import { useMediaQuery } from '@mui/material';
 import { useCallback } from 'react';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import { useAbTestsStore } from 'src/stores/abTests';
+import { useFeatureFlags } from 'src/hooks/useFeatureFlags';
 import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
 
@@ -92,6 +93,24 @@ export function useUserTracking(): UserTracking {
     trackTransaction: jumperTrackTransaction,
   } = useJumperTracking();
 
+  const { data: featureFlags } = useFeatureFlags();
+
+  const getFeatureFlagVariants = useCallback(
+    (eventName: string): Record<string, string | boolean> => {
+      const matching = (featureFlags ?? []).filter(
+        (f) => !f.events?.length || f.events.includes(eventName),
+      );
+      return matching.reduce<Record<string, string | boolean>>(
+        (acc, f) => ({
+          ...acc,
+          [f.key]: f.variant as unknown as string | boolean,
+        }),
+        {},
+      );
+    },
+    [featureFlags],
+  );
+
   const trackEvent = useCallback(
     async ({
       action,
@@ -116,6 +135,7 @@ export function useUserTracking(): UserTracking {
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         try {
+          const flagVariants = getFeatureFlagVariants(action);
           const eventData = {
             category,
             value: typeof value === 'number' ? value : 0,
@@ -131,6 +151,9 @@ export function useUserTracking(): UserTracking {
             referrer: document?.referrer,
             url: window?.location?.href || getSiteUrl(),
             abtests: activeAbTests,
+            ...(Object.keys(flagVariants).length > 0 && {
+              abTestVariants: flagVariants,
+            }),
           };
           await jumperTrackEvent(eventData);
         } catch (error) {
@@ -147,6 +170,7 @@ export function useUserTracking(): UserTracking {
       jumperTrackEvent,
       sessionId,
       activeAbTests,
+      getFeatureFlagVariants,
     ],
   );
 
@@ -162,6 +186,8 @@ export function useUserTracking(): UserTracking {
         googleEvent({ action, category, data });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
+        const dataAction = data[TrackingEventParameter.Action] ?? action ?? '';
+        const flagVariants = getFeatureFlagVariants(dataAction);
         const transactionData = {
           url: window?.location?.href || getSiteUrl(),
           browserFingerprint: fp || 'unknown',
@@ -170,7 +196,7 @@ export function useUserTracking(): UserTracking {
           referrer: document?.referrer,
           abtests: activeAbTests,
           // data from handleRouteTrackingData:
-          action: data[TrackingEventParameter.Action] ?? action ?? '',
+          action: dataAction,
           errorCode: data[TrackingEventParameter.ErrorCode],
           errorCodeKey: data[TrackingEventParameter.ErrorCodeKey],
           errorMessage: data[TrackingEventParameter.ErrorMessage],
@@ -210,7 +236,7 @@ export function useUserTracking(): UserTracking {
           transactionLink: data[TrackingEventParameter.TransactionLink],
           transactionStatus: data[TrackingEventParameter.TransactionStatus],
           type: data[TrackingEventParameter.Type],
-          abTestVariants: data.abTestVariants,
+          abTestVariants: { ...data.abTestVariants, ...flagVariants },
         };
         await jumperTrackTransaction(transactionData);
       }
@@ -231,6 +257,7 @@ export function useUserTracking(): UserTracking {
       jumperTrackTransaction,
       sessionId,
       activeAbTests,
+      getFeatureFlagVariants,
     ],
   );
 

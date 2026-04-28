@@ -521,16 +521,6 @@ export interface WalletEntity {
   user: UserEntity;
 }
 
-export interface PosthogFeatureFlag {
-  /**
-   * The metadata of the feature flag
-   * @example {"timestamp":"2021-01-01T00:00:00.000Z","path":"/api/feature-flag","method":"GET"}
-   */
-  meta: object;
-  /** The data of the feature flag */
-  data: string | boolean;
-}
-
 export interface CreateWalletTransactionDto {
   sessionId: string;
   /**
@@ -591,6 +581,7 @@ export interface CreateWalletTransactionDto {
   pathname?: string;
   referrer?: string;
   abtests?: object;
+  abTestVariants?: object;
   /** @format date-time */
   timestamp: string;
 }
@@ -1020,6 +1011,15 @@ export interface PerkClaimEntity {
   email: string;
 }
 
+export interface FeatureFlagResponseDto {
+  /** @example "a-b-test-trade-display" */
+  key: string;
+  /** @example "test" */
+  variant: object;
+  /** @example ["execution_completed"] */
+  events?: string[];
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 
@@ -1309,29 +1309,6 @@ export class JumperBackend<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
   v1 = {
-    /**
-     * No description
-     *
-     * @tags PostHog, Public
-     * @name PostHogControllerGetFeatureFlagV1
-     * @summary Get a feature flag
-     * @request GET:/v1/posthog/feature-flag
-     */
-    postHogControllerGetFeatureFlagV1: (
-      query: {
-        key: string;
-        distinctId: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PosthogFeatureFlag, any>({
-        path: `/v1/posthog/feature-flag`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
     /**
      * No description
      *
@@ -1838,6 +1815,51 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetAllV1
+     * @summary Get all active feature flags evaluated for a user
+     * @request GET:/v1/feature-flags
+     */
+    featureFlagControllerGetAllV1: (
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagResponseDto[], any>({
+        path: `/v1/feature-flags`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetOneV1
+     * @summary Get a single feature flag evaluated for a user
+     * @request GET:/v1/feature-flags/{key}
+     */
+    featureFlagControllerGetOneV1: (
+      key: string,
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagResponseDto, any>({
+        path: `/v1/feature-flags/${key}`,
         method: 'GET',
         query: query,
         format: 'json',
