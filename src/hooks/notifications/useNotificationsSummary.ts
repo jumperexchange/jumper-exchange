@@ -1,5 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { isAddress } from 'viem';
 import config from '@/config/env-config';
 import { FIFTEEN_SECONDS_MS } from '@/const/time';
 import type { NotificationSummary } from '@/types/notifications';
@@ -17,13 +18,9 @@ class NotificationsSummaryError extends Error {
 export const notificationsSummaryQueryKey = (address?: string) =>
   ['notifications-summary', address] as const;
 
-const walletAddressPattern = /^0x[a-fA-F0-9]{40}$/;
-
 export const useNotificationsSummary = () => {
   const { account } = useAccount();
   const address = account?.address;
-  const isValidWalletAddress =
-    typeof address === 'string' && walletAddressPattern.test(address);
 
   return useQuery({
     queryKey: notificationsSummaryQueryKey(address),
@@ -42,7 +39,8 @@ export const useNotificationsSummary = () => {
 
       return response.json() as Promise<NotificationSummary>;
     },
-    enabled: isValidWalletAddress && !!config.NEXT_PUBLIC_NOTIFICATIONS_URL,
+    enabled:
+      !!address && isAddress(address) && !!config.NEXT_PUBLIC_NOTIFICATIONS_URL,
     refetchInterval: FIFTEEN_SECONDS_MS,
     staleTime: FIFTEEN_SECONDS_MS,
     placeholderData: keepPreviousData,

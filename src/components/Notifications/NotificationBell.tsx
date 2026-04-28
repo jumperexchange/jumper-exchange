@@ -108,15 +108,10 @@ export const NotificationBell = () => {
             anchorEl={anchorRef.current}
             open={open}
             setOpen={setOpen}
-            latestCreatedAt={summary?.latestCreatedAt}
           />
         )
       ) : (
-        <NotificationDrawer
-          open={open}
-          setOpen={setOpen}
-          latestCreatedAt={summary?.latestCreatedAt}
-        />
+        <NotificationDrawer open={open} setOpen={setOpen} />
       )}
     </>
   );

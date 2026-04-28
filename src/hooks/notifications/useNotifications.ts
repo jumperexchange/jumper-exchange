@@ -56,20 +56,10 @@ export const useNotifications = ({
       }
 
       const params = new URLSearchParams();
-      if (category != null) {
-        params.set('category', category);
-      }
-      if (createdAfter != null) {
-        params.set('createdAfter', createdAfter);
-      }
-      if (createdBefore != null) {
-        params.set('createdBefore', createdBefore);
-      }
-      if (limit != null) {
-        params.set('limit', String(limit));
-      }
-      if (offset != null) {
-        params.set('offset', String(offset));
+      for (const [key, value] of Object.entries(filters)) {
+        if (value != null) {
+          params.set(key, String(value));
+        }
       }
 
       const qs = params.toString();

@@ -42,7 +42,7 @@ describe('useNotificationsSummary', () => {
     vi.unstubAllGlobals();
   });
 
-  it('has a 60s refetchInterval when enabled', async () => {
+  it('has a 15s refetchInterval when enabled', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
       json: async () => ({

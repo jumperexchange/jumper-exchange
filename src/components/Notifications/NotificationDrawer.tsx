@@ -11,13 +11,11 @@ import { NotificationHeaderSubtitle } from './Notifications.style';
 interface NotificationDrawerProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  latestCreatedAt?: string | null;
 }
 
 export const NotificationDrawer: FC<NotificationDrawerProps> = ({
   open,
   setOpen,
-  latestCreatedAt: _latestCreatedAt,
 }) => {
   const { t } = useTranslation();
   const {

@@ -35,7 +35,10 @@ export const useFilteredNotifications = ({
     useState<NotificationCategory | null>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
-  const createdAfter = dateFilterToCreatedAfter(dateFilter);
+  const createdAfter = useMemo(
+    () => dateFilterToCreatedAfter(dateFilter),
+    [dateFilter],
+  );
 
   const { data: notifications } = useNotifications({
     enabled,
