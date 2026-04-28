@@ -1,3 +1,4 @@
+import 'server-only';
 import config from '@/config/env-config';
 
 interface ERC20Resource {
@@ -140,6 +141,6 @@ class LifiComposerClient {
 export const makeLifiComposerClient = (): LifiComposerClient => {
   return new LifiComposerClient(
     config.NEXT_PUBLIC_LIFI_COMPOSER_BACKEND_URL,
-    config.NEXT_PUBLIC_LIFI_API_KEY,
+    config.LIFI_COMPOSER_API_KEY,
   );
 };
