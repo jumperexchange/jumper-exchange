@@ -52,7 +52,7 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
         >
           <AvatarItem
             avatar={{
-              src: 'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/protocols/wrapper.svg',
+              src: 'https://cdn.jsdelivr.net/gh/lifinance/types@c55266da1b67513f3aa7ba9c1e066be1fae3a01a/src/assets/icons/protocols/wrapper.svg',
               alt: t('portfolio.dustConversion.routeOverview.composerAlt'),
               id: 'step',
             }}
