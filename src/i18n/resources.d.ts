@@ -192,7 +192,10 @@ export default interface Resources {
       };
       position: {
         disabled: 'Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
-        label: 'Your position';
+        views: {
+          position: 'Your position';
+          yield: 'Estimated yield';
+        };
       };
       relatedMarkets: {
         title: 'Related Markets';
@@ -1234,6 +1237,8 @@ export default interface Resources {
       capInDollar: 'Available liquidity capacity of the market';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
+      claimRedeemAvailable: 'Your withdrawal is ready';
+      claimRedeemPending: 'You have a pending withdraw request';
       close: 'Close';
       copied: 'Copied';
       deposit: 'The token on which the market is defined and yield accrues on.';

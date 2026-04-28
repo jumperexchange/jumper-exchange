@@ -493,6 +493,8 @@
     "capInDollar": "Available liquidity capacity of the market",
     "depositDisabled": "Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
     "withdrawDisabled": "Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
+    "claimRedeemPending": "You have a pending withdraw request",
+    "claimRedeemAvailable": "Your withdrawal is ready",
     "zoomOut": "Zoom out",
     "zoomIn": "Zoom in",
     "fullscreen": "Fullscreen",
@@ -611,8 +613,11 @@
       "goToPortfolio": "Go to Portfolio"
     },
     "position": {
-      "label": "Your position",
-      "disabled": "Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>"
+      "disabled": "Actions are currently disabled for this opportunity. <0>Go to {{protocolName}}</0>",
+      "views": {
+        "position": "Your position",
+        "yield": "Estimated yield"
+      }
     },
     "missingPosition": {
       "title": "Missing a position?",

@@ -129,6 +129,14 @@ export const EarnDetailsActionsHeaderContainer = styled(Box)(({ theme }) => ({
   alignItems: 'center',
 }));
 
+export const EarnYieldColumnsContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(0.25),
+}));
+
 export const EarnDetailsActionsButtonsContainer = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',

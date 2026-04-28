@@ -12,10 +12,10 @@ import {
   EarnDetailsColumnFlexContainer,
   EarnDetailsRowFlexContainer,
 } from './EarnDetails.styles';
-import { EarnDetailsActions } from './EarnDetailsActions';
 import { formatDistance } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
+import { EarnDetailsPosition } from './EarnDetailsPosition/EarnDetailsPosition';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -64,7 +64,7 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
               }
               fullWidth={isMobile}
             />
-            <EarnDetailsActions
+            <EarnDetailsPosition
               earnOpportunity={{
                 ...data,
                 minFromAmountUSD: 0.99,
