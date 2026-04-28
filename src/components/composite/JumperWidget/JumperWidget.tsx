@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import {
   type NavigationContextValue,
   type WidgetFormApi,
+  type JumperWidgetFormListeners,
   FormContext,
   NavigationContext,
   useFormContext,
@@ -330,6 +331,7 @@ interface JumperWidgetProps {
   settings?: JumperWidgetSettings;
   /** ID of a custom view to use as the settings panel. Use `settings` prop instead for built-in settings. */
   settingsViewId?: string;
+  formListeners?: JumperWidgetFormListeners;
 }
 
 export const JumperWidget: FC<JumperWidgetProps> = ({
@@ -339,6 +341,7 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
   onNavigation,
   settings,
   settingsViewId: externalSettingsViewId,
+  formListeners: formListenersProp,
 }) => {
   const { t } = useTranslation();
 
@@ -417,6 +420,16 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
         setError(e instanceof Error ? e : new Error(String(e)));
       }
     },
+    listeners: formListenersProp
+      ? {
+          onChange: ({ formApi, fieldApi }) => {
+            formListenersProp.onChange?.({
+              formApi: formApi as WidgetFormApi,
+              fieldApi: { name: String(fieldApi.name) },
+            });
+          },
+        }
+      : undefined,
   });
 
   // Sync form state when defaultValues change (e.g. async data like lpTokenAmount loads).

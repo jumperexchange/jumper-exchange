@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type {
   JumperWidgetSettings,
@@ -13,22 +13,38 @@ import { widgetStyle } from '../constants';
 import { useDustBalances } from './useDustBalances';
 import { useFallbackNativeToken } from './useFallbackNativeToken';
 import { useDustFormFields } from './useDustFormFields';
-import { DustFieldsSync } from '../components/DustFieldsSync';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
 import { RouteOverview } from '../components/RouteOverview';
 import { ConvertDustSubmitButton } from '../components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from '../components/RouteOverviewSubmitButton';
-import type { NavigationContextValue } from '../../JumperWidget/context';
+import type {
+  JumperWidgetFormFieldChangePayload,
+  JumperWidgetFormListeners,
+  NavigationContextValue,
+} from '../../JumperWidget/context';
 import type { DustSummaryValue } from '../types';
+import { isNil } from '@/utils/isNil';
+import {
+  checkChainHasBalancesBelowThreshold,
+  getFilteredBalances,
+  selectTopAddresses,
+  sortChainsByFilteredDustUsdDesc,
+} from '../utils';
+import type { ChainSingleSelectValue } from '@/components/composite/JumperWidget/components/Chain';
+import type { NumericSelectValue } from '@/components/composite/JumperWidget/components/NumericSelect';
 
 const widgetStyleMemo = widgetStyle;
 
 interface UseDustModalFlowOptions {
   onClose: () => void;
+  isOpen: boolean;
 }
 
-export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
+export const useDustModalFlow = ({
+  onClose,
+  isOpen,
+}: UseDustModalFlowOptions) => {
   const { t } = useTranslation();
   const { refresh: refreshPortfolio } = usePortfolioState();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
@@ -45,6 +61,108 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
+
+  const dustFieldSyncRef = useRef<{
+    prevThreshold: number | 'init';
+    prevChainId: number | 'init';
+  }>({ prevThreshold: 'init', prevChainId: 'init' });
+
+  useEffect(() => {
+    if (isOpen) {
+      dustFieldSyncRef.current = { prevThreshold: 'init', prevChainId: 'init' };
+    }
+  }, [isOpen]);
+
+  const handleDustFormFieldChange = useCallback(
+    ({ formApi, fieldApi }: JumperWidgetFormFieldChangePayload) => {
+      const name = fieldApi.name;
+      const sync = dustFieldSyncRef.current;
+
+      if (name === 'amountThreshold') {
+        const threshold = (
+          formApi.getFieldValue('amountThreshold') as
+            | NumericSelectValue
+            | undefined
+        )?.value;
+        if (isNil(threshold)) {
+          return;
+        }
+        if (sync.prevThreshold === 'init') {
+          sync.prevThreshold = threshold;
+          return;
+        }
+        if (sync.prevThreshold === threshold) {
+          return;
+        }
+        sync.prevThreshold = threshold;
+
+        const sorted = sortChainsByFilteredDustUsdDesc(
+          chains.filter((c) =>
+            checkChainHasBalancesBelowThreshold(
+              nonNativeBalances,
+              c.id,
+              threshold,
+            ),
+          ),
+          nonNativeBalances,
+          threshold,
+        );
+        const topId = sorted[0]?.id;
+        if (isNil(topId)) {
+          return;
+        }
+
+        const current = formApi.getFieldValue('chain') as
+          | ChainSingleSelectValue
+          | undefined;
+
+        void formApi.setFieldValue('chain', { selectedChain: topId });
+
+        const addresses = selectTopAddresses(
+          getFilteredBalances(nonNativeBalances, topId, threshold),
+        );
+        void formApi.setFieldValue('balances', {
+          selectedAddresses: addresses,
+        });
+        return;
+      }
+
+      if (name === 'chain') {
+        const chain = formApi.getFieldValue('chain') as
+          | ChainSingleSelectValue
+          | undefined;
+        const threshold = (
+          formApi.getFieldValue('amountThreshold') as
+            | NumericSelectValue
+            | undefined
+        )?.value;
+        const chainId = chain?.selectedChain;
+        if (isNil(chainId) || isNil(threshold)) {
+          return;
+        }
+        if (sync.prevChainId === 'init') {
+          sync.prevChainId = chainId;
+          return;
+        }
+        sync.prevChainId = chainId;
+        const addresses = selectTopAddresses(
+          getFilteredBalances(nonNativeBalances, chainId, threshold),
+        );
+        void formApi.setFieldValue('balances', {
+          selectedAddresses: addresses,
+        });
+      }
+    },
+    [chains, nonNativeBalances],
+  );
+
+  const formListeners = useMemo<JumperWidgetFormListeners>(
+    () => ({
+      onChange: handleDustFormFieldChange,
+    }),
+    [handleDustFormFieldChange],
+  );
+
   const { composerQuote, fetchComposerQuoteAsync } = useDustComposerQuote();
   const { toAmountFromPrice, toRawAmount } = useTokenAmountInput();
 
@@ -151,12 +269,6 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
         type: 'form' as const,
         id: 'form',
         title: t('portfolio.dustConversion.title'),
-        content: (
-          <DustFieldsSync
-            chains={chains}
-            nonNativeBalances={nonNativeBalances}
-          />
-        ),
         fields: formFields,
         onSubmit: async ({ values }: ViewSubmitContext) => {
           const summary = values.dustSummary as DustSummaryValue | undefined;
@@ -197,8 +309,6 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
       },
     ],
     [
-      chains,
-      nonNativeBalances,
       composerQuote,
       nativeTokenBalance,
       dustSummary,
@@ -228,5 +338,6 @@ export const useDustModalFlow = ({ onClose }: UseDustModalFlowOptions) => {
     widgetStyle: widgetStyleMemo,
     setWidgetNav,
     handleModalClose,
+    formListeners,
   };
 };

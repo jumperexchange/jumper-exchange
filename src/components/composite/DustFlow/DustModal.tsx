@@ -16,7 +16,8 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
     widgetStyle,
     setWidgetNav,
     handleModalClose,
-  } = useDustModalFlow({ onClose });
+    formListeners,
+  } = useDustModalFlow({ onClose, isOpen });
 
   return (
     <ModalContainer isOpen={isOpen} onClose={handleModalClose}>
@@ -27,6 +28,7 @@ export const DustModal: FC<DustModalProps> = ({ isOpen, onClose }) => {
           style={widgetStyle}
           onNavigation={setWidgetNav}
           settings={widgetSettings}
+          formListeners={formListeners}
         />
       ) : null}
     </ModalContainer>
