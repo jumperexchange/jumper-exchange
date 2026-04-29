@@ -12,7 +12,8 @@ import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
-import type { Notification, NotificationCategory } from '@/types/notifications';
+import type { Notification } from '@/types/notifications';
+import { NotificationCategory } from '@/types/notifications';
 import {
   CtaLink,
   NotificationBody,
@@ -25,10 +26,10 @@ import {
 
 // TODO: Think about color mapping the categories
 const CATEGORY_BADGE_VARIANT: Record<NotificationCategory, BadgeVariant> = {
-  earn: BadgeVariant.Secondary,
-  product: BadgeVariant.Secondary,
-  campaign: BadgeVariant.Secondary,
-  portfolio: BadgeVariant.Secondary,
+  [NotificationCategory.Earn]: BadgeVariant.Secondary,
+  [NotificationCategory.Product]: BadgeVariant.Secondary,
+  [NotificationCategory.Campaign]: BadgeVariant.Secondary,
+  [NotificationCategory.Portfolio]: BadgeVariant.Secondary,
 };
 
 interface NotificationItemProps {

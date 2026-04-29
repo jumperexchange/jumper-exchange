@@ -1,4 +1,5 @@
 import config from '@/config/env-config';
+import { isBeta } from './isBeta';
 
 export interface GetApiUrlParams {
   isPrivateVariant?: boolean;
@@ -26,8 +27,7 @@ function betaOverride(_params?: GetApiUrlParams) {
     return undefined;
   }
 
-  const isBetaEnabled = window?.localStorage.getItem('use-beta');
-  if (isBetaEnabled) {
+  if (isBeta()) {
     return ApiUrlFlags.Beta;
   }
 }

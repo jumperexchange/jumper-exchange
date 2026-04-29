@@ -7,7 +7,7 @@ import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import type { LayoutVariantProps } from './Layout.types';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
-import { isProduction } from '@/utils/isProduction';
+import { isBeta } from '@/utils/isBeta';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
@@ -32,7 +32,7 @@ export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
 
       <SecondaryLinksContainer>
         {secondaryButtons}
-        {!isProduction && <NotificationBell />}
+        {isBeta() && <NotificationBell />}
         <MainMenuToggle />
       </SecondaryLinksContainer>
     </>
