@@ -110,6 +110,7 @@ export interface CreateUserTrackingDto {
    * @example "MetaMask"
    */
   walletProvider?: string;
+  abTestVariants?: object;
 }
 
 export interface RewardEntity {
@@ -1014,10 +1015,14 @@ export interface PerkClaimEntity {
 export interface FeatureFlagResponseDto {
   /** @example "a-b-test-trade-display" */
   key: string;
+  /** @example "A/B Test Trade Display" */
+  name?: string;
   /** @example "test" */
-  variant: object;
+  variant: string | boolean;
   /** @example ["execution_completed"] */
   events?: string[];
+  /** @example 639768 */
+  posthogFlagId?: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
