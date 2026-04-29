@@ -14,7 +14,7 @@ For agents and contributors picking up work in this repo, start with [AGENTS.md]
 
 ## Getting Started
 
-Requires `node >=20` (pinned in `.nvmrc` — run `nvm use`).
+Requires `node >=20` (see `.nvmrc` — run `nvm use`).
 
 ```sh
 pnpm install
@@ -23,7 +23,7 @@ pnpm dev            # or: pnpm dev:local | pnpm dev:staging | pnpm dev:productio
 
 ## Tools
 
-- `pnpm api` — regenerate the backend-derived API client. Requires `jumper-backend` running on `localhost:3001`. Output is auto-linted.
+- `pnpm api` — regenerate the backend-derived API client. Requires `jumper-backend` running on `localhost:3001`. Linting/formatting is handled separately by the usual commit/CI checks (or can be run manually).
 - `pnpm typecheck` — run `tsc --noEmit`.
 - `pnpm storybook` — Storybook on port 6006.
 - `pnpm i18next-resources-for-ts` — regenerate typed i18n resources after editing `src/i18n/translations/en/`.

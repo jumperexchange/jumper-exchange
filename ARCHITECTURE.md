@@ -23,8 +23,6 @@ The app embeds the `@lifi/widget` for the swap UX and wraps it with Jumper-speci
 | Tests           | Playwright (E2E), Vitest (unit, snapshot, Storybook)                                                |
 | Package manager | pnpm (`packageManager` field pins the version)                                                      |
 
-`node >=20` is required; `.nvmrc` pins the minor.
-
 ## Directory layout
 
 ```
@@ -109,7 +107,7 @@ jumper-exchange/
 
 Read as: a row module _may_ import from a column module where ✓; _must not_ where ✗.
 
-The load-bearing rules:
+Contribution Rules:
 
 - **`utils/` is a leaf.** It must not import from anything else inside `src/`. Pure helpers only.
 - **`stores/` does not import from `components/`, `hooks/`, or `providers/`.** Stores must be renderable in isolation (and unit-testable) without pulling in the whole tree.
