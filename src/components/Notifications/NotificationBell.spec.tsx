@@ -123,12 +123,14 @@ describe('NotificationBell', () => {
     expect(badge).toHaveAttribute('data-invisible', 'true');
   });
 
-  it('hides badge while first summary request is loading', () => {
-    summaryState.data = undefined;
+  it('hides badge while summary request is loading even with a visible count', () => {
+    // beforeEach sets data to count=5 (badgeContent=2), which would normally
+    // be visible. Loading must be the only reason the badge is hidden.
     summaryState.isLoading = true;
 
     render(<NotificationBell />);
     const badge = screen.getByTestId('notification-badge');
+    expect(badge).toHaveAttribute('data-badge-content', '2');
     expect(badge).toHaveAttribute('data-invisible', 'true');
   });
 

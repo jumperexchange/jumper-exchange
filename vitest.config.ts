@@ -50,6 +50,23 @@ export default defineConfig({
         },
       },
       {
+        plugins: [react()],
+        extends: true,
+        test: {
+          name: 'components',
+          include: ['src/**/*.spec.tsx', '!src/**/*.snapshot.spec.tsx'],
+          setupFiles: ['./vitest.setup.tsx'],
+          environment: 'jsdom',
+          globals: true,
+        },
+        resolve: {
+          alias: {
+            '@': path.resolve(dirname, './src'),
+            src: path.resolve(dirname, './src'),
+          },
+        },
+      },
+      {
         extends: true,
         plugins: [
           // The plugin will run tests for the stories defined in your Storybook config

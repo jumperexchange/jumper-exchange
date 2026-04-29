@@ -181,6 +181,7 @@
     "test:ci:e2e": "npx playwright test",
     "test:ci:e2e:qase": "QASE_MODE=testops npx playwright test",
     "test:unit": "vitest run --project=unit",
+    "test:components": "vitest run --project=components",
     "test:snapshots": "vitest run --project=snapshots",
     "test:snapshots:generate": "vitest run --project=snapshots -u",
     "test:storybook": "vitest run --project=storybook",
