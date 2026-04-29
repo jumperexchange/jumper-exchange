@@ -1,5 +1,19 @@
 import { expect, type Page } from '@playwright/test';
 
+const DESKTOP_FILTER_MODAL = 'earn-filters-desktop-modal';
+
+async function openFilterModal(page: Page) {
+  const triggerButton = page.getByTestId(
+    `${DESKTOP_FILTER_MODAL}-trigger-button`,
+  );
+  await expect(triggerButton).toBeVisible();
+  await triggerButton.click();
+}
+
+async function closeFilterModal(page: Page) {
+  await page.keyboard.press('Escape');
+}
+
 export async function selectAllMarketsTab(page: Page) {
   const allMarketsTab = page.getByTestId('earn-filter-tab-all');
   await allMarketsTab.click();
@@ -30,21 +44,43 @@ export async function selectOptionFromDropDown(
   dropdown: string,
   option: string,
 ) {
-  const dropdownFilter = page.getByTestId(dropdown);
-  const clearButton = page.getByTestId('clear-button');
-  await dropdownFilter.click();
+  await openFilterModal(page);
+
+  // Click the category item in the left panel of the modal
+  const categoryItem = page.getByTestId(dropdown);
+  await expect(categoryItem).toBeVisible();
+  await categoryItem.click();
+
+  // Wait for the options panel to load (clear button appears when panel is ready)
+  const clearButton = page.getByTestId(`${dropdown}-clear-button`);
   await expect(clearButton).toBeVisible();
-  await page.getByRole('option', { name: option }).click();
+
+  // Click the option using case-insensitive regex match (options render as role="menuitem")
+  await page.getByRole('menuitem', { name: new RegExp(option, 'i') }).click();
+
+  // Apply the filter and close the modal
+  await page.getByTestId(`${DESKTOP_FILTER_MODAL}-apply-button`).click();
+
   await page.waitForTimeout(1000);
-  await page.locator('body').click();
 }
 
 export async function getAllOptionsFromDropdown(page: Page, dropdown: string) {
-  const dropdownFilter = page.getByTestId(dropdown);
-  const optionsArray = dropdownFilter.locator('[role="option"]');
-  const options = await optionsArray.allTextContents();
-  await page.keyboard.press('Escape'); //close dropdown
-  return options;
+  await openFilterModal(page);
+
+  // Click the category item to show its options in the right panel
+  const categoryItem = page.getByTestId(dropdown);
+  await expect(categoryItem).toBeVisible();
+  await categoryItem.click();
+
+  // Wait for options to appear
+  const firstOption = page.getByRole('menuitem').first();
+  await expect(firstOption).toBeVisible();
+
+  const options = await page.getByRole('menuitem').allTextContents();
+
+  await closeFilterModal(page);
+
+  return options.filter((text) => text.trim() !== '');
 }
 
 export async function verifyNoSelectedProtocolsAreVisible(
@@ -164,6 +200,8 @@ export async function verifyOnlySelectedTagIsVisible(
 }
 
 export async function verifyFiltersAreVisible(page: Page) {
+  await openFilterModal(page);
+
   const filterIds = [
     'earn-filter-chain-select',
     'earn-filter-protocol-select',
@@ -175,4 +213,6 @@ export async function verifyFiltersAreVisible(page: Page) {
   for (const filterId of filterIds) {
     await expect(page.getByTestId(filterId)).toBeVisible();
   }
+
+  await closeFilterModal(page);
 }
