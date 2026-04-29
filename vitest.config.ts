@@ -53,7 +53,7 @@ export default defineConfig({
         plugins: [react()],
         extends: true,
         test: {
-          name: 'components',
+          name: 'unit-components',
           include: ['src/**/*.spec.tsx', '!src/**/*.snapshot.spec.tsx'],
           setupFiles: ['./vitest.setup.tsx'],
           environment: 'jsdom',
