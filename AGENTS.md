@@ -26,7 +26,7 @@ See @README.md
 
 - **No barrel files** (`index.ts` re-exports). Import directly from the source file.
 - **TypeScript path aliases**: `@/foo` and `src/foo` both resolve to `./src/foo` (see `tsconfig.json` and `vitest.config.ts`). Prefer `@/` in new code.
-- **Comments explain *why*, not *what*.** Self-documenting names first; comments only for non-obvious logic or constraints.
+- **Comments explain _why_, not _what_.** Self-documenting names first; comments only for non-obvious logic or constraints.
 - **Function names should be self-documenting** — see [`~/.claude/CLAUDE.md`](../../../.claude/CLAUDE.md) for the user-level style guide we follow.
 - **Delete replaced code.** No backwards-compatibility shims inside this repo; this is a feature-branch codebase.
 
@@ -54,19 +54,19 @@ Read these first when picking up new work in this repo:
 
 ## Where new things go
 
-| New thing | Goes in |
-| --- | --- |
-| New page | `src/app/[lng]/<segment>/page.tsx` (+ `layout.tsx` if it has children) |
-| New API route handler | `src/app/api/<name>/route.ts` |
-| New feature component | `src/components/<FeatureName>/` (subfolder; one component per file, no barrels) |
-| New zustand store | `src/stores/<feature>/` |
-| New react-query hook | `src/hooks/<feature>/use<Thing>.ts` |
-| New wallet connector | `src/providers/WalletProvider/` + relevant `src/config/<connector>.ts` |
-| New translation key | `src/i18n/translations/en/<namespace>.json` then `pnpm i18next-resources-for-ts` |
-| New unit test | `<file>.spec.ts(x)` next to the source |
-| New E2E test | `tests/<feature>.spec.ts` |
-| New theme token / palette change | `src/theme/` |
-| New env variable | `src/config/env-config.ts` + document in `.env.example` |
+| New thing                        | Goes in                                                                          |
+| -------------------------------- | -------------------------------------------------------------------------------- |
+| New page                         | `src/app/[lng]/<segment>/page.tsx` (+ `layout.tsx` if it has children)           |
+| New API route handler            | `src/app/api/<name>/route.ts`                                                    |
+| New feature component            | `src/components/<FeatureName>/` (subfolder; one component per file, no barrels)  |
+| New zustand store                | `src/stores/<feature>/`                                                          |
+| New react-query hook             | `src/hooks/<feature>/use<Thing>.ts`                                              |
+| New wallet connector             | `src/providers/WalletProvider/` + relevant `src/config/<connector>.ts`           |
+| New translation key              | `src/i18n/translations/en/<namespace>.json` then `pnpm i18next-resources-for-ts` |
+| New unit test                    | `<file>.spec.ts(x)` next to the source                                           |
+| New E2E test                     | `tests/<feature>.spec.ts`                                                        |
+| New theme token / palette change | `src/theme/`                                                                     |
+| New env variable                 | `src/config/env-config.ts` + document in `.env.example`                          |
 
 If a change does not fit any of the above, stop and ask — do not invent a new top-level folder.
 
@@ -85,4 +85,5 @@ If a change does not fit any of the above, stop and ask — do not invent a new 
 - [tests/README.md](./tests/README.md) — Playwright E2E setup and run commands.
 
 <!-- local overrides (gitignored) -->
+
 @AGENTS.local.md

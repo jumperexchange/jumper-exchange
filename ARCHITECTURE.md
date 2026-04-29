@@ -10,18 +10,18 @@ The app embeds the `@lifi/widget` for the swap UX and wraps it with Jumper-speci
 
 ## Stack
 
-| Layer | Choice |
-| --- | --- |
-| Framework | Next.js 16 (App Router) on React 19 with the React Compiler |
-| Styling | MUI v9 + Emotion |
-| Server state | `@tanstack/react-query` |
-| Client state | `zustand` (one store per feature, under `src/stores/<feature>/`) |
-| Forms | `@tanstack/react-form` |
-| i18n | `next-i18n-router` + `i18next`, locale segment in the URL (`/[lng]/…`) |
-| Wallet | `@lifi/sdk` + `@lifi/widget` + per-chain providers (EVM via Wagmi/Viem, Solana, Sui, Bitcoin, Tron) |
-| Observability | Sentry (browser + server + edge) |
-| Tests | Playwright (E2E), Vitest (unit, snapshot, Storybook) |
-| Package manager | pnpm (`packageManager` field pins the version) |
+| Layer           | Choice                                                                                              |
+| --------------- | --------------------------------------------------------------------------------------------------- |
+| Framework       | Next.js 16 (App Router) on React 19 with the React Compiler                                         |
+| Styling         | MUI v9 + Emotion                                                                                    |
+| Server state    | `@tanstack/react-query`                                                                             |
+| Client state    | `zustand` (one store per feature, under `src/stores/<feature>/`)                                    |
+| Forms           | `@tanstack/react-form`                                                                              |
+| i18n            | `next-i18n-router` + `i18next`, locale segment in the URL (`/[lng]/…`)                              |
+| Wallet          | `@lifi/sdk` + `@lifi/widget` + per-chain providers (EVM via Wagmi/Viem, Solana, Sui, Bitcoin, Tron) |
+| Observability   | Sentry (browser + server + edge)                                                                    |
+| Tests           | Playwright (E2E), Vitest (unit, snapshot, Storybook)                                                |
+| Package manager | pnpm (`packageManager` field pins the version)                                                      |
 
 `node >=20` is required; `.nvmrc` pins the minor.
 
@@ -97,17 +97,17 @@ jumper-exchange/
 
 ## Internal dependency rules
 
-| From → To | components | hooks | stores | providers | config | app/ | utils |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| **components** | ✓ | ✓ | ✓ | ✓ (consume context) | ✓ | ✗ | ✓ |
-| **hooks** | ✗ | ✓ | ✓ | ✓ (consume context) | ✓ | ✗ | ✓ |
-| **stores** | ✗ | ✗ | ✓ | ✗ | ✓ | ✗ | ✓ |
-| **providers** | ✓ (render) | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ |
-| **config** | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✓ |
-| **app/** | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| **utils** | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ |
+| From → To      | components | hooks | stores | providers           | config | app/ | utils |
+| -------------- | ---------- | ----- | ------ | ------------------- | ------ | ---- | ----- |
+| **components** | ✓          | ✓     | ✓      | ✓ (consume context) | ✓      | ✗    | ✓     |
+| **hooks**      | ✗          | ✓     | ✓      | ✓ (consume context) | ✓      | ✗    | ✓     |
+| **stores**     | ✗          | ✗     | ✓      | ✗                   | ✓      | ✗    | ✓     |
+| **providers**  | ✓ (render) | ✓     | ✓      | ✓                   | ✓      | ✗    | ✓     |
+| **config**     | ✗          | ✗     | ✗      | ✗                   | ✓      | ✗    | ✓     |
+| **app/**       | ✓          | ✓     | ✓      | ✓                   | ✓      | ✓    | ✓     |
+| **utils**      | ✗          | ✗     | ✗      | ✗                   | ✗      | ✗    | ✓     |
 
-Read as: a row module *may* import from a column module where ✓; *must not* where ✗.
+Read as: a row module _may_ import from a column module where ✓; _must not_ where ✗.
 
 The load-bearing rules:
 
@@ -121,16 +121,16 @@ If a change requires reversing one of these directions, **stop**. The right shap
 
 ## Invariants
 
-| # | Invariant | Enforcement |
-| --- | --- | --- |
-| 1 | All user-facing pages live under `src/app/[lng]/` | doc; obvious on review |
-| 2 | API route handlers in `src/app/api/` are thin proxies — no business logic | doc |
-| 3 | Server state goes through react-query; no direct `fetch` in components | doc |
-| 4 | One zustand store per feature folder under `src/stores/` | doc |
-| 5 | No barrel files (`index.ts` re-exports) | doc; ESLint candidate |
-| 6 | Sentry is initialised only in `instrumentation*.ts` / `sentry.*.config.ts` | doc |
-| 7 | Secrets never committed; new env vars documented in `src/config/env-config.ts` | per-repo CI (existing) |
-| 8 | Pre-commit hook (`tsc --noEmit` + ESLint + Prettier) must pass | Husky + lint-staged |
+| #   | Invariant                                                                      | Enforcement            |
+| --- | ------------------------------------------------------------------------------ | ---------------------- |
+| 1   | All user-facing pages live under `src/app/[lng]/`                              | doc; obvious on review |
+| 2   | API route handlers in `src/app/api/` are thin proxies — no business logic      | doc                    |
+| 3   | Server state goes through react-query; no direct `fetch` in components         | doc                    |
+| 4   | One zustand store per feature folder under `src/stores/`                       | doc                    |
+| 5   | No barrel files (`index.ts` re-exports)                                        | doc; ESLint candidate  |
+| 6   | Sentry is initialised only in `instrumentation*.ts` / `sentry.*.config.ts`     | doc                    |
+| 7   | Secrets never committed; new env vars documented in `src/config/env-config.ts` | per-repo CI (existing) |
+| 8   | Pre-commit hook (`tsc --noEmit` + ESLint + Prettier) must pass                 | Husky + lint-staged    |
 
 ## Cross-repo position
 
