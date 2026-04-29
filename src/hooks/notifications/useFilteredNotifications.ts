@@ -1,6 +1,6 @@
 import { useAccount } from '@lifi/wallet-management';
+import { subDays, subWeeks } from 'date-fns';
 import { useMemo, useState } from 'react';
-import { ONE_DAY_MS, ONE_WEEK_MS, THIRTY_DAYS_MS } from '@/const/time';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { NotificationCategory } from '@/types/notifications';
 import { useNotifications } from './useNotifications';
@@ -17,12 +17,13 @@ const dateFilterToCreatedAfter = (
   if (dateFilter === 'all') {
     return undefined;
   }
-  const msMap: Record<Exclude<DateFilter, 'all'>, number> = {
-    today: ONE_DAY_MS,
-    week: ONE_WEEK_MS,
-    month: THIRTY_DAYS_MS,
+  const now = new Date();
+  const fnMap: Record<Exclude<DateFilter, 'all'>, () => Date> = {
+    today: () => subDays(now, 1),
+    week: () => subWeeks(now, 1),
+    month: () => subDays(now, 30),
   };
-  return new Date(Date.now() - msMap[dateFilter]).toISOString();
+  return fnMap[dateFilter]().toISOString();
 };
 
 export const useFilteredNotifications = ({
