@@ -2,7 +2,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from '@lifi/wallet-management';
 import { makeClient } from '@/app/lib/client';
-import config from '@/config/env-config';
 import { useFpStore } from 'src/stores/fp';
 import type { FeatureFlagResponseDto } from 'src/types/jumper-backend';
 
@@ -18,10 +17,6 @@ export const useFeatureFlags = () => {
   return useQuery({
     queryKey: ['feature-flags', distinctId],
     queryFn: async (): Promise<FeatureFlagResponseDto[]> => {
-      if (!config.NEXT_PUBLIC_BACKEND_URL) {
-        return [];
-      }
-
       const client = makeClient();
       const res = await client.v1.featureFlagControllerGetAllV1({ distinctId });
       // @ts-expect-error: see LF-15589 - we are transforming data in the backend
