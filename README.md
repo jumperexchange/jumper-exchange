@@ -10,43 +10,36 @@
 
 This is the [jumper.xyz](https://jumper.xyz) repository that gets deployed to `develop.jumper.xyz`, `staging.jumper.xyz` and `jumper.xyz`.
 
+For agents and contributors picking up work in this repo, start with [AGENTS.md](./AGENTS.md). The internal app shape and dependency rules are documented in [ARCHITECTURE.md](./ARCHITECTURE.md).
+
 ## Getting Started
 
-In the root directory run the following commands to get started:
+Requires `node >=20` (pinned in `.nvmrc` — run `nvm use`).
 
 ```sh
 pnpm install
-```
-
-to install all dependencies, and choose one of these start commands to start the development vite server and to start building packages in watch mode.
-
-```sh
-pnpm dev
-pnpm dev:local
-pnpm dev:staging
-pnpm dev:production
+pnpm dev            # or: pnpm dev:local | pnpm dev:staging | pnpm dev:production
 ```
 
 ## Tools
 
-Most recent parts of the code rely on API generated from our backend's swagger configuration. With the backend running locally (on localhost:3001), you can generate the latest version of the API using:
+- `pnpm api` — regenerate the backend-derived API client. Requires `jumper-backend` running on `localhost:3001`. Output is auto-linted.
+- `pnpm typecheck` — run `tsc --noEmit`.
+- `pnpm storybook` — Storybook on port 6006.
+- `pnpm i18next-resources-for-ts` — regenerate typed i18n resources after editing `src/i18n/translations/en/`.
 
-```sh
-pnpm api
-```
+## Tests
 
-The generated file requires linting, this should be automatic.
+- `pnpm test:unit` — Vitest unit tests (`<file>.spec.ts(x)`).
+- `pnpm test:snapshots` — snapshot tests; regenerate with `pnpm test:snapshots:generate`.
+- `pnpm test:storybook` — run stories under Vitest + Playwright.
+- Playwright E2E: `pnpm test`, `pnpm test:e2e-real`, `pnpm test:qase`. First-time setup: `pnpm test:install`. See [tests/README.md](./tests/README.md).
 
 ## Lint and checks
 
-We use [husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/lint-staged/lint-staged) to run checks and linting on your code before you commit.
+[husky](https://github.com/typicode/husky) + [lint-staged](https://github.com/lint-staged/lint-staged) run on commit (installed automatically by `pnpm install`).
 
-Husky should be installed automatically when you run `pnpm install`.
-
-### lint-staged
-
-The idea of invoking `tsc --noEmit` from bash instead of yarn comes from here: [github issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655)
-It fixes some problems we had with lint-staged ignoring our tsconfig and not working properly.
+`tsc --noEmit` is invoked from bash inside lint-staged — see [this issue](https://github.com/lint-staged/lint-staged/issues/825#issuecomment-674575655) for why.
 
 ## Contributing Translations
 
