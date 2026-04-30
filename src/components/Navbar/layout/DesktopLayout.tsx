@@ -7,10 +7,15 @@ import { LabelButton } from '../components/Buttons/LabelButton';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import type { LayoutVariantProps } from './Layout.types';
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
-import { isBeta } from '@/utils/isBeta';
+import {
+  GatekeeperStatus,
+  useGatekeeperStatus,
+} from '@/app/ui/gatekeeper/useGatekeeperStatus';
 
 export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
   const { links, activeLink } = useMainLinks();
+
+  const { status } = useGatekeeperStatus('hasNotifications');
 
   return (
     <>
@@ -32,7 +37,7 @@ export const DesktopLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
 
       <SecondaryLinksContainer>
         {secondaryButtons}
-        {isBeta() && <NotificationBell />}
+        {status === GatekeeperStatus.SUCCESS && <NotificationBell />}
         <MainMenuToggle />
       </SecondaryLinksContainer>
     </>
