@@ -26,8 +26,6 @@ See @README.md
 
 - **No barrel files** (`index.ts` re-exports). Import directly from the source file.
 - **TypeScript path aliases**: `@/foo` and `src/foo` both resolve to `./src/foo` (see `tsconfig.json` and `vitest.config.ts`). Prefer `@/` in new code.
-- **Comments explain _why_, not _what_.** Self-documenting names first; comments only for non-obvious logic or constraints.
-- **Function names should be self-documenting** — see [`~/.claude/CLAUDE.md`](../../../.claude/CLAUDE.md) for the user-level style guide we follow.
 - **Delete replaced code.** No backwards-compatibility shims inside this repo; this is a feature-branch codebase.
 
 ### Tests
