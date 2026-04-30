@@ -15,6 +15,7 @@ import {
 } from 'react';
 import { useForm, useStore } from '@tanstack/react-form';
 import { useStore as useZustandStore } from 'zustand';
+import type { NavigationContextValue } from './context';
 import {
   FormContext,
   NavigationContext,
@@ -237,6 +238,7 @@ const JumperWidgetInner: FC<JumperWidgetInnerProps> = ({
 interface JumperWidgetProps {
   views: WidgetView[];
   statusSheet?: JumperWidgetStatusSheetProp;
+  onNavigationReady?: (navigationContext: NavigationContextValue) => void;
   style?: {
     container?: SxProps<Theme>;
     mainView?: SxProps<Theme>;
@@ -248,6 +250,7 @@ interface JumperWidgetProps {
 export const JumperWidget: FC<JumperWidgetProps> = ({
   views,
   statusSheet,
+  onNavigationReady,
   style,
 }) => {
   const uiStoreRef = useRef<ReturnType<typeof createWidgetStore> | null>(null);
@@ -317,6 +320,10 @@ export const JumperWidget: FC<JumperWidgetProps> = ({
     }),
     [currentViewId, goToView, submit, isSubmitting, error, clearError],
   );
+
+  useEffect(() => {
+    onNavigationReady?.({ ...navigationContext });
+  }, [navigationContext, onNavigationReady]);
 
   return (
     <WidgetStoreContext.Provider value={uiStoreRef.current}>
