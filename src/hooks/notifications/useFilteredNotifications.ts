@@ -1,13 +1,34 @@
 import { useAccount } from '@lifi/wallet-management';
+import { subDays, subWeeks } from 'date-fns';
 import { useMemo, useState } from 'react';
-import { ONE_DAY_MS, ONE_WEEK_MS, THIRTY_DAYS_MS } from '@/const/time';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { NotificationCategory } from '@/types/notifications';
 import { useNotifications } from './useNotifications';
 
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
 
-export const useFilteredNotifications = () => {
+interface UseFilteredNotificationsParams {
+  enabled?: boolean;
+}
+
+const dateFilterToCreatedAfter = (
+  dateFilter: DateFilter,
+): string | undefined => {
+  if (dateFilter === 'all') {
+    return undefined;
+  }
+  const now = new Date();
+  const fnMap: Record<Exclude<DateFilter, 'all'>, () => Date> = {
+    today: () => subDays(now, 1),
+    week: () => subWeeks(now, 1),
+    month: () => subDays(now, 30),
+  };
+  return fnMap[dateFilter]().toISOString();
+};
+
+export const useFilteredNotifications = ({
+  enabled = true,
+}: UseFilteredNotificationsParams = {}) => {
   const { account } = useAccount();
   const address = account?.address ?? '';
 
@@ -15,7 +36,17 @@ export const useFilteredNotifications = () => {
     useState<NotificationCategory | null>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>('all');
 
-  const { data: notifications } = useNotifications();
+  const createdAfter = useMemo(
+    () => dateFilterToCreatedAfter(dateFilter),
+    [dateFilter],
+  );
+
+  const { data: notifications } = useNotifications({
+    enabled,
+    category: categoryFilter,
+    createdAfter,
+  });
+
   const [readIds, deletedIds] = useNotificationStore((state) => [
     state.readNotificationIdsByAccount[address] ?? [],
     state.deletedNotificationIdsByAccount[address] ?? [],
@@ -25,37 +56,8 @@ export const useFilteredNotifications = () => {
     if (!notifications) {
       return [];
     }
-
-    const now = Date.now();
-    return notifications.filter((n) => {
-      if (deletedIds.includes(n.id)) {
-        return false;
-      }
-
-      if (categoryFilter && n.category !== categoryFilter) {
-        return false;
-      }
-
-      if (dateFilter !== 'all') {
-        const createdAt = new Date(n.createdAt).getTime();
-        if (!Number.isFinite(createdAt)) {
-          return false;
-        }
-        const msAgo = now - createdAt;
-        if (dateFilter === 'today' && msAgo > ONE_DAY_MS) {
-          return false;
-        }
-        if (dateFilter === 'week' && msAgo > ONE_WEEK_MS) {
-          return false;
-        }
-        if (dateFilter === 'month' && msAgo > THIRTY_DAYS_MS) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-  }, [notifications, deletedIds, categoryFilter, dateFilter]);
+    return notifications.filter((n) => !deletedIds.includes(n.id));
+  }, [notifications, deletedIds]);
 
   const unreadCount = useMemo(
     () => visibleNotifications.filter((n) => !readIds.includes(n.id)).length,

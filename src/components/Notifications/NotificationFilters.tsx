@@ -7,20 +7,20 @@ import { type FC, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
-import type { NotificationCategory } from '@/types/notifications';
+import { NotificationCategory } from '@/types/notifications';
 import type { DateFilter } from '@/hooks/notifications/useFilteredNotifications';
 import { FilterRow } from './Notifications.style';
 
 const CATEGORY_KEYS = [
   'all',
-  'product',
-  'campaign',
-  'earn',
-  'portfolio',
+  NotificationCategory.Product,
+  NotificationCategory.Campaign,
+  NotificationCategory.Earn,
+  NotificationCategory.Portfolio,
 ] as const;
 const DATE_KEYS = ['all', 'today', 'week', 'month'] as const;
 
-type CategoryFilterValue = (typeof CATEGORY_KEYS)[number];
+type CategoryFilterValue = 'all' | NotificationCategory;
 type DateFilterValue = (typeof DATE_KEYS)[number];
 
 interface NotificationFiltersProps {

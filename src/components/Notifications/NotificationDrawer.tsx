@@ -25,7 +25,7 @@ export const NotificationDrawer: FC<NotificationDrawerProps> = ({
     setCategoryFilter,
     dateFilter,
     setDateFilter,
-  } = useFilteredNotifications();
+  } = useFilteredNotifications({ enabled: open });
 
   const handleClose = () => setOpen(false);
 
