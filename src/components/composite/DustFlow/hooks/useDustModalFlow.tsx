@@ -112,10 +112,6 @@ export const useDustModalFlow = ({
           return;
         }
 
-        const current = formApi.getFieldValue('chain') as
-          | ChainSingleSelectValue
-          | undefined;
-
         void formApi.setFieldValue('chain', { selectedChain: topId });
 
         const addresses = selectTopAddresses(
@@ -142,6 +138,9 @@ export const useDustModalFlow = ({
         }
         if (sync.prevChainId === 'init') {
           sync.prevChainId = chainId;
+          return;
+        }
+        if (sync.prevChainId === chainId) {
           return;
         }
         sync.prevChainId = chainId;
