@@ -3,16 +3,21 @@
 import type { FC } from 'react';
 
 import { NotificationBell } from '@/components/Notifications/NotificationBell';
-import { isBeta } from '@/utils/isBeta';
+import {
+  GatekeeperStatus,
+  useGatekeeperStatus,
+} from '@/app/ui/gatekeeper/useGatekeeperStatus';
 import { SecondaryLinksContainer } from './Layout.styles';
 import { MainMenuToggle } from '../components/Buttons/MainMenuToggle';
 import type { LayoutVariantProps } from './Layout.types';
 
 export const MobileLayout: FC<LayoutVariantProps> = ({ secondaryButtons }) => {
+  const { status } = useGatekeeperStatus('hasNotifications');
+
   return (
     <SecondaryLinksContainer>
       {secondaryButtons}
-      {isBeta() && <NotificationBell />}
+      {status === GatekeeperStatus.SUCCESS && <NotificationBell />}
       <MainMenuToggle />
     </SecondaryLinksContainer>
   );
