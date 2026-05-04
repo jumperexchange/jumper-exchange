@@ -106,12 +106,14 @@ const renderBalanceGroup = (balances: BalanceGroup) => {
 const commonArgs = {
   header: (
     <Stack
-      flexDirection="row"
-      gap={2}
-      justifyContent="space-between"
-      width="100%"
+      direction="row"
+      sx={{
+        justifyContent: 'space-between',
+        width: '100%',
+        gap: 2,
+      }}
     >
-      <Stack flexDirection="row" gap={2}>
+      <Stack direction="row" sx={{ gap: 2 }}>
         <Typography variant={defaultConfig.titleVariant}>Tokens</Typography>
         <Typography variant={defaultConfig.titleVariant} color="textSecondary">
           64%

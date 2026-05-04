@@ -9,6 +9,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 interface ExpandableSectionProps<T> {
   header: React.ReactNode;
@@ -71,7 +72,16 @@ export const ExpandableSection = <T,>({
         {header}
       </StyledAccordionSummary>
       <StyledAccordionDetails>
-        <Stack direction="column" useFlexGap gap={1} sx={detailsListSx}>
+        <Stack
+          direction="column"
+          useFlexGap
+          sx={mergeSx(
+            {
+              gap: 1,
+            },
+            detailsListSx,
+          )}
+        >
           <Divider
             sx={(theme) => ({
               borderColor: (theme.vars || theme).palette.alpha100.main,
@@ -83,11 +93,19 @@ export const ExpandableSection = <T,>({
               direction="row"
               spacing={2}
               useFlexGap
-              justifyContent="space-between"
-              alignItems="center"
               key={`ExpandableSectionItem-${index}`}
-              sx={detailsItemSx}
-              onClick={onItemClick ? () => onItemClick(item) : undefined}
+              onClick={
+                onItemClick && isDetailsItemClickable
+                  ? () => onItemClick(item)
+                  : undefined
+              }
+              sx={mergeSx(
+                {
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                },
+                detailsItemSx,
+              )}
             >
               {renderItem(item)}
             </StyledContent>
