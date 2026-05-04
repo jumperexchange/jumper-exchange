@@ -996,7 +996,7 @@ export default interface Resources {
       title: 'Limited Solana token support';
     };
     tooltips: {
-      apr: 'Expected yearly return rate of the tokens invested and rewards.';
+      apr: 'Expected yearly return rate of the tokens invested (incl. rewards if available).';
       apy: 'Expected yearly return rate of the tokens invested.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';

@@ -653,7 +653,7 @@ export interface APYItem {
   reward: number;
   intrinsic: number;
   jumperReward?: number;
-  apiReward?: number;
+  customReward?: number;
   total: number;
 }
 
