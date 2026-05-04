@@ -10,7 +10,7 @@ const nextConfig = {
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
   experimental: {
     serverSourceMaps: false,
-    optimizePackageImports: ['recharts'],
+    optimizePackageImports: [],
     staleTimes: {
       dynamic: 30,
       static: 180,
