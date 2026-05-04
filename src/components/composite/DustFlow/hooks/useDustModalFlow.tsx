@@ -63,13 +63,16 @@ export const useDustModalFlow = ({
   );
 
   const dustFieldSyncRef = useRef<{
-    prevThreshold: number | 'init';
-    prevChainId: number | 'init';
-  }>({ prevThreshold: 'init', prevChainId: 'init' });
+    prevThreshold: number | undefined;
+    prevChainId: number | undefined;
+  }>({ prevThreshold: undefined, prevChainId: undefined });
 
   useEffect(() => {
     if (isOpen) {
-      dustFieldSyncRef.current = { prevThreshold: 'init', prevChainId: 'init' };
+      dustFieldSyncRef.current = {
+        prevThreshold: undefined,
+        prevChainId: undefined,
+      };
     }
   }, [isOpen]);
 
@@ -85,10 +88,6 @@ export const useDustModalFlow = ({
             | undefined
         )?.value;
         if (isNil(threshold)) {
-          return;
-        }
-        if (sync.prevThreshold === 'init') {
-          sync.prevThreshold = threshold;
           return;
         }
         if (sync.prevThreshold === threshold) {
@@ -134,10 +133,6 @@ export const useDustModalFlow = ({
         )?.value;
         const chainId = chain?.selectedChain;
         if (isNil(chainId) || isNil(threshold)) {
-          return;
-        }
-        if (sync.prevChainId === 'init') {
-          sync.prevChainId = chainId;
           return;
         }
         if (sync.prevChainId === chainId) {
