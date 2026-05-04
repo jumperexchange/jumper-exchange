@@ -63,9 +63,14 @@ export function Widget({
   );
 
   useEffect(() => {
-    const routes = [AppPaths.Main, AppPaths.Gas, AppPaths.Private].filter(
-      (route) => route !== pathname,
-    );
+    const routes = [
+      AppPaths.Main,
+      AppPaths.Gas,
+      AppPaths.Private,
+      AppPaths.Portfolio,
+      AppPaths.Earn,
+      AppPaths.Missions,
+    ].filter((route) => route !== pathname);
 
     const runPrefetch = () => {
       routes.forEach((route) =>
