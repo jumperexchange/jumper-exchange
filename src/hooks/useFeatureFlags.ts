@@ -8,7 +8,7 @@ import type { FeatureFlagResponseDto } from 'src/types/jumper-backend';
 export const useFeatureFlagsDistinctId = () => {
   const { account } = useAccount();
   const fp = useFpStore((state) => state.fp);
-  return account.address || fp;
+  return account?.address || fp;
 };
 
 export const useFeatureFlags = () => {
