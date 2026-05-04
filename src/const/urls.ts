@@ -2,8 +2,8 @@ import config from '@/config/env-config';
 
 export const JUMPER_URL = 'https://jumper.xyz';
 export const JUMPER_STRAPI_URL = 'https://strapi.jumper.xyz';
-export const DISCORD_URL = 'https://discord.gg/jumperexchange';
-export const DISCORD_URL_INVITE = 'https://discord.com/invite/jumperexchange';
+export const DISCORD_URL = 'https://discord.gg/jumperapp';
+export const DISCORD_URL_INVITE = 'https://discord.com/invite/jumperapp';
 export const X_URL = 'https://x.com/jumperapp';
 export const GITHUB_URL = 'https://github.com/jumperexchange';
 export const X_SHARE_URL = 'https://x.com/share';
