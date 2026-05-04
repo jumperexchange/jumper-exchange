@@ -9,3 +9,9 @@ export enum AnalyticsRangeFieldEnum {
   MONTH = 'month',
   YEAR = 'year',
 }
+
+export enum BorrowAnalyticsValueFieldEnum {
+  BORROW_APY = 'borrowApy',
+  SUPPLY_APY = 'supplyApy',
+  UTILIZATION = 'utilization',
+}

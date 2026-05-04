@@ -237,6 +237,15 @@ export function useLanguageConfig(
       };
     }
 
+    if (isZapContext(context) && context.subTaskType === 'borrow') {
+      languageResourcesEN.button = {
+        exchange: deps.translation.t('buttons.borrowButtonLabel'),
+        swap: deps.translation.t('buttons.borrowButtonLabel'),
+        deposit: deps.translation.t('buttons.borrowButtonLabel'),
+        depositReview: deps.translation.t('buttons.reviewBorrowButtonLabel'),
+      };
+    }
+
     return {
       languages: {
         default: deps.translation.i18n.language as LanguageKey,

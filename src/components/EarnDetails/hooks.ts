@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import type {
   ApyAnalyticsHistory,
   EarnOpportunityHistory,
+  LoopoorMarketHistory,
 } from 'src/types/jumper-backend';
 import type {
   ChartDataPoint,
@@ -12,6 +13,7 @@ import type {
 } from '../core/charts/LineChart/LineChart';
 import type { StackedAreaChartProps } from '../core/charts/StackedAreaChart/StackedAreaChart';
 import { AnalyticsRangeFieldEnum } from './types';
+import type { BorrowAnalyticsValueFieldEnum } from './types';
 
 const dropUntil = <T>(data: T[], predicate: (item: T) => boolean): T[] =>
   dropWhile(data, negate(predicate));
@@ -88,6 +90,40 @@ export const useBaseChartTheme = (): LineChartProps['theme'] => {
     pointColor: (theme.vars || theme).palette.accent1.main,
     lineColor: (theme.vars || theme).palette.textAccent2,
   };
+};
+
+const RANGE_DURATION_MS: Record<AnalyticsRangeFieldEnum, number> = {
+  [AnalyticsRangeFieldEnum.WEEK]: 7 * 24 * 60 * 60 * 1000,
+  [AnalyticsRangeFieldEnum.MONTH]: 30 * 24 * 60 * 60 * 1000,
+  [AnalyticsRangeFieldEnum.YEAR]: 365 * 24 * 60 * 60 * 1000,
+};
+
+export const useBorrowAnalyticsChartConfig = (
+  rawData: LoopoorMarketHistory | undefined,
+  range: AnalyticsRangeFieldEnum,
+  valueField: BorrowAnalyticsValueFieldEnum,
+): LineChartProps => {
+  const cutoffSeconds = (Date.now() - RANGE_DURATION_MS[range]) / 1000;
+
+  const data = useMemo(() => {
+    const mapped =
+      rawData?.[valueField]
+        .filter((point) => point.x >= cutoffSeconds)
+        .sort((a, b) => a.x - b.x)
+        .map((point) => ({
+          date: new Date(point.x * 1000).toISOString(),
+          value: typeof point.y === 'string' ? parseFloat(point.y) : point.y,
+        })) ?? [];
+    return dropUntil(mapped, hasDefinedValue);
+  }, [rawData, cutoffSeconds, valueField]);
+
+  const dateFormat = useDefaultDateFormat(range);
+  const theme = useBaseChartTheme();
+
+  return useMemo(
+    () => ({ data, dateFormat, theme }),
+    [data, dateFormat, theme],
+  );
 };
 
 export const useRewardChartTheme = (): StackedAreaChartProps['theme'] => {

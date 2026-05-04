@@ -52,7 +52,7 @@ export const SelectBase = <T extends TData>({
       onClose={handleClose}
       renderValue={() => (
         <StyledSelectorContainer disabled={disabled}>
-          <StyledSelectorContentContainer>
+          <StyledSelectorContentContainer fullWidth={rest.fullWidth}>
             {selectorContent}
             <KeyboardArrowDownRoundedIcon
               sx={{
@@ -66,7 +66,7 @@ export const SelectBase = <T extends TData>({
         </StyledSelectorContainer>
       )}
       IconComponent={() => null}
-      autoWidth
+      autoWidth={!rest.fullWidth}
       variant="standard"
       displayEmpty
       MenuProps={{
@@ -114,6 +114,7 @@ export const SelectBase = <T extends TData>({
       {options.map((option) => (
         <StyledMenuItem
           disableRipple
+          disabled={option.disabled}
           key={option.value}
           value={option.value}
           sx={option.sx}

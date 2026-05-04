@@ -225,6 +225,7 @@ export const useTransactionForm = ({
   return {
     currentStep: state.currentStep,
     isSubmitting:
+      state.currentStep === 'fetching' ||
       transactionFlow.isExecuting ||
       transactionFlow.isPending ||
       transactionFlow.isConfirming,

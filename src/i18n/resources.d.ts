@@ -96,6 +96,8 @@ interface Resources {
       requestWithdraw: 'Request withdraw';
       withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
+      borrowButtonLabel: 'Borrow';
+      reviewBorrowButtonLabel: 'Review borrow';
     };
     campaign: {
       missions: {
@@ -259,6 +261,50 @@ interface Resources {
         title: {
           claim: 'Withdraw position';
           request: 'Request withdraw';
+        };
+      };
+      leverageFlow: {
+        confirmation: {
+          title: 'Confirm Leverage';
+          description: 'Please confirm that you want to open this leveraged position.';
+          confirm: 'Confirm';
+        };
+        error: {
+          transactionRejected: {
+            title: 'Transaction rejected';
+            description: 'You rejected the transaction in your wallet. Please try again.';
+            tryAgain: 'Try again';
+          };
+          transactionFailed: {
+            title: 'Transaction failed';
+            description: 'The transaction failed to complete. Please try again.';
+            tryAgain: 'Try again';
+          };
+          insufficientBalance: {
+            title: 'Insufficient balance';
+            description: 'You do not have enough balance to complete this transaction.';
+            close: 'Close';
+          };
+          fetchCallDataFailed: {
+            title: 'Failed to prepare transaction';
+            description: 'We could not prepare your transaction. Please try again.';
+            tryAgain: 'Try again';
+          };
+          chainSwitchFailed: {
+            title: 'Failed to switch network';
+            description: 'Could not switch to the required network. Please switch manually in your wallet.';
+            close: 'Close';
+          };
+          unknown: {
+            title: 'Error';
+            description: 'An unexpected error occurred. Please try again.';
+            tryAgain: 'Try again';
+          };
+        };
+        success: {
+          title: 'Leverage position opened';
+          done: 'Done';
+          seeDetails: 'See details';
         };
       };
       riskDescriptions: {
