@@ -24,6 +24,15 @@ export type WidgetFormApi<T extends WidgetFormValues = WidgetFormValues> =
     unknown
   >;
 
+export type JumperWidgetFormFieldChangePayload = {
+  formApi: WidgetFormApi;
+  fieldApi: { name: string };
+};
+
+export type JumperWidgetFormListeners = {
+  onChange?: (payload: JumperWidgetFormFieldChangePayload) => void;
+};
+
 export const FormContext = createContext<WidgetFormApi | null>(null);
 
 export function useFormContext(): WidgetFormApi {
@@ -41,6 +50,11 @@ export interface NavigationContextValue {
   isSubmitting: boolean;
   error: Error | null;
   clearError: () => void;
+  resetForm: () => void;
+  closeSidePanel: () => void;
+  settingsViewId?: string;
+  goToSettings?: () => void;
+  returnFromSettings?: () => void;
 }
 
 export const NavigationContext = createContext<NavigationContextValue | null>(

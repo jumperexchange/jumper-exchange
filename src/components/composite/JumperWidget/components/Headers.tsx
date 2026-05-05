@@ -5,10 +5,32 @@ import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Size, Variant } from '@/components/core/buttons/types';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SettingsIcon from '@mui/icons-material/Settings';
 
-export const MainHeader = ({ header }: { header: string }) => (
-  <HeaderContainer>
+interface MainHeaderProps {
+  header: string;
+  onSettingsClick?: () => void;
+}
+
+export const MainHeader = ({ header, onSettingsClick }: MainHeaderProps) => (
+  <HeaderContainer
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    }}
+  >
     <Typography variant="titleSmall">{header}</Typography>
+    {onSettingsClick && (
+      <IconButton
+        variant={Variant.Borderless}
+        size={Size.XL}
+        onClick={onSettingsClick}
+        aria-label="Settings"
+      >
+        <SettingsIcon />
+      </IconButton>
+    )}
   </HeaderContainer>
 );
 

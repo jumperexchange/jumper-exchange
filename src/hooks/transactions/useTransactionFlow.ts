@@ -1,26 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  useSwitchChain,
-  useSendTransaction,
-  useWaitForTransactionReceipt,
-} from 'wagmi';
+import { useSwitchChain } from 'wagmi';
 import { useAccount } from '@lifi/wallet-management';
 import type { Hex } from 'viem';
-
-interface TransactionAction {
-  name: string;
-  tx: {
-    to: string;
-    data: string;
-    chainId: number;
-  };
-}
+import { type TransactionAction, type ExecutorType } from './executors/types';
+import { useTransactionExecutor } from './executors/useTransactionExecutor';
 
 export interface CallDataResponse {
   actions: TransactionAction[];
 }
 
 interface UseTransactionFlowOptions {
+  executorType?: ExecutorType;
   onSuccess?: () => void;
   onError?: (
     error: Error,
@@ -29,8 +19,10 @@ interface UseTransactionFlowOptions {
 }
 
 export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
+  const { executorType = 'single' } = options;
   const { account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const executor = useTransactionExecutor(executorType);
 
   const [callData, setCallData] = useState<CallDataResponse | null>(null);
   const [currentActionIndex, setCurrentActionIndex] = useState(0);
@@ -39,29 +31,11 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     'idle' | 'approving' | 'executing' | 'confirming' | 'success'
   >('idle');
   const [error, setError] = useState<Error | null>(null);
+  const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
   const flowLockedRef = useRef(false);
 
-  const {
-    data: txHash,
-    sendTransaction,
-    isPending,
-    isError: isWriteError,
-    error: writeError,
-    reset: resetWrite,
-  } = useSendTransaction();
-
-  const {
-    isLoading: isConfirming,
-    isSuccess,
-    isError: isTxError,
-    error: txError,
-  } = useWaitForTransactionReceipt({
-    hash: txHash,
-    confirmations: 1,
-  });
-
   const executeAction = useCallback(
-    async (action: TransactionAction) => {
+    async (action: TransactionAction, allActions?: TransactionAction[]) => {
       try {
         if (account?.chainId !== action.tx.chainId) {
           await switchChainAsync({ chainId: action.tx.chainId });
@@ -75,73 +49,59 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
             : 'executing',
         );
 
-        sendTransaction({
-          to: action.tx.to as Hex,
-          data: action.tx.data as Hex,
-          chainId: action.tx.chainId,
-        });
-      } catch (e: any) {
+        executor.execute(action, allActions);
+      } catch (e: unknown) {
+        const err = e instanceof Error ? e : new Error(String(e));
         flowLockedRef.current = false;
-        options.onError?.(e, 'chain-switch');
+        options.onError?.(err, 'chain-switch');
         setIsExecuting(false);
-        setError(e);
+        setError(err);
+        throw e;
       }
     },
-    [account?.chainId, switchChainAsync, sendTransaction, options],
+    [account?.chainId, switchChainAsync, executor, options],
   );
 
   useEffect(() => {
-    if (!isWriteError && !isTxError) {
-      return;
-    }
-
-    const e = txError || writeError;
-    if (!e) {
+    if (!executor.isError || !executor.error) {
       return;
     }
 
     flowLockedRef.current = false;
-
-    options.onError?.(e, 'transaction');
+    options.onError?.(executor.error, 'transaction');
     setIsExecuting(false);
-    setError(e);
-    resetWrite();
-  }, [
-    isWriteError,
-    isTxError,
-    txError,
-    writeError,
-    isExecuting,
-    options,
-    resetWrite,
-  ]);
+    setError(executor.error);
+    executor.reset();
+  }, [executor, options]);
 
   useEffect(() => {
-    if (!isSuccess || !callData || !isExecuting) {
+    if (!executor.isSuccess || !callData || !isExecuting) {
       return;
     }
 
     const nextIndex = currentActionIndex + 1;
 
-    if (nextIndex < callData.actions.length) {
+    if (executorType !== 'batch' && nextIndex < callData.actions.length) {
       setCurrentActionIndex(nextIndex);
-      resetWrite();
+      executor.reset();
       executeAction(callData.actions[nextIndex]);
     } else {
       flowLockedRef.current = false;
       setIsExecuting(false);
       setCurrentActionIndex(0);
       setCurrentStep('success');
+      setTxHash(executor.txHash);
       setCallData(null);
+      executor.reset();
       options.onSuccess?.();
     }
   }, [
-    isSuccess,
+    executorType,
+    executor,
     callData,
     isExecuting,
     currentActionIndex,
     executeAction,
-    resetWrite,
     options,
   ]);
 
@@ -161,9 +121,14 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       setCallData(data);
       setCurrentActionIndex(0);
       setError(null);
-      await executeAction(data.actions[0]);
+
+      if (executorType === 'batch') {
+        await executeAction(data.actions[0], data.actions);
+      } else {
+        await executeAction(data.actions[0]);
+      }
     },
-    [executeAction, options],
+    [executorType, executeAction, options],
   );
 
   const retryCurrentAction = useCallback(async () => {
@@ -172,8 +137,12 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     }
     flowLockedRef.current = true;
     setError(null);
-    await executeAction(callData.actions[currentActionIndex]);
-  }, [callData, currentActionIndex, executeAction]);
+    if (executorType === 'batch') {
+      await executeAction(callData.actions[0], callData.actions);
+    } else {
+      await executeAction(callData.actions[currentActionIndex]);
+    }
+  }, [callData, currentActionIndex, executorType, executeAction]);
 
   const resetFlow = useCallback(() => {
     flowLockedRef.current = false;
@@ -182,17 +151,18 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     setCurrentActionIndex(0);
     setCurrentStep('idle');
     setError(null);
-    resetWrite();
-  }, [resetWrite]);
+    setTxHash(undefined);
+    executor.reset();
+  }, [executor]);
 
   return {
     isExecuting,
     currentStep,
     currentActionIndex,
-    isPending,
-    isConfirming,
-    error,
-    txHash,
+    isPending: executor.isPending,
+    isConfirming: executor.isConfirming,
+    error: error ?? executor.error,
+    txHash: currentStep === 'success' ? txHash : executor.txHash,
     executeFlow,
     retryCurrentAction,
     resetFlow,
