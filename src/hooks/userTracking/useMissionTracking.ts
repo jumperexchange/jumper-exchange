@@ -4,7 +4,7 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from './useUserTracking';
-import type { JumperEventData } from '../useJumperTracking';
+import type { JumperEventData } from '../../utils/tracking/jumperTracking';
 import { useCallback } from 'react';
 
 export const useMissionTracking = () => {

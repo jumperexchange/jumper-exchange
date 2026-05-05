@@ -69,3 +69,8 @@ export enum AppPaths {
   Newsletter = JUMPER_NEWSLETTER_PATH,
   Private = JUMPER_PRIVATE_PATH,
 }
+
+export enum JumperBackendApiPaths {
+  GetUserTracking = '/users/events',
+  GetUserTransactions = '/wallets/transactions',
+}
