@@ -4,7 +4,8 @@ import { isProduction } from '@/utils/isProduction';
 import { getLearnSitemapChunkIds } from '@/utils/sitemaps/learn';
 import type { MetadataRoute } from 'next';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-static';
+export const revalidate = 86400;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   // Cannot have a sitemap index yet with app router, so we list chunked sitemap URLs here.

@@ -1,20 +1,33 @@
 import { getChainsQuery } from '@/hooks/useChains';
+import { getTokensQuery } from '@/hooks/useTokens';
 import coins from '@/utils/coins';
 import { getBridgeUrl } from '@/utils/getBridgeUrl';
 import { buildUrl, toSitemapDate } from '@/utils/sitemap';
-import { getChainById } from '@/utils/tokenAndChain';
+import {
+  getChainById,
+  getTokenBySymbolOnSpecificChain,
+} from '@/utils/tokenAndChain';
 import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isAlphanumeric } from '@/utils/validation-schemas';
-import type { ExtendedChain, Token } from '@lifi/sdk';
+import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
 
 export const dynamic = 'force-static';
 
-const SITEMAP_LIMIT = 50_000;
+const SITEMAP_LIMIT = 10_000;
 
-const getFilteredCoins = (availableChainIds: number[]): Token[] =>
+const getFilteredCoins = (
+  availableChainIds: number[],
+  availableTokens: TokensResponse['tokens'],
+): Token[] =>
   coins.filter(
     (coin) =>
-      availableChainIds.includes(coin.chainId) && isAlphanumeric(coin.symbol),
+      availableChainIds.includes(coin.chainId) &&
+      isAlphanumeric(coin.symbol) &&
+      getTokenBySymbolOnSpecificChain(
+        availableTokens,
+        coin.chainId,
+        coin.symbol,
+      ) !== undefined,
   ) as Token[];
 
 const generateBridgePairs = (tokens: Token[]): Array<[Token, Token]> => {
@@ -32,9 +45,12 @@ const generateBridgePairs = (tokens: Token[]): Array<[Token, Token]> => {
 };
 
 const getChainData = async () => {
-  const { chains } = await getChainsQuery();
+  const [{ chains }, availableTokens] = await Promise.all([
+    getChainsQuery(),
+    getTokensQuery(),
+  ]);
   const availableChainIds = chains.map((chain) => chain.id);
-  const filteredCoins = getFilteredCoins(availableChainIds);
+  const filteredCoins = getFilteredCoins(availableChainIds, availableTokens);
   const pairs = generateBridgePairs(filteredCoins);
   return { chains, pairs };
 };
