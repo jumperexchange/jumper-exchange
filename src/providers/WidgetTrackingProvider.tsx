@@ -1,4 +1,4 @@
-import type { JumperEventData } from '@/hooks/useJumperTracking';
+import type { JumperEventData } from '@/utils/tracking/jumperTracking';
 import type {
   ChainTokenSelected,
   FormFieldChanged,

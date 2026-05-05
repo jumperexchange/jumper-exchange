@@ -88,12 +88,14 @@ interface Resources {
     };
     buttons: {
       close: 'Close';
+      convertDust: 'Convert dust';
       deposit: 'Deposit';
       depositButtonLabel: 'Quick deposit';
       depositNow: 'Deposit now';
       managePositionsButtonLabel: 'Manage positions';
       requestRedeemButtonLabel: 'Request redeem';
       requestWithdraw: 'Request withdraw';
+      reviewConversion: 'Review conversion';
       withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
     };
@@ -317,10 +319,17 @@ interface Resources {
     form: {
       labels: {
         amount: 'Amount';
+        chain: 'Chain';
+        convert: 'Convert';
+        dustThreshold: 'Tokens less than';
         received: 'Received';
         requested: 'Requested';
         swap: 'Swap';
         withdrawTo: 'Withdraw to';
+      };
+      descriptions: {
+        chainAvailable_one: '{{count, number}} token · {{amount}} available';
+        chainAvailable_other: '{{count, number}} tokens · {{amount}} available';
       };
     };
     format: {
@@ -346,6 +355,10 @@ interface Resources {
         notConnected: 'We are currently in a <strong>closed beta.</strong>\nConnect to find out if you have access.';
       };
       title: 'Welcome to {{pageTitle}}!';
+    };
+    headers: {
+      chains: 'Chains';
+      tokens: 'Tokens';
     };
     jumperWidget: {
       emptyList: 'No {{itemsName}} available for selection';
@@ -386,11 +399,30 @@ interface Resources {
         tokenCount_one: '{{count}} token on {{chainName}}';
         tokenCount_other: '{{count}} tokens on {{chainName}}';
       };
+      networkCosts: {
+        auto: 'Auto';
+        fees: {
+          free: 'Free';
+          network: 'Network cost';
+          provider: 'Provider fee';
+        };
+        maxSlippage: 'Max. slippage';
+        minReceived: 'Min. received';
+        priceImpact: 'Price impact';
+      };
       placeholder: {
         balancesMultiSelect: 'Select tokens';
         chainSingleSelect: 'Select chain';
         tokenMultiSelect: 'Select tokens';
         tokenSingleSelect: 'Select token';
+      };
+      settings: {
+        auto: 'Auto';
+        slippage: 'Max. slippage';
+        slippageCustom: 'Custom';
+        slippageHighWarning: 'High slippage may indicate a risky trade. Please review your settings before confirming the transaction.';
+        slippageLowWarning: 'Low slippage may result in failed transactions.';
+        title: 'Settings';
       };
     };
     labels: {
@@ -745,6 +777,66 @@ interface Resources {
           };
         };
       };
+      dustConversion: {
+        banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
+        routeOverview: {
+          composerAlt: 'Composer';
+          composerViaLifi: 'Composer via Li.Fi';
+        };
+        error: {
+          chainSwitchFailed: {
+            close: 'Close';
+            description: 'Could not switch to the required network. Please switch manually in your wallet.';
+            title: 'Failed to switch network';
+          };
+          fetchCallDataFailed: {
+            description: 'We could not prepare your transaction. Please try again.';
+            title: 'Failed to prepare transaction';
+            tryAgain: 'Try again';
+          };
+          insufficientBalance: {
+            close: 'Close';
+            description: 'You do not have enough balance to complete this transaction.';
+            title: 'Insufficient balance';
+          };
+          transactionCanceled: {
+            close: 'Close';
+            description: 'The transaction was canceled. Please try again.';
+            title: 'Transaction canceled';
+          };
+          transactionFailed: {
+            description: 'The transaction failed to complete. Please try again.';
+            title: 'Transaction failed';
+            tryAgain: 'Try again';
+          };
+          transactionRejected: {
+            description: 'You rejected the transaction in your wallet. Please try again.';
+            title: 'Transaction rejected';
+            tryAgain: 'Try again';
+          };
+          transactionReverted: {
+            close: 'Close';
+            description: 'The transaction was reverted. Please try again.';
+            title: 'Transaction failed';
+          };
+          unknown: {
+            description: 'An unexpected error occurred. Please try again.';
+            title: 'Error';
+            tryAgain: 'Try again';
+          };
+          walletDoesNotSupportBatch: {
+            close: 'Close';
+            description: 'Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.';
+            title: 'Wallet does not support batch transactions';
+          };
+        };
+        success: {
+          done: 'Done';
+          seeDetails: 'See details';
+          title: 'Conversion complete';
+        };
+        title: 'Convert dust';
+      };
       emptyList: {
         clearFilters: 'Clear filters';
         description: 'Unfortunately there are no results for your search, try clearing your filters.';
@@ -868,11 +960,15 @@ interface Resources {
       deposited: 'The token you have deposited into this market.';
       exitFullscreen: 'Exit fullscreen';
       fullscreen: 'Fullscreen';
+      gasless: 'We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer.';
       lockupPeriod: 'Once deposited, your position is subject to an {{formattedLockupPeriod}} lock-up period before you can withdraw the funds.';
       manageYourPosition: 'You can also manage your funds (withdraw, check PNL) on {{partnerName}} UI by clicking on this button';
+      minReceived: 'The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.';
       noPositionsToManage: 'You do not have any positions to manage';
+      priceImpact: 'The estimated value difference between the source and destination tokens.';
       protocol: 'The protocol you will earn from';
       rewardsApy: 'Expected yearly return rate distributed in reward token.';
+      slippage: 'The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.';
       tvl: 'Total value of crypto assets deposited in this market.';
       withdrawDisabled: 'Withdraw currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       zoomIn: 'Zoom in';

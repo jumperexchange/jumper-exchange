@@ -1,12 +1,12 @@
-import type { FC } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { FieldWrapper, Label } from '../JumperWidget.style';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles';
-import type { Balance, ExtendedToken, PricedToken } from '@/types/tokens';
+import type { Balance, PricedToken } from '@/types/tokens';
 import { DisplayTokensAmount } from './DisplayTokensAmount';
 
-interface BaseProps {
+interface BaseProps extends PropsWithChildren {
   label?: string;
   fieldSx?: SxProps<Theme>;
   to: Balance<PricedToken>;
@@ -36,6 +36,7 @@ export const Summary: FC<SummaryProps> = ({
   from,
   to,
   amountUSD,
+  children,
 }) => {
   if (isSingleBalance(from)) {
     return (
@@ -50,6 +51,7 @@ export const Summary: FC<SummaryProps> = ({
           tokenBalance={from}
           sx={fieldSx}
         />
+        {children}
         <TokenAmountInput
           mode={SelectCardMode.Display}
           tokenBalance={to}
@@ -76,6 +78,7 @@ export const Summary: FC<SummaryProps> = ({
           tokenBalance={from[0]}
           sx={fieldSx}
         />
+        {children}
         <TokenAmountInput
           mode={SelectCardMode.Display}
           tokenBalance={to}
@@ -98,6 +101,7 @@ export const Summary: FC<SummaryProps> = ({
         amountUSD={amountUSD!}
         sx={fieldSx}
       />
+      {children}
       <TokenAmountInput
         mode={SelectCardMode.Display}
         tokenBalance={to}

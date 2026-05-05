@@ -245,7 +245,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         <JumperWidget
           views={views}
           statusSheet={statusSheet}
-          onNavigationReady={handleWidgetNavigationReady}
+          onNavigation={handleWidgetNavigationReady}
           style={widgetStyle}
         />
       ) : null}

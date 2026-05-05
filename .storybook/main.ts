@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/nextjs-vite';
 import { getPublicEnvVars } from '../src/config/env-config.ts';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -21,6 +22,14 @@ const config: StorybookConfig = {
       ...(config.define || {}),
       'process.env': getPublicEnvVars(),
     };
+
+    config.plugins = [
+      ...(config.plugins || []),
+      nodePolyfills({
+        include: ['buffer'],
+        globals: { Buffer: true, global: true },
+      }),
+    ];
 
     return config;
   },

@@ -385,7 +385,11 @@
     "zoomIn": "Zoom in",
     "fullscreen": "Fullscreen",
     "exitFullscreen": "Exit fullscreen",
-    "close": "Close"
+    "close": "Close",
+    "priceImpact": "The estimated value difference between the source and destination tokens.",
+    "slippage": "The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.",
+    "minReceived": "The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.",
+    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer."
   },
   "labels": {
     "apy": "APY",
@@ -699,6 +703,66 @@
       "viewBy": "View by",
       "tokens": "Tokens",
       "defiProtocols": "DeFi Protocols"
+    },
+    "dustConversion": {
+      "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",
+      "title": "Convert dust",
+      "routeOverview": {
+        "composerAlt": "Composer",
+        "composerViaLifi": "Composer via Li.Fi"
+      },
+      "error": {
+        "transactionRejected": {
+          "title": "Transaction rejected",
+          "description": "You rejected the transaction in your wallet. Please try again.",
+          "tryAgain": "Try again"
+        },
+        "transactionFailed": {
+          "title": "Transaction failed",
+          "description": "The transaction failed to complete. Please try again.",
+          "tryAgain": "Try again"
+        },
+        "transactionReverted": {
+          "title": "Transaction failed",
+          "description": "The transaction was reverted. Please try again.",
+          "close": "Close"
+        },
+        "transactionCanceled": {
+          "title": "Transaction canceled",
+          "description": "The transaction was canceled. Please try again.",
+          "close": "Close"
+        },
+        "insufficientBalance": {
+          "title": "Insufficient balance",
+          "description": "You do not have enough balance to complete this transaction.",
+          "close": "Close"
+        },
+        "fetchCallDataFailed": {
+          "title": "Failed to prepare transaction",
+          "description": "We could not prepare your transaction. Please try again.",
+          "tryAgain": "Try again"
+        },
+        "chainSwitchFailed": {
+          "title": "Failed to switch network",
+          "description": "Could not switch to the required network. Please switch manually in your wallet.",
+          "close": "Close"
+        },
+        "walletDoesNotSupportBatch": {
+          "title": "Wallet does not support batch transactions",
+          "description": "Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.",
+          "close": "Close"
+        },
+        "unknown": {
+          "title": "Error",
+          "description": "An unexpected error occurred. Please try again.",
+          "tryAgain": "Try again"
+        }
+      },
+      "success": {
+        "title": "Conversion complete",
+        "done": "Done",
+        "seeDetails": "See details"
+      }
     }
   },
   "newsletter": {
@@ -777,7 +841,9 @@
     "depositNow": "Deposit now",
     "requestWithdraw": "Request withdraw",
     "withdraw": "Withdraw",
-    "close": "Close"
+    "close": "Close",
+    "reviewConversion": "Review conversion",
+    "convertDust": "Convert dust"
   },
   "form": {
     "labels": {
@@ -785,8 +851,19 @@
       "withdrawTo": "Withdraw to",
       "swap": "Swap",
       "requested": "Requested",
-      "received": "Received"
+      "received": "Received",
+      "dustThreshold": "Tokens less than",
+      "chain": "Chain",
+      "convert": "Convert"
+    },
+    "descriptions": {
+      "chainAvailable_one": "{{count}} token · {{amount}} available",
+      "chainAvailable_other": "{{count}} tokens · {{amount}} available"
     }
+  },
+  "headers": {
+    "chains": "Chains",
+    "tokens": "Tokens"
   },
   "modal": {
     "perks": {
@@ -916,6 +993,25 @@
     "label": {
       "tokenCount_one": "{{count}} token on {{chainName}}",
       "tokenCount_other": "{{count}} tokens on {{chainName}}"
+    },
+    "settings": {
+      "title": "Settings",
+      "auto": "Auto",
+      "slippage": "Max. slippage",
+      "slippageCustom": "Custom",
+      "slippageHighWarning": "High slippage may indicate a risky trade. Please review your settings before confirming the transaction.",
+      "slippageLowWarning": "Low slippage may result in failed transactions."
+    },
+    "networkCosts": {
+      "fees": {
+        "free": "Free",
+        "network": "Network cost",
+        "provider": "Provider fee"
+      },
+      "priceImpact": "Price impact",
+      "maxSlippage": "Max. slippage",
+      "minReceived": "Min. received",
+      "auto": "Auto"
     }
   },
   "notifications": {

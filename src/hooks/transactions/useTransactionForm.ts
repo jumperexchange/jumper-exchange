@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import type { ExecutorType } from '@/hooks/transactions/executors/types';
 import type { CallDataResponse } from '@/hooks/transactions/useTransactionFlow';
 import { useTransactionFlow } from '@/hooks/transactions/useTransactionFlow';
 import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
@@ -7,9 +8,12 @@ import { openInNewTab } from '@/utils/openInNewTab';
 import { TransactionErrorType, TransactionError } from './types';
 
 export interface TransactionFormConfig {
-  fetchCallData: () => Promise<CallDataResponse>;
+  fetchCallData: () => Promise<CallDataResponse | undefined>;
   requiresConfirmation?: boolean;
   chainId: number;
+  executorType?: ExecutorType;
+  /** If provided and returns an error type, execution is blocked and the error is shown. */
+  validateBeforeExecute?: () => TransactionErrorType | null;
   onSuccess?: () => void;
 }
 
@@ -96,6 +100,12 @@ const detectErrorType = (
   if (msg.includes('user rejected') || msg.includes('user denied')) {
     return TransactionErrorType.TransactionRejected;
   }
+  if (msg.includes('reverted')) {
+    return TransactionErrorType.TransactionReverted;
+  }
+  if (msg.includes('canceled')) {
+    return TransactionErrorType.TransactionCanceled;
+  }
   if (msg.includes('insufficient')) {
     return TransactionErrorType.InsufficientBalance;
   }
@@ -106,12 +116,15 @@ export const useTransactionForm = ({
   fetchCallData,
   requiresConfirmation = false,
   chainId,
+  executorType,
+  validateBeforeExecute,
   onSuccess,
 }: TransactionFormConfig) => {
   const hasLastIntent = useRef(false);
   const [state, dispatch] = useReducer(formReducer, initialState);
 
   const transactionFlow = useTransactionFlow({
+    executorType,
     onSuccess: () => {
       dispatch({ type: 'SHOW_SUCCESS' });
       onSuccess?.();
@@ -163,6 +176,12 @@ export const useTransactionForm = ({
   ]);
 
   const execute = useCallback(async () => {
+    const validationError = validateBeforeExecute?.();
+    if (validationError) {
+      dispatch({ type: 'SHOW_ERROR', payload: validationError });
+      dispatch({ type: 'SET_STEP', payload: 'idle' });
+      return;
+    }
     hasLastIntent.current = true;
     dispatch({ type: 'HIDE_CONFIRMATION' });
     dispatch({ type: 'SET_STEP', payload: 'fetching' });
@@ -177,8 +196,9 @@ export const useTransactionForm = ({
       await transactionFlow.executeFlow(callData);
     } catch {
       // errors handled by mutation/transactionFlow callbacks
+      dispatch({ type: 'SET_STEP', payload: 'idle' });
     }
-  }, [fetchCallDataMutation, transactionFlow]);
+  }, [validateBeforeExecute, fetchCallDataMutation, transactionFlow]);
 
   const handleSubmit = useCallback(async () => {
     if (state.currentStep !== 'idle') {
@@ -225,6 +245,7 @@ export const useTransactionForm = ({
   return {
     currentStep: state.currentStep,
     isSubmitting:
+      state.currentStep === 'fetching' ||
       transactionFlow.isExecuting ||
       transactionFlow.isPending ||
       transactionFlow.isConfirming,

@@ -81,7 +81,7 @@ exports[`Percent snapshot > percent at 0% matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         0%
       </p>
@@ -129,7 +129,7 @@ exports[`Percent snapshot > percent at 100% matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         100%
       </p>
@@ -228,7 +228,7 @@ exports[`Percent snapshot > percent with extra large size matches snapshot 1`] =
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +8
       </p>
@@ -276,7 +276,7 @@ exports[`Percent snapshot > percent with large size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +5
       </p>
@@ -324,7 +324,7 @@ exports[`Percent snapshot > percent with long text matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         1121111232
       </p>
@@ -372,7 +372,7 @@ exports[`Percent snapshot > percent with medium size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +3
       </p>
@@ -420,7 +420,7 @@ exports[`Percent snapshot > percent with small size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyXXSmallStrong css-1kmsqct-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyXXSmallStrong css-125ae3r-MuiTypography-root"
       >
         +1
       </p>
@@ -468,7 +468,7 @@ exports[`Percent snapshot > percent with text matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         +2
       </p>

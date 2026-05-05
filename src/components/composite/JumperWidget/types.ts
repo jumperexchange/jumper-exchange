@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import type { z } from 'zod';
 import type { StatusBottomSheetProps } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 
@@ -29,6 +29,7 @@ export interface SanitizeListener<TValue> {
 export interface FieldConfig<TValue, TFieldProps, TSidePanelProps> {
   fieldKey: string;
   schema: z.ZodType<TValue>;
+  schemaOptions?: { min?: number; max?: number };
   defaultValue?: TValue;
   fieldProps: Partial<TFieldProps>;
   sidePanelProps?: Partial<TSidePanelProps>;
@@ -122,4 +123,15 @@ export interface JumperWidgetStatusSheetProp {
   content: StatusSheetContent;
   onClose: () => void;
   children?: ReactNode;
+}
+
+export const INTERNAL_SETTINGS_VIEW_ID = '__widget_settings__';
+
+export interface JumperWidgetSettings {
+  slippage?: {
+    value: number;
+    defaultValue: number;
+    onChange: (value: number) => void;
+    showWarning?: boolean;
+  };
 }

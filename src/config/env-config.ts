@@ -68,6 +68,8 @@ const clientBuildTimeEnv: RuntimeConfig = {
     process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL ?? '',
   NEXT_PUBLIC_NOTIFICATIONS_URL:
     process.env.NEXT_PUBLIC_NOTIFICATIONS_URL ?? '',
+  NEXT_PUBLIC_LIFI_COMPOSER_BACKEND_URL:
+    process.env.NEXT_PUBLIC_LIFI_COMPOSER_BACKEND_URL ?? '',
 };
 
 // Initialize config based on environment
