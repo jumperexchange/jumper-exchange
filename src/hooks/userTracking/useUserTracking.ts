@@ -217,16 +217,21 @@ export function useUserTracking(): UserTracking {
         googleEvent({ action, category, data });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
-        const dataAction = data[TrackingEventParameter.Action] ?? action ?? '';
-        const flagVariants = getFeatureFlagVariants(dataAction);
-        await trackJumperTransaction({
-          ...sessionContext,
-          ...buildTransactionPayload(data),
-          action: dataAction,
-          url: window?.location?.href || getSiteUrl(),
-          referrer: document?.referrer,
-          abTestVariants: { ...data.abTestVariants, ...flagVariants },
-        });
+        try {
+          const dataAction =
+            data[TrackingEventParameter.Action] ?? action ?? '';
+          const flagVariants = getFeatureFlagVariants(dataAction);
+          await trackJumperTransaction({
+            ...sessionContext,
+            ...buildTransactionPayload(data),
+            action: dataAction,
+            url: window?.location?.href || getSiteUrl(),
+            referrer: document?.referrer,
+            abTestVariants: { ...data.abTestVariants, ...flagVariants },
+          });
+        } catch (error) {
+          console.error('Error in tracking transaction:', error);
+        }
       }
       if (enableAddressable) {
         addressableEvent({
