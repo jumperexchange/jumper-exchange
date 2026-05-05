@@ -1,9 +1,12 @@
-import { useMemo } from 'react';
-import type { WidgetConfig } from '@lifi/widget';
 import { ChainType } from '@lifi/sdk';
-import envConfig from '@/config/env-config';
+import type { WidgetConfig } from '@lifi/widget';
+import { useMemo } from 'react';
 import { publicRPCList } from 'src/const/rpcList';
+import type { LanguageKey } from 'src/types/i18n';
+import { TaskType } from 'src/types/strapi';
 import getApiUrl from 'src/utils/getApiUrl';
+import envConfig from '@/config/env-config';
+import { AppPaths, getSiteUrl } from '@/const/urls';
 import { useReferrerStore } from '@/stores/referrer/ReferrerStore';
 import type {
   EnglishLanguageResource,
@@ -12,9 +15,6 @@ import type {
   WidgetContext,
 } from './types';
 import { isMissionContext, isZapContext } from './types';
-import { TaskType } from 'src/types/strapi';
-import type { LanguageKey } from 'src/types/i18n';
-import { AppPaths, getSiteUrl } from '@/const/urls';
 
 /**
  * Shared base configuration that's common across all widget types.
@@ -52,14 +52,21 @@ export function useSharedBaseConfig(
   );
 }
 
+interface ShareRpcConfigParams {
+  isPrivateVariant?: boolean;
+}
 /**
  * Shared RPC configuration that's common across all widget types
  */
-export function useSharedRPCConfig(): Partial<WidgetConfig> {
+export function useSharedRPCConfig(
+  params: ShareRpcConfigParams,
+): Partial<WidgetConfig> {
   return useMemo(
     () => ({
       sdkConfig: {
-        apiUrl: getApiUrl(),
+        apiUrl: getApiUrl({
+          isPrivateVariant: params.isPrivateVariant,
+        }),
         rpcUrls: {
           ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
           ...publicRPCList,
@@ -70,7 +77,7 @@ export function useSharedRPCConfig(): Partial<WidgetConfig> {
         },
       },
     }),
-    [],
+    [params.isPrivateVariant],
   );
 }
 
@@ -149,9 +156,12 @@ export function useLanguageConfig(
       };
 
       languageResourcesEN.header = {
-        exchange: context.useSwapBridgeTitle
-          ? deps.translation.t('widget.swapBridge.title')
-          : deps.translation.t('widget.exchange.title'),
+        exchange:
+          context.starterVariant === 'private'
+            ? deps.translation.t('widget.private.title')
+            : context.useSwapBridgeTitle
+              ? deps.translation.t('widget.swapBridge.title')
+              : deps.translation.t('widget.exchange.title'),
       };
 
       return {

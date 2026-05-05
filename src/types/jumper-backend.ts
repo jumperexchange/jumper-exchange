@@ -653,6 +653,8 @@ export interface EarnInteractionFlags {
 export interface APYItem {
   base: number;
   reward: number;
+  intrinsic: number;
+  jumperReward?: number;
   total: number;
 }
 
@@ -681,6 +683,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
@@ -690,12 +693,14 @@ export interface EarnOpportunityWithLatestAnalytics {
 export interface ApyHistoryPoint {
   /** The timestamp of the data point */
   t: number;
-  /** The base APY */
-  base: number;
-  /** The reward APY */
-  reward: number;
-  /** The total APY (base + reward) */
-  total: number;
+  /** The base APY. Null when data is unavailable. */
+  base: number | null;
+  /** The reward APY. Null when data is unavailable. */
+  reward: number | null;
+  /** The intrinsic APY from the underlying asset. Null when data is unavailable. */
+  intrinsic: number | null;
+  /** The total APY (base + reward + intrinsic). Null when data is unavailable. */
+  total: number | null;
 }
 
 export interface ApyAnalyticsHistory {
@@ -706,8 +711,8 @@ export interface ApyAnalyticsHistory {
 export interface EarnOpportunityHistoryPoint {
   /** The timestamp of the data point */
   t: number;
-  /** The value of the data point */
-  v: number | string;
+  /** The value of the data point. Null when data is unavailable. */
+  v: number | string | null;
 }
 
 export interface EarnOpportunityHistory {
@@ -943,6 +948,7 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;

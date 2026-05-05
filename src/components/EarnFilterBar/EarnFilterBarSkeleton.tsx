@@ -11,8 +11,12 @@ export const EarnFilterBarSkeleton = () => {
       </Stack>
       <Stack
         direction="row"
-        alignItems="center"
-        sx={(theme) => ({ gap: theme.spacing(2) })}
+        sx={[
+          {
+            alignItems: 'center',
+          },
+          (theme) => ({ gap: theme.spacing(2) }),
+        ]}
       >
         {Array.from({ length: 5 }).map((_, index) => (
           <BaseSkeleton key={index} variant="rounded" width={56} height={32} />

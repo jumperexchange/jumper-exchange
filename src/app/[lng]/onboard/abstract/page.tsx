@@ -7,7 +7,13 @@ import { WidgetContainer } from '@/components/Widgets/Widgets.style';
 export default function Page() {
   return (
     <Container>
-      <Stack display="flex" alignItems="center" direction="column">
+      <Stack
+        direction="column"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <Typography
           variant="h1"
           sx={(theme) => ({

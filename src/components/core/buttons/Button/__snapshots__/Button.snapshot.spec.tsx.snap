@@ -3,12 +3,12 @@
 exports[`Button snapshot > adornments > matches snapshot with both adornments 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeLarge css-1xskro6-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-yqfw0v-MuiButton-startIcon"
     >
       <svg
         aria-hidden="true"
@@ -28,7 +28,7 @@ exports[`Button snapshot > adornments > matches snapshot with both adornments 1`
       With Both Icons
     </span>
     <span
-      class="MuiButton-icon MuiButton-endIcon MuiButton-iconSizeLarge css-1u6cks-MuiButton-endIcon"
+      class="MuiButton-icon MuiButton-endIcon css-ixtleg-MuiButton-endIcon"
     >
       <svg
         aria-hidden="true"
@@ -49,7 +49,7 @@ exports[`Button snapshot > adornments > matches snapshot with both adornments 1`
 exports[`Button snapshot > adornments > matches snapshot with endAdornment 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -59,7 +59,7 @@ exports[`Button snapshot > adornments > matches snapshot with endAdornment 1`] =
       With End Icon
     </span>
     <span
-      class="MuiButton-icon MuiButton-endIcon MuiButton-iconSizeLarge css-1u6cks-MuiButton-endIcon"
+      class="MuiButton-icon MuiButton-endIcon css-ixtleg-MuiButton-endIcon"
     >
       <svg
         aria-hidden="true"
@@ -80,12 +80,12 @@ exports[`Button snapshot > adornments > matches snapshot with endAdornment 1`] =
 exports[`Button snapshot > adornments > matches snapshot with startAdornment 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeLarge css-1xskro6-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-yqfw0v-MuiButton-startIcon"
     >
       <svg
         aria-hidden="true"
@@ -111,7 +111,7 @@ exports[`Button snapshot > adornments > matches snapshot with startAdornment 1`]
 exports[`Button snapshot > sizes > matches snapshot with LG size 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-p7mbvb-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1jbdb3p-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -127,7 +127,7 @@ exports[`Button snapshot > sizes > matches snapshot with LG size 1`] = `
 exports[`Button snapshot > sizes > matches snapshot with MD size 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -143,7 +143,7 @@ exports[`Button snapshot > sizes > matches snapshot with MD size 1`] = `
 exports[`Button snapshot > sizes > matches snapshot with SM size 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1b3ol5t-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-mm3zbo-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -159,7 +159,7 @@ exports[`Button snapshot > sizes > matches snapshot with SM size 1`] = `
 exports[`Button snapshot > sizes > matches snapshot with XL size 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-16gur57-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-plnfi5-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -175,7 +175,7 @@ exports[`Button snapshot > sizes > matches snapshot with XL size 1`] = `
 exports[`Button snapshot > states > matches snapshot when disabled 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     disabled=""
     tabindex="-1"
     type="button"
@@ -192,7 +192,7 @@ exports[`Button snapshot > states > matches snapshot when disabled 1`] = `
 exports[`Button snapshot > states > matches snapshot when fullWidth 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-fullWidth MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-fullWidth css-m8okkw-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-fullWidth MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-fullWidth css-yj0th5-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -208,14 +208,14 @@ exports[`Button snapshot > states > matches snapshot when fullWidth 1`] = `
 exports[`Button snapshot > states > matches snapshot when loading 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-loading MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart Mui-disabled MuiButton-root MuiButton-loading MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-loading MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart Mui-disabled MuiButton-root MuiButton-loading MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     disabled=""
     id="_r_t_"
     tabindex="-1"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeLarge css-1k2ejx1-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-11vne0n-MuiButton-startIcon"
     >
       <span
         class="css-1hr99lv-MuiButton-loadingIconPlaceholder"
@@ -239,7 +239,7 @@ exports[`Button snapshot > states > matches snapshot when loading 1`] = `
             viewBox="22 22 44 44"
           >
             <circle
-              class="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate css-19t5dcl-MuiCircularProgress-circle"
+              class="MuiCircularProgress-circle css-19t5dcl-MuiCircularProgress-circle"
               cx="44"
               cy="44"
               fill="none"
@@ -262,7 +262,7 @@ exports[`Button snapshot > states > matches snapshot when loading 1`] = `
 exports[`Button snapshot > variants > matches snapshot with alphaDark variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-ga23w2-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1pmi0s-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -278,7 +278,7 @@ exports[`Button snapshot > variants > matches snapshot with alphaDark variant 1`
 exports[`Button snapshot > variants > matches snapshot with alphaLight variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-g3o47o-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-v0pugf-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -294,7 +294,7 @@ exports[`Button snapshot > variants > matches snapshot with alphaLight variant 1
 exports[`Button snapshot > variants > matches snapshot with borderless variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-dq35sb-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1rh1drq-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -310,7 +310,7 @@ exports[`Button snapshot > variants > matches snapshot with borderless variant 1
 exports[`Button snapshot > variants > matches snapshot with default variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-yujln4-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-yfv5jj-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -326,7 +326,7 @@ exports[`Button snapshot > variants > matches snapshot with default variant 1`] 
 exports[`Button snapshot > variants > matches snapshot with disabled variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1qq3ans-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary Mui-disabled MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-ccq63x-MuiButtonBase-root-MuiButton-root"
     disabled=""
     tabindex="-1"
     type="button"
@@ -343,7 +343,7 @@ exports[`Button snapshot > variants > matches snapshot with disabled variant 1`]
 exports[`Button snapshot > variants > matches snapshot with lightBorder variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1pdfnbf-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-eodrri-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -359,7 +359,7 @@ exports[`Button snapshot > variants > matches snapshot with lightBorder variant 
 exports[`Button snapshot > variants > matches snapshot with primary variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-8pl218-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-y8o9e2-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -375,7 +375,7 @@ exports[`Button snapshot > variants > matches snapshot with primary variant 1`] 
 exports[`Button snapshot > variants > matches snapshot with secondary variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-1m4kmzd-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-jot4dq-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
@@ -391,7 +391,7 @@ exports[`Button snapshot > variants > matches snapshot with secondary variant 1`
 exports[`Button snapshot > variants > matches snapshot with success variant 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeLarge MuiButton-textSizeLarge MuiButton-colorPrimary css-y1sqjn-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-b8wh4x-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >

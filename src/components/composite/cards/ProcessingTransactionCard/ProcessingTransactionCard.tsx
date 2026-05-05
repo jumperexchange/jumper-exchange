@@ -52,22 +52,45 @@ export const ProcessingTransactionCard: FC<ProcessingTransactionCardProps> = ({
 
   return (
     <ProcessingTransactionCardContainer status={status} onClick={onClick}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="title2XSmall">{title}</Typography>
-        <Stack direction="row" alignItems="center" spacing={0.75}>
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {targetTime !== undefined && <Timer target={targetTime} />}
           {statusConfig.icon}
         </Stack>
       </Stack>
-
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <Stack direction="row" spacing={-1.25}>
           <WrappedEntityStack token={fromToken} zIndex={1} />
           <WrappedEntityStack token={toToken} zIndex={0} />
         </Stack>
 
         <Stack spacing={0.5}>
-          <Stack direction="row" spacing={0.5} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <Typography variant="bodyLargeStrong">
               {fromToken.symbol}
             </Typography>

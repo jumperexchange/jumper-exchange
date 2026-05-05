@@ -121,8 +121,8 @@ export const NewsletterSubscribeForm: FC<NewsletterSubscribeFormProps> = ({
   const termsConditions = (
     <Typography
       variant="bodyXSmall"
-      color="text.secondary"
       sx={{
+        color: 'text.secondary',
         maxWidth: isStacked ? '100%' : 402,
         textAlign: 'left',
       }}

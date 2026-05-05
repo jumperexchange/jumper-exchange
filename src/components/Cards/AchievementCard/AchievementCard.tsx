@@ -1,8 +1,10 @@
-import { ReactNode } from 'react';
+import { Box } from '@mui/material';
+import type { ReactNode } from 'react';
 import {
   AchievementCardActionArea,
   AchievementCardContainer,
   AchievementCardContent,
+  AchievementCardHeaderBadgeWrapper,
   AchievementCardLabel,
   AchievementCardTypography,
   BaseSkeleton,
@@ -15,6 +17,7 @@ interface AchievementCardProps {
   description: string;
   imageUrl: string;
   badge?: ReactNode;
+  headerBadge?: ReactNode;
   isLoading?: boolean;
 }
 
@@ -23,6 +26,7 @@ export const AchievementCard = ({
   description,
   imageUrl,
   badge,
+  headerBadge,
   isLoading,
 }: AchievementCardProps) => {
   if (isLoading) {
@@ -56,6 +60,11 @@ export const AchievementCard = ({
             }}
           />
         )}
+        {headerBadge ? (
+          <AchievementCardHeaderBadgeWrapper>
+            {headerBadge}
+          </AchievementCardHeaderBadgeWrapper>
+        ) : null}
         <AchievementCardContent>
           <AchievementCardLabel>
             <AchievementCardTypography variant="bodyLargeStrong">

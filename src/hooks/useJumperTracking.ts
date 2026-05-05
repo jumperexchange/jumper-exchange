@@ -6,11 +6,19 @@ import {
   JUMPER_ANALYTICS_EVENT,
   JUMPER_ANALYTICS_TRANSACTION,
 } from 'src/const/abi/jumperApiUrls';
+import type { AbTestVariants } from 'src/const/abtests';
 import type { TransformedRoute } from 'src/types/internal';
 import config from '@/config/env-config';
 
 export type JumperEventData = {
-  [key: string]: string | number | boolean | Record<number, TransformedRoute>;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | Record<number, TransformedRoute>
+    | AbTestVariants;
+} & {
+  abTestVariants?: AbTestVariants;
 };
 
 interface JumperDataTrackEventProps {
@@ -56,7 +64,7 @@ const track = async (data: object, path: string) => {
   }
 };
 
-export interface JumperDataTrackTransactionProps {
+export type JumperDataTrackTransactionProps = {
   abtests?: { [key: string]: boolean };
   action: string;
   browserFingerprint: string;
@@ -107,7 +115,8 @@ export interface JumperDataTrackTransactionProps {
   toAmountFormatted?: string;
   transactionId?: string;
   transactionLink?: string;
-}
+  abTestVariants?: AbTestVariants;
+};
 
 export const useJumperTracking = () => {
   const trackEvent = async (data: JumperDataTrackEventProps) => {
@@ -188,6 +197,7 @@ export const useJumperTracking = () => {
       }),
       ...(data.transactionId && { transactionId: data.transactionId }),
       ...(data.transactionLink && { transactionLink: data.transactionLink }),
+      ...(data.abTestVariants && { abTestVariants: data.abTestVariants }),
     };
     await track(transactionData, JUMPER_ANALYTICS_TRANSACTION);
   };

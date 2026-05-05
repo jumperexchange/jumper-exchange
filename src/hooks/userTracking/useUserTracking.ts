@@ -210,6 +210,7 @@ export function useUserTracking(): UserTracking {
           transactionLink: data[TrackingEventParameter.TransactionLink],
           transactionStatus: data[TrackingEventParameter.TransactionStatus],
           type: data[TrackingEventParameter.Type],
+          abTestVariants: data.abTestVariants,
         };
         await jumperTrackTransaction(transactionData);
       }

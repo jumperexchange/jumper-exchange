@@ -82,6 +82,7 @@ export const CompactWithTwoItems: Story = {
         apy: {
           base: 0.0558,
           reward: 0,
+          intrinsic: 0,
           total: 0.0558,
         },
       },

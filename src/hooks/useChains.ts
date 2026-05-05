@@ -17,7 +17,13 @@ export interface ChainProps {
 
 export async function getChainsQuery() {
   const chains = await getChains(sdkClient, {
-    chainTypes: [ChainType.EVM, ChainType.SVM, ChainType.UTXO, ChainType.MVM],
+    chainTypes: [
+      ChainType.EVM,
+      ChainType.SVM,
+      ChainType.UTXO,
+      ChainType.MVM,
+      ChainType.TVM,
+    ],
   });
   return { chains };
 }

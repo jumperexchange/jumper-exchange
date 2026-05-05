@@ -1,5 +1,6 @@
 import type { ChangeEvent } from 'react';
 import { useState, useMemo } from 'react';
+import MenuList from '@mui/material/MenuList';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
@@ -81,7 +82,13 @@ export const MultiSelectView = <TValue extends string | number>({
   const isValueSelected = value.length > 0;
 
   return (
-    <Stack direction="column" width="100%" gap={2}>
+    <Stack
+      direction="column"
+      sx={{
+        width: '100%',
+        gap: 2,
+      }}
+    >
       <StyledMultiSelectFiltersContainer sx={{ padding: 0, marginBottom: 0 }}>
         <Typography variant="bodyMediumStrong">
           {t('earn.filter.selected', { count: value.length })}
@@ -95,7 +102,6 @@ export const MultiSelectView = <TValue extends string | number>({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
-
       {isSearchable && (
         <StyledMultiSelectFiltersContainer
           size={searchSize}
@@ -129,11 +135,18 @@ export const MultiSelectView = <TValue extends string | number>({
           />
         </StyledMultiSelectFiltersContainer>
       )}
-
-      <Stack
-        direction="column"
-        spacing={listSpacing}
-        sx={mergeSx({ flex: 1, overflowY: 'auto' }, slotProps?.listSx)}
+      <MenuList
+        disablePadding
+        sx={mergeSx(
+          {
+            flex: 1,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: listSpacing,
+          },
+          slotProps?.listSx,
+        )}
       >
         {filteredOptions.map((option) => {
           const isSelected = value.includes(option.value);
@@ -165,7 +178,7 @@ export const MultiSelectView = <TValue extends string | number>({
             </StyledMenuItem>
           );
         })}
-      </Stack>
+      </MenuList>
     </Stack>
   );
 };

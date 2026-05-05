@@ -1,3 +1,11 @@
+import { useAccount } from '@lifi/wallet-management';
+import { GppGood } from '@mui/icons-material';
+import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
+import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import { useTheme } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
+import { isAnonymousSwapEnabled } from '@/app/lib/getFeatureFlag';
 import { AB_TEST_NAME } from '@/const/abtests';
 import {
   TrackingAction,
@@ -6,12 +14,6 @@ import {
 } from '@/const/trackingKeys';
 import { useABTest } from '@/hooks/useABTest';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useAccount } from '@lifi/wallet-management';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useTranslation } from 'react-i18next';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
@@ -38,39 +40,45 @@ export const useVerticalTabs = () => {
     });
   };
 
-  const output = [
+  const tabs = [
     {
-      onClick: handleClickTab(''),
-      value: 0,
-      tooltip:
+      tab: '',
+      label:
         tradeABTest.isEnabled && tradeABTest.value === 'test'
           ? t('navbar.links.trade')
           : t('navbar.links.exchange'),
-      icon: (
-        <SwapHorizIcon
-          sx={(theme) => ({
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color: (theme.vars || theme).palette.text.primary,
-          })}
-        />
-      ),
+      icon: SwapHorizIcon,
     },
     {
-      onClick: handleClickTab('gas/'),
-      value: 1,
-      tooltip: t('navbar.links.refuel'),
-      icon: (
-        <EvStationOutlinedIcon
-          sx={(theme) => ({
-            marginRight: 0.75,
-            marginBottom: `${theme.spacing(0)} !important`,
-            color: (theme.vars || theme).palette.text.primary,
-          })}
-        />
-      ),
+      tab: 'gas/',
+      label: t('navbar.links.refuel'),
+      icon: EvStationOutlinedIcon,
     },
+    ...(isAnonymousSwapEnabled()
+      ? [
+          {
+            tab: 'private/',
+            label: t('navbar.links.private'),
+            icon: GppGood,
+          },
+        ]
+      : []),
   ];
+
+  const output = tabs.map(({ tab, label, icon: Icon }, index) => ({
+    onClick: handleClickTab(tab),
+    value: index,
+    tooltip: label,
+    icon: (
+      <Icon
+        sx={(theme) => ({
+          marginRight: 0.75,
+          marginBottom: `${theme.spacing(0)} !important`,
+          color: (theme.vars || theme).palette.text.primary,
+        })}
+      />
+    ),
+  }));
 
   return output;
 };

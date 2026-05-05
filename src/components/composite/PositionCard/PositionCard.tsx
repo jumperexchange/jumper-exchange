@@ -155,7 +155,6 @@ export const PositionCard: FC<PositionCardProps> = ({
           </StyledTagsRow>
         </StyledSummaryContent>
       </StyledAccordionSummary>
-
       <StyledAccordionDetails>
         <StyledDetailsContainer>
           {positionGroups.map((positionGroup, index) => {

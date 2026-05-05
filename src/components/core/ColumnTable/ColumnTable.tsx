@@ -46,9 +46,11 @@ export const ColumnTable: FC<ColumnTableProps> = ({
                 return (
                   <Stack
                     key={`${rowKey}-${column.id}`}
-                    gap={headerGap}
                     useFlexGap
                     onClick={() => onRowClick?.(row, rowIndex)}
+                    sx={{
+                      gap: headerGap,
+                    }}
                   >
                     {shouldShowHeader &&
                       !column.hideHeader &&

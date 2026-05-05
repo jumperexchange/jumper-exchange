@@ -36,6 +36,9 @@ describe('getPathBasedIntegrator', () => {
     ['/swap', 'swap path'],
     ['/it/bridge', 'it locale + bridge'],
     ['/zh/gas', 'zh locale + gas'],
+    ['/private', 'direct private path'],
+    ['/fr/private', 'fr locale + private'],
+    ['/zh/private', 'zh locale + private'],
     [null, 'null value'],
     [undefined, 'undefined value'],
   ] as const;

@@ -177,7 +177,13 @@ export const WalletWithActions = ({ account }: WalletWithActionsProps) => {
           </Typography>
         </ButtonTransparent>
       </WalletInfoContainer>
-      <Stack direction="row" alignItems="flex-end" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'flex-end',
+        }}
+      >
         <DarkIconButton size="small" onClick={handleExploreButton}>
           <OpenInNewIcon sx={{ height: 20, width: 20 }} />
         </DarkIconButton>

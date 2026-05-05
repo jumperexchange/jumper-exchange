@@ -30,6 +30,11 @@ export const AbTests = {
 export const isAbTestingEnabled = true;
 
 export type AbTestName = keyof typeof AbTests;
+export type AbTestFeatureKey =
+  `$feature/${(typeof AbTests)[keyof typeof AbTests]['name']}`;
+export type AbTestVariants = Partial<
+  Record<(typeof AbTests)[keyof typeof AbTests]['name'], string | boolean>
+>;
 
 // For backward compatibility with AbTestConfig usage
 export const AbTestConfig = {

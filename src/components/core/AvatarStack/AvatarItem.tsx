@@ -12,6 +12,7 @@ import type {
 import { isAvatarCountItem, isAvatarImageItem } from './utils';
 import Typography from '@mui/material/Typography';
 import { mergeSx } from '@/utils/theme/mergeSx';
+import { useGetContrastBgColor } from '@/hooks/images/useGetContrastBgColor';
 
 export const AvatarImage: FC<AvatarImageItemProps> = ({
   avatar,
@@ -26,6 +27,8 @@ export const AvatarImage: FC<AvatarImageItemProps> = ({
 
   const handleLoad = () => setImageStatus('loaded');
   const handleError = () => setImageStatus('error');
+
+  const { contrastBgColor } = useGetContrastBgColor(avatar?.src || '');
 
   const showPlaceholder =
     (imageStatus === 'error' || !avatar.src) && avatar.alt;
@@ -45,7 +48,12 @@ export const AvatarImage: FC<AvatarImageItemProps> = ({
           onErrorCapture: handleError,
         },
       }}
-      sx={sx}
+      sx={mergeSx(
+        sx,
+        !showPlaceholder
+          ? { backgroundColor: `${contrastBgColor} !important` }
+          : {},
+      )}
     >
       {showPlaceholder ? (
         <AvatarPlaceholder size={size} color="textSecondary">

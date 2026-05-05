@@ -62,7 +62,13 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
   };
 
   return (
-    <Stack direction="column" width="100%" gap={1}>
+    <Stack
+      direction="column"
+      sx={{
+        width: '100%',
+        gap: 1,
+      }}
+    >
       <StyledMultiSelectFiltersContainer>
         <Typography variant="bodyMediumStrong">
           {canClear ? formattedRange || category.label : category.label}
@@ -76,7 +82,6 @@ export const DateRangeView: React.FC<DateRangeViewProps> = ({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
-
       <StyledMultiSelectFiltersContainer
         sx={{
           height: 'auto',

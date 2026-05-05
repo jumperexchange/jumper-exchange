@@ -37,3 +37,6 @@ export const useFormatRedeemClaimData = (
     [claimData, t],
   );
 };
+
+export type FormattedClaims = ReturnType<typeof useFormatRedeemClaimData>;
+export type FormattedClaim = FormattedClaims[number];

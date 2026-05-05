@@ -46,14 +46,18 @@ const StyledResponsiveContainer = styled(ResponsiveContainer, {
 }));
 
 export interface ChartDataPoint<
-  V extends number | string | undefined = number | string | undefined,
+  V extends number | string | null | undefined =
+    | number
+    | string
+    | null
+    | undefined,
 > {
   date: string;
   value: V;
 }
 
 export interface LineChartProps<
-  V extends number | string = number | string,
+  V extends number | string | null = number | string | null,
   T extends ChartDataPoint<V> = ChartDataPoint<V>,
 > extends HTMLAttributes<HTMLDivElement> {
   data: T[];
@@ -75,7 +79,7 @@ export interface LineChartProps<
 }
 
 export const LineChart = <
-  V extends number | string = number | string,
+  V extends number | string | null = number | string | null,
   T extends ChartDataPoint<V> = ChartDataPoint<V>,
 >({
   data,
@@ -309,7 +313,7 @@ export const LineChart = <
           payload={[
             {
               payload: activeDot.payload,
-              value: activeDot.payload.value,
+              value: activeDot.payload.value ?? undefined,
               graphicalItemId: dataSetId ?? '',
             },
           ]}

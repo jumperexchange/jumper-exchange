@@ -18,7 +18,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
           focusvisibleclassname="Mui-focusVisible"
         >
           <span
-            class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-yfrx4k-MuiAccordionSummary-content"
+            class="MuiAccordionSummary-content Mui-expanded css-yfrx4k-MuiAccordionSummary-content"
           >
             <div
               class="MuiBox-root css-dcu3ri"
@@ -45,7 +45,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                     />
                   </span>
                   <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1ol01mw-MuiButtonBase-root-MuiButton-root"
+                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
                     tabindex="0"
                     type="button"
                   >
@@ -128,10 +128,10 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                     navbar.walletMenu.walletBalance
                   </p>
                   <div
-                    class="MuiStack-root css-18tjum2-MuiStack-root"
+                    class="MuiStack-root css-1iw8hzp-MuiStack-root"
                   >
                     <div
-                      class="MuiStack-root css-1gu36qu-MuiStack-root"
+                      class="MuiStack-root css-6y1ufm-MuiStack-root"
                     >
                       <div
                         class="css-1l8j7hy"
@@ -251,7 +251,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
           focusvisibleclassname="Mui-focusVisible"
         >
           <span
-            class="MuiAccordionSummary-content Mui-expanded MuiAccordionSummary-contentGutters css-yfrx4k-MuiAccordionSummary-content"
+            class="MuiAccordionSummary-content Mui-expanded css-yfrx4k-MuiAccordionSummary-content"
           >
             <div
               class="MuiBox-root css-dcu3ri"
@@ -278,7 +278,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                     />
                   </span>
                   <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeSmall MuiButton-textSizeSmall MuiButton-colorPrimary css-1ol01mw-MuiButtonBase-root-MuiButton-root"
+                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
                     tabindex="0"
                     type="button"
                   >
@@ -361,10 +361,10 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                     navbar.walletMenu.walletBalance
                   </p>
                   <div
-                    class="MuiStack-root css-18tjum2-MuiStack-root"
+                    class="MuiStack-root css-1iw8hzp-MuiStack-root"
                   >
                     <div
-                      class="MuiStack-root css-1gu36qu-MuiStack-root"
+                      class="MuiStack-root css-6y1ufm-MuiStack-root"
                     >
                       <div
                         class="css-1l8j7hy"
@@ -447,10 +447,10 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                             class="MuiAccordionSummary-content css-18x5eyn-MuiAccordionSummary-content"
                           >
                             <div
-                              class="MuiStack-root css-4ghnc3-MuiStack-root"
+                              class="MuiStack-root css-1whz3z4-MuiStack-root"
                             >
                               <div
-                                class="MuiBox-root css-dffkzv"
+                                class="MuiBox-root css-1hq6w3b"
                               >
                                 <div
                                   class="MuiBox-root css-wioyy2"
@@ -465,7 +465,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiStack-root css-54t7xt-MuiStack-root"
                                       >
                                         <div
-                                          class="MuiAvatar-root MuiAvatar-circular css-1xcstal-MuiAvatar-root"
+                                          class="MuiAvatar-root MuiAvatar-circular css-xq7m3c-MuiAvatar-root"
                                         >
                                           <img
                                             alt="USD Coin"
@@ -494,7 +494,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       class="MuiStack-root css-dnapf8-MuiStack-root"
                                     >
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1furbft-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -503,7 +503,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         </p>
                                       </div>
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1furbft-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -557,10 +557,10 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     class="MuiDivider-root MuiDivider-fullWidth css-1pk5x0u-MuiDivider-root"
                                   />
                                   <div
-                                    class="MuiStack-root css-1n0yfix-MuiStack-root"
+                                    class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-dffkzv"
+                                      class="MuiBox-root css-1hq6w3b"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
@@ -575,7 +575,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-54t7xt-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular css-o8tmub-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
                                               >
                                                 <img
                                                   alt="USD Coin"
@@ -597,7 +597,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nj5o1p-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
@@ -647,10 +647,10 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     </div>
                                   </div>
                                   <div
-                                    class="MuiStack-root css-1n0yfix-MuiStack-root"
+                                    class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-dffkzv"
+                                      class="MuiBox-root css-1hq6w3b"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
@@ -665,7 +665,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-54t7xt-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular css-o8tmub-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
                                               >
                                                 <img
                                                   alt="USD Coin"
@@ -687,7 +687,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nj5o1p-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"

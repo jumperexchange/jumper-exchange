@@ -589,6 +589,7 @@ interface Resources {
         exchange: 'Exchange';
         missions: 'Missions';
         portfolio: 'Portfolio';
+        private: 'Private Swap';
         refuel: 'Gas';
         trade: 'Trade';
       };
@@ -798,6 +799,7 @@ interface Resources {
         cta: 'Start swapping';
         description: "No {{entity}} yet? Let's change that!";
       };
+      ongoing: 'Ongoing';
       open: 'Open {{tool}}';
       perks: 'Perks';
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
@@ -814,6 +816,7 @@ interface Resources {
       };
       shareProfile: 'Share profile';
       tooltips: {
+        ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
         unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
@@ -892,6 +895,9 @@ interface Resources {
       exchange: {
         title: 'Exchange';
       };
+      private: {
+        title: 'Anonymous Swap';
+      };
       swapBridge: {
         title: 'Swap & Bridge';
       };
@@ -917,6 +923,30 @@ interface Resources {
           deposit: 'Deposit';
           withdraw: 'Withdraw';
         };
+      };
+    };
+    notifications: {
+      title: 'Notifications';
+      unread_zero: 'No unread notifications';
+      unread_one: '{{count}} unread notification';
+      unread_other: '{{count}} unread notifications';
+      emptyState: 'No notifications';
+      categories: {
+        all: 'All Categories';
+        product: 'Product';
+        campaign: 'Campaign';
+        earn: 'Earn';
+        portfolio: 'Portfolio';
+      };
+      dateFilter: {
+        all: 'All Time';
+        today: 'Today';
+        week: 'Past Week';
+        month: 'Past Month';
+      };
+      aria: {
+        openPanel: 'Notifications';
+        deleteNotification: 'Delete notification';
       };
     };
   };

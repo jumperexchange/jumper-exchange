@@ -19,10 +19,16 @@ export const BalanceCardSkeleton: FC<BalanceCardSkeletonProps> = ({
       direction="row"
       spacing={2}
       useFlexGap
-      justifyContent="space-between"
-      alignItems="center"
-      width="100%"
-      sx={config.primary.itemSx}
+      sx={[
+        {
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        },
+        ...(Array.isArray(config.primary.itemSx)
+          ? config.primary.itemSx
+          : [config.primary.itemSx]),
+      ]}
     >
       <EntityStackWithBadge
         entities={[]}

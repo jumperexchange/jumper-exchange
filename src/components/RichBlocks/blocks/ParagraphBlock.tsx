@@ -1,9 +1,17 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { ParagraphBlockContainer } from '../RichBlocks.style';
 import type { CommonBlockProps, ParagraphProps, TrackingKeys } from '../types';
 import { RichBlocksVariant } from '../types';
 import dynamic from 'next/dynamic';
-import { parseMarkdownTable } from '../utils/parseMarkdownTable';
+import { renderTableCellFromSegments } from '../renderers/renderTableCellFromSegments';
+import {
+  parseMarkdownTable,
+  parseMarkdownTableWithRanges,
+} from '../utils/parseMarkdownTable';
+import {
+  buildPositionedInlineParts,
+  serializeParagraphInlinesFromReact,
+} from '../utils/serializeParagraphInlinesFromReact';
 
 const ParagraphRenderer = dynamic(() =>
   import('../renderers/ParagraphRenderer').then((mod) => mod.ParagraphRenderer),
@@ -46,35 +54,53 @@ export const ParagraphBlock: FC<ParagraphBlockProps> = ({
   }
 
   const paragraphChildren = children as Array<{ props: ParagraphProps }>;
+  const firstText = String(paragraphChildren[0]?.props?.text ?? '');
 
   if (
-    paragraphChildren[0].props.text.includes('<JUMPER_CTA') &&
+    firstText.includes('<JUMPER_CTA') &&
     variant === RichBlocksVariant.BlogArticle
   ) {
-    return (
-      <CTARenderer
-        text={paragraphChildren[0].props.text}
-        trackingKeys={trackingKeys?.cta}
-      />
-    );
+    return <CTARenderer text={firstText} trackingKeys={trackingKeys?.cta} />;
   }
 
   if (
-    paragraphChildren[0].props.text.includes('<WIDGET') &&
+    firstText.includes('<WIDGET') &&
     variant === RichBlocksVariant.BlogArticle
   ) {
-    return <WidgetRenderer text={paragraphChildren[0].props.text} />;
+    return <WidgetRenderer text={firstText} />;
   }
 
   if (
-    paragraphChildren[0].props.text.includes('<INSTRUCTIONS') &&
+    firstText.includes('<INSTRUCTIONS') &&
     variant === RichBlocksVariant.BlogArticle
   ) {
-    return <InstructionsRenderer text={paragraphChildren[0].props.text} />;
+    return <InstructionsRenderer text={firstText} />;
   }
 
-  const tableData = parseMarkdownTable(paragraphChildren[0].props.text);
+  const inlineNodes = children as ReactNode[];
+  const tablePlain = serializeParagraphInlinesFromReact(inlineNodes);
+  const tableData = parseMarkdownTable(tablePlain);
   if (tableData) {
+    const { plain, positioned } = buildPositionedInlineParts(inlineNodes);
+    const work = plain.trim();
+    const lead = plain.length - plain.trimStart().length;
+    const withRanges = parseMarkdownTableWithRanges(work);
+
+    if (withRanges && positioned.length > 0) {
+      const mapCell = (r: { start: number; end: number }) =>
+        renderTableCellFromSegments(
+          plain,
+          positioned,
+          lead + r.start,
+          lead + r.end,
+        );
+      return (
+        <TableRenderer
+          headers={withRanges.headerCellRanges.map(mapCell)}
+          rows={withRanges.dataRowCellRanges.map((row) => row.map(mapCell))}
+        />
+      );
+    }
     return <TableRenderer headers={tableData.headers} rows={tableData.rows} />;
   }
 

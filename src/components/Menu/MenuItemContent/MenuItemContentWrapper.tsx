@@ -13,10 +13,14 @@ export const MenuItemContentWrapper: FC<MenuItemContentWrapperProps> = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
-      width="100%"
-      sx={styles}
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          width: '100%',
+        },
+        ...(Array.isArray(styles) ? styles : [styles]),
+      ]}
     >
       {children}
     </Stack>

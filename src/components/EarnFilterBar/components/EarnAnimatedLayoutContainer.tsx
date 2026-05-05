@@ -31,10 +31,12 @@ export const EarnAnimatedLayoutContainer: FC<
         {useStackWrapper ? (
           <Stack
             direction="row"
-            gap={1}
-            alignItems="center"
-            flex={1}
-            flexWrap="wrap"
+            sx={{
+              gap: 1,
+              alignItems: 'center',
+              flex: 1,
+              flexWrap: 'wrap',
+            }}
           >
             {children}
           </Stack>

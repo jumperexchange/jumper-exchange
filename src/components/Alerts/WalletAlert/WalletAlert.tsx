@@ -40,16 +40,23 @@ export const WalletAlert = () => {
               <MultisigConfirmationModalIcon />
             </MultisigConfirmationModalIconContainer>
             <Typography
-              fontWeight={700}
-              textAlign={'center'}
-              marginY={4}
               style={{
                 fontSize: '1.125rem',
+              }}
+              sx={{
+                fontWeight: 700,
+                textAlign: 'center',
+                marginY: 4,
               }}
             >
               {title}
             </Typography>
-            <Typography fontSize={'1.125 rem'} marginY={4}>
+            <Typography
+              sx={{
+                fontSize: '1.125 rem',
+                marginY: 4,
+              }}
+            >
               {subtitle}
             </Typography>
             <Button

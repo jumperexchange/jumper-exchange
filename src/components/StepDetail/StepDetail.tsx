@@ -22,7 +22,13 @@ const StepDetail = ({ title, description, img, content }: StepDetailProps) => {
   return (
     <StepDetailContainer sx={(theme) => ({ marginTop: theme.spacing(4) })}>
       <Box>
-        <Typography variant="h4" marginY={2} sx={{ fontSize: '24px' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            marginY: 2,
+            fontSize: '24px',
+          }}
+        >
           {title}
         </Typography>
         {description && <Typography>{description}</Typography>}

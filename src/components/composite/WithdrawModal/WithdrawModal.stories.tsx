@@ -75,6 +75,7 @@ export const Default: Story = {
         apy: {
           base: 5.5,
           reward: 0,
+          intrinsic: 0,
           total: 5.5,
         },
       },
@@ -163,6 +164,7 @@ export const WithToggleAndConnectButton: Story = {
         apy: {
           base: 5.5,
           reward: 0,
+          intrinsic: 0,
           total: 5.5,
         },
       },
