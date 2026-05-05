@@ -28,6 +28,7 @@ import { SolanaProvider as SolanaWidgetProvider } from '@lifi/widget-provider-so
 import { BitcoinProvider as BitcoinWidgetProvider } from '@lifi/widget-provider-bitcoin';
 import { SuiProvider as SuiWidgetProvider } from '@lifi/widget-provider-sui';
 import { TronProvider as TronWidgetProvider } from '@lifi/widget-provider-tron';
+import { JumperSolanaProvider } from '@/utils/instrumentation/JumperSolanaProvider';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';
@@ -40,7 +41,9 @@ export const widgetProviders = [
     porto: true,
     baseAccount: true,
   }),
-  SolanaWidgetProvider(),
+  SolanaWidgetProvider({
+    sdkProvider: ({ getWallet }) => JumperSolanaProvider({ getWallet }),
+  }),
   BitcoinWidgetProvider(),
   SuiWidgetProvider(),
   TronWidgetProvider({

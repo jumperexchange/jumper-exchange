@@ -5,7 +5,6 @@ import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
 import { ClientOnly } from '@/components/ClientOnly';
 
 export const Widget: FC<WidgetProps> = ({ ctx, type, formRef }) => {
-  console.log('jumper w1');
   const { config, isReady } = useWidgetConfig(type, ctx);
 
   return (

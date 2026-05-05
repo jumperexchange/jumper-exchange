@@ -1,6 +1,5 @@
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
-import { makeProviders } from '@/utils/instrumentation/lifiSdkConfig';
 import { useAccount } from '@lifi/wallet-management';
 import { HiddenUI, type WidgetConfig } from '@lifi/widget';
 import merge from 'lodash/merge';
@@ -143,13 +142,6 @@ export function useWidgetConfig<T extends WidgetType>(
         ),
       };
     }
-
-    baseConfig.sdkConfig = {
-      ...(baseConfig.sdkConfig ?? {}),
-      providers: makeProviders(),
-    };
-
-    console.error('jumper init baseConfig', baseConfig);
 
     return baseConfig;
   }, [
