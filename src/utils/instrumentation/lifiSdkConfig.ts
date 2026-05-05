@@ -5,6 +5,7 @@ import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
 import { BitcoinProvider } from '@lifi/sdk-provider-bitcoin';
 import { SolanaProvider } from '@lifi/sdk-provider-solana';
 import { SuiProvider } from '@lifi/sdk-provider-sui';
+import { TronProvider } from '@lifi/sdk-provider-tron';
 import getApiUrl from '../getApiUrl';
 import { getPathname } from '../urls/getPathname';
 import { getPathBasedIntegrator } from '../widgets/getPathBasedIntegrator';
@@ -27,6 +28,7 @@ function initClient() {
         SolanaProvider(),
         BitcoinProvider(),
         SuiProvider(),
+        TronProvider(),
       ],
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR || 'jumper.exchange',
       rpcUrls: {

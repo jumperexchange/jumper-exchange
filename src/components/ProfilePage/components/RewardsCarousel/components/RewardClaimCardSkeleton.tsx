@@ -6,7 +6,7 @@ import { REWARD_CLAIM_CARD_CONFIG } from './constants';
 
 export const RewardClaimCardSkeleton = () => {
   return (
-    <RewardCardContainer gap={2} sx={{ justifyContent: 'space-between' }}>
+    <RewardCardContainer sx={{ gap: 2, justifyContent: 'space-between' }}>
       <EntityChainStack
         variant={EntityChainStackVariant.TokenWithChains}
         tokenSize={REWARD_CLAIM_CARD_CONFIG.tokenSize}

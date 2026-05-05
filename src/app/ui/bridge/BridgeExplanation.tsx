@@ -5,7 +5,13 @@ import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
 const BridgeExplanationSection = () => {
   return (
     <DynamicPagesContainer>
-      <Typography variant="h3" marginY={2} sx={{ fontSize: '32px' }}>
+      <Typography
+        variant="h3"
+        sx={{
+          marginY: 2,
+          fontSize: '32px',
+        }}
+      >
         What is a Blockchain / Crypto Bridge?
       </Typography>
       <Typography>
@@ -18,7 +24,6 @@ const BridgeExplanationSection = () => {
         bridge, assets and data can be transferred between blockchains,
         facilitating crucial interoperability in the crypto ecosystem.
       </Typography>
-
       <Typography>
         Consider Alice, who holds ETH on the Ethereum Mainnet but wants to use
         it on Avalanche. Since these two networks operate independently with
@@ -28,11 +33,10 @@ const BridgeExplanationSection = () => {
         Avalanche. This process allows her to access the features of both
         blockchains without needing to acquire additional assets.
       </Typography>
-
       <Typography
         variant="h4"
-        marginY={2}
         sx={{
+          marginY: 2,
           fontSize: '24px',
         }}
       >

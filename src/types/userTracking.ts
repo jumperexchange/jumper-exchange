@@ -1,6 +1,7 @@
 import type { Route, TokenAmount } from '@lifi/sdk';
+import type { AbTestVariants } from 'src/const/abtests';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
-import type { JumperEventData } from 'src/hooks/useJumperTracking';
+import type { JumperEventData } from 'src/utils/tracking/jumperTracking';
 
 export enum EventTrackingTool {
   GA,
@@ -65,6 +66,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.Tags]?: string;
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;
+  abTestVariants?: AbTestVariants;
 }
 
 export interface TrackTransactionProps {

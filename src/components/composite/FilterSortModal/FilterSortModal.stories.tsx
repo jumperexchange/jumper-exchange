@@ -195,7 +195,13 @@ const EarnFiltersTemplate = () => {
   ];
 
   return (
-    <Stack gap={2} sx={{ width: 544, padding: 3 }}>
+    <Stack
+      sx={{
+        gap: 2,
+        width: 544,
+        padding: 3,
+      }}
+    >
       <FilterSortModal
         categories={categories}
         applyButtonLabel="Apply Filters"
@@ -347,7 +353,13 @@ const BlogArticlesFiltersTemplate = () => {
   ];
 
   return (
-    <Stack gap={2} sx={{ width: 544, padding: 3 }}>
+    <Stack
+      sx={{
+        gap: 2,
+        width: 544,
+        padding: 3,
+      }}
+    >
       <FilterSortModal
         categories={categories}
         applyButtonLabel="Apply Filters"

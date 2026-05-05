@@ -63,7 +63,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
     <ConditionalLink href={href}>
       <ListItemEarnCardContainer hasLink={!!href}>
         <ListItemEarnCardBody hasHintHoverActive>
-          <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
+          <ListItemEarnContentWrapper direction="row" sx={{ flexWrap: 'wrap' }}>
             <EntityStackWithBadge
               addressOverride={lpToken?.address}
               entities={[protocol!]}
@@ -75,7 +75,10 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               }}
             />
             {isMobile && primaryAction}
-            <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
+            <ListItemEarnCardTagContainer
+              direction="row"
+              sx={{ flexWrap: 'wrap' }}
+            >
               {forYou && (
                 <Badge
                   variant={BadgeVariant.Secondary}

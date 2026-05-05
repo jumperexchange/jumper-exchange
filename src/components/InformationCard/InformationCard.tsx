@@ -35,9 +35,20 @@ function InformationCard({
 }) {
   return (
     <InformationCardContainer fullWidth={fullWidth}>
-      <Typography variant="h3" display="flex" alignItems="center">
+      <Typography
+        variant="h3"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         {info.logoURI && (
-          <Box display="flex" marginRight={2}>
+          <Box
+            sx={{
+              display: 'flex',
+              marginRight: 2,
+            }}
+          >
             <Avatar
               variant="rounded"
               src={info.logoURI}

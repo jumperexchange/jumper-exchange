@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import {
   MissionHeroStatsBox,
   MissionHeroStatsText,
@@ -29,9 +29,11 @@ export const MissionHeroStatsCard: FC<InfoCardProps> = ({
       </MissionHeroStatsText>
       {typeof description === 'string' || typeof description === 'number' ? (
         <MissionHeroStatsText
-          typography={{
-            xs: 'titleXSmall',
-            sm: 'titleSmall',
+          sx={{
+            typography: {
+              xs: 'titleXSmall',
+              sm: 'titleSmall',
+            },
           }}
         >
           {description}

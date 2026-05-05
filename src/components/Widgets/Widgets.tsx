@@ -1,17 +1,17 @@
 'use client';
-import { ChainAlert } from '@/components/Alerts';
-import { LinkMap } from '@/const/linkMap';
-import { TabsMap } from '@/const/tabsMap';
-import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType } from '@/types/internal';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
-import { WidgetEvents } from './WidgetEvents';
 import {
   TrackingAction,
   TrackingEventDataAction,
 } from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
+import { ChainAlert } from '@/components/Alerts';
+import { LinkMap } from '@/const/linkMap';
+import { TabsMap } from '@/const/tabsMap';
+import { useActiveTabStore } from '@/stores/activeTab';
+import type { StarterVariantType } from '@/types/internal';
+import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
+import { WidgetEvents } from './WidgetEvents';
 
 interface WidgetsProps {
   widgetVariant: StarterVariantType;
@@ -27,10 +27,12 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
     } else {
       const url = window?.location.pathname.slice(1);
       if (Object.values(LinkMap).includes(url as LinkMap)) {
-        if (!!TabsMap.Buy.destination.filter((el) => el === url).length) {
+        if (TabsMap.Private.destination.filter((el) => el === url).length) {
+          return TabsMap.Private.variant;
+        } else if (TabsMap.Buy.destination.filter((el) => el === url).length) {
           return TabsMap.Buy.variant;
         } else if (
-          !!TabsMap.Refuel.destination.filter((el) => el === url).length
+          TabsMap.Refuel.destination.filter((el) => el === url).length
         ) {
           return TabsMap.Refuel.variant;
         } else {
@@ -51,6 +53,9 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
           break;
         case TabsMap.Refuel.variant:
           setActiveTab(TabsMap.Refuel.index);
+          break;
+        case TabsMap.Private.variant:
+          setActiveTab(TabsMap.Private.index);
           break;
         case TabsMap.Buy.variant:
           setActiveTab(TabsMap.Buy.index);

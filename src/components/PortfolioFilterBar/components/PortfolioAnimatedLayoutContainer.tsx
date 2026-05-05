@@ -32,10 +32,12 @@ export const PortfolioAnimatedLayoutContainer: FC<
       {useStackWrapper ? (
         <Stack
           direction="row"
-          gap={1}
-          alignItems="center"
-          justifyContent="end"
-          flex={1}
+          sx={{
+            gap: 1,
+            alignItems: 'center',
+            justifyContent: 'end',
+            flex: 1,
+          }}
         >
           {children}
         </Stack>

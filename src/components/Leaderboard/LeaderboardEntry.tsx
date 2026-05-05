@@ -45,7 +45,12 @@ export const LeaderboardEntry = ({
       isUserConnected={isUserConnected}
     >
       <LeaderboardEntryInfos>
-        <Box minWidth={74} textAlign={'center'}>
+        <Box
+          sx={{
+            minWidth: 74,
+            textAlign: 'center',
+          }}
+        >
           <RankLabel variant="bodyXSmallStrong">
             {isUserEntry && !isUserConnected
               ? '?'

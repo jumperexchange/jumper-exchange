@@ -18,7 +18,7 @@ export const ListItemEarnCardSkeleton: FC<{}> = ({}) => {
   return (
     <ListItemEarnCardContainer>
       <ListItemEarnCardBody>
-        <ListItemEarnContentWrapper direction="row" flexWrap="wrap">
+        <ListItemEarnContentWrapper direction="row" sx={{ flexWrap: 'wrap' }}>
           <EntityChainStack
             variant={EntityChainStackVariant.Protocol}
             isLoading
@@ -27,7 +27,10 @@ export const ListItemEarnCardSkeleton: FC<{}> = ({}) => {
           {isMobile && (
             <BaseSkeleton variant="circular" width={40} height={40} />
           )}
-          <ListItemEarnCardTagContainer direction="row" flexWrap="wrap">
+          <ListItemEarnCardTagContainer
+            direction="row"
+            sx={{ flexWrap: 'wrap' }}
+          >
             {Array.from({ length: 5 }).map((_, index) => (
               <BadgeSkeleton key={index} size={BadgeSize.MD} />
             ))}

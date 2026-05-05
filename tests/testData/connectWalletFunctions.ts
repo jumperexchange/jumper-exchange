@@ -9,7 +9,7 @@ export const connectButton = (page: Page) => {
   return page.locator('#connect-wallet-button').first();
 };
 export const selectWalletDialog = (page: Page) => {
-  return page.getByRole('dialog', { name: 'Select a wallet' });
+  return page.getByRole('dialog').filter({ hasText: 'Select a wallet' });
 };
 
 export const expectSelectWalletOptionToBeVisible = async (page: Page) => {
@@ -23,8 +23,32 @@ export const expectSelectWalletOptionToBeVisible = async (page: Page) => {
   await expect(selectWalletTitle).toBeVisible();
 };
 
-export const selectWalletOption = async (page: Page, option: string) => {
+export const selectEcosystemDialog = (page: Page) => {
+  return page.getByRole('dialog', { name: 'Select an ecosystem' });
+};
+
+export const selectEcosystemOption = async (
+  page: Page,
+  ecosystem: 'Ethereum' | 'Tron' | 'Solana' | 'Bitcoin' | 'Sui',
+) => {
+  const dialog = selectEcosystemDialog(page);
+  await expect(dialog).toBeVisible();
+  await dialog.getByText(ecosystem, { exact: true }).click();
+};
+
+export const selectWalletOption = async (
+  page: Page,
+  option: string,
+  ecosystem: 'Ethereum' | 'Tron' | 'Solana' | 'Bitcoin' | 'Sui' = 'Ethereum',
+) => {
   await selectWalletDialog(page).getByText(option).click();
+  // Some wallets (e.g. MetaMask) support multiple ecosystems and prompt the
+  // user to choose one before proceeding. If that dialog appears, pick the
+  // requested ecosystem (defaults to Ethereum to preserve existing behavior).
+  const ecosystemDialog = selectEcosystemDialog(page);
+  if (await ecosystemDialog.isVisible().catch(() => false)) {
+    await ecosystemDialog.getByText(ecosystem, { exact: true }).click();
+  }
 };
 
 export const connectAnotherWalletButton = (page: Page) => {

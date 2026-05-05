@@ -111,7 +111,9 @@ export const WideEntityCard: FC<Omit<EntityCardProps, 'type'>> = ({
             />
           ))}
         </StyledParticipantsContainer>
-        <StyledWideEntityCardTitle mt={2}>{title}</StyledWideEntityCardTitle>
+        <StyledWideEntityCardTitle sx={{ mt: 2 }}>
+          {title}
+        </StyledWideEntityCardTitle>
         {Object.keys(rewardGroups || {}).length > 0 && (
           <StyledRewardsContainer direction="row">
             {Object.entries(rewardGroups || {}).map(([rewardKey, rewards]) => {

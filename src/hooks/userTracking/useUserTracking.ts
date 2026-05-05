@@ -1,7 +1,10 @@
 'use client';
 import { getSiteUrl } from '@/const/urls';
-import type { JumperEventData } from '@/hooks/useJumperTracking';
-import { useJumperTracking } from '@/hooks/useJumperTracking';
+import type { JumperEventData } from '@/utils/tracking/jumperTracking';
+import {
+  trackJumperEvent,
+  trackJumperTransaction,
+} from '@/utils/tracking/jumperTracking';
 import { useSession } from '@/hooks/useSession';
 import type {
   TrackEventProps,
@@ -12,9 +15,10 @@ import { EventTrackingTool } from '@/types/userTracking';
 import { useAccount } from '@lifi/wallet-management';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import { useAbTestsStore } from 'src/stores/abTests';
+import { useFeatureFlags } from 'src/hooks/useFeatureFlags';
 import type { TransformedRoute } from 'src/types/internal';
 import { useFingerprint } from '../useFingerprint';
 
@@ -72,6 +76,49 @@ const addressableEvent = ({
     );
 };
 
+function buildTransactionPayload(data: TrackTransactionDataProps) {
+  return {
+    errorCode: data[TrackingEventParameter.ErrorCode],
+    errorCodeKey: data[TrackingEventParameter.ErrorCodeKey],
+    errorMessage: data[TrackingEventParameter.ErrorMessage],
+    exchange: data[TrackingEventParameter.Exchange],
+    feeCost: data[TrackingEventParameter.FeeCost],
+    feeCostFormatted: data[TrackingEventParameter.FeeCostFormatted],
+    feeCostUSD: data[TrackingEventParameter.FeeCostUSD],
+    fromAmount: Number(data[TrackingEventParameter.FromAmount] ?? 0),
+    fromAmountUSD: Number(data[TrackingEventParameter.FromAmountUSD] ?? 0),
+    fromChainId: data[TrackingEventParameter.FromChainId],
+    fromToken: data[TrackingEventParameter.FromToken],
+    gasCost: data[TrackingEventParameter.GasCost],
+    gasCostFormatted: data[TrackingEventParameter.GasCostFormatted],
+    gasCostUSD: Number(data[TrackingEventParameter.GasCostUSD] ?? 0),
+    integrator: data[TrackingEventParameter.Integrator],
+    isFinal: data[TrackingEventParameter.IsFinal],
+    lastStepAction: data[TrackingEventParameter.LastStepAction],
+    message: data[TrackingEventParameter.Message],
+    nbOfSteps: data[TrackingEventParameter.NbOfSteps],
+    routeId: data[TrackingEventParameter.RouteId],
+    slippage: data[TrackingEventParameter.Slippage],
+    maxSlippage: data[TrackingEventParameter.MaxSlippage],
+    status: data[TrackingEventParameter.Status],
+    stepIds: data[TrackingEventParameter.StepIds],
+    steps: data[TrackingEventParameter.Steps],
+    tags: data[TrackingEventParameter.Tags],
+    time: data[TrackingEventParameter.Time],
+    toAmount: Number(data[TrackingEventParameter.ToAmount] ?? 0),
+    toAmountFormatted: data[TrackingEventParameter.ToAmountFormatted],
+    toAmountMin: Number(data[TrackingEventParameter.ToAmountMin] ?? 0),
+    toAmountUSD: Number(data[TrackingEventParameter.ToAmountUSD] ?? 0),
+    toChainId: data[TrackingEventParameter.ToChainId],
+    toToken: data[TrackingEventParameter.ToToken],
+    transactionHash: data[TrackingEventParameter.TransactionHash],
+    transactionId: data[TrackingEventParameter.TransactionId],
+    transactionLink: data[TrackingEventParameter.TransactionLink],
+    transactionStatus: data[TrackingEventParameter.TransactionStatus],
+    type: data[TrackingEventParameter.Type],
+  };
+}
+
 export interface UserTracking {
   trackEvent: (event: TrackEventProps) => Promise<void>;
   trackTransaction: (transaction: TrackTransactionProps) => Promise<void>;
@@ -86,11 +133,34 @@ export function useUserTracking(): UserTracking {
   const sessionId = useSession();
   const fp = useFingerprint();
   const { activeAbTests } = useAbTestsStore();
+  const { data: featureFlags } = useFeatureFlags();
 
-  const {
-    trackEvent: jumperTrackEvent,
-    trackTransaction: jumperTrackTransaction,
-  } = useJumperTracking();
+  const sessionContext = useMemo(
+    () => ({
+      browserFingerprint: fp || 'unknown',
+      walletAddress: account.address || 'not_connected',
+      walletProvider: account.connector?.name,
+      sessionId: sessionId || 'unknown',
+      abtests: activeAbTests,
+    }),
+    [fp, account.address, account.connector?.name, sessionId, activeAbTests],
+  );
+
+  const getFeatureFlagVariants = useCallback(
+    (eventName: string): Record<string, string | boolean> => {
+      const matching = (featureFlags ?? []).filter(
+        (f) => !f.events?.length || f.events.includes(eventName),
+      );
+      return matching.reduce<Record<string, string | boolean>>(
+        (acc, f) => ({
+          ...acc,
+          [f.key]: f.variant as unknown as string | boolean,
+        }),
+        {},
+      );
+    },
+    [featureFlags],
+  );
 
   const trackEvent = useCallback(
     async ({
@@ -107,47 +177,32 @@ export function useUserTracking(): UserTracking {
         googleEvent({ action, category, data });
       }
       if (enableAddressable) {
-        const dataArray = [];
-        if (label) {
-          dataArray.push({ name: 'label', value: label });
-        }
-
         addressableEvent({ action, label, data: data || {}, isConversion });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
         try {
-          const eventData = {
-            category,
-            value: typeof value === 'number' ? value : 0,
+          const flagVariants = getFeatureFlagVariants(action);
+          await trackJumperEvent({
+            ...sessionContext,
             action,
+            category,
             label,
             data: data || {},
+            value: typeof value === 'number' ? value : 0,
             isConnected: account.isConnected || false,
-            walletAddress: account.address || 'not_connected',
-            walletProvider: account.connector?.name,
-            browserFingerprint: fp || 'unknown',
             isMobile: !isDesktop,
-            sessionId: sessionId || 'unknown',
             referrer: document?.referrer,
             url: window?.location?.href || getSiteUrl(),
-            abtests: activeAbTests,
-          };
-          await jumperTrackEvent(eventData);
+            ...(Object.keys(flagVariants).length > 0 && {
+              abTestVariants: flagVariants,
+            }),
+          });
         } catch (error) {
           console.error('Error in tracking event:', error);
         }
       }
     },
-    [
-      account.address,
-      account.connector?.name,
-      account.isConnected,
-      fp,
-      isDesktop,
-      jumperTrackEvent,
-      sessionId,
-      activeAbTests,
-    ],
+    [sessionContext, account.isConnected, isDesktop, getFeatureFlagVariants],
   );
 
   const trackTransaction = useCallback(
@@ -162,58 +217,22 @@ export function useUserTracking(): UserTracking {
         googleEvent({ action, category, data });
       }
       if (!disableTrackingTool?.includes(EventTrackingTool.JumperTracking)) {
-        const transactionData = {
-          url: window?.location?.href || getSiteUrl(),
-          browserFingerprint: fp || 'unknown',
-          walletAddress: account.address || 'not_connected',
-          walletProvider: account.connector?.name,
-          referrer: document?.referrer,
-          abtests: activeAbTests,
-          // data from handleRouteTrackingData:
-          action: data[TrackingEventParameter.Action] ?? action ?? '',
-          errorCode: data[TrackingEventParameter.ErrorCode],
-          errorCodeKey: data[TrackingEventParameter.ErrorCodeKey],
-          errorMessage: data[TrackingEventParameter.ErrorMessage],
-          exchange: data[TrackingEventParameter.Exchange],
-          feeCost: data[TrackingEventParameter.FeeCost],
-          feeCostFormatted: data[TrackingEventParameter.FeeCostFormatted],
-          feeCostUSD: data[TrackingEventParameter.FeeCostUSD],
-          fromAmount: Number(data[TrackingEventParameter.FromAmount]),
-          fromAmountUSD: Number(data[TrackingEventParameter.FromAmountUSD]),
-          fromChainId: data[TrackingEventParameter.FromChainId],
-          fromToken: data[TrackingEventParameter.FromToken],
-          gasCost: data[TrackingEventParameter.GasCost],
-          gasCostFormatted: data[TrackingEventParameter.GasCostFormatted],
-          gasCostUSD: Number(data[TrackingEventParameter.GasCostUSD]),
-          integrator: data[TrackingEventParameter.Integrator],
-          isFinal: data[TrackingEventParameter.IsFinal],
-          lastStepAction: data[TrackingEventParameter.LastStepAction],
-          message: data[TrackingEventParameter.Message],
-          nbOfSteps: data[TrackingEventParameter.NbOfSteps],
-          routeId: data[TrackingEventParameter.RouteId],
-          sessionId: sessionId || '',
-          slippage: data[TrackingEventParameter.Slippage],
-          maxSlippage: data[TrackingEventParameter.MaxSlippage],
-          status: data[TrackingEventParameter.Status],
-          stepIds: data[TrackingEventParameter.StepIds],
-          steps: data[TrackingEventParameter.Steps],
-          tags: data[TrackingEventParameter.Tags],
-          time: data[TrackingEventParameter.Time],
-          toAmount: Number(data[TrackingEventParameter.ToAmount]),
-          toAmountFormatted: data[TrackingEventParameter.ToAmountFormatted],
-          toAmountMin: Number(data[TrackingEventParameter.ToAmountMin]),
-          toAmountUSD: Number(data[TrackingEventParameter.ToAmountUSD]),
-          toChainId: data[TrackingEventParameter.ToChainId],
-          toToken: data[TrackingEventParameter.ToToken],
-          transactionHash: data[TrackingEventParameter.TransactionHash],
-          transactionId: data[TrackingEventParameter.TransactionId],
-          transactionLink: data[TrackingEventParameter.TransactionLink],
-          transactionStatus: data[TrackingEventParameter.TransactionStatus],
-          type: data[TrackingEventParameter.Type],
-        };
-        await jumperTrackTransaction(transactionData);
+        try {
+          const dataAction =
+            data[TrackingEventParameter.Action] ?? action ?? '';
+          const flagVariants = getFeatureFlagVariants(dataAction);
+          await trackJumperTransaction({
+            ...sessionContext,
+            ...buildTransactionPayload(data),
+            action: dataAction,
+            url: window?.location?.href || getSiteUrl(),
+            referrer: document?.referrer,
+            abTestVariants: { ...data.abTestVariants, ...flagVariants },
+          });
+        } catch (error) {
+          console.error('Error in tracking transaction:', error);
+        }
       }
-
       if (enableAddressable) {
         addressableEvent({
           action,
@@ -223,14 +242,7 @@ export function useUserTracking(): UserTracking {
         });
       }
     },
-    [
-      account.address,
-      account.connector?.name,
-      fp,
-      jumperTrackTransaction,
-      sessionId,
-      activeAbTests,
-    ],
+    [sessionContext, getFeatureFlagVariants],
   );
 
   return {

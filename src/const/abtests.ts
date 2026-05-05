@@ -3,6 +3,7 @@ export enum AB_TEST_NAME {
   A_B_TEST_PRICE_IMPACT_DISPLAY = 'a-b-test-price-impact-display',
   A_B_TEST_TRADE_DISPLAY = 'a-b-test-trade-display',
   A_B_TEST_FEE_CONTRIBUTION_DISPLAY = 'a-b-test-fee-contribution-display',
+  DUST_CONVERSION = 'dust-conversion',
 }
 
 // Single source of truth for all A/B tests
@@ -23,6 +24,10 @@ export const AbTests = {
     name: 'a-b-test-fee-contribution-display',
     enabled: true,
   },
+  [AB_TEST_NAME.DUST_CONVERSION]: {
+    name: 'dust-conversion',
+    enabled: true,
+  },
   // Add more tests here as needed
 } as const;
 
@@ -30,6 +35,11 @@ export const AbTests = {
 export const isAbTestingEnabled = true;
 
 export type AbTestName = keyof typeof AbTests;
+export type AbTestFeatureKey =
+  `$feature/${(typeof AbTests)[keyof typeof AbTests]['name']}`;
+export type AbTestVariants = Partial<
+  Record<(typeof AbTests)[keyof typeof AbTests]['name'], string | boolean>
+>;
 
 // For backward compatibility with AbTestConfig usage
 export const AbTestConfig = {

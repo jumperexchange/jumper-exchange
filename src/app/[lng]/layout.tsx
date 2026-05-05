@@ -5,6 +5,7 @@ import Script from 'next/script';
 import type { Viewport } from 'next/types';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Suspense, type ReactNode } from 'react';
+import { FeatureFlagsBootstrap } from 'src/components/FeatureFlagsBootstrap/FeatureFlagsBootstrap';
 import { ReferrerCapture } from 'src/components/ReferrerCapture/ReferrerCapture';
 import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
@@ -17,12 +18,10 @@ import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import {
-  DefaultThemeProvider,
-  MUIThemeProvider,
-} from '@/providers/ThemeProvider';
+import { DefaultThemeProvider } from '@/providers/ThemeProvider/DefaultThemeProvider';
+import { MUIThemeProvider } from '@/providers/ThemeProvider/MUIThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
-import { WalletProvider } from '@/providers/WalletProvider';
+import { WalletProvider } from '@/providers/WalletProvider/WalletProvider';
 import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
 import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
@@ -236,6 +235,7 @@ export default async function RootLayout({
                         <PortfolioProvider>
                           <Suspense>
                             <ReferrerCapture />
+                            <FeatureFlagsBootstrap />
                           </Suspense>
                           <NavbarWrapper />
                           <IntercomProvider />

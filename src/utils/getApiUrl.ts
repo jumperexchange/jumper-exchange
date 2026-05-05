@@ -1,19 +1,41 @@
 import config from '@/config/env-config';
+import { isBeta } from './isBeta';
 
-const getApiUrl = (): string => {
+export interface GetApiUrlParams {
+  isPrivateVariant?: boolean;
+}
+
+enum ApiUrlFlags {
+  Beta = 'beta',
+  Private = 'private',
+}
+
+const getApiUrl = (params?: GetApiUrlParams): string => {
   const suffix = '/v1';
-  let apiUrl = config.NEXT_PUBLIC_LIFI_BACKEND_URL;
-  if (typeof window === 'undefined') {
-    return `${apiUrl}${suffix}`;
-  }
+  const apiUrl = config.NEXT_PUBLIC_LIFI_BACKEND_URL;
 
-  const isBetaEnabled = window?.localStorage.getItem('use-beta');
+  const flags = [betaOverride(params), privateOverride(params)]
+    .filter(Boolean)
+    .map((flag) => `/${flag}`)
+    .join('');
 
-  if (isBetaEnabled) {
-    apiUrl = `${apiUrl}/beta`;
-  }
-
-  return `${apiUrl}${suffix}`;
+  return `${apiUrl}${flags}${suffix}`;
 };
+
+function betaOverride(_params?: GetApiUrlParams) {
+  if (typeof window === 'undefined') {
+    return undefined;
+  }
+
+  if (isBeta()) {
+    return ApiUrlFlags.Beta;
+  }
+}
+
+function privateOverride(params?: GetApiUrlParams) {
+  if (params?.isPrivateVariant) {
+    return ApiUrlFlags.Private;
+  }
+}
 
 export default getApiUrl;

@@ -22,7 +22,9 @@ test.describe('Chains filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
+    await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -110,7 +112,9 @@ test.describe('Protocols filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
+    await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -156,7 +160,9 @@ test.describe('Assets filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
+    await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -177,7 +183,9 @@ test.describe('Tags filters on Earn page', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
+    await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');
@@ -262,7 +270,9 @@ test.describe('Should be able to navigate to the "Your Positions" tab', () => {
   test.beforeEach(async ({ page, context }) => {
     await context.addInitScript({ content: injectMockWallet() });
     await page.goto('/earn');
+    await page.waitForLoadState('load');
     await expect(connectButton(page)).toBeVisible();
+    await expect(connectButton(page)).toBeEnabled();
     await connectButton(page).click();
     await expectSelectWalletOptionToBeVisible(page);
     await selectWalletOption(page, 'MetaMask');

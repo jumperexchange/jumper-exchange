@@ -60,6 +60,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXLargeStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 800,
     fontSize: '24px',
@@ -67,6 +68,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXLarge: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 400,
     fontSize: '24px',
@@ -74,6 +76,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyLargeStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 700,
     fontSize: '18px',
@@ -81,6 +84,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyLarge: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '18px',
@@ -88,6 +92,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyLargeParagraph: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '18px',
@@ -95,6 +100,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyMediumStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 700,
     fontSize: '16px',
@@ -102,6 +108,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyMedium: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '16px',
@@ -109,6 +116,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyMediumParagraph: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '16px',
@@ -116,6 +124,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodySmallStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 700,
     fontSize: '14px',
@@ -123,6 +132,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodySmallParagraph: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '14px',
@@ -130,6 +140,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodySmall: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 400,
     fontSize: '14px',
@@ -137,6 +148,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXSmallStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 700,
     fontSize: '12px',
@@ -144,6 +156,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXSmall: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '12px',
@@ -151,6 +164,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXXSmallStrong: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 700,
     fontSize: '10px',
@@ -158,6 +172,7 @@ export const createTypography = (
     letterSpacing: 0,
   },
   bodyXXSmall: {
+    fontFamily: fonts.body,
     fontStyle: 'normal',
     fontWeight: 400,
     fontSize: '10px',

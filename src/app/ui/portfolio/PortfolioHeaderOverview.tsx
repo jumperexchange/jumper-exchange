@@ -36,7 +36,12 @@ export const PortfolioHeaderOverview = () => {
   return (
     <PortfolioHeaderOverviewContainer>
       <PortfolioHeaderOverviewHeaderContainer>
-        <Typography variant="bodyMediumStrong" color="text.secondary">
+        <Typography
+          variant="bodyMediumStrong"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {t('portfolio.overviewCard.title')}
         </Typography>
         {portfolioWelcomeScreenClosed && <PortfolioRefreshBalance />}

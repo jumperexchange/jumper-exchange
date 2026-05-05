@@ -434,8 +434,8 @@ export const useMenuItems = () => {
       return (
         <Typography
           variant="bodyMedium"
-          textTransform="uppercase"
           sx={{
+            textTransform: 'uppercase',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             maxWidth: 38,

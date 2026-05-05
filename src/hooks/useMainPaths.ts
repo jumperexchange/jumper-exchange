@@ -1,4 +1,6 @@
+import { usePathname } from 'next/navigation';
 import {
+  AppPaths,
   JUMPER_BRIDGE_PATH,
   JUMPER_LEARN_PATH,
   JUMPER_PROFILE_PATH,
@@ -6,7 +8,6 @@ import {
   JUMPER_SWAP_PATH,
   JUMPER_ZAP_PATH,
 } from '@/const/urls';
-import { usePathname } from 'next/navigation';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
@@ -15,8 +16,9 @@ interface useMainPathsProps {
 export const useMainPaths = (): useMainPathsProps => {
   const pathname = usePathname();
 
-  const isGas = pathname?.includes('/gas');
+  const isGas = pathname?.includes(AppPaths.Gas);
   const isBuy = pathname?.includes('/buy');
+  const isPrivate = pathname?.includes(AppPaths.Private);
   //Todo: find better way to check
   const isExchange =
     !pathname?.includes(JUMPER_SWAP_PATH) &&
@@ -31,6 +33,6 @@ export const useMainPaths = (): useMainPathsProps => {
       pathname?.split('/').length === 2);
 
   return {
-    isMainPaths: isGas || isBuy || isExchange,
+    isMainPaths: isGas || isBuy || isPrivate || isExchange,
   };
 };

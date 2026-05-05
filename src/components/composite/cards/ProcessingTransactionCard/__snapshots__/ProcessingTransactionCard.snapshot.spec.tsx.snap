@@ -39,7 +39,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -52,10 +52,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       E
                     </p>
@@ -72,7 +72,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -91,7 +91,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div
@@ -104,10 +104,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       U
                     </p>
@@ -124,7 +124,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -147,7 +147,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
           class="MuiStack-root css-16o79sz-MuiStack-root"
         >
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             ETH
           </p>
@@ -163,13 +163,13 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot 1`] = `
             />
           </svg>
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             USDC
           </p>
         </div>
         <p
-          class="MuiTypography-root MuiTypography-bodyXSmall css-z01s5x-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-bodyXSmall css-17blqod-MuiTypography-root"
         >
           This is a sample transaction description.
         </p>
@@ -218,7 +218,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -231,10 +231,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       E
                     </p>
@@ -251,7 +251,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -270,7 +270,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div
@@ -283,10 +283,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       U
                     </p>
@@ -303,7 +303,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -326,7 +326,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
           class="MuiStack-root css-16o79sz-MuiStack-root"
         >
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             ETH
           </p>
@@ -342,13 +342,13 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status faile
             />
           </svg>
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             USDC
           </p>
         </div>
         <p
-          class="MuiTypography-root MuiTypography-bodyXSmall css-1xsj8gl-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-bodyXSmall css-vbz8oi-MuiTypography-root"
         >
           This is a sample transaction description.
         </p>
@@ -397,7 +397,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
           class="MuiBox-root css-ep7xq6"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-ETH"
           >
             <div
@@ -410,10 +410,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       E
                     </p>
@@ -430,7 +430,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -449,7 +449,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
           class="MuiBox-root css-exjb9r"
         >
           <div
-            class="MuiBox-root css-h1oaii"
+            class="MuiBox-root css-1i97kwt"
             data-testid="tokens-USDC"
           >
             <div
@@ -462,10 +462,10 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-xczvr5-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-pd96vu-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-8stpht-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-eeh64v-MuiTypography-root"
                     >
                       U
                     </p>
@@ -482,7 +482,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular css-lzt2y3-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular css-1m1zdtc-MuiAvatar-root"
                     >
                       <img
                         alt="Ethereum"
@@ -505,7 +505,7 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
           class="MuiStack-root css-16o79sz-MuiStack-root"
         >
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             ETH
           </p>
@@ -521,13 +521,13 @@ exports[`ProcessingTransactionCard snapshot > matches snapshot with status succe
             />
           </svg>
           <p
-            class="MuiTypography-root MuiTypography-bodyLargeStrong css-t4sa8f-MuiTypography-root"
+            class="MuiTypography-root MuiTypography-bodyLargeStrong css-1el8v91-MuiTypography-root"
           >
             USDC
           </p>
         </div>
         <p
-          class="MuiTypography-root MuiTypography-bodyXSmall css-1uzhjcj-MuiTypography-root"
+          class="MuiTypography-root MuiTypography-bodyXSmall css-c4tgj8-MuiTypography-root"
         >
           This is a sample transaction description.
         </p>

@@ -1,4 +1,4 @@
-import { SingleSelectProps } from '../Select.types';
+import type { SingleSelectProps } from '../Select.types';
 import { SelectBase } from '../components/SelectBase';
 import { useSelect } from '../hooks';
 import { SelectorLabel } from '../components/SelectLabel';
@@ -8,6 +8,7 @@ export const SingleSelect = <T extends string>({
   value: initialValue,
   label: initialLabel,
   title,
+  labelIcon,
   debounceMs,
   onChange,
   ...rest
@@ -31,6 +32,8 @@ export const SingleSelect = <T extends string>({
     rest.options.find((option) => option.value === value)?.label ||
     initialLabel ||
     '';
+  const icon =
+    labelIcon ?? rest.options.find((option) => option.value === value)?.icon;
 
   return (
     <SelectBase
@@ -38,7 +41,7 @@ export const SingleSelect = <T extends string>({
       value={value}
       onChange={handleChange}
       multiple={false}
-      selectorContent={<SelectorLabel label={label} />}
+      selectorContent={<SelectorLabel label={label} icon={icon} />}
     />
   );
 };

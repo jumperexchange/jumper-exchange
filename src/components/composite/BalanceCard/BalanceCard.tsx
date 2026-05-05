@@ -69,10 +69,13 @@ export const BalanceCard: FC<BalanceCardProps> = ({
           direction="row"
           spacing={2}
           useFlexGap
-          justifyContent="space-between"
-          alignItems="center"
           onClick={handlePrimaryClick}
-          sx={config.primary.itemSx}
+          sx={[
+            { justifyContent: 'space-between', alignItems: 'center' },
+            ...(Array.isArray(config.primary.itemSx)
+              ? config.primary.itemSx
+              : [config.primary.itemSx]),
+          ]}
         >
           <EntityStackWithBadge
             disableBorder

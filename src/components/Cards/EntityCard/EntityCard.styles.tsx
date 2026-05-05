@@ -196,7 +196,17 @@ export const StyledCompactRewardLabel = styled(Typography)(({ theme }) => ({
 }));
 
 export const StyledRewardsAvatarsContainer = styled((props: StackProps) => (
-  <Stack direction="row" spacing={-1.5} alignItems="center" {...props} />
+  <Stack
+    direction="row"
+    spacing={-1.5}
+    {...props}
+    sx={[
+      {
+        alignItems: 'center',
+      },
+      ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+    ]}
+  />
 ))(({ theme }) => ({}));
 
 export const StyledRewardAvatar = styled(BaseAvatar)(({ theme }) => ({

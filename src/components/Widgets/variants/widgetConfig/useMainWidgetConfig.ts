@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
 import type { WidgetConfig } from '@lifi/widget';
-import { HiddenUI, RequiredUI, ChainId } from '@lifi/widget';
-import { ThemesMap } from 'src/const/themesMap';
-import type { MainWidgetContext, HookDependencies } from './types';
-import { useMemelist } from 'src/hooks/useMemelist';
+import { ChainId, HiddenUI, RequiredUI } from '@lifi/widget';
+import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
-import { generateRouteLabel } from './utils';
+import { ThemesMap } from 'src/const/themesMap';
+import { useMemelist } from 'src/hooks/useMemelist';
 import { themeAllowChains } from '../../Widget.types';
+import type { HookDependencies, MainWidgetContext } from './types';
+import { generateRouteLabel } from './utils';
 
 /**
  * Configuration hook for the main widget variant
@@ -26,7 +26,6 @@ export function useMainWidgetConfig(
 
   return useMemo(() => {
     const isMemecoins = context.partnerName === ThemesMap.Memecoins;
-    const isBuyVariant = context.starterVariant === 'buy';
 
     const _tokens = tokens || {};
     if (memeListTokens) {
@@ -42,11 +41,11 @@ export function useMainWidgetConfig(
       buildUrl: true,
       useRelayerRoutes: true,
       subvariant:
-        isBuyVariant || isMemecoins
+        context.starterVariant === 'buy' ||
+        context.starterVariant === 'private' ||
+        isMemecoins
           ? 'default'
-          : context.starterVariant === 'buy'
-            ? 'default'
-            : context.starterVariant,
+          : context.starterVariant,
       subvariantOptions: {},
 
       // UI configuration
@@ -106,7 +105,8 @@ export function useMainWidgetConfig(
 
     if (
       context.bridgeConditions?.isAGWToNonABSChain ||
-      context.bridgeConditions?.isPrivateSwapSelected
+      context.bridgeConditions?.isPrivateSwapSelected ||
+      context.starterVariant === 'private'
     ) {
       config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
     }

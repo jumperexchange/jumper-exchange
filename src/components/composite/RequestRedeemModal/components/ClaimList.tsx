@@ -1,5 +1,8 @@
 import { type FC, useCallback } from 'react';
-import { type useFormatRedeemClaimData } from '../hooks/useFormatRedeemClaimData';
+import type {
+  FormattedClaim,
+  FormattedClaims,
+} from '../hooks/useFormatRedeemClaimData';
 import { ProcessingTransactionCard } from '@/components/composite/cards/ProcessingTransactionCard/ProcessingTransactionCard';
 import { type ProcessingTransactionCardStatus } from '@/components/composite/cards/ProcessingTransactionCard/types';
 import { useWidgetNavigation } from '@/components/composite/JumperWidget/context';
@@ -7,25 +10,25 @@ import type { ExtendedToken } from '@/types/tokens';
 import { RequestRedeemModalView } from '../types';
 
 interface ClaimListProps {
-  claims: ReturnType<typeof useFormatRedeemClaimData>;
-  setSelectedClaimId: (id: string | null) => void;
+  claims: FormattedClaims;
+  setSelectedClaim: (claim: FormattedClaim | null) => void;
   fromToken: ExtendedToken;
   toToken: ExtendedToken;
 }
 
 export const ClaimList: FC<ClaimListProps> = ({
   claims,
-  setSelectedClaimId,
+  setSelectedClaim,
   toToken,
   fromToken,
 }) => {
   const { goToView } = useWidgetNavigation();
   const handleClaimClick = useCallback(
-    (claimId: string) => {
-      setSelectedClaimId(claimId);
+    (claim: FormattedClaim) => {
+      setSelectedClaim(claim);
       goToView(RequestRedeemModalView.CLAIM_REDEEM);
     },
-    [setSelectedClaimId, goToView],
+    [setSelectedClaim, goToView],
   );
   return claims.map((formattedClaim) => (
     <ProcessingTransactionCard
@@ -37,7 +40,7 @@ export const ClaimList: FC<ClaimListProps> = ({
       description={formattedClaim.description}
       onClick={
         formattedClaim.status === 'success'
-          ? () => handleClaimClick(formattedClaim.id)
+          ? () => handleClaimClick(formattedClaim)
           : undefined
       }
     />

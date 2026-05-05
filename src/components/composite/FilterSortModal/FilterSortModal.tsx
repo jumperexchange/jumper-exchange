@@ -8,7 +8,7 @@ import { MultiLayerDrawerDivider } from '../MultiLayer/MultiLayer.styles';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useFullScreenDrawer } from '@/components/core/FullScreenDrawer/hooks';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { Button } from '@/components/core/buttons/Button/Button';
 import { Size, Variant } from '@/components/core/buttons/types';
@@ -85,7 +85,17 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
       {triggerButton ? (
         triggerButton
       ) : (
-        <Stack direction="row" gap={1} sx={defaultTriggerSx}>
+        <Stack
+          direction="row"
+          sx={[
+            {
+              gap: 1,
+            },
+            ...(Array.isArray(defaultTriggerSx)
+              ? defaultTriggerSx
+              : [defaultTriggerSx]),
+          ]}
+        >
           {hasFilterApplied && (
             <IconButton
               size={Size.MD}
@@ -94,7 +104,7 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
               data-testid={`${testId}-clear-button`}
               sx={clearIconButtonSx}
             >
-              <DeleteOutlineIcon />
+              <DeleteOutlinedIcon />
             </IconButton>
           )}
           <Button
@@ -117,8 +127,25 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
       )}
       <ModalContainer isOpen={isOpen} onClose={handleClose}>
         <SectionCard sx={sectionCardSx}>
-          <Stack direction="row" sx={{ flex: 1, minHeight: 0 }} gap={4}>
-            <Stack direction="column" gap={1} sx={categoryListSx}>
+          <Stack
+            direction="row"
+            sx={{
+              gap: 4,
+              flex: 1,
+              minHeight: 0,
+            }}
+          >
+            <Stack
+              direction="column"
+              sx={[
+                {
+                  gap: 1,
+                },
+                ...(Array.isArray(categoryListSx)
+                  ? categoryListSx
+                  : [categoryListSx]),
+              ]}
+            >
               {categories.map((category, index) => (
                 <CategoryListItem
                   key={category.id}
@@ -144,7 +171,12 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
           </Stack>
 
           <MultiLayerDrawerDivider />
-          <Stack direction="row" gap={2}>
+          <Stack
+            direction="row"
+            sx={{
+              gap: 2,
+            }}
+          >
             <Button
               disabled={disableClear}
               onClick={handleClear}

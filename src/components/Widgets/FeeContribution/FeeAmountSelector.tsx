@@ -32,7 +32,9 @@ export const FeeAmountSelector: FC<FeeAmountSelectorProps> = ({
       container
       spacing={2}
       columnSpacing={1}
-      justifyContent={'space-between'}
+      sx={{
+        justifyContent: 'space-between',
+      }}
     >
       <PredefinedOptions
         isDisabled={isDisabled}

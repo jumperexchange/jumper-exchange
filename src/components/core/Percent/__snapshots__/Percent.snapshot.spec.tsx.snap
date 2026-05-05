@@ -1,0 +1,478 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Percent snapshot > default percent matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="32"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    />
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent at 0% matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="0"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 129.591px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
+      >
+        0%
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent at 100% matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="100"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 0px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
+      >
+        100%
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with children matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="75"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 32.398px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-5mnyfu-MuiAvatar-root"
+      >
+        <img
+          class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+          src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with extra large size matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-14y7xxe"
+  >
+    <span
+      aria-valuenow="90"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 56px; height: 56px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 12.959px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
+      >
+        +8
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with large size matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-lzfw4l"
+  >
+    <span
+      aria-valuenow="88"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 48px; height: 48px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 15.551px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
+      >
+        +5
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with long text matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="32"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
+      >
+        1121111232
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with medium size matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1kzpthm"
+  >
+    <span
+      aria-valuenow="66"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 40px; height: 40px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 44.061px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
+      >
+        +3
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with small size matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-ixlzd0"
+  >
+    <span
+      aria-valuenow="50"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 24px; height: 24px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 64.795px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodyXXSmallStrong css-125ae3r-MuiTypography-root"
+      >
+        +1
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Percent snapshot > percent with text matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-dj6tjg"
+  >
+    <span
+      aria-valuenow="32"
+      class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
+      role="progressbar"
+      style="width: 64px; height: 64px; transform: rotate(-90deg);"
+    >
+      <svg
+        class="MuiCircularProgress-svg css-54pwck-MuiCircularProgress-svg"
+        viewBox="22 22 44 44"
+      >
+        <circle
+          aria-hidden="true"
+          class="MuiCircularProgress-track css-1y40rld-MuiCircularProgress-track"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+        />
+        <circle
+          class="MuiCircularProgress-circle MuiCircularProgress-circleDisableShrink css-eorpq6-MuiCircularProgress-circle"
+          cx="44"
+          cy="44"
+          fill="none"
+          r="20.625"
+          stroke-width="2.75"
+          style="stroke-dasharray: 129.591; stroke-dashoffset: 88.122px;"
+        />
+      </svg>
+    </span>
+    <div
+      class="MuiBox-root css-iwsnym"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
+      >
+        +2
+      </p>
+    </div>
+  </div>
+</div>
+`;

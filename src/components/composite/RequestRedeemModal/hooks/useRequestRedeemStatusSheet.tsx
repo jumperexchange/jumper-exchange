@@ -13,21 +13,21 @@ export const useRequestRedeemStatusSheet = ({
   isClaimFlow,
   selectedClaimToTokenBalance,
   requestWithdrawToTokenBalance,
-  resetAmount,
+  onCloseCallback,
 }: {
   transactionForm: ReturnType<typeof useTransactionForm>;
   isClaimFlow: boolean;
   selectedClaimToTokenBalance: Balance<ExtendedToken>;
   requestWithdrawToTokenBalance: Balance<ExtendedToken>;
-  resetAmount: () => void;
+  onCloseCallback: () => void;
 }) => {
   const lastOpenSheetRef = useRef<JumperWidgetStatusSheetProp | null>(null);
   const { t } = useTranslation();
 
   const handleCloseSuccess = useCallback(() => {
     transactionForm.handleCloseSuccess();
-    resetAmount();
-  }, [transactionForm.handleCloseSuccess, resetAmount]);
+    onCloseCallback();
+  }, [transactionForm.handleCloseSuccess, onCloseCallback]);
 
   const statusContent = useTransactionStatusContent({
     keys: isClaimFlow ? CLAIM_STATUS_KEYS : WITHDRAW_STATUS_KEYS,

@@ -2,9 +2,9 @@ import config from '@/config/env-config';
 
 export const JUMPER_URL = 'https://jumper.xyz';
 export const JUMPER_STRAPI_URL = 'https://strapi.jumper.xyz';
-export const DISCORD_URL = 'https://discord.gg/jumperexchange';
-export const DISCORD_URL_INVITE = 'https://discord.com/invite/jumperexchange';
-export const X_URL = 'https://x.com/JumperExchange';
+export const DISCORD_URL = 'https://discord.gg/jumperapp';
+export const DISCORD_URL_INVITE = 'https://discord.com/invite/jumperapp';
+export const X_URL = 'https://x.com/jumperapp';
 export const GITHUB_URL = 'https://github.com/jumperexchange';
 export const X_SHARE_URL = 'https://x.com/share';
 export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
@@ -33,6 +33,7 @@ export const JUMPER_PRIVACY_POLICY_PATH = '/privacy-policy';
 export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
+export const JUMPER_PRIVATE_PATH = '/private';
 
 export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
 export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
@@ -66,4 +67,10 @@ export enum AppPaths {
   TermsOfBusiness = JUMPER_TERMS_OF_BUSINESS_PATH,
   Portfolio = JUMPER_PORTFOLIO_PATH,
   Newsletter = JUMPER_NEWSLETTER_PATH,
+  Private = JUMPER_PRIVATE_PATH,
+}
+
+export enum JumperBackendApiPaths {
+  GetUserTracking = '/users/events',
+  GetUserTransactions = '/wallets/transactions',
 }

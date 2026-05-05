@@ -110,6 +110,7 @@ export interface CreateUserTrackingDto {
    * @example "MetaMask"
    */
   walletProvider?: string;
+  abTestVariants?: object;
 }
 
 export interface RewardEntity {
@@ -521,16 +522,6 @@ export interface WalletEntity {
   user: UserEntity;
 }
 
-export interface PosthogFeatureFlag {
-  /**
-   * The metadata of the feature flag
-   * @example {"timestamp":"2021-01-01T00:00:00.000Z","path":"/api/feature-flag","method":"GET"}
-   */
-  meta: object;
-  /** The data of the feature flag */
-  data: string | boolean;
-}
-
 export interface CreateWalletTransactionDto {
   sessionId: string;
   /**
@@ -591,6 +582,7 @@ export interface CreateWalletTransactionDto {
   pathname?: string;
   referrer?: string;
   abtests?: object;
+  abTestVariants?: object;
   /** @format date-time */
   timestamp: string;
 }
@@ -653,6 +645,8 @@ export interface EarnInteractionFlags {
 export interface APYItem {
   base: number;
   reward: number;
+  intrinsic: number;
+  jumperReward?: number;
   total: number;
 }
 
@@ -681,6 +675,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
@@ -690,12 +685,14 @@ export interface EarnOpportunityWithLatestAnalytics {
 export interface ApyHistoryPoint {
   /** The timestamp of the data point */
   t: number;
-  /** The base APY */
-  base: number;
-  /** The reward APY */
-  reward: number;
-  /** The total APY (base + reward) */
-  total: number;
+  /** The base APY. Null when data is unavailable. */
+  base: number | null;
+  /** The reward APY. Null when data is unavailable. */
+  reward: number | null;
+  /** The intrinsic APY from the underlying asset. Null when data is unavailable. */
+  intrinsic: number | null;
+  /** The total APY (base + reward + intrinsic). Null when data is unavailable. */
+  total: number | null;
 }
 
 export interface ApyAnalyticsHistory {
@@ -706,8 +703,8 @@ export interface ApyAnalyticsHistory {
 export interface EarnOpportunityHistoryPoint {
   /** The timestamp of the data point */
   t: number;
-  /** The value of the data point */
-  v: number | string;
+  /** The value of the data point. Null when data is unavailable. */
+  v: number | string | null;
 }
 
 export interface EarnOpportunityHistory {
@@ -943,6 +940,7 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
   rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
@@ -1012,6 +1010,19 @@ export interface PerkClaimEntity {
    * @example "test-email@example.com"
    */
   email: string;
+}
+
+export interface FeatureFlagResponseDto {
+  /** @example "a-b-test-trade-display" */
+  key: string;
+  /** @example "A/B Test Trade Display" */
+  name?: string;
+  /** @example "test" */
+  variant: string | boolean;
+  /** @example ["execution_completed"] */
+  events?: string[];
+  /** @example 639768 */
+  posthogFlagId?: number;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1303,29 +1314,6 @@ export class JumperBackend<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
   v1 = {
-    /**
-     * No description
-     *
-     * @tags PostHog, Public
-     * @name PostHogControllerGetFeatureFlagV1
-     * @summary Get a feature flag
-     * @request GET:/v1/posthog/feature-flag
-     */
-    postHogControllerGetFeatureFlagV1: (
-      query: {
-        key: string;
-        distinctId: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<PosthogFeatureFlag, any>({
-        path: `/v1/posthog/feature-flag`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
     /**
      * No description
      *
@@ -1832,6 +1820,51 @@ export class JumperBackend<
     ) =>
       this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetAllV1
+     * @summary Get all active feature flags evaluated for a user
+     * @request GET:/v1/feature-flags
+     */
+    featureFlagControllerGetAllV1: (
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagResponseDto[], any>({
+        path: `/v1/feature-flags`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetOneV1
+     * @summary Get a single feature flag evaluated for a user
+     * @request GET:/v1/feature-flags/{key}
+     */
+    featureFlagControllerGetOneV1: (
+      key: string,
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagResponseDto, any>({
+        path: `/v1/feature-flags/${key}`,
         method: 'GET',
         query: query,
         format: 'json',
