@@ -50,7 +50,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                     type="button"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-bodyMediumStrong css-1isabjp-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-bodyMediumStrong css-1k5osxr-MuiTypography-root"
                     >
                       0x12345...67890
                     </p>
@@ -123,7 +123,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                   class="MuiStack-root css-16ml5pn-MuiStack-root"
                 >
                   <p
-                    class="MuiTypography-root MuiTypography-bodyXSmallStrong css-1o3lrdt-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-bodyXSmallStrong css-1akl7dg-MuiTypography-root"
                   >
                     navbar.walletMenu.walletBalance
                   </p>
@@ -215,7 +215,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                           />
                         </svg>
                         <p
-                          class="MuiTypography-root MuiTypography-body1 css-lvvsd-MuiTypography-root"
+                          class="MuiTypography-root MuiTypography-body1 css-ntmnag-MuiTypography-root"
                         >
                           Failed to load balances
                         </p>
@@ -283,7 +283,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                     type="button"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-bodyMediumStrong css-1isabjp-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-bodyMediumStrong css-1k5osxr-MuiTypography-root"
                     >
                       0x12345...67890
                     </p>
@@ -356,7 +356,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                   class="MuiStack-root css-16ml5pn-MuiStack-root"
                 >
                   <p
-                    class="MuiTypography-root MuiTypography-bodyXSmallStrong css-1o3lrdt-MuiTypography-root"
+                    class="MuiTypography-root MuiTypography-bodyXSmallStrong css-1akl7dg-MuiTypography-root"
                   >
                     navbar.walletMenu.walletBalance
                   </p>
@@ -482,7 +482,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                   class="MuiBox-root css-fxacz8"
                                 >
                                   <p
-                                    class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                    class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                     data-testid="entity-stack-title"
                                   >
                                     USDC
@@ -497,7 +497,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
-                                          class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
+                                          class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
                                         >
                                           P
                                         </p>
@@ -506,7 +506,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
                                       >
                                         <p
-                                          class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
+                                          class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
                                         >
                                           E
                                         </p>
@@ -519,12 +519,12 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                 class="MuiBox-root css-19josn"
                               >
                                 <p
-                                  class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                  class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                 >
                                   $0.00
                                 </p>
                                 <p
-                                  class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
+                                  class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                 >
                                   0
                                 </p>
@@ -600,7 +600,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
-                                                  class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
+                                                  class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
                                                 >
                                                   E
                                                 </p>
@@ -613,7 +613,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiBox-root css-vtfvnu"
                                       >
                                         <p
-                                          class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                          class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                           data-testid="entity-stack-title"
                                         >
                                           USDC
@@ -622,7 +622,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           class="MuiBox-root css-sq6w4p"
                                         >
                                           <p
-                                            class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
+                                            class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                             data-testid="entity-stack-hint"
                                             style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                                           >
@@ -635,12 +635,12 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       class="MuiBox-root css-1wwrdzw"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                       >
                                         format.currency
                                       </p>
                                       <p
-                                        class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
                                         format.decimal USDC
                                       </p>
@@ -690,7 +690,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                                 class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
                                               >
                                                 <p
-                                                  class="MuiTypography-root MuiTypography-body1 css-1rcwuno-MuiTypography-root"
+                                                  class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
                                                 >
                                                   P
                                                 </p>
@@ -703,7 +703,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         class="MuiBox-root css-vtfvnu"
                                       >
                                         <p
-                                          class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                          class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                           data-testid="entity-stack-title"
                                         >
                                           USDC
@@ -712,7 +712,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                           class="MuiBox-root css-sq6w4p"
                                         >
                                           <p
-                                            class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
+                                            class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                             data-testid="entity-stack-hint"
                                             style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                                           >
@@ -725,12 +725,12 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       class="MuiBox-root css-1wwrdzw"
                                     >
                                       <p
-                                        class="MuiTypography-root MuiTypography-bodySmallStrong css-ck7yql-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-bodySmallStrong css-1l6hsgi-MuiTypography-root"
                                       >
                                         format.currency
                                       </p>
                                       <p
-                                        class="MuiTypography-root MuiTypography-bodyXXSmall css-1l48hti-MuiTypography-root"
+                                        class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
                                         format.decimal USDC
                                       </p>

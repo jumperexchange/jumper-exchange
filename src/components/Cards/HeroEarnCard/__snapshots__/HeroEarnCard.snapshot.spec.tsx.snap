@@ -110,7 +110,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                     >
                       B
                     </p>
@@ -132,7 +132,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
               class="MuiBox-root css-zbt97w"
             >
               <p
-                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                 data-testid="entity-stack-hint"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
@@ -257,7 +257,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                     >
                       B
                     </p>
@@ -279,7 +279,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
               class="MuiBox-root css-zbt97w"
             >
               <p
-                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                 data-testid="entity-stack-hint"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
@@ -404,7 +404,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                     >
                       B
                     </p>
@@ -426,7 +426,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
               class="MuiBox-root css-zbt97w"
             >
               <p
-                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                 data-testid="entity-stack-hint"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
@@ -551,7 +551,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                     >
                       B
                     </p>
@@ -573,7 +573,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
               class="MuiBox-root css-zbt97w"
             >
               <p
-                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                 data-testid="entity-stack-hint"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
@@ -702,7 +702,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                       class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                        class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                       >
                         B
                       </p>
@@ -724,7 +724,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                 class="MuiBox-root css-zbt97w"
               >
                 <p
-                  class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                  class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                   data-testid="entity-stack-hint"
                   style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
@@ -893,7 +893,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                     class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
                   >
                     <p
-                      class="MuiTypography-root MuiTypography-body1 css-o1fkh6-MuiTypography-root"
+                      class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
                     >
                       B
                     </p>
@@ -915,7 +915,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
               class="MuiBox-root css-zbt97w"
             >
               <p
-                class="MuiTypography-root MuiTypography-bodyXSmall css-1gwx9ao-MuiTypography-root"
+                class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
                 data-testid="entity-stack-hint"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
