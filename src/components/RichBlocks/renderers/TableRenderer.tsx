@@ -1,19 +1,24 @@
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import type { ParsedTable } from '../utils/parseMarkdownTable';
 import {
   StyledTableContainer,
   StyledHeaderCell,
   StyledBodyCell,
 } from '../RichBlocks.style';
 
-interface TableRendererProps extends ParsedTable {}
+/**
+ * `ParsedTable` uses `string` cells; rich tables pass `ReactNode` from segment rendering.
+ */
+export interface TableRendererProps {
+  headers: Array<string | ReactNode>;
+  rows: Array<Array<string | ReactNode>>;
+}
 
 export const TableRenderer: FC<TableRendererProps> = ({ headers, rows }) => (
-  <StyledTableContainer>
+  <StyledTableContainer sx={{ '& a': { marginLeft: 0 } }}>
     <Table size="small">
       <TableHead>
         <TableRow>

@@ -11,8 +11,8 @@ import { MissionTask } from './MissionTask';
 import { useAccount } from '@lifi/wallet-management';
 import { Badge } from 'src/components/Badge/Badge';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useRouter } from 'next/navigation';
 import { AppPaths } from 'src/const/urls';
+import { useGoBack } from 'src/hooks/routing/useGoBack';
 import {
   MissionDetailsColumnContainer,
   MissionDetailsCardContainer,
@@ -48,7 +48,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
   );
   useResetCurrentActiveTask();
   useSyncMissionDefaultsFromChains(participants, missionId, hasEnded);
-  const router = useRouter();
+  const handleGoBack = useGoBack(AppPaths.Missions);
   const { t } = useTranslation();
 
   const { account } = useAccount();
@@ -70,10 +70,6 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
       />
     );
   }, [status]);
-
-  const handleGoBack = () => {
-    router.push(AppPaths.Missions);
-  };
 
   return (
     <MissionDetailsColumnContainer>
