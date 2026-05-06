@@ -4,6 +4,7 @@ import type {
   WalletToken,
 } from '@/types/tokens';
 import type { App, Chain, Protocol } from '@/types/jumper-backend';
+import type { Token as LifiToken } from '@lifi/sdk';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 
 /**
@@ -123,4 +124,7 @@ export interface OrchestrationState {
 
   /** Refresh data source by address */
   refreshByAddress: (address: string) => void;
+
+  /** Fetch fresh balances for specific tokens and merge into cache, bypassing getWalletBalances indexer lag */
+  refreshForTokens: (address: string, tokens: LifiToken[]) => Promise<void>;
 }
