@@ -56,8 +56,16 @@ importers:
         specifier: ^0.8.10
         version: 0.8.10
       '@intercom/messenger-js-sdk':
+<<<<<<< HEAD
         specifier: ^0.0.19
         version: 0.0.19
+=======
+        specifier: ^0.0.18
+        version: 0.0.18
+      '@jumperexchange/shared-ui':
+        specifier: ^0.5.6
+        version: 0.5.6(06e9991d07eadb05687b37e2131e65c1)
+>>>>>>> 0b2f2beb5 (feat: add shared ui lib and refactor wallet menu)
       '@lifi/explorer':
         specifier: ^0.6.3
         version: 0.6.3(2cbf3074042ce31cfc6f3a58138e91c8)
@@ -1407,8 +1415,29 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+<<<<<<< HEAD
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
+=======
+  '@jumperexchange/shared-ui@0.5.6':
+    resolution: {integrity: sha512-NObCbNLuhXIhK2+5Y3KZGxHeByVnMf79ejJ2L2hQtm2e3BFe9eqZtS3UYWhqDAa6Qz9DG8pRpzSwv6pSWGyUag==, tarball: https://npm.pkg.github.com/download/@jumperexchange/shared-ui/0.5.6/c448361d77299d3ad4d66f5004662184b112da41}
+    peerDependencies:
+      '@emotion/react': '>=11'
+      '@emotion/styled': '>=11'
+      '@mui/icons-material': '>=9'
+      '@mui/material': '>=9'
+      '@mui/system': '>=9'
+      '@strapi/blocks-react-renderer': '>=1'
+      date-fns: '>=4'
+      html-react-parser: '>=5'
+      lodash: '>=4'
+      motion: '>=12'
+      react: '>=19'
+      react-day-picker: '>=9'
+      react-dom: '>=19'
+      recharts: '>=3'
+      typescript: '>=5.4'
+>>>>>>> 0b2f2beb5 (feat: add shared ui lib and refactor wallet menu)
 
   '@ledgerhq/devices@6.27.1':
     resolution: {integrity: sha512-jX++oy89jtv7Dp2X6gwt3MMkoajel80JFWcdc0HCouwDsV1mVJ3SQdwl/bQU0zd8HI6KebvUP95QTwbQLLK/RQ==}
@@ -11855,7 +11884,27 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+<<<<<<< HEAD
   '@js-sdsl/ordered-map@4.4.2': {}
+=======
+  '@jumperexchange/shared-ui@0.5.6(06e9991d07eadb05687b37e2131e65c1)':
+    dependencies:
+      '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.5)
+      '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
+      '@mui/icons-material': 9.0.0(@mui/material@9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
+      '@mui/material': 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      '@mui/system': 9.0.0(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
+      '@strapi/blocks-react-renderer': 1.0.2(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      date-fns: 4.1.0
+      html-react-parser: 5.2.17(@types/react@19.2.14)(react@19.2.5)
+      lodash: 4.18.1
+      motion: 12.38.0(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
+      react: 19.2.5
+      react-day-picker: 9.14.0(react@19.2.5)
+      react-dom: 19.2.5(react@19.2.5)
+      recharts: 3.8.1(@types/react@19.2.14)(react-dom@19.2.5(react@19.2.5))(react-is@19.2.5)(react@19.2.5)(redux@5.0.1)
+      typescript: 5.9.3
+>>>>>>> 0b2f2beb5 (feat: add shared ui lib and refactor wallet menu)
 
   '@ledgerhq/devices@6.27.1':
     dependencies:

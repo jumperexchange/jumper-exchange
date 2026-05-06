@@ -23,6 +23,7 @@ import { MUIThemeProvider } from '@/providers/ThemeProvider/MUIThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
 import { WalletProvider } from '@/providers/WalletProvider/WalletProvider';
 import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
+import { JumperUIProvider } from '@/providers/JumperUIProvider/JumperUIProvider';
 import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {
   baseMiniApp,
@@ -223,21 +224,23 @@ export default async function RootLayout({
               >
                 <WalletProvider>
                   <MUIThemeProvider>
-                    <SettingsStoreProvider>
-                      <NuqsAdapter>
-                        <PortfolioProvider>
-                          <ExtensionDetectionProvider>
-                            <Suspense>
-                              <ReferrerCapture />
-                              <FeatureFlagsBootstrap />
-                            </Suspense>
-                            <NavbarWrapper />
-                            <IntercomProvider />
-                            <main>{children}</main>
-                          </ExtensionDetectionProvider>
-                        </PortfolioProvider>
-                      </NuqsAdapter>
-                    </SettingsStoreProvider>
+                    <JumperUIProvider>
+                      <SettingsStoreProvider>
+                        <NuqsAdapter>
+                          <PortfolioProvider>
+                            <ExtensionDetectionProvider>
+                              <Suspense>
+                                <ReferrerCapture />
+                                <FeatureFlagsBootstrap />
+                              </Suspense>
+                              <NavbarWrapper />
+                              <IntercomProvider />
+                              <main>{children}</main>
+                            </ExtensionDetectionProvider>
+                          </PortfolioProvider>
+                        </NuqsAdapter>
+                      </SettingsStoreProvider>
+                    </JumperUIProvider>
                   </MUIThemeProvider>
                 </WalletProvider>
               </DefaultThemeProvider>

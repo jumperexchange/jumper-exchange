@@ -3,16 +3,24 @@ import { useAccount, useWalletMenu } from '@lifi/wallet-management';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 import { WalletButton, CustomDrawer } from './WalletMenu.style';
-import { WalletBalanceCard } from 'src/components/composite/WalletBalanceCard/WalletBalanceCard';
+import { WalletBalanceCard } from '@jumperexchange/shared-ui';
+import { WalletWithActions } from '@/components/composite/WalletBalanceCard/components/WalletWithActions';
 import { usePortfolioTracking } from '@/hooks/userTracking/usePortfolioTracking';
 import {
   usePortfolioBalances,
   usePortfolioState,
   usePortfolioSummary,
 } from '@/providers/PortfolioProvider/PortfolioContext';
+import { useMainPaths } from 'src/hooks/useMainPaths';
+import { useSettingsStore } from '@/stores/settings';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
+import { AnimatedCounter } from 'react-animated-counter';
+import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 
 export const WalletMenu = () => {
   const { t } = useTranslation();
@@ -30,6 +38,15 @@ export const WalletMenu = () => {
     usePortfolioState();
   const { trackPortfolioMenuOverviewEvent } = usePortfolioTracking();
   const hasTrackedPortfolioOverview = useRef(false);
+  const router = useRouter();
+  const { isMainPaths } = useMainPaths();
+  const { setWelcomeScreenClosed } = useSettingsStore((state) => state);
+  const setFrom = useWidgetCacheStore((state) => state.setFrom);
+
+  const hasMultipleAccountsConnected = useMemo(
+    () => accounts?.filter((account) => account.isConnected).length > 1,
+    [accounts],
+  );
 
   const shouldTrackOverview = !isInitialLoading && !isRefreshing && !isStale;
 
@@ -71,6 +88,38 @@ export const WalletMenu = () => {
       setWalletMenuState(false);
     }
   }, [accounts, setWalletMenuState, _openWalletMenu]);
+
+  const renderTotalBalance = (totalAmountUSD: number) => {
+    const { prefix, suffix, numericValue } =
+      getPortfolioValueInDollarParts(totalAmountUSD);
+    return (
+      <>
+        {prefix}
+        <AnimatedCounter
+          value={Number(numericValue)}
+          fontSize={theme.typography.titleLarge.fontSize?.toString()}
+          includeDecimals
+          decimalPrecision={suffix ? 1 : 2}
+          includeCommas={!suffix}
+          incrementColor={(theme.vars || theme).palette.text.primary}
+          decrementColor={(theme.vars || theme).palette.text.primary}
+          color={(theme.vars || theme).palette.text.primary}
+          containerStyles={{ display: 'inline-flex', textAlign: 'center' }}
+          digitStyles={{ textOverflow: 'inherit' }}
+        />
+        {suffix}
+      </>
+    );
+  };
+
+  const handleSelectToken = (balance: PortfolioBalance<WalletToken> | any) => {
+    setFrom(balance.token.address, balance.token.chainId);
+    setWalletMenuState(false);
+    setWelcomeScreenClosed(true);
+    if (!isMainPaths) {
+      router.push('/');
+    }
+  };
 
   return (
     <CustomDrawer
@@ -129,6 +178,10 @@ export const WalletMenu = () => {
             key={walletAddress}
             data-testid="wallet-balance-card"
             walletAddress={walletAddress}
+            walletHeader={<WalletWithActions account={account} />}
+            defaultExpanded={!hasMultipleAccountsConnected}
+            renderTotalBalance={renderTotalBalance}
+            onTokenSelect={handleSelectToken}
             refetch={() => refreshByAddress(walletAddress)}
             isFetching={
               balanceStateByAddress.isLoading ||
