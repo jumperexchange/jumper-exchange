@@ -10,7 +10,20 @@ interface ChainTokenSelection {
   destinationChainToken: ChainToken;
   toAddress?: string;
   fromAmount?: string;
+  denyBridges?: string[];
+  denyExchanges?: string[];
 }
+
+const parseList = (value: string | null): string[] | undefined => {
+  if (!value) {
+    return undefined;
+  }
+  const items = value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+  return items.length > 0 ? items : undefined;
+};
 
 export const useUrlParams = (): ChainTokenSelection => {
   const [urlParams, setUrlParams] = useState<ChainTokenSelection>({
@@ -24,6 +37,8 @@ export const useUrlParams = (): ChainTokenSelection => {
     },
     toAddress: undefined,
     fromAmount: undefined,
+    denyBridges: undefined,
+    denyExchanges: undefined,
   });
 
   useEffect(() => {
@@ -39,6 +54,8 @@ export const useUrlParams = (): ChainTokenSelection => {
       const toToken = queryParameters.get('toToken');
       const toAddress = queryParameters.get('toAddress');
       const fromAmount = queryParameters.get('fromAmount');
+      const denyBridges = queryParameters.get('denyBridges');
+      const denyExchanges = queryParameters.get('denyExchanges');
 
       setUrlParams({
         sourceChainToken: {
@@ -51,6 +68,8 @@ export const useUrlParams = (): ChainTokenSelection => {
         },
         toAddress: toAddress ?? undefined,
         fromAmount: fromAmount ?? undefined,
+        denyBridges: parseList(denyBridges),
+        denyExchanges: parseList(denyExchanges),
       });
     };
 

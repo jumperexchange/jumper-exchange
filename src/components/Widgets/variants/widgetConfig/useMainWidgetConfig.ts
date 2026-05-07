@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
@@ -18,6 +19,8 @@ export function useMainWidgetConfig(
   const { tokens: memeListTokens } = useMemelist({
     enabled: context.partnerName === ThemesMap.Memecoins,
   });
+
+  const { denyBridges, denyExchanges } = useUrlParams();
 
   const allowedChainsByVariant = useMemo(
     () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
@@ -80,12 +83,24 @@ export function useMainWidgetConfig(
       tokens: _tokens,
 
       // Bridge and exchange configuration
-      bridges: deps.theme.configTheme?.allowedBridges
-        ? { allow: deps.theme.configTheme.allowedBridges }
-        : undefined,
-      exchanges: deps.theme.configTheme?.allowedExchanges
-        ? { allow: deps.theme.configTheme?.allowedExchanges }
-        : undefined,
+      bridges:
+        deps.theme.configTheme?.allowedBridges || denyBridges
+          ? {
+              ...(deps.theme.configTheme?.allowedBridges
+                ? { allow: deps.theme.configTheme.allowedBridges }
+                : {}),
+              ...(denyBridges ? { deny: denyBridges } : {}),
+            }
+          : undefined,
+      exchanges:
+        deps.theme.configTheme?.allowedExchanges || denyExchanges
+          ? {
+              ...(deps.theme.configTheme?.allowedExchanges
+                ? { allow: deps.theme.configTheme.allowedExchanges }
+                : {}),
+              ...(denyExchanges ? { deny: denyExchanges } : {}),
+            }
+          : undefined,
 
       routeLabels: [
         generateRouteLabel(
@@ -141,5 +156,7 @@ export function useMainWidgetConfig(
     deps.theme,
     memeListTokens,
     allowedChainsByVariant,
+    denyBridges,
+    denyExchanges,
   ]);
 }
