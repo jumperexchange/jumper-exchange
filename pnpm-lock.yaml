@@ -63,9 +63,14 @@ importers:
         specifier: ^0.0.18
         version: 0.0.18
       '@jumperexchange/shared-ui':
+<<<<<<< HEAD
         specifier: ^0.5.6
         version: 0.5.6(06e9991d07eadb05687b37e2131e65c1)
 >>>>>>> 0b2f2beb5 (feat: add shared ui lib and refactor wallet menu)
+=======
+        specifier: ^0.6.0
+        version: 0.6.0(06e9991d07eadb05687b37e2131e65c1)
+>>>>>>> 7169b2d76 (chore: bump shared lib version)
       '@lifi/explorer':
         specifier: ^0.6.3
         version: 0.6.3(2cbf3074042ce31cfc6f3a58138e91c8)
@@ -1416,11 +1421,16 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 =======
   '@jumperexchange/shared-ui@0.5.6':
     resolution: {integrity: sha512-NObCbNLuhXIhK2+5Y3KZGxHeByVnMf79ejJ2L2hQtm2e3BFe9eqZtS3UYWhqDAa6Qz9DG8pRpzSwv6pSWGyUag==, tarball: https://npm.pkg.github.com/download/@jumperexchange/shared-ui/0.5.6/c448361d77299d3ad4d66f5004662184b112da41}
+=======
+  '@jumperexchange/shared-ui@0.6.0':
+    resolution: {integrity: sha512-aJRKEL11y5f2B4zOhTwnXqo2bGCP6AuBwXZP9EMPgTb3dufzJ8AdjgJMeSGTt998JpWzkg8v3pucX80wCHJMIw==, tarball: https://npm.pkg.github.com/download/@jumperexchange/shared-ui/0.6.0/644d4e188858a4b55fd835426f7d3d762652781c}
+>>>>>>> 7169b2d76 (chore: bump shared lib version)
     peerDependencies:
       '@emotion/react': '>=11'
       '@emotion/styled': '>=11'
@@ -11885,9 +11895,13 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.5
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   '@js-sdsl/ordered-map@4.4.2': {}
 =======
   '@jumperexchange/shared-ui@0.5.6(06e9991d07eadb05687b37e2131e65c1)':
+=======
+  '@jumperexchange/shared-ui@0.6.0(06e9991d07eadb05687b37e2131e65c1)':
+>>>>>>> 7169b2d76 (chore: bump shared lib version)
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.5)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.5))(@types/react@19.2.14)(react@19.2.5)
