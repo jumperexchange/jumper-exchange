@@ -67,7 +67,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -134,7 +134,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -456,7 +456,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -782,7 +782,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -1162,7 +1162,7 @@ exports[`EarnCard snapshot > compact card with lockup months and cap in dollar m
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -1484,7 +1484,7 @@ exports[`EarnCard snapshot > compact card with lockup months matches snapshot 1`
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -1734,7 +1734,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -1801,7 +1801,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -2082,7 +2082,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2149,7 +2149,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -2430,7 +2430,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >
@@ -2497,7 +2497,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1qsl894-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1f4a75k-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -2688,7 +2688,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -2841,7 +2841,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary css-dhvdgb-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary css-dhvdgb-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -2922,7 +2922,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -3134,7 +3134,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -3405,7 +3405,7 @@ exports[`EarnCard snapshot > list item card with lockup months and cap in dollar
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -3613,7 +3613,7 @@ exports[`EarnCard snapshot > list item card with lockup months matches snapshot 
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -3821,7 +3821,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -3943,7 +3943,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             </p>
           </div>
           <button
-            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary css-dhvdgb-MuiButtonBase-root-MuiButton-root"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeMedium MuiButton-colorPrimary css-dhvdgb-MuiButtonBase-root-MuiButton-root"
             tabindex="0"
             type="button"
           >
@@ -4024,7 +4024,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -4385,7 +4385,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -4449,7 +4449,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1msp9iu-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-hxvnix-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-59pzhe-MuiTypography-root"
@@ -4537,7 +4537,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -4769,7 +4769,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -4833,7 +4833,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1msp9iu-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-hxvnix-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-59pzhe-MuiTypography-root"
@@ -4921,7 +4921,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -5150,7 +5150,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -5214,7 +5214,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1msp9iu-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-hxvnix-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-59pzhe-MuiTypography-root"
@@ -5302,7 +5302,7 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -5565,7 +5565,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -5629,7 +5629,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1msp9iu-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-hxvnix-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-59pzhe-MuiTypography-root"
@@ -5717,7 +5717,7 @@ exports[`EarnCard snapshot > overview card with lockup months and cap in dollar 
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -5946,7 +5946,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -6010,7 +6010,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                   class="MuiStack-root css-k0vgmj-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1msp9iu-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-hxvnix-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-59pzhe-MuiTypography-root"
@@ -6098,7 +6098,7 @@ exports[`EarnCard snapshot > overview card with lockup months matches snapshot 1
                         class="MuiStack-root css-1x5pyaa-MuiStack-root"
                       >
                         <div
-                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-ofb2ig-MuiAvatar-root"
+                          class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1rv9dwv-MuiAvatar-root"
                         >
                           <p
                             class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
