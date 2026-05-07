@@ -32,6 +32,9 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
   >('idle');
   const [error, setError] = useState<Error | null>(null);
   const [txHash, setTxHash] = useState<Hex | undefined>(undefined);
+  const [completedActionHashes, setCompletedActionHashes] = useState<
+    (Hex | undefined)[]
+  >([]);
   const flowLockedRef = useRef(false);
 
   const executeAction = useCallback(
@@ -82,10 +85,20 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     const nextIndex = currentActionIndex + 1;
 
     if (executorType !== 'batch' && nextIndex < callData.actions.length) {
+      setCompletedActionHashes((prev) => {
+        const next = [...prev];
+        next[currentActionIndex] = executor.txHash;
+        return next;
+      });
       setCurrentActionIndex(nextIndex);
       executor.reset();
       executeAction(callData.actions[nextIndex]);
     } else {
+      setCompletedActionHashes((prev) => {
+        const next = [...prev];
+        next[currentActionIndex] = executor.txHash;
+        return next;
+      });
       flowLockedRef.current = false;
       setIsExecuting(false);
       setCurrentActionIndex(0);
@@ -152,6 +165,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     setCurrentStep('idle');
     setError(null);
     setTxHash(undefined);
+    setCompletedActionHashes([]);
     executor.reset();
   }, [executor]);
 
@@ -163,6 +177,7 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
     isConfirming: executor.isConfirming,
     error: error ?? executor.error,
     txHash: currentStep === 'success' ? txHash : executor.txHash,
+    completedActionHashes,
     executeFlow,
     retryCurrentAction,
     resetFlow,

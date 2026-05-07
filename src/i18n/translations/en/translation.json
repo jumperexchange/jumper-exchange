@@ -709,7 +709,11 @@
       "title": "Convert dust",
       "routeOverview": {
         "composerAlt": "Composer",
-        "composerViaLifi": "Composer via Li.Fi"
+        "composerViaLifi": "Composer via LI.FI",
+        "approveToken": "Approve {{symbol}}",
+        "swapTo": "Swap to {{symbol}}",
+        "stepsCount_one": "{{count, number}} step",
+        "stepsCount_other": "{{count, number}} steps"
       },
       "error": {
         "transactionRejected": {

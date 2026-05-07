@@ -254,6 +254,7 @@ export const useTransactionForm = ({
     showSuccessSheet: state.showSuccessSheet,
     showErrorBottomSheet: state.showErrorBottomSheet,
     currentActionIndex: transactionFlow.currentActionIndex,
+    actionHashes: transactionFlow.completedActionHashes,
 
     handleSubmit,
     handleConfirm,
