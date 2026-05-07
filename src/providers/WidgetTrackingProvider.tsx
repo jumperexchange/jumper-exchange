@@ -1,3 +1,4 @@
+import { useUrlParams } from '@/hooks/useUrlParams';
 import type { JumperEventData } from '@/utils/tracking/jumperTracking';
 import type {
   ChainTokenSelected,
@@ -7,7 +8,8 @@ import type {
   RouteHighValueLossUpdate,
   SettingUpdated,
 } from '@lifi/widget';
-import { useWidgetEvents } from '@lifi/widget';
+import { formatTokenPrice, useWidgetEvents } from '@lifi/widget';
+import { useToken } from 'src/hooks/useToken';
 import { isEqual, omit } from 'lodash';
 import type { FC, PropsWithChildren } from 'react';
 import {
@@ -38,6 +40,7 @@ import {
   parseFormFieldChangedToTrackingData,
   parseWidgetSettingsToTrackingData,
 } from 'src/utils/tracking/widget';
+import type { Hex } from 'viem';
 
 interface WidgetTrackingState {
   setDestinationChainTokenForTracking: (
@@ -122,6 +125,26 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const trackedRoutesData = useRef<Record<string, TrackTransactionDataProps>>(
     {},
   );
+  const urlParams = useUrlParams();
+  const urlParamsRef = useRef(urlParams);
+  urlParamsRef.current = urlParams;
+
+  const { token: sourceTokenData } = useToken(
+    sourceChainToken.current?.chainId ??
+      urlParams.sourceChainToken.chainId ??
+      0,
+    (sourceChainToken.current?.tokenAddress ??
+      urlParams.sourceChainToken.token ??
+      '0x') as Hex,
+    { extended: true },
+  );
+
+  const fromAmountUSDFallback = useRef<number>(0);
+  fromAmountUSDFallback.current =
+    sourceTokenData?.priceUSD && urlParams.fromAmount
+      ? Number(formatTokenPrice(urlParams.fromAmount, sourceTokenData.priceUSD))
+      : 0;
+
   const posthogTracker = useMemo(() => {
     return makePosthogTracker({ trackTransaction, trackEvent });
   }, [trackTransaction, trackEvent]);
@@ -155,8 +178,14 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
   const availableRoutes = useCallback(
     (availableRoutes: Route[]) => {
-      if (currentFromAmount.current !== availableRoutes[0]?.fromAmount) {
-        currentFromAmount.current = availableRoutes[0]?.fromAmount;
+      const fromAmount =
+        availableRoutes[0]?.fromAmount ?? urlParamsRef.current.fromAmount;
+      const fromAmountUSD = availableRoutes[0]
+        ? Number(availableRoutes[0].fromAmountUSD)
+        : fromAmountUSDFallback.current;
+
+      if (currentFromAmount.current !== fromAmount) {
+        currentFromAmount.current = fromAmount;
         isRoutesForCurrentFromAmountTracked.current = false;
       }
 
@@ -202,17 +231,23 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         enableAddressable: true,
         data: {
           [TrackingEventParameter.FromToken]:
-            sourceChainToken.current?.tokenAddress || '',
+            sourceChainToken.current?.tokenAddress ||
+            urlParamsRef.current.sourceChainToken.token ||
+            '',
           [TrackingEventParameter.FromChainId]:
-            sourceChainToken.current?.chainId || '',
+            sourceChainToken.current?.chainId ||
+            urlParamsRef.current.sourceChainToken.chainId ||
+            '',
           [TrackingEventParameter.ToToken]:
-            destinationChainToken.current?.tokenAddress || '',
+            destinationChainToken.current?.tokenAddress ||
+            urlParamsRef.current.destinationChainToken.token ||
+            '',
           [TrackingEventParameter.ToChainId]:
-            destinationChainToken.current?.chainId || '',
-          [TrackingEventParameter.FromAmountUSD]: Number(
-            availableRoutes?.[0]?.fromAmountUSD,
-          ),
-          [TrackingEventParameter.FromAmount]: availableRoutes?.[0]?.fromAmount,
+            destinationChainToken.current?.chainId ||
+            urlParamsRef.current.destinationChainToken.chainId ||
+            '',
+          [TrackingEventParameter.FromAmountUSD]: fromAmountUSD,
+          [TrackingEventParameter.FromAmount]: fromAmount || '',
           [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
           [TrackingEventParameter.Routes]: transformedRoutes,
         },
