@@ -830,6 +830,7 @@ interface Resources {
           approveToken: 'Approve {{symbol}}';
           composerAlt: 'Composer';
           composerViaLifi: 'Composer via LI.FI';
+          executingStep: 'Executing step {{current, number}} out of {{total, number}}...';
           stepsCount_one: '{{count, number}} step';
           stepsCount_other: '{{count, number}} steps';
           swapTo: 'Swap to {{symbol}}';

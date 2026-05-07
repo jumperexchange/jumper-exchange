@@ -95,6 +95,9 @@ export const useTransactionFlow = (options: UseTransactionFlowOptions = {}) => {
       executeAction(callData.actions[nextIndex]);
     } else {
       setCompletedActionHashes((prev) => {
+        if (executorType === 'batch') {
+          return Array(callData.actions.length).fill(executor.txHash);
+        }
         const next = [...prev];
         next[currentActionIndex] = executor.txHash;
         return next;

@@ -45,9 +45,7 @@ export const ExpandableSection = <T,>({
   const [isExpanded, setIsExpanded] = useState<boolean>(initialIsExpanded);
 
   useEffect(() => {
-    if (initialIsExpanded) {
-      setIsExpanded(true);
-    }
+    setIsExpanded(initialIsExpanded);
   }, [initialIsExpanded]);
 
   const handleHeaderClick = () => {

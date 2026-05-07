@@ -42,14 +42,7 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
   chainId,
 }) => {
   const { t } = useTranslation();
-  const [stepsExpanded, setStepsExpanded] = useState(false);
   const getExplorerUrl = useGetAddressExplorerUrl('tx');
-
-  useEffect(() => {
-    if (isExecuting) {
-      setStepsExpanded(true);
-    }
-  }, [isExecuting]);
 
   const steps = useMemo(() => {
     if (!composerQuote || !nativeTokenBalance) {
@@ -123,9 +116,14 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
           {t('portfolio.dustConversion.routeOverview.composerViaLifi')}
         </Typography>
         <Typography variant="bodyXXSmall" color="textSecondary">
-          {t('portfolio.dustConversion.routeOverview.stepsCount', {
-            count: steps.length,
-          })}
+          {isExecuting && currentActionIndex !== undefined
+            ? t('portfolio.dustConversion.routeOverview.executingStep', {
+                current: (currentActionIndex ?? 0) + 1,
+                total: steps.length,
+              })
+            : t('portfolio.dustConversion.routeOverview.stepsCount', {
+                count: steps.length,
+              })}
         </Typography>
       </Box>
     </Box>
@@ -142,7 +140,6 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
       <ExpandableSection
         header={header}
         items={steps}
-        isExpanded={stepsExpanded}
         isDetailsItemClickable={false}
         detailsItemSx={{
           padding: 0,
