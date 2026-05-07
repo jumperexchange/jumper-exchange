@@ -116,7 +116,7 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
           {t('portfolio.dustConversion.routeOverview.composerViaLifi')}
         </Typography>
         <Typography variant="bodyXXSmall" color="textSecondary">
-          {isExecuting && currentActionIndex !== undefined
+          {isExecuting
             ? t('portfolio.dustConversion.routeOverview.executingStep', {
                 current: (currentActionIndex ?? 0) + 1,
                 total: steps.length,
