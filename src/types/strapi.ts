@@ -1,5 +1,5 @@
 import type { WidgetConfig } from '@lifi/widget';
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 import type { CreateJumperThemeOptions } from 'src/theme/theme';

@@ -6,7 +6,7 @@ import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import { useFormatDisplayRewardsData } from './useFormatDisplayRewardsData';
 import { QuestData } from 'src/types/strapi';
 import { Chain } from 'src/types/questDetails';
-import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 
 interface DisplayQuestData {
   id: string;

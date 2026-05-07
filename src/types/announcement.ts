@@ -1,4 +1,4 @@
-import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import type { StrapiMediaData } from './strapi';
 
 export type AnnouncementSeverityType = 'error' | 'warning' | 'info' | 'success';

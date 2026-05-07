@@ -1,4 +1,4 @@
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { isValidHeadingLevel } from './isValidHeadingLevel';
 import { getTextFromChildren } from './getTextFromChildren';
 import { createSlugIdGenerator } from './createSlugIdGenerator';

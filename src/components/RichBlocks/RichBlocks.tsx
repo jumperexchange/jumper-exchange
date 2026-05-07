@@ -1,4 +1,4 @@
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { useMemo, type FC } from 'react';
 import type { SxProps, Theme } from '@mui/material/styles';

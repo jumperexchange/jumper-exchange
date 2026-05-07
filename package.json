@@ -141,7 +141,7 @@
     "prettier": "^3.8.3",
     "storybook": "^10.3.6",
     "storybook-addon-pseudo-states": "^10.3.6",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.11",
     "vite-plugin-node-polyfills": "^0.26.0",

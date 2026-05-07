@@ -10,7 +10,7 @@ import {
   AccordionToggleButton,
   FaqShowMoreArrow,
 } from '.';
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
 import { RichBlocks } from '../RichBlocks/RichBlocks';
 import { IconButton } from '../core/buttons/IconButton/IconButton';
 import { Variant } from '../core/buttons/types';
