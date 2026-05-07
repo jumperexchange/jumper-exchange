@@ -1,4 +1,4 @@
-import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
 import { useMemo, type FC } from 'react';
 import type { SxProps, Theme } from '@mui/material/styles';
@@ -11,7 +11,7 @@ import { RichBlocksVariant } from './types';
 import { createSlugIdGenerator } from '@/utils/richBlocks/createSlugIdGenerator';
 
 interface RichBlocksProps {
-  content: RootNode[] | undefined;
+  content: BlocksContent | undefined;
   blockSx?: {
     paragraph?: SxProps<Theme>;
     heading?: SxProps<Theme>;

@@ -10,11 +10,11 @@ import {
   AccordionTitle,
 } from '.';
 import { AccordionFAQItem } from './AccordionFAQItem';
-import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 
 export interface FaqProps {
   Question: string;
-  Answer: string | RootNode[];
+  Answer: string | BlocksContent;
 }
 interface AccordionFAQProps {
   title?: string;

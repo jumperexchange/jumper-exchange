@@ -1,5 +1,5 @@
 import type { QuestDetails } from '@/types/questDetails';
-import { type RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type {
   CampaignData,
   StrapiMediaData,
@@ -88,7 +88,7 @@ export interface CustomInformation {
 export type QuestAttributes = {
   UID: string;
   Title: string;
-  DescriptionRichText?: RootNode[];
+  DescriptionRichText?: BlocksContent;
   Description?: string;
   Link: string;
   Category?: string;
@@ -104,7 +104,7 @@ export type QuestAttributes = {
   Information?: string;
   ClaimingId?: string;
   Subtitle?: string;
-  Steps?: RootNode[];
+  Steps?: BlocksContent;
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
   Image: StrapiMediaData;
   BannerImage: BannerImageData[];

@@ -23,10 +23,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "src/*": ["./src/*"],
-      "i18n-config": ["./i18n-config.ts"],
-      "@strapi/blocks-react-renderer/dist/BlocksRenderer": [
-        "./node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer.d.ts"
-      ]
+      "i18n-config": ["./i18n-config.ts"]
     }
   },
   "rules": {

@@ -1,5 +1,5 @@
 import type { WidgetConfig } from '@lifi/widget';
-import type { RootNode } from '@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 import type { CreateJumperThemeOptions } from 'src/theme/theme';
@@ -158,7 +158,7 @@ export interface TagAttributes {
 /* FAQ-Items */
 interface FaqItemAttributes {
   Question: string;
-  Answer: RootNode[];
+  Answer: BlocksContent;
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
@@ -253,7 +253,7 @@ export interface BlogArticleData extends BlogArticleAttributes {
 export interface BlogArticleAttributes {
   Title: string;
   Subtitle: string;
-  Content: RootNode[];
+  Content: BlocksContent;
   Image: StrapiMediaData;
   Slug: string;
   Level?: string;
@@ -344,7 +344,7 @@ export interface QuestData {
   documentId: string;
   UID: string;
   Title: string;
-  DescriptionRichText: RootNode[];
+  DescriptionRichText: BlocksContent;
   Description: string;
   Link: string;
   Image?: StrapiMediaData;
@@ -514,8 +514,8 @@ export interface PerksDataAttributes {
   Image?: StrapiMediaData | null;
   ClaimableSteps: MultiSelect<AvailableSteps>;
   ClaimableStepProps?: Record<string, string>;
-  HowToUseDescription?: RootNode[];
-  NextStepsDescription?: RootNode[];
+  HowToUseDescription?: BlocksContent;
+  NextStepsDescription?: BlocksContent;
   createdAt: string;
   publishedAt?: string;
   updatedAt: string;
