@@ -68,7 +68,7 @@
     "ethers": "^6.16.0",
     "extract-colors": "^4.2.1",
     "graphql": "^16.14.0",
-    "html-react-parser": "^5.2.17",
+    "html-react-parser": "^6.1.0",
     "i18next": "^26.0.10",
     "i18next-resources-to-backend": "^1.2.1",
     "jsonwebtoken": "^9.0.3",
