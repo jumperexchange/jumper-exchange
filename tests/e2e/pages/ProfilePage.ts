@@ -71,7 +71,11 @@ export class ProfilePage {
   async openAchievementsTab(): Promise<void> {
     await expect(this.achievementsTab).toBeVisible();
     await this.achievementsTab.click();
-    await expect(this.startSwappingLink).toBeVisible();
+    // 30s timeout: the "Start swapping" CTA is data-driven (shown when the
+    // wallet has zero completed swaps) and depends on a backend fetch that
+    // can be slow on prod (observed timing-out at the default 10s during
+    // D10d smoke). Same pattern as Learn / Scan flake fixes in D10c.
+    await expect(this.startSwappingLink).toBeVisible({ timeout: 30_000 });
   }
 
   async openPerksTab(): Promise<void> {
