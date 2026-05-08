@@ -309,6 +309,13 @@ export const useDustModalFlow = ({
             composerQuote={composerQuote ?? undefined}
             nativeTokenBalance={nativeTokenBalance}
             selectedInputBalances={dustSummary?.selectedBalances ?? []}
+            currentActionIndex={transactionForm.currentActionIndex}
+            isExecuting={
+              transactionForm.currentStep === 'approving' ||
+              transactionForm.currentStep === 'requesting'
+            }
+            actionHashes={transactionForm.actionHashes}
+            chainId={nativeTokenChainId}
           />
         ),
         onSubmit: async () => {
@@ -328,6 +335,7 @@ export const useDustModalFlow = ({
       formFields,
       transactionForm,
       widgetNav,
+      nativeTokenChainId,
       t,
     ],
   );

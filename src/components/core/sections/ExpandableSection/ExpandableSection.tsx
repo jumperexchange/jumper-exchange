@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   StyledAccordion,
   StyledAccordionDetails,
@@ -43,6 +43,10 @@ export const ExpandableSection = <T,>({
   dataTestId,
 }: ExpandableSectionProps<T>) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(initialIsExpanded);
+
+  useEffect(() => {
+    setIsExpanded(initialIsExpanded);
+  }, [initialIsExpanded]);
 
   const handleHeaderClick = () => {
     if (!shouldExpand) {

@@ -779,10 +779,6 @@ interface Resources {
       };
       dustConversion: {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
-        routeOverview: {
-          composerAlt: 'Composer';
-          composerViaLifi: 'Composer via Li.Fi';
-        };
         error: {
           chainSwitchFailed: {
             close: 'Close';
@@ -829,6 +825,15 @@ interface Resources {
             description: 'Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.';
             title: 'Wallet does not support batch transactions';
           };
+        };
+        routeOverview: {
+          approveToken: 'Approve {{symbol}}';
+          composerAlt: 'Composer';
+          composerViaLifi: 'Composer via LI.FI';
+          executingStep: 'Executing step {{current, number}} out of {{total, number}}...';
+          stepsCount_one: '{{count, number}} step';
+          stepsCount_other: '{{count, number}} steps';
+          swapTo: 'Swap to {{symbol}}';
         };
         success: {
           done: 'Done';
