@@ -10,8 +10,8 @@ for (const { name, size } of [
 ]) {
   test.describe(`Settings menu [Viewport: ${name}]`, () => {
     // jscpd:ignore-start
-    // Mirrors the viewport-iteration boilerplate in swapActions.spec.ts.
-    // Abstracting the pattern would obscure the per-spec viewport intent.
+    // Viewport-iteration mirrors swapActions.spec.ts.
+    // Abstracting would obscure the per-spec viewport intent.
     test.use({ viewport: size });
 
     test.beforeEach(async ({ page }) => {

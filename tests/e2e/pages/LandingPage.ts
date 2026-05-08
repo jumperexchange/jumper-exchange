@@ -20,9 +20,7 @@ export class LandingPage {
     this.getStartedButton = page.getByTestId('get-started-button');
     this.welcomeOverlay = page.locator(WELCOME_OVERLAY_SELECTOR);
     this.jumperLogo = page.locator('#jumper-logo');
-    // TODO(app): JUM-924 — add `homepage-stat-{chains,bridges,dexs}-count`
-    // data-testids on the count <span>s so we can drop the structural
-    // preceding-sibling xpath anchors.
+    // TODO(app): JUM-924 — add `homepage-stat-{chains,bridges,dexs}-count` testids.
     this.chainsCount = page.locator(
       '//*[text()="Chains"]/preceding-sibling::*[1]',
     );
@@ -72,8 +70,7 @@ export class LandingPage {
   async expectRoutesVisibility(options: {
     bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
-    // Cross-VM bridges (SUI/SOL/BTC → Hypercore) routinely exceed the default
-    // 10s expect timeout on LiFi; pass 30_000+ for those.
+    // Cross-VM bridges (SUI/SOL/BTC → Hypercore) often exceed default 10s; pass 30_000+.
     timeoutMs?: number;
   }): Promise<void> {
     const { bestReturnShouldBeVisible, checkRelayRoute, timeoutMs } = options;
@@ -96,8 +93,7 @@ export class LandingPage {
 
     const viewportWidth = this.page.viewportSize()?.width;
     if (viewportWidth !== undefined && viewportWidth < 599) {
-      // TODO(app): JUM-924 — add `widget-route-expand-toggle` testid so we
-      // can drop this MUI internal class selector.
+      // TODO(app): JUM-924 — add `widget-route-expand-toggle` testid.
       await this.page
         .locator('button.MuiIconButton-root.MuiIconButton-sizeSmall:has(svg)')
         .click();
@@ -121,9 +117,7 @@ export class LandingPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  // Accepts a string (exact match) or a RegExp (pre-anchored).
-  // Used with `EXCHANGE_TAB_LABEL_PATTERN` for AB-tested labels so the spec
-  // doesn't fail when the test wallet is bucketed into the alt variant.
+  // RegExp form is for AB-tested labels (see `EXCHANGE_TAB_LABEL_PATTERN`).
   async navigateAndExpectTab(
     tabKey: number | string,
     expected: RegExp | string,

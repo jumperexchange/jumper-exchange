@@ -18,9 +18,7 @@ test.describe('Verify essential mobile flows', () => {
     qase(4, 'Page fits the mobile viewport width correctly'),
     async ({ page }) => {
       const viewport = page.viewportSize();
-      // Defensive guard for `viewportSize()` returning null when no viewport is set.
-      // Throws to fail-fast with a meaningful message rather than later NPEs.
-      // eslint-disable-next-line playwright/no-conditional-in-test -- defensive null-guard
+      // eslint-disable-next-line playwright/no-conditional-in-test -- null-guard for viewportSize()
       if (!viewport) {
         throw new Error('Viewport size not available');
       }
@@ -92,15 +90,10 @@ test.describe('Verify essential mobile flows', () => {
       await mainMenu.expectItemCount(10);
     });
 
-    // Mobile theme-switch is flaky against the Strapi-driven theme menu —
-    // either `closeOnMobileViewport` clicks off-screen on full-height drawers,
-    // or the theme submenu animation races the click. Repro is intermittent
-    // and we have not isolated root cause yet. Quarantined per the standards
-    // rule on flake (tests/README.md § "Flakiness is a bug"): mechanism is
-    // `test.step.skip` (preserves coverage of the rest of the test) plus a
-    // written reason here. Filing a Linear bug to track root-cause investigation.
-    // TODO: replace this comment with a JUM-XXX ticket reference once filed.
-    // eslint-disable-next-line playwright/no-skipped-test -- quarantined flake; see comment above
+    // Quarantined: mobile theme-switch flakes against the Strapi-driven menu
+    // (suspected closeOnMobileViewport off-screen click or animation race).
+    // TODO: file JUM-XXX bug for root-cause investigation.
+    // eslint-disable-next-line playwright/no-skipped-test -- quarantined flake
     await test.step.skip('switch theme', async () => {
       await mainMenu.switchTheme(Theme.Dark);
       await page.waitForFunction(

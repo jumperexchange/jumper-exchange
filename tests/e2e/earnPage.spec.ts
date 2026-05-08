@@ -6,9 +6,7 @@ import { EarnPage } from './pages';
 
 import type { Page } from '@playwright/test';
 
-// Shared `beforeEach` body for the four describe blocks that start on the
-// All-Markets tab. The Analytics and Your-Positions blocks have different
-// setup (different path / different tab) and use their own `beforeEach`.
+// Shared beforeEach for the four All-Markets describe blocks. Analytics + Your-Positions have their own.
 async function setupAllMarketsView(jumperPage: Page): Promise<void> {
   await jumperPage.goto('/earn');
   await jumperPage.waitForLoadState('load');

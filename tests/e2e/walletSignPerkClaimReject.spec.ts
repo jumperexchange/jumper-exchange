@@ -3,16 +3,12 @@ import { qase } from 'playwright-qase-reporter';
 import { expect, connectedTest as test } from './fixtures';
 import { ProfilePage } from './pages';
 
-// Negative-path counterpart to walletSignPerkClaim: ensure that rejecting the
-// MetaMask signature prompt does NOT call jumper-backend and does NOT leave
-// the UI in a stuck or claimed state.
+// Negative-path counterpart to walletSignPerkClaim — rejection must not POST claim or stick the UI.
 test.describe('Perk claim — reject signature', () => {
   test(
     qase(201, 'Reject the perk claim signature'),
     async ({ jumperPage, wallet }) => {
-      // jscpd:ignore-start
-      // Sister spec to walletSignPerkClaim — the duplication makes the diff
-      // (sign vs reject) immediately visible to a reader.
+      // jscpd:ignore-start — sister spec to walletSignPerkClaim; diff (sign vs reject) is the point.
       await jumperPage.goto('/profile');
       const profilePage = new ProfilePage(jumperPage);
 
@@ -34,9 +30,7 @@ test.describe('Perk claim — reject signature', () => {
       await profilePage.clickFirstPerkClaim();
       await wallet.rejectPopup(wallet.getContext());
 
-      // Give the UI a beat to settle before asserting absence (claim endpoint
-      // not hit) — without this, we'd race the rejection handler. Web-first
-      // assertions don't help here: we're verifying *no* state change.
+      // Settle for the absence assertion; web-first can't help (verifying *no* state change).
       // eslint-disable-next-line playwright/no-wait-for-timeout -- intentional settle for absence assertion
       await jumperPage.waitForTimeout(2000);
       await profilePage.expectPerkClaimErrorOrIdle();

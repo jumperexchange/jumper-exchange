@@ -134,9 +134,7 @@ export class EarnPage {
     await this.page.getByTestId(dropdownTestId).click();
     await expect(this.clearButton).toBeVisible();
     await this.page.getByRole('option', { name: option }).click();
-    // MUI dropdown re-renders cards after selection; brief settle-wait before
-    // the body-click dismiss avoids racing the menu close animation.
-    // eslint-disable-next-line playwright/no-wait-for-timeout -- intentional UI settle
+    // eslint-disable-next-line playwright/no-wait-for-timeout -- settle for MUI dropdown re-render before body-click dismiss
     await this.page.waitForTimeout(1000);
     await this.page.locator('body').click();
   }

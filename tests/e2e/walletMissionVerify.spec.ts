@@ -2,20 +2,13 @@ import { qase } from 'playwright-qase-reporter';
 
 import { expect, connectedTest as test } from './fixtures';
 
-// Cross-LiFi flow: Jumper UI → wagmi useSignMessage → MetaMask popup →
-// jumper-frontend posts to LiFi `/tasks_verification`. A failure here can
-// originate in Jumper, in the widget team's signing helper, or in LiFi core —
-// catching all three is the whole point.
-//
-// External dependency: hits LiFi's `/tasks_verification` service at the URL in
-// `NEXT_PUBLIC_LIFI_BACKEND_URL`. If that service is down, this test fails;
-// that is signal, not flake. Do not mock.
+// Real signature path: Jumper → wagmi → MetaMask → LiFi /tasks_verification.
+// External dependency on NEXT_PUBLIC_LIFI_BACKEND_URL — service down = test fails. Signal, not flake.
 test.describe('Mission wallet verification', () => {
   test(
     qase(203, 'Verify wallet on a mission via real signature'),
     async ({ jumperPage, wallet }) => {
-      // TODO(app): JUM-924 — add `missions-list` and `mission-verify-button`
-      // testids. Until then, the test asserts on heading + button label.
+      // TODO(app): JUM-924 — add `missions-list` + `mission-verify-button` testids.
       await jumperPage.goto('/missions');
       await jumperPage.waitForLoadState('domcontentloaded');
 

@@ -24,9 +24,7 @@ test.describe('API env-config.js', () => {
 
       const env = sandbox.window._env_;
       expect(env, 'window._env_ should be defined').toBeDefined();
-      // TypeScript narrowing: `expect(...).toBeDefined()` doesn't propagate to TS,
-      // so this guard is unreachable at runtime but required for the type system.
-      // eslint-disable-next-line playwright/no-conditional-in-test -- TS narrowing only
+      // eslint-disable-next-line playwright/no-conditional-in-test -- TS-only narrowing; toBeDefined() doesn't propagate types.
       if (!env) {
         return;
       }

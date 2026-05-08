@@ -25,21 +25,17 @@ export class SettingsPage {
     this.slippageInput = page.getByPlaceholder('Custom');
     this.bridgesList = page.getByTestId('bridges-list');
     this.bridgesListFirstItem = this.bridgesList.getByRole('button').first();
-    // MUI v9 dropped auto data-testid on icon SVGs (PR #2814 bumped material
-    // to ^9.0.0). Use the checkbox role on the bridge row instead.
+    // MUI v9 dropped auto-testids on icon SVGs; anchor on the row's checkbox role.
     this.bridgesListFirstCheckbox = this.bridgesListFirstItem
       .getByRole('checkbox')
       .first();
-    // TODO(app): JUM-924 — add `settings-drawer-back-button` testid; we anchor
-    // on the IconButton at the start of the settings header for now.
+    // TODO(app): JUM-924 — add `settings-drawer-back-button` testid.
     this.backArrowButton = page
       .locator('button.MuiIconButton-edgeStart')
       .first();
     this.deselectAllButton = page.getByLabel('Deselect all');
     this.selectAllButton = page.locator('#select-all');
-    // TODO(app): JUM-924 — replace MUI badge classes with
-    // `settings-badge-info` / `settings-badge-warning` testids; these classes
-    // are an MUI internal contract that breaks on major bumps.
+    // TODO(app): JUM-924 — replace MUI badge classes with `settings-badge-{info,warning}` testids.
     this.badgeInfo = page.locator('span.MuiBadge-badge.MuiBadge-colorInfo');
     this.badgeWarning = page.locator(
       'span.MuiBadge-badge.MuiBadge-colorWarning',
@@ -62,7 +58,6 @@ export class SettingsPage {
     await this.deselectAllButton.click();
   }
 
-  // Returns the display name so the caller can re-select it by name later.
   async deselectFirstBridge(): Promise<string> {
     const bridgeName = (await this.bridgesListFirstItem.textContent()) ?? '';
     await this.bridgesListFirstCheckbox.click();
@@ -102,9 +97,7 @@ export class SettingsPage {
   }
 
   async expectSlippageWarning(message: string): Promise<void> {
-    // The warning message text and its preceding icon always render together
-    // in the slippage panel; asserting the message is sufficient and survives
-    // the MUI v9 testid removal on the icon itself.
+    // MUI v9 dropped the icon testid; the message text is visible alongside it.
     await expect(this.page.getByText(message)).toBeVisible();
   }
 
@@ -139,13 +132,9 @@ export class SettingsPage {
     elementType: 'button' | 'p',
     options: ItemAssertion,
   ): Promise<void> {
-    // TODO(app): JUM-924 — distinguish settings labels in <button> vs <p>
-    // tags with role-specific testids (e.g. `settings-item-button-{label}`,
-    // `settings-item-readonly-{label}`) so we can drop the tag-filtered xpath.
-    // WHY (current state): settings labels appear in both buttons (clickable
-    // items) and paragraphs (read-only state). Playwright's getByText matches
-    // both, so we filter by tag explicitly via xpath to assert one without
-    // the other.
+    // TODO(app): JUM-924 — distinguish button vs paragraph labels with
+    // role-specific testids. Today both render the same text, so we filter
+    // by tag via xpath to assert one without the other.
     const item = this.page.locator(
       `xpath=//${elementType}[normalize-space(text())="${label}"]`,
     );
@@ -161,9 +150,7 @@ export class SettingsPage {
   }
 
   private fractionLocator(category: string): Locator {
-    // TODO(app): JUM-924 — expose per-category fraction testids (e.g.
-    // `settings-bridges-fraction`) so we can drop this text-walk + xpath.
-    // The "/" character is the only stable text marker today.
+    // TODO(app): JUM-924 — expose per-category fraction testids (e.g. `settings-bridges-fraction`); the "/" char is the only stable text marker today.
     return this.page
       .getByText(category)
       .locator('..')

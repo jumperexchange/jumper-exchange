@@ -43,8 +43,7 @@ test.describe('Main Menu flows', () => {
   test(
     qase(22, 'Should be able to navigate to the Jumper Learn'),
     async ({ page }) => {
-      // Learn loads marketing/strapi content; CI sees ~38s navigation time.
-      test.slow();
+      test.slow(); // marketing/strapi content; CI ~38s navigation
       const mainMenu = new MainMenuPage(page);
       await mainMenu.clickMenuItem('Learn');
       await expect(page).toHaveURL(
@@ -66,11 +65,7 @@ test.describe('Main Menu flows', () => {
       const firstArticleCard = articlesGrid.locator('a').first();
       await expect(firstArticleCard).toBeVisible();
       await firstArticleCard.click();
-      // Wait for the article URL specifically — the listing is at /learn,
-      // an article is at /learn/<slug>. If the click didn't navigate
-      // (intercepted by a Strapi loading skeleton, or the wrong anchor was
-      // matched by .first()), this fails fast with a clear "didn't leave
-      // the listing" message instead of a misleading heading-not-visible.
+      // waitForURL fails fast if the click didn't navigate off the listing.
       await page.waitForURL(new RegExp(`${URLS.LEARN_LOCAL}/[^/].*`), {
         timeout: 30_000,
       });
@@ -105,10 +100,6 @@ test.describe('Main Menu flows', () => {
     async ({ page }) => {
       const mainMenu = new MainMenuPage(page);
       await mainMenu.clickMenuItem('Scan');
-      // Host-agnostic: Jumper canonical host is jumper.xyz, with jumper.exchange
-      // redirecting; assert on the path only so either host resolves.
-      // 30s timeout: Scan page navigation is slow on prod (observed 20s in
-      // smoke runs); the default 10s flakes intermittently.
       await expect(page).toHaveURL(
         new RegExp(String.raw`${URLS.SCAN_LOCAL}(?:/|$|\?)`),
         { timeout: 30_000 },
@@ -167,11 +158,7 @@ test.describe('Main Menu flows', () => {
   test(
     qase(19, 'Should be able to navigate to Link3'),
     async ({ context, page }) => {
-      // link3.to is currently unreachable — DNS resolves but TCP times out
-      // (verified 2026-05-08 via direct curl on the bare domain). The link
-      // in Jumper's footer is correct; the destination's server is down.
-      // Re-enable once link3.to is reachable again, or remove if Jumper
-      // drops the link3 footer link.
+      // link3.to TCP-times-out (2026-05-08); destination is down, our link is correct.
       test.fixme();
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
@@ -185,8 +172,6 @@ test.describe('Main Menu flows', () => {
     qase(37, 'Should be able to navigate to the Privacy Policy page'),
     async ({ page }) => {
       await new LandingPage(page).clickNavItem('Privacy Policy');
-      // 30s timeout: the static marketing page can be slow on prod (observed
-      // staying at "/" through the default 10s — same pattern as D10c).
       await expect(page).toHaveURL(
         new RegExp(String.raw`${URLS.PRIVACY_POLICY}(?:$|\?|#)`),
         { timeout: 30_000 },
@@ -241,7 +226,6 @@ test.describe('Main Menu flows', () => {
 
   test(qase(55, 'Should be able to open newsletter page'), async ({ page }) => {
     await new LandingPage(page).clickNavItem('Newsletter');
-    // 30s timeout: same Strapi-driven slow-page pattern as Privacy Policy / Scan.
     await expect(page).toHaveURL(
       new RegExp(String.raw`${URLS.NEWSLETTER}(?:$|\?|#)`),
       {

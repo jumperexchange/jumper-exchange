@@ -43,11 +43,8 @@ export const JUMPER_BUTTONS = {
   PASS: 'Pass',
 } as const;
 
-// All known label variants for the swap/bridge tab. The label is driven by
-// the `a-b-test-trade-display` AB test (JUM-797) and will change once
-// JUM-838 ships "Swap & Bridge" to 100%. Tests must accept any of these
-// since the test wallet's bucket is server-resolved per address and not
-// overridable client-side.
+// AB-tested by `a-b-test-trade-display` (JUM-797 → JUM-838 ships "Swap & Bridge" to 100%).
+// Bucket is server-resolved per wallet address; tests must accept any variant.
 export const TAB_LABELS = {
   EXCHANGE: 'Exchange',
   SWAP_AND_BRIDGE: 'Swap & Bridge',

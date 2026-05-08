@@ -8,14 +8,11 @@ export class ScanPage {
   readonly transferHeading: Locator;
 
   constructor(private readonly page: Page) {
-    // Both labels are rendered as MuiTypography <p>, not <h*>. getByText
-    // matches whichever element actually carries the string and stays
-    // resilient if the app later wraps them in a heading.
+    // Labels are <p>, not <h*>; getByText matches either if the app later wraps in a heading.
     this.latestTransfersHeading = page.getByText('Latest transfers', {
       exact: true,
     });
-    // TODO(app): JUM-924 — add `scan-tx-link` data-testid on the row
-    // anchor so we can drop the structural `a[href^=...]` selector.
+    // TODO(app): JUM-924 — add `scan-tx-link` testid on the row anchor.
     this.transactionLinks = page.locator('a[href^="/scan/tx/"]');
     this.transferHeading = page.getByText('Transfer', { exact: true }).first();
   }

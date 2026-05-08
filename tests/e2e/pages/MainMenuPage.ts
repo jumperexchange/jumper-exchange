@@ -51,9 +51,7 @@ export class MainMenuPage {
     }
   }
 
-  // Partner themes are Strapi-driven and absent on local/CI baseline. The
-  // theme menu always contains 'Dark', 'Light', 'System'; anything else is
-  // a partner theme. Returns null when no partner theme is configured.
+  // Partner themes are Strapi-driven; static menu items are 'Dark'/'Light'/'System'.
   async findPartnerTheme(): Promise<null | string> {
     const allMenuItems = await this.menuItems.allTextContents();
     const partnerTheme = allMenuItems.find(
@@ -72,9 +70,7 @@ export class MainMenuPage {
     await this.leaderboardButton.click();
   }
 
-  // Wrap the page-event listener and the trigger click in Promise.all so the
-  // listener is registered BEFORE the click can fire — otherwise a fast popup
-  // can open before waitForEvent attaches and the helper hangs.
+  // Promise.all so the page-event listener attaches BEFORE the click fires.
   async openNewTabAndExpectUrl(
     context: BrowserContext,
     url: string,
@@ -97,8 +93,7 @@ export class MainMenuPage {
     await this.burgerButton.click();
   }
 
-  // Drawer overlay only intercepts clicks within its bounding box; click 20px
-  // above the top edge to dismiss.
+  // Drawer overlay only intercepts within its bbox; click 20px above the top edge to dismiss.
   private async closeOnMobileViewport(): Promise<void> {
     const box = await this.menu.boundingBox();
     if (box) {

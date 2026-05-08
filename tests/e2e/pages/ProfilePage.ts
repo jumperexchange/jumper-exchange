@@ -40,15 +40,12 @@ export class ProfilePage {
   }
 
   async expectPerkClaimed(): Promise<void> {
-    // TODO(app): JUM-924 — expose `perks-card-claimed-badge` testid so we
-    // don't fall back to the "Claimed" string match.
+    // TODO(app): JUM-924 — expose `perks-card-claimed-badge` testid.
     await expect(this.perksCardsClaimedBadge).toBeVisible();
   }
 
   async expectPerkClaimErrorOrIdle(): Promise<void> {
-    // After a wallet rejection the UI either shows an error message or simply
-    // stays on the unclaimed state — never a stuck spinner. Both outcomes are
-    // acceptable; assert the negative case (no claimed badge appeared).
+    // Post-rejection the UI either errors or stays unclaimed; both are fine. Assert no claimed badge appeared.
     await expect(this.perksCardsClaimedBadge).toBeHidden();
   }
 
@@ -62,19 +59,14 @@ export class ProfilePage {
   }
 
   async expectVisible(): Promise<void> {
-    // Anchor on the Perks tab — the legacy `.profile-page` wrapper class is
-    // no longer rendered, but the Perks/Achievements tabs are stable signals
-    // that the profile view (whether full-page or inline) is showing.
+    // Anchor on Perks tab — `.profile-page` wrapper no longer rendered.
     await expect(this.perksTab).toBeVisible();
   }
 
   async openAchievementsTab(): Promise<void> {
     await expect(this.achievementsTab).toBeVisible();
     await this.achievementsTab.click();
-    // 30s timeout: the "Start swapping" CTA is data-driven (shown when the
-    // wallet has zero completed swaps) and depends on a backend fetch that
-    // can be slow on prod (observed timing-out at the default 10s during
-    // D10d smoke). Same pattern as Learn / Scan flake fixes in D10c.
+    // 30s: CTA is data-driven (zero-swap state) and waits on a backend fetch.
     await expect(this.startSwappingLink).toBeVisible({ timeout: 30_000 });
   }
 

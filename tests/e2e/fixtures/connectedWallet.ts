@@ -28,10 +28,7 @@ export const connectedTest = realWalletTest.extend<ConnectedWalletFixtures>({
     await use(new LandingPage(jumperPage));
   },
 
-  // The connect step itself: fixture-scoped so every test that uses
-  // connectedTest starts already wallet-connected and can focus on its actual
-  // assertions. Specs that test the connect flow itself (connectWallet.spec)
-  // use realWalletTest instead.
+  // Auto-runs the connect flow before each test. For specs that test connect itself, use realWalletTest.
   walletConnected: [
     async ({ connectWalletPage, landingPage, wallet, walletContext }, use) => {
       await landingPage.closeWelcomeScreen();

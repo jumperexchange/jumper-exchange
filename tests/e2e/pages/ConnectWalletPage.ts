@@ -52,9 +52,7 @@ export class ConnectWalletPage {
     await expect(this.connectAnotherWalletButton).toBeVisible();
   }
 
-  // WalletConnect / Reown's modal exposes its own data-testids (`w3m-modal-card`,
-  // `wui-qr-code`); encapsulate them here so specs don't reach into a 3rd-party
-  // DOM directly.
+  // Encapsulates the Reown/WalletConnect modal testids (`w3m-modal-card`, `wui-qr-code`).
   async expectQrCodeVisible(): Promise<void> {
     const modal = this.page.locator('[data-testid="w3m-modal-card"]');
     await expect(modal.locator('[data-testid="wui-qr-code"]')).toBeVisible();
@@ -81,8 +79,7 @@ export class ConnectWalletPage {
     await expect(this.walletDrawer).toBeVisible();
   }
 
-  // Post-MetaMask "Select an ecosystem" dialog (Ethereum / Solana) — Jumper
-  // added this step in the connect flow; we have to pick before the popup fires.
+  // Post-MetaMask "Select an ecosystem" dialog — must pick before the popup fires.
   async selectEcosystem(name: ChainName): Promise<void> {
     const dialog = this.page
       .getByRole('dialog')

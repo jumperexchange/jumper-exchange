@@ -11,8 +11,8 @@ import { LandingPage, SettingsPage } from './pages';
 ].forEach(({ name, size }) => {
   test.describe(`On chain swaps [Viewport: ${name}]`, () => {
     // jscpd:ignore-start
-    // Mirrors the viewport-iteration boilerplate in settings.spec.ts.
-    // Abstracting the pattern would obscure the per-spec viewport intent.
+    // Viewport-iteration mirrors settings.spec.ts.
+    // Abstracting would obscure the per-spec viewport intent.
     test.use({ viewport: size });
 
     test.beforeEach(async ({ page }) => {
@@ -110,9 +110,7 @@ import { LandingPage, SettingsPage } from './pages';
             await page.goto(`/${buildUlParams(params)}`);
             await landingPage.expectRoutesVisibility({
               bestReturnShouldBeVisible: true,
-              // CI baseline: cross-VM Hypercore pairs (SUI/SOL/BTC → HYP)
-              // routinely take ~50s on LiFi. 90s gives headroom without
-              // masking real outages.
+              // Cross-VM Hypercore pairs routinely take ~50s on LiFi; 90s headroom.
               timeoutMs: 90_000,
             });
           });

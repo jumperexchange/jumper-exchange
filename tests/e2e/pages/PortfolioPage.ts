@@ -77,9 +77,7 @@ export class PortfolioPage {
     this.depositModalTitle = this.page.getByText('Quick deposit', {
       exact: true,
     });
-    // MUI v9 dropped auto data-testid on icon SVGs; fall back to the close
-    // button's accessible name (or the modal-close-button testid if the app
-    // exposes one).
+    // MUI v9 dropped icon testids; fall back to accessible name.
     this.closeModalButton = this.page
       .getByTestId('modal-close-button')
       .or(this.page.getByRole('button', { name: /close/i }).first());
@@ -284,10 +282,7 @@ export class PortfolioPage {
     }
   }
 
-  // Shared body for the per-tab filter assertions. The wallet-select filter
-  // only renders when more than one wallet is connected, so the per-tab
-  // method passes its full filter list and the helper drops `walletSelectFilter`
-  // when only one wallet is connected.
+  // walletSelectFilter only renders with 2+ wallets connected; drop it when not.
   private async expectTabFilters(filterLocators: Locator[]): Promise<void> {
     await this.connectWalletPage.openWalletDrawer();
     const connectedWalletCount =
