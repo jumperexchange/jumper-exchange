@@ -30,7 +30,7 @@ interface RouteOverviewProps {
 }
 
 const COMPOSER_ICON_SRC =
-  'https://cdn.jsdelivr.net/gh/lifinance/types@c55266da1b67513f3aa7ba9c1e066be1fae3a01a/src/assets/icons/protocols/wrapper.svg';
+  'https://github.com/lifinance/types/blob/main/src/assets/icons/protocols/wrapper.svg';
 
 export const RouteOverview: FC<RouteOverviewProps> = ({
   composerQuote,
