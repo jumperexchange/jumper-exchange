@@ -107,7 +107,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -254,7 +254,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -401,7 +401,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -548,7 +548,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -699,7 +699,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
                     class="MuiStack-root css-1x5pyaa-MuiStack-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                     >
                       <p
                         class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -890,7 +890,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
                   class="MuiStack-root css-1x5pyaa-MuiStack-root"
                 >
                   <div
-                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1nfq0a4-MuiAvatar-root"
+                    class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1vawnsp-MuiAvatar-root"
                   >
                     <p
                       class="MuiTypography-root MuiTypography-body1 css-1wn45fg-MuiTypography-root"
@@ -925,7 +925,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
           </div>
         </div>
         <button
-          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
+          class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1ii0feb-MuiButtonBase-root-MuiButton-root"
           tabindex="0"
           type="button"
         >

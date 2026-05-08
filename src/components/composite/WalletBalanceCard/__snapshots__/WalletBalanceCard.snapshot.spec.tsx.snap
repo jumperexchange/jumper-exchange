@@ -33,7 +33,7 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                     class="MuiBadge-root css-vo210k-MuiBadge-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-4ydead-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1wpxi8j-MuiAvatar-root"
                     >
                       <span
                         class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-piyikp-MuiSkeleton-root"
@@ -41,11 +41,11 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-13qhmtj-MuiBadge-badge"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
                     />
                   </span>
                   <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
+                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
                     tabindex="0"
                     type="button"
                   >
@@ -266,7 +266,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                     class="MuiBadge-root css-vo210k-MuiBadge-root"
                   >
                     <div
-                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-4ydead-MuiAvatar-root"
+                      class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1wpxi8j-MuiAvatar-root"
                     >
                       <span
                         class="MuiSkeleton-root MuiSkeleton-circular MuiSkeleton-pulse css-piyikp-MuiSkeleton-root"
@@ -274,11 +274,11 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-13qhmtj-MuiBadge-badge"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
                     />
                   </span>
                   <button
-                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
+                    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall MuiButton-colorPrimary css-1e40vs5-MuiButtonBase-root-MuiButton-root"
                     tabindex="0"
                     type="button"
                   >
@@ -494,7 +494,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       class="MuiStack-root css-dnapf8-MuiStack-root"
                                     >
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1d3oy14-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -503,7 +503,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                         </p>
                                       </div>
                                       <div
-                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-i19px6-MuiAvatar-root"
+                                        class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1d3oy14-MuiAvatar-root"
                                       >
                                         <p
                                           class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -597,7 +597,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-t79l3q-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
@@ -687,7 +687,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                               class="MuiStack-root css-1x5pyaa-MuiStack-root"
                                             >
                                               <div
-                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-1fuvsw5-MuiAvatar-root"
+                                                class="MuiAvatar-root MuiAvatar-circular MuiAvatar-colorDefault css-t79l3q-MuiAvatar-root"
                                               >
                                                 <p
                                                   class="MuiTypography-root MuiTypography-body1 css-1uhph86-MuiTypography-root"
