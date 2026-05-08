@@ -10,6 +10,57 @@ End-to-end automation for jumper-exchange. Two test surfaces:
 Both surfaces run under one Playwright config (`../playwright.config.ts`); the
 split is by spec location, not by test runner.
 
+## Quickstart
+
+```sh
+pnpm install
+pnpm test:install                                  # one-time Playwright browsers
+pnpm test                                          # run the full suite
+```
+
+For wallet-touching specs, create a gitignored `tests/.env.test.local`:
+
+```sh
+TEST_WALLET_SEED_PHRASE="word1 word2 ... word12"   # throwaway, zero funds
+TEST_WALLET_PASSWORD="..."
+```
+
+**Why two files?** `tests/.env.test` is committed and holds shared defaults
+(URLs, `NEXT_PUBLIC_*` keys, integrator IDs) — so a fresh clone has a working
+test environment without anyone copying secrets around. `.env.test.local` is
+gitignored and holds per-developer overrides (wallet seed, password). This is
+the
+[Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables)
+for `.env*` files; `playwright.config.ts` loads `.env.test.local` with
+`override: true` so local values win. CI injects wallet values from GitHub
+Actions secrets directly.
+
+### Common commands
+
+```sh
+pnpm test tests/e2e/landingPage.spec.ts            # one file
+BASE_URL=https://jumper.xyz pnpm test              # against deployed prod
+
+pnpm tsc:tests                                     # typecheck the tests package
+pnpm exec eslint tests                             # lint
+pnpm exec playwright test --list                   # discover specs
+pnpm exec playwright show-report                   # open last HTML report
+pnpm test:qase                                     # full suite + Qase reporter
+```
+
+When `BASE_URL` is set the local dev server is skipped — Playwright runs
+straight against the deployment.
+
+### Run modes
+
+| Mode                 | Command                                         | Frontend                                                               | Backend                                                                   | SSO gate                        |
+| -------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
+| **CI parity**        | `pnpm test` (no `BASE_URL`)                     | local Next.js on `:3000` (Playwright `webServer` boots `pnpm run dev`) | develop API (`api-develop.jumper.exchange`) — read from `tests/.env.test` | none                            |
+| **Prod smoke**       | `BASE_URL=https://jumper.xyz pnpm test`         | prod                                                                   | prod                                                                      | none                            |
+| **Deployed develop** | `BASE_URL=https://develop.jumper.xyz pnpm test` | develop deployed                                                       | develop API                                                               | **YES — Cloudflare Access SSO** |
+
+CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runner and points at `api-develop.jumper.exchange`. The Cloudflare Access SSO gate is on the deployed develop frontend only.
+
 ## Layout
 
 ```
@@ -68,68 +119,11 @@ External services (LiFi `/tasks_verification`, jumper-backend `/perks/claim`,
 etc.) are exercised live. A failure caused by an upstream regression is the
 test doing its job, not flake to mask.
 
-## Required env
+## Writing tests
 
-Wallet-touching specs need a throwaway test mnemonic (zero funds, never reuse
-on mainnet) plus the wallet password. Locally, create `tests/.env.test.local`
-(gitignored via the `.env*` rule) with:
+Pick a fixture, then follow the pattern that matches it.
 
-```sh
-TEST_WALLET_SEED_PHRASE="word1 word2 ... word12"
-TEST_WALLET_PASSWORD="..."
-```
-
-`tests/.env.test` itself is committed per
-[Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) —
-it holds shared defaults (URLs, `NEXT_PUBLIC_*` keys, integrator IDs).
-Per-developer secrets go in `.env.test.local`, which is loaded second by
-`playwright.config.ts` with `override: true` so local values win over the
-shared defaults. CI injects the same wallet values from GitHub Actions
-secrets directly into the runner env.
-
-## Running
-
-```sh
-pnpm install
-pnpm test:install                                  # one-time Playwright browsers
-
-pnpm test                                          # full suite (boots local dev server)
-pnpm test tests/e2e/landingPage.spec.ts            # one file
-BASE_URL=https://jumper.xyz pnpm test              # against deployed prod
-BASE_URL=https://develop.jumper.xyz pnpm test      # develop (gated by Cloudflare Access)
-# `jumper.exchange` redirects to `jumper.xyz`; pass `.xyz` directly to skip the hop.
-
-pnpm tsc:tests                                     # typecheck the tests package
-pnpm exec eslint tests                             # lint
-pnpm exec playwright test --list                   # discover specs without running
-pnpm exec playwright show-report                   # open last HTML report
-
-pnpm test:qase                                     # full suite with Qase reporter
-```
-
-When `BASE_URL` is set the local dev server is skipped — Playwright runs
-straight against the deployment.
-
-## Run modes (which combo reproduces what)
-
-| Mode                 | Command                                         | Frontend                                                               | Backend                                                                   | SSO gate                                                                                                   | Reproduces                                   |
-| -------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| **CI parity**        | `pnpm test` (no `BASE_URL`)                     | local Next.js on `:3000` (Playwright `webServer` boots `pnpm run dev`) | develop API (`api-develop.jumper.exchange`) — read from `tests/.env.test` | none                                                                                                       | what `.github/workflows/playwright.yml` runs |
-| **Prod smoke**       | `BASE_URL=https://jumper.xyz pnpm test`         | prod                                                                   | prod                                                                      | none                                                                                                       | smoke against deployed prod                  |
-| **Deployed develop** | `BASE_URL=https://develop.jumper.xyz pnpm test` | develop deployed                                                       | develop API                                                               | **YES — Cloudflare Access SSO** blocks all programmatic traffic without a service token / cookie injection | rarely needed; almost never the right move   |
-
-CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runner and points at `api-develop.jumper.exchange`. The Cloudflare Access SSO gate is on the deployed develop frontend only.
-
-## Common gotchas
-
-- **Dev server wedges.** Turbopack can lock up on heavy module compilations and consume 4+ GB. If a run hangs at "injected env" with no further output, kill the next-server process tree and re-run, OR pass `BASE_URL=https://jumper.xyz` to skip the local dev server entirely.
-- **`prepareUserDataDir` auto-wipes per worker.** No manual `rm -rf tests/e2e/wallet/user_data/` needed between runs. The framework clears + recreates the per-worker dir on every launch — that's why each wallet-touching spec pays the ~30s onboarding cost.
-- **First wallet-touching run downloads MetaMask.** ~10 MB, ~15s, on first run only. Cached at `tests/e2e/wallet/extensions/metamask/` for subsequent runs. If the cache gets corrupt, delete that directory.
-- **Wallet secrets live in `tests/.env.test.local` (gitignored), not `.env.test`.** `.env.test` is committed per [Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) with shared defaults (URLs, `NEXT_PUBLIC_*` keys); per-developer secrets (seed phrase, password) go in `.env.test.local` so they don't show as Modified in git. If you accidentally added them to `.env.test`, move them to `.env.test.local`. CI injects the wallet values from GitHub Actions secrets.
-- **MUI major bumps drop auto-`data-testid`s.** PR #2814 (MUI v7→v9) silently broke specs anchored on `WarningRoundedIcon`, `ArrowBackIcon` etc. Anchor on app-side testids or accessible names — see [JUM-924](https://linear.app/lifi-linear/issue/JUM-924) for the consolidated app-side testid request.
-- **Marketing pages cross-host to `jumper.xyz`.** Privacy / Terms / Newsletter / Scan navigate to `jumper.xyz`; URL assertions must be host-agnostic regex.
-
-## Adding a new POM
+### Adding a new POM
 
 1. Create `tests/e2e/pages/MyPage.ts` as a class. Locators in the constructor,
    action methods first, `expectX` assertions second. No deep inheritance.
@@ -143,15 +137,13 @@ CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runn
 4. No magic literals. Promote any user-facing string the spec asserts on to a
    constant in `tests/e2e/data/`.
 
-## Adding a new wallet test
-
-Wallet-touching specs use `realWalletTest` (just the wallet, not yet connected) or `connectedTest` (auto-connected to Jumper). One fixture per spec file.
+### Adding a new spec
 
 1. Decide which fixture you need:
    - `noWalletTest` — UI/DOM assertions only, no wallet
    - `realWalletTest` — wallet present but not connected (e.g. testing the connect flow itself, or MetaMask-only flows like `walletAddCustomNetwork`)
    - `connectedTest` — wallet auto-connected to Jumper (e.g. profile, portfolio, perks flows)
-2. Create `tests/e2e/myWalletFlow.spec.ts`. Import the fixture as `test`:
+2. Create `tests/e2e/myFlow.spec.ts`. Import the fixture as `test`:
    ```ts
    import { connectedTest as test, expect } from './fixtures';
    ```
@@ -162,129 +154,52 @@ Wallet-touching specs use `realWalletTest` (just the wallet, not yet connected) 
    - `wallet.rejectPopup(walletContext)` — rejects whatever popup is open
    - `wallet.switchNetworkFromPopup(walletContext)` — approves a `wallet_switchEthereumChain` request
 5. Specs that need a funded wallet (real on-chain tx) must check `TEST_WALLET_FUNDED_SEED_PHRASE`/`PASSWORD` env vars before running. The unfunded wallet at `TEST_WALLET_SEED_PHRASE` must NEVER be used for funded flows.
-6. After writing, run locally before pushing:
+6. Before pushing:
    ```sh
    pnpm tsc:tests
    pnpm exec eslint tests --max-warnings=0
-   BASE_URL=https://jumper.xyz pnpm exec playwright test tests/e2e/myWalletFlow.spec.ts --workers=1
+   BASE_URL=https://jumper.xyz pnpm exec playwright test tests/e2e/myFlow.spec.ts --workers=1
    ```
 
 ## Coding standards
 
-Conventions enforced (or aspired to) for everything under `tests/`. Pair with the human-side review and the CI gates in `.github/workflows/playwright.yml` and `.github/workflows/checks.yml`.
+Mechanical rules (TS strict, no `any` / `!` without why, perfectionist sort, playwright-plugin rules, prettier formatting, jscpd dupcheck) are enforced by `eslint.config.mjs` + `tests/tsconfig.json` + husky `pre-commit`. The cultural rules below are review-enforced:
 
-**General principles**
+**Principles.** KISS · YAGNI · Minimal Viable Change · Boy Scout Rule · Readability over cleverness.
 
-- **KISS.** Start with the simplest solution that works. Add complexity only when something forces it.
-- **YAGNI.** Don't add features, abstractions, or "future-proofing" that weren't explicitly asked for.
-- **Minimal Viable Change.** The smallest change that achieves the goal. No scope creep.
-- **Boy Scout Rule.** Leave touched files cleaner than you found them — fix obvious nearby issues.
-- **Readability over cleverness.** Write for the next person. If a line needs a comment to be understood, rewrite the line first.
+**TypeScript.** Strict mode on. Explicit return types on exported functions and POM methods. Constants in `SCREAMING_SNAKE_CASE`, centralized in `tests/e2e/data/`. Single-file types co-located with their owner; promote to a shared location only when used in 2+ files.
 
-**TypeScript**
+**ESLint + Prettier.** Flat config + `eslint-plugin-playwright` + `eslint-plugin-perfectionist`. Husky `pre-commit` runs `tsc --noEmit + eslint --fix + prettier --write` on staged files. **Prettier runs standalone, not as an ESLint plugin** — `eslint-config-prettier` disables conflicting rules; don't introduce `eslint-plugin-prettier`.
 
-- Strict mode on via `tests/tsconfig.json`. Lint/type errors are bugs, not noise.
-- No `any` without a comment explaining why (`@typescript-eslint/no-explicit-any: error`).
-- No non-null assertions (`!`) without a comment explaining why (`@typescript-eslint/no-non-null-assertion: error`). Prefer real null checks.
-- `import type` for all type-only imports (`@typescript-eslint/consistent-type-imports`).
-- Prefix intentionally-unused parameters with `_` (e.g. `prepareUserDataDir(dir, _useParallel)`). The lint rule `no-unused-vars` is configured with `argsIgnorePattern: "^_"`.
-- Explicit return types on exported functions and POM methods.
-- **Type co-location with nuance.** Single-file types stay co-located with their owner. Types crossing module boundaries (used in 2+ files) move to a shared location — currently inline barrels under `tests/e2e/data/` for now; introduce `tests/e2e/types/` when shared types accumulate.
-- Constants in `SCREAMING_SNAKE_CASE`; centralized in `tests/e2e/data/`.
+**Functions and methods.** **SLAP** (Single Level of Abstraction): one level per body. **CQS** (Command-Query Separation): a method either changes state or returns a value, not both. Pure functions where possible. If reading a function requires scrolling, split it.
 
-**ESLint + Prettier**
+**Page Object Model.** **SRP** (one POM = one page area, class-based). Locators in the constructor; action methods first, `expectX` assertions second. **Composition over inheritance.** **Single entry point** — import from `tests/e2e/{pages,data}/index.ts`, don't reach into internals from specs. **Law of Demeter** — specs talk to POMs, not POM internals. **Encapsulation** — internals stay private. **Selector priority**: `data-testid` → `id` → `aria-label` → `getByRole` → `getByText` with `{ exact: true }`. Missing app-side testids → `// TODO(app): JUM-924 — …` comment. **No magic literals** — promote to `tests/e2e/data/` constants.
 
-- ESLint flat config: `eslint-plugin-playwright` rules tuned for Qase wrappers, `eslint-plugin-perfectionist` (`recommended-natural`) for sort/import ordering (tests-only scope).
-- Prettier runs as a standalone tool — never as an ESLint plugin. `eslint-config-prettier` disables conflicting rules.
-- Formatting enforced via repo-wide husky `pre-commit` + `lint-staged` (`tsc --noEmit + eslint --fix + prettier --write` on staged TS/JS).
-- Don't disable lint rules ad-hoc. If a rule is wrong for a case, the disable comment must include a one-line _why_.
+**Test design.** **AAA** (Arrange → Act → Assert) every time. **Hermetic tests** — fully self-contained, no shared state, no execution-order dependencies. **Assert What You Mean** — `expect(status).toBe(400)`, not `toBeGreaterThanOrEqual(400)`. **Flakiness is a bug** — quarantine with `test.fixme()` + a written reason + a tracked Linear ticket. Never retry-and-shrug.
 
-**Functions and methods**
+**Error handling.** Never swallow errors silently. **Fail Fast** — fixture setup throws when env is wrong. **Fail with meaning** — error messages describe what went wrong and where. **Diagnose root cause, not symptoms** — patches that mask symptoms are debt.
 
-- **SLAP** (Single Level of Abstraction): each function operates at one level of detail. Don't mix high-level orchestration with low-level implementation in the same body.
-- **CQS** (Command-Query Separation): a method either changes state or returns a value — not both. POM action methods don't double as assertion sources.
-- Pure functions where possible (same input → same output, no side effects). Side-effecting code stays explicit and isolated.
-- Keep functions short and focused. If reading a single function requires scrolling, split it.
+**Comments.** Default to none. Add only when _why_ is non-obvious (workaround, hidden invariant, surprising behavior). Document intent, not mechanics. No commented-out code in committed work.
 
-**Page Object Model**
+**Before claiming done.** IDE diagnostics, `pnpm tsc:tests`, `pnpm exec eslint tests --max-warnings=0`, `pnpm dupcheck:tests`. For substantive changes, run the affected specs locally — don't rely solely on CI.
 
-- **SRP.** One POM = one page area. Class-based, in `tests/e2e/pages/`.
-- Locators in the constructor; action methods first; `expectX` assertions second.
-- **Composition over inheritance.** Build behaviour by combining small focused helpers, not deep class hierarchies.
-- **Single entry point.** Import POMs and constants from `tests/e2e/pages/index.ts` and `tests/e2e/data/index.ts`. Don't reach into individual internal files from specs.
-- **Law of Demeter.** Specs talk to POMs, not to POM internals. Don't chain through `pomA.pomB.locator.foo`.
-- **Encapsulation.** Internals stay private. If something doesn't need to be public, it isn't.
-- Selector priority (top to bottom): `data-testid` → `id` → `aria-label` → `getByRole` → `getByText` with `{ exact: true }`. Avoid CSS classes and structural xpath. Missing app-side testids → `// TODO(app): …` comment.
-- No magic literals. Promote any user-facing string a spec asserts on to a constant in `tests/e2e/data/`. Build URL params via `buildUlParams`, not string concatenation.
+**What NOT to do.** Add unrequested features or "future-proofing." Modify files outside the agreed scope without asking. Run Prettier as an ESLint plugin.
 
-**Tests-specific principles**
+## Common gotchas
 
-- **AAA.** Arrange → Act → Assert. Every test, every time.
-- **Hermetic tests.** Each test fully self-contained. No shared state, no reliance on execution order. Per-worker `user_data` dirs already enforce this for wallet state.
-- **Test Data Isolation.** Set up and tear down explicitly. Test data must not bleed between specs or between local/CI runs.
-- **Assert What You Mean.** Specific expected values: `expect(status).toBe(400)` not `expect(status).toBeGreaterThanOrEqual(400)`. Broad assertions are a quality smell.
-- **Flakiness is a bug.** A flaky test is broken, not "sometimes passing." Quarantine with `test.fixme()` + a written reason, file the bug, fix root cause — never retry-and-shrug.
-- **First-Class Tests.** Test code is held to the same quality bar as production code. No shortcuts in naming, structure, or clarity.
-- **Contract tests** for API surfaces (`tests/api/`). Verify schemas and interfaces stay stable.
-- **Stable selectors** (UI/E2E). Already covered above; never CSS classes, never DOM-structure xpath.
+- **Dev server wedges.** Turbopack can lock up on heavy module compilations and consume 4+ GB. If a run hangs at "injected env" with no further output, kill the next-server process tree and re-run, OR pass `BASE_URL=https://jumper.xyz` to skip the local dev server entirely.
+- **`prepareUserDataDir` auto-wipes per worker.** No manual `rm -rf tests/e2e/wallet/user_data/` needed between runs. The framework clears + recreates the per-worker dir on every launch — that's why each wallet-touching spec pays the ~30s onboarding cost.
+- **First wallet-touching run downloads MetaMask.** ~10 MB, ~15s, on first run only. Cached at `tests/e2e/wallet/extensions/metamask/` for subsequent runs. If the cache gets corrupt, delete that directory.
+- **Wallet secrets live in `tests/.env.test.local` (gitignored), not `.env.test`.** `.env.test` is committed per [Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) with shared defaults; per-developer secrets go in `.env.test.local`. CI injects from GitHub Actions secrets.
+- **Marketing pages cross-host to `jumper.xyz`.** Privacy / Terms / Newsletter / Scan navigate to `jumper.xyz`; URL assertions must be host-agnostic regex.
 
-**Error handling**
+## Tools
 
-- **Never swallow errors silently.** Catch blocks must log enough context to trace what happened. `.catch(() => {})` requires a comment explaining why the error is intentionally ignored (e.g. `bringToFront` race).
-- **Fail Fast.** Fixture setup fails loud if env is wrong (`TEST_WALLET_SEED_PHRASE` missing → throw, don't produce a mysterious test failure 30s later).
-- **Fail with meaning.** Error messages describe what went wrong and where, not just that something went wrong.
-- **Diagnose root cause, not symptoms.** When a test fails, identify what actually caused it. A patch that masks the symptom is debt.
-
-**Comments**
-
-- Default to none. Add only when _why_ is non-obvious (workaround for a specific bug, hidden invariant, surprising behavior).
-- Document intent, not mechanics. If you're explaining _what_ the code does, rename things first.
-- No commented-out code or stale TODOs in committed work.
-
-**Post-edit checks (mandatory before claiming done)**
-
-- IDE diagnostics first (LSP errors/warnings).
-- `pnpm tsc:tests` and `pnpm exec eslint tests` — no errors, no new warnings.
-- `pnpm dupcheck:tests` (jscpd) — no duplication regressions. (Script: `npx jscpd tests/e2e --min-lines 5 --min-tokens 50`. Add to `package.json` if missing.)
-- For substantive changes: run the affected specs locally, not just rely on CI.
-
-**Real-world default**
-
-- Real wallet, real backend, real upstream. Mocks are a last resort with a written reason. See _Real wallet, not mocks_ above.
-
-**Code quality signals — flag these proactively when you see them**
-
-- Inline literal values with no name (magic numbers/strings).
-- Functions doing more than one thing.
-- Imports bypassing the `index.ts` barrel.
-- Use of `any` or `!` without a why-comment.
-- Tests with shared mutable state or implicit ordering.
-- Assertions that don't fully specify the expected outcome.
-- Deep inheritance chains (suggest composition).
-- Comments explaining _what_ code does rather than _why_.
-- New features or abstractions that weren't explicitly requested (YAGNI).
-- Catch blocks without context.
-
-**What NOT to do**
-
-- Don't add unrequested features, abstractions, or "future-proofing."
-- Don't modify files outside the agreed scope without asking.
-- Don't include `Co-Authored-By: Claude` or any AI attribution in commits.
-- Don't leave debug `console.log` or commented-out code in committed work.
-- Don't run Prettier as an ESLint plugin (`eslint-plugin-prettier`). They run as separate tools.
-
-## Qase
-
-Every `test()` is wrapped in `qase(N, "title")`. The numeric ID is the link
-to TestOps; do not change it when moving or renaming a spec.
+**Qase TestOps.** Every `test()` is wrapped in `qase(N, "title")`. The numeric ID is the link to TestOps; do not change it when moving or renaming a spec.
 
 ```sh
 export QASE_TESTOPS_API_TOKEN="..."   # from 1Password (QA dept)
 pnpm test:qase
 ```
 
-## VS Code
-
-Install the official "Playwright Test for VSCode" extension. Run/debug
-individual tests from the Test sidebar. The extension picks up
-`playwright.config.ts` automatically.
+**VS Code.** Install the official "Playwright Test for VSCode" extension. Run/debug individual tests from the Test sidebar. The extension picks up `playwright.config.ts` automatically.
