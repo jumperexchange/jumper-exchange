@@ -185,8 +185,11 @@ test.describe('Main Menu flows', () => {
     qase(37, 'Should be able to navigate to the Privacy Policy page'),
     async ({ page }) => {
       await new LandingPage(page).clickNavItem('Privacy Policy');
+      // 30s timeout: the static marketing page can be slow on prod (observed
+      // staying at "/" through the default 10s — same pattern as D10c).
       await expect(page).toHaveURL(
         new RegExp(String.raw`${URLS.PRIVACY_POLICY}(?:$|\?|#)`),
+        { timeout: 30_000 },
       );
     },
   );
@@ -238,8 +241,12 @@ test.describe('Main Menu flows', () => {
 
   test(qase(55, 'Should be able to open newsletter page'), async ({ page }) => {
     await new LandingPage(page).clickNavItem('Newsletter');
+    // 30s timeout: same Strapi-driven slow-page pattern as Privacy Policy / Scan.
     await expect(page).toHaveURL(
       new RegExp(String.raw`${URLS.NEWSLETTER}(?:$|\?|#)`),
+      {
+        timeout: 30_000,
+      },
     );
   });
 });
