@@ -33,7 +33,7 @@ test.describe('Mission wallet verification', () => {
 
       await wallet.signPopup(wallet.getContext());
       const verificationResponse = await verificationResponsePromise;
-      expect(verificationResponse.status()).toBeLessThan(400);
+      expect(verificationResponse.status()).toBe(200);
 
       await expect(
         jumperPage.getByText('Wallet verified', { exact: false }).first(),

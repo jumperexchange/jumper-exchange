@@ -34,12 +34,6 @@ export class MainMenuPage {
     await expect(this.backgroundRoot).toHaveCSS('background-color', rgb);
   }
 
-  async expectBlogSections(selectors: string[]): Promise<void> {
-    for (const selector of selectors) {
-      await expect(this.page.locator(`#${selector}`)).toBeVisible();
-    }
-  }
-
   async expectHeaderTabs(): Promise<void> {
     await expect(this.headerMissionTab).toBeVisible();
     await expect(this.headerExchangeTab).toBeVisible();

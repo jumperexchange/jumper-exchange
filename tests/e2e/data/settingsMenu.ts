@@ -1,7 +1,6 @@
 export const SETTINGS_MENU = {
   BRIDGES: {
     LABEL: 'Bridges',
-    ZAP_COUNT: 2,
   },
   EXCHANGES: {
     LABEL: 'Exchanges',

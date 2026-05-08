@@ -139,9 +139,13 @@ export class SettingsPage {
     elementType: 'button' | 'p',
     options: ItemAssertion,
   ): Promise<void> {
-    // WHY: settings labels appear in both buttons (clickable items) and
-    // paragraphs (read-only state). Playwright's getByText matches both, so
-    // we filter by tag explicitly via xpath to assert one without the other.
+    // TODO(app): JUM-924 — distinguish settings labels in <button> vs <p>
+    // tags with role-specific testids (e.g. `settings-item-button-{label}`,
+    // `settings-item-readonly-{label}`) so we can drop the tag-filtered xpath.
+    // WHY (current state): settings labels appear in both buttons (clickable
+    // items) and paragraphs (read-only state). Playwright's getByText matches
+    // both, so we filter by tag explicitly via xpath to assert one without
+    // the other.
     const item = this.page.locator(
       `xpath=//${elementType}[normalize-space(text())="${label}"]`,
     );

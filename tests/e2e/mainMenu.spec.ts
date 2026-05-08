@@ -54,6 +54,8 @@ test.describe('Main Menu flows', () => {
         { timeout: 60_000 },
       );
       await page.waitForLoadState('load');
+      // TODO(app): JUM-924 — add `learn-page` data-testid so we can drop
+      // the `.learn-page` CSS-class anchor.
       await expect(page.locator('.learn-page')).toBeVisible();
       await mainMenu.expectHeaderTabs();
 

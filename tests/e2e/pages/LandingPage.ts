@@ -20,6 +20,9 @@ export class LandingPage {
     this.getStartedButton = page.getByTestId('get-started-button');
     this.welcomeOverlay = page.locator(WELCOME_OVERLAY_SELECTOR);
     this.jumperLogo = page.locator('#jumper-logo');
+    // TODO(app): JUM-924 — add `homepage-stat-{chains,bridges,dexs}-count`
+    // data-testids on the count <span>s so we can drop the structural
+    // preceding-sibling xpath anchors.
     this.chainsCount = page.locator(
       '//*[text()="Chains"]/preceding-sibling::*[1]',
     );

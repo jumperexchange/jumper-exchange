@@ -1,6 +1,5 @@
 import { CHAINS, WALLET_OPTIONS } from '../data';
-import { ConnectWalletPage } from '../pages/ConnectWalletPage';
-import { LandingPage } from '../pages/LandingPage';
+import { ConnectWalletPage, LandingPage } from '../pages';
 import { realWalletTest } from './realWallet';
 
 import type { Page } from '@playwright/test';

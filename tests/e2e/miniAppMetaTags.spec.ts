@@ -1,6 +1,5 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { baseMiniApp } from '../../src/app/lib/metadata';
 import { expect, noWalletTest as test } from './fixtures';
 
 test.describe('Mini App meta tags on page head', () => {
@@ -17,17 +16,15 @@ test.describe('Mini App meta tags on page head', () => {
 
       const miniappData = JSON.parse(fcMiniappContent ?? '');
       expect(miniappData.version).toBe('next');
-      expect(miniappData.imageUrl).toContain(baseMiniApp.iconUrl);
+      expect(miniappData.imageUrl).toContain('/mini-app-icon.png');
       expect(miniappData.button).toBeDefined();
       expect(miniappData.button.title).toBe('Launch Jumper');
       expect(miniappData.button.action.type).toBe('launch_miniapp');
       expect(miniappData.button.action.name).toBe('Jumper');
       expect(miniappData.button.action.splashImageUrl).toContain(
-        baseMiniApp.splashImageUrl,
+        '/favicon.png',
       );
-      expect(miniappData.button.action.splashBackgroundColor).toBe(
-        baseMiniApp.splashBackgroundColor,
-      );
+      expect(miniappData.button.action.splashBackgroundColor).toBe('#653ca2');
     },
   );
 
@@ -38,10 +35,7 @@ test.describe('Mini App meta tags on page head', () => {
 
       const baseAppIdMeta = page.locator('meta[name="base:app_id"]');
       await expect(baseAppIdMeta).toHaveCount(1);
-
-      const appIdContent = baseAppIdMeta;
-      expect(appIdContent).toBeDefined();
-      await expect(appIdContent).not.toHaveAttribute('content', '');
+      await expect(baseAppIdMeta).not.toHaveAttribute('content', '');
     },
   );
 });

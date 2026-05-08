@@ -14,6 +14,8 @@ export class ScanPage {
     this.latestTransfersHeading = page.getByText('Latest transfers', {
       exact: true,
     });
+    // TODO(app): JUM-924 — add `scan-tx-link` data-testid on the row
+    // anchor so we can drop the structural `a[href^=...]` selector.
     this.transactionLinks = page.locator('a[href^="/scan/tx/"]');
     this.transferHeading = page.getByText('Transfer', { exact: true }).first();
   }

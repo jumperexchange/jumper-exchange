@@ -12,12 +12,10 @@ export class ProfilePage {
   readonly perksCardsClaimedBadge: Locator;
   readonly perksClaimError: Locator;
   readonly perksTab: Locator;
-  readonly profileContainer: Locator;
   readonly startSwappingLink: Locator;
   readonly transactionHistoryButton: Locator;
 
   constructor(private readonly page: Page) {
-    this.profileContainer = page.locator('.profile-page');
     this.perksTab = page.locator('#profile-tabs-perks');
     this.achievementsTab = page.locator('#profile-tabs-achievements');
     this.perksCards = page.locator('[data-testid="perks-card"]');
