@@ -156,54 +156,34 @@ export class PortfolioPage {
     await this.gearboxPositionCard.click();
   }
 
-  async getValueSelectFilterText(): Promise<null | string> {
-    const paragraphs = this.valueSelectFilter.locator('p');
-    const count = await paragraphs.count();
-    for (let i = 0; i < count; i++) {
-      const text = await paragraphs.nth(i).textContent();
-      if (text && /\d+\s*-\s*\d+/.test(text.trim())) {
-        return text.trim();
-      }
-    }
-    return null;
-  }
-
-  async openFilterModal(): Promise<void> {
-    await this.filterTriggerButton.click();
-    await this.filterModalApplyButton.waitFor({
-      state: 'visible',
-      timeout: 10000,
-    });
-  }
-
-  async verifyAllFiltersAreVisible(): Promise<void> {
+  async expectAllFiltersAreVisible(): Promise<void> {
     await this.waitForFilterBarReady();
     await expect(this.filterTriggerButton).toBeVisible();
   }
 
-  async verifyDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+  async expectDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await expect(this.depositButton).toBeVisible({ timeout: 30000 });
   }
 
-  async verifyDepositModalIsVisible(): Promise<void> {
+  async expectDepositModalIsVisible(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await expect(this.depositModalTitle).toBeVisible();
   }
 
-  async verifyFiltersAreVisibleOnDefiProtocolsTab(): Promise<void> {
-    await this.verifyTabFilters(this.defiProtocolsFilterLocators);
+  async expectFiltersAreVisibleOnDefiProtocolsTab(): Promise<void> {
+    await this.expectTabFilters(this.defiProtocolsFilterLocators);
   }
 
-  async verifyFiltersAreVisibleOnTokensTab(): Promise<void> {
-    await this.verifyTabFilters(this.tokensFilterLocators);
+  async expectFiltersAreVisibleOnTokensTab(): Promise<void> {
+    await this.expectTabFilters(this.tokensFilterLocators);
   }
 
-  async verifyGetStartedButtonIsVisible(): Promise<void> {
+  async expectGetStartedButtonIsVisible(): Promise<void> {
     await expect(this.getStartedButton).toBeVisible();
   }
 
-  async verifyMainTotalValueEqualsSumOfIndividualValues(): Promise<void> {
+  async expectMainTotalValueEqualsSumOfIndividualValues(): Promise<void> {
     const portfolioTotalValueText =
       await this.portfolioHeaderOverviewElement.getAttribute('aria-label');
 
@@ -228,12 +208,12 @@ export class PortfolioPage {
     ).toBe(true);
   }
 
-  async verifyTabsAreVisible(): Promise<void> {
+  async expectTabsAreVisible(): Promise<void> {
     await expect(this.tokensTab).toBeVisible();
     await expect(this.defiProtocolsTab).toBeVisible();
   }
 
-  async verifyValueSelectFilterIsCleared(): Promise<void> {
+  async expectValueSelectFilterIsCleared(): Promise<void> {
     await this.openFilterModal();
     const valueText = await this.getValueSelectFilterText();
     if (valueText !== null) {
@@ -244,18 +224,38 @@ export class PortfolioPage {
     await this.closeFilterModal();
   }
 
-  async verifyValueSelectFilterIsVisible(): Promise<void> {
+  async expectValueSelectFilterIsVisible(): Promise<void> {
     await this.waitForFilterBarReady();
     await this.openFilterModal();
     await expect(this.valueSelectFilter).toBeVisible();
   }
 
-  async verifyWithdrawButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
+  async expectWithdrawButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
     await expect(this.withdrawButton).toBeVisible();
   }
 
-  async verifyWithdrawModalIsVisible(): Promise<void> {
+  async expectWithdrawModalIsVisible(): Promise<void> {
     await expect(this.withdrawModalTitle).toBeVisible();
+  }
+
+  async getValueSelectFilterText(): Promise<null | string> {
+    const paragraphs = this.valueSelectFilter.locator('p');
+    const count = await paragraphs.count();
+    for (let i = 0; i < count; i++) {
+      const text = await paragraphs.nth(i).textContent();
+      if (text && /\d+\s*-\s*\d+/.test(text.trim())) {
+        return text.trim();
+      }
+    }
+    return null;
+  }
+
+  async openFilterModal(): Promise<void> {
+    await this.filterTriggerButton.click();
+    await this.filterModalApplyButton.waitFor({
+      state: 'visible',
+      timeout: 10000,
+    });
   }
 
   async waitForFilterBarReady(): Promise<void> {
@@ -266,23 +266,17 @@ export class PortfolioPage {
     });
   }
 
-  private extractNumber(label: null | string): number {
-    if (label === null) {
-      throw new Error('extractNumber: label is null');
-    }
-    return Number(label.replace('Total value: ', '').replace(/[^0-9.-]+/g, ''));
-  }
-
-  private async verifyFiltersVisible(filters: Locator[]): Promise<void> {
+  private async expectFiltersVisible(filters: Locator[]): Promise<void> {
     for (const filter of filters) {
       await expect(filter).toBeVisible();
     }
   }
+
   // Shared body for the per-tab filter assertions. The wallet-select filter
   // only renders when more than one wallet is connected, so the per-tab
   // method passes its full filter list and the helper drops `walletSelectFilter`
   // when only one wallet is connected.
-  private async verifyTabFilters(filterLocators: Locator[]): Promise<void> {
+  private async expectTabFilters(filterLocators: Locator[]): Promise<void> {
     await this.connectWalletPage.openWalletDrawer();
     const connectedWalletCount =
       await this.connectWalletPage.getConnectedWalletCount();
@@ -297,7 +291,13 @@ export class PortfolioPage {
 
     await expect(this.filterTriggerButton).toBeVisible();
     await this.openFilterModal();
-    await this.verifyFiltersVisible(filtersToCheck);
+    await this.expectFiltersVisible(filtersToCheck);
     await this.closeFilterModal();
+  }
+  private extractNumber(label: null | string): number {
+    if (label === null) {
+      throw new Error('extractNumber: label is null');
+    }
+    return Number(label.replace('Total value: ', '').replace(/[^0-9.-]+/g, ''));
   }
 }

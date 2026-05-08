@@ -25,8 +25,8 @@ test.describe('Main Menu flows', () => {
   test(
     qase(9, 'Should be able to open mission page and then open the mission'),
     async ({ page }) => {
-      const missionsButton = page.getByTestId('navbar-missions-button');
-      await missionsButton.click();
+      const mainMenu = new MainMenuPage(page);
+      await mainMenu.headerMissionTab.click();
 
       const firstMissionCard = page
         .locator('[data-testid^="mission-card-"]')
