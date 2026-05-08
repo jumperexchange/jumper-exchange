@@ -1,8 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { JUMPER_BUTTONS } from './data';
 import { expect, connectedTest as test } from './fixtures';
-import { MainMenuPage } from './pages';
+import { MainMenuPage, ProfilePage } from './pages';
 
 test.describe('Profile and Leaderboard navigation with wallet', () => {
   test.beforeEach(async ({ jumperPage }) => {
@@ -16,12 +15,11 @@ test.describe('Profile and Leaderboard navigation with wallet', () => {
     ),
     async ({ jumperPage }) => {
       const mainMenu = new MainMenuPage(jumperPage);
+      const profilePage = new ProfilePage(jumperPage);
       const leaderboardPageTitle = jumperPage.getByText('Leaderboard', {
         exact: true,
       });
-      await jumperPage
-        .getByRole('button', { name: JUMPER_BUTTONS.PASS })
-        .click();
+      await profilePage.clickPassPrompt();
       await mainMenu.openLeaderboard();
       await expect(leaderboardPageTitle).toBeVisible();
     },

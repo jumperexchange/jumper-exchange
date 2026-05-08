@@ -18,7 +18,7 @@ export class PortfolioPage {
   private readonly filterModalApplyButton: Locator;
   private readonly filterModalCloseButton: Locator;
   private readonly filterTriggerButton: Locator;
-  private readonly gearBoxPositionCard: Locator;
+  private readonly gearboxPositionCard: Locator;
   private readonly getStartedButton: Locator;
   private readonly portfolioHeaderOverviewElement: Locator;
   private readonly sortSelectFilter: Locator;
@@ -119,7 +119,7 @@ export class PortfolioPage {
     this.withdrawButton = this.page
       .getByTestId('portfolio-withdraw-button')
       .first();
-    this.gearBoxPositionCard = this.page.getByLabel(
+    this.gearboxPositionCard = this.page.getByLabel(
       'Position card for gearbox protocol',
     );
   }
@@ -152,15 +152,8 @@ export class PortfolioPage {
     });
   }
 
-  async expandSparkPositionCard(): Promise<void> {
-    await this.gearBoxPositionCard.click();
-  }
-
-  extractNumber(label: null | string): number {
-    if (label === null) {
-      throw new Error('extractNumber: label is null');
-    }
-    return Number(label.replace('Total value: ', '').replace(/[^0-9.-]+/g, ''));
+  async expandGearboxPositionCard(): Promise<void> {
+    await this.gearboxPositionCard.click();
   }
 
   async getValueSelectFilterText(): Promise<null | string> {
@@ -233,12 +226,6 @@ export class PortfolioPage {
       isDifferenceZero,
       `Total value does not equal sum of individual values. Difference: ${difference}`,
     ).toBe(true);
-
-    if (!isDifferenceZero) {
-      throw new Error(
-        `Total value does not equal sum of individual values. Difference: ${difference}`,
-      );
-    }
   }
 
   async verifyTabsAreVisible(): Promise<void> {
@@ -277,6 +264,13 @@ export class PortfolioPage {
       state: 'visible',
       timeout: 30000,
     });
+  }
+
+  private extractNumber(label: null | string): number {
+    if (label === null) {
+      throw new Error('extractNumber: label is null');
+    }
+    return Number(label.replace('Total value: ', '').replace(/[^0-9.-]+/g, ''));
   }
 
   private async verifyFiltersVisible(filters: Locator[]): Promise<void> {

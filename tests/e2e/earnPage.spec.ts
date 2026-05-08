@@ -29,9 +29,7 @@ test.describe('Chains filters on Earn page', () => {
 
       await test.step('Verify Earn tabs are visible', async () => {
         await expect(earnPage.allMarketsTab).toBeVisible();
-        await expect(
-          jumperPage.getByTestId('earn-filter-tab-foryou'),
-        ).toBeVisible();
+        await expect(earnPage.forYouTab).toBeVisible();
         await expect(earnPage.yourPositionsTab).toBeVisible();
       });
 

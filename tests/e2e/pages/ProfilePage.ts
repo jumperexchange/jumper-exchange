@@ -1,5 +1,7 @@
 import { expect } from '@playwright/test';
 
+import { JUMPER_BUTTONS } from '../data';
+
 import type { Locator, Page } from '@playwright/test';
 
 export class ProfilePage {
@@ -33,6 +35,10 @@ export class ProfilePage {
 
   async clickFirstPerkClaim(): Promise<void> {
     await this.perksCardsClaimButton.click();
+  }
+
+  async clickPassPrompt(): Promise<void> {
+    await this.page.getByRole('button', { name: JUMPER_BUTTONS.PASS }).click();
   }
 
   async expectPerkClaimed(): Promise<void> {

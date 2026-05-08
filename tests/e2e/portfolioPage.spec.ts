@@ -87,7 +87,7 @@ test.describe('Portfolio page', () => {
 
       await test.step('verify deposit/withdraw buttons on defi positions tab', async () => {
         await portfolioPage.clickDefiProtocolsTab();
-        await portfolioPage.expandSparkPositionCard();
+        await portfolioPage.expandGearboxPositionCard();
         await portfolioPage.verifyDepositButtonIsVisibleOnDeFiPositionsTab();
         await portfolioPage.verifyWithdrawButtonIsVisibleOnDeFiPositionsTab();
       });

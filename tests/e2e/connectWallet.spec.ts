@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { CHAINS, JUMPER_BUTTONS, WALLET_OPTIONS } from './data';
+import { CHAINS, WALLET_OPTIONS } from './data';
 import { realWalletTest as test } from './fixtures';
 import { ConnectWalletPage, LandingPage, ProfilePage } from './pages';
 
@@ -24,7 +24,7 @@ test.describe('Connect/disconnect MetaMask with Jumper and open /profile', () =>
     });
 
     await test.step('Navigate to profile', async () => {
-      await page.getByRole('button', { name: JUMPER_BUTTONS.PASS }).click();
+      await profilePage.clickPassPrompt();
       await profilePage.expectVisible();
     });
 

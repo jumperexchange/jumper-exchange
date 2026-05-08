@@ -23,10 +23,12 @@ export class EarnPage {
   readonly allMarketsTab: Locator;
   readonly cardsGrid: Locator;
   readonly clearButton: Locator;
+  readonly forYouTab: Locator;
   readonly yourPositionsTab: Locator;
 
   constructor(private readonly page: Page) {
     this.allMarketsTab = page.getByTestId('earn-filter-tab-all');
+    this.forYouTab = page.getByTestId('earn-filter-tab-foryou');
     this.yourPositionsTab = page.getByTestId('earn-filter-tab-your-positions');
     this.cardsGrid = page.getByTestId('earn-opportunities-cards-grid');
     this.clearButton = page.getByTestId('clear-button');

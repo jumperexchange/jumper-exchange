@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { buildUlParams } from './data';
+import { buildUlParams, SETTINGS_MENU } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
 import { noWalletTest as test } from './fixtures';
 import { LandingPage, SettingsPage } from './pages';
@@ -28,8 +28,8 @@ import { LandingPage, SettingsPage } from './pages';
         await test.step('Check if the Relay fallback route is shown', async () => {
           const settings = new SettingsPage(page);
           const landingPage = new LandingPage(page);
-          await settings.open('Settings');
-          await settings.clickItem('Bridges');
+          await settings.open(SETTINGS_MENU.TITLE);
+          await settings.clickItem(SETTINGS_MENU.BRIDGES.LABEL);
           await settings.deselectAll();
           await settings.goBack();
 
