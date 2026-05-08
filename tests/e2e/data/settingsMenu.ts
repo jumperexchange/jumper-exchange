@@ -1,0 +1,31 @@
+export const SETTINGS_MENU = {
+  BRIDGES: {
+    LABEL: 'Bridges',
+    ZAP_COUNT: 2,
+  },
+  EXCHANGES: {
+    LABEL: 'Exchanges',
+  },
+  GAS_PRICE: {
+    FAST: 'Fast',
+    LABEL: 'Gas price',
+    NORMAL: 'Normal',
+    SLOW: 'Slow',
+  },
+  RESET: {
+    BUTTON: 'Reset settings',
+    DIALOG_CONFIRM_BUTTON: 'Reset',
+  },
+  ROUTE_PRIORITY: {
+    BEST_RETURN: 'Best Return',
+    FASTEST: 'Fastest',
+    LABEL: 'Route priority',
+  },
+  SLIPPAGE: {
+    AUTO: 'Auto',
+    LABEL: 'Max. slippage',
+    WARNING_MESSAGE:
+      'Low slippage tolerance may cause transaction delays or failures.',
+  },
+  TITLE: 'Settings',
+} as const;

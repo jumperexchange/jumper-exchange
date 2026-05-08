@@ -1,0 +1,123 @@
+import { qase } from 'playwright-qase-reporter';
+
+import { buildUlParams } from './data';
+import chainData from './data/chainData.json' with { type: 'json' };
+import { noWalletTest as test } from './fixtures';
+import { LandingPage, SettingsPage } from './pages';
+
+[
+  { name: 'Mobile', size: { height: 812, width: 375 } },
+  { name: 'Desktop', size: { height: 1080, width: 1920 } },
+].forEach(({ name, size }) => {
+  test.describe(`On chain swaps [Viewport: ${name}]`, () => {
+    // jscpd:ignore-start
+    // Mirrors the viewport-iteration boilerplate in settings.spec.ts.
+    // Abstracting the pattern would obscure the per-spec viewport intent.
+    test.use({ viewport: size });
+
+    test.beforeEach(async ({ page }) => {
+      const landingPage = new LandingPage(page);
+      await landingPage.goto();
+      await landingPage.closeWelcomeScreen();
+    });
+    // jscpd:ignore-end
+
+    test(
+      qase(name === 'Mobile' ? 23 : 26, 'ETH chain swap pair'),
+      async ({ page }) => {
+        await test.step('Check if the Relay fallback route is shown', async () => {
+          const settings = new SettingsPage(page);
+          const landingPage = new LandingPage(page);
+          await settings.open('Settings');
+          await settings.clickItem('Bridges');
+          await settings.deselectAll();
+          await settings.goBack();
+
+          const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
+          await page.goto(`/${urlParams}`);
+          await landingPage.expectRoutesVisibility({
+            bestReturnShouldBeVisible: true,
+            checkRelayRoute: true,
+          });
+        });
+      },
+    );
+
+    test(
+      qase(name === 'Mobile' ? 24 : 27, 'ARB chain swap pairs'),
+      async ({ page }) => {
+        const landingPage = new LandingPage(page);
+
+        await test.step(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair`, async () => {
+          await page.goto(`/${buildUlParams(chainData.ARBtoARB.ETHtoUSDT)}`);
+          await landingPage.expectRoutesVisibility({
+            bestReturnShouldBeVisible: true,
+          });
+        });
+
+        await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
+          await page.goto(`/${buildUlParams(chainData.ARBtoARB.USDCtoWBTC)}`);
+          await landingPage.expectRoutesVisibility({
+            bestReturnShouldBeVisible: true,
+          });
+        });
+      },
+    );
+
+    test(
+      qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'),
+      async ({ page }) => {
+        // Seven cross-VM Hypercore route lookups; LiFi can take 30-90s each.
+        test.slow();
+        const landingPage = new LandingPage(page);
+
+        const swapPairs: Array<{
+          label: string;
+          params: Parameters<typeof buildUlParams>[0];
+        }> = [
+          {
+            label: `${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} → ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol}`,
+            params: chainData.EVMtoHypercore.ETHtoUSDC,
+          },
+          {
+            label: `${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} → ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol}`,
+            params: chainData.ArbUSDCtoHypercore.USDCtoUSDC,
+          },
+          {
+            label: `[NEGATIVE] ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.tokenSymbol} → ${chainData.ArbUSDCtoHypercore.USDCtoUSDC.toTokenSymbol} below 5 USDC`,
+            params: chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC,
+          },
+          {
+            label: `${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} → ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol}`,
+            params: chainData.EVMtoHypercore.ETHtoUSDC,
+          },
+          {
+            label: `${chainData.BTCtoHypercore.BTCtoUSDC.tokenSymbol} → ${chainData.BTCtoHypercore.BTCtoUSDC.toTokenSymbol}`,
+            params: chainData.BTCtoHypercore.BTCtoUSDC,
+          },
+          {
+            label: `${chainData.SOLtoHypercore.SOLtoUSDC.tokenSymbol} → ${chainData.SOLtoHypercore.SOLtoUSDC.toTokenSymbol}`,
+            params: chainData.SOLtoHypercore.SOLtoUSDC,
+          },
+          {
+            label: `${chainData.SUItoHypercore.SUItoUSDC.tokenSymbol} → ${chainData.SUItoHypercore.SUItoUSDC.toTokenSymbol}`,
+            params: chainData.SUItoHypercore.SUItoUSDC,
+          },
+        ];
+
+        for (const { label, params } of swapPairs) {
+          await test.step(`Check ${label} swap pair`, async () => {
+            await page.goto(`/${buildUlParams(params)}`);
+            await landingPage.expectRoutesVisibility({
+              bestReturnShouldBeVisible: true,
+              // CI baseline: cross-VM Hypercore pairs (SUI/SOL/BTC → HYP)
+              // routinely take ~50s on LiFi. 90s gives headroom without
+              // masking real outages.
+              timeoutMs: 90_000,
+            });
+          });
+        }
+      },
+    );
+  });
+});

@@ -67,6 +67,8 @@ next-env.d.ts
 /blob-report/
 /playwright/.cache/
 test-results.json
+tests/e2e/wallet/user_data/
+tests/e2e/wallet/extensions/
 
 *storybook.log
 storybook-static

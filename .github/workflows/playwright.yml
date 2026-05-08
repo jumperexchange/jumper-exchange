@@ -78,7 +78,10 @@ jobs:
     needs: [create-qase-run]
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
-    timeout-minutes: 20
+    # 25 min headroom — `swapActions.spec.ts` and `mainMenu.spec.ts` use
+    # `test.slow()` (3× per-test timeout) and one Hyperliquid case has
+    # `timeoutMs: 90_000`. 20 min was tight against worst-case shard timing.
+    timeout-minutes: 25
     runs-on: ubuntu-latest
     strategy:
       matrix:
