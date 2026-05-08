@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { JUMPER_BUTTONS } from '../data';
+import { JUMPER_BUTTONS, UI_STRINGS } from '../data';
 
 import type { ChainName } from '../data';
 import type { Locator, Page } from '@playwright/test';
@@ -50,6 +50,15 @@ export class ConnectWalletPage {
 
   async expectDisconnectMenuVisible(): Promise<void> {
     await expect(this.connectAnotherWalletButton).toBeVisible();
+  }
+
+  // WalletConnect / Reown's modal exposes its own data-testids (`w3m-modal-card`,
+  // `wui-qr-code`); encapsulate them here so specs don't reach into a 3rd-party
+  // DOM directly.
+  async expectQrCodeVisible(): Promise<void> {
+    const modal = this.page.locator('[data-testid="w3m-modal-card"]');
+    await expect(modal.locator('[data-testid="wui-qr-code"]')).toBeVisible();
+    await expect(modal.getByText(UI_STRINGS.SCAN_QR_CODE_TITLE)).toBeVisible();
   }
 
   async expectSelectWalletDialogVisible(): Promise<void> {

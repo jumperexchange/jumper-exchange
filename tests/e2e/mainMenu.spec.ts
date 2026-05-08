@@ -110,8 +110,9 @@ test.describe('Main Menu flows', () => {
     async ({ context, page }) => {
       const mainMenu = new MainMenuPage(page);
       await mainMenu.clickMenuItem('Resources');
-      await mainMenu.clickMenuItem('Github');
-      await mainMenu.openNewTabAndExpectUrl(context, URLS.GITHUB);
+      await mainMenu.openNewTabAndExpectUrl(context, URLS.GITHUB, () =>
+        mainMenu.clickMenuItem('Github'),
+      );
     },
   );
 
@@ -120,8 +121,9 @@ test.describe('Main Menu flows', () => {
     async ({ context, page }) => {
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.clickNavItem('X social link');
-      await mainMenu.openNewTabAndExpectUrl(context, URLS.X);
+      await mainMenu.openNewTabAndExpectUrl(context, URLS.X, () =>
+        landingPage.clickNavItem('X social link'),
+      );
     },
   );
 
@@ -130,8 +132,9 @@ test.describe('Main Menu flows', () => {
     async ({ context, page }) => {
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.clickNavItem('Discord social link');
-      await mainMenu.openNewTabAndExpectUrl(context, URLS.DISCORD);
+      await mainMenu.openNewTabAndExpectUrl(context, URLS.DISCORD, () =>
+        landingPage.clickNavItem('Discord social link'),
+      );
     },
   );
 
@@ -140,8 +143,9 @@ test.describe('Main Menu flows', () => {
     async ({ context, page }) => {
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.clickNavItem('Telegram social link');
-      await mainMenu.openNewTabAndExpectUrl(context, URLS.TELEGRAM);
+      await mainMenu.openNewTabAndExpectUrl(context, URLS.TELEGRAM, () =>
+        landingPage.clickNavItem('Telegram social link'),
+      );
     },
   );
 
@@ -156,8 +160,9 @@ test.describe('Main Menu flows', () => {
       test.fixme();
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.clickNavItem('Link3 social link');
-      await mainMenu.openNewTabAndExpectUrl(context, URLS.LINK3);
+      await mainMenu.openNewTabAndExpectUrl(context, URLS.LINK3, () =>
+        landingPage.clickNavItem('Link3 social link'),
+      );
     },
   );
 

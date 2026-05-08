@@ -1,7 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { EXCHANGE_TAB_LABEL_PATTERN, UI_STRINGS, WALLET_OPTIONS } from './data';
-import { expect, noWalletTest as test } from './fixtures';
+import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data';
+import { noWalletTest as test } from './fixtures';
 import { ConnectWalletPage, LandingPage } from './pages';
 
 test.describe('Landing page and navigation', () => {
@@ -41,13 +41,7 @@ test.describe('Landing page and navigation', () => {
       await page
         .getByText(WALLET_OPTIONS.WALLET_CONNECT, { exact: true })
         .click();
-      const walletConnectModal = page.locator('[data-testid="w3m-modal-card"]');
-      await expect(
-        walletConnectModal.locator('[data-testid="wui-qr-code"]'),
-      ).toBeVisible();
-      await expect(
-        walletConnectModal.getByText(UI_STRINGS.SCAN_QR_CODE_TITLE),
-      ).toBeVisible();
+      await connectWalletPage.expectQrCodeVisible();
     },
   );
 });

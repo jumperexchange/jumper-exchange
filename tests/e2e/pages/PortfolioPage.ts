@@ -3,16 +3,15 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { ConnectWalletPage } from './ConnectWalletPage';
 
 export class PortfolioPage {
-  public readonly closeModalButton: Locator;
-  public readonly depositButton: Locator;
-  public readonly withdrawButton: Locator;
   private readonly assetSelectFilter: Locator;
   private readonly chainSelectFilter: Locator;
   private readonly clearFiltersButton: Locator;
+  private readonly closeModalButton: Locator;
   private readonly connectWalletPage: ConnectWalletPage;
   private readonly defiPositionsOverviewElement: Locator;
   private readonly defiProtocolsFilterLocators: Locator[];
   private readonly defiProtocolsTab: Locator;
+  private readonly depositButton: Locator;
   private readonly depositModalTitle: Locator;
   private readonly filterBarSkeleton: Locator;
   private readonly filterModalApplyButton: Locator;
@@ -27,6 +26,7 @@ export class PortfolioPage {
   private readonly tokensTab: Locator;
   private readonly valueSelectFilter: Locator;
   private readonly walletSelectFilter: Locator;
+  private readonly withdrawButton: Locator;
   private readonly withdrawModalTitle: Locator;
 
   constructor(private readonly page: Page) {
@@ -132,8 +132,16 @@ export class PortfolioPage {
     });
   }
 
+  async clickCloseModalButton(): Promise<void> {
+    await this.closeModalButton.click();
+  }
+
   async clickDefiProtocolsTab(): Promise<void> {
     await this.defiProtocolsTab.click();
+  }
+
+  async clickDepositButton(): Promise<void> {
+    await this.depositButton.click();
   }
 
   async clickGetStartedButton(): Promise<void> {
@@ -142,6 +150,10 @@ export class PortfolioPage {
 
   async clickTokensTab(): Promise<void> {
     await this.tokensTab.click();
+  }
+
+  async clickWithdrawButton(): Promise<void> {
+    await this.withdrawButton.click();
   }
 
   async closeFilterModal(): Promise<void> {

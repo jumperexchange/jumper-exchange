@@ -89,13 +89,13 @@ test.describe('Portfolio page', () => {
     });
 
     await test.step('verify deposit modal opens and closes', async () => {
-      await portfolioPage.depositButton.click();
+      await portfolioPage.clickDepositButton();
       await portfolioPage.expectDepositModalIsVisible();
-      await portfolioPage.closeModalButton.click();
+      await portfolioPage.clickCloseModalButton();
     });
 
     await test.step('verify withdraw modal opens', async () => {
-      await portfolioPage.withdrawButton.click();
+      await portfolioPage.clickWithdrawButton();
       await portfolioPage.expectWithdrawModalIsVisible();
     });
   });

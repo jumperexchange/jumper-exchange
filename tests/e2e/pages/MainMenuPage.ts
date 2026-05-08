@@ -51,6 +51,18 @@ export class MainMenuPage {
     }
   }
 
+  // Partner themes are Strapi-driven and absent on local/CI baseline. The
+  // theme menu always contains 'Dark', 'Light', 'System'; anything else is
+  // a partner theme. Returns null when no partner theme is configured.
+  async findPartnerTheme(): Promise<null | string> {
+    const allMenuItems = await this.menuItems.allTextContents();
+    const partnerTheme = allMenuItems.find(
+      (item) =>
+        !['Dark', 'Light', 'System'].includes(item) && item.trim() !== '',
+    );
+    return partnerTheme ?? null;
+  }
+
   async open(): Promise<void> {
     await this.burgerButton.click();
     await expect(this.menu).toBeVisible();
@@ -60,11 +72,18 @@ export class MainMenuPage {
     await this.leaderboardButton.click();
   }
 
+  // Wrap the page-event listener and the trigger click in Promise.all so the
+  // listener is registered BEFORE the click can fire — otherwise a fast popup
+  // can open before waitForEvent attaches and the helper hangs.
   async openNewTabAndExpectUrl(
     context: BrowserContext,
     url: string,
+    trigger: () => Promise<void>,
   ): Promise<void> {
-    const newPage = await context.waitForEvent('page');
+    const [newPage] = await Promise.all([
+      context.waitForEvent('page'),
+      trigger(),
+    ]);
     expect(newPage.url()).toBe(url);
   }
 

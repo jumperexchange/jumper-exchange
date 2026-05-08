@@ -69,11 +69,7 @@ test.describe('Switch theme — partner themes', () => {
       await mainMenu.open();
       await landingPage.clickMenuItem('Theme');
 
-      const allMenuItems = await mainMenu.menuItems.allTextContents();
-      const partnerTheme = allMenuItems.find(
-        (item) =>
-          !['Dark', 'Light', 'System'].includes(item) && item.trim() !== '',
-      );
+      const partnerTheme = await mainMenu.findPartnerTheme();
 
       // Partner theme presence is Strapi-driven and absent on local/CI baseline; skip when not configured.
       /* eslint-disable playwright/no-conditional-in-test, playwright/no-skipped-test -- env-conditional skip */
