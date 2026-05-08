@@ -68,12 +68,14 @@ export const RouteOverview: FC<RouteOverviewProps> = ({
     ];
 
     return labels.map((label, index) => {
-      const status =
-        currentActionIndex !== undefined && index < currentActionIndex
-          ? 'completed'
-          : isExecuting && index === currentActionIndex
-            ? 'executing'
-            : 'pending';
+      const isCompleted =
+        Boolean(actionHashes?.[index]) ||
+        (currentActionIndex !== undefined && index < currentActionIndex);
+      const status = isCompleted
+        ? 'completed'
+        : isExecuting && index === currentActionIndex
+          ? 'executing'
+          : 'pending';
 
       const txHash = actionHashes?.[index];
       const explorerUrl =
