@@ -2,9 +2,12 @@ import { useCallback, useMemo } from 'react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import type { Account } from '@lifi/widget-provider';
 import { useAccount } from '@lifi/wallet-management';
-import type { ChainType } from '@lifi/sdk';
-import { compact, max } from 'lodash';
-import { fetchBalancesForAddress } from '../lib/fetchBalancesForAddresses';
+import type { ChainType, Token as LifiToken } from '@lifi/sdk';
+import { compact, differenceWith, max } from 'lodash';
+import {
+  fetchBalancesForAddress,
+  fetchTokenBalancesForAddress,
+} from '../lib/fetchBalancesForAddresses';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import type { TokenBalance } from '@/types/tokens';
 
@@ -26,6 +29,7 @@ export interface UseTokensDataResult extends ResultState {
   refetch: () => void;
   cancel: () => void;
   refetchForAddress: (address: string) => void;
+  refetchForTokens: (address: string, tokens: LifiToken[]) => Promise<void>;
   stateByAddress: Record<string, ResultState>;
 }
 
@@ -141,6 +145,35 @@ export const useBalancesData = (): UseTokensDataResult => {
     [queries, addresses, queryClient],
   );
 
+  const refetchForTokens = useCallback(
+    async (address: string, tokens: LifiToken[]) => {
+      const freshBalances = await fetchTokenBalancesForAddress(address, tokens);
+
+      queryClient.setQueryData<TokenQueryData>(
+        ['portfolio-tokens', address],
+        (prev) => {
+          if (!prev) {
+            return prev;
+          }
+
+          const kept = differenceWith(
+            prev.balances,
+            tokens,
+            (b, t) =>
+              b.token.chainId === t.chainId &&
+              b.token.address.toLowerCase() === t.address.toLowerCase(),
+          );
+
+          return {
+            ...prev,
+            balances: [...kept, ...freshBalances],
+          };
+        },
+      );
+    },
+    [queryClient],
+  );
+
   const balancesByAddress = useMemo(() => {
     return queries.reduce(
       (acc, query, index) => {
@@ -213,5 +246,6 @@ export const useBalancesData = (): UseTokensDataResult => {
     refetch,
     cancel,
     refetchForAddress,
+    refetchForTokens,
   };
 };
