@@ -92,7 +92,15 @@ test.describe('Verify essential mobile flows', () => {
       await mainMenu.expectItemCount(10);
     });
 
-    // eslint-disable-next-line playwright/no-skipped-test -- theme-switch on mobile is currently flaky against the Strapi-driven theme menu; quarantined here pending fix
+    // Mobile theme-switch is flaky against the Strapi-driven theme menu —
+    // either `closeOnMobileViewport` clicks off-screen on full-height drawers,
+    // or the theme submenu animation races the click. Repro is intermittent
+    // and we have not isolated root cause yet. Quarantined per the standards
+    // rule on flake (tests/README.md § "Flakiness is a bug"): mechanism is
+    // `test.step.skip` (preserves coverage of the rest of the test) plus a
+    // written reason here. Filing a Linear bug to track root-cause investigation.
+    // TODO: replace this comment with a JUM-XXX ticket reference once filed.
+    // eslint-disable-next-line playwright/no-skipped-test -- quarantined flake; see comment above
     await test.step.skip('switch theme', async () => {
       await mainMenu.switchTheme(Theme.Dark);
       await page.waitForFunction(
