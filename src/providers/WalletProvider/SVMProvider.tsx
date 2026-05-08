@@ -12,6 +12,7 @@ import {
 } from 'react';
 import type { SolanaClientConfig } from '@solana/client';
 import envConfig from '@/config/env-config';
+import { useHydrated } from '@/hooks/useHydrated';
 
 const SOLANA_CHAIN_ID = '1151111081099710';
 
@@ -58,6 +59,7 @@ const SolanaWalletSync: FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
+  const isHydrated = useHydrated();
   const solanaConfig = useMemo<SolanaClientConfig>(() => {
     const rpcUrl = getSolanaRpcUrl();
     return {
@@ -69,7 +71,10 @@ export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SolanaProvider
       config={solanaConfig}
-      walletPersistence={{ autoConnect: true, storageKey: 'jumper-solana' }}
+      walletPersistence={{
+        autoConnect: isHydrated,
+        storageKey: 'jumper-solana',
+      }}
     >
       <SolanaWalletSync>{children}</SolanaWalletSync>
     </SolanaProvider>
