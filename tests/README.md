@@ -71,17 +71,21 @@ test doing its job, not flake to mask.
 ## Required env
 
 Wallet-touching specs need a throwaway test mnemonic (zero funds, never reuse
-on mainnet) plus the wallet password. Locally, copy `.env.test.example` →
-`.env.test` and fill in:
+on mainnet) plus the wallet password. Locally, create `tests/.env.test.local`
+(gitignored via the `.env*` rule) with:
 
 ```sh
 TEST_WALLET_SEED_PHRASE="word1 word2 ... word12"
 TEST_WALLET_PASSWORD="..."
 ```
 
-CI injects the same values from secrets.
-
-`tests/.env.test` is gitignored. If you see it tracked locally, do not commit.
+`tests/.env.test` itself is committed per
+[Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) —
+it holds shared defaults (URLs, `NEXT_PUBLIC_*` keys, integrator IDs).
+Per-developer secrets go in `.env.test.local`, which is loaded second by
+`playwright.config.ts` with `override: true` so local values win over the
+shared defaults. CI injects the same wallet values from GitHub Actions
+secrets directly into the runner env.
 
 ## Running
 
@@ -121,7 +125,7 @@ CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runn
 - **Dev server wedges.** Turbopack can lock up on heavy module compilations and consume 4+ GB. If a run hangs at "injected env" with no further output, kill the next-server process tree and re-run, OR pass `BASE_URL=https://jumper.xyz` to skip the local dev server entirely.
 - **`prepareUserDataDir` auto-wipes per worker.** No manual `rm -rf tests/e2e/wallet/user_data/` needed between runs. The framework clears + recreates the per-worker dir on every launch — that's why each wallet-touching spec pays the ~30s onboarding cost.
 - **First wallet-touching run downloads MetaMask.** ~10 MB, ~15s, on first run only. Cached at `tests/e2e/wallet/extensions/metamask/` for subsequent runs. If the cache gets corrupt, delete that directory.
-- **`tests/.env.test` is gitignored.** Contains the throwaway test seed phrase and password. CI injects from secrets. If you find it tracked locally, do NOT commit.
+- **Wallet secrets live in `tests/.env.test.local` (gitignored), not `.env.test`.** `.env.test` is committed per [Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) with shared defaults (URLs, `NEXT_PUBLIC_*` keys); per-developer secrets (seed phrase, password) go in `.env.test.local` so they don't show as Modified in git. If you accidentally added them to `.env.test`, move them to `.env.test.local`. CI injects the wallet values from GitHub Actions secrets.
 - **MUI major bumps drop auto-`data-testid`s.** PR #2814 (MUI v7→v9) silently broke specs anchored on `WarningRoundedIcon`, `ArrowBackIcon` etc. Anchor on app-side testids or accessible names — see [JUM-924](https://linear.app/lifi-linear/issue/JUM-924) for the consolidated app-side testid request.
 - **Marketing pages cross-host to `jumper.xyz`.** Privacy / Terms / Newsletter / Scan navigate to `jumper.xyz`; URL assertions must be host-agnostic regex.
 

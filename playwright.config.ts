@@ -10,6 +10,11 @@ import dotenv from 'dotenv';
  */
 
 dotenv.config({ path: './tests/.env.test' });
+// Per-developer overrides (gitignored via the `.env*` rule). Loaded second
+// with `override: true` so local values (wallet seed, password) win over
+// the committed shared defaults — Next.js convention. See tests/README.md
+// § Required env.
+dotenv.config({ path: './tests/.env.test.local', override: true });
 
 // Use process.env.PORT by default and fallback to port 3000
 // const PORT = process.env.PORT || 3000;
