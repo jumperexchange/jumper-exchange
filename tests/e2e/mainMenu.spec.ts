@@ -110,7 +110,7 @@ test.describe('Main Menu flows', () => {
       // 30s timeout: Scan page navigation is slow on prod (observed 20s in
       // smoke runs); the default 10s flakes intermittently.
       await expect(page).toHaveURL(
-        new RegExp(`${URLS.SCAN_LOCAL}(?:/|$|\\?)`),
+        new RegExp(String.raw`${URLS.SCAN_LOCAL}(?:/|$|\?)`),
         { timeout: 30_000 },
       );
       await mainMenu.expectHeaderTabs();
@@ -186,7 +186,7 @@ test.describe('Main Menu flows', () => {
     async ({ page }) => {
       await new LandingPage(page).clickNavItem('Privacy Policy');
       await expect(page).toHaveURL(
-        new RegExp(`${URLS.PRIVACY_POLICY}(?:$|\\?|#)`),
+        new RegExp(String.raw`${URLS.PRIVACY_POLICY}(?:$|\?|#)`),
       );
     },
   );
@@ -231,13 +231,15 @@ test.describe('Main Menu flows', () => {
     async ({ page }) => {
       await new LandingPage(page).clickNavItem('Terms Of Business');
       await expect(page).toHaveURL(
-        new RegExp(`${URLS.TERMS_OF_BUSINESS}(?:$|\\?|#)`),
+        new RegExp(String.raw`${URLS.TERMS_OF_BUSINESS}(?:$|\?|#)`),
       );
     },
   );
 
   test(qase(55, 'Should be able to open newsletter page'), async ({ page }) => {
     await new LandingPage(page).clickNavItem('Newsletter');
-    await expect(page).toHaveURL(new RegExp(`${URLS.NEWSLETTER}(?:$|\\?|#)`));
+    await expect(page).toHaveURL(
+      new RegExp(String.raw`${URLS.NEWSLETTER}(?:$|\?|#)`),
+    );
   });
 });
