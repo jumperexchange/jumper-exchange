@@ -1,3 +1,5 @@
+/// <reference types="gtag.js" />
+
 import type { ChainId } from '@lifi/sdk';
 import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';

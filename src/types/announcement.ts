@@ -1,4 +1,4 @@
-import { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type { StrapiMediaData } from './strapi';
 
 export type AnnouncementSeverityType = 'error' | 'warning' | 'info' | 'success';
@@ -6,7 +6,7 @@ export type AnnouncementSeverityType = 'error' | 'warning' | 'info' | 'success';
 export interface AnnouncementData {
   id: number;
   documentId: string;
-  Content: RootNode[];
+  Content: BlocksContent;
   Severity: AnnouncementSeverityType;
   Priority: number;
   StartDate: string;
@@ -21,7 +21,7 @@ export interface AnnouncementData {
 export interface AnnouncementDisplay {
   id: number;
   documentId: string;
-  content: RootNode[];
+  content: BlocksContent;
   severity: AnnouncementSeverityType;
   priority: number;
   startDate: string;

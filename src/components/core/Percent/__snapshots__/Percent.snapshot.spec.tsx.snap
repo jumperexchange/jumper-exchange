@@ -6,6 +6,8 @@ exports[`Percent snapshot > default percent matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="32"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -48,6 +50,8 @@ exports[`Percent snapshot > percent at 0% matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="0"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -81,7 +85,7 @@ exports[`Percent snapshot > percent at 0% matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         0%
       </p>
@@ -96,6 +100,8 @@ exports[`Percent snapshot > percent at 100% matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="100"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -129,7 +135,7 @@ exports[`Percent snapshot > percent at 100% matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         100%
       </p>
@@ -144,6 +150,8 @@ exports[`Percent snapshot > percent with children matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="75"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -195,6 +203,8 @@ exports[`Percent snapshot > percent with extra large size matches snapshot 1`] =
     class="MuiBox-root css-14y7xxe"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="90"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -228,7 +238,7 @@ exports[`Percent snapshot > percent with extra large size matches snapshot 1`] =
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +8
       </p>
@@ -243,6 +253,8 @@ exports[`Percent snapshot > percent with large size matches snapshot 1`] = `
     class="MuiBox-root css-lzfw4l"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="88"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -276,7 +288,7 @@ exports[`Percent snapshot > percent with large size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +5
       </p>
@@ -291,6 +303,8 @@ exports[`Percent snapshot > percent with long text matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="32"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -324,7 +338,7 @@ exports[`Percent snapshot > percent with long text matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         1121111232
       </p>
@@ -339,6 +353,8 @@ exports[`Percent snapshot > percent with medium size matches snapshot 1`] = `
     class="MuiBox-root css-1kzpthm"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="66"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -372,7 +388,7 @@ exports[`Percent snapshot > percent with medium size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodySmallStrong css-5w9z78-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodySmallStrong css-1tzy2ep-MuiTypography-root"
       >
         +3
       </p>
@@ -387,6 +403,8 @@ exports[`Percent snapshot > percent with small size matches snapshot 1`] = `
     class="MuiBox-root css-ixlzd0"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="50"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -420,7 +438,7 @@ exports[`Percent snapshot > percent with small size matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyXXSmallStrong css-1kmsqct-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyXXSmallStrong css-125ae3r-MuiTypography-root"
       >
         +1
       </p>
@@ -435,6 +453,8 @@ exports[`Percent snapshot > percent with text matches snapshot 1`] = `
     class="MuiBox-root css-dj6tjg"
   >
     <span
+      aria-valuemax="100"
+      aria-valuemin="0"
       aria-valuenow="32"
       class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-6cbzxn-MuiCircularProgress-root"
       role="progressbar"
@@ -468,7 +488,7 @@ exports[`Percent snapshot > percent with text matches snapshot 1`] = `
       class="MuiBox-root css-iwsnym"
     >
       <p
-        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1o6pzmx-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-bodyLargeStrong css-1gut58d-MuiTypography-root"
       >
         +2
       </p>

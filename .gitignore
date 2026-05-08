@@ -70,3 +70,7 @@ test-results.json
 
 *storybook.log
 storybook-static
+
+# Per-developer agent overrides
+AGENTS.local.md
+CLAUDE.local.md
