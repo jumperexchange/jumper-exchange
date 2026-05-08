@@ -69,6 +69,10 @@ next-env.d.ts
 test-results.json
 tests/e2e/wallet/user_data/
 tests/e2e/wallet/extensions/
+# Stray root-level MetaMask extension cache — created when the wallet
+# framework runs with a different cwd. Anchored to repo root so the
+# tests/e2e/wallet/extensions/ rule above still owns the canonical path.
+/extensions/
 
 *storybook.log
 storybook-static
