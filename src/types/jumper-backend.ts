@@ -1637,27 +1637,6 @@ export class JumperBackend<
      * No description
      *
      * @tags Portfolio, Public
-     * @name PortfolioControllerGetProxyTokenBalancesV1
-     * @summary Get proxy token balances from DeFi positions
-     * @request POST:/v1/portfolio/tokens
-     */
-    portfolioControllerGetProxyTokenBalancesV1: (
-      data: PostTokensDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<ProxyTokenBalances, any>({
-        path: `/v1/portfolio/tokens`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Portfolio, Public
      * @name PortfolioControllerGetTokensForAddressV1
      * @summary Get tokens for a set of addresses
      * @request GET:/v1/portfolio/tokens
@@ -1777,6 +1756,27 @@ export class JumperBackend<
         path: `/v1/portfolio/positions`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Accepts an explicit list of proxy token addresses to query, supporting arbitrary payload sizes.
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetProxyTokenBalancesV1
+     * @summary Search proxy token balances by token address list
+     * @request POST:/v1/portfolio/query/proxy-tokens
+     */
+    portfolioControllerGetProxyTokenBalancesV1: (
+      data: PostTokensDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<ProxyTokenBalances, any>({
+        path: `/v1/portfolio/query/proxy-tokens`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
