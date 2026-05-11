@@ -114,7 +114,6 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [widgetEvents, refetchWithdrawToken, setSupportModalState]);
 
-  console.log('jumper w3');
   const { config: widgetConfig, isReady } = useWidgetConfig('zap', enhancedCtx);
 
   return fromChain && fromToken && isReady ? (

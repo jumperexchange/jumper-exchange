@@ -42,8 +42,7 @@ async function jumperGetBalance(
         blockNumber,
       }),
     );
-  } catch (error) {
-    console.warn('jumperGetBalance failed, returning zero balances', error);
+  } catch {
     return tokens.map((t): TokenAmount => ({ ...t, amount: 0n, blockNumber }));
   }
 }
