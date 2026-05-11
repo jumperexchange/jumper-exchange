@@ -1,6 +1,35 @@
 import SuperJSON from 'superjson';
-import type { ComposeResponseData } from '@/app/lib/lifi-composer-client';
+import type {
+  ComposeResponseData,
+  FailedOp,
+} from '@/app/lib/lifi-composer-client';
 import type { DustSummaryValue } from './types';
+
+export class DustPreparationError extends Error {
+  failedOps: FailedOp[];
+  succeededOps: string[];
+
+  constructor(message: string, failedOps: FailedOp[], succeededOps: string[]) {
+    super(message);
+    this.name = 'DustPreparationError';
+    this.failedOps = failedOps;
+    this.succeededOps = succeededOps;
+  }
+}
+
+export function extractFailedTokenAddresses(
+  failedOps: FailedOp[],
+): Set<string> {
+  const addressRe = /0x[0-9a-fA-F]{40}/g;
+  const addresses = new Set<string>();
+  for (const op of failedOps) {
+    const matches = op.message.match(addressRe);
+    if (matches?.[0]) {
+      addresses.add(matches[0].toLowerCase());
+    }
+  }
+  return addresses;
+}
 
 export const DUST_COMPOSER_QUOTE_STALE_MS = 2 * 60 * 1000; // 2 minutes
 
@@ -89,6 +118,17 @@ export async function fetchDustComposerQuote(
   const { data, success, error } = await response.json();
 
   if (!success) {
+    if (
+      error?.kind === 'preparation_error' &&
+      error.failedOps?.length &&
+      error.succeededOps?.length
+    ) {
+      throw new DustPreparationError(
+        error.message ?? 'Partial preparation failure',
+        error.failedOps,
+        error.succeededOps,
+      );
+    }
     throw new Error(error?.message || 'Failed to fetch composer quote');
   }
 

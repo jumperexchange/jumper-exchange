@@ -71,7 +71,7 @@ const widgetStyle: Story['args']['style'] = {
   }),
 };
 
-const summaryFieldSx = {
+export const summaryFieldSx = {
   background: 'transparent',
   boxShadow: 'none',
   padding: 0,

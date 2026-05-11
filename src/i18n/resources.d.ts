@@ -826,6 +826,16 @@ interface Resources {
             title: 'Wallet does not support batch transactions';
           };
         };
+        partialError: {
+          cancel: 'Cancel';
+          convertibleDust: 'Convertible dust';
+          descriptionNotConvertible: 'The selected tokens are currently unavailable for conversion.';
+          descriptionPartiallyConvertible: "Some selected tokens couldn't be converted.";
+          excludedTokens_one: 'Excluded token';
+          excludedTokens_other: 'Excluded tokens';
+          proceed: 'Proceed';
+          title: "Some tokens can't be converted";
+        };
         routeOverview: {
           approveToken: 'Approve {{symbol}}';
           composerAlt: 'Composer';

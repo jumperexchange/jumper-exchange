@@ -6,15 +6,25 @@ import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles'
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { useTranslation } from 'react-i18next';
 import { type Balance, type ExtendedToken } from '@/types/tokens';
-import type { TransactionFormForDustStatusSheet } from '../types';
+import type {
+  DustPartialQuoteState,
+  TransactionFormForDustStatusSheet,
+} from '../types';
+import { PartialQuoteErrorSheetContent } from '../components/PartialQuoteErrorSheetContent';
 
 export const useDustConversionStatusSheet = ({
   transactionForm,
   toTokenBalance,
+  partialQuoteError,
+  onPartialErrorProceed,
+  onPartialErrorCancel,
   onSuccess,
 }: {
   transactionForm: TransactionFormForDustStatusSheet;
   toTokenBalance?: Balance<ExtendedToken>;
+  partialQuoteError: DustPartialQuoteState | null;
+  onPartialErrorProceed: () => void;
+  onPartialErrorCancel: () => void;
   onSuccess: () => void;
 }) => {
   const lastOpenSheetRef = useRef<JumperWidgetStatusSheetProp | null>(null);
@@ -38,6 +48,51 @@ export const useDustConversionStatusSheet = ({
   });
 
   const openSheet = useMemo((): JumperWidgetStatusSheetProp | null => {
+    if (partialQuoteError) {
+      const isProceedable = partialQuoteError.proceedableBalances.length > 0;
+
+      if (!isProceedable) {
+        return {
+          isOpen: true,
+          content: {
+            title: t('portfolio.dustConversion.partialError.title'),
+            description: t(
+              'portfolio.dustConversion.partialError.descriptionNotConvertible',
+            ),
+            callToAction: t('portfolio.dustConversion.partialError.cancel'),
+            callToActionType: 'button',
+            status: 'info',
+            onClick: onPartialErrorCancel,
+          },
+          onClose: onPartialErrorCancel,
+        };
+      }
+
+      return {
+        isOpen: true,
+        content: {
+          title: t('portfolio.dustConversion.partialError.title'),
+          description: t(
+            'portfolio.dustConversion.partialError.descriptionPartiallyConvertible',
+          ),
+          callToAction: t('portfolio.dustConversion.partialError.proceed'),
+          callToActionType: 'button',
+          secondaryCallToAction: t(
+            'portfolio.dustConversion.partialError.cancel',
+          ),
+          status: 'info',
+          onClick: onPartialErrorProceed,
+          onSecondaryClick: onPartialErrorCancel,
+        },
+        onClose: onPartialErrorCancel,
+        children: (
+          <PartialQuoteErrorSheetContent
+            failedBalances={partialQuoteError.failedBalances}
+            successfulBalances={partialQuoteError.proceedableBalances}
+          />
+        ),
+      };
+    }
     if (
       transactionForm.showConfirmationSheet &&
       statusContent.confirmationSheetContent
@@ -87,6 +142,9 @@ export const useDustConversionStatusSheet = ({
     statusContent.errorSheetContent,
     statusContent.successSheetContent,
     toTokenBalance,
+    partialQuoteError,
+    onPartialErrorProceed,
+    onPartialErrorCancel,
     t,
   ]);
 

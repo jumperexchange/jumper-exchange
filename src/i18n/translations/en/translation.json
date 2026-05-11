@@ -716,6 +716,16 @@
         "stepsCount_other": "{{count, number}} steps",
         "executingStep": "Executing step {{current, number}} out of {{total, number}}..."
       },
+      "partialError": {
+        "title": "Some tokens can't be converted",
+        "descriptionPartiallyConvertible": "Some selected tokens couldn't be converted.",
+        "descriptionNotConvertible": "The selected tokens are currently unavailable for conversion.",
+        "excludedTokens_one": "Excluded token",
+        "excludedTokens_other": "Excluded tokens",
+        "convertibleDust": "Convertible dust",
+        "proceed": "Proceed",
+        "cancel": "Cancel"
+      },
       "error": {
         "transactionRejected": {
           "title": "Transaction rejected",
