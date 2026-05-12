@@ -109,7 +109,7 @@ adapted from a separate QA framework.
 
 The MetaMask zip is pulled from a pinned GitHub release on first run
 (`tests/e2e/wallet/constants/extensionConstants.ts`, version 13.16.0). The
-extracted extension is cached under `tests/e2e/wallet/extensions/metamask/`.
+extracted extension is cached at the repo-root `extensions/metamask/` directory (gitignored).
 Each Playwright worker gets its own Chromium profile under `user_data/` so
 parallel execution doesn't share extension state.
 
@@ -186,7 +186,7 @@ Mechanical rules (TS strict, no `any` / `!` without why, perfectionist sort, pla
 
 - **Dev server wedges.** Turbopack can lock up on heavy module compilations and consume 4+ GB. If a run hangs at "injected env" with no further output, kill the next-server process tree and re-run, OR pass `BASE_URL=https://jumper.xyz` to skip the local dev server entirely.
 - **`prepareUserDataDir` auto-wipes per worker.** No manual `rm -rf tests/e2e/wallet/user_data/` needed between runs. The framework clears + recreates the per-worker dir on every launch — that's why each wallet-touching spec pays the ~30s onboarding cost.
-- **First wallet-touching run downloads MetaMask.** ~10 MB, ~15s, on first run only. Cached at `tests/e2e/wallet/extensions/metamask/` for subsequent runs. If the cache gets corrupt, delete that directory.
+- **First wallet-touching run downloads MetaMask.** ~10 MB, ~15s, on first run only. Cached at the repo-root `extensions/metamask/` directory (gitignored) for subsequent runs. If the cache gets corrupt or the framework's pinned version changes, the next run re-extracts automatically (manifest-version mismatch invalidates the cache).
 - **Wallet secrets live in `tests/.env.test.local` (gitignored), not `.env.test`.** `.env.test` is committed per [Next.js convention](https://nextjs.org/docs/app/guides/environment-variables#test-environment-variables) with shared defaults; per-developer secrets go in `.env.test.local`. CI injects from GitHub Actions secrets.
 - **Marketing pages cross-host to `jumper.xyz`.** Privacy / Terms / Newsletter / Scan navigate to `jumper.xyz`; URL assertions must be host-agnostic regex.
 
