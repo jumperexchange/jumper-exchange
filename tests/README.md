@@ -143,8 +143,7 @@ Pick a fixture, then follow the pattern that matches it.
    - `wallet.signPopup(walletContext)` — approves a sign-typed-data / message signature
    - `wallet.rejectPopup(walletContext)` — rejects whatever popup is open
    - `wallet.switchNetworkFromPopup(walletContext)` — approves a `wallet_switchEthereumChain` request
-5. Specs that need a funded wallet (real on-chain tx) must check `TEST_WALLET_FUNDED_SEED_PHRASE`/`PASSWORD` env vars before running. The unfunded wallet at `TEST_WALLET_SEED_PHRASE` must NEVER be used for funded flows.
-6. Before pushing:
+5. Before pushing:
    ```sh
    pnpm tsc:tests
    pnpm exec eslint tests --max-warnings=0
