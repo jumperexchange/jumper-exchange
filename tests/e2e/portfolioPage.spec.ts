@@ -69,39 +69,44 @@ test.describe('Portfolio page', () => {
 
   // Blocked on funded QA wallet — OverviewView (with the aria-label totals)
   // is only rendered when the wallet has tokens or DeFi positions.
-  test.fixme('verify main total value equals sum of individual values', async ({
-    jumperPage,
-  }) => {
-    const portfolioPage = new PortfolioPage(jumperPage);
-    await portfolioPage.expectGetStartedButtonIsVisible();
-    await portfolioPage.clickGetStartedButton();
-    await portfolioPage.expectMainTotalValueEqualsSumOfIndividualValues();
-  });
+  test.fixme(
+    qase(206, 'verify main total value equals sum of individual values'),
+    async ({ jumperPage }) => {
+      const portfolioPage = new PortfolioPage(jumperPage);
+      await portfolioPage.expectGetStartedButtonIsVisible();
+      await portfolioPage.clickGetStartedButton();
+      await portfolioPage.expectMainTotalValueEqualsSumOfIndividualValues();
+    },
+  );
 
   // Blocked on funded QA wallet — relies on an active gearbox protocol position to expand.
-  test.fixme('verify that deposit and withdraw buttons are visible on DeFI positions tab', async ({
-    jumperPage,
-  }) => {
-    const portfolioPage = new PortfolioPage(jumperPage);
-    await portfolioPage.expectGetStartedButtonIsVisible();
-    await portfolioPage.clickGetStartedButton();
+  test.fixme(
+    qase(
+      207,
+      'verify that deposit and withdraw buttons are visible on DeFI positions tab',
+    ),
+    async ({ jumperPage }) => {
+      const portfolioPage = new PortfolioPage(jumperPage);
+      await portfolioPage.expectGetStartedButtonIsVisible();
+      await portfolioPage.clickGetStartedButton();
 
-    await test.step('verify deposit/withdraw buttons on defi positions tab', async () => {
-      await portfolioPage.clickDefiProtocolsTab();
-      await portfolioPage.expandGearboxPositionCard();
-      await portfolioPage.expectDepositButtonIsVisibleOnDeFiPositionsTab();
-      await portfolioPage.expectWithdrawButtonIsVisibleOnDeFiPositionsTab();
-    });
+      await test.step('verify deposit/withdraw buttons on defi positions tab', async () => {
+        await portfolioPage.clickDefiProtocolsTab();
+        await portfolioPage.expandGearboxPositionCard();
+        await portfolioPage.expectDepositButtonIsVisibleOnDeFiPositionsTab();
+        await portfolioPage.expectWithdrawButtonIsVisibleOnDeFiPositionsTab();
+      });
 
-    await test.step('verify deposit modal opens and closes', async () => {
-      await portfolioPage.clickDepositButton();
-      await portfolioPage.expectDepositModalIsVisible();
-      await portfolioPage.clickCloseModalButton();
-    });
+      await test.step('verify deposit modal opens and closes', async () => {
+        await portfolioPage.clickDepositButton();
+        await portfolioPage.expectDepositModalIsVisible();
+        await portfolioPage.clickCloseModalButton();
+      });
 
-    await test.step('verify withdraw modal opens', async () => {
-      await portfolioPage.clickWithdrawButton();
-      await portfolioPage.expectWithdrawModalIsVisible();
-    });
-  });
+      await test.step('verify withdraw modal opens', async () => {
+        await portfolioPage.clickWithdrawButton();
+        await portfolioPage.expectWithdrawModalIsVisible();
+      });
+    },
+  );
 });
