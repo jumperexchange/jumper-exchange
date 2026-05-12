@@ -92,7 +92,8 @@ test.describe('Verify essential mobile flows', () => {
 
     // Quarantined: mobile theme-switch flakes against the Strapi-driven menu
     // (suspected closeOnMobileViewport off-screen click or animation race).
-    // TODO: file JUM-XXX bug for root-cause investigation.
+    // Not currently tracked in Linear; re-enable after a dedicated
+    // root-cause pass on the menu/animation interaction.
     // eslint-disable-next-line playwright/no-skipped-test -- quarantined flake
     await test.step.skip('switch theme', async () => {
       await mainMenu.switchTheme(Theme.Dark);
