@@ -21,7 +21,7 @@ let _client: ReturnType<typeof createClient>;
 /**
  * Define our custom providers in a function
  * used by the widget and our jumper sdk client.
- * This ensures the configuration is consistent accross the UI.
+ * This ensures the configuration is consistent across the UI.
  */
 export const makeProviders = () => {
   return [
