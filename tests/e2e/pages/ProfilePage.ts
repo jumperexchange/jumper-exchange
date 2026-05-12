@@ -22,7 +22,9 @@ export class ProfilePage {
     this.perksCardsClaimButton = this.perksCards
       .getByRole('button', { name: 'Claim' })
       .first();
-    this.perksCardsClaimedBadge = page.getByTestId('perks-card-claimed-badge');
+    // TODO(app): JUM-924 item #3 — replace this text fallback with
+    // `getByTestId('perks-card-claimed-badge')` once FE ships that data-testid.
+    this.perksCardsClaimedBadge = page.getByText('Claimed', { exact: true });
     this.perksClaimError = page.getByTestId('perks-claim-error');
     this.startSwappingLink = page.getByRole('link', { name: 'Start swapping' });
     this.transactionHistoryButton = page.getByLabel('Activities');
@@ -45,7 +47,6 @@ export class ProfilePage {
   }
 
   async expectPerkClaimed(): Promise<void> {
-    // TODO(app): JUM-924 — expose `perks-card-claimed-badge` testid.
     await expect(this.perksCardsClaimedBadge).toBeVisible();
   }
 
