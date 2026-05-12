@@ -194,28 +194,31 @@ export class PortfolioPage {
   }
 
   async expectMainTotalValueEqualsSumOfIndividualValues(): Promise<void> {
-    const portfolioTotalValueText =
-      await this.portfolioHeaderOverviewElement.getAttribute('aria-label');
-
-    const tokensTotalValueText =
-      await this.tokensOverviewElement.getAttribute('aria-label');
-
-    const defiPositionsTotalValueText =
-      await this.defiPositionsOverviewElement.getAttribute('aria-label');
-
-    const totalValueNum = this.extractNumber(portfolioTotalValueText);
-    const tokensValueNum = this.extractNumber(tokensTotalValueText);
-    const defiProtocolsValueNum = this.extractNumber(
-      defiPositionsTotalValueText,
-    );
-
-    const totalValueComputedNum = tokensValueNum + defiProtocolsValueNum;
-    const difference = Math.abs(totalValueComputedNum - totalValueNum);
-    const isDifferenceZero = difference < Number.EPSILON;
-    expect(
-      isDifferenceZero,
-      `Total value does not equal sum of individual values. Difference: ${difference}`,
-    ).toBe(true);
+    // Poll until all three aria-labels populate AND main = tokens + defi.
+    // Without polling, one overview can render before another, racing the
+    // arithmetic check against partially-loaded state.
+    await expect
+      .poll(
+        async () => {
+          const [totalLabel, tokensLabel, defiLabel] = await Promise.all([
+            this.portfolioHeaderOverviewElement.getAttribute('aria-label'),
+            this.tokensOverviewElement.getAttribute('aria-label'),
+            this.defiPositionsOverviewElement.getAttribute('aria-label'),
+          ]);
+          if (!totalLabel || !tokensLabel || !defiLabel) {
+            return false;
+          }
+          const total = this.extractNumber(totalLabel);
+          const tokens = this.extractNumber(tokensLabel);
+          const defi = this.extractNumber(defiLabel);
+          if ([total, tokens, defi].some(Number.isNaN)) {
+            return false;
+          }
+          return Math.abs(total - (tokens + defi)) < Number.EPSILON;
+        },
+        { timeout: 30_000 },
+      )
+      .toBe(true);
   }
 
   async expectTabsAreVisible(): Promise<void> {

@@ -161,11 +161,12 @@ export class SettingsPage {
   private async readFraction(
     category: string,
   ): Promise<{ denominator: number; numerator: number }> {
-    const text = (await this.fractionLocator(category).textContent()) ?? '';
+    // Poll until the fraction text settles to `N/M`. After `goBack()`, the
+    // settings drawer animates and may flash empty/stale text.
+    const locator = this.fractionLocator(category);
+    await expect(locator).toHaveText(/^\s*\d+\/\d+\s*$/);
+    const text = (await locator.textContent()) ?? '';
     const [num, den] = text.split('/');
-    if (!num || !den) {
-      throw new Error(`Invalid fraction format: ${text}`);
-    }
     const numerator = Number(num);
     const denominator = Number(den);
     if (denominator === 0) {

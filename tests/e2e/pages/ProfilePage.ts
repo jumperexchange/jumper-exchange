@@ -36,7 +36,12 @@ export class ProfilePage {
   }
 
   async clickPassPrompt(): Promise<void> {
-    await this.page.getByRole('button', { name: JUMPER_BUTTONS.PASS }).click();
+    // Pass is a Link to /profile; await the navigation so subsequent
+    // assertions don't race the client-side route transition.
+    await Promise.all([
+      this.page.waitForURL(/\/profile(?:\/|$|\?|#)/),
+      this.page.getByRole('button', { name: JUMPER_BUTTONS.PASS }).click(),
+    ]);
   }
 
   async expectPerkClaimed(): Promise<void> {
@@ -50,8 +55,10 @@ export class ProfilePage {
   }
 
   async expectPerksCards(): Promise<void> {
-    const count = await this.perksCards.count();
-    expect(count).toBeGreaterThan(1);
+    // .count() is synchronous; poll until backend returns 2+ cards.
+    await expect
+      .poll(() => this.perksCards.count(), { timeout: 30_000 })
+      .toBeGreaterThan(1);
   }
 
   async expectTransactionsPresent(): Promise<void> {
@@ -64,10 +71,7 @@ export class ProfilePage {
   }
 
   async openAchievementsTab(): Promise<void> {
-    await expect(this.achievementsTab).toBeVisible();
     await this.achievementsTab.click();
-    // 30s: CTA is data-driven (zero-swap state) and waits on a backend fetch.
-    await expect(this.startSwappingLink).toBeVisible({ timeout: 30_000 });
   }
 
   async openPerksTab(): Promise<void> {

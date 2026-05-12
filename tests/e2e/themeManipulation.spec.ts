@@ -81,18 +81,19 @@ test.describe('Switch theme — partner themes', () => {
 
       await landingPage.clickMenuItem(partnerTheme);
 
-      const isThemeApplied = await backgroundElement.evaluate(
-        (el, prevBgColor) => {
-          const bgColorChanged =
-            getComputedStyle(el).backgroundColor !== prevBgColor;
-          const imgElement = el.querySelector('img');
-          const hasBgImage = imgElement !== null && !!imgElement.src;
-          return bgColorChanged || hasBgImage;
-        },
-        initialBgColor,
-      );
-
-      expect(isThemeApplied).toBe(true);
+      // Poll until the theme transition has applied; one-shot evaluate races
+      // the style update.
+      await expect
+        .poll(() =>
+          backgroundElement.evaluate((el, prevBgColor) => {
+            const bgColorChanged =
+              getComputedStyle(el).backgroundColor !== prevBgColor;
+            const imgElement = el.querySelector('img');
+            const hasBgImage = imgElement !== null && !!imgElement.src;
+            return bgColorChanged || hasBgImage;
+          }, initialBgColor),
+        )
+        .toBe(true);
     },
   );
 });

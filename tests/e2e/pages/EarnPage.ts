@@ -65,21 +65,11 @@ export class EarnPage {
   }
 
   async expectNoSelectedItemsVisible(items: string[]): Promise<void> {
-    await this.page.waitForLoadState('load');
     await expect(this.cardsGrid).toBeVisible();
-
-    const childElements = this.cardsGrid.locator('*');
-    const childCount = await childElements.count();
-    const patterns = items.map(
-      (item) => new RegExp(`\\b${item.toLowerCase()}\\b`),
-    );
-
-    for (let i = 0; i < childCount; i++) {
-      const text = (await childElements.nth(i).textContent()) ?? '';
-      const lower = text.toLowerCase();
-      for (const pattern of patterns) {
-        expect(lower).not.toMatch(pattern);
-      }
+    for (const item of items) {
+      await expect(this.cardsGrid).not.toContainText(
+        new RegExp(String.raw`\b${item}\b`, 'i'),
+      );
     }
   }
 
@@ -87,9 +77,9 @@ export class EarnPage {
     await this.page.waitForLoadState('load');
     await expect(this.cardsGrid).toBeVisible();
 
-    const elements = this.page.getByTestId(`assets-${selectedAsset}`);
-    const count = await elements.count();
-    expect(count).toBeGreaterThan(0);
+    await expect(
+      this.page.getByTestId(`assets-${selectedAsset}`),
+    ).not.toHaveCount(0);
   }
 
   async expectOnlySelectedTagVisible(selectedTag: string): Promise<void> {
@@ -101,17 +91,15 @@ export class EarnPage {
     const slug = (label: string): string =>
       label.toLowerCase().replace(/\s+/g, '-');
 
-    const selectedTagCount = await this.page
-      .getByTestId(`earn-card-tag-${slug(selectedTag)}`)
-      .count();
-
     for (const optionToHide of optionsToHide) {
       await expect(
         this.page.getByTestId(`earn-card-tag-${slug(optionToHide)}`),
       ).toHaveCount(0);
     }
 
-    expect(selectedTagCount).toBeGreaterThan(0);
+    await expect(
+      this.page.getByTestId(`earn-card-tag-${slug(selectedTag)}`),
+    ).not.toHaveCount(0);
   }
 
   async getDropdownOptions(dropdownTestId: string): Promise<string[]> {
