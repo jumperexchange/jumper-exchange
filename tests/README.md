@@ -1,14 +1,7 @@
 # Jumper Playwright Tests
 
-End-to-end automation for jumper-exchange. Two test surfaces:
-
-| Path         | Purpose                                                     |
-| ------------ | ----------------------------------------------------------- |
-| `tests/e2e/` | Browser-driven specs that walk the Jumper UI.               |
-| `tests/api/` | Request-only specs that hit JSON/JS endpoints (no browser). |
-
-Both surfaces run under one Playwright config (`../playwright.config.ts`); the
-split is by spec location, not by test runner.
+End-to-end automation for jumper-exchange. Browser-driven specs live in
+`tests/e2e/`, run via the root `playwright.config.ts`.
 
 ## Quickstart
 
@@ -71,9 +64,6 @@ tests/
 │   ├── fixtures/    # noWallet / realWallet / connectedWallet
 │   ├── wallet/      # vendored MetaMask driver framework
 │   ├── utils/       # tiny helpers (translation strip, viewport math)
-│   └── *.spec.ts
-├── api/
-│   ├── fixtures.ts  # re-exports { test, expect } so api specs share an import shape
 │   └── *.spec.ts
 └── tsconfig.json
 ```

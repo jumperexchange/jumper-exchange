@@ -8,19 +8,18 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 - **Don't change qase IDs.** Reordering, renaming, or deleting them breaks Qase TestOps reporting. New tests pick a new ID; never reuse an old one.
 - **Don't touch `tests/e2e/wallet/`** — vendored real-MetaMask framework. If something there needs fixing, that's a separate, deliberate change with its own PR.
 - **Don't add barrel `index.ts` files** outside `tests/e2e/{data,pages,fixtures}/`. The whole-repo rule against barrels has documented test-only exceptions in those three folders; nowhere else.
-- **Don't import `tests/` code into `src/`** or vice-versa, except `tests/api/*` reading from `src/app/lib/metadata` for asserting public manifest values.
+- **Don't import `tests/` code into `src/`** or vice-versa.
 
 ## Suite layout
 
-| Path                  | What it holds                                                        |
-| --------------------- | -------------------------------------------------------------------- |
-| `tests/e2e/`          | Browser-driven Playwright specs that walk the Jumper UI              |
-| `tests/api/`          | Request-only specs that hit FE-served JSON/JS endpoints (no browser) |
-| `tests/e2e/pages/`    | Class-based POMs, one file per page/view                             |
-| `tests/e2e/fixtures/` | Playwright test fixtures (wallet variants, etc.)                     |
-| `tests/e2e/data/`     | Shared constants, URL params, chain data, settings menu strings      |
-| `tests/e2e/utils/`    | Small reusable test helpers                                          |
-| `tests/e2e/wallet/`   | **Vendored** real-MetaMask framework — off-limits                    |
+| Path                  | What it holds                                                   |
+| --------------------- | --------------------------------------------------------------- |
+| `tests/e2e/`          | Browser-driven Playwright specs that walk the Jumper UI         |
+| `tests/e2e/pages/`    | Class-based POMs, one file per page/view                        |
+| `tests/e2e/fixtures/` | Playwright test fixtures (wallet variants, etc.)                |
+| `tests/e2e/data/`     | Shared constants, URL params, chain data, settings menu strings |
+| `tests/e2e/utils/`    | Small reusable test helpers                                     |
+| `tests/e2e/wallet/`   | **Vendored** real-MetaMask framework — off-limits               |
 
 ## Fixture selection
 
@@ -34,15 +33,13 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 
 ## Where new things go
 
-| New thing                       | Goes in                                       |
-| ------------------------------- | --------------------------------------------- |
-| New e2e spec                    | `tests/e2e/<feature>.spec.ts`                 |
-| New FE-endpoint API spec        | `tests/api/<feature>.spec.ts`                 |
-| New BE-endpoint API test        | **NOT here** — goes in `jumper-backend/test/` |
-| New POM (class)                 | `tests/e2e/pages/<Name>Page.ts`               |
-| New fixture                     | `tests/e2e/fixtures/<name>.ts`                |
-| New shared constant / test data | `tests/e2e/data/<topic>.ts`                   |
-| New test util                   | `tests/e2e/utils/<topic>.ts`                  |
+| New thing                       | Goes in                         |
+| ------------------------------- | ------------------------------- |
+| New e2e spec                    | `tests/e2e/<feature>.spec.ts`   |
+| New POM (class)                 | `tests/e2e/pages/<Name>Page.ts` |
+| New fixture                     | `tests/e2e/fixtures/<name>.ts`  |
+| New shared constant / test data | `tests/e2e/data/<topic>.ts`     |
+| New test util                   | `tests/e2e/utils/<topic>.ts`    |
 
 ## Selector priority
 
