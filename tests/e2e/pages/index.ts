@@ -6,3 +6,4 @@ export { PortfolioPage } from './PortfolioPage';
 export { ProfilePage } from './ProfilePage';
 export { ScanPage } from './ScanPage';
 export { SettingsPage } from './SettingsPage';
+export { WidgetPage } from './WidgetPage';
