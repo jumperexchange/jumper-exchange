@@ -6,7 +6,7 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 
 - **No mocks unless absolutely necessary.** Real wallet, real backend, real upstream. If you must mock, justify it in the PR description.
 - **Don't change qase IDs.** Reordering, renaming, or deleting them breaks Qase TestOps reporting. New tests pick a new ID; never reuse an old one.
-- **Don't touch `tests/e2e/wallet/`** — vendored real-MetaMask framework. If something there needs fixing, that's a separate, deliberate change with its own PR.
+- **Treat `tests/e2e/wallet/` as load-bearing infrastructure** — the real-MetaMask driver framework. Bug fixes (popup detection, timing, sequencing) are in scope when a spec genuinely needs them; just don't casually refactor or restructure this code. Patterns may not be idiomatic for the rest of the repo — leave them unless changing them is the actual fix.
 - **Don't add barrel `index.ts` files** outside `tests/e2e/{data,pages,fixtures}/`. The whole-repo rule against barrels has documented test-only exceptions in those three folders; nowhere else.
 - **Don't import `tests/` code into `src/`** or vice-versa.
 
@@ -19,7 +19,7 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 | `tests/e2e/fixtures/` | Playwright test fixtures (wallet variants, etc.)                |
 | `tests/e2e/data/`     | Shared constants, URL params, chain data, settings menu strings |
 | `tests/e2e/utils/`    | Small reusable test helpers                                     |
-| `tests/e2e/wallet/`   | **Vendored** real-MetaMask framework — off-limits               |
+| `tests/e2e/wallet/`   | Real-MetaMask driver framework — load-bearing, modify carefully |
 
 ## Fixture selection
 

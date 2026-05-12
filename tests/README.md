@@ -62,7 +62,7 @@ tests/
 │   ├── data/        # typed constants — URLs, settings labels, theme RGBs, wallet options
 │   ├── pages/       # class-based POMs (one per page area)
 │   ├── fixtures/    # noWallet / realWallet / connectedWallet
-│   ├── wallet/      # vendored MetaMask driver framework
+│   ├── wallet/      # real-MetaMask driver framework (load-bearing)
 │   ├── utils/       # tiny helpers (translation strip, viewport math)
 │   └── *.spec.ts
 └── tsconfig.json
