@@ -5,12 +5,11 @@ import { networks } from './wallet/constants/networkConstants';
 
 // End-to-end useSwitchChain → MetaMask provider event → widget re-render path.
 test.describe('Switch network from Jumper widget', () => {
-  test(
+  // JUM-924 item #1: `widget-source-chain` testid doesn't render on prod today.
+  // Re-enable once the FE adds a stable testid for the from-chain selector.
+  test.fixme(
     qase(202, 'Switch chain via Jumper triggers MetaMask popup'),
     async ({ jumperPage, wallet }) => {
-      // JUM-924 item #1: `widget-source-chain` testid doesn't render on prod today.
-      // Re-enable once the FE adds a stable testid for the from-chain selector.
-      test.fixme();
       await jumperPage.goto('/');
       await jumperPage.waitForLoadState('domcontentloaded');
 

@@ -155,11 +155,10 @@ test.describe('Main Menu flows', () => {
     },
   );
 
-  test(
+  // link3.to TCP-times-out (2026-05-08); destination is down, our link is correct.
+  test.fixme(
     qase(19, 'Should be able to navigate to Link3'),
     async ({ context, page }) => {
-      // link3.to TCP-times-out (2026-05-08); destination is down, our link is correct.
-      test.fixme();
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
       await mainMenu.openNewTabAndExpectUrl(context, URLS.LINK3, () =>

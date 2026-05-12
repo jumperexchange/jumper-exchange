@@ -5,11 +5,10 @@ import { expect, connectedTest as test } from './fixtures';
 // Real signature path: Jumper → wagmi → MetaMask → LiFi /tasks_verification.
 // External dependency on NEXT_PUBLIC_LIFI_BACKEND_URL — service down = test fails. Signal, not flake.
 test.describe('Mission wallet verification', () => {
-  test(
+  // Blocked on funded QA wallet — requires an active mission with a verifiable user.
+  test.fixme(
     qase(203, 'Verify wallet on a mission via real signature'),
     async ({ jumperPage, wallet }) => {
-      // Blocked on funded QA wallet — requires an active mission with a verifiable user.
-      test.fixme();
       // TODO(app): JUM-924 — add `missions-list` + `mission-verify-button` testids.
       await jumperPage.goto('/missions');
       await jumperPage.waitForLoadState('domcontentloaded');
