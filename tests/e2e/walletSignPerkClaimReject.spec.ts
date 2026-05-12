@@ -8,6 +8,8 @@ test.describe('Perk claim — reject signature', () => {
   test(
     qase(201, 'Reject the perk claim signature'),
     async ({ jumperPage, wallet }) => {
+      // Blocked on funded QA wallet — sister spec to walletSignPerkClaim; same prerequisite.
+      test.fixme();
       // jscpd:ignore-start — sister spec to walletSignPerkClaim; diff (sign vs reject) is the point.
       await jumperPage.goto('/profile');
       const profilePage = new ProfilePage(jumperPage);

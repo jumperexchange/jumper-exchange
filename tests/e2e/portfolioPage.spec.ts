@@ -19,6 +19,8 @@ test.describe('Portfolio page', () => {
       'verify portfolio page elements and filters on Tokens and DeFi Protocols tabs',
     ),
     async ({ jumperPage }) => {
+      // Blocked on funded QA wallet — Tokens / DeFi Protocols tabs render empty placeholders without positions.
+      test.fixme();
       const portfolioPage = new PortfolioPage(jumperPage);
 
       await test.step('verify get started button is visible and close welcome screen', async () => {
@@ -47,6 +49,8 @@ test.describe('Portfolio page', () => {
       'verify value filter is cleared when clicking clear filter button',
     ),
     async ({ jumperPage }) => {
+      // Blocked on funded QA wallet — value filter dropdown only renders with tokens present.
+      test.fixme();
       const portfolioPage = new PortfolioPage(jumperPage);
       await portfolioPage.expectGetStartedButtonIsVisible();
       await portfolioPage.clickGetStartedButton();
@@ -68,6 +72,9 @@ test.describe('Portfolio page', () => {
   test('verify main total value equals sum of individual values', async ({
     jumperPage,
   }) => {
+    // Blocked on funded QA wallet — OverviewView (with the aria-label totals)
+    // is only rendered when the wallet has tokens or DeFi positions.
+    test.fixme();
     const portfolioPage = new PortfolioPage(jumperPage);
     await portfolioPage.expectGetStartedButtonIsVisible();
     await portfolioPage.clickGetStartedButton();
@@ -77,6 +84,8 @@ test.describe('Portfolio page', () => {
   test('verify that deposit and withdraw buttons are visible on DeFI positions tab', async ({
     jumperPage,
   }) => {
+    // Blocked on funded QA wallet — relies on an active gearbox protocol position to expand.
+    test.fixme();
     const portfolioPage = new PortfolioPage(jumperPage);
     await portfolioPage.expectGetStartedButtonIsVisible();
     await portfolioPage.clickGetStartedButton();

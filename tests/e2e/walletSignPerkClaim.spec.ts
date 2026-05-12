@@ -9,6 +9,8 @@ test.describe('Perk claim — sign and submit', () => {
   test(
     qase(200, 'Claim a perk with a real signature'),
     async ({ jumperPage, wallet }) => {
+      // Blocked on funded QA wallet — requires an unclaimed published perk for the connected wallet.
+      test.fixme();
       // jscpd:ignore-start — sister spec to walletSignPerkClaimReject; diff (sign vs reject) is the point.
       await jumperPage.goto('/profile');
       const profilePage = new ProfilePage(jumperPage);

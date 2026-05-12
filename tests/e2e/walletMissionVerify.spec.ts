@@ -8,6 +8,8 @@ test.describe('Mission wallet verification', () => {
   test(
     qase(203, 'Verify wallet on a mission via real signature'),
     async ({ jumperPage, wallet }) => {
+      // Blocked on funded QA wallet — requires an active mission with a verifiable user.
+      test.fixme();
       // TODO(app): JUM-924 — add `missions-list` + `mission-verify-button` testids.
       await jumperPage.goto('/missions');
       await jumperPage.waitForLoadState('domcontentloaded');

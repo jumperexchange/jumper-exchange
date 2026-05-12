@@ -67,6 +67,9 @@ import { LandingPage, SettingsPage } from './pages';
     test(
       qase(name === 'Mobile' ? 25 : 28, 'Hyperliquid chain swap pairs'),
       async ({ page }) => {
+        // Intermittent upstream: LiFi cross-VM Hypercore route discovery frequently exceeds
+        // the 90s per-pair budget. Re-enable when LiFi SUI/SOL/BTC → Hypercore is consistently <90s.
+        test.fixme();
         // Seven cross-VM Hypercore route lookups; LiFi can take 30-90s each.
         test.slow();
         const landingPage = new LandingPage(page);

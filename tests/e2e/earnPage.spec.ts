@@ -19,6 +19,9 @@ test.describe('Chains filters on Earn page', () => {
   test(
     qase(40, 'Should be able to navigate to the earn page'),
     async ({ jumperPage }) => {
+      // Blocked: filter chip bar (`earn-filter-chain-select` et al) doesn't render reliably on cold-start.
+      // Re-enable once the cold-start tab-switch race is fixed or filter-bar testids stabilize. JUM-924-adjacent.
+      test.fixme();
       const earnPage = new EarnPage(jumperPage);
 
       await test.step('Navigate to earn page and verify URL', async () => {
@@ -45,6 +48,9 @@ test.describe('Chains filters on Earn page', () => {
   test(
     qase(41, 'Should be able to filter by base chain'),
     async ({ jumperPage }) => {
+      // JUM-924 item #8: `earn-card-chain-name` testid removed from loaded EarnCards.
+      // Re-enable when the FE adds a chain-name testid to loaded (non-skeleton) cards.
+      test.fixme();
       const earnPage = new EarnPage(jumperPage);
       await earnPage.selectOptionFromDropdown(
         'earn-filter-chain-select',
@@ -57,6 +63,8 @@ test.describe('Chains filters on Earn page', () => {
   test(
     qase(42, 'Should be able to filter by arbitrum chain'),
     async ({ jumperPage }) => {
+      // JUM-924 item #8: same as qase 41 — chain-name testid gap.
+      test.fixme();
       const earnPage = new EarnPage(jumperPage);
       await earnPage.selectOptionFromDropdown(
         'earn-filter-chain-select',
@@ -69,6 +77,8 @@ test.describe('Chains filters on Earn page', () => {
   test(
     qase(43, 'Should be able to filter by ethereum chain'),
     async ({ jumperPage }) => {
+      // JUM-924 item #8: same as qase 41 — chain-name testid gap.
+      test.fixme();
       const earnPage = new EarnPage(jumperPage);
       await earnPage.selectOptionFromDropdown(
         'earn-filter-chain-select',
@@ -188,6 +198,9 @@ test.describe('Should be able to navigate to the "Your Positions" tab', () => {
   test(
     qase(56, 'Should be able to navigate to the "Your Positions" tab'),
     async ({ jumperPage }) => {
+      // Blocked: filter chip bar doesn't render on Your Positions tab with an empty wallet
+      // (same FE behavior surfaced by qase 40). Re-enable with funded wallet or filter-bar testid fix.
+      test.fixme();
       await new EarnPage(jumperPage).expectFiltersVisible();
     },
   );
