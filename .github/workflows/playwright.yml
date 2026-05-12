@@ -108,6 +108,8 @@ jobs:
           SHARD: ${{ matrix.shard }}/${{ strategy.job-total }}
           TEST_WALLET_SEED_PHRASE: ${{ secrets.TEST_WALLET_SEED_PHRASE }}
           TEST_WALLET_PASSWORD: ${{ secrets.TEST_WALLET_PASSWORD }}
+          DEFAULT_TIMEOUT: 10000
+          LONG_TIMEOUT: 20000
         if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
         run: |
           if [ -n "$QASE_TESTOPS_API_TOKEN" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
