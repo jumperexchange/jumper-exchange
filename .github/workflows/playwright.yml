@@ -101,6 +101,8 @@ jobs:
       - name: Install Playwright Browsers
         run: |
           pnpm exec playwright install --with-deps chromium
+      - name: Install xvfb
+        run: sudo apt-get update && sudo apt-get install -y xvfb
       - name: Run Playwright tests
         env:
           QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
@@ -108,17 +110,15 @@ jobs:
           SHARD: ${{ matrix.shard }}/${{ strategy.job-total }}
           TEST_WALLET_SEED_PHRASE: ${{ secrets.TEST_WALLET_SEED_PHRASE }}
           TEST_WALLET_PASSWORD: ${{ secrets.TEST_WALLET_PASSWORD }}
-          DEFAULT_TIMEOUT: 10000
-          LONG_TIMEOUT: 20000
         if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
         run: |
           if [ -n "$QASE_TESTOPS_API_TOKEN" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
             echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
-            pnpm run test:ci:e2e:qase \
+            xvfb-run -a pnpm run test:ci:e2e:qase \
               --shard "$SHARD"
           else
             echo "Running tests without Qase reporting (API token or run ID not available)"
-            pnpm run test:ci:e2e \
+            xvfb-run -a pnpm run test:ci:e2e \
               --shard "$SHARD"
           fi
       - name: Upload blob report to Github Actions Artifacts

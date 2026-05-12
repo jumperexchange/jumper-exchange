@@ -46,7 +46,7 @@ export async function launchBrowserWithExtension(
     // does not propagate to manually-launched persistent contexts.
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     channel,
-    headless: !!process.env.CI,
+    headless: false,
     // Playwright 1.58 rejects `viewport: null` paired with the implicit
     // deviceScaleFactor on macOS — set an explicit viewport everywhere.
     viewport: { height: 720, width: 1280 },
