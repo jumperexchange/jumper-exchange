@@ -3,10 +3,12 @@ import Background from '@/components/Background';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
 import config, { getPublicEnvVars } from '@/config/env-config';
 import { fonts } from '@/fonts/fonts';
-import { DefaultThemeProvider } from '@/providers/ThemeProvider/DefaultThemeProvider';
-import { MUIThemeProvider } from '@/providers/ThemeProvider/MUIThemeProvider';
+import {
+  MUIThemeProvider,
+  DefaultThemeProvider,
+} from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
-import { WalletProvider } from '@/providers/WalletProvider/WalletProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import Script from 'next/script';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';

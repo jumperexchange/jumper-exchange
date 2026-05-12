@@ -13,7 +13,7 @@ export const MenuItemLinkInternal = ({
   MenuItemProps,
   'label' | 'prefixIcon' | 'suffixIcon' | 'showMoreIcon' | 'link'
 >) => (
-  <MenuItemLink as={Link} prefetch href={link?.url || '#'}>
+  <MenuItemLink as={Link} prefetch={false} href={link?.url || '#'}>
     <MenuItemLabel
       label={label}
       showMoreIcon={showMoreIcon}

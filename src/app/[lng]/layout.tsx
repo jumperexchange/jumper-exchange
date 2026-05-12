@@ -18,10 +18,12 @@ import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
 import { fonts } from '@/fonts/fonts';
 import { ReactQueryProvider } from '@/providers/ReactQueryProvider';
-import { DefaultThemeProvider } from '@/providers/ThemeProvider/DefaultThemeProvider';
-import { MUIThemeProvider } from '@/providers/ThemeProvider/MUIThemeProvider';
+import {
+  DefaultThemeProvider,
+  MUIThemeProvider,
+} from '@/providers/ThemeProvider';
 import TranslationsProvider from '@/providers/TranslationProvider';
-import { WalletProvider } from '@/providers/WalletProvider/WalletProvider';
+import { WalletProvider } from '@/providers/WalletProvider';
 import { PortfolioProvider } from '@/providers/PortfolioProvider/PortfolioProvider';
 import { getMiniAppSettings } from '../lib/getMiniAppSettings';
 import {

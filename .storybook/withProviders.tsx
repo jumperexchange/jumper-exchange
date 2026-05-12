@@ -1,8 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactQueryProvider } from '../src/providers/ReactQueryProvider';
-import { DefaultThemeProvider } from '../src/providers/ThemeProvider/DefaultThemeProvider';
-import { MUIThemeProvider } from '../src/providers/ThemeProvider/MUIThemeProvider';
+import {
+  DefaultThemeProvider,
+  MUIThemeProvider,
+} from '../src/providers/ThemeProvider';
 import TranslationsProvider from '../src/providers/TranslationProvider';
 import { WalletProvider } from '../src/providers/WalletProvider/WalletProvider';
 import { SettingsStoreProvider } from '../src/stores/settings';
