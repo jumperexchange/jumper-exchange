@@ -230,15 +230,13 @@ export default class MetaMaskPage extends WalletPage {
 
   /**
    * URL fragments to identify MetaMask popup/notification pages.
-   * Used by WalletPage.confirmInPopup().
-   * @returns {string[]}
+   * Only `notification.html` is the actual popup; broader fragments
+   * (`metamask`, `chrome-extension://`) also match the main wallet
+   * tab and caused the scan fallback to grab it instead of a
+   * sequential popup when the popup hadn't spawned yet.
    */
   getPopupUrlMatchers(): string[] {
-    return [
-      'notification.html',
-      EXTENSION_NAME.METAMASK,
-      'chrome-extension://',
-    ];
+    return ['notification.html'];
   }
 
   /**
