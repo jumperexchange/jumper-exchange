@@ -1,39 +1,31 @@
 import fs from 'fs';
 
 /**
- * Deletes the specified directory and all its contents.
- * @param {string} dirPath - The path to the directory to delete.
+ * Deletes the specified directory and all its contents. Throws on failure
+ * so tests fail fast at setup instead of running against stale MetaMask state.
  */
 export function clearUserDataDir(dirPath: string): void {
-  if (fs.existsSync(dirPath)) {
-    try {
-      fs.rmSync(dirPath, { force: true, recursive: true });
-      console.log(`Deleted user data directory: ${dirPath}`);
-    } catch (error) {
-      console.error(`Failed to delete user data directory: ${dirPath}`, error);
-    }
-  } else {
+  if (!fs.existsSync(dirPath)) {
     console.log(`User data directory does not exist: ${dirPath}`);
+    return;
   }
+  fs.rmSync(dirPath, { force: true, recursive: true });
+  console.log(`Deleted user data directory: ${dirPath}`);
 }
 
 /**
- * Creates a new user data directory for parallel execution.
- * @param {string} dirPath - The path to the directory to create.
+ * Creates a new user data directory for parallel execution. Throws on failure
+ * so tests fail fast at setup instead of running without a writable profile.
  */
 export function createNewUserDataDirForParallelExecution(
   dirPath: string,
 ): void {
-  if (!fs.existsSync(dirPath)) {
-    try {
-      fs.mkdirSync(dirPath, { recursive: true });
-      console.log(`Created user data directory: ${dirPath}`);
-    } catch (error) {
-      console.error(`Failed to create user data directory: ${dirPath}`, error);
-    }
-  } else {
+  if (fs.existsSync(dirPath)) {
     console.log(`User data directory already exists: ${dirPath}`);
+    return;
   }
+  fs.mkdirSync(dirPath, { recursive: true });
+  console.log(`Created user data directory: ${dirPath}`);
 }
 
 /**
