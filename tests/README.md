@@ -14,9 +14,17 @@ pnpm test                                          # run the full suite
 For wallet-touching specs, create a gitignored `tests/.env.test.local`:
 
 ```sh
-TEST_WALLET_SEED_PHRASE="word1 word2 ... word12"   # throwaway, zero funds
+TEST_WALLET_SEED_PHRASE="word1 word2 ... word12"
 TEST_WALLET_PASSWORD="..."
 ```
+
+**Wallet funding requirements:**
+
+- Most wallet specs work with a throwaway zero-funds wallet (connect, sign-message, switch-network, add-custom-network flows).
+- `walletSwapExecute.spec.ts` (qase 205) executes a real on-chain swap on Arbitrum and consumes ~5 USDC per run. The wallet needs USDC + ETH for gas on Arb. Refill via `lifinance/automate-wallet-dev-fees`.
+- Funded-wallet-gated specs (`walletSignPerkClaim`, `walletSignPerkClaimReject`, `walletMissionVerify`, `earnPage` user filters, `portfolioPage`) are currently `test.fixme()` pending shared funded wallet provisioning.
+
+CI injects the same `TEST_WALLET_*` values from GitHub Actions secrets — the CI wallet must be the funded one for qase 205 to pass.
 
 **Why two files?** `tests/.env.test` is committed and holds shared defaults
 (URLs, `NEXT_PUBLIC_*` keys, integrator IDs) — so a fresh clone has a working
