@@ -180,12 +180,7 @@ const eslintConfig = defineConfig([
     },
   },
 
-  // Strict TS for our own test code. Excludes the wallet framework under
-  // `tests/e2e/wallet/**` — that code was ported from another project and
-  // has its own typing conventions; tightening it is a deliberate refactor,
-  // not part of the default strict-TS sweep here.
-  // `argsIgnorePattern: "^_"` is the convention for intentionally-unused params
-  // (e.g. `_useParallelUserDataDir` in BrowserManager).
+  // `argsIgnorePattern: "^_"` allows intentionally-unused params (e.g. `_useParallelUserDataDir`).
   {
     files: ['tests/**/*.ts'],
     ignores: ['tests/e2e/wallet/**'],

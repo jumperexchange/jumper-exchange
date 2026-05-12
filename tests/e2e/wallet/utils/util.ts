@@ -1,8 +1,7 @@
 import fs from 'fs';
 
 /**
- * Deletes the specified directory and all its contents. Throws on failure
- * so tests fail fast at setup instead of running against stale MetaMask state.
+ * Deletes the specified directory and all its contents.
  */
 export function clearUserDataDir(dirPath: string): void {
   if (!fs.existsSync(dirPath)) {
@@ -14,8 +13,7 @@ export function clearUserDataDir(dirPath: string): void {
 }
 
 /**
- * Creates a new user data directory for parallel execution. Throws on failure
- * so tests fail fast at setup instead of running without a writable profile.
+ * Creates a new user data directory for parallel execution.
  */
 export function createNewUserDataDirForParallelExecution(
   dirPath: string,

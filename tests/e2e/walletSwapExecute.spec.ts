@@ -35,10 +35,6 @@ test.describe('Wallet swap — execute on Arbitrum', () => {
       });
 
       await test.step('Sign swap transaction in MetaMask', async () => {
-        // USDC → USDT on Arb routes through approve + swap (2 popups).
-        // If LiFi ever picks a permit-based path for this pair, this call
-        // will fail with "No MetaMask confirm button found" — surface that
-        // explicitly rather than swallowing it.
         await wallet.signPopup(walletContext);
       });
 

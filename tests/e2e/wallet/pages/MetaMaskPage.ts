@@ -131,9 +131,6 @@ export default class MetaMaskPage extends WalletPage {
     const primary = this.selectors.transaction.confirmTxn;
     const fallback = this.selectors.transaction.confirm;
 
-    // Probe and click both use LONG_TIMEOUT so a slow MM popup transition
-    // doesn't bail at the probe with click-budget still available. Worst
-    // case: 2×LONG_TIMEOUT (primary probe + fallback probe) before throwing.
     if (await this.play.isElementVisible(primary, null, LONG_TIMEOUT)) {
       await this.play.click(primary, 0, LONG_TIMEOUT);
       return;

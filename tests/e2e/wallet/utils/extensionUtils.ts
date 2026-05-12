@@ -143,11 +143,6 @@ abstract class ExtensionDownloader<TConfig extends ExtensionConfig> {
    */
   protected abstract getTempFileName(config: TConfig): string;
 
-  /**
-   * Checks whether a previously-extracted extension on disk is usable.
-   * Default: manifest.json parses cleanly. Subclasses can tighten this
-   * (e.g. version match) without re-implementing the catch.
-   */
   protected async isCachedExtensionValid(config: TConfig): Promise<boolean> {
     try {
       const manifest = await validateExtractedExtension(config.extractPath);
@@ -157,11 +152,6 @@ abstract class ExtensionDownloader<TConfig extends ExtensionConfig> {
     }
   }
 
-  /**
-   * Per-source validity check between an existing manifest and the desired
-   * config. Default accepts any valid manifest; GitHub-pinned configs
-   * override to require version match.
-   */
   protected matchesConfig(
     _manifest: ExtensionManifest,
     _config: TConfig,
@@ -259,11 +249,6 @@ class GitHubExtensionDownloader extends ExtensionDownloader<GitHubExtensionConfi
     return `${config.id}_${config.version}.zip`;
   }
 
-  /**
-   * GitHub configs pin a version; a cached manifest with a different
-   * version (e.g. an old MetaMask release left over from a previous run)
-   * must be re-extracted, not silently reused.
-   */
   protected matchesConfig(
     manifest: ExtensionManifest,
     config: GitHubExtensionConfig,
