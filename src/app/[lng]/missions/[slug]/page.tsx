@@ -115,7 +115,7 @@ export async function generateMetadata({
 }
 
 export const dynamicParams = true;
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
