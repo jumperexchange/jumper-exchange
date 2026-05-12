@@ -22,8 +22,8 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
   const rewardsIds = data.CustomInformation?.['rewardsIds'];
   const tasksVerification = data.tasks_verification;
   const [rewardOpportunities, taskOpportunities] = await Promise.all([
-    fetchOpportunitiesByRewardsIds(rewardsIds),
-    fetchTaskOpportunities(tasksVerification),
+    fetchOpportunitiesByRewardsIds(rewardsIds).catch(() => []),
+    fetchTaskOpportunities(tasksVerification).catch(() => []),
   ]);
 
   return (
