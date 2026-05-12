@@ -57,6 +57,7 @@ abstract class ExtensionDownloader<TConfig extends ExtensionConfig> {
       console.log(
         `Cached ${this.formatName(config)} extension at ${config.extractPath} is invalid; re-extracting.`,
       );
+      await fsPromises.rm(config.extractPath, { force: true, recursive: true });
     }
 
     await fsPromises.mkdir(path.dirname(config.extractPath), {
