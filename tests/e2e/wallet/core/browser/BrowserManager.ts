@@ -46,9 +46,6 @@ export async function launchBrowserWithExtension(
     // does not propagate to manually-launched persistent contexts.
     baseURL: process.env.BASE_URL || 'http://localhost:3000',
     channel,
-    // CI runners have no display; Chrome's new headless mode supports the
-    // MetaMask extension. Local stays headed so popups are visible while
-    // debugging.
     headless: !!process.env.CI,
     // Playwright 1.58 rejects `viewport: null` paired with the implicit
     // deviceScaleFactor on macOS — set an explicit viewport everywhere.
