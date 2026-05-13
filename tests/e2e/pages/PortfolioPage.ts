@@ -2,6 +2,8 @@ import { expect, type Locator, type Page } from '@playwright/test';
 
 import { ConnectWalletPage } from './ConnectWalletPage';
 
+const PORTFOLIO_LOAD_TIMEOUT_MS = 30_000;
+
 export class PortfolioPage {
   private readonly assetSelectFilter: Locator;
   private readonly chainSelectFilter: Locator;
@@ -173,7 +175,9 @@ export class PortfolioPage {
 
   async expectDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
-    await expect(this.depositButton).toBeVisible({ timeout: 30000 });
+    await expect(this.depositButton).toBeVisible({
+      timeout: PORTFOLIO_LOAD_TIMEOUT_MS,
+    });
   }
 
   async expectDepositModalIsVisible(): Promise<void> {
@@ -216,7 +220,7 @@ export class PortfolioPage {
           }
           return Math.abs(total - (tokens + defi)) < Number.EPSILON;
         },
-        { timeout: 30_000 },
+        { timeout: PORTFOLIO_LOAD_TIMEOUT_MS },
       )
       .toBe(true);
   }
@@ -272,10 +276,13 @@ export class PortfolioPage {
   }
 
   async waitForFilterBarReady(): Promise<void> {
-    await this.filterBarSkeleton.waitFor({ state: 'hidden', timeout: 30000 });
+    await this.filterBarSkeleton.waitFor({
+      state: 'hidden',
+      timeout: PORTFOLIO_LOAD_TIMEOUT_MS,
+    });
     await this.filterTriggerButton.waitFor({
       state: 'visible',
-      timeout: 30000,
+      timeout: PORTFOLIO_LOAD_TIMEOUT_MS,
     });
   }
 
