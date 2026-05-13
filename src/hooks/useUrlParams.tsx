@@ -5,7 +5,7 @@ interface ChainToken {
   token: string | undefined;
 }
 
-interface ChainTokenSelection {
+interface UrlParams {
   sourceChainToken: ChainToken;
   destinationChainToken: ChainToken;
   toAddress?: string;
@@ -25,8 +25,8 @@ const parseList = (value: string | null): string[] | undefined => {
   return items.length > 0 ? items : undefined;
 };
 
-export const useUrlParams = (): ChainTokenSelection => {
-  const [urlParams, setUrlParams] = useState<ChainTokenSelection>({
+export const useUrlParams = (): UrlParams => {
+  const [urlParams, setUrlParams] = useState<UrlParams>({
     sourceChainToken: {
       chainId: undefined,
       token: undefined,

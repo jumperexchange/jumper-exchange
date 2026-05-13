@@ -9,6 +9,21 @@ import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
 
+function toolsConfig(allow?: string[], deny?: string[]) {
+  if (!allow && !deny) {
+    return undefined;
+  }
+
+  let result: { allow?: string[]; deny?: string[] } = {};
+  if (allow) {
+    result = { ...result, allow };
+  }
+  if (deny) {
+    result = { ...result, deny };
+  }
+  return result;
+}
+
 /**
  * Configuration hook for the main widget variant
  */
@@ -83,24 +98,11 @@ export function useMainWidgetConfig(
       tokens: _tokens,
 
       // Bridge and exchange configuration
-      bridges:
-        deps.theme.configTheme?.allowedBridges || denyBridges
-          ? {
-              ...(deps.theme.configTheme?.allowedBridges
-                ? { allow: deps.theme.configTheme.allowedBridges }
-                : {}),
-              ...(denyBridges ? { deny: denyBridges } : {}),
-            }
-          : undefined,
-      exchanges:
-        deps.theme.configTheme?.allowedExchanges || denyExchanges
-          ? {
-              ...(deps.theme.configTheme?.allowedExchanges
-                ? { allow: deps.theme.configTheme.allowedExchanges }
-                : {}),
-              ...(denyExchanges ? { deny: denyExchanges } : {}),
-            }
-          : undefined,
+      bridges: toolsConfig(deps.theme.configTheme?.allowedBridges, denyBridges),
+      exchanges: toolsConfig(
+        deps.theme.configTheme?.allowedExchanges,
+        denyExchanges,
+      ),
 
       routeLabels: [
         generateRouteLabel(
