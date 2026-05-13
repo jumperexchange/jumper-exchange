@@ -9,6 +9,7 @@ import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
+import envConfig from '@/config/env-config';
 
 type Params = Promise<{ slug: string }>;
 
@@ -16,6 +17,9 @@ export const dynamicParams = true;
 export const revalidate = 300;
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
+    return [];
+  }
   const res = await getOpportunitiesFiltered({});
   const rows = res.data?.data ?? [];
   const slugs = [
