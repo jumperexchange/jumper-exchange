@@ -4,6 +4,8 @@ import { URLS } from './data';
 import { expect, noWalletTest as test } from './fixtures';
 import { LandingPage, MainMenuPage, ScanPage } from './pages';
 
+const NAV_TIMEOUT_MS = 30_000;
+
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
     const landingPage = new LandingPage(page);
@@ -67,11 +69,11 @@ test.describe('Main Menu flows', () => {
       await firstArticleCard.click();
       // waitForURL fails fast if the click didn't navigate off the listing.
       await page.waitForURL(new RegExp(`${URLS.LEARN_LOCAL}/[^/].*`), {
-        timeout: 30_000,
+        timeout: NAV_TIMEOUT_MS,
       });
       await page.waitForLoadState('load');
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible({
-        timeout: 30_000,
+        timeout: NAV_TIMEOUT_MS,
       });
       await mainMenu.expectSocialIcons(['LinkedIn', 'Facebook', 'X']);
     },
@@ -102,7 +104,7 @@ test.describe('Main Menu flows', () => {
       await mainMenu.clickMenuItem('Scan');
       await expect(page).toHaveURL(
         new RegExp(String.raw`${URLS.SCAN_LOCAL}(?:/|$|\?)`),
-        { timeout: 30_000 },
+        { timeout: NAV_TIMEOUT_MS },
       );
       await mainMenu.expectHeaderTabs();
       const scanPage = new ScanPage(page);
@@ -173,7 +175,7 @@ test.describe('Main Menu flows', () => {
       await new LandingPage(page).clickNavItem('Privacy Policy');
       await expect(page).toHaveURL(
         new RegExp(String.raw`${URLS.PRIVACY_POLICY}(?:$|\?|#)`),
-        { timeout: 30_000 },
+        { timeout: NAV_TIMEOUT_MS },
       );
     },
   );
@@ -200,7 +202,9 @@ test.describe('Main Menu flows', () => {
       const sendMessageInIframe = iFrameLocator.locator(
         '[aria-label*="Send a message"]',
       );
-      await expect(sendMessageInIframe).toBeVisible({ timeout: 30_000 });
+      await expect(sendMessageInIframe).toBeVisible({
+        timeout: NAV_TIMEOUT_MS,
+      });
       await expect(sendMessageInIframe).toBeDisabled();
 
       const messageInput = iFrameLocator.locator(
@@ -228,7 +232,7 @@ test.describe('Main Menu flows', () => {
     await expect(page).toHaveURL(
       new RegExp(String.raw`${URLS.NEWSLETTER}(?:$|\?|#)`),
       {
-        timeout: 30_000,
+        timeout: NAV_TIMEOUT_MS,
       },
     );
   });
