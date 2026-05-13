@@ -18,7 +18,6 @@ import { MissionFormWidget } from './MissionFormWidget';
 import { MissionTaskComplete } from './MissionTaskComplete';
 import { MissionEnded } from './MissionEnded';
 import { MissionVerifyWallet } from './MissionVerifyWallet';
-import { useHydrated } from '@/hooks/useHydrated';
 
 export interface MissionWidgetProps {
   customInformation?: CustomInformation;
@@ -32,12 +31,6 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     isCurrentActiveTaskCompleted,
     missionHasEnded,
   } = useMissionStore();
-
-  const isHydrated = useHydrated();
-
-  if (!isHydrated) {
-    return <WidgetSkeleton />;
-  }
 
   const renderContent = (): ReactNode => {
     if (missionHasEnded) {
