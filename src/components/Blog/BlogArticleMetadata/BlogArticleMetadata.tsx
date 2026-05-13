@@ -94,7 +94,12 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
       {hasTags && (
         <Stack sx={{ flexDirection: 'row', gap: 1, overflow: 'hidden' }}>
           {visibleTags.map((tag) => (
-            <Badge label={tag.Title} size={tagSize} variant={tagVariant} />
+            <Badge
+              key={tag.id}
+              label={tag.Title}
+              size={tagSize}
+              variant={tagVariant}
+            />
           ))}
           {remainingCount > 0 && (
             <Tooltip title={hiddenTags.map((tag) => tag.Title).join(', ')}>
