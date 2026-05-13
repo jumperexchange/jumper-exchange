@@ -38,7 +38,7 @@ import {
   sortBlogArticles,
   tagAccessors,
 } from './utils';
-import { isEqual } from 'lodash';
+import { isEqual, uniqBy } from 'lodash';
 
 const PAGE_SIZE = 6;
 
@@ -161,7 +161,7 @@ export const LearnFilteringProvider = ({
       return [];
     }
     if (tab === TAG_ALL) {
-      return allData.map(tagAccessors.articles).flat();
+      return uniqBy(allData.map(tagAccessors.articles).flat(), 'documentId');
     }
     const selectedTag = allData.find((tag) => tag.Title === tab);
     if (
