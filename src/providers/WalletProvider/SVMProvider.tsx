@@ -68,11 +68,15 @@ export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
+  if (!isHydrated) {
+    return <>{children}</>;
+  }
+
   return (
     <SolanaProvider
       config={solanaConfig}
       walletPersistence={{
-        autoConnect: isHydrated,
+        autoConnect: true,
         storageKey: 'jumper-solana',
       }}
     >
