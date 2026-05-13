@@ -54,17 +54,9 @@ export class LandingPage {
   }
 
   async expectHomepageStatsLoaded(): Promise<void> {
-    await expect(this.chainsCount).not.toHaveText('0', { timeout: 5000 });
-    await expect(this.bridgesCount).not.toHaveText('0', { timeout: 5000 });
-    await expect(this.dexsCount).not.toHaveText('0', { timeout: 5000 });
-
-    const chains = (await this.chainsCount.textContent()) ?? '0';
-    const bridges = (await this.bridgesCount.textContent()) ?? '0';
-    const dexs = (await this.dexsCount.textContent()) ?? '0';
-
-    expect(Number(chains)).toBeGreaterThan(0);
-    expect(Number(bridges)).toBeGreaterThan(0);
-    expect(Number(dexs)).toBeGreaterThan(0);
+    await this.expectStatGreaterThanZero(this.chainsCount);
+    await this.expectStatGreaterThanZero(this.bridgesCount);
+    await this.expectStatGreaterThanZero(this.dexsCount);
   }
 
   async expectRoutesVisibility(options: {
@@ -129,5 +121,14 @@ export class LandingPage {
         ? this.page.getByText(expected, { exact: true })
         : this.page.getByText(expected);
     await expect(label).toBeVisible();
+  }
+
+  // Counter animates via useCountUpAnimation; poll the semantic assertion so transient "0" snapshots don't fail us.
+  private async expectStatGreaterThanZero(locator: Locator): Promise<void> {
+    await expect
+      .poll(async () => Number((await locator.textContent()) ?? '0'), {
+        timeout: 10_000,
+      })
+      .toBeGreaterThan(0);
   }
 }
