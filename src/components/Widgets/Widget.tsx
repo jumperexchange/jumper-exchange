@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useBridgeConditions } from 'src/hooks/useBridgeConditions';
+import { useMultisig } from 'src/hooks/useMultisig';
 import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
@@ -55,6 +56,7 @@ export function Widget({
   const pathname = usePathname();
   const { account } = useAccount();
   const isConnectedAGW = account?.connector?.name === 'Abstract';
+  const { isSafe } = useMultisig();
 
   const { activeTab } = useActiveTabStore();
   const partnerName = configTheme?.uid ?? 'default';
@@ -63,9 +65,14 @@ export function Widget({
   );
 
   useEffect(() => {
-    const routes = [AppPaths.Main, AppPaths.Gas, AppPaths.Private].filter(
-      (route) => route !== pathname,
-    );
+    const routes = [
+      AppPaths.Main,
+      AppPaths.Gas,
+      AppPaths.Private,
+      AppPaths.Portfolio,
+      AppPaths.Earn,
+      AppPaths.Missions,
+    ].filter((route) => route !== pathname);
 
     const runPrefetch = () => {
       routes.forEach((route) =>
@@ -130,6 +137,7 @@ export function Widget({
       allowToChains,
       bridgeConditions,
       isConnectedAGW,
+      isSafeContext: isSafe,
     }),
     [
       starterVariant,
@@ -139,6 +147,7 @@ export function Widget({
       allowToChains,
       bridgeConditions,
       isConnectedAGW,
+      isSafe,
       integratorStringByType,
     ],
   );

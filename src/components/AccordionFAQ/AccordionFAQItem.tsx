@@ -10,14 +10,14 @@ import {
   AccordionToggleButton,
   FaqShowMoreArrow,
 } from '.';
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import { RichBlocks } from '../RichBlocks/RichBlocks';
 import { IconButton } from '../core/buttons/IconButton/IconButton';
 import { Variant } from '../core/buttons/types';
 
 interface AccordionFAQItemProps {
   question: string;
-  answer: string | RootNode[];
+  answer: string | BlocksContent;
   itemSx?: SxProps<Theme>;
   itemAnswerSx?: SxProps<Theme>;
   index: number;

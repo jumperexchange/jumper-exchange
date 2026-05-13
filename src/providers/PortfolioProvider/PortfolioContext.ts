@@ -98,6 +98,7 @@ const defaultOrchestrationState: OrchestrationState = {
   },
   refresh: () => {},
   refreshByAddress: () => {},
+  refreshForTokens: () => Promise.resolve(),
 };
 
 export const PortfolioContext = createContext<PortfolioContextValue>({

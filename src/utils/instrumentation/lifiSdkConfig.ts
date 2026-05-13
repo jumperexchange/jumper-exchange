@@ -1,6 +1,6 @@
 import config from '@/config/env-config';
 import { publicRPCList } from '@/const/rpcList';
-import { createClient } from '@lifi/sdk';
+import { createClient, type SDKProvider } from '@lifi/sdk';
 import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
 import { BitcoinProvider } from '@lifi/sdk-provider-bitcoin';
 import { SolanaProvider } from '@lifi/sdk-provider-solana';
@@ -23,13 +23,6 @@ function initClient() {
     _client = createClient({
       apiKey: config.NEXT_PUBLIC_LIFI_API_KEY,
       apiUrl: getApiUrl(),
-      providers: [
-        EthereumProvider(),
-        SolanaProvider(),
-        BitcoinProvider(),
-        SuiProvider(),
-        TronProvider(),
-      ],
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR || 'jumper.exchange',
       rpcUrls: {
         ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
@@ -47,6 +40,13 @@ function initClient() {
         return request;
       },
     });
+    _client.setProviders([
+      EthereumProvider(),
+      SolanaProvider(),
+      BitcoinProvider(),
+      SuiProvider(),
+      TronProvider(),
+    ] as SDKProvider[]);
   }
   return _client;
 }

@@ -14,7 +14,7 @@ For agents and contributors picking up work in this repo, start with [AGENTS.md]
 
 ## Getting Started
 
-Requires `node >=20` (see `.nvmrc` — run `nvm use`).
+Requires Node 22+ (see `.nvmrc` — run `nvm use`).
 
 ```sh
 pnpm install

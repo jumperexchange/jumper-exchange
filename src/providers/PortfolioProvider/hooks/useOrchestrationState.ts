@@ -133,6 +133,16 @@ export const useOrchestrationState = (
     [balances.refetchForAddress],
   );
 
+  const refreshForTokens = useCallback(
+    (
+      address: string,
+      tokens: Parameters<typeof balances.refetchForTokens>[1],
+    ) => {
+      return balances.refetchForTokens(address, tokens);
+    },
+    [balances.refetchForTokens],
+  );
+
   return useMemo(
     () => ({
       isEmpty,
@@ -150,6 +160,7 @@ export const useOrchestrationState = (
       },
       refresh,
       refreshByAddress,
+      refreshForTokens,
     }),
     [
       isEmpty,
@@ -165,6 +176,7 @@ export const useOrchestrationState = (
       pricesSource,
       refresh,
       refreshByAddress,
+      refreshForTokens,
     ],
   );
 };

@@ -11,6 +11,8 @@ const eslintConfig = defineConfig([
   // Global ignores
   globalIgnores([
     '**/node_modules/**',
+    '**/.cache-synpress/**',
+    '**/storybook-static/**',
     '**/.next/**',
     '**/dist/**',
     '**/build/**',

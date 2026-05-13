@@ -1,11 +1,13 @@
-FROM node:20 AS builder
+FROM node:22-alpine AS builder
+
+RUN apk add --no-cache ca-certificates openssl python3 make g++ libc6-compat
 
 ARG ENV_NAME
 ENV ENV_NAME=$ENV_NAME
 ARG NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_PUBLIC_LATEST_COMMIT_SHA=$NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PNPM_VERSION=10.28.2
+ENV PNPM_VERSION=10.33.4
 RUN corepack enable && corepack install -g pnpm@$PNPM_VERSION
 
 WORKDIR /app
@@ -27,8 +29,8 @@ COPY ./$ENV_FILE ./.env
 RUN pnpm build
 
 # Production image, copy all the files and run next
-FROM node:20-alpine AS runner
-ENV PNPM_VERSION=10.28.2
+FROM node:22-alpine AS runner
+ENV PNPM_VERSION=10.33.4
 
 WORKDIR /app
 
@@ -37,6 +39,8 @@ WORKDIR /app
 RUN corepack enable && corepack install -g pnpm@$PNPM_VERSION
 #NOTE: Make sure to put the following en variable after setting up corepack
 ENV NODE_ENV=production
+
+RUN apk add --no-cache ca-certificates openssl
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

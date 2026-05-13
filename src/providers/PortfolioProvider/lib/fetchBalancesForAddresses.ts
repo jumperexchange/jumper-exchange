@@ -5,7 +5,7 @@ import {
   getWalletBalances,
 } from '@lifi/sdk';
 import type { Token, TokenAmount } from '@lifi/sdk';
-import { flatMap } from 'lodash';
+import { flatMap, groupBy } from 'lodash';
 import { createBatchFetcher } from '@/utils/batches/fetcher';
 import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
 import {
@@ -22,7 +22,7 @@ const createTokensBalanceFromPlain = <
   return createTokenBalance(createExtendedToken(token), token.amount);
 };
 
-const createTokenBalancesFromPlainArray = <
+export const createTokenBalancesFromPlainArray = <
   T extends Omit<TokenAmount, 'amount'> & {
     amount?: string | bigint | undefined;
   },
@@ -45,6 +45,24 @@ export interface FetchBalancesParams {
   ) => void;
   onComplete?: (tokens: TokenBalance[]) => void;
 }
+
+/** Fetch fresh balances for a specific list of tokens — bypasses getWalletBalances indexer lag */
+export const fetchTokenBalancesForAddress = async (
+  address: string,
+  tokens: Token[],
+): Promise<TokenBalance[]> => {
+  const grouped = groupBy(tokens, (t) => t.chainId);
+
+  const { results } = createBatchFetcher<Token, TokenAmount>(
+    grouped,
+    async (_chainId, tokenBatch) => {
+      const balances = await getTokenBalances(sdkClient, address, tokenBatch);
+      return balances.filter((t) => t.amount && t.amount > BigInt(0));
+    },
+  );
+
+  return createTokenBalancesFromPlainArray(await results);
+};
 
 /** Fetch tokens for EVM wallet (no batching needed) */
 export const fetchBalancesForEVMAddress = async (address: string) => {

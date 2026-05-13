@@ -46,7 +46,7 @@ export const useDustModalFlow = ({
   isOpen,
 }: UseDustModalFlowOptions) => {
   const { t } = useTranslation();
-  const { refresh: refreshPortfolio } = usePortfolioState();
+  const { refreshForTokens } = usePortfolioState();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
   const fallbackNativeToken = useFallbackNativeToken(nativeExtendedTokens);
   const formFields = useDustFormFields({
@@ -66,6 +66,20 @@ export const useDustModalFlow = ({
     prevThreshold: number | undefined;
     prevChainId: number | undefined;
   }>({ prevThreshold: undefined, prevChainId: undefined });
+
+  const completedDustSummaryRef = useRef<DustSummaryValue | null>(null);
+
+  const refreshCompletedDustTokens = useCallback(() => {
+    const summary = completedDustSummaryRef.current;
+    if (!summary) {
+      return;
+    }
+    completedDustSummaryRef.current = null;
+    void refreshForTokens(summary.address, [
+      ...summary.selectedBalances.map((b) => b.token),
+      summary.nativeToken,
+    ]);
+  }, [refreshForTokens]);
 
   useEffect(() => {
     if (isOpen) {
@@ -239,14 +253,19 @@ export const useDustModalFlow = ({
     requiresConfirmation: false,
     executorType: supportsBatchTransactions ? 'batch' : 'single',
     fetchCallData,
+    onSuccess: () => {
+      if (dustSummary) {
+        completedDustSummaryRef.current = dustSummary;
+      }
+    },
   });
 
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
     onSuccess: () => {
+      refreshCompletedDustTokens();
       setDustSummary(null);
-      refreshPortfolio();
       widgetNav?.resetForm();
     },
   });
@@ -254,7 +273,7 @@ export const useDustModalFlow = ({
   const handleModalClose = () => {
     onClose();
     transactionForm.resetForm();
-    refreshPortfolio();
+    refreshCompletedDustTokens();
   };
 
   const views = useMemo(
@@ -290,6 +309,13 @@ export const useDustModalFlow = ({
             composerQuote={composerQuote ?? undefined}
             nativeTokenBalance={nativeTokenBalance}
             selectedInputBalances={dustSummary?.selectedBalances ?? []}
+            currentActionIndex={transactionForm.currentActionIndex}
+            isExecuting={
+              transactionForm.currentStep === 'approving' ||
+              transactionForm.currentStep === 'requesting'
+            }
+            actionHashes={transactionForm.actionHashes}
+            chainId={nativeTokenChainId}
           />
         ),
         onSubmit: async () => {
@@ -309,6 +335,7 @@ export const useDustModalFlow = ({
       formFields,
       transactionForm,
       widgetNav,
+      nativeTokenChainId,
       t,
     ],
   );

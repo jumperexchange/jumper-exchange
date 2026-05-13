@@ -133,7 +133,15 @@ export function useMainWidgetConfig(
       config.hiddenUI = [...(config.hiddenUI || []), HiddenUI.ToAddress];
     }
 
-    if (!context.isConnectedAGW) {
+    if (context.isSafeContext) {
+      config.sdkConfig = {
+        ...config.sdkConfig,
+        routeOptions: {
+          ...config.sdkConfig?.routeOptions,
+          allowSwitchChain: false,
+        },
+      };
+    } else if (!context.isConnectedAGW) {
       config.sdkConfig = {
         ...config.sdkConfig,
         routeOptions: {
@@ -152,6 +160,7 @@ export function useMainWidgetConfig(
     context.allowFromChains,
     context.allowToChains,
     context.isConnectedAGW,
+    context.isSafeContext,
     context.bridgeConditions,
     deps.theme,
     memeListTokens,

@@ -23,15 +23,35 @@ const getPageTitle = (title: string) => {
 const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
-  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
-    {
-      page: 1,
-      pageSize: 12,
-    },
+  const pageSize = 25;
+
+  const { data: firstPage } = await getQuestsWithNoCampaignAttached(
+    { page: 1, pageSize, withCount: true },
     UPCOMING_DAYS_AHEAD,
   );
 
-  return missionsResponse.data.map((mission) => ({ slug: mission.Slug || '' }));
+  const { pageCount } = firstPage.meta.pagination;
+
+  const remainingPages =
+    pageCount > 1
+      ? await Promise.all(
+          Array.from({ length: pageCount - 1 }, (_, i) =>
+            getQuestsWithNoCampaignAttached(
+              { page: i + 2, pageSize },
+              UPCOMING_DAYS_AHEAD,
+            ),
+          ),
+        )
+      : [];
+
+  const allMissions = [
+    ...firstPage.data,
+    ...remainingPages.flatMap(({ data }) => data.data),
+  ];
+
+  return allMissions
+    .filter((mission) => mission.Slug)
+    .map((mission) => ({ slug: mission.Slug! }));
 }
 
 export async function generateMetadata({
