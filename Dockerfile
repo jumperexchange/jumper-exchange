@@ -1,4 +1,6 @@
-FROM node:22-bookworm AS builder
+FROM node:22-alpine AS builder
+
+RUN apk add --no-cache ca-certificates openssl python3 make g++ libc6-compat
 
 ARG ENV_NAME
 ENV ENV_NAME=$ENV_NAME
@@ -37,6 +39,8 @@ WORKDIR /app
 RUN corepack enable && corepack install -g pnpm@$PNPM_VERSION
 #NOTE: Make sure to put the following en variable after setting up corepack
 ENV NODE_ENV=production
+
+RUN apk add --no-cache ca-certificates openssl
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
