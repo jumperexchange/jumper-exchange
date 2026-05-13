@@ -6,12 +6,14 @@ import { BlogArticleMetaProperty } from './BlogArticleMetadata.style';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import type { TypographyProps } from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import type { SxProps, Theme } from '@mui/material/styles';
 
 interface BlogArticleMetadataProps {
   article: BlogArticleData;
+  maxVisibleTags?: number;
   tagSize?: BadgeSize;
   tagVariant?: BadgeVariant;
   metaVariant?: TypographyProps['variant'];
@@ -20,6 +22,7 @@ interface BlogArticleMetadataProps {
 
 export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
   article,
+  maxVisibleTags,
   tagSize = BadgeSize.MD,
   tagVariant = BadgeVariant.Alpha,
   metaVariant = 'bodyXSmall',
@@ -29,13 +32,19 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
   },
 }) => {
   const { t } = useTranslation();
-  const firstTag = article?.tags?.[0];
   const now = Date.now();
   const publishDate = article.publishedAt || article.createdAt || now;
   const updateDate = article.updatedAt || publishDate;
   const isUpdateAfterPublish =
     Boolean(article.updatedAt) && differenceInDays(updateDate, publishDate) > 0;
   const minRead = readingTime(article?.WordCount);
+  const tags = article.tags || [];
+  const hasTags = tags.length > 0;
+  const visibleTags =
+    maxVisibleTags !== undefined ? tags.slice(0, maxVisibleTags) : tags;
+  const hiddenTags =
+    maxVisibleTags !== undefined ? tags.slice(maxVisibleTags) : [];
+  const remainingCount = hiddenTags.length;
 
   return (
     <Stack useFlexGap sx={sx}>
@@ -82,8 +91,21 @@ export const BlogArticleMetadata: FC<BlogArticleMetadataProps> = ({
         </BlogArticleMetaProperty>
       </Stack>
 
-      {firstTag && (
-        <Badge label={firstTag.Title} size={tagSize} variant={tagVariant} />
+      {hasTags && (
+        <Stack sx={{ flexDirection: 'row', gap: 1, overflow: 'hidden' }}>
+          {visibleTags.map((tag) => (
+            <Badge label={tag.Title} size={tagSize} variant={tagVariant} />
+          ))}
+          {remainingCount > 0 && (
+            <Tooltip title={hiddenTags.map((tag) => tag.Title).join(', ')}>
+              <Badge
+                label={`+${remainingCount}`}
+                size={tagSize}
+                variant={tagVariant}
+              />
+            </Tooltip>
+          )}
+        </Stack>
       )}
     </Stack>
   );
