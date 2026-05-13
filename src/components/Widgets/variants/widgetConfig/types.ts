@@ -71,6 +71,7 @@ export interface MainWidgetContext extends CommonWidgetContext {
     toAddress?: string;
   };
   isConnectedAGW?: boolean;
+  isSafeContext?: boolean;
 }
 
 export interface MissionWidgetContext extends CommonWidgetContext {
