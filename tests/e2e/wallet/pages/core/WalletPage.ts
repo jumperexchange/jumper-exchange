@@ -152,8 +152,9 @@ export default abstract class WalletPage<
     if (!this._extensionNamePattern) {
       return this._defaultExtensionId;
     }
+    let page: null | Page = null;
     try {
-      const page = await this.page.context().newPage();
+      page = await this.page.context().newPage();
       await page.goto('chrome://extensions');
       const id = await page.evaluate((pattern: string) => {
         interface ChromeExtension {
@@ -182,10 +183,11 @@ export default abstract class WalletPage<
           });
         });
       }, this._extensionNamePattern);
-      await page.close();
       return id ?? this._defaultExtensionId;
     } catch {
       return this._defaultExtensionId;
+    } finally {
+      await page?.close().catch(() => {});
     }
   }
 
