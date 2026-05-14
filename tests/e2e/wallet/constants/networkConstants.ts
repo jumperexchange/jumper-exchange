@@ -48,16 +48,4 @@ export const networks: Record<string, NetworkConfig> = {
     networkName: 'Ronin',
     rpcUrl: 'https://ronin.roninchain.com',
   },
-  sepolia: {
-    chainId: '11155111',
-    currencySymbol: 'ETH',
-    networkName: 'Sepolia',
-    rpcUrl: 'https://sepolia.infura.io/v3/your-api-key',
-  },
-  solana: {
-    chainId: '',
-    currencySymbol: '',
-    networkName: 'Solana',
-    rpcUrl: '',
-  },
 };
