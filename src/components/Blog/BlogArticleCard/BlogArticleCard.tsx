@@ -83,7 +83,7 @@ export const BlogArticleCard = ({
           </BlogArticleCardTitle>
           <BlogArticleCardDetails>
             {isClient ? (
-              <BlogArticleMetadata article={article} />
+              <BlogArticleMetadata article={article} maxVisibleTags={2} />
             ) : (
               <BlogArticleMetadataSkeleton />
             )}
