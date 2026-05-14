@@ -227,12 +227,9 @@ export class PortfolioPage {
 
   async expectValueSelectFilterIsCleared(): Promise<void> {
     await this.openFilterModal();
-    const valueText = await this.getValueSelectFilterText();
-    if (valueText !== null) {
-      throw new Error(
-        `Value filter still contains value range after clearing: ${valueText}`,
-      );
-    }
+    await expect
+      .poll(() => this.getValueSelectFilterText(), { timeout: 5_000 })
+      .toBeNull();
     await this.closeFilterModal();
   }
 
