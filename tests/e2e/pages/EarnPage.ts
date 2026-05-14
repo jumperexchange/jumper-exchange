@@ -34,6 +34,23 @@ export class EarnPage {
     this.clearButton = page.getByTestId('clear-button');
   }
 
+  async clearFilters(): Promise<void> {
+    await this.clearButton.click();
+  }
+
+  async expectAllCardsHaveTag(selectedTag: string): Promise<void> {
+    const slug = (label: string): string =>
+      label.toLowerCase().replace(/\s+/g, '-');
+    const cards = this.cardsGrid.getByTestId('earn-card');
+    await expect(cards).not.toHaveCount(0);
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      await expect(
+        cards.nth(i).getByTestId(`earn-card-tag-${slug(selectedTag)}`),
+      ).toHaveCount(1);
+    }
+  }
+
   async expectAllCardsShowChain(expectedChain: string): Promise<void> {
     await this.page.waitForLoadState('load');
 
@@ -53,6 +70,18 @@ export class EarnPage {
     for (const testId of ANALYTICS_BUTTON_TESTIDS) {
       await expect(this.page.getByTestId(testId)).toBeVisible();
     }
+  }
+
+  async expectAtLeastOneCard(): Promise<void> {
+    await expect(this.cardsGrid.getByTestId('earn-card')).not.toHaveCount(0);
+  }
+
+  async expectCardCountLessThan(beforeCount: number): Promise<void> {
+    await expect
+      .poll(async () => this.cardsGrid.getByTestId('earn-card').count(), {
+        timeout: 5_000,
+      })
+      .toBeLessThan(beforeCount);
   }
 
   async expectFiltersVisible(): Promise<void> {
@@ -79,24 +108,8 @@ export class EarnPage {
     ).not.toHaveCount(0);
   }
 
-  async expectOnlySelectedTagVisible(selectedTag: string): Promise<void> {
-    const allOptions = await this.getDropdownOptions('earn-filter-tag-select');
-    const optionsToHide = allOptions.filter(
-      (option) => option.toLowerCase() !== selectedTag.toLowerCase(),
-    );
-
-    const slug = (label: string): string =>
-      label.toLowerCase().replace(/\s+/g, '-');
-
-    for (const optionToHide of optionsToHide) {
-      await expect(
-        this.page.getByTestId(`earn-card-tag-${slug(optionToHide)}`),
-      ).toHaveCount(0);
-    }
-
-    await expect(
-      this.page.getByTestId(`earn-card-tag-${slug(selectedTag)}`),
-    ).not.toHaveCount(0);
+  async getCardCount(): Promise<number> {
+    return this.cardsGrid.getByTestId('earn-card').count();
   }
 
   async getDropdownOptions(dropdownTestId: string): Promise<string[]> {

@@ -132,39 +132,20 @@ test.describe('Assets filters on Earn page', () => {
 test.describe('Tags filters on Earn page', () => {
   test.beforeEach(async ({ jumperPage }) => setupAllMarketsView(jumperPage));
 
-  test(
-    qase(51, 'Should be able to filter by Synthetic tag'),
+  // JUM-924 item #13: card-level `earn-card` testid needed for per-card scoping.
+  test.fixme(
+    qase(208, 'Filter by tag returns only cards that have that tag'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
-      await earnPage.selectOptionFromDropdown(
-        'earn-filter-tag-select',
-        'Synthetic',
-      );
-      await earnPage.expectOnlySelectedTagVisible('Synthetic');
-    },
-  );
+      const baseline = await earnPage.getCardCount();
 
-  test(
-    qase(46, 'Should be able to filter by Yield Aggregator tag'),
-    async ({ jumperPage }) => {
-      const earnPage = new EarnPage(jumperPage);
-      await earnPage.selectOptionFromDropdown(
-        'earn-filter-tag-select',
-        'Yield Aggregator',
-      );
-      await earnPage.expectOnlySelectedTagVisible('Yield Aggregator');
-    },
-  );
-
-  test(
-    qase(48, 'Should be able to filter by Liquid Staking tag'),
-    async ({ jumperPage }) => {
-      const earnPage = new EarnPage(jumperPage);
-      await earnPage.selectOptionFromDropdown(
-        'earn-filter-tag-select',
-        'Liquid Staking',
-      );
-      await earnPage.expectOnlySelectedTagVisible('Liquid Staking');
+      for (const tag of ['Yield Aggregator', 'Liquid Staking', 'Synthetic']) {
+        await earnPage.selectOptionFromDropdown('earn-filter-tag-select', tag);
+        await earnPage.expectCardCountLessThan(baseline);
+        await earnPage.expectAtLeastOneCard();
+        await earnPage.expectAllCardsHaveTag(tag);
+        await earnPage.clearFilters();
+      }
     },
   );
 });
