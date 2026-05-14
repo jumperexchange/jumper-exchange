@@ -100,10 +100,11 @@ export class EarnPage {
   }
 
   async getDropdownOptions(dropdownTestId: string): Promise<string[]> {
-    const options = await this.page
-      .getByTestId(dropdownTestId)
-      .locator('[role="option"]')
-      .allTextContents();
+    // MUI Select renders options in a portal under <body>, not as descendants
+    // of the trigger. Open the dropdown, read options at page scope, then close.
+    await this.page.getByTestId(dropdownTestId).click();
+    await expect(this.clearButton).toBeVisible();
+    const options = await this.page.getByRole('option').allTextContents();
     await this.page.keyboard.press('Escape');
     return options;
   }
