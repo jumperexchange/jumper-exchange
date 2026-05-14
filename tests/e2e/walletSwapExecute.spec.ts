@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { buildUlParams } from './data';
+import { buildUrlParams } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
 import { connectedTest as test } from './fixtures';
 import { LandingPage, WidgetPage } from './pages';
@@ -19,7 +19,7 @@ test.describe('Wallet swap — execute on Arbitrum', () => {
       const pair = chainData.ARBtoARB.USDCtoUSDT5;
 
       await test.step('Open swap deeplink and wait for route', async () => {
-        await jumperPage.goto(`/${buildUlParams(pair)}`);
+        await jumperPage.goto(`/${buildUrlParams(pair)}`);
         await landingPage.expectRoutesVisibility({
           bestReturnShouldBeVisible: true,
         });

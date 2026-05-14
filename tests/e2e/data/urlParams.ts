@@ -6,7 +6,7 @@ export interface WidgetUrlParams {
   toToken: string;
 }
 
-export function buildUlParams(data: WidgetUrlParams): string {
+export function buildUrlParams(data: WidgetUrlParams): string {
   const params = new URLSearchParams({
     fromAmount: data.amount,
     fromChain: data.fromChain,

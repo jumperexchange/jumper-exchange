@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { buildUlParams, SETTINGS_MENU } from './data';
+import { buildUrlParams, SETTINGS_MENU } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
 import { noWalletTest as test } from './fixtures';
 import { LandingPage, SettingsPage } from './pages';
@@ -33,7 +33,7 @@ import { LandingPage, SettingsPage } from './pages';
           await settings.deselectAll();
           await settings.goBack();
 
-          const urlParams = buildUlParams(chainData.ETHtoETHswap.ETHtoETH);
+          const urlParams = buildUrlParams(chainData.ETHtoETHswap.ETHtoETH);
           await page.goto(`/${urlParams}`);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
@@ -49,14 +49,14 @@ import { LandingPage, SettingsPage } from './pages';
         const landingPage = new LandingPage(page);
 
         await test.step(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair`, async () => {
-          await page.goto(`/${buildUlParams(chainData.ARBtoARB.ETHtoUSDT)}`);
+          await page.goto(`/${buildUrlParams(chainData.ARBtoARB.ETHtoUSDT)}`);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
           });
         });
 
         await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
-          await page.goto(`/${buildUlParams(chainData.ARBtoARB.USDCtoWBTC)}`);
+          await page.goto(`/${buildUrlParams(chainData.ARBtoARB.USDCtoWBTC)}`);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
           });
@@ -75,7 +75,7 @@ import { LandingPage, SettingsPage } from './pages';
 
         const swapPairs: Array<{
           label: string;
-          params: Parameters<typeof buildUlParams>[0];
+          params: Parameters<typeof buildUrlParams>[0];
         }> = [
           {
             label: `${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} → ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol}`,
@@ -109,7 +109,7 @@ import { LandingPage, SettingsPage } from './pages';
 
         for (const { label, params } of swapPairs) {
           await test.step(`Check ${label} swap pair`, async () => {
-            await page.goto(`/${buildUlParams(params)}`);
+            await page.goto(`/${buildUrlParams(params)}`);
             await landingPage.expectRoutesVisibility({
               bestReturnShouldBeVisible: true,
               // Cross-VM Hypercore pairs routinely take ~50s on LiFi; 90s headroom.
