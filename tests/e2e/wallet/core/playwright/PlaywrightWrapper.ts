@@ -90,6 +90,17 @@ export default class PlaywrightWrapper {
     }
   }
 
+  // Wallet secrets (seed phrase, password) must not leak into CI logs.
+  public async fillSecret(
+    selector: string,
+    value: string,
+    index: null | number = null,
+    timeout: number = DEFAULT_TIMEOUT,
+    strict: boolean = true,
+  ): Promise<void> {
+    return this.fill(selector, value, index, timeout, true, strict);
+  }
+
   /**
    * Clicks on an element using Playwright's `force` option.
    * Intended for known UI overlays where the target is still the correct action surface.

@@ -218,9 +218,12 @@ export default class MetaMaskPage extends WalletPage {
     // Fill each recovery word input field with the corresponding word from the seed phrase.
     for (let i = 0; i < words.length; i++) {
       if (i === 0) {
-        await this.play.fill(this.selectors.seedPhrase.inputField, words[i]);
+        await this.play.fillSecret(
+          this.selectors.seedPhrase.inputField,
+          words[i],
+        );
       } else {
-        await this.play.fill(
+        await this.play.fillSecret(
           this.selectors.seedPhrase.wordInputPrefix + i,
           words[i],
         );
@@ -288,8 +291,8 @@ export default class MetaMaskPage extends WalletPage {
    * @returns {Promise<void>}
    */
   async setupPassword(password: string): Promise<void> {
-    await this.play.fill(this.selectors.password.newInput, password);
-    await this.play.fill(this.selectors.password.confirmInput, password);
+    await this.play.fillSecret(this.selectors.password.newInput, password);
+    await this.play.fillSecret(this.selectors.password.confirmInput, password);
     await this.play.click(this.selectors.password.termsCheckbox);
     await this.play.click(this.selectors.password.importButton);
   }
@@ -319,7 +322,10 @@ export default class MetaMaskPage extends WalletPage {
    * @returns {Promise<void>}
    */
   async submitPassword(password: string): Promise<void> {
-    await this.play.fill(this.selectors.password.unlockPasswordInput, password);
+    await this.play.fillSecret(
+      this.selectors.password.unlockPasswordInput,
+      password,
+    );
     await this.play.click(this.selectors.password.unlockSubmitButton);
   }
 
