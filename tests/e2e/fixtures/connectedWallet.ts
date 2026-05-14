@@ -1,5 +1,6 @@
 import { CHAINS, WALLET_OPTIONS } from '../data';
-import { ConnectWalletPage, LandingPage } from '../pages';
+import { ConnectWalletPage } from '../pages/ConnectWalletPage';
+import { LandingPage } from '../pages/LandingPage';
 import { realWalletTest } from './realWallet';
 
 import type { Page } from '@playwright/test';
@@ -42,5 +43,3 @@ export const connectedTest = realWalletTest.extend<ConnectedWalletFixtures>({
     { auto: true },
   ],
 });
-
-export { expect } from '@playwright/test';

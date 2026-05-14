@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { ProfilePage } from './pages';
+import { ProfilePage } from './pages/ProfilePage';
 
 // Real signature path: Jumper → wagmi → MetaMask → jumper-backend /v1/perks/claim.
 // Requires the test wallet to have an unclaimed published perk on the connected backend.

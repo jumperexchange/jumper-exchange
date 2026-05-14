@@ -1,7 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { PortfolioPage } from './pages';
+import { PortfolioPage } from './pages/PortfolioPage';
 
 test.describe('Portfolio page', () => {
   test.beforeEach(async ({ jumperPage }) => {

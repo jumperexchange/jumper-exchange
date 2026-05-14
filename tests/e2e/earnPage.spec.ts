@@ -3,7 +3,7 @@ import { qase } from 'playwright-qase-reporter';
 
 import { CHAINS } from './data';
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { EarnPage } from './pages';
+import { EarnPage } from './pages/EarnPage';
 
 import type { Page } from '@playwright/test';
 

@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { ProfilePage } from './pages';
+import { ProfilePage } from './pages/ProfilePage';
 
 import type { Request } from '@playwright/test';
 

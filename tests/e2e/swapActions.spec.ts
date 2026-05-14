@@ -3,8 +3,8 @@ import { qase } from 'playwright-qase-reporter';
 import { buildUrlParams, SETTINGS_MENU } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
 import { noWalletTest as test } from './fixtures/noWallet';
-import { LandingPage, SettingsPage } from './pages';
-
+import { LandingPage } from './pages/LandingPage';
+import { SettingsPage } from './pages/SettingsPage';
 [
   { name: 'Mobile', size: { height: 812, width: 375 } },
   { name: 'Desktop', size: { height: 1080, width: 1920 } },

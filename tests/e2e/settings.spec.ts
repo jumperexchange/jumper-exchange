@@ -2,8 +2,8 @@ import { qase } from 'playwright-qase-reporter';
 
 import { SETTINGS_MENU } from './data';
 import { noWalletTest as test } from './fixtures/noWallet';
-import { LandingPage, SettingsPage } from './pages';
-
+import { LandingPage } from './pages/LandingPage';
+import { SettingsPage } from './pages/SettingsPage';
 for (const { name, size } of [
   { name: 'Mobile', size: { height: 812, width: 375 } },
   { name: 'Desktop', size: { height: 1080, width: 1920 } },

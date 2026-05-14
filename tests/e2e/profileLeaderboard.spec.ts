@@ -2,7 +2,8 @@ import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { MainMenuPage, ProfilePage } from './pages';
+import { MainMenuPage } from './pages/MainMenuPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 test.describe('Profile and Leaderboard navigation with wallet', () => {
   test.beforeEach(async ({ jumperPage }) => {

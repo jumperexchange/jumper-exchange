@@ -2,7 +2,9 @@ import { qase } from 'playwright-qase-reporter';
 
 import { CHAINS, WALLET_OPTIONS } from './data';
 import { realWalletTest as test } from './fixtures/realWallet';
-import { ConnectWalletPage, LandingPage, ProfilePage } from './pages';
+import { ConnectWalletPage } from './pages/ConnectWalletPage';
+import { LandingPage } from './pages/LandingPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 test.describe('Connect/disconnect MetaMask with Jumper and open /profile', () => {
   test(qase(36, 'Connect MetaMask wallet to Jumper'), async ({ wallet }) => {

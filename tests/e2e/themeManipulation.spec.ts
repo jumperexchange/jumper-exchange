@@ -3,7 +3,8 @@ import { qase } from 'playwright-qase-reporter';
 
 import { THEME_DARK_BG_RGB, THEME_LIGHT_BG_RGB } from './data';
 import { noWalletTest as test } from './fixtures/noWallet';
-import { LandingPage, MainMenuPage, Theme } from './pages';
+import { LandingPage } from './pages/LandingPage';
+import { MainMenuPage, Theme } from './pages/MainMenuPage';
 
 test.describe('Switch theme — dark mode', () => {
   test.use({ colorScheme: 'dark' });

@@ -3,7 +3,8 @@ import { qase } from 'playwright-qase-reporter';
 import { buildUrlParams } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
 import { connectedTest as test } from './fixtures/connectedWallet';
-import { LandingPage, WidgetPage } from './pages';
+import { LandingPage } from './pages/LandingPage';
+import { WidgetPage } from './pages/WidgetPage';
 
 // Real on-chain swap on Arbitrum; one-way, consumes ~5 USDC per run.
 // Funded wallet supports ~10 runs before USDC runs dry — refill via
