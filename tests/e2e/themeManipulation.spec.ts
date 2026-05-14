@@ -73,10 +73,12 @@ test.describe('Switch theme — partner themes', () => {
 
       const partnerTheme = await mainMenu.findPartnerTheme();
 
-      // Partner theme presence is Strapi-driven and absent on local/CI baseline; skip when not configured.
       /* eslint-disable playwright/no-conditional-in-test, playwright/no-skipped-test -- env-conditional skip */
       if (!partnerTheme) {
-        test.skip();
+        test.skip(
+          true,
+          'Partner theme not configured in this environment (Strapi-driven)',
+        );
         return;
       }
       /* eslint-enable playwright/no-conditional-in-test, playwright/no-skipped-test */
