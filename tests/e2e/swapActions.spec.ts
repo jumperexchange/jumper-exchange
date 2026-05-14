@@ -90,10 +90,6 @@ import { LandingPage, SettingsPage } from './pages';
             params: chainData.ArbUSDCtoHypercore.NegativeUSDCtoUSDC,
           },
           {
-            label: `${chainData.EVMtoHypercore.ETHtoUSDC.tokenSymbol} → ${chainData.EVMtoHypercore.ETHtoUSDC.toTokenSymbol}`,
-            params: chainData.EVMtoHypercore.ETHtoUSDC,
-          },
-          {
             label: `${chainData.BTCtoHypercore.BTCtoUSDC.tokenSymbol} → ${chainData.BTCtoHypercore.BTCtoUSDC.toTokenSymbol}`,
             params: chainData.BTCtoHypercore.BTCtoUSDC,
           },
