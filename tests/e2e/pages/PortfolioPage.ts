@@ -168,11 +168,6 @@ export class PortfolioPage {
     await this.gearboxPositionCard.click();
   }
 
-  async expectAllFiltersAreVisible(): Promise<void> {
-    await this.waitForFilterBarReady();
-    await expect(this.filterTriggerButton).toBeVisible();
-  }
-
   async expectDepositButtonIsVisibleOnDeFiPositionsTab(): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await expect(this.depositButton).toBeVisible({
