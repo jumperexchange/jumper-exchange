@@ -130,6 +130,7 @@ abstract class ExtensionDownloader<TConfig extends ExtensionConfig> {
     return {
       maxRedirects: 5,
       responseType: 'arraybuffer',
+      timeout: 60_000,
       validateStatus: (status) => status >= 200 && status < 400,
     };
   }
@@ -346,6 +347,8 @@ async function extractZipBuffer(
   const entries = Object.keys(zip.files);
   const rootDir = stripRootDir ? detectZipRootDir(entries) : '';
   const rootLen = rootDir.length;
+  const resolvedOutputDir = path.resolve(outputDir);
+  const outputDirPrefix = `${resolvedOutputDir}${path.sep}`;
 
   await Promise.all(
     entries.map(async (filename) => {
@@ -363,7 +366,15 @@ async function extractZipBuffer(
       }
 
       const file = zip.files[filename];
-      const destPath = path.join(outputDir, destFilename);
+      const destPath = path.resolve(outputDir, destFilename);
+
+      // Defence against zip-slip: reject entries that resolve outside outputDir.
+      if (
+        destPath !== resolvedOutputDir &&
+        !destPath.startsWith(outputDirPrefix)
+      ) {
+        throw new Error(`Unsafe zip entry path: ${destFilename}`);
+      }
 
       if (file.dir) {
         await fsPromises.mkdir(destPath, { recursive: true });
