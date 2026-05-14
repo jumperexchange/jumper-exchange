@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data';
+import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';

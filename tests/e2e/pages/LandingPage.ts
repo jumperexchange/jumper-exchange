@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { ROUTE_LABELS } from '../data';
+import { ROUTE_LABELS } from '../data/urls';
 
 import type { Locator, Page } from '@playwright/test';
 

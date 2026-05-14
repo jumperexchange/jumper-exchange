@@ -1,7 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { buildUrlParams } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
+import { buildUrlParams } from './data/urlParams';
 import { connectedTest as test } from './fixtures/connectedWallet';
 import { LandingPage } from './pages/LandingPage';
 import { WidgetPage } from './pages/WidgetPage';

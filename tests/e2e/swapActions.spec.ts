@@ -1,7 +1,8 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { buildUrlParams, SETTINGS_MENU } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
+import { SETTINGS_MENU } from './data/settingsMenu';
+import { buildUrlParams } from './data/urlParams';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { SettingsPage } from './pages/SettingsPage';

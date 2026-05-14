@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { CHAINS, WALLET_OPTIONS } from './data';
+import { CHAINS, WALLET_OPTIONS } from './data/urls';
 import { realWalletTest as test } from './fixtures/realWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';

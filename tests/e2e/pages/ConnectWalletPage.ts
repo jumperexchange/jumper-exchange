@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 
-import { JUMPER_BUTTONS, UI_STRINGS } from '../data';
+import { JUMPER_BUTTONS, UI_STRINGS } from '../data/urls';
 
-import type { ChainName } from '../data';
+import type { ChainName } from '../data/urls';
 import type { Locator, Page } from '@playwright/test';
 
 export class ConnectWalletPage {

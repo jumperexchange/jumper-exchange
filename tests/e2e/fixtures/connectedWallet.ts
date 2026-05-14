@@ -1,4 +1,4 @@
-import { CHAINS, WALLET_OPTIONS } from '../data';
+import { CHAINS, WALLET_OPTIONS } from '../data/urls';
 import { ConnectWalletPage } from '../pages/ConnectWalletPage';
 import { LandingPage } from '../pages/LandingPage';
 import { realWalletTest } from './realWallet';

@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { THEME_DARK_BG_RGB, THEME_LIGHT_BG_RGB } from './data';
+import { THEME_DARK_BG_RGB, THEME_LIGHT_BG_RGB } from './data/themes';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { MainMenuPage, Theme } from './pages/MainMenuPage';

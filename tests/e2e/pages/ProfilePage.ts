@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { JUMPER_BUTTONS } from '../data';
+import { JUMPER_BUTTONS } from '../data/urls';
 
 import type { Locator, Page } from '@playwright/test';
 

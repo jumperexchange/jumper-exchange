@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { URLS } from './data';
+import { URLS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { MainMenuPage } from './pages/MainMenuPage';
