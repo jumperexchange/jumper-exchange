@@ -81,10 +81,8 @@ export class MainMenuPage {
       trigger(),
     ]);
     try {
-      // Wait for the popup to leave about:blank before reading url(). DCL is
-      // sufficient — the URL is committed by then, even if assets keep loading.
       await newPage.waitForLoadState('domcontentloaded');
-      expect(newPage.url()).toBe(url);
+      await expect(newPage).toHaveURL(url);
     } finally {
       // Close the popup explicitly so its in-flight requests don't keep
       // running and pressuring the next test's network/CPU budget.

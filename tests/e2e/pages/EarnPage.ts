@@ -40,15 +40,12 @@ export class EarnPage {
     const chainNameElements = this.cardsGrid.getByTestId(
       'earn-card-chain-name',
     );
-    await expect(chainNameElements.first()).toBeVisible();
-    const count = await chainNameElements.count();
-    expect(count).toBeGreaterThan(0);
+    await expect(chainNameElements).not.toHaveCount(0);
 
+    const expectedPattern = new RegExp(`^${expectedChain}$`, 'i');
+    const count = await chainNameElements.count();
     for (let i = 0; i < count; i++) {
-      const element = chainNameElements.nth(i);
-      await expect(element).toBeVisible();
-      const text = (await element.textContent()) ?? '';
-      expect(text.toLowerCase()).toBe(expectedChain.toLowerCase());
+      await expect(chainNameElements.nth(i)).toHaveText(expectedPattern);
     }
   }
 
