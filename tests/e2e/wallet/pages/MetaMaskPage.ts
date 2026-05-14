@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 import { EXTENSION_NAME } from '../constants/extensionConstants';
 import { LONG_TIMEOUT } from '../constants/timeoutConstants';
 import { launchBrowserWithExtension } from '../core/browser/BrowserManager';
@@ -180,6 +182,12 @@ export default class MetaMaskPage extends WalletPage {
     const instance = new MetaMaskPage(page, this.selectors);
     instance._defaultExtensionId = this._defaultExtensionId;
     return instance;
+  }
+
+  async expectNetworkVisible(networkName: string): Promise<void> {
+    await expect(
+      this.page.getByText(networkName, { exact: false }).first(),
+    ).toBeVisible({ timeout: LONG_TIMEOUT });
   }
 
   /**
