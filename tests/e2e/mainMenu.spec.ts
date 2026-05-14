@@ -1,7 +1,8 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import { URLS } from './data';
-import { expect, noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage, MainMenuPage, ScanPage } from './pages';
 
 const NAV_TIMEOUT_MS = 30_000;

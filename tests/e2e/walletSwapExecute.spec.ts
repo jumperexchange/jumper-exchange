@@ -2,7 +2,7 @@ import { qase } from 'playwright-qase-reporter';
 
 import { buildUrlParams } from './data';
 import chainData from './data/chainData.json' with { type: 'json' };
-import { connectedTest as test } from './fixtures';
+import { connectedTest as test } from './fixtures/connectedWallet';
 import { LandingPage, WidgetPage } from './pages';
 
 // Real on-chain swap on Arbitrum; one-way, consumes ~5 USDC per run.

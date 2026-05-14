@@ -1,6 +1,7 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { expect, noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 
 test.describe('Mini App meta tags on page head', () => {
   test(

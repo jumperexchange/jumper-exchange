@@ -1,6 +1,7 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { expect, connectedTest as test } from './fixtures';
+import { connectedTest as test } from './fixtures/connectedWallet';
 
 // Real signature path: Jumper → wagmi → MetaMask → LiFi /tasks_verification.
 // External dependency on NEXT_PUBLIC_LIFI_BACKEND_URL — service down = test fails. Signal, not flake.

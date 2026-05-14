@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { realWalletTest as test } from './fixtures';
+import { realWalletTest as test } from './fixtures/realWallet';
 import { networks } from './wallet/constants/networkConstants';
 
 // Smoke for the wallet driver: catches MetaMask UI drift before app-driven specs do.

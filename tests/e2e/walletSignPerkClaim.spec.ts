@@ -1,6 +1,7 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { expect, connectedTest as test } from './fixtures';
+import { connectedTest as test } from './fixtures/connectedWallet';
 import { ProfilePage } from './pages';
 
 // Real signature path: Jumper → wagmi → MetaMask → jumper-backend /v1/perks/claim.

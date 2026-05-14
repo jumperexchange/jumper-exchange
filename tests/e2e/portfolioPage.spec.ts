@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { connectedTest as test } from './fixtures';
+import { connectedTest as test } from './fixtures/connectedWallet';
 import { PortfolioPage } from './pages';
 
 test.describe('Portfolio page', () => {

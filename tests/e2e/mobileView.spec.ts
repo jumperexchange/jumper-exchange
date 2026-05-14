@@ -1,7 +1,8 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import enTranslation from '../../src/i18n/translations/en/translation.json' with { type: 'json' };
-import { expect, noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage, MainMenuPage, Theme } from './pages';
 import { isFullyInViewport } from './utils/elementUtils';
 import { removeFormattingTags } from './utils/translationUtils';

@@ -1,7 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
 import { SETTINGS_MENU } from './data';
-import { noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage, SettingsPage } from './pages';
 
 for (const { name, size } of [

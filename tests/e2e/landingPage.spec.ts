@@ -1,7 +1,7 @@
 import { qase } from 'playwright-qase-reporter';
 
 import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data';
-import { noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage, LandingPage } from './pages';
 
 test.describe('Landing page and navigation', () => {

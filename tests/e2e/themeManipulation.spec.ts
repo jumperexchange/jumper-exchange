@@ -1,7 +1,8 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
 import { THEME_DARK_BG_RGB, THEME_LIGHT_BG_RGB } from './data';
-import { expect, noWalletTest as test } from './fixtures';
+import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage, MainMenuPage, Theme } from './pages';
 
 test.describe('Switch theme — dark mode', () => {

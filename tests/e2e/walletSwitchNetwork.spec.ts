@@ -1,6 +1,7 @@
+import { expect } from '@playwright/test';
 import { qase } from 'playwright-qase-reporter';
 
-import { expect, connectedTest as test } from './fixtures';
+import { connectedTest as test } from './fixtures/connectedWallet';
 import { networks } from './wallet/constants/networkConstants';
 
 // End-to-end useSwitchChain → MetaMask provider event → widget re-render path.
