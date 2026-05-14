@@ -20,8 +20,12 @@ test.describe('Wallet swap — execute on Arbitrum', () => {
 
       await test.step('Open swap deeplink and wait for route', async () => {
         await jumperPage.goto(`/${buildUrlParams(pair)}`);
+        // 30s budget: MetaMask onboarding leaves LiFi connection cold, so the
+        // first route discovery can exceed the default 10s. No-wallet specs
+        // don't see this because they hit LiFi while the connection is warm.
         await landingPage.expectRoutesVisibility({
           bestReturnShouldBeVisible: true,
+          timeoutMs: 30_000,
         });
       });
 
