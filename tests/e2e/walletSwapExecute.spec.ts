@@ -10,7 +10,9 @@ import { WidgetPage } from './pages/WidgetPage';
 // Funded wallet supports ~10 runs before USDC runs dry — refill via
 // `lifinance/automate-wallet-dev-fees`.
 test.describe('Wallet swap — execute on Arbitrum', () => {
-  test(
+  // JUM-952: real-tx tests should not run on every PR CI. Re-enable once the
+  // scheduled broadcast workflow (`playwright-broadcast.yml`) lands.
+  test.fixme(
     qase(205, 'Execute a USDC → USDT swap on Arbitrum end-to-end'),
     async ({ jumperPage, wallet, walletContext }) => {
       test.setTimeout(300_000);
