@@ -3,6 +3,8 @@ import { qase } from 'playwright-qase-reporter';
 import { expect, connectedTest as test } from './fixtures';
 import { ProfilePage } from './pages';
 
+import type { Request } from '@playwright/test';
+
 // Negative-path counterpart to walletSignPerkClaim — rejection must not POST claim or stick the UI.
 test.describe('Perk claim — reject signature', () => {
   // Blocked on funded QA wallet — sister spec to walletSignPerkClaim; same prerequisite.
@@ -19,14 +21,15 @@ test.describe('Perk claim — reject signature', () => {
       // jscpd:ignore-end
 
       let claimEndpointHit = false;
-      jumperPage.on('request', (request) => {
+      const onRequest = (request: Request): void => {
         if (
           /\/v1\/perks\/claim$/.test(new URL(request.url()).pathname) &&
           request.method() === 'POST'
         ) {
           claimEndpointHit = true;
         }
-      });
+      };
+      jumperPage.on('request', onRequest);
 
       await profilePage.clickFirstPerkClaim();
       await wallet.rejectPopup(wallet.getContext());
@@ -36,6 +39,7 @@ test.describe('Perk claim — reject signature', () => {
       await jumperPage.waitForTimeout(2000);
       await profilePage.expectPerkClaimErrorOrIdle();
       expect(claimEndpointHit).toBe(false);
+      jumperPage.off('request', onRequest);
     },
   );
 });
