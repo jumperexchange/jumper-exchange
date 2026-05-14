@@ -22,12 +22,14 @@ test.describe('Perk claim — reject signature', () => {
 
       let claimEndpointHit = false;
       const onRequest = (request: Request): void => {
+        /* eslint-disable playwright/no-conditional-in-test -- listener filter, not a test assertion */
         if (
           /\/v1\/perks\/claim$/.test(new URL(request.url()).pathname) &&
           request.method() === 'POST'
         ) {
           claimEndpointHit = true;
         }
+        /* eslint-enable playwright/no-conditional-in-test */
       };
       jumperPage.on('request', onRequest);
 
