@@ -62,10 +62,14 @@ export class LandingPage {
   async expectRoutesVisibility(options: {
     bestReturnShouldBeVisible: boolean;
     checkRelayRoute?: boolean;
-    // Cross-VM bridges (SUI/SOL/BTC → Hypercore) often exceed default 10s; pass 30_000+.
+    // 30s is the default — same-chain Arb / ETH route discovery normally
+    // completes in 1-3s but spikes to 15-25s when LiFi or jumper-backend
+    // pipeline is slow. Cross-VM bridges (SUI/SOL/BTC → Hypercore) need
+    // 90_000+; pass explicitly.
     timeoutMs?: number;
   }): Promise<void> {
-    const { bestReturnShouldBeVisible, checkRelayRoute, timeoutMs } = options;
+    const { bestReturnShouldBeVisible, checkRelayRoute } = options;
+    const timeoutMs = options.timeoutMs ?? 30_000;
 
     if (!bestReturnShouldBeVisible) {
       await expect(
