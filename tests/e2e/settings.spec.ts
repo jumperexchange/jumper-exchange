@@ -84,7 +84,8 @@ for (const { name, size } of [
 
         await test.step('Verify Bridge Settings - Deselect and select 1 bridge', async () => {
           await settings.clickItem(SETTINGS_MENU.BRIDGES.LABEL);
-          const bridgeName = await settings.deselectFirstBridge();
+          const bridgeName = await settings.getFirstBridgeName();
+          await settings.deselectFirstBridge();
           await settings.goBack();
           await settings.expectDeselectedAmount(SETTINGS_MENU.BRIDGES.LABEL, 1);
 

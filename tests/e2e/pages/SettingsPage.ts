@@ -58,10 +58,8 @@ export class SettingsPage {
     await this.deselectAllButton.click();
   }
 
-  async deselectFirstBridge(): Promise<string> {
-    const bridgeName = (await this.bridgesListFirstItem.textContent()) ?? '';
+  async deselectFirstBridge(): Promise<void> {
     await this.bridgesListFirstCheckbox.click();
-    return bridgeName;
   }
 
   async expectDeselectedAmount(
@@ -108,6 +106,10 @@ export class SettingsPage {
   async fillSlippage(value: string): Promise<void> {
     await expect(this.slippageInput).toBeVisible();
     await this.slippageInput.fill(value);
+  }
+
+  async getFirstBridgeName(): Promise<string> {
+    return (await this.bridgesListFirstItem.textContent()) ?? '';
   }
 
   async goBack(): Promise<void> {
