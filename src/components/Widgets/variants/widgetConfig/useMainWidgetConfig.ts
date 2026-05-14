@@ -4,9 +4,25 @@ import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
 import { useMemelist } from 'src/hooks/useMemelist';
+import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
+
+function toolsConfig(allow?: string[], deny?: string[]) {
+  if (!allow && !deny) {
+    return undefined;
+  }
+
+  let result: { allow?: string[]; deny?: string[] } = {};
+  if (allow) {
+    result = { ...result, allow };
+  }
+  if (deny) {
+    result = { ...result, deny };
+  }
+  return result;
+}
 
 /**
  * Configuration hook for the main widget variant
@@ -18,6 +34,8 @@ export function useMainWidgetConfig(
   const { tokens: memeListTokens } = useMemelist({
     enabled: context.partnerName === ThemesMap.Memecoins,
   });
+
+  const { denyBridges, denyExchanges } = useUrlParams();
 
   const allowedChainsByVariant = useMemo(
     () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
@@ -80,12 +98,11 @@ export function useMainWidgetConfig(
       tokens: _tokens,
 
       // Bridge and exchange configuration
-      bridges: deps.theme.configTheme?.allowedBridges
-        ? { allow: deps.theme.configTheme.allowedBridges }
-        : undefined,
-      exchanges: deps.theme.configTheme?.allowedExchanges
-        ? { allow: deps.theme.configTheme?.allowedExchanges }
-        : undefined,
+      bridges: toolsConfig(deps.theme.configTheme?.allowedBridges, denyBridges),
+      exchanges: toolsConfig(
+        deps.theme.configTheme?.allowedExchanges,
+        denyExchanges,
+      ),
 
       routeLabels: [
         generateRouteLabel(
@@ -150,5 +167,7 @@ export function useMainWidgetConfig(
     deps.theme,
     memeListTokens,
     allowedChainsByVariant,
+    denyBridges,
+    denyExchanges,
   ]);
 }
