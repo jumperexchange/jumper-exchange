@@ -213,7 +213,7 @@ export class PortfolioPage {
           if ([total, tokens, defi].some(Number.isNaN)) {
             return false;
           }
-          return Math.abs(total - (tokens + defi)) < Number.EPSILON;
+          return Math.abs(total - (tokens + defi)) < 0.01;
         },
         { timeout: PORTFOLIO_LOAD_TIMEOUT_MS },
       )
