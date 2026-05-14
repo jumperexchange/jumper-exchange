@@ -104,7 +104,6 @@ export class SettingsPage {
   }
 
   async fillSlippage(value: string): Promise<void> {
-    await expect(this.slippageInput).toBeVisible();
     await this.slippageInput.fill(value);
   }
 
@@ -118,7 +117,7 @@ export class SettingsPage {
 
   async open(title: string): Promise<void> {
     await this.settingsButton.click();
-    await expect(this.page.getByText(title)).toBeVisible();
+    await this.page.getByText(title).waitFor({ state: 'visible' });
   }
 
   async selectAll(): Promise<void> {

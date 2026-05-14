@@ -116,7 +116,7 @@ export class EarnPage {
     // MUI Select renders options in a portal under <body>, not as descendants
     // of the trigger. Open the dropdown, read options at page scope, then close.
     await this.page.getByTestId(dropdownTestId).click();
-    await expect(this.clearButton).toBeVisible();
+    await this.clearButton.waitFor({ state: 'visible' });
     const options = await this.page.getByRole('option').allTextContents();
     await this.page.keyboard.press('Escape');
     return options;
@@ -131,7 +131,7 @@ export class EarnPage {
     option: string,
   ): Promise<void> {
     await this.page.getByTestId(dropdownTestId).click();
-    await expect(this.clearButton).toBeVisible();
+    await this.clearButton.waitFor({ state: 'visible' });
     await this.page.getByRole('option', { name: option }).click();
     // eslint-disable-next-line playwright/no-wait-for-timeout -- settle for MUI dropdown re-render before body-click dismiss
     await this.page.waitForTimeout(1000);

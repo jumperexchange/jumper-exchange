@@ -60,7 +60,7 @@ export default class PlaywrightWrapper {
    * @param {string} value - Value to fill
    * @param {number|null} [index=null] - Optional index if multiple elements match
    * @param {number} [timeout=this.DEFAULT_TIMEOUT] - Timeout for the action
-   * @param {boolean} [maskValue=true] - Whether to mask the value in logs
+   * @param {boolean} [maskValue=false] - Whether to mask the value in logs (use fillSecret for wallet secrets)
    * @param {boolean} [strict=true] - Throw if the action fails
    * @returns {Promise<void>}
    */

@@ -561,5 +561,6 @@ async function resolveLocalExtensionPath(
     );
   }
 
+  await validateExtractedExtension(wallet.extractPath);
   return wallet.extractPath;
 }
