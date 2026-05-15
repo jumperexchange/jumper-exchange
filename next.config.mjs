@@ -11,10 +11,6 @@ const nextConfig = {
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: [],
-    staleTimes: {
-      dynamic: 30,
-      static: 180,
-    },
   },
   webpack: (config) => {
     config.resolve.extensionAlias = {

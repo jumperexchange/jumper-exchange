@@ -12,7 +12,6 @@ import { useAccount } from '@lifi/wallet-management';
 import { Badge } from 'src/components/Badge/Badge';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppPaths } from 'src/const/urls';
-import { useGoBack } from 'src/hooks/routing/useGoBack';
 import {
   MissionDetailsColumnContainer,
   MissionDetailsCardContainer,
@@ -26,6 +25,7 @@ import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { BaseAlertVariant } from 'src/components/Alerts/BaseAlert/BaseAlert.styles';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 import { useResetCurrentActiveTask } from 'src/hooks/tasksVerification/useResetCurrentActiveTask';
+import { useGoBack } from '@/hooks/routing/useGoBack';
 
 interface MissionDetailsProps {
   mission: Quest;

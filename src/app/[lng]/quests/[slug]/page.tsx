@@ -1,78 +1,38 @@
 import { questSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
-import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
-import { siteName } from 'src/app/lib/metadata';
-import { AppPaths, getSiteUrl, JUMPER_QUESTS_PATH } from 'src/const/urls';
+import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
-import { getQuestBySlug } from '../../../lib/getQuestBySlug';
 
 type Params = Promise<{ slug: string }>;
 
+/**
+ * Legacy `/quests/:slug` URLs redirect to `/missions/:slug`.
+ * Keep metadata cheap (no Strapi): canonical points at missions so crawlers
+ * and previews prefer the real URL; avoid indexing the redirect hop.
+ */
 export async function generateMetadata({
   params,
 }: {
   params: Params;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const slugResult = questSlugSchema.safeParse(slug);
+  const pathSlug = slugResult.success ? slugResult.data : slug;
+  const missionUrl = `${getSiteUrl()}${AppPaths.Missions}/${pathSlug}`;
+  const titleFromSlug = sliceStrToXChar(pathSlug.replaceAll('-', ' '), 45);
 
-  try {
-    // Validate slug
-    const slugResult = questSlugSchema.safeParse(slug);
-    if (!slugResult.success) {
-      throw new Error('Invalid quest slug');
-    }
-
-    const quest = await getQuestBySlug(slugResult.data);
-    if (!quest || !quest.data) {
-      throw new Error();
-    }
-
-    const questData = quest.data;
-    const baseUrl = getStrapiBaseUrl();
-
-    const openGraph: Metadata['openGraph'] = {
-      title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
-      description: `${sliceStrToXChar(questData.Information || 'Quest description', 60)}`,
-      siteName: siteName,
-      url: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
-      images: [
-        {
-          url: `${baseUrl}${questData.Image?.url}`,
-          width: 900,
-          height: 450,
-          alt: 'banner image',
-        },
-      ],
-      type: 'article',
-    };
-
-    return {
-      title: `Jumper Quest | ${sliceStrToXChar(questData.Title, 45)}`,
-      description: questData.Subtitle,
-      alternates: {
-        canonical: `${getSiteUrl()}${JUMPER_QUESTS_PATH}/${slug}`,
-      },
-      twitter: openGraph,
-      openGraph,
-    };
-  } catch (err) {
-    return {
-      title: `Jumper Quest | ${sliceStrToXChar(slug.replaceAll('-', ' '), 45)}`,
-      description: `This is the description for the quest "${slug.replaceAll('-', ' ')}".`,
-    };
-  }
+  return {
+    title: `Jumper Mission | ${titleFromSlug}`,
+    alternates: {
+      canonical: missionUrl,
+    },
+    robots: {
+      index: false,
+      follow: true,
+    },
+  };
 }
-
-export async function generateStaticParams() {
-  const { data } = await getQuestsWithNoCampaignAttached();
-
-  return data.data.map((quest) => ({ slug: quest.Slug }));
-}
-
-export const dynamicParams = true;
-export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;

@@ -1,34 +1,31 @@
+import { Suspense } from 'react';
 import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import { MissionsList } from './MissionsList';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
-import { getProfileBannerCampaigns } from 'src/app/lib/getProfileBannerCampaigns';
-import { isBannerCampaign } from 'src/utils/isBannerCampaign';
-import { BannerCampaign } from './BannerCampaign/BannerCampaign';
+import { BannerCampaignSkeleton } from './BannerCampaign/BannerCampaignSkeleton';
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import { MissionsSection } from './MissionsSection';
 import { MissionPageTracking } from '@/components/headless/tracking/MissionPageTracking';
+import { MissionsPageBanner } from './MissionsPageBanner';
 
 export const MissionsPage = async () => {
-  const [{ data: campaigns }, { data: missionsResponse }] = await Promise.all([
-    getProfileBannerCampaigns(),
-    getQuestsWithNoCampaignAttached(
-      {
-        page: 1,
-        pageSize: PAGE_SIZE,
-        withCount: true,
-      },
-      UPCOMING_DAYS_AHEAD,
-    ),
-  ]);
+  const { data: missionsResponse } = await getQuestsWithNoCampaignAttached(
+    {
+      page: 1,
+      pageSize: PAGE_SIZE,
+      withCount: true,
+    },
+    UPCOMING_DAYS_AHEAD,
+  );
   const missions = missionsResponse.data;
   const totalMissions = missionsResponse.meta.pagination?.total || 0;
   const hasMoreMissions = totalMissions > missions.length;
 
-  const validBannerCampaigns = campaigns?.filter(isBannerCampaign) || [];
-
   return (
     <>
-      <BannerCampaign campaigns={validBannerCampaigns} />
+      <Suspense fallback={<BannerCampaignSkeleton />}>
+        <MissionsPageBanner />
+      </Suspense>
       <MissionsSection count={totalMissions}>
         <GridContainer gridTemplateColumns="repeat(auto-fill, minmax(min(320px, 100%), 1fr))">
           <MissionsList

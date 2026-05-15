@@ -63,8 +63,6 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
 
   const hasAccess = Boolean(data?.[flag]);
 
-  console.log('8. useGatekeeperStatus done', hasAccess);
-
   return {
     status: hasAccess ? GatekeeperStatus.SUCCESS : GatekeeperStatus.NOT_ALLOWED,
   };

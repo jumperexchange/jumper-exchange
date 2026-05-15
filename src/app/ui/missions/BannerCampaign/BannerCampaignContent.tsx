@@ -1,6 +1,7 @@
 'use client';
 
-import { FC, PropsWithChildren, useState } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   BannerSlideContainer,
@@ -47,6 +48,7 @@ export const BannerCampaignContent: FC<BannerCampaignContentProps> = ({
           }
           isImageLoading={isLoading}
           onLoadingComplete={() => setIsLoading(false)}
+          priority
         />
       </BannerImageWrapper>
       {children && <BannerContentOverlay>{children}</BannerContentOverlay>}

@@ -1,9 +1,7 @@
 'use client';
 import { useQueries } from '@tanstack/react-query';
-import {
-  getMerklOpportunities,
-  MerklOpportunity,
-} from 'src/app/lib/getMerklOpportunities';
+import type { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
+import { getMerklOpportunities } from 'src/app/lib/getMerklOpportunities';
 import { REWARDS_CHAIN_IDS } from 'src/const/partnerRewardsTheme';
 import { MERKL_CACHE_TIME } from 'src/utils/merkl/merklApi';
 import { sanitizeSearchQuery } from 'src/utils/merkl/merklHelper';
@@ -48,7 +46,7 @@ export const useMissionsMaxAPY = (
         refetchInterval: MERKL_CACHE_TIME,
         retry: 3,
         refetchOnWindowFocus: false,
-        refetchOnMount: true,
+        refetchOnMount: false,
       })),
     ),
     combine: (results) => {

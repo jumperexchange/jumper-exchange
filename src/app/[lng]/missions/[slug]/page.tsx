@@ -11,6 +11,7 @@ import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
 import { MissionPage } from 'src/app/ui/mission/MissionPage';
 import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
+import envConfig from '@/config/env-config';
 
 type Params = Promise<{ slug: string }>;
 
@@ -23,6 +24,10 @@ const getPageTitle = (title: string) => {
 const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
+  if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
+    return [];
+  }
+
   const pageSize = 25;
 
   const { data: firstPage } = await getQuestsWithNoCampaignAttached(
@@ -115,7 +120,7 @@ export async function generateMetadata({
 }
 
 export const dynamicParams = true;
-export const revalidate = 300;
+export const revalidate = 3600;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
