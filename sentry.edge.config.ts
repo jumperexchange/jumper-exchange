@@ -6,9 +6,7 @@ import { getSentryBaseOptions } from './src/sentry/sharedOptions';
 
 const base = getSentryBaseOptions('edge');
 
-init({
-  ...base,
-});
+init(base);
 
 if (base.debug) {
   const client = getClient();
