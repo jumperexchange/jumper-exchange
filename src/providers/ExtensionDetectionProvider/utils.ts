@@ -283,12 +283,10 @@ export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
  * check plus MutationObserver on `document.documentElement` for `data-csn`
  * (same idea as {@link mutationObserverDetector}), capped by `observeMs`.
  */
-export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (
-  observeMs: number = POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS,
-): string => {
+export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (): string => {
   const k = JSON.stringify(POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY);
   const log = JSON.stringify('[extension-detection:pocket-data-csn]');
-  return `(function(){try{var w=window;var k=${k};var ms=${observeMs};var L=${log};function hasCsn(){var e=document.documentElement;return !!(e&&e.hasAttribute("data-csn"));}var el=document.documentElement;if(!el){console.log(L,"no documentElement, snapshot false");w[k]=false;return;}if(hasCsn()){console.log(L,"sync: data-csn already present, snapshot true");w[k]=true;return;}console.log(L,"watching documentElement for data-csn",ms+"ms");w[k]=false;var obs,t;function finish(reason){console.log(L,"stop",reason);if(obs){obs.disconnect();obs=null;}if(t){clearTimeout(t);t=0;}}obs=new MutationObserver(function(){if(hasCsn()){console.log(L,"mutation: data-csn present, snapshot true");w[k]=true;finish("matched");}});t=setTimeout(function(){finish("timeout");},ms);obs.observe(el,{attributes:true,attributeFilter:["data-csn"]});}catch(e){console.error(L,"snapshot error",e);window[${k}]=false;}})();`;
+  return `(function(){try{var w=window;var k=${k};var L=${log};function hasCsn(){var e=document.documentElement;return !!(e&&e.hasAttribute("data-csn"));}var el=document.documentElement;if(!el){console.log(L,"no documentElement, snapshot false");w[k]=false;return;}if(hasCsn()){console.log(L,"sync: data-csn already present, snapshot true");w[k]=true;}else{console.log(L,"watching documentElement for data-csn");w[k]=false;}var obs=new MutationObserver(function(){if(hasCsn()){console.log(L,"mutation: data-csn present, snapshot true");w[k]=true;}});obs.observe(el,{attributes:true,attributeFilter:["data-csn"]});}catch(e){console.error(L,"snapshot error",e);window[${k}]=false;}})();`;
 };
 
 export function pocketUniverseDatasetCsnDetector(
