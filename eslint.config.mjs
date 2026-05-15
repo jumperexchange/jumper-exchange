@@ -2,6 +2,8 @@
 // See: https://nextjs.org/docs/app/api-reference/config/eslint
 import nextPlugin from '@next/eslint-plugin-next';
 import prettierConfig from 'eslint-config-prettier';
+import perfectionist from 'eslint-plugin-perfectionist';
+import playwright from 'eslint-plugin-playwright';
 import tseslint from 'typescript-eslint';
 import reactHooks from 'eslint-plugin-react-hooks';
 import { defineConfig, globalIgnores } from 'eslint/config';
@@ -44,7 +46,66 @@ const eslintConfig = defineConfig([
     },
   },
 
-  // Prettier config (disables conflicting rules)
+  {
+    files: ['tests/**/*.ts'],
+    ignores: ['tests/e2e/wallet/**'],
+    ...playwright.configs['flat/recommended'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      // Qase wraps titles in a function call; the rule demands string literals.
+      'playwright/valid-title': 'off',
+      // POM assertion methods. Convention: any callee whose name contains
+      // `expect` or `verify` performs an assertion. Covers bare `expect()`,
+      // `pom.expectVisible()`, `pom.verifyTabsAreVisible()`, and
+      // `openNewTabAndExpectUrl()` style member calls.
+      'playwright/expect-expect': [
+        'warn',
+        {
+          assertFunctionPatterns: ['[Ee]xpect|[Vv]erify'],
+        },
+      ],
+      'playwright/no-networkidle': 'error',
+      'playwright/no-unused-locators': 'error',
+      'playwright/prefer-web-first-assertions': 'error',
+    },
+  },
+
+  {
+    files: ['tests/**/*.ts'],
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
+    },
+  },
+
+  {
+    files: ['tests/**/*.ts'],
+    plugins: {
+      perfectionist,
+    },
+    rules: {
+      ...perfectionist.configs['recommended-natural'].rules,
+      'perfectionist/sort-imports': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            ['parent', 'sibling', 'index'],
+            'type',
+          ],
+          newlinesBetween: 'always',
+          order: 'asc',
+          type: 'natural',
+        },
+      ],
+    },
+  },
+
+  // Must stay last so prettier-config can disable conflicting rules.
   prettierConfig,
 
   // React Hooks plugin configuration
@@ -106,6 +167,30 @@ const eslintConfig = defineConfig([
           avoidEscape: true,
           allowTemplateLiterals: true,
         },
+      ],
+    },
+  },
+
+  // Tests-only final override. Lives after Custom rules so it wins on conflicts.
+  // Playwright fixtures take a `use` callback, not a React hook.
+  {
+    files: ['tests/**/*.ts'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+
+  // `argsIgnorePattern: "^_"` allows intentionally-unused params (e.g. `_useParallelUserDataDir`).
+  {
+    files: ['tests/**/*.ts'],
+    ignores: ['tests/e2e/wallet/**'],
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
       ],
     },
   },

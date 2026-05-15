@@ -103,3 +103,13 @@ jobs:
         with:
           header: Snapshot Tests Summary
           message: ${{ steps.test.outcome == 'success' && '✅ All snapshot tests passed' || '❌ Some snapshot tests failed. Check the logs for details.' }}
+
+  dupcheck-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - *checkout
+      - *pnpm-setup
+      - *node-setup
+      - *install-dependencies
+      - name: Detect duplicated code under tests/e2e
+        run: pnpm dupcheck:tests
