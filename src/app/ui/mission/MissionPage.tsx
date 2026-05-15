@@ -8,6 +8,7 @@ import { MissionDetails } from './MissionDetails';
 import { MissionWidget } from './MissionWidget/MissionWidget';
 import { TwoColumnLayout } from 'src/components/TwoColumnLayout/TwoColumnLayout';
 import { MissionPageTracking } from '@/components/headless/tracking/MissionPageTracking';
+import { captureException } from '@sentry/nextjs';
 
 interface MissionPageProps {
   slug: string;
@@ -22,8 +23,24 @@ export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
   const rewardsIds = data.CustomInformation?.['rewardsIds'];
   const tasksVerification = data.tasks_verification;
   const [rewardOpportunities, taskOpportunities] = await Promise.all([
-    fetchOpportunitiesByRewardsIds(rewardsIds).catch(() => []),
-    fetchTaskOpportunities(tasksVerification).catch(() => []),
+    fetchOpportunitiesByRewardsIds(rewardsIds).catch((error) => {
+      captureException(error, {
+        tags: {
+          component: 'MissionPage',
+          action: 'fetchOpportunitiesByRewardsIds',
+        },
+      });
+      return [];
+    }),
+    fetchTaskOpportunities(tasksVerification).catch((error) => {
+      captureException(error, {
+        tags: {
+          component: 'MissionPage',
+          action: 'fetchTaskOpportunities',
+        },
+      });
+      return [];
+    }),
   ]);
 
   return (
