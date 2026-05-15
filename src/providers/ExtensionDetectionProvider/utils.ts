@@ -274,19 +274,60 @@ export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
   return {
     strategy: 'pocket:html-data-csn-beforeInteractive-snapshot',
     detect: async () =>
-      Reflect.get(window, POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY) === true,
+      Reflect.get(window, POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY) ===
+        true || !!document.documentElement?.hasAttribute('data-csn'),
   };
 }
 
 /**
  * Inline script for {@link pocketUniverseHtmlDataCsnSnapshotDetector}: sync
- * check plus MutationObserver on `document.documentElement` for `data-csn`
- * (same idea as {@link mutationObserverDetector}), capped by `observeMs`.
+ * check plus a persistent MutationObserver on `document.documentElement` for
+ * `data-csn`. The observer is never disconnected so late injections are caught.
  */
 export const getPocketUniverseHtmlDataCsnSnapshotInlineScript = (): string => {
   const k = JSON.stringify(POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY);
   const log = JSON.stringify('[extension-detection:pocket-data-csn]');
-  return `(function(){try{var w=window;var k=${k};var L=${log};function hasCsn(){var e=document.documentElement;return !!(e&&e.hasAttribute("data-csn"));}var el=document.documentElement;if(!el){console.log(L,"no documentElement, snapshot false");w[k]=false;return;}if(hasCsn()){console.log(L,"sync: data-csn already present, snapshot true");w[k]=true;}else{console.log(L,"watching documentElement for data-csn");w[k]=false;}var obs=new MutationObserver(function(){if(hasCsn()){console.log(L,"mutation: data-csn present, snapshot true");w[k]=true;}});obs.observe(el,{attributes:true,attributeFilter:["data-csn"]});}catch(e){console.error(L,"snapshot error",e);window[${k}]=false;}})();`;
+  return `
+(function () {
+  try {
+    var w = window;
+    var k = ${k};
+    var L = ${log};
+
+    function hasCsn() {
+      var el = document.documentElement;
+      return !!(el && el.hasAttribute('data-csn'));
+    }
+
+    var el = document.documentElement;
+    if (!el) {
+      console.log(L, 'no documentElement, snapshot false');
+      w[k] = false;
+      return;
+    }
+
+    if (hasCsn()) {
+      console.log(L, 'sync: data-csn already present, snapshot true');
+      w[k] = true;
+    } else {
+      console.log(L, 'watching documentElement for data-csn');
+      w[k] = false;
+    }
+
+    // Never disconnected — catches data-csn however late the extension injects it.
+    var obs = new MutationObserver(function () {
+      if (hasCsn()) {
+        console.log(L, 'mutation: data-csn present, snapshot true');
+        w[k] = true;
+      }
+    });
+    obs.observe(el, { attributes: true, attributeFilter: ['data-csn'] });
+  } catch (e) {
+    console.error(L, 'snapshot error', e);
+    window[${k}] = false;
+  }
+})();
+`.trim();
 };
 
 export function pocketUniverseDatasetCsnDetector(
