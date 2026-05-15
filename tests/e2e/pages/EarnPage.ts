@@ -104,8 +104,13 @@ export class EarnPage {
     await expect(this.cardsGrid).toBeVisible();
 
     await expect(
-      this.page.getByTestId(`assets-${selectedAsset}`),
+      this.cardsGrid.getByTestId(`assets-${selectedAsset}`),
     ).not.toHaveCount(0);
+    await expect(
+      this.cardsGrid.locator(
+        `[data-testid^="assets-"]:not([data-testid="assets-${selectedAsset}"])`,
+      ),
+    ).toHaveCount(0);
   }
 
   async getCardCount(): Promise<number> {
