@@ -7,15 +7,9 @@ import {
 import { SuiGrpcClient } from '@mysten/sui/grpc';
 import { getJsonRpcFullnodeUrl } from '@mysten/sui/jsonRpc';
 import { type FC, type PropsWithChildren, useRef } from 'react';
-import { useHydrated } from '@/hooks/useHydrated';
 
 export const SuiProvider: FC<PropsWithChildren> = ({ children }) => {
-  const isHydrated = useHydrated();
   const dappKit = useRef<DefaultExpectedDppKit>(null);
-
-  if (!isHydrated) {
-    return <>{children}</>;
-  }
 
   if (!dappKit.current) {
     dappKit.current = createDAppKit({
