@@ -1,0 +1,127 @@
+{
+  "ETHtoETHswap": {
+    "ETHtoETH": {
+      "tokenSymbol": "ETH",
+      "fromToken": "0x0000000000000000000000000000000000000000",
+      "fromChain": "1",
+      "amount": "1",
+      "toTokenSymbol": "ETH",
+      "toToken": "0x0000000000000000000000000000000000000000",
+      "toChain": "42161"
+    },
+
+    "USDTtoDAI": {
+      "tokenSymbol": "USDT",
+      "fromToken": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "fromChain": "1",
+      "amount": "10",
+      "toTokenSymbol": "DAI",
+      "toToken": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "toChain": "1"
+    },
+
+    "USDCtoWETH": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "fromChain": "1",
+      "amount": "50",
+      "toTokenSymbol": "WETH",
+      "toToken": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "toChain": "1"
+    }
+  },
+  "ARBtoARB": {
+    "ETHtoUSDT": {
+      "tokenSymbol": "ETH",
+      "fromToken": "0x0000000000000000000000000000000000000000",
+      "fromChain": "42161",
+      "amount": "1",
+      "toToken": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+      "toTokenSymbol": "USDT",
+      "toChain": "42161"
+    },
+    "USDCtoWBTC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "toToken": "0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f",
+      "toTokenSymbol": "WBTC",
+      "toChain": "42161",
+      "amount": "100"
+    },
+    "USDCtoUSDT5": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "toToken": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+      "toTokenSymbol": "USDT",
+      "toChain": "42161",
+      "amount": "5"
+    }
+  },
+  "EVMtoHypercore": {
+    "ETHtoUSDC": {
+      "tokenSymbol": "ETH",
+      "fromToken": "0x0000000000000000000000000000000000000000",
+      "fromChain": "1",
+      "amount": "1",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    }
+  },
+  "ArbUSDCtoHypercore": {
+    "USDCtoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "amount": "5",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    },
+    "NegativeUSDCtoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "fromChain": "42161",
+      "amount": "2",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    }
+  },
+
+  "BTCtoHypercore": {
+    "BTCtoUSDC": {
+      "tokenSymbol": "BTC",
+      "fromToken": "bitcoin",
+      "fromChain": "20000000000001",
+      "amount": "0.01",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    }
+  },
+  "SOLtoHypercore": {
+    "SOLtoUSDC": {
+      "tokenSymbol": "SOL",
+      "fromToken": "11111111111111111111111111111111",
+      "fromChain": "1151111081099710",
+      "amount": "2",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    }
+  },
+  "SUItoHypercore": {
+    "SUItoUSDC": {
+      "tokenSymbol": "USDC",
+      "fromToken": "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI",
+      "fromChain": "9270000000000000",
+      "amount": "40",
+      "toToken": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+      "toTokenSymbol": "USDC",
+      "toChain": "1337"
+    }
+  }
+}
