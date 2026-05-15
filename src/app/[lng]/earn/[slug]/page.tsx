@@ -3,22 +3,35 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
+import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
+import envConfig from '@/config/env-config';
 
 type Params = Promise<{ slug: string }>;
 
 export const dynamicParams = true;
 export const revalidate = 300;
 
-export async function generateStaticParams(): Promise<Params[]> {
-  console.log('21. Earn page generateStaticParams');
-
-  // TODO: LF-14853: list available opportunities
-  return [];
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
+    return [];
+  }
+  const res = await getOpportunitiesFiltered({});
+  const rows = res.data?.data ?? [];
+  const slugs = [
+    ...new Set(
+      rows
+        .map(({ slug }) => slug)
+        .filter(
+          (slug): slug is string => typeof slug === 'string' && slug.length > 0,
+        ),
+    ),
+  ];
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -26,7 +39,6 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  console.log('20. Earn page metadata');
   const { slug } = await params;
 
   const openGraph: Metadata['openGraph'] = {
@@ -49,24 +61,15 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: { params: Params }) {
-  console.log('22. Earn page');
   const { slug } = await params;
 
-  console.log('24. Earn page slug', slug);
-
   if (!slug) {
-    console.log('23. Earn page not found');
     return notFound();
   }
 
-  try {
-    return (
-      <Suspense fallback={<EarnPageSkeleton />}>
-        <EarnPage slug={slug} />
-      </Suspense>
-    );
-  } catch (error) {
-    console.error('26. Failed to fetch earn page', error);
-    throw error;
-  }
+  return (
+    <Suspense fallback={<EarnPageSkeleton />}>
+      <EarnPage slug={slug} />
+    </Suspense>
+  );
 }

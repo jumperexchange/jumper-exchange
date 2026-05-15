@@ -20,8 +20,6 @@ interface EarnPageProps {
 }
 
 export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
-  console.log('27. EarnPage');
-
   // TODO: LF-14853: Opportunity Details
   const [opportunity, relatedMarkets] = await Promise.all([
     getOpportunityBySlug(slug).catch((error) => {
@@ -31,8 +29,6 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
       return { error, data: [] };
     }),
   ]);
-
-  console.log('28. EarnPage opportunity', opportunity);
 
   if (opportunity.error || !opportunity.data) {
     return notFound();
@@ -45,8 +41,6 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
 
   const relatedMarketsData =
     relatedMarkets.data?.filter(Boolean).slice(0, 3) ?? [];
-
-  console.log('29. EarnPage relatedMarkets', relatedMarketsData);
 
   const { tags, protocol } = opportunity.data;
 
