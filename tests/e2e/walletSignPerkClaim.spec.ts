@@ -22,7 +22,7 @@ test.describe('Perk claim — sign and submit', () => {
 
       const claimResponsePromise = jumperPage.waitForResponse(
         (response) =>
-          /\/v1\/perks\/claim$/.test(new URL(response.url()).pathname) &&
+          new URL(response.url()).pathname.endsWith('/v1/perks/claim') &&
           response.request().method() === 'POST',
       );
 

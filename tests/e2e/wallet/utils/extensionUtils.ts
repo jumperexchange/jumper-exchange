@@ -319,7 +319,7 @@ async function extractCRX(
 
   const headerLength = buf.readUInt32LE(8);
   const zipStartOffset = 12 + headerLength;
-  const zipBuffer = buf.slice(zipStartOffset);
+  const zipBuffer = buf.subarray(zipStartOffset);
 
   await extractZipBuffer(zipBuffer, outputDir, false);
 }

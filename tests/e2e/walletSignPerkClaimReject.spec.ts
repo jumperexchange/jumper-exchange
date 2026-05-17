@@ -25,7 +25,7 @@ test.describe('Perk claim — reject signature', () => {
       const onRequest = (request: Request): void => {
         /* eslint-disable playwright/no-conditional-in-test -- listener filter, not a test assertion */
         if (
-          /\/v1\/perks\/claim$/.test(new URL(request.url()).pathname) &&
+          new URL(request.url()).pathname.endsWith('/v1/perks/claim') &&
           request.method() === 'POST'
         ) {
           claimEndpointHit = true;
