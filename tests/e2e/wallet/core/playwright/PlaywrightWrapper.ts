@@ -178,7 +178,7 @@ export default class PlaywrightWrapper {
    */
   public getElement(selector: string, index: null | number = null): Locator {
     if (typeof selector !== 'string') {
-      throw new Error(`Invalid selector: ${selector}`);
+      throw new TypeError(`Invalid selector: ${selector}`);
     }
     let locator = this.isCssSelector(selector)
       ? this.page.locator(selector)
