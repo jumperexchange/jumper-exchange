@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 /**
  * Deletes the specified directory and all its contents.
