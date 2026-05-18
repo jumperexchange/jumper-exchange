@@ -15,6 +15,11 @@ import { useFallbackNativeToken } from './useFallbackNativeToken';
 import { useDustFormFields } from './useDustFormFields';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
+import {
+  DustChainValidationError,
+  DustPreparationError,
+  extractFailedTokenAddresses,
+} from '../dustComposerQuoteApi';
 import { RouteOverview } from '../components/RouteOverview';
 import { ConvertDustSubmitButton } from '../components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from '../components/RouteOverviewSubmitButton';
@@ -23,7 +28,7 @@ import type {
   JumperWidgetFormListeners,
   NavigationContextValue,
 } from '../../JumperWidget/context';
-import type { DustSummaryValue } from '../types';
+import type { DustPartialQuoteState, DustSummaryValue } from '../types';
 import { isNil } from '@/utils/isNil';
 import {
   checkChainHasBalancesBelowThreshold,
@@ -61,6 +66,11 @@ export const useDustModalFlow = ({
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
+  const [partialQuoteError, setPartialQuoteError] =
+    useState<DustPartialQuoteState | null>(null);
+  const [chainValidationError, setChainValidationError] =
+    useState<DustChainValidationError | null>(null);
+  const pendingDustSummaryRef = useRef<DustSummaryValue | null>(null);
 
   const dustFieldSyncRef = useRef<{
     prevThreshold: number | undefined;
@@ -201,14 +211,36 @@ export const useDustModalFlow = ({
 
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
-      if (!dustSummary) {
+      const effectiveSummary = pendingDustSummaryRef.current ?? dustSummary;
+      pendingDustSummaryRef.current = null;
+      if (!effectiveSummary) {
         throw new Error('Missing fields');
       }
-      await fetchComposerQuoteAsync(dustSummary, slippage);
 
-      if (widgetNav) {
-        widgetNav.goToView('summary');
+      try {
+        await fetchComposerQuoteAsync(effectiveSummary, slippage);
+      } catch (e) {
+        if (e instanceof DustChainValidationError) {
+          setChainValidationError(e);
+          return undefined;
+        }
+        if (e instanceof DustPreparationError) {
+          const failedAddresses = extractFailedTokenAddresses(e.failedOps);
+          const failedBalances = effectiveSummary.selectedBalances.filter((b) =>
+            failedAddresses.has(b.token.address.toLowerCase()),
+          );
+          const proceedableBalances = effectiveSummary.selectedBalances.filter(
+            (b) => !failedAddresses.has(b.token.address.toLowerCase()),
+          );
+          setPartialQuoteError({ failedBalances, proceedableBalances });
+          setDustSummary(effectiveSummary);
+          return undefined;
+        }
+        throw e;
       }
+
+      setDustSummary(effectiveSummary);
+      widgetNav?.goToView('summary');
       return undefined;
     }
 
@@ -260,9 +292,41 @@ export const useDustModalFlow = ({
     },
   });
 
+  const handlePartialErrorProceed = useCallback(() => {
+    if (!partialQuoteError || !dustSummary) {
+      return;
+    }
+    const { proceedableBalances } = partialQuoteError;
+    pendingDustSummaryRef.current = {
+      ...dustSummary,
+      selectedBalances: proceedableBalances,
+      amountUSD: proceedableBalances.reduce(
+        (sum, b) => sum + (b.amountUSD ?? 0),
+        0,
+      ),
+    };
+    setPartialQuoteError(null);
+    void transactionForm.handleSubmit();
+  }, [partialQuoteError, dustSummary, transactionForm]);
+
+  const handlePartialErrorCancel = useCallback(() => {
+    setPartialQuoteError(null);
+    transactionForm.resetForm();
+  }, [transactionForm]);
+
+  const handleChainValidationErrorCancel = useCallback(() => {
+    setChainValidationError(null);
+    transactionForm.resetForm();
+  }, [transactionForm]);
+
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
+    partialQuoteError,
+    chainValidationError,
+    onPartialErrorProceed: handlePartialErrorProceed,
+    onPartialErrorCancel: handlePartialErrorCancel,
+    onChainValidationErrorCancel: handleChainValidationErrorCancel,
     onSuccess: () => {
       refreshCompletedDustTokens();
       setDustSummary(null);
@@ -273,6 +337,7 @@ export const useDustModalFlow = ({
   const handleModalClose = () => {
     onClose();
     transactionForm.resetForm();
+    statusSheet.onClose();
     refreshCompletedDustTokens();
   };
 

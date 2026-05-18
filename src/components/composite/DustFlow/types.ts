@@ -4,6 +4,11 @@ import type {
   ExtendedToken,
 } from '@/types/tokens';
 
+export interface DustPartialQuoteState {
+  failedBalances: PortfolioBalance<WalletToken>[];
+  proceedableBalances: PortfolioBalance<WalletToken>[];
+}
+
 import type { TransactionErrorType } from '@/hooks/transactions/types';
 
 export interface DustSummaryValue {

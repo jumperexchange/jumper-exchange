@@ -716,6 +716,22 @@
         "stepsCount_other": "{{count, number}} steps",
         "executingStep": "Executing step {{current, number}} out of {{total, number}}..."
       },
+      "partialError": {
+        "title": "Some tokens can't be converted",
+        "descriptionPartiallyConvertible_one": "{{tokens}} couldn't be converted. They will be excluded from the dust sweeping operation.",
+        "descriptionPartiallyConvertible_other": "{{tokens}} couldn't be converted. They will be excluded from the dust sweeping operation.",
+        "descriptionNotConvertible": "The selected tokens are currently unavailable for conversion.",
+        "excludedTokens_one": "Excluded token",
+        "excludedTokens_other": "Excluded tokens",
+        "convertibleDust": "Convertible dust",
+        "proceed": "Proceed",
+        "cancel": "Cancel"
+      },
+      "chainValidationError": {
+        "title": "Chain not supported",
+        "description": "Currently {{chain}} chain can't support this operation, but we're actively working on it.",
+        "cancel": "Cancel"
+      },
       "error": {
         "transactionRejected": {
           "title": "Transaction rejected",

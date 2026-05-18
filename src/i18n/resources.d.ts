@@ -1,4 +1,4 @@
-interface Resources {
+export default interface Resources {
   language: {
     language: {
       key: 'Language';
@@ -317,6 +317,10 @@ interface Resources {
       learnMore: 'Learn more';
     };
     form: {
+      descriptions: {
+        chainAvailable_one: '{{count}} token · {{amount}} available';
+        chainAvailable_other: '{{count}} tokens · {{amount}} available';
+      };
       labels: {
         amount: 'Amount';
         chain: 'Chain';
@@ -326,10 +330,6 @@ interface Resources {
         requested: 'Requested';
         swap: 'Swap';
         withdrawTo: 'Withdraw to';
-      };
-      descriptions: {
-        chainAvailable_one: '{{count, number}} token · {{amount}} available';
-        chainAvailable_other: '{{count, number}} tokens · {{amount}} available';
       };
     };
     format: {
@@ -705,6 +705,30 @@ interface Resources {
         title: 'Subscribe to the Jumper Newsletter';
       };
     };
+    notifications: {
+      aria: {
+        deleteNotification: 'Delete notification';
+        openPanel: 'Notifications';
+      };
+      categories: {
+        all: 'All Categories';
+        campaign: 'Campaign';
+        earn: 'Earn';
+        portfolio: 'Portfolio';
+        product: 'Product';
+      };
+      dateFilter: {
+        all: 'All Time';
+        month: 'Past Month';
+        today: 'Today';
+        week: 'Past Week';
+      };
+      emptyState: 'No notifications';
+      title: 'Notifications';
+      unread_one: '{{count}} unread notification';
+      unread_other: '{{count}} unread notifications';
+      unread_zero: 'No unread notifications';
+    };
     portfolio: {
       assetOverviewCard: {
         navigation: {
@@ -779,6 +803,11 @@ interface Resources {
       };
       dustConversion: {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
+        chainValidationError: {
+          cancel: 'Cancel';
+          description: "Currently chain {{chain}} can't support this operation, but we're actively working on it.";
+          title: 'Chain not supported';
+        };
         error: {
           chainSwitchFailed: {
             close: 'Close';
@@ -825,6 +854,17 @@ interface Resources {
             description: 'Your connected wallet does not support batch transactions (EIP-5792). Please connect a different wallet.';
             title: 'Wallet does not support batch transactions';
           };
+        };
+        partialError: {
+          cancel: 'Cancel';
+          convertibleDust: 'Convertible dust';
+          descriptionNotConvertible: 'The selected tokens are currently unavailable for conversion.';
+          descriptionPartiallyConvertible_one: "{{tokens}} couldn't be converted. They will be excluded from the dust sweeping operation.";
+          descriptionPartiallyConvertible_other: "{{tokens}} couldn't be converted. They will be excluded from the dust sweeping operation.";
+          excludedTokens_one: 'Excluded token';
+          excludedTokens_other: 'Excluded tokens';
+          proceed: 'Proceed';
+          title: "Some tokens can't be converted";
         };
         routeOverview: {
           approveToken: 'Approve {{symbol}}';
@@ -1026,31 +1066,5 @@ interface Resources {
         };
       };
     };
-    notifications: {
-      title: 'Notifications';
-      unread_zero: 'No unread notifications';
-      unread_one: '{{count}} unread notification';
-      unread_other: '{{count}} unread notifications';
-      emptyState: 'No notifications';
-      categories: {
-        all: 'All Categories';
-        product: 'Product';
-        campaign: 'Campaign';
-        earn: 'Earn';
-        portfolio: 'Portfolio';
-      };
-      dateFilter: {
-        all: 'All Time';
-        today: 'Today';
-        week: 'Past Week';
-        month: 'Past Month';
-      };
-      aria: {
-        openPanel: 'Notifications';
-        deleteNotification: 'Delete notification';
-      };
-    };
   };
 }
-
-export default Resources;
