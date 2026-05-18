@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  console.log('1. Earn page');
+  const renderId = Math.random().toString(36).slice(2, 6);
+  console.log('1. Earn page', renderId);
 
   return (
     <Suspense fallback={<EarnsPageSkeleton />}>
