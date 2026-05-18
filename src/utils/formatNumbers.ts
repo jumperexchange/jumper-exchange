@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const decimalFormatter = (
   lng: string | undefined,
   options: Intl.NumberFormatOptions,
@@ -128,6 +130,8 @@ export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
  * Combines a formatted decimal `amount` string with a token `symbol`,
  * collapsing non-zero values below the dust threshold to `<0.0001 SYMBOL`
  * so positions don't render as long decimals like `0.000000000000000001 eETH`.
+ * The collapsed label is locale-aware via `format.dustAmount`; falls back to
+ * the en-US literal when i18next hasn't been initialised yet (e.g. tests).
  */
 export const formatTokenAmountWithDust = (
   amount: string,
@@ -136,7 +140,13 @@ export const formatTokenAmountWithDust = (
   const numeric = parseFloat(amount);
   const label = symbol || '---';
   if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-    return `${DUST_AMOUNT_LABEL} ${label}`;
+    const translated = i18next.t('format.dustAmount', {
+      value: DUST_AMOUNT_THRESHOLD,
+      symbol: label,
+    });
+    return !translated || translated.startsWith('format.dustAmount')
+      ? `${DUST_AMOUNT_LABEL} ${label}`
+      : translated;
   }
   return `${amount} ${label}`;
 };
@@ -156,12 +166,19 @@ export const DUST_USD_LABEL = '<$0.01';
  * Wraps `formatUSD` and collapses any positive USD value below $0.01 to
  * `<$0.01`. Mirrors `formatTokenAmountWithDust` on the dollar axis, scoped
  * to position UIs where sub-cent values are noise.
+ * The collapsed label is locale-aware via `format.dustUsd`; falls back to
+ * the en-US literal when i18next hasn't been initialised yet (e.g. tests).
  */
 export const formatUSDWithDust = (amountUSD: number | string): string => {
   const numeric =
     typeof amountUSD === 'number' ? amountUSD : parseFloat(amountUSD as string);
   if (Number.isFinite(numeric) && numeric > 0 && numeric < DUST_USD_THRESHOLD) {
-    return DUST_USD_LABEL;
+    const translated = i18next.t('format.dustUsd', {
+      value: DUST_USD_THRESHOLD,
+    });
+    return !translated || translated.startsWith('format.dustUsd')
+      ? DUST_USD_LABEL
+      : translated;
   }
   return formatUSD(amountUSD ?? 0);
 };

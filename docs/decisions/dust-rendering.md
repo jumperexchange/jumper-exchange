@@ -4,7 +4,9 @@
 
 ## Decision
 
-Token-amount strings in position UIs collapse any non-zero value below `0.0001` to `<0.0001 SYMBOL`. USD values in the same surfaces collapse any non-zero value below `$0.01` to `<$0.01`. Both thresholds and labels live exactly once in `src/utils/formatNumbers.ts` and are reused by every call site.
+Token-amount strings in position UIs collapse any non-zero value below `0.0001` to `<0.0001 SYMBOL`. USD values in the same surfaces collapse any non-zero value below `$0.01` to `<$0.01`.
+
+Numeric thresholds (`DUST_AMOUNT_THRESHOLD`, `DUST_USD_THRESHOLD`) live in `src/utils/formatNumbers.ts`. The collapsed labels are locale-aware: they are read from `src/i18n/translations/<lng>/translation.json` under `format.dustAmount` / `format.dustUsd` via the `i18next` singleton, with an en-US literal fallback when i18next hasn't been initialised yet (e.g. unit tests or very early startup).
 
 `@lifi/widget`'s `compactNumberFormatter` (Unicode subscript notation, e.g. `0.0₁₇1 eETH`) was evaluated and rejected: it reads as a rendering bug rather than intentional formatting.
 

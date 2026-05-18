@@ -22,8 +22,8 @@ import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
 import { formatApy } from '@/utils/numbers/apy';
 import {
+  DUST_USD_THRESHOLD,
   formatTokenAmountWithDust,
-  formatUSDWithDust,
 } from '@/utils/formatNumbers';
 import type { AppToken, DefiToken, Token } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
@@ -138,20 +138,29 @@ export const renderEntityCell = ({
 
 export const renderValueCell = ({
   item,
-  t: _t,
+  t,
   titleVariant,
   descriptionVariant,
-}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => (
-  <TitleWithHint
-    title={formatUSDWithDust(item.amountUSD)}
-    hint={formatTokenAmountWithDust(
-      formatUnits(BigInt(item.amount || '0'), item.decimals),
-      item.symbol,
-    )}
-    titleVariant={titleVariant}
-    hintVariant={descriptionVariant}
-  />
-);
+}: RenderCellProps<EnhancedDefiTokenWithPositionData>) => {
+  const usd = Number(item.amountUSD);
+  const isDustUsd = Number.isFinite(usd) && usd > 0 && usd < DUST_USD_THRESHOLD;
+
+  return (
+    <TitleWithHint
+      title={
+        isDustUsd
+          ? t('format.dustUsd', { value: DUST_USD_THRESHOLD })
+          : t('format.currency', { value: item.amountUSD ?? 0 })
+      }
+      hint={formatTokenAmountWithDust(
+        formatUnits(BigInt(item.amount || '0'), item.decimals),
+        item.symbol,
+      )}
+      titleVariant={titleVariant}
+      hintVariant={descriptionVariant}
+    />
+  );
+};
 
 export const renderApyCell = ({
   item,
