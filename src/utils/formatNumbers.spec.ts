@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   formatTokenAmountWithDust,
+  formatUSDWithDust,
   formatValueWithConfig,
 } from './formatNumbers';
 import { APY_FORMAT_CONFIG } from './numbers/apy';
@@ -32,6 +33,32 @@ describe('formatTokenAmountWithDust', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', '')).toBe(
       '<0.0001 ---',
     );
+  });
+});
+
+describe('formatUSDWithDust', () => {
+  it('should collapse sub-cent amount to <$0.01', () => {
+    expect(formatUSDWithDust(0.001)).toBe('<$0.01');
+  });
+
+  it('should collapse sub-cent string amount to <$0.01', () => {
+    expect(formatUSDWithDust('0.005')).toBe('<$0.01');
+  });
+
+  it('should not collapse zero', () => {
+    expect(formatUSDWithDust(0)).toBe('$0.00');
+  });
+
+  it('should not collapse amount exactly at boundary', () => {
+    expect(formatUSDWithDust(0.01)).toBe('$0.01');
+  });
+
+  it('should not collapse normal amount', () => {
+    expect(formatUSDWithDust(12.34)).toBe('$12.34');
+  });
+
+  it('should treat empty string as zero', () => {
+    expect(formatUSDWithDust('')).toBe('$0.00');
   });
 });
 

@@ -21,7 +21,10 @@ import type { TFunction } from 'i18next';
 import { WithdrawFlowOnDemandButton } from '../WithdrawFlow/WithdrawFlow';
 import { formatUnits } from 'viem';
 import { formatApy } from '@/utils/numbers/apy';
-import { formatTokenAmountWithDust } from '@/utils/formatNumbers';
+import {
+  formatTokenAmountWithDust,
+  formatUSDWithDust,
+} from '@/utils/formatNumbers';
 import type { AppToken, DefiToken, Token } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 
@@ -135,12 +138,12 @@ export const renderEntityCell = ({
 
 export const renderValueCell = ({
   item,
-  t,
+  t: _t,
   titleVariant,
   descriptionVariant,
 }: RenderCellProps<EnhancedDefiTokenWithPositionData>) => (
   <TitleWithHint
-    title={t('format.currency', { value: item.amountUSD })}
+    title={formatUSDWithDust(item.amountUSD)}
     hint={formatTokenAmountWithDust(
       formatUnits(BigInt(item.amount || '0'), item.decimals),
       item.symbol,

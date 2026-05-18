@@ -329,6 +329,15 @@ describe('ExtendedToken', () => {
 
       expect(result).toBe('$0.00');
     });
+
+    it('should collapse sub-cent USD amount to <$0.01', () => {
+      const token = new ExtendedToken(TOKEN_FIXTURE);
+
+      // 1000000000000000 wei × priceUSD 0.812 / 1e18 ≈ $0.000812 — below $0.01
+      const result = token.formatAmountUSD('1000000000000000');
+
+      expect(result).toBe('<$0.01');
+    });
   });
 
   describe('formatAmountFromUSD', () => {

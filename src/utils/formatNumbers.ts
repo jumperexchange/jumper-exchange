@@ -148,3 +148,20 @@ export const formatUSD = currencyFormatter('en-US', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
+
+export const DUST_USD_THRESHOLD = 0.01;
+export const DUST_USD_LABEL = '<$0.01';
+
+/**
+ * Wraps `formatUSD` and collapses any positive USD value below $0.01 to
+ * `<$0.01`. Mirrors `formatTokenAmountWithDust` on the dollar axis, scoped
+ * to position UIs where sub-cent values are noise.
+ */
+export const formatUSDWithDust = (amountUSD: number | string): string => {
+  const numeric =
+    typeof amountUSD === 'number' ? amountUSD : parseFloat(amountUSD as string);
+  if (Number.isFinite(numeric) && numeric > 0 && numeric < DUST_USD_THRESHOLD) {
+    return DUST_USD_LABEL;
+  }
+  return formatUSD(amountUSD ?? 0);
+};

@@ -7,7 +7,7 @@ import type { Address } from 'viem';
 import { useToken } from '@/hooks/useToken';
 import type { Token } from '@/types/jumper-backend';
 
-import { formatUSD } from '../../utils/formatNumbers';
+import { formatUSD, formatUSDWithDust } from '../../utils/formatNumbers';
 import { SimpleToken } from '../../utils/Token';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
@@ -66,7 +66,7 @@ export const EarnDetailsActionsPosition: FC<
         formattedAmountUSD = extendedToken.formatAmountUSD(amount);
       } else if (amountUSD) {
         formattedAmount = extendedToken.formatAmountFromUSD(amountUSD);
-        formattedAmountUSD = formatUSD(amountUSD);
+        formattedAmountUSD = formatUSDWithDust(amountUSD);
       } else {
         formattedAmount = extendedToken.formatZeroAmount();
         formattedAmountUSD = extendedToken.formatZeroUSD();
