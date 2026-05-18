@@ -6,9 +6,11 @@ import type {
 import type { DustSummaryValue } from './types';
 
 export class DustChainValidationError extends Error {
-  constructor(message: string) {
+  chainId: number;
+  constructor(message: string, chainId: number) {
     super(message);
     this.name = 'DustChainValidationError';
+    this.chainId = chainId;
   }
 }
 
@@ -128,6 +130,7 @@ export async function fetchDustComposerQuote(
     if (error?.kind === 'chain_validation_error') {
       throw new DustChainValidationError(
         error.message ?? 'Chain not supported',
+        chainId,
       );
     }
     if (

@@ -337,6 +337,7 @@ export const useDustModalFlow = ({
   const handleModalClose = () => {
     onClose();
     transactionForm.resetForm();
+    statusSheet.onClose();
     refreshCompletedDustTokens();
   };
 
