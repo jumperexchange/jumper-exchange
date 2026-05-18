@@ -171,6 +171,7 @@ export const LineChart = <
         width="100%"
         height="100%"
         enableCrosshair={enableCrosshair}
+        initialDimension={{ height: 100, width: 100 }}
         {...props}
       >
         <AreaChart

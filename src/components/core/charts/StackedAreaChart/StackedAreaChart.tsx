@@ -174,10 +174,6 @@ export const StackedAreaChart = ({
     setActiveDot(null);
   }, []);
 
-  if (isLoading) {
-    return <LineChartSkeleton />;
-  }
-
   const tooltipPosition = activeDot
     ? calculateTooltipPosition(
         activeDot.cx,
@@ -237,6 +233,7 @@ export const StackedAreaChart = ({
         ref={chartContainerRef}
         width="100%"
         height="100%"
+        initialDimension={{ height: 100, width: 100 }}
         enableCrosshair={enableCrosshair}
         {...props}
       >
