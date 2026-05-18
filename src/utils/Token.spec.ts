@@ -116,12 +116,31 @@ describe('SimpleToken', () => {
       expect(result).toBe('10 xDAI');
     });
 
-    it('should format small fractional amount', () => {
+    it('should collapse small fractional amount below threshold to <0.0001', () => {
       const token = new SimpleToken(STATIC_TOKEN_FIXTURE);
 
+      // 14353125728879 wei with 18 decimals = 0.000014... — below dust threshold
       const result = token.formatAmount('14353125728879');
 
-      expect(result).toBe('0.000014353125728879 xDAI');
+      expect(result).toBe('<0.0001 xDAI');
+    });
+
+    it('should collapse dust amount to <0.0001', () => {
+      const token = new SimpleToken(STATIC_TOKEN_FIXTURE);
+
+      // 1 wei with 18 decimals = 0.000000000000000001 — well below threshold
+      const result = token.formatAmount('1');
+
+      expect(result).toBe('<0.0001 xDAI');
+    });
+
+    it('should not collapse amount exactly at threshold', () => {
+      const token = new SimpleToken(STATIC_TOKEN_FIXTURE);
+
+      // 1e14 wei with 18 decimals = 0.0001 — exactly at boundary, should render unchanged
+      const result = token.formatAmount('100000000000000');
+
+      expect(result).toBe('0.0001 xDAI');
     });
 
     it('should handle token with no symbol', () => {
@@ -133,6 +152,17 @@ describe('SimpleToken', () => {
       const result = token.formatAmount('1000000000000000000');
 
       expect(result).toBe('1 ---');
+    });
+
+    it('should collapse dust amount to <0.0001 with no symbol fallback', () => {
+      const token = new SimpleToken({
+        ...STATIC_TOKEN_FIXTURE,
+        symbol: '',
+      });
+
+      const result = token.formatAmount('1');
+
+      expect(result).toBe('<0.0001 ---');
     });
   });
 
@@ -340,6 +370,15 @@ describe('ExtendedToken', () => {
       const result = token.formatAmountFromUSD(1000n);
 
       expect(result).toBe('1231.527093596059 xDAI');
+    });
+
+    it('should collapse dust token amount from tiny USD input to <0.0001', () => {
+      const token = new ExtendedToken(TOKEN_FIXTURE);
+
+      // 0.00001 USD / 0.812 = ~0.0000123 xDAI — below threshold
+      const result = token.formatAmountFromUSD('0.00001');
+
+      expect(result).toBe('<0.0001 xDAI');
     });
   });
 });

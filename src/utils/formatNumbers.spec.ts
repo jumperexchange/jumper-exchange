@@ -1,6 +1,39 @@
 import { describe, expect, it } from 'vitest';
-import { formatValueWithConfig } from './formatNumbers';
+import {
+  formatTokenAmountWithDust,
+  formatValueWithConfig,
+} from './formatNumbers';
 import { APY_FORMAT_CONFIG } from './numbers/apy';
+
+describe('formatTokenAmountWithDust', () => {
+  it('should collapse dust amount to <0.0001 SYMBOL', () => {
+    expect(formatTokenAmountWithDust('0.000000000000000001', 'eETH')).toBe(
+      '<0.0001 eETH',
+    );
+  });
+
+  it('should not collapse amount exactly at boundary', () => {
+    expect(formatTokenAmountWithDust('0.0001', 'eETH')).toBe('0.0001 eETH');
+  });
+
+  it('should not collapse zero', () => {
+    expect(formatTokenAmountWithDust('0', 'eETH')).toBe('0 eETH');
+  });
+
+  it('should not collapse normal amount', () => {
+    expect(formatTokenAmountWithDust('12.345', 'eETH')).toBe('12.345 eETH');
+  });
+
+  it('should use --- fallback for missing symbol on normal amount', () => {
+    expect(formatTokenAmountWithDust('1', '')).toBe('1 ---');
+  });
+
+  it('should use --- fallback for missing symbol on dust amount', () => {
+    expect(formatTokenAmountWithDust('0.000000000000000001', '')).toBe(
+      '<0.0001 ---',
+    );
+  });
+});
 
 describe('formatValueWithConfig', () => {
   describe('with APY_FORMAT_CONFIG', () => {

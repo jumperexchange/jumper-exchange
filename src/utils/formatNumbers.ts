@@ -121,6 +121,26 @@ export const formatValueWithConfig = (
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
 
+export const DUST_AMOUNT_THRESHOLD = 0.0001;
+export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
+
+/**
+ * Combines a formatted decimal `amount` string with a token `symbol`,
+ * collapsing non-zero values below the dust threshold to `<0.0001 SYMBOL`
+ * so positions don't render as long decimals like `0.000000000000000001 eETH`.
+ */
+export const formatTokenAmountWithDust = (
+  amount: string,
+  symbol: string,
+): string => {
+  const numeric = parseFloat(amount);
+  const label = symbol || '---';
+  if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
+    return `${DUST_AMOUNT_LABEL} ${label}`;
+  }
+  return `${amount} ${label}`;
+};
+
 export const formatUSD = currencyFormatter('en-US', {
   notation: 'compact',
   currency: 'USD',
