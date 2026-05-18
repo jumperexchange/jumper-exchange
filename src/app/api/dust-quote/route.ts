@@ -12,10 +12,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         success: false,
-        error: {
-          message: error instanceof Error ? error.message : String(error),
-          kind: 'internal',
-        },
+        error,
       },
       { status: 500 },
     );

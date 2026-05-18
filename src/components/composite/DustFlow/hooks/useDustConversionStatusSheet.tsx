@@ -11,20 +11,25 @@ import type {
   TransactionFormForDustStatusSheet,
 } from '../types';
 import { PartialQuoteErrorSheetContent } from '../components/PartialQuoteErrorSheetContent';
+import type { DustChainValidationError } from '../dustComposerQuoteApi';
 
 export const useDustConversionStatusSheet = ({
   transactionForm,
   toTokenBalance,
   partialQuoteError,
+  chainValidationError,
   onPartialErrorProceed,
   onPartialErrorCancel,
+  onChainValidationErrorCancel,
   onSuccess,
 }: {
   transactionForm: TransactionFormForDustStatusSheet;
   toTokenBalance?: Balance<ExtendedToken>;
   partialQuoteError: DustPartialQuoteState | null;
+  chainValidationError: DustChainValidationError | null;
   onPartialErrorProceed: () => void;
   onPartialErrorCancel: () => void;
+  onChainValidationErrorCancel: () => void;
   onSuccess: () => void;
 }) => {
   const lastOpenSheetRef = useRef<JumperWidgetStatusSheetProp | null>(null);
@@ -48,6 +53,25 @@ export const useDustConversionStatusSheet = ({
   });
 
   const openSheet = useMemo((): JumperWidgetStatusSheetProp | null => {
+    if (chainValidationError) {
+      return {
+        isOpen: true,
+        content: {
+          title: t('portfolio.dustConversion.chainValidationError.title'),
+          description: t(
+            'portfolio.dustConversion.chainValidationError.description',
+          ),
+          callToAction: t(
+            'portfolio.dustConversion.chainValidationError.cancel',
+          ),
+          callToActionType: 'button',
+          status: 'error',
+          onClick: onChainValidationErrorCancel,
+        },
+        onClose: onChainValidationErrorCancel,
+      };
+    }
+
     if (partialQuoteError) {
       const isProceedable = partialQuoteError.proceedableBalances.length > 0;
 
@@ -74,6 +98,12 @@ export const useDustConversionStatusSheet = ({
           title: t('portfolio.dustConversion.partialError.title'),
           description: t(
             'portfolio.dustConversion.partialError.descriptionPartiallyConvertible',
+            {
+              tokens: partialQuoteError.failedBalances
+                .map((balance) => balance.token.symbol)
+                .join(', '),
+              count: partialQuoteError.failedBalances.length,
+            },
           ),
           callToAction: t('portfolio.dustConversion.partialError.proceed'),
           callToActionType: 'button',
@@ -143,8 +173,10 @@ export const useDustConversionStatusSheet = ({
     statusContent.successSheetContent,
     toTokenBalance,
     partialQuoteError,
+    chainValidationError,
     onPartialErrorProceed,
     onPartialErrorCancel,
+    onChainValidationErrorCancel,
     t,
   ]);
 

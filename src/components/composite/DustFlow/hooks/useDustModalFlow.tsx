@@ -16,6 +16,7 @@ import { useDustFormFields } from './useDustFormFields';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
 import {
+  DustChainValidationError,
   DustPreparationError,
   extractFailedTokenAddresses,
 } from '../dustComposerQuoteApi';
@@ -67,6 +68,8 @@ export const useDustModalFlow = ({
   );
   const [partialQuoteError, setPartialQuoteError] =
     useState<DustPartialQuoteState | null>(null);
+  const [chainValidationError, setChainValidationError] =
+    useState<DustChainValidationError | null>(null);
   const pendingDustSummaryRef = useRef<DustSummaryValue | null>(null);
 
   const dustFieldSyncRef = useRef<{
@@ -217,6 +220,10 @@ export const useDustModalFlow = ({
       try {
         await fetchComposerQuoteAsync(effectiveSummary, slippage);
       } catch (e) {
+        if (e instanceof DustChainValidationError) {
+          setChainValidationError(e);
+          return undefined;
+        }
         if (e instanceof DustPreparationError) {
           const failedAddresses = extractFailedTokenAddresses(e.failedOps);
           const failedBalances = effectiveSummary.selectedBalances.filter((b) =>
@@ -307,12 +314,19 @@ export const useDustModalFlow = ({
     transactionForm.resetForm();
   }, [transactionForm]);
 
+  const handleChainValidationErrorCancel = useCallback(() => {
+    setChainValidationError(null);
+    transactionForm.resetForm();
+  }, [transactionForm]);
+
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
     partialQuoteError,
+    chainValidationError,
     onPartialErrorProceed: handlePartialErrorProceed,
     onPartialErrorCancel: handlePartialErrorCancel,
+    onChainValidationErrorCancel: handleChainValidationErrorCancel,
     onSuccess: () => {
       refreshCompletedDustTokens();
       setDustSummary(null);

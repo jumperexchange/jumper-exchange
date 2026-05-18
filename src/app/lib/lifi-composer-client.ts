@@ -138,12 +138,6 @@ class LifiComposerClient {
       body: JSON.stringify(body),
     });
 
-    if (!response.ok) {
-      throw new Error(
-        `LiFi Composer failed: ${response.status} ${response.statusText}`,
-      );
-    }
-
     return response.json();
   }
 }

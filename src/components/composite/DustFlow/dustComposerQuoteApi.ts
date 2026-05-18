@@ -5,6 +5,13 @@ import type {
 } from '@/app/lib/lifi-composer-client';
 import type { DustSummaryValue } from './types';
 
+export class DustChainValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'DustChainValidationError';
+  }
+}
+
 export class DustPreparationError extends Error {
   failedOps: FailedOp[];
   succeededOps: string[];
@@ -118,6 +125,11 @@ export async function fetchDustComposerQuote(
   const { data, success, error } = await response.json();
 
   if (!success) {
+    if (error?.kind === 'chain_validation_error') {
+      throw new DustChainValidationError(
+        error.message ?? 'Chain not supported',
+      );
+    }
     if (
       error?.kind === 'preparation_error' &&
       error.failedOps?.length &&

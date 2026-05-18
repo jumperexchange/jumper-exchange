@@ -779,6 +779,11 @@ interface Resources {
       };
       dustConversion: {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
+        chainValidationError: {
+          cancel: 'Cancel';
+          description: 'This chain is not currently supported for dust conversion.';
+          title: 'Chain not supported';
+        };
         error: {
           chainSwitchFailed: {
             close: 'Close';
@@ -830,7 +835,8 @@ interface Resources {
           cancel: 'Cancel';
           convertibleDust: 'Convertible dust';
           descriptionNotConvertible: 'The selected tokens are currently unavailable for conversion.';
-          descriptionPartiallyConvertible: "Some selected tokens couldn't be converted.";
+          descriptionPartiallyConvertible_one: "{{tokens}} couldn't be converted.";
+          descriptionPartiallyConvertible_other: "{{tokens}} couldn't be converted.";
           excludedTokens_one: 'Excluded token';
           excludedTokens_other: 'Excluded tokens';
           proceed: 'Proceed';
