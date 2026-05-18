@@ -158,6 +158,7 @@
     "dev:production": "dotenv -e .env.production next dev",
     "build": "NODE_OPTIONS=--max-old-space-size=6144 next build --turbopack",
     "api": "./gen-api.sh",
+    "gen:ondo-denylist": "node ./gen-ondo-denylist.mjs",
     "start": "next start",
     "lint": "eslint .",
     "lint_es": "eslint . --ext .ts,.tsx,.js,.jsx",
