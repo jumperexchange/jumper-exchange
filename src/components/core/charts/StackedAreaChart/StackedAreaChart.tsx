@@ -233,7 +233,7 @@ export const StackedAreaChart = ({
         ref={chartContainerRef}
         width="100%"
         height="100%"
-        initialDimension={{ height: 100, width: 100 }}
+        initialDimension={{ height: 234, width: 250 }}
         enableCrosshair={enableCrosshair}
         {...props}
       >
