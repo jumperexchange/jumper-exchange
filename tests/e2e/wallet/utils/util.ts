@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from 'node:fs';
 
 /**
  * Deletes the specified directory and all its contents.
@@ -43,7 +43,7 @@ export function normalizeAndSortText(text: string): string {
     .split('|') // Split by delimiter
     .map((part) => part.trim()) // Clean up each part
     .filter(Boolean) // Remove empty parts
-    .sort() // Sort alphabetically (so order doesn't matter)
+    .sort((a, b) => a.localeCompare(b)) // Sort alphabetically (so order doesn't matter)
     .join(''); // Join back together with no space
 }
 

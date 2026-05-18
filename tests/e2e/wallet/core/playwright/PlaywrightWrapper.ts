@@ -29,7 +29,7 @@ export default class PlaywrightWrapper {
     timeout: number = DEFAULT_TIMEOUT,
   ): Promise<void> {
     console.log(
-      `Clicking "${selector}"` + (index !== null ? ` (index ${index})` : ''),
+      `Clicking "${selector}"` + (index === null ? '' : ` (index ${index})`),
     );
     try {
       const element = this.getElement(selector, index);
@@ -37,7 +37,7 @@ export default class PlaywrightWrapper {
     } catch (error: any) {
       throw new Error(
         `Failed to click "${selector}"` +
-          (index !== null ? ` (index ${index})` : '') +
+          (index === null ? '' : ` (index ${index})`) +
           ` within ${timeout}ms.\n${error.message}`,
       );
     }
@@ -75,7 +75,7 @@ export default class PlaywrightWrapper {
     const loggedValue = maskValue ? '*'.repeat(value?.length ?? 0) : value;
     console.log(
       `Filling input "${selector}"` +
-        (index !== null ? ` (index ${index})` : '') +
+        (index === null ? '' : ` (index ${index})`) +
         ` with value "${loggedValue}"`,
     );
     try {
@@ -116,7 +116,7 @@ export default class PlaywrightWrapper {
   ): Promise<void> {
     console.log(
       `Force clicking "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     try {
       const element = this.getElement(selector, index);
@@ -124,7 +124,7 @@ export default class PlaywrightWrapper {
     } catch (error: any) {
       throw new Error(
         `Failed to force click "${selector}"` +
-          (index !== null ? ` (index ${index})` : '') +
+          (index === null ? '' : ` (index ${index})`) +
           ` within ${timeout}ms.\n${error.message}`,
       );
     }
@@ -178,7 +178,7 @@ export default class PlaywrightWrapper {
    */
   public getElement(selector: string, index: null | number = null): Locator {
     if (typeof selector !== 'string') {
-      throw new Error(`Invalid selector: ${selector}`);
+      throw new TypeError(`Invalid selector: ${selector}`);
     }
     let locator = this.isCssSelector(selector)
       ? this.page.locator(selector)
@@ -206,7 +206,7 @@ export default class PlaywrightWrapper {
   ): Promise<string> {
     console.log(
       `Getting inner HTML for "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     const element = this.getElement(selector, index);
     await element.waitFor({ state: 'attached', timeout });
@@ -227,7 +227,7 @@ export default class PlaywrightWrapper {
   ): Promise<string> {
     console.log(
       `Getting inner text for "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     const element = this.getElement(selector, index);
     await element.waitFor({ state: 'attached', timeout });
@@ -301,7 +301,7 @@ export default class PlaywrightWrapper {
   ): Promise<string> {
     console.log(
       `Getting value from input field "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     const element = this.getElement(selector, index);
     await element.waitFor({ state: 'attached', timeout });
@@ -337,7 +337,7 @@ export default class PlaywrightWrapper {
   ): Promise<string> {
     console.log(
       `Waiting for non-empty text in "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     const element = this.getElement(selector, index);
     await element.waitFor({ state: 'attached', timeout });
@@ -759,7 +759,7 @@ export default class PlaywrightWrapper {
   ): Promise<void> {
     console.log(
       `Scrolling "${selector}" into view` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     const element = this.getElement(selector, index);
     await element.waitFor({ state: 'attached', timeout });
@@ -782,7 +782,7 @@ export default class PlaywrightWrapper {
   ): Promise<void> {
     console.log(
       `Selecting option index ${optionIndex} from <select> "${selector}"` +
-        (elementIndex !== null ? ` (element index ${elementIndex})` : ''),
+        (elementIndex === null ? '' : ` (element index ${elementIndex})`),
     );
     const selectElement = this.getElement(selector, elementIndex);
     await selectElement.selectOption(
@@ -895,7 +895,7 @@ export default class PlaywrightWrapper {
       : filePaths;
     console.log(
       `Uploading file(s) "${filesLabel}" via "${selector}"` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
 
     try {
@@ -968,7 +968,7 @@ export default class PlaywrightWrapper {
   ): Promise<boolean> {
     console.log(
       `Waiting for "${selector}" to be present in DOM` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
 
     try {
@@ -1011,7 +1011,7 @@ export default class PlaywrightWrapper {
   ): Promise<boolean> {
     console.log(
       `Waiting for "${selector}" to appear then disappear (disappear state: ${disappearState})` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
 
     try {
@@ -1049,7 +1049,7 @@ export default class PlaywrightWrapper {
   ): Promise<boolean> {
     console.log(
       `Waiting for "${selector}" to be visible` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     try {
       const element = this.getElement(selector, index);
@@ -1089,7 +1089,7 @@ export default class PlaywrightWrapper {
   ): Promise<boolean> {
     console.log(
       `Waiting for "${selector}" to disappear (state: ${state})` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
     try {
       const element = this.getElement(selector, index);
@@ -1122,7 +1122,7 @@ export default class PlaywrightWrapper {
   ): Promise<string> {
     console.log(
       `Waiting for input field "${selector}" to be filled` +
-        (index !== null ? ` (index ${index})` : ''),
+        (index === null ? '' : ` (index ${index})`),
     );
 
     const element = this.getElement(selector, index);
