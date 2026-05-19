@@ -30,6 +30,7 @@ export {
   mutationObserverDetector,
   pocketUniverseDatasetCsnDetector,
   pocketUniverseHtmlDataCsnSnapshotDetector,
+  postMessageProxyDetector,
   resourceFetchDetector,
   stylesheetDetector,
 } from './utils';
