@@ -13,15 +13,16 @@ import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
 import { useAdCooldownStore } from '@/stores/adCooldown/AdCooldownStore';
 import type { StrapiFeatureCardData } from '@/types/strapi';
+import type { SpindlCardData } from '@/types/spindl';
+import { useSpindlMatrixCards } from './FeatureCards.stories.spindl';
 import { FeatureCard } from './FeatureCard';
 
 // ---------------------------------------------------------------------------
-// Shared header above each card cell
+// Strapi card header (with Strapi admin link)
 // ---------------------------------------------------------------------------
 
 interface CardHeaderProps {
   cardData: StrapiFeatureCardData;
-  /** Chip shown to flag publication state within this group */
   chip: { label: string; color: 'success' | 'warning' | 'error' | 'info' };
 }
 
@@ -81,12 +82,60 @@ const CardHeader = ({ cardData, chip }: CardHeaderProps) => {
 };
 
 // ---------------------------------------------------------------------------
-// Card grid
+// Spindl card header (no Strapi admin link, links to CTA instead)
+// ---------------------------------------------------------------------------
+
+const SpindlCardHeader = ({ card }: { card: SpindlCardData }) => (
+  <Box
+    sx={{
+      display: 'flex',
+      alignItems: 'baseline',
+      justifyContent: 'space-between',
+      gap: 1,
+      mb: 0.5,
+      px: 0.5,
+    }}
+  >
+    <Box sx={{ minWidth: 0 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 0.25 }}>
+        <Chip label="SPINDL" color="info" size="small" variant="outlined" />
+        <Typography
+          variant="bodySmallStrong"
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {card.Title}
+        </Typography>
+      </Box>
+      <Typography variant="bodyXSmall" sx={{ color: 'text.secondary' }}>
+        creative: {card.spindlData.ad_creative_id} · impression:{' '}
+        {card.spindlData.impression_id}
+      </Typography>
+    </Box>
+    {card.URL && (
+      <Link
+        href={card.URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        variant="bodyXSmall"
+        sx={{ flexShrink: 0 }}
+      >
+        Preview CTA ↗
+      </Link>
+    )}
+  </Box>
+);
+
+// ---------------------------------------------------------------------------
+// Strapi card grid
 // ---------------------------------------------------------------------------
 
 interface CardGridProps {
   cards: StrapiFeatureCardData[];
-  /** documentIds present in the *other* group — used to cross-reference */
   otherIds: Set<string>;
   group: 'draft' | 'published';
 }
@@ -102,15 +151,12 @@ const CardGrid = ({ cards, otherIds, group }: CardGridProps) => (
   >
     {cards.map((cardData, index) => {
       const isInOtherGroup = otherIds.has(cardData.documentId);
-
       const chip: CardHeaderProps['chip'] =
         group === 'draft'
           ? isInOtherGroup
             ? { label: 'LIVE', color: 'success' }
             : { label: 'DRAFT ONLY', color: 'warning' }
-          : isInOtherGroup
-            ? { label: 'PUBLISHED', color: 'success' }
-            : { label: 'PUBLISHED', color: 'success' };
+          : { label: 'PUBLISHED', color: 'success' };
 
       return (
         <Box key={`${group}-${cardData.id ?? index}`} sx={{ width: 384 }}>
@@ -119,6 +165,28 @@ const CardGrid = ({ cards, otherIds, group }: CardGridProps) => (
         </Box>
       );
     })}
+  </Box>
+);
+
+// ---------------------------------------------------------------------------
+// Spindl card grid
+// ---------------------------------------------------------------------------
+
+const SpindlCardGrid = ({ cards }: { cards: SpindlCardData[] }) => (
+  <Box
+    sx={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fill, minmax(384px, 1fr))',
+      gap: 3,
+      justifyItems: 'center',
+    }}
+  >
+    {cards.map((card, index) => (
+      <Box key={`spindl-${card.id ?? index}`} sx={{ width: 384 }}>
+        <SpindlCardHeader card={card} />
+        <FeatureCard data={card} />
+      </Box>
+    ))}
   </Box>
 );
 
@@ -141,11 +209,23 @@ const SectionHeading = ({ title, count }: { title: string; count: number }) => (
 // Main story component
 // ---------------------------------------------------------------------------
 
-const AllCardsPreview = () => {
+interface AllCardsPreviewProps {
+  /** Injected by the withProviders decorator via context spread */
+  globals?: { locale?: string };
+}
+
+const AllCardsPreview = ({ globals }: AllCardsPreviewProps) => {
   useEffect(() => {
     // Bypass the production cooldown gate so every FeatureCard will paint.
     useAdCooldownStore.setState({ adSession: {}, _hasHydrated: true });
   }, []);
+
+  // Derive a country code from the active locale for Spindl targeting.
+  // Locale format is either 'en' or 'en-US'; fallback to 'US' when no region.
+  const locale = globals?.locale || 'en';
+  const country = locale.includes('-')
+    ? locale.split('-')[1].toUpperCase()
+    : 'US';
 
   const { data: draftCards, isLoading: draftLoading } =
     useStrapi<StrapiFeatureCardData>({
@@ -161,6 +241,12 @@ const AllCardsPreview = () => {
       queryKey: ['feature-cards', 'storybook', 'published'],
     });
 
+  const {
+    cards: spindlCards,
+    isLoading: spindlLoading,
+    errorCount: spindlErrorCount,
+  } = useSpindlMatrixCards(country);
+
   const draftIds = useMemo(
     () => new Set((draftCards ?? []).map((c) => c.documentId)),
     [draftCards],
@@ -169,6 +255,11 @@ const AllCardsPreview = () => {
   const publishedIds = useMemo(
     () => new Set((publishedCards ?? []).map((c) => c.documentId)),
     [publishedCards],
+  );
+
+  const sortedSpindlCards = useMemo(
+    () => sortBy(spindlCards, (c) => c.Title.toLowerCase()),
+    [spindlCards],
   );
 
   const sortedDraftCards = useMemo(
@@ -186,7 +277,7 @@ const AllCardsPreview = () => {
     [publishedCards],
   );
 
-  if (draftLoading || publishedLoading) {
+  if (draftLoading || publishedLoading || spindlLoading) {
     return (
       <Box sx={{ p: 4 }}>
         <Typography variant="bodyMedium">Loading cards…</Typography>
@@ -194,18 +285,37 @@ const AllCardsPreview = () => {
     );
   }
 
-  if (!draftCards?.length && !publishedCards?.length) {
+  if (!spindlCards.length && !draftCards?.length && !publishedCards?.length) {
     return (
       <Box sx={{ p: 4 }}>
-        <Typography variant="bodyMedium">
-          No feature cards found in Strapi.
-        </Typography>
+        <Typography variant="bodyMedium">No cards found.</Typography>
       </Box>
     );
   }
 
   return (
     <Box sx={{ padding: 3, bgcolor: 'background.default', minHeight: '100vh' }}>
+      {!!sortedSpindlCards.length && (
+        <Box sx={{ mb: 5 }}>
+          <SectionHeading title="Spindl" count={sortedSpindlCards.length} />
+          {spindlErrorCount > 0 && (
+            <Typography
+              variant="bodyXSmall"
+              sx={{ color: 'warning.main', mb: 2 }}
+            >
+              {spindlErrorCount} matrix call(s) failed — results may be
+              incomplete.
+            </Typography>
+          )}
+          <SpindlCardGrid cards={sortedSpindlCards} />
+        </Box>
+      )}
+
+      {!!sortedSpindlCards.length &&
+        !!(sortedPublishedCards.length || sortedDraftCards.length) && (
+          <Divider sx={{ mb: 5 }} />
+        )}
+
       {!!sortedPublishedCards.length && (
         <Box sx={{ mb: 5 }}>
           <SectionHeading
