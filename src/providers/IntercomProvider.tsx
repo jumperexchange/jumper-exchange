@@ -3,6 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 import { useHydrated } from 'src/hooks/useHydrated';
 import dynamic from 'next/dynamic';
 import { useWebMetricComplete } from '@/hooks/useWebMetricComplete';
+import { useMenuStore } from 'src/stores/menu';
 
 const IntercomProviderInner = dynamic(
   () =>
@@ -14,11 +15,14 @@ const IntercomProviderInner = dynamic(
 
 export const IntercomProvider: FC<PropsWithChildren> = ({ children }) => {
   const hydrated = useHydrated();
-  const fcpDone = useWebMetricComplete('LCP');
+  const lcpDone = useWebMetricComplete('LCP');
+  const intercomActivated = useMenuStore((state) => state.intercomActivated);
+
+  const shouldInitIntercom = hydrated && lcpDone && intercomActivated;
 
   return (
     <>
-      {hydrated && fcpDone && <IntercomProviderInner />}
+      {shouldInitIntercom && <IntercomProviderInner />}
       {children}
     </>
   );

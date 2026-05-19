@@ -9,6 +9,8 @@ interface DefaultMenuType {
   openWalletMenu: boolean;
   openSubMenu: keyof typeof MenuKeys;
   openSupportModal: boolean;
+  intercomActivated: boolean;
+  pendingIntercomShow: boolean;
   openSnackbar: SnackbarProps;
   supportModalUnreadCount: number;
 }
@@ -18,6 +20,8 @@ export const defaultMenu: DefaultMenuType = {
   openWalletMenu: false,
   openSubMenu: MenuKeysEnum.None,
   openSupportModal: false,
+  intercomActivated: false,
+  pendingIntercomShow: false,
   openSnackbar: { open: false },
   supportModalUnreadCount: 0,
 };
@@ -91,9 +95,19 @@ export const useMenuStore = createWithEqualityFn<MenuState>(
       set((state) => ({
         ...state,
         openSupportModal: open,
+        intercomActivated: open ? true : state.intercomActivated,
+        pendingIntercomShow: open ? true : state.pendingIntercomShow,
         openMainMenu: false,
         openWalletMenu: false,
         openSubMenu: MenuKeysEnum.None,
+      }));
+    },
+
+    clearPendingIntercomShow: () => {
+      set((state) => ({
+        ...state,
+        openSupportModal: false,
+        pendingIntercomShow: false,
       }));
     },
 

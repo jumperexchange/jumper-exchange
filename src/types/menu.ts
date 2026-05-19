@@ -15,6 +15,8 @@ export type MenuProps = {
   openSubMenu: keyof typeof MenuKeysEnum;
   openSnackbar: SnackbarProps;
   openSupportModal: boolean;
+  intercomActivated: boolean;
+  pendingIntercomShow: boolean;
   supportModalUnreadCount: number;
 };
 export interface MenuState extends MenuProps {
@@ -34,6 +36,7 @@ export interface MenuState extends MenuProps {
   ) => void;
   // Toggle support modal
   setSupportModalState: (open: boolean) => void;
+  clearPendingIntercomShow: () => void;
   // Set support modal unread count
   setSupportModalUnreadCount: (count: number) => void;
 }
