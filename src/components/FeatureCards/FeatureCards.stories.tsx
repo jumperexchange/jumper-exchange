@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import sortBy from 'lodash/sortBy';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import config from '@/config/env-config';
 import { STRAPI_FEATURE_CARDS } from '@/const/strapiContentKeys';
 import { useStrapi } from '@/hooks/useStrapi';
@@ -149,7 +149,7 @@ const CardGrid = ({ cards, otherIds, group }: CardGridProps) => (
       justifyItems: 'center',
     }}
   >
-    {cards.map((cardData, index) => {
+    {cards.map((cardData) => {
       const isInOtherGroup = otherIds.has(cardData.documentId);
       const chip: CardHeaderProps['chip'] =
         group === 'draft'
@@ -159,7 +159,7 @@ const CardGrid = ({ cards, otherIds, group }: CardGridProps) => (
           : { label: 'PUBLISHED', color: 'success' };
 
       return (
-        <Box key={`${group}-${cardData.id ?? index}`} sx={{ width: 384 }}>
+        <Box key={`${group}-${cardData.documentId}`} sx={{ width: 384 }}>
           <CardHeader cardData={cardData} chip={chip} />
           <FeatureCard data={cardData} />
         </Box>
@@ -181,8 +181,8 @@ const SpindlCardGrid = ({ cards }: { cards: SpindlCardData[] }) => (
       justifyItems: 'center',
     }}
   >
-    {cards.map((card, index) => (
-      <Box key={`spindl-${card.id ?? index}`} sx={{ width: 384 }}>
+    {cards.map((card) => (
+      <Box key={`spindl-${card.id}`} sx={{ width: 384 }}>
         <SpindlCardHeader card={card} />
         <FeatureCard data={card} />
       </Box>
@@ -231,6 +231,8 @@ const AllCardsPreview = ({ globals }: AllCardsPreviewProps) => {
     useStrapi<StrapiFeatureCardData>({
       contentType: STRAPI_FEATURE_CARDS,
       status: 'draft',
+      includePersonalized: true,
+      ignoreCampaignDates: true,
       queryKey: ['feature-cards', 'storybook', 'draft'],
     });
 
@@ -238,6 +240,8 @@ const AllCardsPreview = ({ globals }: AllCardsPreviewProps) => {
     useStrapi<StrapiFeatureCardData>({
       contentType: STRAPI_FEATURE_CARDS,
       status: 'published',
+      includePersonalized: true,
+      ignoreCampaignDates: true,
       queryKey: ['feature-cards', 'storybook', 'published'],
     });
 
@@ -247,35 +251,20 @@ const AllCardsPreview = ({ globals }: AllCardsPreviewProps) => {
     errorCount: spindlErrorCount,
   } = useSpindlMatrixCards(country);
 
-  const draftIds = useMemo(
-    () => new Set((draftCards ?? []).map((c) => c.documentId)),
-    [draftCards],
-  );
+  const draftIds = new Set((draftCards ?? []).map((c) => c.documentId));
 
-  const publishedIds = useMemo(
-    () => new Set((publishedCards ?? []).map((c) => c.documentId)),
-    [publishedCards],
-  );
+  const publishedIds = new Set((publishedCards ?? []).map((c) => c.documentId));
 
-  const sortedSpindlCards = useMemo(
-    () => sortBy(spindlCards, (c) => c.Title.toLowerCase()),
-    [spindlCards],
-  );
+  const sortedSpindlCards = sortBy(spindlCards, (c) => c.Title.toLowerCase());
 
-  const sortedDraftCards = useMemo(
-    () =>
-      sortBy(draftCards ?? [], [
-        (c) => (publishedIds.has(c.documentId) ? 0 : 1),
-        (c) => (c.uid || c.Title).toLowerCase(),
-      ]),
-    [draftCards, publishedIds],
-  );
+  const sortedDraftCards = sortBy(draftCards ?? [], [
+    (c) => (publishedIds.has(c.documentId) ? 0 : 1),
+    (c) => (c.uid || c.Title).toLowerCase(),
+  ]);
 
-  const sortedPublishedCards = useMemo(
-    () =>
-      sortBy(publishedCards ?? [], [(c) => (c.uid || c.Title).toLowerCase()]),
-    [publishedCards],
-  );
+  const sortedPublishedCards = sortBy(publishedCards ?? [], [
+    (c) => (c.uid || c.Title).toLowerCase(),
+  ]);
 
   if (draftLoading || publishedLoading || spindlLoading) {
     return (
