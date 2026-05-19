@@ -49,6 +49,10 @@ interface ContentTypeProps {
   /** Override the Strapi publication status filter. When omitted the default
    *  env-based rule applies: 'draft' on non-production, nothing on production. */
   status?: 'draft' | 'published';
+  /** When true, skips the PersonalizedFeatureCard exclusion filter (feature-cards only). */
+  includePersonalized?: boolean;
+  /** When true, skips the campaignStart/campaignEnd date-window filters (feature-cards only). */
+  ignoreCampaignDates?: boolean;
 }
 
 export function getStrapiUrl(contentType: string): URL {
@@ -69,6 +73,8 @@ export const useStrapi = <T>({
   filterFeaturedFaq,
   queryKey,
   status,
+  includePersonalized,
+  ignoreCampaignDates,
 }: ContentTypeProps): UseStrapiProps<T> => {
   // account needed to filter personalized feature cards
 
@@ -153,16 +159,22 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
-    apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
-    //filter url
-    const currentDate = new Date(Date.now()).toISOString().split('T')[0];
-    apiUrl.searchParams.set(
-      'filters[$or][0][campaignStart][$lte]',
-      currentDate,
-    );
-    apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
-    apiUrl.searchParams.set('filters[$or][0][campaignEnd][$gte]', currentDate);
-    apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
+    if (!includePersonalized) {
+      apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
+    }
+    if (!ignoreCampaignDates) {
+      const currentDate = new Date(Date.now()).toISOString().split('T')[0];
+      apiUrl.searchParams.set(
+        'filters[$or][0][campaignStart][$lte]',
+        currentDate,
+      );
+      apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
+      apiUrl.searchParams.set(
+        'filters[$or][0][campaignEnd][$gte]',
+        currentDate,
+      );
+      apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
+    }
   }
 
   // partner-themes -->
