@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import { sb } from 'storybook/test';
+import i18nConfig from '../i18n-config';
 import { withProviders } from './withProviders';
 
 sb.mock(import('@lifi/wallet-management'), { spy: true });
@@ -27,10 +28,24 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    locale: {
+      name: 'Locale',
+      description: 'UI language',
+      defaultValue: 'en',
+      toolbar: {
+        icon: 'globe',
+        items: i18nConfig.locales.map((l) => ({
+          value: l,
+          title: l.toUpperCase(),
+        })),
+        dynamicTitle: true,
+      },
+    },
   },
   parameters: {
     globals: {
       theme: 'light',
+      locale: 'en',
     },
 
     controls: {

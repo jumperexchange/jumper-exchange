@@ -31,12 +31,15 @@ const ThemeBridge = ({
 export const withProviders = (Story: () => ReactNode, context) => {
   const [resources, setResources] = useState<any>(null);
 
+  const activeLocale = (context.globals.locale as string) || fallbackLng;
+
   useEffect(() => {
+    setResources(null);
     (async () => {
-      const { resources } = await initTranslations(fallbackLng, namespaces);
+      const { resources } = await initTranslations(activeLocale, namespaces);
       setResources(resources);
     })();
-  }, []);
+  }, [activeLocale]);
 
   if (!resources) return <div>Loading...</div>;
 
@@ -47,7 +50,7 @@ export const withProviders = (Story: () => ReactNode, context) => {
       <ReactQueryProvider>
         <TranslationsProvider
           namespaces={[defaultNS]}
-          locale={fallbackLng}
+          locale={activeLocale}
           resources={resources}
         >
           <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
