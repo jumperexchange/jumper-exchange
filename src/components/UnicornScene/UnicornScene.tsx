@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export type UnicornSceneProps = {
   projectId?: string;
@@ -28,7 +28,6 @@ export default function UnicornScene({
 }: UnicornSceneProps) {
   const elementRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{ destroy: () => void } | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const scriptId = useRef(`us-data-${Math.random().toString(36).slice(2)}`);
 
   useEffect(() => {
@@ -59,7 +58,8 @@ export default function UnicornScene({
       script.onload = () => {
         callback();
       };
-      script.onerror = () => setError('Failed to load UnicornStudio script');
+      script.onerror = () =>
+        console.error('Failed to load UnicornStudio script');
 
       document.body.appendChild(script);
     };
@@ -158,8 +158,6 @@ export default function UnicornScene({
       data-us-arialabel={ariaLabel}
       data-us-production={true}
       data-us-lazyload={lazyLoad ? 'true' : ''}
-    >
-      {error && <div className="text-red-500">{error}</div>}
-    </div>
+    />
   );
 }
