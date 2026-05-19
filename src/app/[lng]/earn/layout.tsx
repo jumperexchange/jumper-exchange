@@ -12,7 +12,8 @@ import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider
 export const fetchCache = 'default-cache';
 
 export default function EarnLayout({ children }: PropsWithChildren) {
-  console.log('1. EarnLayout');
+  const renderId = Math.random().toString(36).slice(2, 6);
+  console.log('1. EarnLayout', renderId);
 
   if (!isEarnFeatureEnabled()) {
     console.log('2. EarnLayout not found');
