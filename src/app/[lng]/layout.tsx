@@ -34,6 +34,7 @@ import {
   THEME_COLOR_SCHEME_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
+import '@/providers/ExtensionDetectionProvider/extensionDetectionRegister';
 import { ExtensionDetectionRoot } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionRoot';
 import { getPocketUniverseHtmlDataCsnSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/utils';
 
@@ -245,7 +246,7 @@ export default async function RootLayout({
                           <ExtensionDetectionRoot>
                             <Suspense>
                               <ReferrerCapture />
-                            <FeatureFlagsBootstrap />
+                              <FeatureFlagsBootstrap />
                             </Suspense>
                             <NavbarWrapper />
                             <IntercomProvider />
