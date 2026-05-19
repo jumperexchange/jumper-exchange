@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { getSpindlConfig } from 'src/hooks/feature-cards/spindl/spindlConfig';
+import { fetchSpindlCards } from 'src/hooks/feature-cards/spindl/fetchSpindlCards';
 import { spindlItemToCardData } from 'src/hooks/feature-cards/spindl/spindlMapper';
-import type { SpindlCardData, SpindlFetchData } from 'src/types/spindl';
+import type { SpindlCardData } from 'src/types/spindl';
 import { isSpindlFetchResponse } from 'src/types/spindl';
-import { callRequest } from 'src/utils/callRequest';
 
 // Chain IDs matching @lifi/sdk ChainId enum values (ETH, ARB, OPT, POL, Base)
 const ETH = 1;
@@ -41,7 +40,6 @@ export const SPINDL_STORYBOOK_MATRIX: MatrixEntry[] = [
   { chainId: POL, tokenAddress: NATIVE, label: 'POL / native' },
 ];
 
-const FETCH_SPINDL_PATH = '/render/jumper';
 const STALE_TIME_MS = 5 * 60 * 1000; // 5 minutes
 
 /**
@@ -55,23 +53,9 @@ export const useSpindlMatrixCards = (
   const { data, isLoading } = useQuery({
     queryKey: ['spindl-storybook-matrix', country],
     queryFn: async () => {
-      const spindlConfig = getSpindlConfig();
-
       const results = await Promise.allSettled(
         SPINDL_STORYBOOK_MATRIX.map(({ chainId, tokenAddress }) =>
-          callRequest<SpindlFetchData>({
-            method: 'GET',
-            path: FETCH_SPINDL_PATH,
-            apiUrl: spindlConfig.apiUrl,
-            headers: spindlConfig.headers,
-            queryParams: {
-              placement_id: 'notify_message',
-              limit: '3',
-              country,
-              chain_id: String(chainId),
-              token_address: tokenAddress,
-            },
-          }),
+          fetchSpindlCards({ chainId, tokenAddress, country }),
         ),
       );
 
