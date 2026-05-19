@@ -1,4 +1,4 @@
-import type { StoryContext } from '@storybook/react';
+import type { Decorator } from '@storybook/react';
 import type { Resource } from 'i18next';
 import { type ReactNode, useEffect, useState } from 'react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
@@ -30,10 +30,7 @@ const ThemeBridge = ({
   return <>{children}</>;
 };
 
-export const withProviders = (
-  Story: () => ReactNode,
-  context: StoryContext,
-) => {
+export const withProviders: Decorator = (Story, context) => {
   const [resources, setResources] = useState<Resource | null>(null);
 
   const activeLocale = (context.globals.locale as string) || fallbackLng;
