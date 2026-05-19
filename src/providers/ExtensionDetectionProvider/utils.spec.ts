@@ -1,14 +1,6 @@
 // @vitest-environment jsdom
 
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-  type MockInstance,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   chromeExtensionInjectedDetector,
@@ -571,16 +563,6 @@ describe('withTimeout', () => {
 });
 
 describe('runDetectors', () => {
-  let logSpy: MockInstance<typeof console.log>;
-
-  beforeEach(() => {
-    logSpy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
-  });
-
-  afterEach(() => {
-    logSpy.mockRestore();
-  });
-
   it('returns true when any detector succeeds', async () => {
     const definition: ExtensionDefinition = {
       name: 'test-ext',
@@ -591,7 +573,6 @@ describe('runDetectors', () => {
     };
 
     await expect(runDetectors(definition)).resolves.toBe(true);
-    expect(logSpy).toHaveBeenCalledTimes(2);
   });
 
   it('returns false when all detectors fail', async () => {
@@ -616,7 +597,7 @@ describe('runDetectors', () => {
             throw new Error('detect failed');
           },
         },
-        { strategy: 'ok', detect: async () => true, timeout: 5000 },
+        { strategy: 'ok', detect: async () => true },
       ],
     };
 
@@ -644,6 +625,35 @@ describe('runDetectors', () => {
     await vi.advanceTimersByTimeAsync(100);
 
     await expect(resultPromise).resolves.toBe(false);
+
+    vi.useRealTimers();
+  });
+
+  it('resolves as soon as a fast detector succeeds without waiting for slow ones', async () => {
+    vi.useFakeTimers();
+
+    let slowCompleted = false;
+    const definition: ExtensionDefinition = {
+      name: 'test-ext',
+      detectors: [
+        {
+          strategy: 'slow',
+          timeout: 5000,
+          detect: () =>
+            new Promise<boolean>((resolve) => {
+              setTimeout(() => {
+                slowCompleted = true;
+                resolve(false);
+              }, 5000);
+            }),
+        },
+        { strategy: 'fast', detect: async () => true },
+      ],
+    };
+
+    const resultPromise = runDetectors(definition);
+    await expect(resultPromise).resolves.toBe(true);
+    expect(slowCompleted).toBe(false);
 
     vi.useRealTimers();
   });

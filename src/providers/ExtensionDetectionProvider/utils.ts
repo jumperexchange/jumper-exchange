@@ -267,8 +267,11 @@ export function mutationObserverDetector(
 export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY =
   '__jumperExtPocketHtmlDataCsn' as const;
 
-/** Same window as {@link pocketUniverseDatasetCsnDetector} (mutation path). */
-export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS = 2000;
+/** Mutation fallback when snapshot / postMessage / DOM injection miss. */
+export const POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_OBSERVE_MS = 500;
+
+/** EIP-6963 announce listen window (providers usually respond immediately). */
+export const POCKET_UNIVERSE_EIP6963_LISTEN_MS = 1500;
 
 export function pocketUniverseHtmlDataCsnSnapshotDetector(): ExtensionDetector {
   return {
@@ -487,19 +490,48 @@ export function withTimeout<T>(
   ]);
 }
 
+/**
+ * Runs detectors in parallel and resolves as soon as any reports `true`.
+ * When all have reported `false`, resolves `false` without waiting for slower
+ * detectors that already missed the early-exit window.
+ */
 export async function runDetectors(
   definition: ExtensionDefinition,
 ): Promise<boolean> {
-  const results = await Promise.all(
-    definition.detectors.map((d) =>
-      withTimeout(d.detect(), d.timeout ?? 2000, false).catch(() => false),
-    ),
-  );
-  results.forEach((result, index) => {
-    console.log(
-      `Result for definition ${definition.detectors[index].strategy}`,
-      result,
-    );
+  if (definition.detectors.length === 0) {
+    return false;
+  }
+
+  return new Promise<boolean>((resolve) => {
+    let remaining = definition.detectors.length;
+    let settled = false;
+
+    const settle = (result: boolean, index: number) => {
+      if (envConfig.NODE_ENV === 'development') {
+        console.log(
+          `Result for definition ${definition.detectors[index].strategy}`,
+          result,
+        );
+      }
+      if (settled) {
+        return;
+      }
+      if (result) {
+        settled = true;
+        resolve(true);
+        return;
+      }
+      remaining -= 1;
+      if (remaining === 0) {
+        settled = true;
+        resolve(false);
+      }
+    };
+
+    definition.detectors.forEach((d, index) => {
+      withTimeout(d.detect(), d.timeout ?? 2000, false)
+        .catch(() => false)
+        .then((result) => settle(result, index));
+    });
   });
-  return results.some(Boolean);
 }
