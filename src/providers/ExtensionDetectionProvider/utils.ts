@@ -374,5 +374,11 @@ export async function runDetectors(
       withTimeout(d.detect(), d.timeout ?? 2000, false).catch(() => false),
     ),
   );
+  results.forEach((result, index) => {
+    console.log(
+      `Result for definition ${definition.detectors[index].strategy}`,
+      result,
+    );
+  });
   return results.some(Boolean);
 }
