@@ -18,7 +18,7 @@ const ThemeBridge = ({
   children,
   theme,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   theme: string;
 }) => {
   const { setMode } = useColorScheme();
