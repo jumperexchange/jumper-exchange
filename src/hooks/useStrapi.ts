@@ -207,6 +207,8 @@ export const useStrapi = <T>({
       queryKey,
       filterPersonalFeatureCards?.account?.isConnected,
       effectiveStatus,
+      includePersonalized ?? false,
+      ignoreCampaignDates ?? false,
     ],
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href));
