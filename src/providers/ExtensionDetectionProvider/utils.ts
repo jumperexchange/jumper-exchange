@@ -183,15 +183,16 @@ const messageHandshakeMatchesReply = (
 };
 
 /**
- * Posts `outgoing` with `window.postMessage(outgoing, '*')` and listens for a
- * reply. When `expectedReplyType` is `'*'`, any `message` whose `data` is a
- * non-null object counts as success; otherwise `event.data.type` must match.
+ * Posts `outgoing` to `window.location.origin` and listens for a reply from
+ * `event.source === window` on the same origin. When `expectedReplyType` is
+ * `'*'`, any non-null object `data` counts as success; otherwise `data.type` must match.
  */
 export function messageHandshakeDetector(
   outgoing: Record<string, unknown>,
   expectedReplyType: string,
   timeoutMs = 500,
 ): ExtensionDetector {
+  const targetOrigin = window.location.origin;
   return {
     strategy: `message-handshake:${expectedReplyType}`,
     timeout: timeoutMs + 100,
@@ -203,6 +204,9 @@ export function messageHandshakeDetector(
         }, timeoutMs);
 
         function handler(event: MessageEvent) {
+          if (event.source !== window || event.origin !== targetOrigin) {
+            return;
+          }
           if (!messageHandshakeMatchesReply(event.data, expectedReplyType)) {
             return;
           }
@@ -219,7 +223,7 @@ export function messageHandshakeDetector(
         }
 
         window.addEventListener('message', handler, true);
-        window.postMessage(outgoing, '*');
+        window.postMessage(outgoing, targetOrigin);
       }),
   };
 }
@@ -444,7 +448,10 @@ export function postMessageProxyDetector(
       }
 
       try {
-        window.postMessage(POCKET_UNIVERSE_POST_MESSAGE_WEB3_PROBE, '*');
+        window.postMessage(
+          POCKET_UNIVERSE_POST_MESSAGE_WEB3_PROBE,
+          window.location.origin,
+        );
       } catch {
         return false;
       }

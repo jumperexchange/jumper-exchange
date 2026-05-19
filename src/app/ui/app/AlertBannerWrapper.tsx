@@ -13,9 +13,10 @@ export const AlertBannerWrapper: FC = ({}) => {
   const { t } = useTranslation();
   const { detected } = useExtension(POCKET_UNIVERSE_EXTENSION);
   const { account } = useAccount();
+  const showAlert = detected && !!account?.isConnected;
 
   return (
-    <Fade in={detected && !!account?.isConnected} timeout={400}>
+    <Fade in={showAlert} timeout={400} mountOnEnter unmountOnExit>
       <Box
         sx={{
           marginTop: 2,

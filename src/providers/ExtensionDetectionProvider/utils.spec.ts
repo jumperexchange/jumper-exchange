@@ -25,7 +25,8 @@ import {
 } from './utils';
 
 const runInlineScript = (source: string): void => {
-  globalThis.eval(source);
+  const execute = new Function(source);
+  execute();
 };
 
 describe('domElementDetector', () => {
@@ -224,15 +225,48 @@ describe('eip6963AnnounceProviderDetector', () => {
 });
 
 describe('messageHandshakeDetector', () => {
+  const dispatchMessage = (init: MessageEventInit) => {
+    window.dispatchEvent(new MessageEvent('message', init));
+  };
+
+  const dispatchTrustedReply = (data: unknown) => {
+    dispatchMessage({
+      data,
+      origin: window.location.origin,
+      source: window,
+    });
+  };
+
   beforeEach(() => {
     vi.useFakeTimers();
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    vi.restoreAllMocks();
   });
 
-  it('resolves true when a typed reply is received', async () => {
+  it('posts outgoing payload to window.location.origin', async () => {
+    const postMessageSpy = vi.spyOn(window, 'postMessage');
+    const outgoing = { type: 'probe' };
+    const detectPromise = messageHandshakeDetector(
+      outgoing,
+      'pong',
+      500,
+    ).detect();
+
+    await Promise.resolve();
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      outgoing,
+      window.location.origin,
+    );
+
+    dispatchTrustedReply({ type: 'pong' });
+    await expect(detectPromise).resolves.toBe(true);
+  });
+
+  it('resolves true when a same-origin reply from window is received', async () => {
     const detectPromise = messageHandshakeDetector(
       { type: 'probe' },
       'pong',
@@ -241,12 +275,7 @@ describe('messageHandshakeDetector', () => {
 
     await Promise.resolve();
 
-    window.dispatchEvent(
-      new MessageEvent('message', {
-        data: { type: 'pong' },
-        origin: window.location.origin,
-      }),
-    );
+    dispatchTrustedReply({ type: 'pong' });
 
     await expect(detectPromise).resolves.toBe(true);
   });
@@ -260,14 +289,49 @@ describe('messageHandshakeDetector', () => {
 
     await Promise.resolve();
 
-    window.dispatchEvent(
-      new MessageEvent('message', {
-        data: { foo: 'bar' },
-        origin: window.location.origin,
-      }),
-    );
+    dispatchTrustedReply({ foo: 'bar' });
 
     await expect(detectPromise).resolves.toBe(true);
+  });
+
+  it('ignores replies from a different origin', async () => {
+    const detectPromise = messageHandshakeDetector(
+      { type: 'probe' },
+      'pong',
+      100,
+    ).detect();
+
+    await Promise.resolve();
+
+    dispatchMessage({
+      data: { type: 'pong' },
+      origin: 'https://evil.example',
+      source: window,
+    });
+
+    await vi.advanceTimersByTimeAsync(150);
+
+    await expect(detectPromise).resolves.toBe(false);
+  });
+
+  it('ignores replies when event.source is not window', async () => {
+    const detectPromise = messageHandshakeDetector(
+      { type: 'probe' },
+      'pong',
+      100,
+    ).detect();
+
+    await Promise.resolve();
+
+    dispatchMessage({
+      data: { type: 'pong' },
+      origin: window.location.origin,
+      source: null,
+    });
+
+    await vi.advanceTimersByTimeAsync(150);
+
+    await expect(detectPromise).resolves.toBe(false);
   });
 
   it('times out when no matching reply arrives', async () => {
@@ -475,10 +539,24 @@ describe('postMessageProxyDetector', () => {
     ).resolves.toBe(false);
   });
 
-  it('returns true after Web3 probe when proxy replaces postMessage', async () => {
-    const detectPromise = postMessageProxyDetector().detect();
+  it('posts Web3 probe to window.location.origin', async () => {
+    let probeTargetOrigin: string | undefined;
+    const recordingPostMessage = ((message: unknown, targetOrigin: string) => {
+      probeTargetOrigin = targetOrigin;
+      void message;
+    }) as typeof window.postMessage;
 
+    Reflect.set(
+      window,
+      POCKET_UNIVERSE_NATIVE_POST_MESSAGE_SNAPSHOT_KEY,
+      recordingPostMessage,
+    );
+    window.postMessage = recordingPostMessage;
+
+    const detectPromise = postMessageProxyDetector().detect();
     await Promise.resolve();
+
+    expect(probeTargetOrigin).toBe(window.location.origin);
 
     window.postMessage = vi.fn() as unknown as typeof window.postMessage;
 
