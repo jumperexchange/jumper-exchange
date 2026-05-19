@@ -1,8 +1,8 @@
 import { shuffle } from 'lodash';
-import { mergedRPCList } from 'src/const/rpcList';
+import { getMergedRPCList } from 'src/const/rpcList';
 
 export const getShuffledRPCForChain = (chainId: string | number) => {
-  const rpcUrls = mergedRPCList[chainId];
+  const rpcUrls = getMergedRPCList()[chainId];
   if (!rpcUrls?.length) {
     return;
   }

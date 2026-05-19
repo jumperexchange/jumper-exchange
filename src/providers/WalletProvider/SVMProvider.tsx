@@ -12,6 +12,7 @@ import {
 } from 'react';
 import type { SolanaClientConfig } from '@solana/client';
 import envConfig from '@/config/env-config';
+import { getCustomRPCs } from '@/const/rpcList';
 import { useHydrated } from '@/hooks/useHydrated';
 
 const SOLANA_CHAIN_ID = '1151111081099710';
@@ -20,14 +21,11 @@ function getSolanaRpcUrl(): string | undefined {
   if (envConfig.NEXT_PUBLIC_SOLANA_RPC_URI) {
     return envConfig.NEXT_PUBLIC_SOLANA_RPC_URI;
   }
-  try {
-    const customRpcs = JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS || '{}');
-    const solanaRpcs = customRpcs[SOLANA_CHAIN_ID];
-    if (Array.isArray(solanaRpcs) && solanaRpcs.length > 0) {
-      return solanaRpcs[0];
-    }
-  } catch {
-    // ignore parse errors
+  // getCustomRPCs() strips browser-only endpoints (e.g. Helius) on SSR so
+  // we never warm up an authenticated, rate-limited RPC from the pod fleet.
+  const solanaRpcs = getCustomRPCs()[SOLANA_CHAIN_ID];
+  if (Array.isArray(solanaRpcs) && solanaRpcs.length > 0) {
+    return solanaRpcs[0];
   }
   return undefined;
 }
