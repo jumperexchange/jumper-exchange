@@ -1,13 +1,12 @@
 'use client';
 
-import './extensionDetectionRegister';
-
 import React, { useCallback, useEffect } from 'react';
 import { useStore } from 'zustand';
-import { extensionDetectionStore } from './extensionDetectionSingletonStore';
+import { extensionDetectionInitialDefinitions } from './extensionDetectionInitialDefinitions';
 import {
   DEFAULT_EXTENSION_STATUS,
   type ExtensionDetectionStore,
+  extensionDetectionStore,
   ExtensionDetectionStoreContext,
   useExtensionDetectionStore,
 } from './store';
@@ -20,7 +19,7 @@ export type {
   ExtensionStatus,
 } from './utils';
 
-export { extensionDetectionStore } from './extensionDetectionSingletonStore';
+export { extensionDetectionStore } from './store';
 export {
   chromeExtensionInjectedDetector,
   domElementDetector,
@@ -34,6 +33,14 @@ export {
   resourceFetchDetector,
   stylesheetDetector,
 } from './utils';
+
+extensionDetectionStore
+  .getState()
+  .initRegistry(extensionDetectionInitialDefinitions);
+
+for (const def of extensionDetectionInitialDefinitions) {
+  void extensionDetectionStore.getState().runCheck(def.name);
+}
 
 export interface ExtensionDetectionProviderProps {
   children: React.ReactNode;

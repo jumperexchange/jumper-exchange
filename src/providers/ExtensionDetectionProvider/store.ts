@@ -86,6 +86,8 @@ export function createExtensionDetectionStore(): StoreApi<ExtensionDetectionStor
   }));
 }
 
+export const extensionDetectionStore = createExtensionDetectionStore();
+
 export const ExtensionDetectionStoreContext =
   createContext<StoreApi<ExtensionDetectionStore> | null>(null);
 

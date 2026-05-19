@@ -34,7 +34,7 @@ import {
   THEME_COLOR_SCHEME_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
-import { ExtensionDetectionRoot } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionRoot';
+import { ExtensionDetectionProvider } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
 import {
   getPocketUniverseHtmlDataCsnSnapshotInlineScript,
   getPostMessageNativeSnapshotInlineScript,
@@ -252,7 +252,7 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
-                          <ExtensionDetectionRoot>
+                          <ExtensionDetectionProvider>
                             <Suspense>
                               <ReferrerCapture />
                               <FeatureFlagsBootstrap />
@@ -260,7 +260,7 @@ export default async function RootLayout({
                             <NavbarWrapper />
                             <IntercomProvider />
                             <main>{children}</main>
-                          </ExtensionDetectionRoot>
+                          </ExtensionDetectionProvider>
                         </PortfolioProvider>
                       </NuqsAdapter>
                     </SettingsStoreProvider>
