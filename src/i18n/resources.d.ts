@@ -12,7 +12,7 @@ export default interface Resources {
       title: 'This wallet only works on Abstract!';
     };
     alerts: {
-      extension: "We detect that you're using {{extensionName}}. This extension can overwrite transactions on top of Jumper and charge a {{fee, number}}% fee on top.";
+      extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra {{fee, number}}% fee. We recommend disabling these extensions before swapping.';
     };
     badge: {
       updated: 'Updated {{time}} ago';
