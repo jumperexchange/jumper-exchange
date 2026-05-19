@@ -21,7 +21,7 @@ export const fetchSpindlCards = ({
     queryParams: {
       placement_id: PLACEMENT_ID,
       limit: DEFAULT_LIMIT,
-      address,
+      ...(address !== undefined && { address }),
       country,
       chain_id: chainId !== undefined ? String(chainId) : undefined,
       token_address: tokenAddress,
