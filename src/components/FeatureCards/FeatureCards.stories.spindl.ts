@@ -59,17 +59,18 @@ export const useSpindlMatrixCards = (
         ),
       );
 
-      const errorCount = results.filter((r) => r.status === 'rejected').length;
+      let errorCount = results.filter((r) => r.status === 'rejected').length;
 
       const seen = new Set<string>();
       const cards: SpindlCardData[] = [];
       let flatIndex = 0;
 
       for (const result of results) {
-        if (
-          result.status === 'fulfilled' &&
-          isSpindlFetchResponse(result.value)
-        ) {
+        if (result.status === 'fulfilled') {
+          if (!isSpindlFetchResponse(result.value)) {
+            errorCount += 1;
+            continue;
+          }
           for (const item of result.value.items) {
             if (!seen.has(item.id)) {
               seen.add(item.id);
