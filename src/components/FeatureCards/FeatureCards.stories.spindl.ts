@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchSpindlCards } from 'src/hooks/feature-cards/spindl/fetchSpindlCards';
-import { spindlItemToCardData } from 'src/hooks/feature-cards/spindl/spindlMapper';
-import type { SpindlCardData } from 'src/types/spindl';
-import { isSpindlFetchResponse } from 'src/types/spindl';
+import { fetchSpindlCards } from '@/hooks/feature-cards/spindl/fetchSpindlCards';
+import { spindlItemToCardData } from '@/hooks/feature-cards/spindl/spindlMapper';
+import type { SpindlCardData } from '@/types/spindl';
+import { isSpindlFetchResponse } from '@/types/spindl';
 
 // Chain IDs matching @lifi/sdk ChainId enum values (ETH, ARB, OPT, POL, Base)
 const ETH = 1;

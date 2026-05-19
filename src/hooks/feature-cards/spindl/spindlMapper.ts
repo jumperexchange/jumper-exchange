@@ -2,7 +2,7 @@ import type {
   SpindlCardData,
   SpindlMediaAttributes,
   SpindlItem,
-} from 'src/types/spindl';
+} from '@/types/spindl';
 
 export function spindlItemToCardData(
   item: SpindlItem,

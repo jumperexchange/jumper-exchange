@@ -1,5 +1,5 @@
-import type { SpindlFetchData, SpindlFetchParams } from 'src/types/spindl';
-import { callRequest } from 'src/utils/callRequest';
+import type { SpindlFetchData, SpindlFetchParams } from '@/types/spindl';
+import { callRequest } from '@/utils/callRequest';
 import { getSpindlConfig } from './spindlConfig';
 
 const FETCH_SPINDL_PATH = '/render/jumper';

@@ -5,12 +5,9 @@ import {
   type RouteExecutionUpdate,
 } from '@lifi/widget';
 import { useCallback, useEffect } from 'react';
-import { useCallRequest } from 'src/hooks/useCallRequest';
-import {
-  isSpindlFetchResponse,
-  type SpindlFetchParams,
-} from 'src/types/spindl';
-import { getLocale } from 'src/utils/getLocale';
+import { useCallRequest } from '@/hooks/useCallRequest';
+import { isSpindlFetchResponse, type SpindlFetchParams } from '@/types/spindl';
+import { getLocale } from '@/utils/getLocale';
 import { fetchSpindlCards } from './fetchSpindlCards';
 import { useSpindlProcessData } from './useSpindlProcessData';
 
