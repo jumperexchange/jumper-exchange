@@ -46,6 +46,9 @@ interface ContentTypeProps {
   pagination?: PaginationProps;
   filterFeaturedFaq?: boolean;
   queryKey?: (string | number | undefined)[];
+  /** Override the Strapi publication status filter. When omitted the default
+   *  env-based rule applies: 'draft' on non-production, nothing on production. */
+  status?: 'draft' | 'published';
 }
 
 export function getStrapiUrl(contentType: string): URL {
@@ -65,6 +68,7 @@ export const useStrapi = <T>({
   pagination,
   filterFeaturedFaq,
   queryKey,
+  status,
 }: ContentTypeProps): UseStrapiProps<T> => {
   // account needed to filter personalized feature cards
 
@@ -175,14 +179,23 @@ export const useStrapi = <T>({
       apiUrl.searchParams.set('filters[uid][$eq]', filterUid);
     }
   }
-  // show drafts ONLY on development env
-  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('status', 'draft');
-  config.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+  // Explicit `status` prop wins; otherwise show drafts on non-production envs.
+  const defaultStatus =
+    config.NEXT_PUBLIC_ENVIRONMENT !== 'production' ? 'draft' : undefined;
+  const effectiveStatus = status ?? defaultStatus;
+  if (effectiveStatus) {
+    apiUrl.searchParams.set('status', effectiveStatus);
+  }
+  if (config.NEXT_PUBLIC_ENVIRONMENT === 'development') {
     apiUrl.searchParams.set('pagination[pageSize]', '50');
+  }
 
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
-    queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
+    queryKey: [
+      queryKey,
+      filterPersonalFeatureCards?.account?.isConnected,
+      effectiveStatus,
+    ],
     queryFn: async () => {
       const response = await fetch(decodeURIComponent(apiUrl.href));
       const result = await response.json();
