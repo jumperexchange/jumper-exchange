@@ -2,32 +2,52 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { createExtensionDetector } from './createExtensionDetector';
+import { chromeExtensionInjectedDetector } from './detectors/chromeExtensionInjectedDetector';
+import { domElementDetector } from './detectors/domElementDetector';
+import { eip6963AnnounceProviderDetector } from './detectors/eip6963AnnounceProviderDetector';
+import { globalVariableDetector } from './detectors/globalVariableDetector';
+import { messageHandshakeDetector } from './detectors/messageHandshakeDetector';
+import { mutationObserverDetector } from './detectors/mutationObserverDetector';
 import {
-  chromeExtensionInjectedDetector,
-  domElementDetector,
-  eip6963AnnounceProviderDetector,
   getPocketUniverseHtmlDataCsnSnapshotInlineScript,
-  getPostMessageNativeSnapshotInlineScript,
-  globalVariableDetector,
-  messageHandshakeDetector,
-  mutationObserverDetector,
   POCKET_UNIVERSE_HTML_DATA_CSN_SNAPSHOT_KEY,
-  POCKET_UNIVERSE_NATIVE_POST_MESSAGE_SNAPSHOT_KEY,
-  POCKET_UNIVERSE_POST_MESSAGE_PROXY_PROBE_SETTLE_MS,
   pocketUniverseDatasetCsnDetector,
   pocketUniverseHtmlDataCsnSnapshotDetector,
+} from './detectors/pocketUniverse/htmlDataCsnDetector';
+import {
+  getPostMessageNativeSnapshotInlineScript,
+  POCKET_UNIVERSE_NATIVE_POST_MESSAGE_SNAPSHOT_KEY,
+  POCKET_UNIVERSE_POST_MESSAGE_PROXY_PROBE_SETTLE_MS,
   postMessageProxyDetector,
-  resourceFetchDetector,
-  runDetectors,
-  stylesheetDetector,
-  withTimeout,
-  type ExtensionDefinition,
-} from './utils';
+} from './detectors/pocketUniverse/postMessageProxyDetector';
+import { resourceFetchDetector } from './detectors/resourceFetchDetector';
+import { stylesheetDetector } from './detectors/stylesheetDetector';
+import { runDetectors } from './runDetectors';
+import type { ExtensionDefinition } from './types';
+import { withTimeout } from './withTimeout';
 
 const runInlineScript = (source: string): void => {
   const execute = new Function(source);
   execute();
 };
+
+describe('createExtensionDetector', () => {
+  it('builds the same detector as domElementDetector', async () => {
+    const el = document.createElement('div');
+    el.id = 'api-marker';
+    document.body.appendChild(el);
+
+    const detector = createExtensionDetector({
+      kind: 'domElement',
+      selector: '#api-marker',
+    });
+
+    await expect(detector.detect()).resolves.toBe(true);
+    expect(detector.strategy).toBe('dom-element:#api-marker');
+    document.body.innerHTML = '';
+  });
+});
 
 describe('domElementDetector', () => {
   afterEach(() => {

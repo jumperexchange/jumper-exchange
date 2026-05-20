@@ -35,10 +35,8 @@ import {
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
 import { ExtensionDetectionProvider } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
-import {
-  getPocketUniverseHtmlDataCsnSnapshotInlineScript,
-  getPostMessageNativeSnapshotInlineScript,
-} from '@/providers/ExtensionDetectionProvider/utils';
+import { getPocketUniverseHtmlDataCsnSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/detectors/pocketUniverse/htmlDataCsnDetector';
+import { getPostMessageNativeSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/detectors/pocketUniverse/postMessageProxyDetector';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {

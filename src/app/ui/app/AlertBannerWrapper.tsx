@@ -4,14 +4,14 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import { type FC } from 'react';
 
-import { useExtension } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
+import { useExtensionDetectionStatus } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
 import { POCKET_UNIVERSE_EXTENSION } from '@/providers/ExtensionDetectionProvider/extensionDetectionInitialDefinitions';
 import { useTranslation } from 'react-i18next';
 import { useAccount } from '@lifi/wallet-management';
 
 export const AlertBannerWrapper: FC = ({}) => {
   const { t } = useTranslation();
-  const { detected } = useExtension(POCKET_UNIVERSE_EXTENSION);
+  const { detected } = useExtensionDetectionStatus(POCKET_UNIVERSE_EXTENSION);
   const { account } = useAccount();
   const showAlert = detected && !!account?.isConnected;
 

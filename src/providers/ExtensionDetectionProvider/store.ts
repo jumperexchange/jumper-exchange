@@ -2,11 +2,8 @@
 
 import { createContext, useContext } from 'react';
 import { createStore, type StoreApi } from 'zustand';
-import {
-  type ExtensionDefinition,
-  type ExtensionStatus,
-  runDetectors,
-} from './utils';
+import { runDetectors } from './runDetectors';
+import type { ExtensionDefinition, ExtensionStatus } from './types';
 
 export interface ExtensionDetectionStore {
   statusMap: Record<string, ExtensionStatus>;

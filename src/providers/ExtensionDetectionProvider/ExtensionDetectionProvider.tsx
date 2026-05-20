@@ -10,29 +10,7 @@ import {
   ExtensionDetectionStoreContext,
   useExtensionDetectionStore,
 } from './store';
-import type { ExtensionStatus } from './utils';
-
-export type {
-  Eip6963AnnounceProviderMatch,
-  ExtensionDefinition,
-  ExtensionDetector,
-  ExtensionStatus,
-} from './utils';
-
-export { extensionDetectionStore } from './store';
-export {
-  chromeExtensionInjectedDetector,
-  domElementDetector,
-  eip6963AnnounceProviderDetector,
-  globalVariableDetector,
-  messageHandshakeDetector,
-  mutationObserverDetector,
-  pocketUniverseDatasetCsnDetector,
-  pocketUniverseHtmlDataCsnSnapshotDetector,
-  postMessageProxyDetector,
-  resourceFetchDetector,
-  stylesheetDetector,
-} from './utils';
+import type { ExtensionStatus } from './types';
 
 extensionDetectionStore
   .getState()
@@ -71,7 +49,7 @@ export function ExtensionDetectionProvider({
   );
 }
 
-export function useExtension(name: string): ExtensionStatus {
+export function useExtensionDetectionStatus(name: string): ExtensionStatus {
   const store = useExtensionDetectionStore();
   const key = name.toLowerCase();
   const selectStatus = useCallback(
