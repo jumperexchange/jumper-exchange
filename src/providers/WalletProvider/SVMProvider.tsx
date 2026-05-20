@@ -79,18 +79,28 @@ export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   // `<SolanaProvider>` wrapper is kept identical across both paths so children
   // do NOT unmount when the underlying client is replaced — only the
   // `SolanaClientContext` value changes, which is exactly what we want.
+  //
+  // `walletPersistence` is also gated on `isHydrated`. Pre-hydration we pass
+  // `false`, which fully short-circuits `<SolanaProvider>`'s persistence path:
+  // no `localStorage` read, no `<WalletPersistence>` child mounted, and no
+  // `subscribeSolanaState(...)` against the stub client (which has no actions
+  // wired up). Once hydrated we install the real persistence config, at which
+  // point auto-connect runs against the real client.
   const providerProps = isHydrated
-    ? { config: solanaConfig }
-    : { client: ssrSolanaClient };
+    ? {
+        config: solanaConfig,
+        walletPersistence: {
+          autoConnect: true,
+          storageKey: 'jumper-solana',
+        },
+      }
+    : {
+        client: ssrSolanaClient,
+        walletPersistence: false as const,
+      };
 
   return (
-    <SolanaProvider
-      {...providerProps}
-      walletPersistence={{
-        autoConnect: isHydrated,
-        storageKey: 'jumper-solana',
-      }}
-    >
+    <SolanaProvider {...providerProps}>
       <SolanaWalletSync>{children}</SolanaWalletSync>
     </SolanaProvider>
   );
