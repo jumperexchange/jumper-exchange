@@ -1,6 +1,11 @@
 import { expect } from '@playwright/test';
 
+import { perfPaths, slugFromHref } from '../data/perfUrls';
+import { gotoAndWaitForLoad } from '../utils/navigationUtils';
+
 import type { Locator, Page } from '@playwright/test';
+
+const PAGE_READY_TIMEOUT_MS = 60_000;
 
 const ANALYTICS_BUTTON_TESTIDS = [
   'analytics-range-week',
@@ -38,6 +43,32 @@ export class EarnPage {
     await this.clearButton.click();
   }
 
+  async discoverOpportunitySlugs(
+    locale: string,
+    limit: number,
+  ): Promise<string[]> {
+    await this.goto(locale);
+    await this.expectAllMarketsListReady();
+
+    const hrefs = await this.cardsGrid
+      .locator('a[href*="/earn/"]')
+      .evaluateAll((anchors) =>
+        anchors
+          .map((anchor) => anchor.getAttribute('href'))
+          .filter((href): href is string => !!href),
+      );
+
+    const slugs = [
+      ...new Set(
+        hrefs
+          .map((href) => slugFromHref(href, 'earn'))
+          .filter((slug): slug is string => !!slug),
+      ),
+    ];
+
+    return slugs.slice(0, limit);
+  }
+
   async expectAllCardsHaveTag(selectedTag: string): Promise<void> {
     const slug = (label: string): string =>
       label.toLowerCase().replace(/\s+/g, '-');
@@ -64,6 +95,19 @@ export class EarnPage {
     for (let i = 0; i < count; i++) {
       await expect(chainNameElements.nth(i)).toHaveText(expectedPattern);
     }
+  }
+
+  async expectAllMarketsListReady(): Promise<void> {
+    await expect(this.allMarketsTab).toBeVisible({
+      timeout: PAGE_READY_TIMEOUT_MS,
+    });
+    await this.selectAllMarketsTab();
+    await expect(this.cardsGrid.first()).toBeVisible({
+      timeout: PAGE_READY_TIMEOUT_MS,
+    });
+    await expect(
+      this.cardsGrid.getByTestId('entity-stack-title').first(),
+    ).toBeVisible({ timeout: PAGE_READY_TIMEOUT_MS });
   }
 
   async expectAnalyticsButtonsVisible(): Promise<void> {
@@ -125,6 +169,10 @@ export class EarnPage {
     const options = await this.page.getByRole('option').allTextContents();
     await this.page.keyboard.press('Escape');
     return options;
+  }
+
+  async goto(locale: string): Promise<void> {
+    await gotoAndWaitForLoad(this.page, perfPaths.earnIndex(locale));
   }
 
   async selectAllMarketsTab(): Promise<void> {
