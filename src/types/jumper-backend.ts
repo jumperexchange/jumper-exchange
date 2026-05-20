@@ -915,8 +915,6 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
-  /** @deprecated */
-  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
@@ -1333,8 +1331,6 @@ export interface EarnOpportunityWithScore {
   lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
-  /** @deprecated */
-  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
