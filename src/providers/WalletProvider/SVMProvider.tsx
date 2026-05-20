@@ -10,10 +10,11 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import type { SolanaClientConfig } from '@solana/client';
+import type { SolanaClient, SolanaClientConfig } from '@solana/client';
 import envConfig from '@/config/env-config';
 import { getCustomRPCs } from '@/const/rpcList';
 import { useHydrated } from '@/hooks/useHydrated';
+import { createSsrSolanaClient } from './ssrSolanaClient';
 
 const SOLANA_CHAIN_ID = '1151111081099710';
 
@@ -56,6 +57,13 @@ const SolanaWalletSync: FC<PropsWithChildren> = ({ children }) => {
   return children;
 };
 
+// Pre-hydration stub client built once per process. Satisfies the
+// `<SolanaProvider client={...}>` contract without calling `createClient(...)`,
+// which is what triggers the `getLatestBlockhash` cluster warmup against
+// rate-limited / IP-restricted Solana RPCs from the pod fleet on every SSR
+// render. See `./ssrSolanaClient.ts` for the rationale.
+const ssrSolanaClient: SolanaClient = createSsrSolanaClient();
+
 export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
   const isHydrated = useHydrated();
   const solanaConfig = useMemo<SolanaClientConfig>(() => {
@@ -66,9 +74,18 @@ export const SVMProvider: FC<PropsWithChildren> = ({ children }) => {
     };
   }, []);
 
+  // Provide a no-warmup stub on SSR + the first client render (so hydration
+  // matches), then swap to a real config-driven client once hydrated. The
+  // `<SolanaProvider>` wrapper is kept identical across both paths so children
+  // do NOT unmount when the underlying client is replaced — only the
+  // `SolanaClientContext` value changes, which is exactly what we want.
+  const providerProps = isHydrated
+    ? { config: solanaConfig }
+    : { client: ssrSolanaClient };
+
   return (
     <SolanaProvider
-      config={solanaConfig}
+      {...providerProps}
       walletPersistence={{
         autoConnect: isHydrated,
         storageKey: 'jumper-solana',
