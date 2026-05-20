@@ -24,21 +24,43 @@ flowchart TD
   TokenHelper["formatTokenAmountWithDust(amount, symbol)\nin src/utils/formatNumbers.ts"]
   USDConst["DUST_USD_THRESHOLD = 0.01\nDUST_USD_LABEL\nin src/utils/formatNumbers.ts"]
   USDHelper["formatUSDWithDust(amountUSD)\nin src/utils/formatNumbers.ts"]
-  TokenMethod["SimpleToken.formatTokenWithSymbol\nin src/utils/Token.ts"]
+
+  TokenHook["useTokenFormatters\n.toDisplayAmount / .toDisplayAmountUSD\nin src/hooks/tokens/useTokenFormatters.ts"]
+  PortfolioHook["usePortfolioFormatters\n.toDisplayAggregatedAmount / .toDisplayAggregatedAmountUSD\nin src/hooks/tokens/usePortfolioFormatters.ts"]
+  TokenAmount["TokenAmount family\n(SingleTokenAmount / AggregatedTokenAmount)"]
+  Portfolio["Portfolio surfaces\n(PositionCard rows, BalanceCard, BalanceStackItem)"]
+
+  SimpleMethod["SimpleToken.formatTokenWithSymbol\nin src/utils/Token.ts"]
   USDMethod["ExtendedToken.formatAmountUSD\nin src/utils/Token.ts"]
   Earn["EarnDetailsActionsPosition\n(via formatAmount / formatAmountFromUSD / formatUSDWithDust)"]
-  DeFi["DeFiPositionCard renderValueCell\nin src/components/composite/DeFiPositionCard/utils.tsx"]
 
   TokenConst --> TokenHelper
   USDConst --> USDHelper
-  TokenHelper --> TokenMethod
-  TokenMethod --> Earn
+
+  TokenHelper --> TokenHook
+  USDHelper --> TokenHook
+  TokenHelper --> PortfolioHook
+  USDHelper --> PortfolioHook
+  TokenHook --> TokenAmount
+  PortfolioHook --> TokenAmount
+  TokenAmount --> Portfolio
+
+  TokenHelper --> SimpleMethod
   USDHelper --> USDMethod
+  SimpleMethod --> Earn
   USDMethod --> Earn
   USDHelper --> Earn
-  TokenHelper --> DeFi
-  USDHelper --> DeFi
 ```
+
+### Where applied
+
+| Surface                      | Entry point                                         | Routes through                                                                                                                                                       |
+| ---------------------------- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Portfolio DeFi positions tab | `PositionCard.renderValueCell` -> `TokenAmount`     | `useTokenFormatters` (single) / `usePortfolioFormatters` (aggregated)                                                                                                |
+| Portfolio Tokens tab         | `BalanceCard` / `BalanceStackItem` -> `TokenAmount` | `useTokenFormatters` / `usePortfolioFormatters`                                                                                                                      |
+| Earn "Your position" card    | `EarnDetailsActionsPosition`                        | `SimpleToken.formatAmount` -> `formatTokenAmountWithDust`; `ExtendedToken.formatAmountUSD` -> `formatUSDWithDust`; direct `formatUSDWithDust` in the USD-only branch |
+
+The hooks inline the `numeric > 0 && numeric < THRESHOLD` predicate and delegate to the helpers only on the dust branch, so non-dust values keep their existing localized `format.decimal` / `format.currency` / `format.currencyCompact` formatting.
 
 ## Boundary cases
 
@@ -62,6 +84,6 @@ flowchart TD
 
 ## Out of scope
 
-`PositionCard` / `TokenAmount` already caps display via `useTokenFormatters.toDisplayAmount` (`maximumFractionDigits: 3`), so it never produces a long-decimal dust string. Leaving it untouched keeps this change minimal.
+The global `currencyFormatter` / `t('format.currency', ...)` path (NetworkCost, FeeBreakdownTooltip, etc.) is intentionally unchanged on its own. Collapsing applies to call sites that route through `useTokenFormatters` / `usePortfolioFormatters` (Portfolio surfaces via `TokenAmount`) and the Earn `Token.ts` methods. Other consumers of `t('format.currency')` keep their existing behavior.
 
-The global `currencyFormatter` / `t('format.currency', ...)` path (NetworkCost, FeeBreakdownTooltip, etc.) is intentionally unchanged; collapsing applies only to position surfaces where sub-cent values are noise.
+The deprecated `src/components/composite/DeFiPositionCard/` folder was deleted as part of this change since the Portfolio Provider migration left it without production references.
