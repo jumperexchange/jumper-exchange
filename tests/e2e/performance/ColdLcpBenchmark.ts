@@ -48,43 +48,48 @@ export class ColdLcpBenchmark {
   async measureMissionsToEarnTransition(): Promise<TransitionMetrics> {
     const { locale } = this.config;
     const context = await this.browser.newContext();
-    const page = await context.newPage();
-    const coordinator = new PerfPageCoordinator(page);
 
-    await installLcpObserver(page);
+    try {
+      const page = await context.newPage();
+      const coordinator = new PerfPageCoordinator(page);
 
-    const missionsStart = Date.now();
-    await gotoAndWaitForLoad(page, perfPaths.missionsIndex(locale));
-    await coordinator.waitUntilReady('missions-index');
-    const missionsReadyMs = Date.now() - missionsStart;
+      await installLcpObserver(page);
 
-    const earnNavStart = Date.now();
-    await gotoAndWaitForLoad(page, perfPaths.earnIndex(locale));
-    await coordinator.waitUntilReady('earn-index');
-    const earnNavigationMs = Date.now() - earnNavStart;
-    const earnLcpMs = await readLcpMs(page);
+      const missionsStart = Date.now();
+      await gotoAndWaitForLoad(page, perfPaths.missionsIndex(locale));
+      await coordinator.waitUntilReady('missions-index');
+      const missionsReadyMs = Date.now() - missionsStart;
 
-    await context.close();
+      const earnNavStart = Date.now();
+      await gotoAndWaitForLoad(page, perfPaths.earnIndex(locale));
+      await coordinator.waitUntilReady('earn-index');
+      const earnNavigationMs = Date.now() - earnNavStart;
+      const earnLcpMs = await readLcpMs(page);
 
-    return {
-      earnLcpMs,
-      earnNavigationMs,
-      missionsReadyMs,
-      transitionDeltaMs: earnNavigationMs,
-    };
+      return {
+        earnLcpMs,
+        earnNavigationMs,
+        missionsReadyMs,
+        transitionDeltaMs: earnNavigationMs,
+      };
+    } finally {
+      await context.close();
+    }
   }
 
   async measureRoute(route: PerfRoute): Promise<number> {
     const context = await this.browser.newContext();
-    const page = await context.newPage();
 
-    await installLcpObserver(page);
-    await gotoAndWaitForLoad(page, route.path);
-    await new PerfPageCoordinator(page).waitUntilReady(route.kind);
-    const lcpMs = await readLcpMs(page);
+    try {
+      const page = await context.newPage();
 
-    await context.close();
-    return lcpMs;
+      await installLcpObserver(page);
+      await gotoAndWaitForLoad(page, route.path);
+      await new PerfPageCoordinator(page).waitUntilReady(route.kind);
+      return await readLcpMs(page);
+    } finally {
+      await context.close();
+    }
   }
 
   async runSamples(

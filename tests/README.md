@@ -109,12 +109,11 @@ CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runn
 ```
 tests/
 ├── e2e/
-│   ├── data/        # typed constants — URLs, settings labels, theme RGBs, wallet options
+│   ├── data/        # typed constants — URLs, settings labels, theme RGBs, wallet options, perfConfig, perfUrls
 │   ├── pages/       # class-based POMs (one per page area)
 │   ├── fixtures/    # noWallet / realWallet / connectedWallet
 │   ├── wallet/      # real-MetaMask driver framework (load-bearing)
-│   ├── data/        # perfConfig, perfUrls (cold-load LCP env + paths)
-│   ├── utils/       # measureLcp, perfRandom (pure helpers)
+│   ├── utils/       # measureLcp, perfRandom, navigationUtils (pure helpers)
 │   ├── performance/ # ColdLcpBenchmark, PerfSlugPool, PerfRouteFactory
 │   └── *.spec.ts
 └── tsconfig.json

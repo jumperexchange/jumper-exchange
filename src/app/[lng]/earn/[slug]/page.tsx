@@ -4,7 +4,8 @@ import {
   pageTwitter,
 } from '@/app/lib/metadata';
 import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
-import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
+import { EarnPage } from '@/app/ui/earn/EarnPage';
+import { EarnPageSkeleton } from '@/app/ui/earn/EarnPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';

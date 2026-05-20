@@ -17,24 +17,30 @@ export class PerfSlugPool {
   ): Promise<PerfSlugPool> {
     const discoverMissionSlugs = async (): Promise<string[]> => {
       const context = await browser.newContext();
-      const page = await context.newPage();
-      const slugs = await new MissionsPage(page).discoverSlugs(
-        config.locale,
-        config.slugPoolLimit,
-      );
-      await context.close();
-      return slugs;
+
+      try {
+        const page = await context.newPage();
+        return await new MissionsPage(page).discoverSlugs(
+          config.locale,
+          config.slugPoolLimit,
+        );
+      } finally {
+        await context.close();
+      }
     };
 
     const discoverEarnSlugs = async (): Promise<string[]> => {
       const context = await browser.newContext();
-      const page = await context.newPage();
-      const slugs = await new EarnPage(page).discoverOpportunitySlugs(
-        config.locale,
-        config.slugPoolLimit,
-      );
-      await context.close();
-      return slugs;
+
+      try {
+        const page = await context.newPage();
+        return await new EarnPage(page).discoverOpportunitySlugs(
+          config.locale,
+          config.slugPoolLimit,
+        );
+      } finally {
+        await context.close();
+      }
     };
 
     // Separate pages: concurrent goto on one tab aborts the other (ERR_ABORTED).
