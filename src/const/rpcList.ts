@@ -53,6 +53,11 @@ const BROWSER_ONLY_RPC_HOSTS = [
   // QuikNode endpoints are authenticated/paid; we don't want SSR pods
   // burning the request budget on cluster-warmup pings.
   'quiknode.pro',
+  // Triton One (rpcpool.com) hosts our private LiFi Solana RPC, which is
+  // origin/IP-restricted and returns 403 when called from pod IPs. This is
+  // what surfaces as `[react-core] cluster warmup failed ... 'Forbidden'`
+  // on SSR after Helius/QuikNode are filtered out.
+  'rpcpool.com',
 ];
 
 function isBrowserOnlyRpc(url: string): boolean {
