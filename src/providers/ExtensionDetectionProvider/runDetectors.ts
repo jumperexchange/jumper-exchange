@@ -41,7 +41,8 @@ export const runDetectors = async (
     };
 
     definition.detectors.forEach((d, index) => {
-      withTimeout(d.detect(), d.timeout ?? 2000, false)
+      const detectPromise = Promise.resolve().then(() => d.detect());
+      withTimeout(detectPromise, d.timeout ?? 2000, false)
         .catch(() => false)
         .then((result) => settle(result, index));
     });

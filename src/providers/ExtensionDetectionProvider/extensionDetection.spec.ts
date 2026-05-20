@@ -702,6 +702,45 @@ describe('runDetectors', () => {
     await expect(runDetectors(definition)).resolves.toBe(true);
   });
 
+  it('treats synchronous detector throws as false', async () => {
+    const definition: ExtensionDefinition = {
+      name: 'test-ext',
+      detectors: [
+        {
+          strategy: 'throws-sync',
+          detect: () => {
+            throw new Error('sync detect failed');
+          },
+        },
+        { strategy: 'ok', detect: async () => true },
+      ],
+    };
+
+    await expect(runDetectors(definition)).resolves.toBe(true);
+  });
+
+  it('resolves false when every detector throws synchronously', async () => {
+    const definition: ExtensionDefinition = {
+      name: 'test-ext',
+      detectors: [
+        {
+          strategy: 'throws-sync-a',
+          detect: () => {
+            throw new Error('sync a');
+          },
+        },
+        {
+          strategy: 'throws-sync-b',
+          detect: () => {
+            throw new Error('sync b');
+          },
+        },
+      ],
+    };
+
+    await expect(runDetectors(definition)).resolves.toBe(false);
+  });
+
   it('uses detector timeout via withTimeout', async () => {
     vi.useFakeTimers();
 
