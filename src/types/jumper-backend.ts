@@ -1047,23 +1047,28 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   cancelToken?: CancelToken;
 }
 
-export type VaultSpecificData = Record<string, any> | null;
-
-export type VaultsFYICallDataResponse = {
-  currentActionIndex: number;
-  actions: VaultsFYICallDataActionResponse[];
-};
-
-export type VaultsFYICallDataActionResponse = {
-  name: string;
-  tx: WalletCall;
-};
-
-export interface WalletCall {
+export interface CallDataTxDto {
+  /** Address of the transaction recipient */
   to: Hex;
+  /** Hex-encoded calldata, 0x-prefixed */
   data: `0x${string}`;
+  /** Value (in wei) to send with the transaction */
   value?: string;
+  /** Chain ID of the transaction */
   chainId: number;
+}
+
+export interface CallDataActionDto {
+  /** Name of the action step */
+  name: string;
+  tx: CallDataTxDto;
+}
+
+export interface CallDataResponseDto {
+  /** Index of the current action in the actions array */
+  currentActionIndex: number;
+  /** Ordered list of transaction steps to execute */
+  actions: CallDataActionDto[];
 }
 
 export type RequestParams = Omit<
@@ -1451,8 +1456,8 @@ export class JumperBackend<
      *
      * @tags Earn, Public
      * @name earnControllerGetVaultSpecificDataV1
-     * @summary Get an earn opportunity by slug
-     * @request GET:/v1/earn/items/{slug}
+     * @summary Get the vault specific data for a user in a given earn opportunity
+     * @request GET:/v1/earn/items/{slug}/vault-specific-data
      */
     earnControllerGetVaultSpecificDataV1: (
       slug: string,
@@ -1461,7 +1466,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<VaultSpecificData, any>({
+      this.request<Record<string, any> | null, any>({
         path: `/v1/earn/items/${slug}/vault-specific-data`,
         method: 'GET',
         query: query,
@@ -1474,7 +1479,7 @@ export class JumperBackend<
      *
      * @tags Earn, Public
      * @name earnControllerGetRequestRedeemCallDataV1
-     * @summary Get an earn opportunity by slug
+     * @summary Get request-redeem calldata for an earn opportunity
      * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
      */
     earnControllerGetRequestRedeemCallDataV1: (
@@ -1485,7 +1490,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<{ data: VaultsFYICallDataResponse }, any>({
+      this.request<CallDataResponseDto, any>({
         path: `/v1/earn/items/${slug}/request-redeem/call-data`,
         method: 'GET',
         query: query,
@@ -1498,18 +1503,17 @@ export class JumperBackend<
      *
      * @tags Earn, Public
      * @name earnControllerGetClaimRedeemCalldataV1
-     * @summary Get an earn opportunity by slug
+     * @summary Get claim-redeem calldata for an earn opportunity
      * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
      */
     earnControllerGetClaimRedeemCalldataV1: (
       slug: string,
       query?: {
         address: Hex;
-        amount: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<{ data: VaultsFYICallDataResponse }, any>({
+      this.request<CallDataResponseDto, any>({
         path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
         query: query,

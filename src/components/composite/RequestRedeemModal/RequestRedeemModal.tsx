@@ -72,10 +72,10 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         earnOpportunity.slug,
         {
           address: accountAddress as Hex,
-          amount: selectedClaim.assetAmount ?? '0',
         },
       );
 
+      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return data.data;
     }
     const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
@@ -83,14 +83,9 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
       { address: accountAddress as Hex, amount },
     );
 
+    // @ts-expect-error: see LF-15589 - we are transforming data in the backend
     return data.data;
-  }, [
-    isClaimFlow,
-    earnOpportunity.slug,
-    accountAddress,
-    selectedClaim,
-    amount,
-  ]);
+  }, [isClaimFlow, earnOpportunity.slug, accountAddress, amount]);
 
   const transactionForm = useTransactionForm({
     chainId: earnOpportunity.lpToken.chain.chainId,
