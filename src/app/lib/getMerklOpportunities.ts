@@ -1,5 +1,6 @@
 import { withScope, captureException } from '@sentry/nextjs';
-import { merklApi } from 'src/utils/merkl/merklApi';
+import { unstable_cache } from 'next/cache';
+import { MERKL_STALE_TIME, merklApi } from 'src/utils/merkl/merklApi';
 
 // Infer types from the API
 type MerklOpportunitesApiResponse = Awaited<
@@ -50,7 +51,7 @@ async function fetchOpportunities(
   }
 }
 
-export async function getMerklOpportunities({
+async function getMerklOpportunitiesUncached({
   campaignId,
   chainIds,
   searchQueries,
@@ -60,37 +61,43 @@ export async function getMerklOpportunities({
     return [];
   }
 
-  const allOpportunities: MerklOpportunity[] = [];
-
   // Handle campaign-specific query first (highest priority)
   if (campaignId) {
-    const opportunities = await fetchOpportunities({ campaignId });
-    return opportunities;
+    return fetchOpportunities({ campaignId });
   }
 
   // Handle chain-specific queries
   if (chainIds?.length) {
-    for (const chainId of chainIds) {
-      // If search queries exist, combine them with chain queries
-      if (searchQueries?.length) {
-        for (const search of searchQueries) {
-          const opportunities = await fetchOpportunities({ chainId, search });
-          allOpportunities.push(...opportunities);
-        }
-      } else {
-        // Just fetch chain opportunities
-        const opportunities = await fetchOpportunities({ chainId });
-        allOpportunities.push(...opportunities);
-      }
+    if (searchQueries?.length) {
+      const results = await Promise.all(
+        chainIds.flatMap((chainId) =>
+          searchQueries.map((search) =>
+            fetchOpportunities({ chainId, search }),
+          ),
+        ),
+      );
+      return results.flat();
     }
-  }
-  // Handle search-only queries if no chains specified
-  else if (searchQueries?.length) {
-    for (const search of searchQueries) {
-      const opportunities = await fetchOpportunities({ search });
-      allOpportunities.push(...opportunities);
-    }
+
+    const results = await Promise.all(
+      chainIds.map((chainId) => fetchOpportunities({ chainId })),
+    );
+    return results.flat();
   }
 
-  return allOpportunities;
+  // Handle search-only queries if no chains specified
+  if (searchQueries?.length) {
+    const results = await Promise.all(
+      searchQueries.map((search) => fetchOpportunities({ search })),
+    );
+    return results.flat();
+  }
+
+  return [];
 }
+
+export const getMerklOpportunities = unstable_cache(
+  getMerklOpportunitiesUncached,
+  ['merkl-opportunities'],
+  { revalidate: MERKL_STALE_TIME / 1000 },
+);

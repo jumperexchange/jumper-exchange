@@ -5,6 +5,15 @@ import {
 } from '@/app/lib/metadata';
 import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
 import { AppPaths, getSiteUrl } from '@/const/urls';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import {
+  earnFilterOpportunitiesQueryKey,
+  fetchEarnFilterOpportunities,
+} from '@/hooks/earn/useEarnFilterOpportunities';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -24,12 +33,18 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const renderId = Math.random().toString(36).slice(2, 6);
-  console.log('1. Earn page', renderId);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: earnFilterOpportunitiesQueryKey({}),
+    queryFn: () => fetchEarnFilterOpportunities({}),
+  });
 
   return (
-    <Suspense fallback={<EarnsPageSkeleton />}>
-      <EarnsPage />
-    </Suspense>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<EarnsPageSkeleton />}>
+        <EarnsPage />
+      </Suspense>
+    </HydrationBoundary>
   );
 }
