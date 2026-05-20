@@ -338,7 +338,7 @@ const AllCardsPreview = ({ globals }: AllCardsPreviewProps) => {
 };
 
 const meta: Meta<typeof AllCardsPreview> = {
-  title: 'Components/FeatureCards/All Cards',
+  title: 'Preview/FeatureCards',
   component: AllCardsPreview,
   tags: ['autodocs'],
 };

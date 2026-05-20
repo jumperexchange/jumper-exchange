@@ -48,6 +48,12 @@ const preview: Preview = {
       locale: 'en',
     },
 
+    options: {
+      storySort: {
+        order: ['Preview', '*'],
+      },
+    },
+
     controls: {
       matchers: {
         color: /(background|color)$/i,
