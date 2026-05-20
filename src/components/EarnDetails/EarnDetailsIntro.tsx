@@ -16,6 +16,7 @@ import { EarnDetailsActions } from './EarnDetailsActions';
 import { formatDistance } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
+import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -29,15 +30,20 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
   useZapEarnOpportunitySlugStorage(data.slug);
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  // The SSR/ISR snapshot can be served stale by the CDN (JUM-775), so the
+  // prop-level `data.latest.date` may be days old. Prefer the live refetch
+  // for the "Updated at" badge; fall back to the SSR value for first paint.
+  const { data: liveData } = useEarnOpportunityBySlug(data.slug);
+  const liveLatestDate = liveData?.latest?.date ?? data.latest?.date;
   const updateBadgeLabel = useMemo(() => {
-    if (!data.latest.date) {
+    if (!liveLatestDate) {
       return '';
     }
 
     const now = Date.now();
-    const distance = formatDistance(data.latest.date, now);
+    const distance = formatDistance(liveLatestDate, now);
     return t('earn.overview.updated', { time: distance });
-  }, [data.latest.date, t]);
+  }, [liveLatestDate, t]);
 
   return (
     <EarnDetailsRowFlexContainer>
