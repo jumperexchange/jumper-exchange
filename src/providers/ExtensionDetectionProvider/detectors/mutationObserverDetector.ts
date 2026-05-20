@@ -8,15 +8,30 @@ export const mutationObserverDetector = (
   timeout: observeMs + 200,
   detect: () =>
     new Promise<boolean>((resolve) => {
+      let settled = false;
+      let timeoutId: ReturnType<typeof setTimeout> | undefined = undefined;
+      let observer: MutationObserver | undefined = undefined;
+
+      const finish = (result: boolean) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (timeoutId !== undefined) {
+          clearTimeout(timeoutId);
+        }
+        observer?.disconnect();
+        resolve(result);
+      };
+
       if (document.querySelector(selector)) {
-        resolve(true);
+        finish(true);
         return;
       }
 
-      const observer = new MutationObserver(() => {
+      observer = new MutationObserver(() => {
         if (document.querySelector(selector)) {
-          observer.disconnect();
-          resolve(true);
+          finish(true);
         }
       });
 
@@ -26,9 +41,6 @@ export const mutationObserverDetector = (
         attributes: true,
       });
 
-      setTimeout(() => {
-        observer.disconnect();
-        resolve(false);
-      }, observeMs);
+      timeoutId = setTimeout(() => finish(false), observeMs);
     }),
 });

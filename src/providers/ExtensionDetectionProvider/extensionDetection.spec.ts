@@ -400,6 +400,18 @@ describe('mutationObserverDetector', () => {
     await expect(detectPromise).resolves.toBe(true);
   });
 
+  it('clears the timeout after a match during observation', async () => {
+    const detectPromise = mutationObserverDetector('#appears', 500).detect();
+
+    const el = document.createElement('div');
+    el.id = 'appears';
+    document.body.appendChild(el);
+
+    await expect(detectPromise).resolves.toBe(true);
+    await vi.advanceTimersByTimeAsync(500);
+    await expect(detectPromise).resolves.toBe(true);
+  });
+
   it('returns false after the observe window elapses', async () => {
     const detectPromise = mutationObserverDetector(
       '#never-appears',
