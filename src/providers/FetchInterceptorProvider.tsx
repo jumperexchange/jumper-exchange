@@ -9,8 +9,6 @@ import {
 import getApiUrl from '@/utils/getApiUrl';
 
 export function FetchInterceptorProvider() {
-  console.log('4. FetchInterceptorProvider');
-
   const apiUrl = getApiUrl();
 
   useEffect(() => {
@@ -42,8 +40,6 @@ export function FetchInterceptorProvider() {
       interceptor.dispose();
     };
   }, [apiUrl]);
-
-  console.log('5. FetchInterceptorProvider done');
 
   return null;
 }

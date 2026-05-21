@@ -45,6 +45,9 @@ export default defineConfig({
   },
   testDir: './tests',
   testMatch: '**/*.spec.ts',
+  // Cold-load LCP benchmarks live under tests/performance/ — run via
+  // `pnpm test:perf:cold-lcp` (playwright.perf.config.ts), not the CI e2e gate.
+  testIgnore: ['**/performance/**'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

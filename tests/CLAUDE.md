@@ -18,8 +18,9 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 | `tests/e2e/pages/`    | Class-based POMs, one file per page/view                        |
 | `tests/e2e/fixtures/` | Playwright test fixtures (wallet variants, etc.)                |
 | `tests/e2e/data/`     | Shared constants, URL params, chain data, settings menu strings |
-| `tests/e2e/utils/`    | Small reusable test helpers                                     |
+| `tests/e2e/utils/`    | Small reusable e2e helpers                                      |
 | `tests/e2e/wallet/`   | Real-MetaMask driver framework — load-bearing, modify carefully |
+| `tests/performance/`  | Cold-load LCP benchmarks (`pnpm test:perf:cold-lcp` only)       |
 
 ## Fixture selection
 
@@ -33,13 +34,15 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 
 ## Where new things go
 
-| New thing                       | Goes in                         |
-| ------------------------------- | ------------------------------- |
-| New e2e spec                    | `tests/e2e/<feature>.spec.ts`   |
-| New POM (class)                 | `tests/e2e/pages/<Name>Page.ts` |
-| New fixture                     | `tests/e2e/fixtures/<name>.ts`  |
-| New shared constant / test data | `tests/e2e/data/<topic>.ts`     |
-| New test util                   | `tests/e2e/utils/<topic>.ts`    |
+| New thing                       | Goes in                               |
+| ------------------------------- | ------------------------------------- |
+| New e2e spec                    | `tests/e2e/<feature>.spec.ts`         |
+| New perf benchmark              | `tests/performance/<name>.spec.ts`    |
+| New POM (class)                 | `tests/e2e/pages/<Name>Page.ts`       |
+| New fixture                     | `tests/e2e/fixtures/<name>.ts`        |
+| New shared constant / test data | `tests/e2e/data/<topic>.ts`           |
+| New e2e test util               | `tests/e2e/utils/<topic>.ts`          |
+| New perf util / config          | `tests/performance/utils/` or `data/` |
 
 ## Selector priority
 
