@@ -1,16 +1,16 @@
 import { expect } from '@playwright/test';
 
-import { perfPaths } from '../data/perfUrls';
+import { gotoAndWaitForLoad } from '../e2e/utils/navigationUtils';
+import { missionsEarnPaths } from './data/routePaths';
+import { PerfPageCoordinator } from './PerfPageCoordinator';
 import {
   installLcpObserver,
   type LcpSummary,
   readLcpMs,
   summarizeSamples,
-} from '../utils/measureLcp';
-import { gotoAndWaitForLoad } from '../utils/navigationUtils';
-import { PerfPageCoordinator } from './PerfPageCoordinator';
+} from './utils/measureLcp';
 
-import type { PerfConfig } from '../data/perfConfig';
+import type { PerfConfig } from './data/perfConfig';
 import type { PerfRoute, TransitionMetrics } from './types';
 import type { Browser } from '@playwright/test';
 
@@ -56,12 +56,12 @@ export class ColdLcpBenchmark {
       await installLcpObserver(page);
 
       const missionsStart = Date.now();
-      await gotoAndWaitForLoad(page, perfPaths.missionsIndex(locale));
+      await gotoAndWaitForLoad(page, missionsEarnPaths.missionsIndex(locale));
       await coordinator.waitUntilReady('missions-index');
       const missionsReadyMs = Date.now() - missionsStart;
 
       const earnNavStart = Date.now();
-      await gotoAndWaitForLoad(page, perfPaths.earnIndex(locale));
+      await gotoAndWaitForLoad(page, missionsEarnPaths.earnIndex(locale));
       await coordinator.waitUntilReady('earn-index');
       const earnNavigationMs = Date.now() - earnNavStart;
       const earnLcpMs = await readLcpMs(page);

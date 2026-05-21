@@ -1,6 +1,9 @@
 import { expect } from '@playwright/test';
 
-import { perfPaths, slugFromHref } from '../data/perfUrls';
+import {
+  missionsEarnPaths,
+  parseSlugFromHref,
+} from '../../performance/data/routePaths';
 import { gotoAndWaitForLoad } from '../utils/navigationUtils';
 
 import type { Page } from '@playwright/test';
@@ -25,7 +28,7 @@ export class MissionsPage {
     const slugs = [
       ...new Set(
         hrefs
-          .map((href) => slugFromHref(href, 'missions'))
+          .map((href) => parseSlugFromHref(href, 'missions'))
           .filter((slug): slug is string => !!slug),
       ),
     ];
@@ -40,6 +43,9 @@ export class MissionsPage {
   }
 
   async goto(locale: string): Promise<void> {
-    await gotoAndWaitForLoad(this.page, perfPaths.missionsIndex(locale));
+    await gotoAndWaitForLoad(
+      this.page,
+      missionsEarnPaths.missionsIndex(locale),
+    );
   }
 }

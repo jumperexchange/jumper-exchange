@@ -1,9 +1,9 @@
-import { loadPerfConfig } from '../data/perfConfig';
-import { expect, noWalletTest as test } from '../fixtures/noWallet';
-import { createRandomSource } from '../utils/perfRandom';
+import { expect, noWalletTest as test } from '../e2e/fixtures/noWallet';
 import { ColdLcpBenchmark } from './ColdLcpBenchmark';
+import { loadPerfConfig } from './data/perfConfig';
 import { PerfRouteFactory } from './PerfRouteFactory';
 import { PerfSlugPool } from './PerfSlugPool';
+import { createRandomSource } from './utils/perfRandom';
 
 test.describe('@performance cold-load LCP', () => {
   test.describe.configure({ mode: 'serial' });
@@ -11,7 +11,9 @@ test.describe('@performance cold-load LCP', () => {
   const config = loadPerfConfig();
   let slugPool: PerfSlugPool;
 
-  test.beforeAll(async ({ browser }) => {
+  // Named setup test (not beforeAll) so Playwright attributes slug-discovery
+  // failures to this step instead of the first `cold LCP: …` case.
+  test('setup: discover slug pools (missions + earn)', async ({ browser }) => {
     slugPool = await PerfSlugPool.discover(browser, config);
 
     console.log(

@@ -1,4 +1,5 @@
-export const perfPaths = {
+/** Locale-prefixed app paths for missions and earn (benchmarks + e2e POMs). */
+export const missionsEarnPaths = {
   earnDetail: (locale: string, slug: string): string =>
     `/${locale}/earn/${slug}`,
   earnIndex: (locale: string): string => `/${locale}/earn`,
@@ -7,7 +8,7 @@ export const perfPaths = {
   missionsIndex: (locale: string): string => `/${locale}/missions`,
 } as const;
 
-export const slugFromHref = (
+export const parseSlugFromHref = (
   href: string,
   segment: 'earn' | 'missions',
 ): null | string => {

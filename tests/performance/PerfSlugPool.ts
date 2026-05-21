@@ -1,8 +1,8 @@
-import { EarnPage } from '../pages/EarnPage';
-import { MissionsPage } from '../pages/MissionsPage';
-import { pickRandomItem } from '../utils/perfRandom';
+import { EarnPage } from '../e2e/pages/EarnPage';
+import { MissionsPage } from '../e2e/pages/MissionsPage';
+import { pickRandomItem } from './utils/perfRandom';
 
-import type { PerfConfig } from '../data/perfConfig';
+import type { PerfConfig } from './data/perfConfig';
 import type { Browser } from '@playwright/test';
 
 export class PerfSlugPool {

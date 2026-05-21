@@ -1,7 +1,7 @@
-import { EarnDetailPage } from '../pages/EarnDetailPage';
-import { EarnPage } from '../pages/EarnPage';
-import { MissionDetailPage } from '../pages/MissionDetailPage';
-import { MissionsPage } from '../pages/MissionsPage';
+import { EarnDetailPage } from '../e2e/pages/EarnDetailPage';
+import { EarnPage } from '../e2e/pages/EarnPage';
+import { MissionDetailPage } from '../e2e/pages/MissionDetailPage';
+import { MissionsPage } from '../e2e/pages/MissionsPage';
 
 import type { PerfRouteKind } from './types';
 import type { Page } from '@playwright/test';

@@ -179,7 +179,7 @@
     "pre-commit": "lint-staged",
     "i18next-resources-for-ts": "i18next-resources-for-ts interface -i ./src/i18n/translations/en -o ./src/i18n/resources.d.ts",
     "test": "pnpm exec playwright test",
-    "test:perf:cold-lcp": "pnpm exec playwright test tests/e2e/performance/coldLoadLcp.spec.ts --workers=1 --reporter=list",
+    "test:perf:cold-lcp": "pnpm exec playwright test -c playwright.perf.config.ts",
     "test:install": "pnpm exec playwright install",
     "test:qase": "QASE_MODE=testops pnpm test",
     "test:e2e-real": "npx playwright test --headed",

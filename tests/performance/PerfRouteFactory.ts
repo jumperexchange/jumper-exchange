@@ -1,6 +1,6 @@
-import { perfPaths } from '../data/perfUrls';
+import { missionsEarnPaths } from './data/routePaths';
 
-import type { PerfConfig } from '../data/perfConfig';
+import type { PerfConfig } from './data/perfConfig';
 import type { PerfSlugPool } from './PerfSlugPool';
 import type { PerfRoute } from './types';
 
@@ -16,12 +16,12 @@ export class PerfRouteFactory {
       {
         kind: 'missions-index',
         name: 'missions-index',
-        path: perfPaths.missionsIndex(locale),
+        path: missionsEarnPaths.missionsIndex(locale),
       },
       {
         kind: 'earn-index',
         name: 'earn-index',
-        path: perfPaths.earnIndex(locale),
+        path: missionsEarnPaths.earnIndex(locale),
       },
     ];
 
@@ -62,7 +62,7 @@ export class PerfRouteFactory {
     return {
       kind: 'earn-detail',
       name: `earn-detail-${slug}`,
-      path: perfPaths.earnDetail(this.config.locale, slug),
+      path: missionsEarnPaths.earnDetail(this.config.locale, slug),
     };
   }
 
@@ -70,7 +70,7 @@ export class PerfRouteFactory {
     return {
       kind: 'mission-detail',
       name: `mission-detail-${slug}`,
-      path: perfPaths.missionDetail(this.config.locale, slug),
+      path: missionsEarnPaths.missionDetail(this.config.locale, slug),
     };
   }
 }

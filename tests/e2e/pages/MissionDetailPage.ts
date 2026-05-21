@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { perfPaths } from '../data/perfUrls';
+import { missionsEarnPaths } from '../../performance/data/routePaths';
 import { gotoAndWaitForLoad } from '../utils/navigationUtils';
 
 import type { Page } from '@playwright/test';
@@ -24,6 +24,9 @@ export class MissionDetailPage {
   }
 
   async goto(locale: string, slug: string): Promise<void> {
-    await gotoAndWaitForLoad(this.page, perfPaths.missionDetail(locale, slug));
+    await gotoAndWaitForLoad(
+      this.page,
+      missionsEarnPaths.missionDetail(locale, slug),
+    );
   }
 }

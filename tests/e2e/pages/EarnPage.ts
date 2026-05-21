@@ -1,6 +1,9 @@
 import { expect } from '@playwright/test';
 
-import { perfPaths, slugFromHref } from '../data/perfUrls';
+import {
+  missionsEarnPaths,
+  parseSlugFromHref,
+} from '../../performance/data/routePaths';
 import { gotoAndWaitForLoad } from '../utils/navigationUtils';
 
 import type { Locator, Page } from '@playwright/test';
@@ -61,7 +64,7 @@ export class EarnPage {
     const slugs = [
       ...new Set(
         hrefs
-          .map((href) => slugFromHref(href, 'earn'))
+          .map((href) => parseSlugFromHref(href, 'earn'))
           .filter((slug): slug is string => !!slug),
       ),
     ];
@@ -172,7 +175,7 @@ export class EarnPage {
   }
 
   async goto(locale: string): Promise<void> {
-    await gotoAndWaitForLoad(this.page, perfPaths.earnIndex(locale));
+    await gotoAndWaitForLoad(this.page, missionsEarnPaths.earnIndex(locale));
   }
 
   async selectAllMarketsTab(): Promise<void> {
