@@ -6,19 +6,38 @@ import { SelectCardMode } from '@/components/Cards/SelectCard/SelectCard.styles'
 import { TokenAmountInput } from '../../TokenAmountInput/TokenAmountInput';
 import { useTranslation } from 'react-i18next';
 import { type Balance, type ExtendedToken } from '@/types/tokens';
-import type { TransactionFormForDustStatusSheet } from '../types';
+import type {
+  DustPartialQuoteState,
+  TransactionFormForDustStatusSheet,
+} from '../types';
+import { PartialQuoteErrorSheetContent } from '../components/PartialQuoteErrorSheetContent';
+import type { DustChainValidationError } from '../dustComposerQuoteApi';
+import { useChainDetails } from '@/hooks/chains/useChainDetails';
 
 export const useDustConversionStatusSheet = ({
   transactionForm,
   toTokenBalance,
+  partialQuoteError,
+  chainValidationError,
+  onPartialErrorProceed,
+  onPartialErrorCancel,
+  onChainValidationErrorCancel,
   onSuccess,
 }: {
   transactionForm: TransactionFormForDustStatusSheet;
   toTokenBalance?: Balance<ExtendedToken>;
+  partialQuoteError: DustPartialQuoteState | null;
+  chainValidationError: DustChainValidationError | null;
+  onPartialErrorProceed: () => void;
+  onPartialErrorCancel: () => void;
+  onChainValidationErrorCancel: () => void;
   onSuccess: () => void;
 }) => {
   const lastOpenSheetRef = useRef<JumperWidgetStatusSheetProp | null>(null);
   const { t } = useTranslation();
+  const { chain: validationErrorChain } = useChainDetails(
+    chainValidationError?.chainId,
+  );
 
   const handleCloseSuccess = useCallback(() => {
     transactionForm.handleCloseSuccess();
@@ -38,6 +57,79 @@ export const useDustConversionStatusSheet = ({
   });
 
   const openSheet = useMemo((): JumperWidgetStatusSheetProp | null => {
+    if (chainValidationError) {
+      return {
+        isOpen: true,
+        content: {
+          title: t('portfolio.dustConversion.chainValidationError.title'),
+          description: t(
+            'portfolio.dustConversion.chainValidationError.description',
+            {
+              chain: validationErrorChain?.name ?? chainValidationError.chainId,
+            },
+          ),
+          callToAction: t(
+            'portfolio.dustConversion.chainValidationError.cancel',
+          ),
+          callToActionType: 'button',
+          status: 'error',
+          onClick: onChainValidationErrorCancel,
+        },
+        onClose: onChainValidationErrorCancel,
+      };
+    }
+
+    if (partialQuoteError) {
+      const isProceedable = partialQuoteError.proceedableBalances.length > 0;
+
+      if (!isProceedable) {
+        return {
+          isOpen: true,
+          content: {
+            title: t('portfolio.dustConversion.partialError.title'),
+            description: t(
+              'portfolio.dustConversion.partialError.descriptionNotConvertible',
+            ),
+            callToAction: t('portfolio.dustConversion.partialError.cancel'),
+            callToActionType: 'button',
+            status: 'info',
+            onClick: onPartialErrorCancel,
+          },
+          onClose: onPartialErrorCancel,
+        };
+      }
+
+      return {
+        isOpen: true,
+        content: {
+          title: t('portfolio.dustConversion.partialError.title'),
+          description: t(
+            'portfolio.dustConversion.partialError.descriptionPartiallyConvertible',
+            {
+              tokens: partialQuoteError.failedBalances
+                .map((balance) => balance.token.name || balance.token.symbol)
+                .join(', '),
+              count: partialQuoteError.failedBalances.length,
+            },
+          ),
+          callToAction: t('portfolio.dustConversion.partialError.proceed'),
+          callToActionType: 'button',
+          secondaryCallToAction: t(
+            'portfolio.dustConversion.partialError.cancel',
+          ),
+          status: 'info',
+          onClick: onPartialErrorProceed,
+          onSecondaryClick: onPartialErrorCancel,
+        },
+        onClose: onPartialErrorCancel,
+        children: (
+          <PartialQuoteErrorSheetContent
+            failedBalances={partialQuoteError.failedBalances}
+            successfulBalances={partialQuoteError.proceedableBalances}
+          />
+        ),
+      };
+    }
     if (
       transactionForm.showConfirmationSheet &&
       statusContent.confirmationSheetContent
@@ -87,6 +179,12 @@ export const useDustConversionStatusSheet = ({
     statusContent.errorSheetContent,
     statusContent.successSheetContent,
     toTokenBalance,
+    partialQuoteError,
+    chainValidationError,
+    validationErrorChain?.name,
+    onPartialErrorProceed,
+    onPartialErrorCancel,
+    onChainValidationErrorCancel,
     t,
   ]);
 

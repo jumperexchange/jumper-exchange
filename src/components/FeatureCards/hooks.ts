@@ -25,8 +25,7 @@ export const useFeatureCardTracking = (data: FeatureCardData) => {
   const impressionEventFired = useRef(false);
   const displayEventFired = useRef(false);
 
-  // Track Spindl impression on mount
-  useEffect(() => {
+  const trackImpression = () => {
     if (impressionEventFired.current) {
       return;
     }
@@ -39,7 +38,7 @@ export const useFeatureCardTracking = (data: FeatureCardData) => {
         data.spindlData.ad_creative_id,
       );
     }
-  }, [data]);
+  };
 
   const trackDisplay = () => {
     if (displayEventFired.current) {
@@ -93,7 +92,7 @@ export const useFeatureCardTracking = (data: FeatureCardData) => {
     }
   };
 
-  return { trackDisplay, trackClose, trackClick };
+  return { trackDisplay, trackImpression, trackClose, trackClick };
 };
 
 export const useFeatureCardColors = (

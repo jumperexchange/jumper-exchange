@@ -1,4 +1,4 @@
-import type { Font } from 'node_modules/next/dist/compiled/@vercel/og/satori';
+import type { Font } from 'next/dist/compiled/@vercel/og/satori';
 
 export const imageResponseOptions = async ({
   width,

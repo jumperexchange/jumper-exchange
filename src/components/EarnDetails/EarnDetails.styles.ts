@@ -80,11 +80,10 @@ export const EarnDetailsAnalyticsButton = styled(ButtonPrimary, {
   ],
 }));
 
-export const EarnDetailsAnalyticsLineChartContainer = styled(Box)(
-  ({ theme }) => ({
-    height: 234,
-  }),
-);
+export const EarnDetailsAnalyticsLineChartContainer = styled(Box)(() => ({
+  height: 234,
+  width: '100%',
+}));
 
 export const BaseSkeletonBox = styled(Skeleton)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.surface2.main,

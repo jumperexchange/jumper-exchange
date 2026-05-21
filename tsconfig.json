@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "incremental": true,
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
@@ -22,7 +21,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "src/*": ["./src/*"],
+      "i18n-config": ["./i18n-config.ts"]
     }
   },
   "rules": {

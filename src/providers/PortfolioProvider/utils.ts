@@ -148,7 +148,8 @@ export const dedupTokensFromLpPositions = (
     (balance) =>
       !lpTokens.some(
         (lpToken) =>
-          lpToken.token.address === balance.token.address &&
+          lpToken.token.address.toLowerCase() ===
+            balance.token.address.toLowerCase() &&
           lpToken.token.chain?.chainId === balance.token.chainId,
       ),
   );

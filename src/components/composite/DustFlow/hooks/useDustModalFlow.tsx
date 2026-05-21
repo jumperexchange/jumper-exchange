@@ -15,6 +15,11 @@ import { useFallbackNativeToken } from './useFallbackNativeToken';
 import { useDustFormFields } from './useDustFormFields';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
+import {
+  DustChainValidationError,
+  DustPreparationError,
+  extractFailedTokenAddresses,
+} from '../dustComposerQuoteApi';
 import { RouteOverview } from '../components/RouteOverview';
 import { ConvertDustSubmitButton } from '../components/ConvertDustSubmitButton';
 import { RouteOverviewSubmitButton } from '../components/RouteOverviewSubmitButton';
@@ -23,7 +28,7 @@ import type {
   JumperWidgetFormListeners,
   NavigationContextValue,
 } from '../../JumperWidget/context';
-import type { DustSummaryValue } from '../types';
+import type { DustPartialQuoteState, DustSummaryValue } from '../types';
 import { isNil } from '@/utils/isNil';
 import {
   checkChainHasBalancesBelowThreshold,
@@ -46,7 +51,7 @@ export const useDustModalFlow = ({
   isOpen,
 }: UseDustModalFlowOptions) => {
   const { t } = useTranslation();
-  const { refresh: refreshPortfolio } = usePortfolioState();
+  const { refreshForTokens } = usePortfolioState();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
   const fallbackNativeToken = useFallbackNativeToken(nativeExtendedTokens);
   const formFields = useDustFormFields({
@@ -61,11 +66,30 @@ export const useDustModalFlow = ({
   const [widgetNav, setWidgetNav] = useState<NavigationContextValue | null>(
     null,
   );
+  const [partialQuoteError, setPartialQuoteError] =
+    useState<DustPartialQuoteState | null>(null);
+  const [chainValidationError, setChainValidationError] =
+    useState<DustChainValidationError | null>(null);
+  const pendingDustSummaryRef = useRef<DustSummaryValue | null>(null);
 
   const dustFieldSyncRef = useRef<{
     prevThreshold: number | undefined;
     prevChainId: number | undefined;
   }>({ prevThreshold: undefined, prevChainId: undefined });
+
+  const completedDustSummaryRef = useRef<DustSummaryValue | null>(null);
+
+  const refreshCompletedDustTokens = useCallback(() => {
+    const summary = completedDustSummaryRef.current;
+    if (!summary) {
+      return;
+    }
+    completedDustSummaryRef.current = null;
+    void refreshForTokens(summary.address, [
+      ...summary.selectedBalances.map((b) => b.token),
+      summary.nativeToken,
+    ]);
+  }, [refreshForTokens]);
 
   useEffect(() => {
     if (isOpen) {
@@ -187,14 +211,36 @@ export const useDustModalFlow = ({
 
   const fetchCallData = useCallback(async () => {
     if (isDustSelection) {
-      if (!dustSummary) {
+      const effectiveSummary = pendingDustSummaryRef.current ?? dustSummary;
+      pendingDustSummaryRef.current = null;
+      if (!effectiveSummary) {
         throw new Error('Missing fields');
       }
-      await fetchComposerQuoteAsync(dustSummary, slippage);
 
-      if (widgetNav) {
-        widgetNav.goToView('summary');
+      try {
+        await fetchComposerQuoteAsync(effectiveSummary, slippage);
+      } catch (e) {
+        if (e instanceof DustChainValidationError) {
+          setChainValidationError(e);
+          return undefined;
+        }
+        if (e instanceof DustPreparationError) {
+          const failedAddresses = extractFailedTokenAddresses(e.failedOps);
+          const failedBalances = effectiveSummary.selectedBalances.filter((b) =>
+            failedAddresses.has(b.token.address.toLowerCase()),
+          );
+          const proceedableBalances = effectiveSummary.selectedBalances.filter(
+            (b) => !failedAddresses.has(b.token.address.toLowerCase()),
+          );
+          setPartialQuoteError({ failedBalances, proceedableBalances });
+          setDustSummary(effectiveSummary);
+          return undefined;
+        }
+        throw e;
       }
+
+      setDustSummary(effectiveSummary);
+      widgetNav?.goToView('summary');
       return undefined;
     }
 
@@ -239,14 +285,51 @@ export const useDustModalFlow = ({
     requiresConfirmation: false,
     executorType: supportsBatchTransactions ? 'batch' : 'single',
     fetchCallData,
+    onSuccess: () => {
+      if (dustSummary) {
+        completedDustSummaryRef.current = dustSummary;
+      }
+    },
   });
+
+  const handlePartialErrorProceed = useCallback(() => {
+    if (!partialQuoteError || !dustSummary) {
+      return;
+    }
+    const { proceedableBalances } = partialQuoteError;
+    pendingDustSummaryRef.current = {
+      ...dustSummary,
+      selectedBalances: proceedableBalances,
+      amountUSD: proceedableBalances.reduce(
+        (sum, b) => sum + (b.amountUSD ?? 0),
+        0,
+      ),
+    };
+    setPartialQuoteError(null);
+    void transactionForm.handleSubmit();
+  }, [partialQuoteError, dustSummary, transactionForm]);
+
+  const handlePartialErrorCancel = useCallback(() => {
+    setPartialQuoteError(null);
+    transactionForm.resetForm();
+  }, [transactionForm]);
+
+  const handleChainValidationErrorCancel = useCallback(() => {
+    setChainValidationError(null);
+    transactionForm.resetForm();
+  }, [transactionForm]);
 
   const statusSheet = useDustConversionStatusSheet({
     transactionForm,
     toTokenBalance: nativeTokenBalance,
+    partialQuoteError,
+    chainValidationError,
+    onPartialErrorProceed: handlePartialErrorProceed,
+    onPartialErrorCancel: handlePartialErrorCancel,
+    onChainValidationErrorCancel: handleChainValidationErrorCancel,
     onSuccess: () => {
+      refreshCompletedDustTokens();
       setDustSummary(null);
-      refreshPortfolio();
       widgetNav?.resetForm();
     },
   });
@@ -254,7 +337,8 @@ export const useDustModalFlow = ({
   const handleModalClose = () => {
     onClose();
     transactionForm.resetForm();
-    refreshPortfolio();
+    statusSheet.onClose();
+    refreshCompletedDustTokens();
   };
 
   const views = useMemo(
@@ -290,6 +374,13 @@ export const useDustModalFlow = ({
             composerQuote={composerQuote ?? undefined}
             nativeTokenBalance={nativeTokenBalance}
             selectedInputBalances={dustSummary?.selectedBalances ?? []}
+            currentActionIndex={transactionForm.currentActionIndex}
+            isExecuting={
+              transactionForm.currentStep === 'approving' ||
+              transactionForm.currentStep === 'requesting'
+            }
+            actionHashes={transactionForm.actionHashes}
+            chainId={nativeTokenChainId}
           />
         ),
         onSubmit: async () => {
@@ -309,6 +400,7 @@ export const useDustModalFlow = ({
       formFields,
       transactionForm,
       widgetNav,
+      nativeTokenChainId,
       t,
     ],
   );

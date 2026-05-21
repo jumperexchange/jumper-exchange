@@ -100,12 +100,22 @@ export interface ComposeResponseData {
   priceImpact: PriceImpact;
 }
 
+export interface FailedOp {
+  callId: string;
+  op: string;
+  kind: string;
+  message: string;
+  path: string;
+}
+
 interface ComposeResponse {
   data: ComposeResponseData;
   success: boolean;
   error?: {
     message: string;
     kind: string;
+    failedOps?: FailedOp[];
+    succeededOps?: string[];
   };
 }
 
@@ -127,12 +137,6 @@ class LifiComposerClient {
       },
       body: JSON.stringify(body),
     });
-
-    if (!response.ok) {
-      throw new Error(
-        `LiFi Composer failed: ${response.status} ${response.statusText}`,
-      );
-    }
 
     return response.json();
   }

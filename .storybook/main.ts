@@ -31,6 +31,11 @@ const config: StorybookConfig = {
       }),
     ];
 
+    config.resolve = {
+      ...config.resolve,
+      dedupe: [...(config.resolve?.dedupe ?? []), 'debug'],
+    };
+
     return config;
   },
 };

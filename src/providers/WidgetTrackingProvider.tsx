@@ -1,3 +1,4 @@
+import { useUrlParams } from '@/hooks/useUrlParams';
 import type { JumperEventData } from '@/utils/tracking/jumperTracking';
 import type {
   ChainTokenSelected,
@@ -7,7 +8,9 @@ import type {
   RouteHighValueLossUpdate,
   SettingUpdated,
 } from '@lifi/widget';
-import { useWidgetEvents } from '@lifi/widget';
+import { formatTokenPrice, useWidgetEvents } from '@lifi/widget';
+import type { Address } from 'viem';
+import { useTokens } from 'src/hooks/useTokens';
 import { isEqual, omit } from 'lodash';
 import type { FC, PropsWithChildren } from 'react';
 import {
@@ -122,6 +125,12 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   const trackedRoutesData = useRef<Record<string, TrackTransactionDataProps>>(
     {},
   );
+  const urlParams = useUrlParams();
+  const urlParamsRef = useRef(urlParams);
+  urlParamsRef.current = urlParams;
+
+  const { getToken } = useTokens();
+
   const posthogTracker = useMemo(() => {
     return makePosthogTracker({ trackTransaction, trackEvent });
   }, [trackTransaction, trackEvent]);
@@ -155,8 +164,37 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
 
   const availableRoutes = useCallback(
     (availableRoutes: Route[]) => {
-      if (currentFromAmount.current !== availableRoutes[0]?.fromAmount) {
-        currentFromAmount.current = availableRoutes[0]?.fromAmount;
+      const firstRoute = availableRoutes[0];
+
+      const fromToken =
+        sourceChainToken.current?.tokenAddress ??
+        urlParamsRef.current.sourceChainToken.token;
+      const fromChainId =
+        sourceChainToken.current?.chainId ??
+        urlParamsRef.current.sourceChainToken.chainId;
+      const toToken =
+        destinationChainToken.current?.tokenAddress ??
+        urlParamsRef.current.destinationChainToken.token;
+      const toChainId =
+        destinationChainToken.current?.chainId ??
+        urlParamsRef.current.destinationChainToken.chainId;
+
+      const fromAmount =
+        firstRoute?.fromAmount ?? urlParamsRef.current.fromAmount;
+
+      const fallbackToken =
+        fromChainId && fromToken
+          ? getToken(fromChainId, fromToken as Address)
+          : undefined;
+
+      const fromAmountUSD = firstRoute
+        ? Number(firstRoute.fromAmountUSD)
+        : fallbackToken?.priceUSD && fromAmount
+          ? Number(formatTokenPrice(fromAmount, fallbackToken.priceUSD))
+          : 0;
+
+      if (currentFromAmount.current !== fromAmount) {
+        currentFromAmount.current = fromAmount;
         isRoutesForCurrentFromAmountTracked.current = false;
       }
 
@@ -201,18 +239,12 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
         label: `routes_available`,
         enableAddressable: true,
         data: {
-          [TrackingEventParameter.FromToken]:
-            sourceChainToken.current?.tokenAddress || '',
-          [TrackingEventParameter.FromChainId]:
-            sourceChainToken.current?.chainId || '',
-          [TrackingEventParameter.ToToken]:
-            destinationChainToken.current?.tokenAddress || '',
-          [TrackingEventParameter.ToChainId]:
-            destinationChainToken.current?.chainId || '',
-          [TrackingEventParameter.FromAmountUSD]: Number(
-            availableRoutes?.[0]?.fromAmountUSD,
-          ),
-          [TrackingEventParameter.FromAmount]: availableRoutes?.[0]?.fromAmount,
+          [TrackingEventParameter.FromToken]: fromToken || '',
+          [TrackingEventParameter.FromChainId]: fromChainId || '',
+          [TrackingEventParameter.ToToken]: toToken || '',
+          [TrackingEventParameter.ToChainId]: toChainId || '',
+          [TrackingEventParameter.FromAmountUSD]: fromAmountUSD,
+          [TrackingEventParameter.FromAmount]: fromAmount || '',
           [TrackingEventParameter.NbOfSteps]: availableRoutes.length,
           [TrackingEventParameter.Routes]: transformedRoutes,
         },
@@ -222,7 +254,7 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
       isRoutesForCurrentDestinationTokenTracked.current = true;
       isRoutesForCurrentFromAmountTracked.current = true;
     },
-    [trackEvent, trackingActionKeys.availableRoutes],
+    [trackEvent, trackingActionKeys.availableRoutes, getToken],
   );
 
   const routeExecutionStarted = useCallback(

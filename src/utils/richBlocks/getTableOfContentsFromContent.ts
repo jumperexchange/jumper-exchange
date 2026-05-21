@@ -1,4 +1,4 @@
-import type { RootNode } from 'node_modules/@strapi/blocks-react-renderer/dist/BlocksRenderer';
+import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import { isValidHeadingLevel } from './isValidHeadingLevel';
 import { getTextFromChildren } from './getTextFromChildren';
 import { createSlugIdGenerator } from './createSlugIdGenerator';
@@ -10,7 +10,9 @@ export interface TableOfContentsItem {
   text: string;
 }
 
-function isHeadingNode(node: RootNode): node is RootNode & HeadingNode {
+function isHeadingNode(
+  node: BlocksContent[number],
+): node is BlocksContent[number] & HeadingNode {
   return (
     typeof node === 'object' &&
     node !== null &&
@@ -19,7 +21,7 @@ function isHeadingNode(node: RootNode): node is RootNode & HeadingNode {
 }
 
 export function getTableOfContentsFromContent(
-  content: RootNode[] | undefined,
+  content: BlocksContent | undefined,
 ): TableOfContentsItem[] {
   if (!Array.isArray(content)) {
     return [];

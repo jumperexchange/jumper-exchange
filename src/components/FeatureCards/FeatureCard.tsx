@@ -38,7 +38,8 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const imageUrl = useFeatureCardImage(data);
   const colors = useFeatureCardColors(data, imageUrl);
   const cardStyles = useFeatureCardStyles();
-  const { trackDisplay, trackClose, trackClick } = useFeatureCardTracking(data);
+  const { trackDisplay, trackClose, trackClick, trackImpression } =
+    useFeatureCardTracking(data);
   const { disableCard } = useFeatureCardDisable(data);
 
   const walletAddress = account?.address ?? '';
@@ -68,6 +69,7 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
   const handleImpressionOnce = () => {
     if (open) {
       trackDisplay();
+      trackImpression();
     }
   };
 
@@ -134,15 +136,18 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
           {data?.Title && (
             <FeatureCardTitle
               variant="headerSmall"
-              color={colors.title}
               gutterBottom
+              sx={{ color: colors.title }}
             >
               {data.Title}
             </FeatureCardTitle>
           )}
 
           {data?.Subtitle && (
-            <FeatureCardSubtitle variant="bodySmall" color={colors.subtitle}>
+            <FeatureCardSubtitle
+              variant="bodySmall"
+              sx={{ color: colors.subtitle }}
+            >
               {data.Subtitle}
             </FeatureCardSubtitle>
           )}
@@ -154,7 +159,10 @@ export const FeatureCard = ({ data }: FeatureCardProps) => {
               href={data?.URL}
               onClick={(e) => handleClick(e, 'click_cta')}
             >
-              <FeatureCardCtaLabel variant="bodySmallStrong" color={colors.cta}>
+              <FeatureCardCtaLabel
+                variant="bodySmallStrong"
+                sx={{ color: colors.cta }}
+              >
                 {data?.CTACall ?? t('featureCard.learnMore')}
               </FeatureCardCtaLabel>
             </FeatureCardCtaLink>
