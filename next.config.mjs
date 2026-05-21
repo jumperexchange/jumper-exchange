@@ -8,6 +8,7 @@ const nextConfig = {
   reactCompiler: true,
   productionBrowserSourceMaps: false,
   serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  expireTime: 86400, // one day in seconds
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: [],
