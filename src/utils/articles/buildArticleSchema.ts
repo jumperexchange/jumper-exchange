@@ -1,13 +1,10 @@
 import { getSiteUrl } from '@/const/urls';
 import type { BlogArticleData } from '@/types/strapi';
-import { getStrapiBaseUrl } from '../strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from '../strapi/strapiHelper';
 
 export function buildArticleSchema(articleData: BlogArticleData) {
-  const baseUrl = getStrapiBaseUrl();
   const pageUrl = `${getSiteUrl()}/learn/${articleData.Slug}`;
-  const imageUrl = articleData.Image?.url
-    ? `${baseUrl}${articleData.Image.url}`
-    : undefined;
+  const imageUrl = resolveStrapiMediaUrl(articleData.Image?.url);
 
   return (
     articleData.seo?.structuredData ?? {

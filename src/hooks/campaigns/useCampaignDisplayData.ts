@@ -2,12 +2,10 @@ import { useMemo } from 'react';
 import { MissionHeroStatsCardVariant } from 'src/components/Cards/MissionHeroStatsCard/MissionHeroStatsCard.style';
 import { AppPaths } from 'src/const/urls';
 import { BenefitCardColorMode, CampaignData } from 'src/types/strapi';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useCampaignDisplayData = (campaign: CampaignData) => {
   return useMemo(() => {
-    const apiBaseUrl = getStrapiBaseUrl();
-
     const getStatsCardVariant = (colorMode?: BenefitCardColorMode) =>
       colorMode === BenefitCardColorMode.Dark
         ? MissionHeroStatsCardVariant.Inverted
@@ -23,9 +21,9 @@ export const useCampaignDisplayData = (campaign: CampaignData) => {
       rewardChainIds: campaign.merkl_rewards
         ?.map((reward) => reward.ChainId)
         .filter((rewardChainId) => rewardChainId !== null),
-      background: `${apiBaseUrl}${campaign.Background?.url || ''}`,
-      icon: `${apiBaseUrl}${campaign.Icon?.url || ''}`,
-      bannerImage: `${apiBaseUrl}${campaign.ProfileBannerImage?.url || ''}`,
+      background: resolveStrapiMediaUrl(campaign.Background?.url) ?? '',
+      icon: resolveStrapiMediaUrl(campaign.Icon?.url) ?? '',
+      bannerImage: resolveStrapiMediaUrl(campaign.ProfileBannerImage?.url) ?? '',
       bannerTitle: campaign.ProfileBannerTitle || '',
       bannerDescription: campaign.ProfileBannerDescription || '',
       link:

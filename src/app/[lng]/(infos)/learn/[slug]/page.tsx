@@ -8,7 +8,7 @@ import { sliceStrToXChar } from '@/utils/splitStringToXChar';
 import { learnSlugSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound, permanentRedirect } from 'next/navigation';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { getArticleBySlug } from '../../../../lib/getArticleBySlug';
 import { getArticlesByTag } from '../../../../lib/getArticlesByTag';
 
@@ -20,9 +20,8 @@ const FALLBACK_METADATA: Metadata = {
 
 function getStrapiImageUrl(
   image: StrapiMediaData | undefined,
-  baseUrl: string,
 ): string | undefined {
-  return image?.url ? `${baseUrl}${image.url}` : undefined;
+  return resolveStrapiMediaUrl(image?.url);
 }
 
 function getPageTitle(title: string) {
@@ -71,11 +70,10 @@ export async function generateMetadata({
   const seo = articleData.seo;
 
   const pageUrl = `${getSiteUrl()}/learn/${validatedSlug}`;
-  const baseUrl = getStrapiBaseUrl();
 
   const ogImage =
     seo?.openGraph?.ogImage ?? seo?.metaImage ?? articleData.Image;
-  const ogImageUrl = getStrapiImageUrl(ogImage, baseUrl);
+  const ogImageUrl = getStrapiImageUrl(ogImage);
 
   const title = getPageTitle(
     seo?.metaTitle ?? sliceStrToXChar(articleData.Title, 45),

@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { PerksDataAttributes } from 'src/types/strapi';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
   return useMemo(() => {
-    const baseStrapiUrl = getStrapiBaseUrl();
     const {
       documentId,
       Title,
@@ -23,15 +22,8 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       NextStepsDescription,
     } = perk;
 
-    let bannerImageUrl = '';
-    if (BannerImage?.url) {
-      bannerImageUrl = `${baseStrapiUrl}${BannerImage?.url}`;
-    }
-
-    let imageUrl = '';
-    if (Image?.url) {
-      imageUrl = `${baseStrapiUrl}${Image?.url}`;
-    }
+    const bannerImageUrl = resolveStrapiMediaUrl(BannerImage?.url) ?? '';
+    const imageUrl = resolveStrapiMediaUrl(Image?.url) ?? '';
 
     return {
       id: documentId,

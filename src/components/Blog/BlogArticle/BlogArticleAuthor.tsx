@@ -3,7 +3,7 @@ import type { FC, PropsWithChildren } from 'react';
 import { BlogAuthorSocials } from './BlogAuthorSocials';
 import Typography from '@mui/material/Typography';
 import { BaseBlogArticleSkeleton, BlogAuthorAvatar } from './BlogArticle.style';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from '@/utils/strapi/strapiHelper';
 import Box from '@mui/material/Box';
 import { WithSkeleton } from './WithSkeleton';
 
@@ -22,8 +22,6 @@ export const BlogArticleAuthor: FC<BlogArticleAuthorProps> = ({
   source,
   showRole = false,
 }) => {
-  const baseUrl = getStrapiBaseUrl();
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
       <WithSkeleton
@@ -39,7 +37,7 @@ export const BlogArticleAuthor: FC<BlogArticleAuthorProps> = ({
         <BlogAuthorAvatar
           width={avatarSize}
           height={avatarSize}
-          src={`${baseUrl}${author?.Avatar?.url}`}
+          src={resolveStrapiMediaUrl(author?.Avatar?.url)}
           alt={`${author?.Name || 'Author'}'s avatar`}
         />
       </WithSkeleton>

@@ -7,7 +7,7 @@ import type { SxProps, Theme } from '@mui/material/styles';
 import { Skeleton } from '@mui/material';
 import Link from 'next/link';
 import useClient from 'src/hooks/useClient';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import {
   BlogArticleCardContainer,
   BlogArticleCardContent,
@@ -30,7 +30,6 @@ export const BlogArticleCard = ({
   sx,
 }: BlogArticleCardProps) => {
   const { trackEvent } = useUserTracking();
-  const baseUrl = getStrapiBaseUrl();
   const { closeAllMenus } = useMenuStore((state) => state);
   const isClient = useClient();
   const handleClick = () => {
@@ -55,9 +54,11 @@ export const BlogArticleCard = ({
         onClick={handleClick}
         sx={sx}
       >
-        {article?.Image && baseUrl ? (
+        {article?.Image ? (
           <BlogArticleCardImage
-            src={`${baseUrl}${article?.Image?.formats.small.url || article?.Image?.url}`}
+            src={resolveStrapiMediaUrl(
+              article?.Image?.formats.small.url || article?.Image?.url,
+            )}
             alt={article?.Image?.alternativeText ?? article?.Title}
             // read the following to understand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
             width={0}
