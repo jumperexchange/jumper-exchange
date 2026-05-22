@@ -5,35 +5,23 @@ import {
   usePerkClaimStatusStore,
   PerkClaimStatus,
 } from 'src/stores/perkClaimStatus';
-import {
+import type {
   HttpResponse,
   PerkClaimDto,
   PerkClaimEntity,
 } from 'src/types/jumper-backend';
+import { makeClient } from '@/app/lib/client';
 
 export type ClaimPerkResult = HttpResponse<PerkClaimEntity, unknown>;
 
 export async function claimPerkQuery(props: PerkClaimDto) {
-  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${apiBaseUrl}/perks/claim`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(props),
-  });
-
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
-
-  const data: ClaimPerkResult = await res.json();
-
-  if (!data) {
+  const client = makeClient();
+  const response = await client.v1.perksControllerPerkClaimV1(props);
+  if (!response.data) {
     throw new Error('Invalid response');
   }
 
-  return data;
+  return response.data;
 }
 
 export const useClaimPerk = (address?: string, perkId?: string) => {

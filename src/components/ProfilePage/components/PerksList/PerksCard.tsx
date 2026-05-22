@@ -51,12 +51,20 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     setIsOpen(true);
   }, []);
 
-  const isClaimed = useMemo(() => {
-    return (
-      claimedPerks?.some(
-        (claimedPerk) => claimedPerk.perkId === id.toString(),
-      ) ?? false
+  const { isClaimed, code } = useMemo(() => {
+    const claimedPerk = claimedPerks?.find(
+      (claimedPerk) => claimedPerk.perkId === id.toString(),
     );
+    if (!claimedPerk) {
+      return {
+        isClaimed: false,
+        code: undefined,
+      };
+    }
+    return {
+      isClaimed: true,
+      code: claimedPerk.code,
+    };
   }, [claimedPerks, id]);
 
   const isLocked = useMemo(() => {
@@ -127,6 +135,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
         {perkCard}
         <ClaimPerkModal
           perkId={id}
+          perkPromoCode={code}
           isClaimed={isClaimed}
           isOpen={isOpen}
           onClose={handleCloseModal}

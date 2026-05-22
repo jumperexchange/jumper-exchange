@@ -177,7 +177,8 @@
     "connectAnotherWallet": "Connect another wallet"
   },
   "error": {
-    "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."
+    "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support.",
+    "promoCodesExhausted": "We ran out of promo codes. Please contact support."
   },
   "multisig": {
     "connected": {
@@ -389,7 +390,8 @@
     "priceImpact": "The estimated value difference between the source and destination tokens.",
     "slippage": "The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.",
     "minReceived": "The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.",
-    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer."
+    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer.",
+    "copied": "Copied"
   },
   "labels": {
     "apy": "APY",
@@ -404,7 +406,8 @@
     "protocol": "Protocol",
     "category": "Category",
     "overview": "Overview",
-    "capInDollar": "Capacity"
+    "capInDollar": "Capacity",
+    "promoCode": "Promo code"
   },
   "search": {
     "placeholder": "Search...",

@@ -1,5 +1,6 @@
 import Typography from '@mui/material/Typography';
-import { FC } from 'react';
+import { type FC } from 'react';
+import type { Theme } from '@mui/material/styles';
 import {
   StyledModalContentContainer,
   StyledModalSectionContainer,
@@ -11,22 +12,33 @@ import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Badge } from 'src/components/Badge/Badge';
 import { useTranslation } from 'react-i18next';
 import { RichBlocks } from 'src/components/RichBlocks/RichBlocks';
-import { ClaimedProps } from '../../ClaimPerkModal.types';
+import type { ClaimedProps } from '../../ClaimPerkModal.types';
+import { PromoCodeRenderer } from 'src/components/RichBlocks/renderers/PromoCodeRenderer';
 
-interface ClaimedContentProps
-  extends Pick<
-    ClaimedProps,
-    'nextStepsDescription' | 'howToUsePerkDescription'
-  > {
+const paragraphSx = (theme: Theme) => ({
+  ...theme.typography.bodyMedium,
+  color: (theme.vars || theme).palette.text.secondary,
+  '& a': { margin: 0 },
+});
+
+interface ClaimedContentProps extends Pick<
+  ClaimedProps,
+  'nextStepsDescription' | 'howToUsePerkDescription'
+> {
   walletAddress: string;
+  promoCode?: string;
+  isPromoCodeLoading: boolean;
 }
 
 export const ClaimedContent: FC<ClaimedContentProps> = ({
   walletAddress,
   nextStepsDescription,
   howToUsePerkDescription,
+  promoCode,
+  isPromoCodeLoading,
 }) => {
   const { t } = useTranslation();
+
   return (
     <StyledModalSectionContainer>
       <StyledModalContentContainer>
@@ -52,14 +64,18 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
           </Typography>
           <RichBlocks
             content={nextStepsDescription}
-            blockSx={{
-              paragraph: (theme) => ({
-                ...theme.typography.bodyMedium,
-                color: (theme.vars || theme).palette.text.secondary,
-                '& a': {
-                  margin: 0,
-                },
-              }),
+            blockSx={{ paragraph: paragraphSx }}
+            customRenderer={{
+              paragraph: {
+                validator: (text) =>
+                  text.startsWith('<PROMO') || text.startsWith('Promo'),
+                render: () => (
+                  <PromoCodeRenderer
+                    promoCode={promoCode}
+                    isLoading={isPromoCodeLoading}
+                  />
+                ),
+              },
             }}
           />
         </StyledTextSectionContainer>
@@ -69,15 +85,7 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
           </Typography>
           <RichBlocks
             content={howToUsePerkDescription}
-            blockSx={{
-              paragraph: (theme) => ({
-                ...theme.typography.bodyMedium,
-                color: (theme.vars || theme).palette.text.secondary,
-                '& a': {
-                  margin: 0,
-                },
-              }),
-            }}
+            blockSx={{ paragraph: paragraphSx }}
           />
         </StyledTextSectionContainer>
       </StyledModalContentContainer>

@@ -1,6 +1,11 @@
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { ParagraphBlockContainer } from '../RichBlocks.style';
-import type { CommonBlockProps, ParagraphProps, TrackingKeys } from '../types';
+import type {
+  CommonBlockProps,
+  CustomRenderer,
+  ParagraphProps,
+  TrackingKeys,
+} from '../types';
 import { RichBlocksVariant } from '../types';
 import dynamic from 'next/dynamic';
 import { renderTableCellFromSegments } from '../renderers/renderTableCellFromSegments';
@@ -37,11 +42,13 @@ const TableRenderer = dynamic(() =>
 
 interface ParagraphBlockProps extends PropsWithChildren, CommonBlockProps {
   trackingKeys?: TrackingKeys;
+  customRenderer?: CustomRenderer;
 }
 
 export const ParagraphBlock: FC<ParagraphBlockProps> = ({
   children,
   sx,
+  customRenderer,
   trackingKeys,
   variant,
 }) => {
@@ -75,6 +82,10 @@ export const ParagraphBlock: FC<ParagraphBlockProps> = ({
     variant === RichBlocksVariant.BlogArticle
   ) {
     return <InstructionsRenderer text={firstText} />;
+  }
+
+  if (customRenderer && customRenderer.validator(firstText)) {
+    return customRenderer.render(firstText);
   }
 
   const inlineNodes = children as ReactNode[];
