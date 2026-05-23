@@ -48,9 +48,11 @@ export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
     <BlogArticleCardContainer>
       {data?.Image && (
         <BlogArticleCardImage
-          src={resolveStrapiMediaUrl(
-            data?.Image?.formats.small.url || data?.Image?.url,
-          )}
+          src={
+            resolveStrapiMediaUrl(
+              data?.Image?.formats.small.url || data?.Image?.url,
+            ) ?? ''
+          }
           alt={data?.Image?.alternativeText ?? data?.Title}
           width={0}
           height={0}

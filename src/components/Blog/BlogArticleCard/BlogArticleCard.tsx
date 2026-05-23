@@ -56,9 +56,11 @@ export const BlogArticleCard = ({
       >
         {article?.Image ? (
           <BlogArticleCardImage
-            src={resolveStrapiMediaUrl(
-              article?.Image?.formats.small.url || article?.Image?.url,
-            )}
+            src={
+              resolveStrapiMediaUrl(
+                article?.Image?.formats.small.url || article?.Image?.url,
+              ) ?? ''
+            }
             alt={article?.Image?.alternativeText ?? article?.Title}
             // read the following to understand why width and height are set to 0, https://github.com/vercel/next.js/discussions/18474#discussioncomment-5501724
             width={0}

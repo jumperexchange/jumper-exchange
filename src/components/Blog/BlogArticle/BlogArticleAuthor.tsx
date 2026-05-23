@@ -37,7 +37,7 @@ export const BlogArticleAuthor: FC<BlogArticleAuthorProps> = ({
         <BlogAuthorAvatar
           width={avatarSize}
           height={avatarSize}
-          src={resolveStrapiMediaUrl(author?.Avatar?.url)}
+          src={resolveStrapiMediaUrl(author?.Avatar?.url) ?? ''}
           alt={`${author?.Name || 'Author'}'s avatar`}
         />
       </WithSkeleton>
