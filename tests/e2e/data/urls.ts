@@ -4,7 +4,7 @@ export const URLS = {
   EXPLORE_FILAMENT: '/quests/rewards-from-filament',
   GITHUB: 'https://github.com/jumperexchange',
   LEARN_LOCAL: '/learn',
-  LINK3: 'https://link3.to/jumperexchange',
+  LINK3: 'https://link3.to/jumperapp_',
   MORPHO: 'https://morpho.org/',
   NEWSLETTER: '/newsletter',
   PORTFOLIO_LOCAL: '/portfolio',
