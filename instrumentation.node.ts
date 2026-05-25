@@ -61,7 +61,12 @@ export const initOpenTelemetry = () => {
       metricsEnabled,
     });
 
+    let shuttingDown = false;
     const shutdown = async () => {
+      if (shuttingDown) {
+        return;
+      }
+      shuttingDown = true;
       try {
         await meterProvider.shutdown();
         diag.info('OpenTelemetry MeterProvider shut down successfully');
