@@ -107,7 +107,7 @@ export const useDustConversionTracking = () => {
       buildAndTrack(
         context,
         TrackingAction.OnRouteExecutionFailedDust,
-        'execution_error',
+        'execution_failed_dust',
         TrackingEventDataAction.ExecutionFailedDust,
         {
           txHash,
