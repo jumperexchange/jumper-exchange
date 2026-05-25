@@ -79,6 +79,7 @@ export type JumperDataTrackTransactionProps = JumperTrackingBaseProps & {
   toAmountFormatted?: string;
   transactionId?: string;
   transactionLink?: string;
+  tokenCount?: number;
 };
 
 const track = async (data: object, path: string) => {
