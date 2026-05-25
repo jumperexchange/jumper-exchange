@@ -219,7 +219,8 @@
     },
     "overrides": {
       "@safe-global/safe-apps-provider": ">=0.18.6",
-      "hono": "^4.12.7"
+      "hono": "^4.12.7",
+      "systeminformation": "^5.31.6"
     },
     "onlyBuiltDependencies": [
       "@reown/appkit",
