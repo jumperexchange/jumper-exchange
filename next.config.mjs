@@ -108,6 +108,18 @@ const nextConfig = {
         port: '',
         pathname: '/jumper-strapi-media-dev/uploads/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-staging/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-prod/uploads/**',
+      },
       // {
       //   protocol: 'https',
       //   hostname: 'cdn.mygateway.xyz',
