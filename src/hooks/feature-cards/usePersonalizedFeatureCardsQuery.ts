@@ -29,9 +29,7 @@ export const usePersonalizedFeatureCardsQuery =
           throw new Error('Account address must be set');
         }
 
-        const response = await fetch(
-          getFeatureCardsEndpoint(account?.address),
-        );
+        const response = await fetch(getFeatureCardsEndpoint(account?.address));
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -52,9 +50,10 @@ export const usePersonalizedFeatureCardsQuery =
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
-    fcCardData?.map((id: number) =>
-      apiUrl.searchParams.set('filters[id][]', id.toString()),
-    );
+
+    fcCardData?.forEach((documentId: string, i: number) => {
+      apiUrl.searchParams.append(`filters[documentId][$in][${i}]`, documentId);
+    });
 
     config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('status', 'draft');
