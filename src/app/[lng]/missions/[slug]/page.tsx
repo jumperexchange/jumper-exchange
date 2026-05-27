@@ -5,7 +5,7 @@ import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
@@ -81,7 +81,7 @@ export async function generateMetadata({
     }
 
     const missionData = mission.data;
-    const baseUrl = getStrapiBaseUrl();
+    const imageUrl = resolveStrapiMediaUrl(missionData.Image?.url);
 
     const pageUrl = `${getSiteUrl()}${AppPaths.Missions}/${slug}`;
 
@@ -90,14 +90,16 @@ export async function generateMetadata({
       description: `${sliceStrToXChar(missionData.Information || 'Mission description', 60)}`,
       siteName: siteName,
       url: pageUrl,
-      images: [
-        {
-          url: `${baseUrl}${missionData.Image?.url}`,
-          width: 900,
-          height: 450,
-          alt: 'banner image',
-        },
-      ],
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 900,
+              height: 450,
+              alt: 'banner image',
+            },
+          ]
+        : undefined,
       type: 'article',
     };
 
