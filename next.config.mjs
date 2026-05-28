@@ -7,7 +7,13 @@ const nextConfig = {
   trailingSlash: false,
   reactCompiler: true,
   productionBrowserSourceMaps: false,
-  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  serverExternalPackages: [
+    'pino',
+    'pino-pretty',
+    'thread-stream',
+    '@opentelemetry/exporter-metrics-otlp-grpc',
+    '@opentelemetry/host-metrics',
+  ],
   expireTime: 86400, // one day in seconds
   experimental: {
     serverSourceMaps: false,

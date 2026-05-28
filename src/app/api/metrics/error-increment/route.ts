@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
-import { parseErrorOperation } from '@/utils/prometheus/errorOperations';
-import { recordServerError } from '@/utils/prometheus/recordError';
+import { parseErrorOperation } from '@/utils/telemetry/errorOperations';
+import { recordServerError } from '@/utils/telemetry/recordError';
 
 export const dynamic = 'force-dynamic';
 
