@@ -1,7 +1,7 @@
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatLockupDuration } from 'src/utils/earn/utils';
+import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
 import type {
   APYItem,
   Chain,
@@ -89,20 +89,25 @@ const buildRewardsApyItem = (
   };
 };
 
+const SECONDS_PER_DAY = 86400;
+
 const buildLockupItem = (
-  lockupMonths: number | string | undefined,
+  lockupDays: number | string | undefined,
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
-  const lockupMonthsNumber = Number(lockupMonths);
-  if (isNaN(lockupMonthsNumber) || !lockupMonthsNumber) {
+  const lockupDaysNumber = Number(lockupDays);
+  if (isNaN(lockupDaysNumber) || !lockupDaysNumber) {
     return null;
   }
 
-  const formatted = formatLockupDuration(lockupMonthsNumber);
+  const { value, unit } = formatLockupPeriod(
+    lockupDaysNumber * SECONDS_PER_DAY,
+  );
+  const formatted = `${value} ${unit}`;
   return {
     key: 'lockupPeriod',
-    dataTestId: `lockupPeriod-${lockupMonthsNumber}`,
+    dataTestId: `lockupPeriod-${lockupDaysNumber}`,
     label: t('labels.lockupPeriod'),
     value: formatted,
     tooltip: t('tooltips.lockupPeriod', {
@@ -254,7 +259,7 @@ export const useFormatDisplayEarnOpportunityData = (
   const { getChainById } = useChains();
 
   return useMemo(() => {
-    const lockupMonths = earnOpportunity?.lockupMonths;
+    const lockupDays = earnOpportunity?.lockupDays;
     const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
@@ -275,8 +280,8 @@ export const useFormatDisplayEarnOpportunityData = (
     // Build all items, passing variant to each builder
     const overviewItems = [
       apyItem,
-      lockupMonths
-        ? buildLockupItem(lockupMonths, variant, t)
+      lockupDays
+        ? buildLockupItem(lockupDays, variant, t)
         : capInDollar
           ? buildCapInDollarItem(capInDollar, variant, t)
           : buildRewardsApyItem(rewardsApy, variant, t),
