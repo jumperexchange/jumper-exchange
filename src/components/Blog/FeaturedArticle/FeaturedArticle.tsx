@@ -11,7 +11,7 @@ import type { BlogArticleData } from '@/types/strapi';
 import RouterLink from 'next/link';
 import { JUMPER_LEARN_PATH } from 'src/const/urls';
 import useClient from 'src/hooks/useClient';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import {
   FeaturedArticleContent,
   FeaturedArticleDetails,
@@ -35,7 +35,6 @@ interface FeaturedArticleProps {
 export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
   const { trackEvent } = useUserTracking();
   const isClient = useClient();
-  const baseUrl = getStrapiBaseUrl();
 
   const cardRef = useRef<HTMLAnchorElement>(null);
   const rawX = useMotionValue(0);
@@ -94,7 +93,12 @@ export const FeaturedArticle = ({ featuredArticle }: FeaturedArticleProps) => {
             height={0}
             sizes="100vw"
             priority
-            src={`${baseUrl}${featuredArticle?.Image?.formats?.medium.url || featuredArticle?.Image?.url}`}
+            src={
+              resolveStrapiMediaUrl(
+                featuredArticle?.Image?.formats?.medium.url ||
+                  featuredArticle?.Image?.url,
+              ) ?? ''
+            }
             alt={
               featuredArticle?.Image?.alternativeText ?? featuredArticle?.Title
             }

@@ -7,6 +7,7 @@ settings:
 overrides:
   '@safe-global/safe-apps-provider': '>=0.18.6'
   hono: ^4.12.7
+  systeminformation: ^5.31.6
 
 importers:
 
@@ -61,47 +62,47 @@ importers:
         specifier: ^0.6.3
         version: 0.6.3(98d0182a31e833cc88e18653733273e2)
       '@lifi/sdk':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11
       '@lifi/sdk-provider-bitcoin':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@lifi/sdk-provider-ethereum':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
       '@lifi/sdk-provider-solana':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
       '@lifi/sdk-provider-sui':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10(typescript@6.0.3)
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11(typescript@6.0.3)
       '@lifi/sdk-provider-tron':
-        specifier: ^4.0.0-beta.10
-        version: 4.0.0-beta.10(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+        specifier: ^4.0.0-beta.11
+        version: 4.0.0-beta.11(bufferutil@4.1.0)(utf-8-validate@6.0.6)
       '@lifi/wallet-management':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@lifi/widget':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@lifi/widget-provider':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20
       '@lifi/widget-provider-bitcoin':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@bigmi/react@0.8.0(@tanstack/query-core@5.100.9)(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6)))(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@bigmi/react@0.8.0(@tanstack/query-core@5.100.9)(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6)))(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@lifi/widget-provider-ethereum':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@wagmi/core@3.4.10(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(viem@2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)))(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(wagmi@3.6.12)(zod@4.4.3)
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@wagmi/core@3.4.10(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(viem@2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)))(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(wagmi@3.6.12)(zod@4.4.3)
       '@lifi/widget-provider-solana':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@types/react@19.2.14)(bs58@6.0.0)(bufferutil@4.1.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(utf-8-validate@6.0.6)
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@types/react@19.2.14)(bs58@6.0.0)(bufferutil@4.1.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(utf-8-validate@6.0.6)
       '@lifi/widget-provider-sui':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@mysten/dapp-kit-react@2.0.3(@mysten/sui@2.16.2(typescript@6.0.3))(@types/react@19.2.14)(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@mysten/dapp-kit-react@2.0.3(@mysten/sui@2.16.2(typescript@6.0.3))(@types/react@19.2.14)(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)
       '@lifi/widget-provider-tron':
-        specifier: ^4.0.0-beta.19
-        version: 4.0.0-beta.19(@react-native-async-storage/async-storage@1.24.0(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6)))(@tronweb3/tronwallet-adapter-react-hooks@1.1.12(bufferutil@4.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(utf-8-validate@6.0.6))(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
+        specifier: ^4.0.0-beta.20
+        version: 4.0.0-beta.20(@react-native-async-storage/async-storage@1.24.0(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6)))(@tronweb3/tronwallet-adapter-react-hooks@1.1.12(bufferutil@4.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(utf-8-validate@6.0.6))(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
       '@merkl/api':
         specifier: 1.20.0
         version: 1.20.0(@sinclair/typebox@0.34.49)(exact-mirror@1.0.0)(file-type@22.0.1)(openapi-types@12.1.3)(typescript@6.0.3)
@@ -132,6 +133,30 @@ importers:
       '@mysten/sui':
         specifier: ^2.16.2
         version: 2.16.2(typescript@6.0.3)
+      '@opentelemetry/api':
+        specifier: ^1.9.1
+        version: 1.9.1
+      '@opentelemetry/exporter-metrics-otlp-grpc':
+        specifier: ^0.214.0
+        version: 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/host-metrics':
+        specifier: ^0.35.5
+        version: 0.35.5(@opentelemetry/api@1.9.1)
+      '@opentelemetry/instrumentation':
+        specifier: ^0.218.0
+        version: 0.218.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/instrumentation-runtime-node':
+        specifier: ^0.25.0
+        version: 0.25.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources':
+        specifier: ^2.7.1
+        version: 2.7.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-metrics':
+        specifier: ^2.7.1
+        version: 2.7.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/semantic-conventions':
+        specifier: ^1.40.0
+        version: 1.40.0
       '@safe-global/safe-apps-sdk':
         specifier: ^9.1.0
         version: 9.1.0(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
@@ -140,7 +165,7 @@ importers:
         version: 10.52.0
       '@sentry/nextjs':
         specifier: ^10.52.0
-        version: 10.52.0(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(next@16.2.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)(webpack@5.106.2(esbuild@0.27.7))
+        version: 10.52.0(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(next@16.2.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)(webpack@5.106.2(esbuild@0.27.7))
       '@sentry/react':
         specifier: ^10.52.0
         version: 10.52.0(react@19.2.6)
@@ -1098,6 +1123,15 @@ packages:
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
 
+  '@grpc/grpc-js@1.14.4':
+    resolution: {integrity: sha512-k9Dj3DV/itK9D06Y8f190Qgop7/Ui+D0njFV3LHMPwPT75DpXLQohE9Wmz0QElrJnzsjB7KPWiKJbOl7IPDArQ==}
+    engines: {node: '>=12.10.0'}
+
+  '@grpc/proto-loader@0.8.1':
+    resolution: {integrity: sha512-wtF6h+DY6M3YaDBPAmvuuA6jV8Sif9MjtOI5euKFWRgCDl5PeDpPsHR9u2l6St5ceY8AZgoNDww5+HvEsXFsGg==}
+    engines: {node: '>=6'}
+    hasBin: true
+
   '@hcaptcha/loader@2.3.0':
     resolution: {integrity: sha512-i4lnNxKBe+COf3R1nFZEWaZoHIoJjvDgWqvcNrdZq8ehoSNMN6KVZ56dcQ02qKie2h3+BkbkwlJA9DOIuLlK/g==}
 
@@ -1364,6 +1398,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
+  '@js-sdsl/ordered-map@4.4.2':
+    resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
+
   '@ledgerhq/devices@6.27.1':
     resolution: {integrity: sha512-jX++oy89jtv7Dp2X6gwt3MMkoajel80JFWcdc0HCouwDsV1mVJ3SQdwl/bQU0zd8HI6KebvUP95QTwbQLLK/RQ==}
 
@@ -1402,20 +1439,20 @@ packages:
       react: '>=19.2.0'
       react-dom: '>=19.2.0'
 
-  '@lifi/sdk-provider-bitcoin@4.0.0-beta.10':
-    resolution: {integrity: sha512-HV41ppAlNSKkGkTz3y+aZBLEwS7aU66/v7A2/QX9As9WrSGraYpxan3STP76Gam4ezqxqnRIFYr/MjoLm+NBhg==}
+  '@lifi/sdk-provider-bitcoin@4.0.0-beta.11':
+    resolution: {integrity: sha512-gfwJDB42FQAoETLHCJpGa38jsn9I39+AKN2N7SI4cjq+dBDEkInbT4NQSxDeGX/omKcpnNt1eVPhLqP9Cxvd2A==}
 
-  '@lifi/sdk-provider-ethereum@4.0.0-beta.10':
-    resolution: {integrity: sha512-9SypDiJYSDYaWvjB+1H8aDTsgLtAb4tvqfFZXhDYSJZ4dbmTL5XpilL09yQdOSVXGFbm1s/AXyQEKaprfJzPqA==}
+  '@lifi/sdk-provider-ethereum@4.0.0-beta.11':
+    resolution: {integrity: sha512-6RYcJk7LDtIfRacCYVNIdR7LCtlM7Rw1xh+oCSbSKidWysp/LAogZpLGPxgsMbMSxhq72UjhRZCUOjPLyWFZmA==}
 
-  '@lifi/sdk-provider-solana@4.0.0-beta.10':
-    resolution: {integrity: sha512-yqreX/b+5sRbocdOHrwB2V3N/VJRnTXa2qZaOGKOQ+A88dhaJda7c7OPNTVc4FtBU0SzVAGJnZ92dp/MhI5VrA==}
+  '@lifi/sdk-provider-solana@4.0.0-beta.11':
+    resolution: {integrity: sha512-zdYFvIEq2Z3HKnx9nvmqXmgIqOn3iDxr2wcoCgoba3L8nqvS3HZcP1Af/XwQp/F5+Jx8Rn8kn2jFyPjP1Mx4rw==}
 
-  '@lifi/sdk-provider-sui@4.0.0-beta.10':
-    resolution: {integrity: sha512-F9M6W6SNiTbdcOyBRB2L9nxe4DzJxYiSqsa8FhawadUwL6/sCWYgnyTk3p1tWZXTr9vxqBQMH2CcTmigvfOTZg==}
+  '@lifi/sdk-provider-sui@4.0.0-beta.11':
+    resolution: {integrity: sha512-jWi8Clcbpz05DlhrpujOyu4nQPFgOlnf6DKOUEtdcAPsbXH+oPgwqiIpLWAvcb5CaDgxuwPvJVjDnap6HATg9g==}
 
-  '@lifi/sdk-provider-tron@4.0.0-beta.10':
-    resolution: {integrity: sha512-jPJi+REHJVlXYZMKqbZg4PBnmQsur5zTPysIQbylxqul8l2kOie9TnmGdX2i0xHMdx5DNlFMSkGBKgWFFBZLfw==}
+  '@lifi/sdk-provider-tron@4.0.0-beta.11':
+    resolution: {integrity: sha512-SqnztcpD6fNNJ0rO1rhZ4BBoTCSlPdlhW2BgwnKhJNaxda5/pASpkbIvMp3mYE5HuCjO216o1aNiz2gPqx67Cg==}
 
   '@lifi/sdk@3.16.3':
     resolution: {integrity: sha512-7fpeBIOkEtOiRoBGYkGjaLwFASgmkHKvDn+52rw/q5YM6MMKMGpPBlBsvAjOapLaZWMgnan1VFPaIc+v/QyJKA==}
@@ -1424,14 +1461,14 @@ packages:
       '@solana/web3.js': ^1.98.0
       viem: ^2.21.0
 
-  '@lifi/sdk@4.0.0-beta.10':
-    resolution: {integrity: sha512-9Uh2YJQmcO7zwVjhhXxNDnj7OL8Kp7MBphrFORvAOjt2ZU7BUJsOPaV35rjfAlscOKXKyvcKvJ1JTFBVRTSL4Q==}
+  '@lifi/sdk@4.0.0-beta.11':
+    resolution: {integrity: sha512-qGgcAwAMkzppw6sccoAu8I7COe1MuiVgfVHgk6peP5BUSMfVpIBuZfrgUat9m6a94OnEy0jRrkwUIE7FmiecJw==}
 
   '@lifi/types@17.65.0':
     resolution: {integrity: sha512-2COF1WimbFiPv51x4T1lvXSs8sRB6CP0SzOTCt7xCwaaeMBLczuuJmF0r10pY9JPxdzbJtVMM83Za3uCslqlWA==}
 
-  '@lifi/types@17.80.0':
-    resolution: {integrity: sha512-E/D46kGNXRASk1RRKAoeuMCt56ziAoWHKH/IGcFVmDUSAgF1PjoeO1Fbso13+elKPaAaMhevrjq9Jkh+D0msHg==}
+  '@lifi/types@17.82.1':
+    resolution: {integrity: sha512-n1FDyQtREj8RO/6XTeC1B2fq39t3CUlm7b+TeiMKQ6pLRpovwAZFhhv7dZIuAqr9FJvXc3cKVciyrR3L5IthmQ==}
 
   '@lifi/wallet-management@3.22.8':
     resolution: {integrity: sha512-9BKfq6GQk27vrL/OXGBahAg5hQCysYNnyQAQ2++sfyJEd6c90SIqZvfMU+MZYq3Mw87JC4+rmqUwiVr+MEQbaw==}
@@ -1444,44 +1481,44 @@ packages:
       react-dom: '>=18'
       wagmi: ^2.19.0
 
-  '@lifi/wallet-management@4.0.0-beta.19':
-    resolution: {integrity: sha512-9jYV7w3qNMXvwPVTBKShaMKXHtf7fZjvpaSqf5xpYivcbMcWJaccozUTkh7dcRFo+8upyMVxyqNBdvR5ZLfcbA==}
+  '@lifi/wallet-management@4.0.0-beta.20':
+    resolution: {integrity: sha512-ZOckTyKWdsUZaqJF1Hm1ydF3PJF83YBTtfNJyl7rVSGd9PSJbQxuHlEsQrEDFrDbe7WagG2oqx9Umv+7q0t7RA==}
     peerDependencies:
       '@tanstack/react-query': '>=5.90.0'
       react: '>=18'
       react-dom: '>=18'
 
-  '@lifi/widget-provider-bitcoin@4.0.0-beta.19':
-    resolution: {integrity: sha512-LgzeiJVwR8zMFKXtqTRLg6IsWwE6pEs/b2mw2wg3dqVk8KahpXZyM1/YI2agpYg6OtK6UkE1ypekkc1J4PEaaA==}
+  '@lifi/widget-provider-bitcoin@4.0.0-beta.20':
+    resolution: {integrity: sha512-7xcudJ7J3W76QenUWLjlENyyHtAJgS/WBaT8l1UoO3cvJCRJoU8UhmTc/K+OYO0FCPuyOpylsFeXobeVfT4hBQ==}
     peerDependencies:
       '@bigmi/react': ^0.8.0
 
-  '@lifi/widget-provider-ethereum@4.0.0-beta.19':
-    resolution: {integrity: sha512-OK/1pllC/q8kmfmQ1apHHCBxtQ1lrdFAB2pGEhSMRmyhzK80mf7l+Wl/9ah6YpSq64vjsCXz8aBIcj80Vkz7Yg==}
+  '@lifi/widget-provider-ethereum@4.0.0-beta.20':
+    resolution: {integrity: sha512-Q8m5O6wCJyYVDCi6Tx/D2rn9FHqrFkLHbxm7hhjVWFT6Yyam+ZGEvdOGV5+h7JxWf7pBDzqLvXm8+Dq3D5LHzg==}
     peerDependencies:
       '@wagmi/core': ^3.x
       wagmi: ^3.x
 
-  '@lifi/widget-provider-solana@4.0.0-beta.19':
-    resolution: {integrity: sha512-s+sZ7hgLqx7vINxDuo0u/AhVOebJg/nwYSDejJ64OuQ7a2CXJGPRNjbrg43yagT5P7R+PZG3tt22hSHqHRpQaw==}
+  '@lifi/widget-provider-solana@4.0.0-beta.20':
+    resolution: {integrity: sha512-11G5mu7gfnd79kO/tdTe78Le3KR1F6bopVg76WlIux+VQpXaBfXm/mhWpVg4xxcYDL6kRsAGF4kxK9h3L/eAog==}
     peerDependencies:
       bs58: '>=4.0.1'
 
-  '@lifi/widget-provider-sui@4.0.0-beta.19':
-    resolution: {integrity: sha512-Kc2dUCjFyfDbu4RytsIP/gocB/INFSsdVkyT4eDHt/BtEM8P7JoZY+K365RcBb91jZO7/npMgZ5tZVcrjlc4Ag==}
+  '@lifi/widget-provider-sui@4.0.0-beta.20':
+    resolution: {integrity: sha512-jTyjaEm4Oqfc8eRkFhn79pR0llKz7eKWXQ+4CmCYROTQnXspqNd2fSTSKfnpac+uEfpDa21fT92ZetC/lS+ZiQ==}
     peerDependencies:
       '@mysten/dapp-kit-react': ^2.0.0
 
-  '@lifi/widget-provider-tron@4.0.0-beta.19':
-    resolution: {integrity: sha512-m0UYWVZ2lADZDh3xkuKodB5O4XoxjHx7oTuDlIub/s4wUBJFXWHDafIIfrc++MvCh7EBslg9vEwCCi2bImkK7Q==}
+  '@lifi/widget-provider-tron@4.0.0-beta.20':
+    resolution: {integrity: sha512-g4l71fke3qZDxLPlZobe8YkcAo9XHDX9r7WPhiNCK5nyEwAej+I6kUVgg602m4ovhB1vQ/AXg63w2nTxOiFiWQ==}
     peerDependencies:
       '@tronweb3/tronwallet-adapter-react-hooks': ^1.1.11
 
-  '@lifi/widget-provider@4.0.0-beta.19':
-    resolution: {integrity: sha512-sL21Lx0ukwHrdFU6yq3T93lOPLVxBNSLwlpJcfcu+jbhJK8Q2bXzIUfEnWUYgvl93n8FhcLr+ilo6odt+Lpxvg==}
+  '@lifi/widget-provider@4.0.0-beta.20':
+    resolution: {integrity: sha512-FVKNASAHdpJie64SWaNek8JWfpFG7Ubb+yjAnULY2w2N+P8e/m6DHE3uFf1GTYpck03V0MrMFq3jfmccQPvUpw==}
 
-  '@lifi/widget@4.0.0-beta.19':
-    resolution: {integrity: sha512-AFx6IkLVZrl2tpRJfUrZrBRmYyjPXJkWlFhZSW/x6CYz+Hnc6HJYY2Ja7ZrsijswDRdwgP+nS4ZCs7avqL3X2w==}
+  '@lifi/widget@4.0.0-beta.20':
+    resolution: {integrity: sha512-AD0efA/h1Wt5yauCurhpVj+/R2CSxQIR989aqLpTPaOwog3Mk0okUPhpi01LWZWZkbanyJYiXb2g7nP5GPkuFA==}
     peerDependencies:
       '@tanstack/react-query': '>=5.90.0'
       react: '>=18'
@@ -2199,6 +2236,10 @@ packages:
     resolution: {integrity: sha512-40lSJeqYO8Uz2Yj7u94/SJWE/wONa7rmMKjI1ZcIjgf3MHNHv1OZUCrCETGuaRF62d5pQD1wKIW+L4lmSMTzZA==}
     engines: {node: '>=8.0.0'}
 
+  '@opentelemetry/api-logs@0.218.0':
+    resolution: {integrity: sha512-fmEWp5kXlGEc3i/lR698Hz41DfGyN4Tbe4g7L1AxSc7fF8Xeh/FQ9Quqpa9dVA413Q1Ad43QOLzU4JoXgbFPWw==}
+    engines: {node: '>=8.0.0'}
+
   '@opentelemetry/api@1.9.1':
     resolution: {integrity: sha512-gLyJlPHPZYdAk1JENA9LeHejZe1Ti77/pTeFm/nMXmQH/HFZlcS/O2XJB+L8fkbrNSqhdtlvjBVjxwUYanNH5Q==}
     engines: {node: '>=8.0.0'}
@@ -2214,6 +2255,30 @@ packages:
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
+
+  '@opentelemetry/exporter-metrics-otlp-grpc@0.214.0':
+    resolution: {integrity: sha512-0NGxWHVYHgbp51SEzmsP+Hdups81eRs229STcSWHo3WO0aqY6RpJ9csxfyEtFgaNrBDv6UfOh0je4ss/ROS6XA==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/exporter-metrics-otlp-http@0.214.0':
+    resolution: {integrity: sha512-Tx/59RmjBgkXJ3qnsD04rpDrVWL53LU/czpgLJh+Ab98nAroe91I7vZ3uGN9mxwPS0jsZEnmqmHygVwB2vRMlA==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/exporter-trace-otlp-http@0.214.0':
+    resolution: {integrity: sha512-kIN8nTBMgV2hXzV/a20BCFilPZdAIMYYJGSgfMMRm/Xa+07y5hRDS2Vm12A/z8Cdu3Sq++ZvJfElokX2rkgGgw==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/host-metrics@0.35.5':
+    resolution: {integrity: sha512-Zf9Cjl7H6JalspnK5KD1+LLKSVecSinouVctNmUxRy+WP+20KwHq+qg4hADllkEmJ99MZByLLmEmzrr7s92V6g==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
 
   '@opentelemetry/instrumentation-amqplib@0.61.0':
     resolution: {integrity: sha512-mCKoyTGfRNisge4br0NpOFSy2Z1NnEW8hbCJdUDdJFHrPqVzc4IIBPA/vX0U+LUcQqrQvJX+HMIU0dbDRe0i0Q==}
@@ -2317,6 +2382,12 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
 
+  '@opentelemetry/instrumentation-runtime-node@0.25.0':
+    resolution: {integrity: sha512-XaCmwBSui5KeTn8M6OzaEn1rEsNWtUkjuc1ylg0tqQTLHibNQ0n7f8v4zdF6x/nBV1OnsiYlN8RLHauGemv/TA==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
   '@opentelemetry/instrumentation-tedious@0.33.0':
     resolution: {integrity: sha512-Q6WQwAD01MMTub31GlejoiFACYNw26J426wyjvU7by7fDIr2nZXNW4vhTGs7i7F0TnXBO3xN688g1tdUgYwJ5w==}
     engines: {node: ^18.19.0 || >=20.6.0}
@@ -2341,8 +2412,62 @@ packages:
     peerDependencies:
       '@opentelemetry/api': ^1.3.0
 
+  '@opentelemetry/instrumentation@0.218.0':
+    resolution: {integrity: sha512-mIZil8Es+sYDK5m+DQiwAwF57F14TF2YlEqvIjZ/RQWcxDBwRGsKfdK2Tv65OU9meQKCMzSIFS9mxAcnAb6Bkg==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/otlp-exporter-base@0.214.0':
+    resolution: {integrity: sha512-u1Gdv0/E9wP+apqWf7Wv2npXmgJtxsW2XL0TEv9FZloTZRuMBKmu8cYVXwS4Hm3q/f/3FuCnPTgiwYvIqRSpRg==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/otlp-grpc-exporter-base@0.214.0':
+    resolution: {integrity: sha512-IDP6zcyA24RhNZ289MP6eToIZcinlmirHjX8v3zKCQ2ZhPpt5cGwkN91tCth337lqHIgWcTy90uKRiX/SzALDw==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/otlp-transformer@0.214.0':
+    resolution: {integrity: sha512-DSaYcuBRh6uozfsWN3R8HsN0yDhCuWP7tOFdkUOVaWD1KVJg8m4qiLUsg/tNhTLS9HUYUcwNpwL2eroLtsZZ/w==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': ^1.3.0
+
+  '@opentelemetry/resources@2.6.1':
+    resolution: {integrity: sha512-lID/vxSuKWXM55XhAKNoYXu9Cutoq5hFdkbTdI/zDKQktXzcWBVhNsOkiZFTMU9UtEWuGRNe0HUgmsFldIdxVA==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.3.0 <1.10.0'
+
   '@opentelemetry/resources@2.7.1':
     resolution: {integrity: sha512-DeT6KKolmC4e/dRQvMQ/RwlnzhaqeiFOXY5ngoOPJ07GgVVKxZOg9EcrNZb5aTzUn+iCrJldAgOfQm1O/QfPAQ==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.3.0 <1.10.0'
+
+  '@opentelemetry/sdk-logs@0.214.0':
+    resolution: {integrity: sha512-zf6acnScjhsaBUU22zXZ/sLWim1dfhUAbGXdMmHmNG3LfBnQ3DKsOCITb2IZwoUsNNMTogqFKBnlIPPftUgGwA==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.4.0 <1.10.0'
+
+  '@opentelemetry/sdk-metrics@2.6.1':
+    resolution: {integrity: sha512-9t9hJHX15meBy2NmTJxL+NJfXmnausR2xUDvE19XQce0Qi/GBtDGamU8nS1RMbdgDmhgpm3VaOu2+fiS/SfTpQ==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.9.0 <1.10.0'
+
+  '@opentelemetry/sdk-metrics@2.7.1':
+    resolution: {integrity: sha512-MpDJdkiFDs3Pm1RHO3KByuZbuBdJEXEAkiC0+yJdsZGVCdf1RpHR6n+LHDcS7ffmfrt5kVCzJSCfm4z2C7v0uQ==}
+    engines: {node: ^18.19.0 || >=20.6.0}
+    peerDependencies:
+      '@opentelemetry/api': '>=1.9.0 <1.10.0'
+
+  '@opentelemetry/sdk-trace-base@2.6.1':
+    resolution: {integrity: sha512-r86ut4T1e8vNwB35CqCcKd45yzqH6/6Wzvpk2/cZB8PsPLlZFTvrh8yfOS3CYZYcUmAx4hHTZJ8AO8Dj8nrdhw==}
     engines: {node: ^18.19.0 || >=20.6.0}
     peerDependencies:
       '@opentelemetry/api': '>=1.3.0 <1.10.0'
@@ -7833,6 +7958,9 @@ packages:
     resolution: {integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==}
     engines: {node: '>=10'}
 
+  lodash.camelcase@4.3.0:
+    resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
+
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
     deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
@@ -9606,6 +9734,12 @@ packages:
 
   symbol-tree@3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
+
+  systeminformation@5.31.6:
+    resolution: {integrity: sha512-Uv2b2uGGM6ns+26czgW2cYRabYdnswM0ddSOOlryHOaelzsmDSet1iM/NT7VOYxW8x/BW+HkY+b1Ve2pLTSGSA==}
+    engines: {node: '>=8.0.0'}
+    os: [darwin, linux, win32, freebsd, openbsd, netbsd, sunos, android]
+    hasBin: true
 
   tabbable@6.4.0:
     resolution: {integrity: sha512-05PUHKSNE8ou2dwIxTngl4EzcnsCDZGJ/iCLtDflR/SHB/ny14rXc+qU5P4mG9JkusiV7EivzY9Mhm55AzAvCg==}
@@ -11543,6 +11677,18 @@ snapshots:
     dependencies:
       graphql: 16.14.0
 
+  '@grpc/grpc-js@1.14.4':
+    dependencies:
+      '@grpc/proto-loader': 0.8.1
+      '@js-sdsl/ordered-map': 4.4.2
+
+  '@grpc/proto-loader@0.8.1':
+    dependencies:
+      lodash.camelcase: 4.3.0
+      long: 5.3.2
+      protobufjs: 7.5.7
+      yargs: 17.7.2
+
   '@hcaptcha/loader@2.3.0': {}
 
   '@hcaptcha/react-hcaptcha@1.17.4(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
@@ -11761,6 +11907,8 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  '@js-sdsl/ordered-map@4.4.2': {}
+
   '@ledgerhq/devices@6.27.1':
     dependencies:
       '@ledgerhq/errors': 6.33.0
@@ -11872,11 +12020,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/sdk-provider-bitcoin@4.0.0-beta.10(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
+  '@lifi/sdk-provider-bitcoin@4.0.0-beta.11(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
     dependencies:
       '@bigmi/core': 0.8.0(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@bitcoinerlab/secp256k1': 1.2.0
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
       bech32: 2.0.0
       bitcoinjs-lib: 7.0.1(typescript@6.0.3)
     transitivePeerDependencies:
@@ -11887,9 +12035,9 @@ snapshots:
       - typescript
       - use-sync-external-store
 
-  '@lifi/sdk-provider-ethereum@4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)':
+  '@lifi/sdk-provider-ethereum@4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
       viem: 2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
     transitivePeerDependencies:
       - bufferutil
@@ -11897,9 +12045,9 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/sdk-provider-solana@4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)':
+  '@lifi/sdk-provider-solana@4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
       '@solana/kit': 6.9.0(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
       '@solana/wallet-standard-features': 1.3.0
       '@wallet-standard/base': 1.1.0
@@ -11909,18 +12057,18 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@lifi/sdk-provider-sui@4.0.0-beta.10(typescript@6.0.3)':
+  '@lifi/sdk-provider-sui@4.0.0-beta.11(typescript@6.0.3)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
       '@mysten/sui': 2.16.2(typescript@6.0.3)
     transitivePeerDependencies:
       - '@gql.tada/svelte-support'
       - '@gql.tada/vue-support'
       - typescript
 
-  '@lifi/sdk-provider-tron@4.0.0-beta.10(bufferutil@4.1.0)(utf-8-validate@6.0.6)':
+  '@lifi/sdk-provider-tron@4.0.0-beta.11(bufferutil@4.1.0)(utf-8-validate@6.0.6)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
       '@tronweb3/tronwallet-abstract-adapter': 1.1.13(bufferutil@4.1.0)(utf-8-validate@6.0.6)
       tronweb: 6.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
     transitivePeerDependencies:
@@ -11980,9 +12128,9 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/sdk@4.0.0-beta.10':
+  '@lifi/sdk@4.0.0-beta.11':
     dependencies:
-      '@lifi/types': 17.80.0
+      '@lifi/types': 17.82.1
 
   '@lifi/types@17.65.0(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)':
     dependencies:
@@ -11993,7 +12141,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/types@17.80.0': {}
+  '@lifi/types@17.82.1': {}
 
   '@lifi/wallet-management@3.22.8(39049895419e5cf00624f455c05b1c25)':
     dependencies:
@@ -12037,12 +12185,12 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/wallet-management@4.0.0-beta.19(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
+  '@lifi/wallet-management@4.0.0-beta.20(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.6)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@mui/icons-material': 9.0.1(@mui/material@9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@mui/material': 9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@mui/system': 9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
@@ -12062,14 +12210,14 @@ snapshots:
       - typescript
       - use-sync-external-store
 
-  '@lifi/widget-provider-bitcoin@4.0.0-beta.19(@bigmi/react@0.8.0(@tanstack/query-core@5.100.9)(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6)))(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
+  '@lifi/widget-provider-bitcoin@4.0.0-beta.20(@bigmi/react@0.8.0(@tanstack/query-core@5.100.9)(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6)))(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
     dependencies:
       '@bigmi/client': 0.8.0(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@bigmi/core': 0.8.0(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
       '@bigmi/react': 0.8.0(@tanstack/query-core@5.100.9)(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/sdk-provider-bitcoin': 4.0.0-beta.10(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/sdk-provider-bitcoin': 4.0.0-beta.11(@types/react@19.2.14)(bs58@6.0.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+      '@lifi/widget-provider': 4.0.0-beta.20
     transitivePeerDependencies:
       - '@tanstack/query-core'
       - '@types/react'
@@ -12079,11 +12227,11 @@ snapshots:
       - typescript
       - use-sync-external-store
 
-  '@lifi/widget-provider-ethereum@4.0.0-beta.19(@wagmi/core@3.4.10(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(viem@2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)))(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(wagmi@3.6.12)(zod@4.4.3)':
+  '@lifi/widget-provider-ethereum@4.0.0-beta.20(@wagmi/core@3.4.10(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(viem@2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)))(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(wagmi@3.6.12)(zod@4.4.3)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/sdk-provider-ethereum': 4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/sdk-provider-ethereum': 4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@wagmi/core': 3.4.10(@tanstack/query-core@5.100.9)(@types/react@19.2.14)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(viem@2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3))
       viem: 2.48.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
       wagmi: 3.6.12(7b53d130d937ae4235aa8a6f7c0d76b4)
@@ -12093,11 +12241,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/widget-provider-solana@4.0.0-beta.19(@types/react@19.2.14)(bs58@6.0.0)(bufferutil@4.1.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(utf-8-validate@6.0.6)':
+  '@lifi/widget-provider-solana@4.0.0-beta.20(@types/react@19.2.14)(bs58@6.0.0)(bufferutil@4.1.0)(immer@11.1.4)(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))(utf-8-validate@6.0.6)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/sdk-provider-solana': 4.0.0-beta.10(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/sdk-provider-solana': 4.0.0-beta.11(bufferutil@4.1.0)(typescript@6.0.3)(utf-8-validate@6.0.6)
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@wallet-standard/app': 1.1.0
       '@wallet-standard/base': 1.1.0
       '@wallet-standard/features': 1.1.0
@@ -12113,11 +12261,11 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
 
-  '@lifi/widget-provider-sui@4.0.0-beta.19(@mysten/dapp-kit-react@2.0.3(@mysten/sui@2.16.2(typescript@6.0.3))(@types/react@19.2.14)(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)':
+  '@lifi/widget-provider-sui@4.0.0-beta.20(@mysten/dapp-kit-react@2.0.3(@mysten/sui@2.16.2(typescript@6.0.3))(@types/react@19.2.14)(react@19.2.6)(typescript@6.0.3))(typescript@6.0.3)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/sdk-provider-sui': 4.0.0-beta.10(typescript@6.0.3)
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/sdk-provider-sui': 4.0.0-beta.11(typescript@6.0.3)
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@mysten/dapp-kit-react': 2.0.3(@mysten/sui@2.16.2(typescript@6.0.3))(@types/react@19.2.14)(react@19.2.6)(typescript@6.0.3)
       '@mysten/sui': 2.16.2(typescript@6.0.3)
     transitivePeerDependencies:
@@ -12125,11 +12273,11 @@ snapshots:
       - '@gql.tada/vue-support'
       - typescript
 
-  '@lifi/widget-provider-tron@4.0.0-beta.19(@react-native-async-storage/async-storage@1.24.0(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6)))(@tronweb3/tronwallet-adapter-react-hooks@1.1.12(bufferutil@4.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(utf-8-validate@6.0.6))(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)':
+  '@lifi/widget-provider-tron@4.0.0-beta.20(@react-native-async-storage/async-storage@1.24.0(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6)))(@tronweb3/tronwallet-adapter-react-hooks@1.1.12(bufferutil@4.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(utf-8-validate@6.0.6))(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/sdk-provider-tron': 4.0.0-beta.10(bufferutil@4.1.0)(utf-8-validate@6.0.6)
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/sdk-provider-tron': 4.0.0-beta.11(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@tronweb3/tronwallet-abstract-adapter': 1.1.13(bufferutil@4.1.0)(utf-8-validate@6.0.6)
       '@tronweb3/tronwallet-adapter-react-hooks': 1.1.12(bufferutil@4.1.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(utf-8-validate@6.0.6)
       '@tronweb3/tronwallet-adapters': 1.2.25(@react-native-async-storage/async-storage@1.24.0(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6)))(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(typescript@6.0.3)(utf-8-validate@6.0.6)(zod@4.4.3)
@@ -12162,17 +12310,17 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@lifi/widget-provider@4.0.0-beta.19':
+  '@lifi/widget-provider@4.0.0-beta.20':
     dependencies:
-      '@lifi/sdk': 4.0.0-beta.10
+      '@lifi/sdk': 4.0.0-beta.11
 
-  '@lifi/widget@4.0.0-beta.19(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
+  '@lifi/widget@4.0.0-beta.20(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.14)(react@19.2.6)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
-      '@lifi/sdk': 4.0.0-beta.10
-      '@lifi/wallet-management': 4.0.0-beta.19(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
-      '@lifi/widget-provider': 4.0.0-beta.19
+      '@lifi/sdk': 4.0.0-beta.11
+      '@lifi/wallet-management': 4.0.0-beta.20(@tanstack/react-query@5.100.9(react@19.2.6))(@types/react@19.2.14)(immer@11.1.4)(react-dom@19.2.6(react@19.2.6))(react-native@0.85.1(@babel/core@7.29.0)(@types/react@19.2.14)(bufferutil@4.1.0)(react@19.2.6)(utf-8-validate@6.0.6))(react@19.2.6)(typescript@6.0.3)(use-sync-external-store@1.4.0(react@19.2.6))
+      '@lifi/widget-provider': 4.0.0-beta.20
       '@mui/icons-material': 9.0.1(@mui/material@9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
       '@mui/material': 9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       '@mui/system': 9.0.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6))(@types/react@19.2.14)(react@19.2.6)
@@ -13166,6 +13314,10 @@ snapshots:
     dependencies:
       '@opentelemetry/api': 1.9.1
 
+  '@opentelemetry/api-logs@0.218.0':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+
   '@opentelemetry/api@1.9.1': {}
 
   '@opentelemetry/core@2.6.1(@opentelemetry/api@1.9.1)':
@@ -13177,6 +13329,42 @@ snapshots:
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/semantic-conventions': 1.40.0
+
+  '@opentelemetry/exporter-metrics-otlp-grpc@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@grpc/grpc-js': 1.14.4
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/exporter-metrics-otlp-http': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-exporter-base': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-grpc-exporter-base': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-transformer': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-metrics': 2.6.1(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/exporter-metrics-otlp-http@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-exporter-base': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-transformer': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-metrics': 2.6.1(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-exporter-base': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-transformer': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-trace-base': 2.6.1(@opentelemetry/api@1.9.1)
+    optional: true
+
+  '@opentelemetry/host-metrics@0.35.5(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      systeminformation: 5.31.6
 
   '@opentelemetry/instrumentation-amqplib@0.61.0(@opentelemetry/api@1.9.1)':
     dependencies:
@@ -13324,6 +13512,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@opentelemetry/instrumentation-runtime-node@0.25.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/instrumentation': 0.212.0(@opentelemetry/api@1.9.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@opentelemetry/instrumentation-tedious@0.33.0(@opentelemetry/api@1.9.1)':
     dependencies:
       '@opentelemetry/api': 1.9.1
@@ -13360,10 +13555,77 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@opentelemetry/instrumentation@0.218.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/api-logs': 0.218.0
+      import-in-the-middle: 3.0.1
+      require-in-the-middle: 8.0.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@opentelemetry/otlp-exporter-base@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-transformer': 0.214.0(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/otlp-grpc-exporter-base@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@grpc/grpc-js': 1.14.4
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-exporter-base': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/otlp-transformer': 0.214.0(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/otlp-transformer@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/api-logs': 0.214.0
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-logs': 0.214.0(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-metrics': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/sdk-trace-base': 2.6.1(@opentelemetry/api@1.9.1)
+      protobufjs: 7.5.7
+
+  '@opentelemetry/resources@2.6.1(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/semantic-conventions': 1.40.0
+
   '@opentelemetry/resources@2.7.1(@opentelemetry/api@1.9.1)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/semantic-conventions': 1.40.0
+
+  '@opentelemetry/sdk-logs@0.214.0(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/api-logs': 0.214.0
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/semantic-conventions': 1.40.0
+
+  '@opentelemetry/sdk-metrics@2.6.1(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/sdk-metrics@2.7.1(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.7.1(@opentelemetry/api@1.9.1)
+
+  '@opentelemetry/sdk-trace-base@2.6.1(@opentelemetry/api@1.9.1)':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@opentelemetry/core': 2.6.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/resources': 2.6.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/semantic-conventions': 1.40.0
 
   '@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1)':
@@ -15633,7 +15895,7 @@ snapshots:
 
   '@sentry/core@10.52.0': {}
 
-  '@sentry/nextjs@10.52.0(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(next@16.2.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)(webpack@5.106.2(esbuild@0.27.7))':
+  '@sentry/nextjs@10.52.0(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(next@16.2.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.1)(@playwright/test@1.59.1)(babel-plugin-macros@3.1.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(react@19.2.6)(webpack@5.106.2(esbuild@0.27.7))':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/semantic-conventions': 1.40.0
@@ -15641,7 +15903,7 @@ snapshots:
       '@sentry-internal/browser-utils': 10.52.0
       '@sentry/bundler-plugin-core': 5.2.1
       '@sentry/core': 10.52.0
-      '@sentry/node': 10.52.0
+      '@sentry/node': 10.52.0(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))
       '@sentry/opentelemetry': 10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)
       '@sentry/react': 10.52.0(react@19.2.6)
       '@sentry/vercel-edge': 10.52.0
@@ -15658,7 +15920,7 @@ snapshots:
       - supports-color
       - webpack
 
-  '@sentry/node-core@10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/instrumentation@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)':
+  '@sentry/node-core@10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/instrumentation@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)':
     dependencies:
       '@sentry/core': 10.52.0
       '@sentry/opentelemetry': 10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)
@@ -15666,11 +15928,12 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
       '@opentelemetry/core': 2.7.1(@opentelemetry/api@1.9.1)
+      '@opentelemetry/exporter-trace-otlp-http': 0.214.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/instrumentation': 0.214.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/sdk-trace-base': 2.7.1(@opentelemetry/api@1.9.1)
       '@opentelemetry/semantic-conventions': 1.40.0
 
-  '@sentry/node@10.52.0':
+  '@sentry/node@10.52.0(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))':
     dependencies:
       '@fastify/otel': 0.18.0(@opentelemetry/api@1.9.1)
       '@opentelemetry/api': 1.9.1
@@ -15698,7 +15961,7 @@ snapshots:
       '@opentelemetry/semantic-conventions': 1.40.0
       '@prisma/instrumentation': 7.6.0(@opentelemetry/api@1.9.1)
       '@sentry/core': 10.52.0
-      '@sentry/node-core': 10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/instrumentation@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)
+      '@sentry/node-core': 10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/exporter-trace-otlp-http@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/instrumentation@0.214.0(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)
       '@sentry/opentelemetry': 10.52.0(@opentelemetry/api@1.9.1)(@opentelemetry/core@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/sdk-trace-base@2.7.1(@opentelemetry/api@1.9.1))(@opentelemetry/semantic-conventions@1.40.0)
       import-in-the-middle: 3.0.1
     transitivePeerDependencies:
@@ -22841,6 +23104,8 @@ snapshots:
     dependencies:
       p-locate: 5.0.0
 
+  lodash.camelcase@4.3.0: {}
+
   lodash.get@4.4.2: {}
 
   lodash.includes@4.3.0: {}
@@ -25066,6 +25331,8 @@ snapshots:
       use-sync-external-store: 1.6.0(react@19.2.6)
 
   symbol-tree@3.2.4: {}
+
+  systeminformation@5.31.6: {}
 
   tabbable@6.4.0: {}
 

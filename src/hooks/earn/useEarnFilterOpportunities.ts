@@ -8,6 +8,17 @@ import {
 import { ONE_HOUR_MS } from '@/const/time';
 import type { EarnOpportunities } from '@/types/jumper-backend';
 
+export const earnFilterOpportunitiesQueryKey = (
+  filter: EarnOpportunityFilter,
+) => ['earn-filter-opportunities', filter] as const;
+
+export const fetchEarnFilterOpportunities = async (
+  filter: EarnOpportunityFilter,
+) => {
+  const result = await getOpportunitiesFiltered(filter);
+  return result.data;
+};
+
 export interface Props {
   filter: EarnOpportunityFilter;
 }
@@ -31,11 +42,8 @@ export const useEarnFilterOpportunities = (
   > = { enabled: true },
 ): Result => {
   return useQuery({
-    queryKey: ['earn-filter-opportunities', filter],
-    queryFn: async () => {
-      const result = await getOpportunitiesFiltered(filter);
-      return result.data;
-    },
+    queryKey: earnFilterOpportunitiesQueryKey(filter),
+    queryFn: () => fetchEarnFilterOpportunities(filter),
     select: (payload) => {
       return {
         ...payload,

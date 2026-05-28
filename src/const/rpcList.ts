@@ -34,41 +34,29 @@ export const publicRPCList = {
 };
 
 /**
- * RPC providers that must NOT be used during SSR.
+ * Chain IDs whose RPC endpoints are NEVER used from server-side code.
  *
- * These are authenticated, paid endpoints whose quotas are intended to be
- * spent on real user traffic from the browser. Because all SSR traffic exits
- * through a small number of pod IPs, any synchronized burst (e.g. fleet
- * restart, deploy, traffic spike) bunches up on the same source IP and either
- * blows the per-origin quota (triggering tight retry loops that burn CPU and
- * memory) or wastes paid request budget on cluster-warmup pings.
- *
- * On the browser, requests are spread across millions of user IPs, so the
- * per-origin limit is never an issue and the spend goes to actual users.
+ * Any host-by-host blocklist for Solana ends up listing every Solana RPC in
+ * existence: Helius / QuikNode are authenticated paid endpoints that 429,
+ * `*.rpcpool.com` (Triton One — including LiFi's `lifi-mainc49-4c2b.*`) is
+ * origin/IP-locked and 403s, `api.mainnet-beta.solana.com` is itself a
+ * Triton proxy, and even `solana-rpc.publicnode.com` rate-limits server IPs.
+ * In practice nothing rendered on the server actually needs Solana RPC —
+ * wallet UI, balance reads, quote previews, and route execution all run
+ * after hydration. So instead of chasing providers, we drop the entire
+ * Solana chain from the SSR RPC map and leave the browser path untouched.
  */
-const BROWSER_ONLY_RPC_HOSTS = [
-  // Helius rebate endpoints share a per-rebate-address quota across all
-  // callers. SSR concentrates this onto the pod fleet IPs and hits 429.
-  'helius-rpc.com',
-  // QuikNode endpoints are authenticated/paid; we don't want SSR pods
-  // burning the request budget on cluster-warmup pings.
-  'quiknode.pro',
-];
-
-function isBrowserOnlyRpc(url: string): boolean {
-  try {
-    const host = new URL(url).hostname;
-    return BROWSER_ONLY_RPC_HOSTS.some((needle) => host.includes(needle));
-  } catch {
-    return false;
-  }
-}
+const BROWSER_ONLY_CHAIN_IDS: ReadonlySet<string> = new Set([
+  // Solana mainnet
+  '1151111081099710',
+]);
 
 type RpcMap = Record<string, string[]>;
 
 /**
- * Returns the parsed `NEXT_PUBLIC_CUSTOM_RPCS` map, with browser-only
- * endpoints stripped on the server. On the client it is returned unchanged.
+ * Returns the parsed `NEXT_PUBLIC_CUSTOM_RPCS` map, with chains whose RPCs
+ * must not be exercised from server-side code stripped on SSR. On the
+ * browser it is returned unchanged.
  *
  * Use this everywhere that a component or SDK initializer might run on SSR
  * (LiFi SDK init, widget config, Solana provider, etc.) instead of inlining
@@ -88,12 +76,11 @@ export function getCustomRPCs(): RpcMap {
 
   const filtered: RpcMap = {};
   for (const [chainId, urls] of Object.entries(parsed)) {
-    if (!Array.isArray(urls)) {
+    if (BROWSER_ONLY_CHAIN_IDS.has(chainId)) {
       continue;
     }
-    const safe = urls.filter((url) => !isBrowserOnlyRpc(url));
-    if (safe.length > 0) {
-      filtered[chainId] = safe;
+    if (Array.isArray(urls) && urls.length > 0) {
+      filtered[chainId] = urls;
     }
   }
   return filtered;

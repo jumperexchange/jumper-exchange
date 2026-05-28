@@ -4,14 +4,11 @@ import type { BlogArticleData } from '@/types/strapi';
 import Link from 'next/link';
 import type { FC } from 'react';
 import { LearnPageSearchArticleListShell } from './LearnPageSearchArticleListShell';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
 
 interface LearnPageSearchArticleListProps {
   articles: BlogArticleData[];
   highlight?: string;
 }
-
-const baseUrl = getStrapiBaseUrl();
 
 export const LearnPageSearchArticleList: FC<
   LearnPageSearchArticleListProps
@@ -28,7 +25,6 @@ export const LearnPageSearchArticleList: FC<
         <BlogArticleCard
           variant="preview"
           data={article}
-          baseUrl={baseUrl}
           highlight={highlight}
         />
       </Link>

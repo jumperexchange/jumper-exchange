@@ -1,8 +1,10 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { MissionsPage } from 'src/app/ui/missions/MissionsPage';
 import { MissionsPageSkeleton } from 'src/app/ui/missions/MissionsPageSkeleton';
 import { getSiteUrl, AppPaths } from 'src/const/urls';
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: 'Jumper Missions',
