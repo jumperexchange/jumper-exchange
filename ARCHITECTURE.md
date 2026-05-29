@@ -134,7 +134,3 @@ If a change requires reversing one of these directions, **stop**. The right shap
 
 - This app depends on `jumper-backend` (primary, via REST) and on `strapi-cms` (legacy direct paths, via REST).
 - The TypeScript types of the backend API are vendored here, regenerated from `jumper-backend`'s Swagger via `pnpm api` (which calls `gen-api.sh`). Never hand-edit the generated file — change the upstream Swagger and regenerate.
-
-## Decisions
-
-Small, scoped engineering decisions are logged under [docs/decisions.md](./docs/decisions.md).
