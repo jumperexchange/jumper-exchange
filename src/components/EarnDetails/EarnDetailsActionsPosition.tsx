@@ -7,8 +7,8 @@ import type { Address } from 'viem';
 import { useToken } from '@/hooks/useToken';
 import type { Token } from '@/types/jumper-backend';
 
-import { formatUSD, formatUSDWithDust } from '../../utils/formatNumbers';
-import { SimpleToken } from '../../utils/Token';
+import { formatUSD, formatUSDWithDust } from '@/utils/formatNumbers';
+import { SimpleToken } from '@/utils/Token';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
 import { AvatarSize } from '../core/AvatarStack/AvatarStack.types';
