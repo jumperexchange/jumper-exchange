@@ -148,14 +148,14 @@ export const createBaseToken = (
       ...base,
       type: 'base',
       chainId: token.chain.chainId,
-      logoURI: token.logo,
+      logoURI: token.logo ?? undefined,
     };
   } else {
     result = {
       ...base,
       type: 'base',
       chainId: token.chainId,
-      logoURI: token.logoURI,
+      logoURI: token.logoURI ?? undefined,
       coinKey: token.coinKey,
       tags: token.tags,
     };
@@ -199,7 +199,7 @@ export const createPositionToken = (
       name: token.name,
       symbol: token.symbol,
       decimals: token.decimals,
-      logoURI: token.logo,
+      logoURI: token.logo ?? undefined,
       priceUSD: String(token.priceUSD),
       chainId: token.chain.chainId,
       chain: token.chain,

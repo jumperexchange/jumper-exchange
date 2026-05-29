@@ -204,7 +204,7 @@ export const DeFiPositionCard: FC<DeFiPositionCardProps> = ({
                         header={t(
                           'portfolio.defiPositionCard.overview.details',
                         )}
-                        description={description}
+                        description={description.toString()}
                       />
                     )}
                     <StyledOverviewActions>

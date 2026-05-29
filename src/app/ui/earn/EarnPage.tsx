@@ -2,18 +2,18 @@ import { notFound } from 'next/navigation';
 import type { FC } from 'react';
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
+import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
+import { GoBack } from 'src/components/composite/GoBack/GoBack';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
-import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
 import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
-import { AppPaths } from 'src/const/urls';
-import { GoBack } from 'src/components/composite/GoBack/GoBack';
+import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
-import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
-import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
-import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
-import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
+import { AppPaths } from 'src/const/urls';
 import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
+import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
 
 interface EarnPageProps {
   slug: string;
@@ -30,11 +30,11 @@ export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
     }),
   ]);
 
-  if (opportunity.error || !opportunity.data) {
+  if ('error' in opportunity || !opportunity.data) {
     return notFound();
   }
 
-  if (relatedMarkets.error) {
+  if ('error' in relatedMarkets) {
     console.error(relatedMarkets.error);
     // pass
   }

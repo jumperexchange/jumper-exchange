@@ -100,7 +100,7 @@ export const WithdrawFlowOnDemandButton: FC<
   Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
     earnOpportunityInteractionFlags?: EarnInteractionFlags;
-    protocolUrl?: string;
+    protocolUrl?: string | null;
     protocolName?: string;
   }
 > = ({
