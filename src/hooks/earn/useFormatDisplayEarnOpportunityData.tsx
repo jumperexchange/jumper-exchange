@@ -1,7 +1,15 @@
+import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { SECONDS_IN_A_DAY } from '@/const/time';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
+import { formatCapInDollar } from '@/utils/numbers/capInDollar';
+import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type {
   APYItem,
   Chain,
@@ -9,18 +17,11 @@ import type {
   Protocol,
   Token,
 } from 'src/types/jumper-backend';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
 import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { capitalizeString } from 'src/utils/capitalizeString';
-import type { TFunction } from 'i18next';
-import { useChains } from '@/hooks/useChains';
-import { getChainName } from '@/utils/chains/getChainName';
-import { formatCapInDollar } from '@/utils/numbers/capInDollar';
-import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
-import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -89,8 +90,6 @@ const buildRewardsApyItem = (
   };
 };
 
-const SECONDS_PER_DAY = 86400;
-
 const buildLockupItem = (
   lockupDays: number | string | undefined,
   variant: EarnCardVariant,
@@ -102,7 +101,7 @@ const buildLockupItem = (
   }
 
   const { value, unit } = formatLockupPeriod(
-    lockupDaysNumber * SECONDS_PER_DAY,
+    lockupDaysNumber * SECONDS_IN_A_DAY,
   );
   const formatted = `${value} ${unit}`;
   return {
