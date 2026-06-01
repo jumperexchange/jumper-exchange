@@ -103,11 +103,11 @@ export const toPortfolioPosition = (
           ? toPositionBalance(
               {
                 ...position.lpToken,
+                decimals: 18,
                 amount: '0',
                 amountUSD: 0,
                 priceUSD: 0,
                 chainType: '-',
-                decimals: 18, // THESE IS ONLY USED TEMPORARILY
               },
               getPrice,
             )
