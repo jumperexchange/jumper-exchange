@@ -776,6 +776,8 @@ export interface LpToken {
   name: string;
   symbol: string;
   address: string;
+  decimals?: number;
+  logo?: string | null;
   chain: Chain;
 }
 
