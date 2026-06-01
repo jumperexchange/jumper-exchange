@@ -28,7 +28,9 @@ import { flatMap } from 'lodash';
 import {
   balanceGroupSortAccessors,
   sortPortfolioItems,
+  type BalanceGroup,
 } from '@/providers/PortfolioProvider/filtering/utils';
+import { isValueWorthDisplaying } from '@/utils/numbers/displayValueThreshold';
 import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
 import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
 import { AppPaths } from '@/const/urls';
@@ -59,8 +61,19 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const { setWalletMenuState } = useMenuStore((state) => state);
 
   const balanceGroups = useMemo(() => {
+    // Hard floor: hide dust below the $0.10 display threshold and drop emptied
+    // groups. The per-wallet total below stays computed from unfiltered data.
+    const displayableEntries = Object.entries(data)
+      .map(
+        ([symbol, group]): BalanceGroup => [
+          symbol,
+          group.filter((balance) => isValueWorthDisplaying(balance.amountUSD)),
+        ],
+      )
+      .filter(([, group]) => group.length > 0);
+
     return sortPortfolioItems(
-      Object.entries(data),
+      displayableEntries,
       'value',
       'desc',
       balanceGroupSortAccessors,

@@ -20,17 +20,17 @@ import { DEFAULT_POSITIONS_MIN_VALUE } from './constants';
 import type { PortfolioPosition } from '../types';
 import { balanceAccessors, positionAccessors } from '../utils';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
+import {
+  isValueWorthDisplaying,
+  roundDisplayValueUsd,
+} from '@/utils/numbers/displayValueThreshold';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
 >;
 
-export const sanitizeValue = (value: number): number => {
-  if (!isFinite(value)) {
-    return value;
-  }
-  return Number(value.toFixed(2));
-};
+export const sanitizeValue = (value: number): number =>
+  roundDisplayValueUsd(value);
 
 export const sortPortfolioItems = <T>(
   items: T[],
@@ -181,6 +181,11 @@ export const filterSortBalancesData = (
     );
   }
 
+  // Hard floor: hide dust below the $0.10 display threshold regardless of slider
+  allBalances = allBalances.filter((balance) =>
+    isValueWorthDisplaying(balance.amountUSD),
+  );
+
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     allBalances = allBalances.filter((balance) => {
       return isWithinValueRange(
@@ -282,7 +287,10 @@ export const filterSortPositionsData = (
   sortByValue: SortByEnum,
   order: OrderEnum,
 ): Record<string, PortfolioPosition[]> => {
-  let result = [...positions];
+  // Hard floor: hide dust below the $0.10 display threshold regardless of slider
+  let result = positions.filter((position) =>
+    isValueWorthDisplaying(position.netUsd),
+  );
 
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     result = result.filter((position) => {

@@ -11,6 +11,8 @@ import {
 } from 'react';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
+import { usePortfolioDeFiPositions } from '@/hooks/portfolio/usePortfolioDeFiPositions';
+import { isValueWorthDisplaying } from '@/utils/numbers/displayValueThreshold';
 import type { NullableFields } from 'src/types/internal';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type { StrapiMetaPagination } from 'src/types/strapi';
@@ -185,6 +187,23 @@ export const EarnFilteringProvider = ({
     [allNoFilter.data],
   );
 
+  // Summed net USD per earn slug, used to apply the $0.10 display floor on the
+  // "Your positions" tab (the backend filters by hasPositions, not by value).
+  const yourPositions = usePortfolioDeFiPositions({
+    accounts: tab === EarnFilterTab.YOUR_POSITIONS && account ? [account] : [],
+  });
+
+  const positionValueBySlug = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const position of yourPositions.data?.data ?? []) {
+      if (!position.earn) {
+        continue;
+      }
+      map.set(position.earn, (map.get(position.earn) ?? 0) + position.netUsd);
+    }
+    return map;
+  }, [yourPositions.data?.data]);
+
   const totalMarkets = allNoFilterData.length;
 
   const { sourceData, error, updatedAt } = useMemo(() => {
@@ -218,10 +237,21 @@ export const EarnFilteringProvider = ({
 
     const filtered = filterOpportunities(sourceData, filter);
 
-    const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
+    // Hard floor on the "Your positions" tab: drop opportunities whose summed
+    // position value rounds below $0.10. Opportunities with no matching
+    // position value are dropped too (nothing worth showing).
+    const floored =
+      tab === EarnFilterTab.YOUR_POSITIONS
+        ? filtered.filter((opportunity) => {
+            const value = positionValueBySlug.get(opportunity.slug);
+            return value !== undefined && isValueWorthDisplaying(value);
+          })
+        : filtered;
+
+    const sorted = sortOpportunities(floored, sortBy, OrderOptions.DESC);
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab]);
+  }, [sourceData, filter, sortBy, tab, positionValueBySlug]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
