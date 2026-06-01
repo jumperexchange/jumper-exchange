@@ -44,7 +44,14 @@ export const useTokenAmountInput = () => {
 
   // Format price for display (used when not editing in price mode)
   const toPriceDisplay = useCallback((priceValue: number): string => {
-    return formatInputAmount(priceValue.toFixed(USD_DECIMALS), USD_DECIMALS);
+    return formatInputAmount(
+      priceValue.toLocaleString('en', {
+        notation: 'standard',
+        maximumFractionDigits: USD_DECIMALS,
+        useGrouping: false,
+      }),
+      USD_DECIMALS,
+    );
   }, []);
 
   // Convert price input to token amount string
