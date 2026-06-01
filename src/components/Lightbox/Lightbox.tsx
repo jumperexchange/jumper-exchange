@@ -10,11 +10,10 @@ import { LightboxToolbar } from './LightboxToolbar';
 import { useLightbox } from './useLightbox';
 
 interface LightboxProps {
-  baseUrl: string;
   imageData: StrapiMediaAttributes;
 }
 
-export const Lightbox = ({ baseUrl, imageData }: LightboxProps) => {
+export const Lightbox = ({ imageData }: LightboxProps) => {
   const {
     open,
     scale,

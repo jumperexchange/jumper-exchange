@@ -1,7 +1,7 @@
 import { ChainType } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
-import { publicRPCList } from 'src/const/rpcList';
+import { getCustomRPCs, publicRPCList } from 'src/const/rpcList';
 import type { LanguageKey } from 'src/types/i18n';
 import { TaskType } from 'src/types/strapi';
 import getApiUrl from 'src/utils/getApiUrl';
@@ -68,7 +68,7 @@ export function useSharedRPCConfig(
           isPrivateVariant: params.isPrivateVariant,
         }),
         rpcUrls: {
-          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
+          ...getCustomRPCs(),
           ...publicRPCList,
         },
         routeOptions: {

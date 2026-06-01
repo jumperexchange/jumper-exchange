@@ -1,5 +1,5 @@
 import config from '@/config/env-config';
-import { publicRPCList } from '@/const/rpcList';
+import { getCustomRPCs, publicRPCList } from '@/const/rpcList';
 import { createClient, type SDKProvider } from '@lifi/sdk';
 import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
 import { BitcoinProvider } from '@lifi/sdk-provider-bitcoin';
@@ -25,7 +25,7 @@ function initClient() {
       apiUrl: getApiUrl(),
       integrator: config.NEXT_PUBLIC_WIDGET_INTEGRATOR || 'jumper.exchange',
       rpcUrls: {
-        ...JSON.parse(config.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
+        ...getCustomRPCs(),
         ...publicRPCList,
       },
       preloadChains: true,

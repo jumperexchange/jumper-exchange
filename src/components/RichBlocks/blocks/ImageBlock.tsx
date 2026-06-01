@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import type { CommonBlockProps, ImageProps } from '../types';
 import { RichBlocksVariant } from '../types';
 
@@ -16,9 +16,9 @@ export const ImageBlock: FC<ImageBlockProps> = ({ image, variant }) => {
     return null;
   }
 
-  const baseUrl = getStrapiBaseUrl();
-  if (!baseUrl) {
+  const resolvedUrl = resolveStrapiMediaUrl(image?.url);
+  if (!resolvedUrl) {
     return null;
   }
-  return <Lightbox imageData={image} baseUrl={baseUrl} />;
+  return <Lightbox imageData={{ ...image, url: resolvedUrl }} />;
 };

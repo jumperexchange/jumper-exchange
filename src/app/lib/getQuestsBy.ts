@@ -1,9 +1,10 @@
+import { cache } from 'react';
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
-export async function getQuestsBy(key: string, value: string) {
+export const getQuestsBy = cache(async (key: string, value: string) => {
   const urlParams = new QuestStrapiApi()
     .filterBy(key, value)
     .populateCampaign();
@@ -26,4 +27,4 @@ export async function getQuestsBy(key: string, value: string) {
   const data: StrapiResponse<Quest> = await res.json(); // Use the defined type here
 
   return { data }; // Return a plain object
-}
+});

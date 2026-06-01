@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import type { FeatureCardData } from '@/types/strapi';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { isSpindlTrackData } from '@/types/spindl';
 import { trackSpindl } from '@/hooks/feature-cards/spindl/trackSpindl';
@@ -155,18 +155,18 @@ export const useFeatureCardImage = (data: FeatureCardData): URL | null => {
   const { mode: themeMode } = useColorScheme();
   return useMemo(() => {
     const mode = data?.DisplayConditions?.mode || themeMode;
-    const baseUrl = getStrapiBaseUrl();
 
     if (!data?.BackgroundImageDark?.url || !data?.BackgroundImageLight?.url) {
       return null;
     }
 
-    const imageUrl =
+    const rawImageUrl =
       mode === 'dark'
         ? data.BackgroundImageDark.url
         : data.BackgroundImageLight.url;
 
-    return new URL(imageUrl, baseUrl);
+    const resolved = resolveStrapiMediaUrl(rawImageUrl);
+    return resolved ? new URL(resolved) : null;
   }, [
     data?.BackgroundImageDark?.url,
     data?.BackgroundImageLight?.url,
