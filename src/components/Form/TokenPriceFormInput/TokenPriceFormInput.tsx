@@ -14,15 +14,12 @@ interface TokenPriceFormInputProps extends Pick<
 > {
   tokenBalance: Balance<ExtendedToken>;
   onAmountChange: (amount: string, amountUSD: string) => void;
-  /** When provided, syncs the input to this token amount (e.g. when parent resets). */
-  syncValue?: string;
   endAdornment?: React.ReactNode;
 }
 
 export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
   tokenBalance,
   onAmountChange,
-  syncValue,
   endAdornment,
   ...rest
 }) => {
@@ -46,17 +43,6 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
 
   const [_amount, setAmount] = useState(initialAmount);
   const [displayValue, setDisplayValue] = useState(initialDisplayValue);
-
-  useEffect(() => {
-    if (syncValue === undefined) {
-      return;
-    }
-
-    setAmount(syncValue);
-    setDisplayValue(
-      toPriceDisplay(toPrice(syncValue, tokenBalance.token.priceUSD)),
-    );
-  }, [syncValue, tokenBalance.token.priceUSD, toPrice, toPriceDisplay]);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

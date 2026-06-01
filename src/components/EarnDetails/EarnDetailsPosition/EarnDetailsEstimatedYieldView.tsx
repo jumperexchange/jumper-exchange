@@ -42,6 +42,7 @@ export const EarnDetailsEstimatedYieldView: FC<
   const initialAmount = toAmount(depositTokenBalance.amount, token.decimals);
 
   const [inputAmount, setInputAmount] = useState(initialAmount);
+  const [inputKey, setInputKey] = useState(0);
 
   const rawInputAmount = toRawAmount(inputAmount, token.decimals);
 
@@ -51,6 +52,7 @@ export const EarnDetailsEstimatedYieldView: FC<
 
   const handleResetInitial = () => {
     setInputAmount(initialAmount);
+    setInputKey((prev) => prev + 1);
   };
 
   const formatYieldAmount = (duration: number, yieldBoost: number) => {
@@ -89,8 +91,8 @@ export const EarnDetailsEstimatedYieldView: FC<
       <TokenPriceFormInput
         id="your-yield-estimate"
         name="your-yield-estimate"
+        key={inputKey.toString()}
         tokenBalance={depositTokenBalance}
-        syncValue={inputAmount}
         onAmountChange={handleAmountChange}
         sx={(theme) => ({
           marginBottom: theme.spacing(1.75),
