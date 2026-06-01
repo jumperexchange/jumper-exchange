@@ -1,7 +1,7 @@
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
-import { config } from '@/config/config';
+import config from '@/config/env-config';
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -720,6 +720,23 @@ export interface EarnOpportunityHistoryPoint {
 export interface EarnOpportunityHistory {
   /** The data points */
   points: EarnOpportunityHistoryPoint[];
+}
+
+export interface WalletCallDto {
+  to: string;
+  data: string;
+  value?: string;
+  chainId: number;
+}
+
+export interface VaultsFYICallDataActionResponseDto {
+  name: string;
+  tx: WalletCallDto;
+}
+
+export interface VaultsFYICallDataResponseDto {
+  currentActionIndex: number;
+  actions: VaultsFYICallDataActionResponseDto[];
 }
 
 export interface TokenBalance {
@@ -1537,6 +1554,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1578,6 +1596,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1617,6 +1636,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1662,6 +1682,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1718,6 +1739,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1755,6 +1777,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1794,6 +1817,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1845,6 +1869,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1897,6 +1922,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1933,13 +1959,14 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: EarnOpportunityHistory;
+          data: Record<string, any>;
           /** @example "Success" */
           message: string;
           meta: {
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -1977,13 +2004,14 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: EarnOpportunityHistory;
+          data: VaultsFYICallDataResponseDto;
           /** @example "Success" */
           message: string;
           meta: {
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -2021,13 +2049,14 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: EarnOpportunityHistory;
+          data: VaultsFYICallDataResponseDto;
           /** @example "Success" */
           message: string;
           meta: {
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -2099,6 +2128,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -2199,10 +2229,13 @@ export class JumperBackend<
           /** @example "Success" */
           message: string;
           meta: {
+            /** @format date-time */
+            updatedAt: string;
+            cacheControl?: number;
+            isFresh?: boolean;
             timestamp: string;
             path: string;
             method: string;
-            updatedAt?: string;
             pagination?: {
               page: number;
               limit: number;
@@ -2242,6 +2275,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -2286,10 +2320,13 @@ export class JumperBackend<
           /** @example "Success" */
           message: string;
           meta: {
+            /** @format date-time */
+            updatedAt: string;
+            cacheControl?: number;
+            isFresh?: boolean;
             timestamp: string;
             path: string;
             method: string;
-            updatedAt?: string;
             pagination?: {
               page: number;
               limit: number;
@@ -2342,10 +2379,13 @@ export class JumperBackend<
           /** @example "Success" */
           message: string;
           meta: {
+            /** @format date-time */
+            updatedAt: string;
+            cacheControl?: number;
+            isFresh?: boolean;
             timestamp: string;
             path: string;
             method: string;
-            updatedAt?: string;
             pagination?: {
               page: number;
               limit: number;
@@ -2387,6 +2427,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;
@@ -2430,6 +2471,7 @@ export class JumperBackend<
             timestamp: string;
             path: string;
             method: string;
+            /** @format date-time */
             updatedAt?: string;
             pagination?: {
               page: number;

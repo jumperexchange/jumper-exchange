@@ -212,7 +212,7 @@ export const createPositionToken = (
     name: token.name,
     symbol: token.symbol,
     decimals: token.decimals,
-    logoURI: token.logo,
+    logoURI: token.logo ?? undefined,
     priceUSD: String(token.priceUSD),
     chainId: -1, // App tokens don't have a chainId
     app: token.app,

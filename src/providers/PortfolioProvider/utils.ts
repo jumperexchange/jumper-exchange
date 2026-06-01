@@ -107,6 +107,7 @@ export const toPortfolioPosition = (
                 amountUSD: 0,
                 priceUSD: 0,
                 chainType: '-',
+                decimals: 18, // THESE IS ONLY USED TEMPORARILY
               },
               getPrice,
             )

@@ -78,7 +78,7 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
 
       return data.data;
     }
-    const { data } = await client.v1.earnControllerGetRequestRedeemCallDataV1(
+    const { data } = await client.v1.earnControllerGetRequestRedeemCalldataV1(
       earnOpportunity.slug,
       { address: accountAddress as Hex, amount },
     );
