@@ -866,6 +866,23 @@ export interface Protocol {
   url?: string | null;
 }
 
+// --- JUM-845 scoped manual addition (reconcile on next full `pnpm api` regen) ---
+// Vault warning messages surfaced on the earn opportunity details page.
+// Hand-added (not auto-generated) to keep the PR scoped to JUM-845.
+export enum VaultMessageSeverity {
+  Info = 'info',
+  Warning = 'warning',
+  Critical = 'critical',
+}
+
+export interface VaultMessage {
+  content: string;
+  severity: VaultMessageSeverity;
+  /** @format date-time */
+  publishedAt: string;
+}
+// --- end JUM-845 scoped manual addition ---
+
 export interface EarnInteractionFlags {
   canBorrow: boolean;
   canDeposit: boolean;
@@ -909,6 +926,8 @@ export interface EarnOpportunityWithLatestAnalytics {
   description: string;
   tags: string[];
   rewards: Token[];
+  /** JUM-845 scoped manual addition — reconcile on next full regen. */
+  messages: VaultMessage[];
   lpToken: Token;
   slug: string;
   featured: boolean;
@@ -1327,6 +1346,8 @@ export interface EarnOpportunityWithScore {
   description: string;
   tags: string[];
   rewards: Token[];
+  /** JUM-845 scoped manual addition — reconcile on next full regen. */
+  messages: VaultMessage[];
   lpToken: Token;
   slug: string;
   featured: boolean;
