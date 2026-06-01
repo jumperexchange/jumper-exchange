@@ -1,6 +1,5 @@
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import { BlocksRenderer } from '@strapi/blocks-react-renderer';
-import type { ReactNode } from 'react';
 import { useMemo, type FC } from 'react';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { ParagraphBlock } from './blocks/ParagraphBlock';
