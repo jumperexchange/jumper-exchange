@@ -27,9 +27,9 @@ export const EarnDetailsMessages: FC<EarnDetailsMessagesProps> = ({
 
   return (
     <Stack spacing={1}>
-      {messages.map((message) => (
+      {messages.map((message, index) => (
         <Alert
-          key={`${message.publishedAt}-${message.content}`}
+          key={`${index}-${message.publishedAt}-${message.content}`}
           severity={SEVERITY_TO_MUI[message.severity]}
         >
           {message.content}
