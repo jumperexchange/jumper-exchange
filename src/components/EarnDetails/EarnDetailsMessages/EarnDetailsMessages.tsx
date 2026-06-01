@@ -1,17 +1,15 @@
 import type { FC } from 'react';
-import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 
+import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
+import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
 import type { VaultMessage } from '@/types/jumper-backend';
 import { VaultMessageSeverity } from '@/types/jumper-backend';
 
-const SEVERITY_TO_MUI: Record<
-  VaultMessageSeverity,
-  'info' | 'warning' | 'error'
-> = {
-  [VaultMessageSeverity.Info]: 'info',
-  [VaultMessageSeverity.Warning]: 'warning',
-  [VaultMessageSeverity.Critical]: 'error',
+const SEVERITY_TO_VARIANT: Record<VaultMessageSeverity, BaseAlertVariant> = {
+  [VaultMessageSeverity.Info]: BaseAlertVariant.Info,
+  [VaultMessageSeverity.Warning]: BaseAlertVariant.Warning,
+  [VaultMessageSeverity.Critical]: BaseAlertVariant.Error,
 };
 
 interface EarnDetailsMessagesProps {
@@ -28,12 +26,11 @@ export const EarnDetailsMessages: FC<EarnDetailsMessagesProps> = ({
   return (
     <Stack spacing={1}>
       {messages.map((message, index) => (
-        <Alert
+        <BaseAlert
           key={`${index}-${message.publishedAt}-${message.content}`}
-          severity={SEVERITY_TO_MUI[message.severity]}
-        >
-          {message.content}
-        </Alert>
+          variant={SEVERITY_TO_VARIANT[message.severity]}
+          description={message.content}
+        />
       ))}
     </Stack>
   );
