@@ -7,9 +7,6 @@ import { Variant } from '@/components/core/buttons/types';
 import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { useTranslation } from 'react-i18next';
-import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
-import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
-
 interface PromoCodeRendererProps {
   promoCode?: string;
   isLoading: boolean;
