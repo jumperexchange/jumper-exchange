@@ -116,6 +116,7 @@ function buildTransactionPayload(data: TrackTransactionDataProps) {
     transactionLink: data[TrackingEventParameter.TransactionLink],
     transactionStatus: data[TrackingEventParameter.TransactionStatus],
     type: data[TrackingEventParameter.Type],
+    tokenCount: data[TrackingEventParameter.TokenCount],
   };
 }
 

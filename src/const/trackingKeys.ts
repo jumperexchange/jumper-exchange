@@ -74,6 +74,11 @@ export enum TrackingAction {
   OnRouteExecutionFailedEarnWithdraw = 'action_on_route_exec_failed_earn_withdraw',
   OnChangeSettingsEarnWithdraw = 'action_change_settings_earn_withdraw',
 
+  // Dust conversion
+  OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
+  OnRouteExecutionCompletedDust = 'action_on_route_exec_completed_dust',
+  OnRouteExecutionFailedDust = 'action_on_route_exec_failed_dust',
+
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
@@ -168,6 +173,9 @@ export enum TrackingEventDataAction {
   ExecutionStartEarnWithdraw = 'execution_start_earn_withdraw',
   ExecutionCompletedEarnWithdraw = 'execution_completed_earn_withdraw',
   ExecutionFailedEarnWithdraw = 'execution_failed_earn_withdraw',
+  ExecutionStartDust = 'execution_start_dust',
+  ExecutionCompletedDust = 'execution_completed_dust',
+  ExecutionFailedDust = 'execution_failed_dust',
 }
 
 export enum TrackingCategory {
@@ -352,6 +360,7 @@ export enum TrackingEventParameter {
   ActiveCampaignBanner = 'param_campaign_banner_campaign',
 
   // Portfolio
+  TokenCount = 'param_token_count',
   PortfolioTotalBalanceUSD = 'param_portfolio_total_balance_usd',
   PortfolioNumberOfTokens = 'param_portfolio_nb_of_tokens',
   PortfolioNumberOfChains = 'param_portfolio_nb_of_chains',
