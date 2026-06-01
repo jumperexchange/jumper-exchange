@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getAnnouncements } from '@/app/lib/getAnnouncements';
 import { useAnnouncementStore } from '@/stores/announcements/AnnouncementStore';
 import { useEffect, useMemo } from 'react';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { TEN_MINUTES_MS, THIRTY_MINUTES_MS } from 'src/const/time';
 
 interface UseAnnouncementsProps {
@@ -20,7 +20,6 @@ interface UseAnnouncementsProps {
 const mapToDisplayFormat = (
   announcement: AnnouncementData,
 ): AnnouncementDisplay => {
-  const baseStrapiUrl = getStrapiBaseUrl();
   return {
     id: announcement.id,
     documentId: announcement.documentId,
@@ -32,7 +31,7 @@ const mapToDisplayFormat = (
     logo: announcement.Logo
       ? {
           ...announcement.Logo,
-          url: `${baseStrapiUrl}${announcement.Logo?.url}`,
+          url: resolveStrapiMediaUrl(announcement.Logo?.url) ?? '',
         }
       : undefined,
     dismissible: announcement.Dismissible,

@@ -17,3 +17,23 @@ export function getStrapiApiAccessToken() {
   }
   return config.NEXT_PUBLIC_STRAPI_API_TOKEN;
 }
+
+/**
+ * Resolve a Strapi media URL.
+ *
+ * Newer Strapi versions return absolute URLs (e.g. https://cdn.example.com/...)
+ * while older / local Strapi instances return relative paths (e.g. /uploads/...).
+ * This helper prefixes the configured Strapi base URL only when the value is a
+ * relative path, keeping consumers backward compatible with both formats.
+ */
+export function resolveStrapiMediaUrl(
+  url: string | null | undefined,
+): string | undefined {
+  if (!url) {
+    return undefined;
+  }
+  if (url.startsWith('http')) {
+    return url;
+  }
+  return `${getStrapiBaseUrl()}${url}`;
+}

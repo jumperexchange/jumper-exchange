@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   errorOperationFromRequestContext,
   parseErrorOperation,
-} from '@/utils/prometheus/errorOperations';
+} from '@/utils/telemetry/errorOperations';
 
 describe('parseErrorOperation', () => {
   it('returns known operations unchanged', () => {

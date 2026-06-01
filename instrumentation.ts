@@ -1,9 +1,8 @@
 export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     await import('./sentry.server.config');
-    const { initPrometheusRegistry } =
-      await import('./src/utils/prometheus/initPrometheusRegistry');
-    await initPrometheusRegistry();
+    const { initOpenTelemetry } = await import('./instrumentation.node');
+    initOpenTelemetry();
   }
 
   if (process.env.NEXT_RUNTIME === 'edge') {
@@ -13,4 +12,4 @@ export async function register() {
   await import('./src/utils/instrumentation/lifiSdkConfig');
 }
 
-export { onRequestError } from './src/utils/prometheus/onRequestError';
+export { onRequestError } from './src/utils/telemetry/onRequestError';
