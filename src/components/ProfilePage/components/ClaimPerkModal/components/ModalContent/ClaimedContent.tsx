@@ -10,10 +10,16 @@ import {
 import { walletDigest } from 'src/utils/walletDigest';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Badge } from 'src/components/Badge/Badge';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { RichBlocks } from 'src/components/RichBlocks/RichBlocks';
 import type { ClaimedProps } from '../../ClaimPerkModal.types';
-import { PromoCodeRenderer } from 'src/components/RichBlocks/renderers/PromoCodeRenderer';
+import {
+  isPromoPlaceholderParagraph,
+  PromoCodeRenderer,
+} from 'src/components/RichBlocks/renderers/PromoCodeRenderer';
+import { getParagraphLinkProps } from 'src/components/RichBlocks/renderers/LinkRenderer';
+import { ParagraphLink } from 'src/components/RichBlocks/RichBlocks.style';
+import { DISCORD_URL } from '@/const/urls';
 
 const paragraphSx = (theme: Theme) => ({
   ...theme.typography.bodyMedium,
@@ -28,6 +34,7 @@ interface ClaimedContentProps extends Pick<
   walletAddress: string;
   promoCode?: string;
   isPromoCodeLoading: boolean;
+  hasCustomPromoCodes: boolean;
 }
 
 export const ClaimedContent: FC<ClaimedContentProps> = ({
@@ -36,8 +43,12 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
   howToUsePerkDescription,
   promoCode,
   isPromoCodeLoading,
+  hasCustomPromoCodes,
 }) => {
   const { t } = useTranslation();
+
+  const isPromoPoolExhausted =
+    hasCustomPromoCodes && !isPromoCodeLoading && !promoCode;
 
   return (
     <StyledModalSectionContainer>
@@ -62,22 +73,32 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
           <Typography variant="titleXSmall">
             {t('modal.perks.claimedPerk.nextSteps')}
           </Typography>
-          <RichBlocks
-            content={nextStepsDescription}
-            blockSx={{ paragraph: paragraphSx }}
-            customRenderer={{
-              paragraph: {
-                validator: (text) =>
-                  text.startsWith('<PROMO') || text.startsWith('Promo'),
-                render: () => (
-                  <PromoCodeRenderer
-                    promoCode={promoCode}
-                    isLoading={isPromoCodeLoading}
-                  />
-                ),
-              },
-            }}
-          />
+          {isPromoPoolExhausted ? (
+            <Typography variant="bodyMedium" color="textSecondary">
+              <Trans
+                i18nKey="modal.perks.claimedPerk.nextStepsPromoCodesExhaustedDescription"
+                components={[
+                  <ParagraphLink {...getParagraphLinkProps(DISCORD_URL)} />,
+                ]}
+              />
+            </Typography>
+          ) : (
+            <RichBlocks
+              content={nextStepsDescription}
+              blockSx={{ paragraph: paragraphSx }}
+              customRenderer={{
+                paragraph: {
+                  validator: isPromoPlaceholderParagraph,
+                  render: () => (
+                    <PromoCodeRenderer
+                      promoCode={promoCode}
+                      isLoading={isPromoCodeLoading}
+                    />
+                  ),
+                },
+              }}
+            />
+          )}
         </StyledTextSectionContainer>
         <StyledTextSectionContainer>
           <Typography variant="titleXSmall">

@@ -1014,7 +1014,7 @@ export interface PerkClaimResponseDto {
    * Promo code assigned to this claim, if the perk has a code pool
    * @example "AIRALO-XYZ-2024"
    */
-  code?: string;
+  promoCode?: string;
 }
 
 export interface PerkClaimEntity {

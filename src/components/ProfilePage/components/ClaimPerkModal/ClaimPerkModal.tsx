@@ -13,6 +13,7 @@ interface ClaimPerkModalProps
   extends ModalContainerProps, Omit<BaseStepperProps, 'onClaim'>, ClaimedProps {
   perkId: string;
   perkPromoCode?: string;
+  hasCustomPromoCodes: boolean;
   isClaimed: boolean;
 }
 
@@ -27,6 +28,7 @@ export const ClaimPerkModal: FC<ClaimPerkModalProps> = ({
   walletAddress,
   nextStepsDescription,
   howToUsePerkDescription,
+  hasCustomPromoCodes,
 }) => {
   const {
     mutate: claimPerk,
@@ -64,8 +66,9 @@ export const ClaimPerkModal: FC<ClaimPerkModalProps> = ({
             walletAddress={walletAddress}
             nextStepsDescription={nextStepsDescription}
             howToUsePerkDescription={howToUsePerkDescription}
-            promoCode={claimedPerk?.code ?? perkPromoCode}
+            promoCode={claimedPerk?.promoCode ?? perkPromoCode}
             isPromoCodeLoading={isClaimPerkPending}
+            hasCustomPromoCodes={hasCustomPromoCodes}
           />
         ) : (
           <StepperContent

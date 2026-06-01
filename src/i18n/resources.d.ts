@@ -312,7 +312,6 @@ export default interface Resources {
     };
     error: {
       message: 'Something went wrong. Please try reloading the page. If the problem persists, contact our support.';
-      promoCodesExhausted: 'We ran out of promo codes. Please contact support.';
     };
     featureCard: {
       learnMore: 'Learn more';
@@ -536,6 +535,7 @@ export default interface Resources {
           howToUsePerk: 'How to use your perk ?';
           howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
           nextSteps: 'Next steps';
+          nextStepsPromoCodesExhaustedDescription: "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week.";
           title: 'Perk claimed!';
         };
         signatureFailed: {

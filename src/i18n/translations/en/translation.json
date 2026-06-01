@@ -177,8 +177,7 @@
     "connectAnotherWallet": "Connect another wallet"
   },
   "error": {
-    "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support.",
-    "promoCodesExhausted": "We ran out of promo codes. Please contact support."
+    "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."
   },
   "multisig": {
     "connected": {
@@ -899,7 +898,8 @@
         "description": "You have verified this perk with the following address",
         "nextSteps": "Next steps",
         "howToUsePerk": "How to use your perk ?",
-        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website.",
+        "nextStepsPromoCodesExhaustedDescription": "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week."
       },
       "signatureFailed": {
         "title": "Signature required",

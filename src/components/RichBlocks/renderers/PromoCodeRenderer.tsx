@@ -15,6 +15,9 @@ interface PromoCodeRendererProps {
   isLoading: boolean;
 }
 
+export const isPromoPlaceholderParagraph = (text: string) =>
+  text.startsWith('<PROMO');
+
 export const PromoCodeRenderer: FC<PromoCodeRendererProps> = ({
   promoCode,
   isLoading,
@@ -96,12 +99,7 @@ export const PromoCodeRenderer: FC<PromoCodeRendererProps> = ({
       );
     }
 
-    return (
-      <BaseAlert
-        title={t('error.promoCodesExhausted')}
-        variant={BaseAlertVariant.Error}
-      />
-    );
+    return null;
   };
 
   return (
