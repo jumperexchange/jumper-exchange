@@ -15,6 +15,7 @@ import { useFallbackNativeToken } from './useFallbackNativeToken';
 import { useDustFormFields } from './useDustFormFields';
 import { useDustComposerQuote } from './useDustComposerQuote';
 import { useDustConversionStatusSheet } from './useDustConversionStatusSheet';
+import { useDustConversionTracking } from '@/hooks/userTracking/useDustConversionTracking';
 import {
   DustChainValidationError,
   DustPreparationError,
@@ -30,6 +31,7 @@ import type {
 } from '../../JumperWidget/context';
 import type { DustPartialQuoteState, DustSummaryValue } from '../types';
 import { isNil } from '@/utils/isNil';
+import type { Hex } from 'viem';
 import {
   checkChainHasBalancesBelowThreshold,
   getFilteredBalances,
@@ -51,6 +53,11 @@ export const useDustModalFlow = ({
   isOpen,
 }: UseDustModalFlowOptions) => {
   const { t } = useTranslation();
+  const {
+    trackDustExecutionStarted,
+    trackDustExecutionCompleted,
+    trackDustExecutionFailed,
+  } = useDustConversionTracking();
   const { refreshForTokens } = usePortfolioState();
   const { nonNativeBalances, chains, nativeExtendedTokens } = useDustBalances();
   const fallbackNativeToken = useFallbackNativeToken(nativeExtendedTokens);
@@ -78,6 +85,15 @@ export const useDustModalFlow = ({
   }>({ prevThreshold: undefined, prevChainId: undefined });
 
   const completedDustSummaryRef = useRef<DustSummaryValue | null>(null);
+  const hasTrackedExecutionStartRef = useRef(false);
+  const hasTrackedExecutionCompletedRef = useRef(false);
+  const hasTrackedExecutionFailedRef = useRef(false);
+
+  const resetTrackingFlags = useCallback(() => {
+    hasTrackedExecutionStartRef.current = false;
+    hasTrackedExecutionCompletedRef.current = false;
+    hasTrackedExecutionFailedRef.current = false;
+  }, []);
 
   const refreshCompletedDustTokens = useCallback(() => {
     const summary = completedDustSummaryRef.current;
@@ -292,6 +308,96 @@ export const useDustModalFlow = ({
     },
   });
 
+  useEffect(() => {
+    const currentStep = transactionForm.currentStep;
+
+    if (!dustSummary || !composerQuote || hasTrackedExecutionStartRef.current) {
+      return;
+    }
+
+    if (currentStep !== 'approving' && currentStep !== 'requesting') {
+      return;
+    }
+
+    hasTrackedExecutionStartRef.current = true;
+    trackDustExecutionStarted({ dustSummary, composerQuote, slippage });
+  }, [
+    transactionForm.currentStep,
+    dustSummary,
+    composerQuote,
+    slippage,
+    trackDustExecutionStarted,
+    resetTrackingFlags,
+  ]);
+
+  useEffect(() => {
+    if (
+      transactionForm.currentStep !== 'success' ||
+      !transactionForm.showSuccessSheet ||
+      !dustSummary ||
+      !composerQuote ||
+      hasTrackedExecutionCompletedRef.current
+    ) {
+      return;
+    }
+
+    const txHash = [...transactionForm.actionHashes]
+      .reverse()
+      .find((hash): hash is Hex => Boolean(hash));
+
+    if (!txHash) {
+      return;
+    }
+
+    hasTrackedExecutionCompletedRef.current = true;
+    completedDustSummaryRef.current = dustSummary;
+    trackDustExecutionCompleted(
+      { dustSummary, composerQuote, slippage },
+      txHash,
+    );
+  }, [
+    transactionForm.currentStep,
+    transactionForm.showSuccessSheet,
+    transactionForm.actionHashes,
+    dustSummary,
+    composerQuote,
+    slippage,
+    trackDustExecutionCompleted,
+  ]);
+
+  useEffect(() => {
+    if (
+      !transactionForm.showErrorBottomSheet ||
+      !dustSummary ||
+      !composerQuote ||
+      !hasTrackedExecutionStartRef.current ||
+      hasTrackedExecutionFailedRef.current
+    ) {
+      return;
+    }
+
+    const txHash = [...transactionForm.actionHashes]
+      .reverse()
+      .find((hash): hash is Hex => Boolean(hash));
+
+    hasTrackedExecutionFailedRef.current = true;
+    trackDustExecutionFailed(
+      { dustSummary, composerQuote, slippage },
+      {
+        message: transactionForm.errorType,
+        txHash,
+      },
+    );
+  }, [
+    transactionForm.showErrorBottomSheet,
+    transactionForm.errorType,
+    transactionForm.actionHashes,
+    dustSummary,
+    composerQuote,
+    slippage,
+    trackDustExecutionFailed,
+  ]);
+
   const handlePartialErrorProceed = useCallback(() => {
     if (!partialQuoteError || !dustSummary) {
       return;
@@ -339,6 +445,7 @@ export const useDustModalFlow = ({
     transactionForm.resetForm();
     statusSheet.onClose();
     refreshCompletedDustTokens();
+    resetTrackingFlags();
   };
 
   const views = useMemo(
