@@ -30,7 +30,8 @@ import { Variant as IconButtonVariant } from '@/components/core/buttons/types';
 import CheckIcon from '@mui/icons-material/Check';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
-import { isProduction } from '@/utils/isProduction';
+import { AB_TEST_NAME } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
 
 interface EarnDetailsActionsProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -79,6 +80,16 @@ export const EarnDetailsActions = ({
     earnOpportunity.lpToken.address as Hex,
     earnOpportunity.lpToken.chain.chainId,
   );
+
+  const requestRedeemFlowFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.REQUEST_REDEEM_FLOW,
+    address: account?.address ?? '',
+  });
+
+  const isRequestRedeemFlowEnabled =
+    !requestRedeemFlowFeatureFlag.isLoading &&
+    requestRedeemFlowFeatureFlag.isEnabled &&
+    !!requestRedeemFlowFeatureFlag.value;
 
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.data) {
@@ -199,16 +210,18 @@ export const EarnDetailsActions = ({
             sx={{ flex: 1 }}
           />
         )}
-        {hasDeposited && !earnOpportunity.isRedeemable && !isProduction && (
-          <RequestRedeemFlowButton
-            earnOpportunity={earnOpportunity}
-            size="large"
-            label={t('buttons.withdrawButtonLabel')}
-            refetchCallback={handleRefreshBalances}
-            data-testid="request-redeem-button"
-            sx={{ flex: 1 }}
-          />
-        )}
+        {hasDeposited &&
+          !earnOpportunity.isRedeemable &&
+          isRequestRedeemFlowEnabled && (
+            <RequestRedeemFlowButton
+              earnOpportunity={earnOpportunity}
+              size="large"
+              label={t('buttons.withdrawButtonLabel')}
+              refetchCallback={handleRefreshBalances}
+              data-testid="request-redeem-button"
+              sx={{ flex: 1 }}
+            />
+          )}
       </EarnDetailsActionsButtonsContainer>
     );
   };
@@ -246,7 +259,7 @@ export const EarnDetailsActions = ({
         <Typography variant="bodyXSmall" color="textSecondary">
           {t('earn.position.label')}
         </Typography>
-        {!isProduction && claimRedeemButton}
+        {isRequestRedeemFlowEnabled && claimRedeemButton}
       </EarnDetailsActionsHeaderContainer>
       <EarnDetailsActionsPosition
         token={earnOpportunity.lpToken}
