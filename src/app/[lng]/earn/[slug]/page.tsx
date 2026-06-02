@@ -83,23 +83,22 @@ export default async function Page({ params }: { params: Params }) {
 
   const queryClient = new QueryClient();
 
-  // Prefetch opportunity — use fetchQuery so we can detect 404 and call notFound()
-  const opportunity = await queryClient
-    .fetchQuery({
-      queryKey: earnOpportunityBySlugQueryKey(slug),
-      queryFn: () => fetchEarnOpportunityBySlug(slug),
-    })
-    .catch(() => null);
+  const [opportunity] = await Promise.all([
+    queryClient
+      .fetchQuery({
+        queryKey: earnOpportunityBySlugQueryKey(slug),
+        queryFn: () => fetchEarnOpportunityBySlug(slug),
+      })
+      .catch(() => null),
+    queryClient.prefetchQuery({
+      queryKey: earnRelatedMarketsQueryKey(slug),
+      queryFn: () => fetchEarnRelatedMarkets(slug),
+    }),
+  ]);
 
   if (!opportunity) {
     return notFound();
   }
-
-  // Prefetch related markets in parallel — non-critical, silently ignored on error
-  await queryClient.prefetchQuery({
-    queryKey: earnRelatedMarketsQueryKey(slug),
-    queryFn: () => fetchEarnRelatedMarkets(slug),
-  });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
