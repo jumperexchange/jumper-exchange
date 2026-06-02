@@ -684,10 +684,11 @@ export interface EarnOpportunityWithLatestAnalytics {
   lockupMonths?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
+  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   latest: EarnOpportunityHistoryItem;
-  rewardsApy?: number;
   provider?: 'vaultsfyi' | 'dialect';
   providerInternalId?: string;
 }
@@ -1014,10 +1015,11 @@ export interface EarnOpportunityWithScore {
   lockupMonths?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
+  /** @deprecated */
+  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   latest: EarnOpportunityHistoryItem;
-  rewardsApy?: number;
   provider?: 'vaultsfyi' | 'dialect';
   providerInternalId?: string;
   score: number;
