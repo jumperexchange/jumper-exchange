@@ -89,7 +89,8 @@ export const EarnDetailsActions = ({
   const isRequestRedeemFlowEnabled =
     !requestRedeemFlowFeatureFlag.isLoading &&
     requestRedeemFlowFeatureFlag.isEnabled &&
-    !!requestRedeemFlowFeatureFlag.value;
+    (requestRedeemFlowFeatureFlag.value === true ||
+      requestRedeemFlowFeatureFlag.value === 'test');
 
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.data) {
