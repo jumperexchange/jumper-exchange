@@ -1,22 +1,62 @@
 // middleware.ts
-import acceptLanguage from 'accept-language';
-import { i18nRouter } from 'next-i18n-router';
 import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import i18nConfig from 'i18n-config';
 import { cookieName } from '@/i18n/i18next-settings';
 import { lookupI18nLocaleDetector } from './i18n/lookupI18nLocaleDetector';
-import { locales } from './i18n/i18next-locales';
+import {
+  buildInternalLocalePath,
+  isSoftNavigationRequest,
+  resolveLocaleRouting,
+} from './i18n/resolveLocaleRequest';
+import { stripLocaleFromPathname } from './utils/urls/stripLocaleFromPathname';
 
-acceptLanguage.languages(locales);
+const LOCALE_HEADER = 'x-next-i18n-router-locale';
 
 export function proxy(request: NextRequest) {
-  const response = i18nRouter(request, {
-    ...i18nConfig,
-    localeDetector: lookupI18nLocaleDetector,
+  const pathname = request.nextUrl.pathname;
+  const cookieLocale = request.cookies.get(cookieName)?.value;
+  const detectorLocale = lookupI18nLocaleDetector(request, i18nConfig);
+
+  const decision = resolveLocaleRouting({
+    pathname,
+    cookie: cookieLocale,
+    detectorLocale,
+    locales: i18nConfig.locales,
+    defaultLocale: i18nConfig.defaultLocale,
+    referer: request.headers.get('referer'),
+    requestOrigin: request.nextUrl.origin,
+    isSoftNavigation: isSoftNavigationRequest(request.headers),
   });
 
-  const storedLocale = request.cookies.get(cookieName)?.value;
-  if (storedLocale && !i18nConfig.locales.includes(storedLocale)) {
+  const responseOptions = {
+    request: {
+      headers: new Headers(request.headers),
+    },
+  };
+
+  const pathWithSearch = `${decision.targetPath}${request.nextUrl.search}`;
+
+  let response: NextResponse;
+
+  if (decision.action === 'redirect') {
+    response = NextResponse.redirect(new URL(pathWithSearch, request.url));
+  } else {
+    const pathWithoutLocale = stripLocaleFromPathname(decision.targetPath);
+    const internalPath = buildInternalLocalePath(
+      pathWithoutLocale,
+      decision.serveLocale,
+    );
+
+    response = NextResponse.rewrite(
+      new URL(`${internalPath}${request.nextUrl.search}`, request.url),
+      responseOptions,
+    );
+  }
+
+  response.headers.set(LOCALE_HEADER, decision.serveLocale);
+
+  if (cookieLocale && !i18nConfig.locales.includes(cookieLocale)) {
     response.cookies.set(cookieName, '', {
       path: '/',
       maxAge: 0,
@@ -25,8 +65,6 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  // Set a cookie with the pathname that was used on the first page load
-  const pathname = request.nextUrl.pathname;
   response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
 
   return response;
