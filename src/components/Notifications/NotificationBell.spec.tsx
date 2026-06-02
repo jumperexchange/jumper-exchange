@@ -12,10 +12,10 @@ const accountState: { account?: { address: string } } = {
 };
 
 const summaryState: {
-  data?: { count: number; latestCreatedAt: string | null };
+  data?: { count: number; expiredCount: number };
   isLoading: boolean;
 } = {
-  data: { count: 0, latestCreatedAt: null },
+  data: { count: 0, expiredCount: 0 },
   isLoading: false,
 };
 
@@ -93,7 +93,7 @@ describe('NotificationBell', () => {
     };
     summaryState.data = {
       count: 5,
-      latestCreatedAt: '2026-04-16T10:30:00.000Z',
+      expiredCount: 0,
     };
     summaryState.isLoading = false;
     useNotificationStore.setState({
@@ -115,7 +115,7 @@ describe('NotificationBell', () => {
   });
 
   it('clamps badge to zero when local dismissed count exceeds server count', () => {
-    summaryState.data = { count: 1, latestCreatedAt: null };
+    summaryState.data = { count: 1, expiredCount: 0 };
     // 1 - 2 readIds - 1 deletedId = -2 → clamped to 0
     render(<NotificationBell />);
     const badge = screen.getByTestId('notification-badge');
