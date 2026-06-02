@@ -5,11 +5,9 @@ import {
 } from '@/app/lib/metadata';
 import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnPage } from '@/app/ui/earn/EarnPage';
-import { EarnPageSkeleton } from '@/app/ui/earn/EarnPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import { Suspense } from 'react';
 import envConfig from '@/config/env-config';
 import {
   dehydrate,
@@ -102,9 +100,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<EarnPageSkeleton />}>
-        <EarnPage slug={slug} />
-      </Suspense>
+      <EarnPage slug={slug} />
     </HydrationBoundary>
   );
 }
