@@ -1,3 +1,4 @@
+import { isAfter, isValid, parseISO } from 'date-fns';
 import type { Notification } from '@/types/notifications';
 
 /**
@@ -20,9 +21,10 @@ export const isExpired = (
   if (!notification.expiresAt) {
     return false;
   }
-  const expiresAt = new Date(notification.expiresAt).getTime();
-  if (Number.isNaN(expiresAt)) {
+  const expiresAt = parseISO(notification.expiresAt);
+  if (!isValid(expiresAt)) {
     return false;
   }
-  return expiresAt <= now;
+  // Expired once expiresAt <= now (the exact boundary counts as expired).
+  return !isAfter(expiresAt, now);
 };
