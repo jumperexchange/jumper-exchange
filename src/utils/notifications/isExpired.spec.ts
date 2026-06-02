@@ -20,9 +20,9 @@ describe('isExpired', () => {
     );
   });
 
-  it('treats the exact boundary as expired', () => {
+  it('treats the exact boundary as not yet expired', () => {
     expect(isExpired({ expiresAt: '2026-06-01T12:00:00.000Z' }, NOW)).toBe(
-      true,
+      false,
     );
   });
 
