@@ -14,6 +14,7 @@ import {
   WalletManagementProviders,
 } from '@lifi/wallet-management';
 import { setTag, setUser } from '@sentry/nextjs';
+import { walletDigest } from '@/utils/walletDigest';
 import type { ExtendedChain } from '@lifi/sdk';
 import { type FC, type PropsWithChildren, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -97,7 +98,7 @@ const WalletTrackingClient = () => {
 
   useEffect(() => {
     const handleWalletConnected = async (data: WalletConnected) => {
-      setUser({ id: data.address, username: data.connectorName });
+      setUser({ id: walletDigest(data.address) });
       setTag('wallet.chainType', data.chainType);
       setTag('wallet.chainId', String(data.chainId));
       trackEvent({
