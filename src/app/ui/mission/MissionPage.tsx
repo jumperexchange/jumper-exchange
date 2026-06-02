@@ -1,20 +1,22 @@
-import type { FC } from 'react';
-import { notFound } from 'next/navigation';
+'use client';
 
-import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
+import type { FC } from 'react';
 import { MissionDetails } from './MissionDetails';
 import { MissionWidget } from './MissionWidget/MissionWidget';
+import { MissionPageSkeleton } from './MissionPageSkeleton';
 import { TwoColumnLayout } from 'src/components/TwoColumnLayout/TwoColumnLayout';
 import { MissionPageTracking } from '@/components/headless/tracking/MissionPageTracking';
+import { useQuestBySlug } from 'src/hooks/quests/useQuestBySlug';
 
 interface MissionPageProps {
   slug: string;
 }
 
-export const MissionPage: FC<MissionPageProps> = async ({ slug }) => {
-  const { data } = await getQuestBySlug(slug);
-  if (!data) {
-    return notFound();
+export const MissionPage: FC<MissionPageProps> = ({ slug }) => {
+  const { data, isLoading } = useQuestBySlug(slug);
+
+  if (isLoading || !data) {
+    return <MissionPageSkeleton />;
   }
 
   return (
