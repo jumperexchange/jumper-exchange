@@ -29,12 +29,15 @@ import { useGoBack } from '@/hooks/routing/useGoBack';
 
 interface MissionDetailsProps {
   mission: Quest;
-  tasks: TaskVerificationWithApy[];
 }
 
-export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
+export const MissionDetails: FC<MissionDetailsProps> = ({ mission }) => {
   const missionId = mission.documentId;
   const hasEnded = mission.hasEnded ?? false;
+
+  const tasks = useMemo(() => {
+    return mission.tasks_verification;
+  }, [mission]);
 
   const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',

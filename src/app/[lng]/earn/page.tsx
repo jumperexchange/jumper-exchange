@@ -18,6 +18,8 @@ import {
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
+export const revalidate = 300;
+
 export const metadata: Metadata = {
   title: pageMetadataFields.earn.title,
   description: pageMetadataFields.earn.description,
