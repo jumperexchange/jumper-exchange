@@ -81,12 +81,20 @@ export default async function Page({ params }: { params: Params }) {
     queryClient
       .fetchQuery({
         queryKey: earnOpportunityBySlugQueryKey(slug),
-        queryFn: () => getOpportunityBySlugCached(slug),
+        queryFn: async () => {
+          const result = await getOpportunityBySlugCached(slug);
+          return result.data;
+        },
       })
-      .catch(() => null),
+      .catch(() => ({ data: null })),
     queryClient.prefetchQuery({
       queryKey: earnRelatedMarketsQueryKey(slug),
-      queryFn: () => getOpportunityRelatedMarketCached(slug).catch(() => []),
+      queryFn: async () => {
+        const result = await getOpportunityRelatedMarketCached(slug).catch(
+          () => ({ data: [] }),
+        );
+        return result.data;
+      },
     }),
   ]);
 

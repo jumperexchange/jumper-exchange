@@ -1,12 +1,21 @@
 import { unstable_cache } from 'next/cache';
-import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import type {
+  EarnOpportunityWithLatestAnalytics,
+  HttpResponse,
+} from '@/types/jumper-backend';
 import { makeClient } from './client';
+
+export type GetOpportunityBySlugResult = HttpResponse<
+  EarnOpportunityWithLatestAnalytics,
+  unknown
+>;
 
 export async function getOpportunityBySlug(
   slug: string,
-): Promise<EarnOpportunityWithLatestAnalytics | undefined> {
+): Promise<GetOpportunityBySlugResult> {
   const client = makeClient();
   const response = await client.v1.earnControllerGetItemV1(slug);
+  /* @ts-expect-error: see LF-15589 */
   return response.data;
 }
 

@@ -7,7 +7,10 @@ export const earnOpportunityBySlugQueryKey = (slug: string) =>
 export const useEarnOpportunityBySlug = (slug: string) => {
   return useQuery({
     queryKey: earnOpportunityBySlugQueryKey(slug),
-    queryFn: () => getOpportunityBySlug(slug),
+    queryFn: async () => {
+      const result = await getOpportunityBySlug(slug);
+      return result.data;
+    },
     enabled: false,
   });
 };

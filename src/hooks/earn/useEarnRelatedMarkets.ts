@@ -8,7 +8,10 @@ export const earnRelatedMarketsQueryKey = (slug: string) =>
 export const useEarnRelatedMarkets = (slug: string) => {
   return useQuery({
     queryKey: earnRelatedMarketsQueryKey(slug),
-    queryFn: () => getOpportunityRelatedMarket(slug),
+    queryFn: async () => {
+      const result = await getOpportunityRelatedMarket(slug);
+      return result.data;
+    },
     staleTime: FIVE_MINUTES_MS,
   });
 };

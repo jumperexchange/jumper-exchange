@@ -29,13 +29,19 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
   const { data: opportunity, isLoading: isOpportunityLoading } = useQuery({
     queryKey: earnOpportunityBySlugQueryKey(slug),
-    queryFn: () => getOpportunityBySlug(slug),
+    queryFn: async () => {
+      const result = await getOpportunityBySlug(slug);
+      return result.data;
+    },
     staleTime: FIVE_MINUTES_MS,
   });
 
   const { data: relatedMarkets } = useQuery({
     queryKey: earnRelatedMarketsQueryKey(slug),
-    queryFn: () => getOpportunityRelatedMarket(slug),
+    queryFn: async () => {
+      const result = await getOpportunityRelatedMarket(slug);
+      return result.data;
+    },
     staleTime: FIVE_MINUTES_MS,
   });
 
@@ -54,7 +60,9 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
         <EarnDetailsRisks protocol={protocol} tags={tags} />
       </EarnDetailsSection>
       <EarnDetailsSection>
-        <EarnRelatedMarkets relatedMarkets={relatedMarkets ?? []} />
+        <EarnRelatedMarkets
+          relatedMarkets={relatedMarkets?.filter(Boolean).slice(0, 3) ?? []}
+        />
       </EarnDetailsSection>
       <DepositFlowModal />
       <WithdrawFlowModal />
