@@ -11,6 +11,19 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
 import envConfig from '@/config/env-config';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import {
+  earnOpportunityBySlugQueryKey,
+  fetchEarnOpportunityBySlug,
+} from 'src/hooks/earn/useEarnOpportunityBySlug';
+import {
+  earnRelatedMarketsQueryKey,
+  fetchEarnRelatedMarkets,
+} from 'src/hooks/earn/useEarnRelatedMarkets';
 
 type Params = Promise<{ slug: string }>;
 
@@ -68,9 +81,31 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
+  const queryClient = new QueryClient();
+
+  // Prefetch opportunity — use fetchQuery so we can detect 404 and call notFound()
+  const opportunity = await queryClient
+    .fetchQuery({
+      queryKey: earnOpportunityBySlugQueryKey(slug),
+      queryFn: () => fetchEarnOpportunityBySlug(slug),
+    })
+    .catch(() => null);
+
+  if (!opportunity) {
+    return notFound();
+  }
+
+  // Prefetch related markets in parallel — non-critical, silently ignored on error
+  await queryClient.prefetchQuery({
+    queryKey: earnRelatedMarketsQueryKey(slug),
+    queryFn: () => fetchEarnRelatedMarkets(slug),
+  });
+
   return (
-    <Suspense fallback={<EarnPageSkeleton />}>
-      <EarnPage slug={slug} />
-    </Suspense>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<EarnPageSkeleton />}>
+        <EarnPage slug={slug} />
+      </Suspense>
+    </HydrationBoundary>
   );
 }

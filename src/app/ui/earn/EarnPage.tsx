@@ -1,7 +1,6 @@
-import { notFound } from 'next/navigation';
+'use client';
+
 import type { FC } from 'react';
-import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
-import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
@@ -14,46 +13,52 @@ import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawF
 import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
 import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
 import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
+import { EarnPageSkeleton } from './EarnPageSkeleton';
+import {
+  earnOpportunityBySlugQueryKey,
+  fetchEarnOpportunityBySlug,
+} from 'src/hooks/earn/useEarnOpportunityBySlug';
+import {
+  earnRelatedMarketsQueryKey,
+  fetchEarnRelatedMarkets,
+} from 'src/hooks/earn/useEarnRelatedMarkets';
+import { useQuery } from '@tanstack/react-query';
+import { FIVE_MINUTES_MS } from '@/const/time';
 
 interface EarnPageProps {
   slug: string;
 }
 
-export const EarnPage: FC<EarnPageProps> = async ({ slug }) => {
+export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
-  const [opportunity, relatedMarkets] = await Promise.all([
-    getOpportunityBySlug(slug).catch((error) => {
-      return { error, data: undefined };
-    }),
-    getOpportunityRelatedMarket(slug).catch((error) => {
-      return { error, data: [] };
-    }),
-  ]);
+  const { data: opportunity, isLoading: isOpportunityLoading } = useQuery({
+    queryKey: earnOpportunityBySlugQueryKey(slug),
+    queryFn: () => fetchEarnOpportunityBySlug(slug),
+    staleTime: FIVE_MINUTES_MS,
+  });
 
-  if (opportunity.error || !opportunity.data) {
-    return notFound();
+  const { data: relatedMarkets } = useQuery({
+    queryKey: earnRelatedMarketsQueryKey(slug),
+    queryFn: () => fetchEarnRelatedMarkets(slug),
+    staleTime: FIVE_MINUTES_MS,
+  });
+
+  if (isOpportunityLoading || !opportunity) {
+    return <EarnPageSkeleton />;
   }
 
-  if (relatedMarkets.error) {
-    console.error(relatedMarkets.error);
-    // pass
-  }
-
-  const relatedMarketsData =
-    relatedMarkets.data?.filter(Boolean).slice(0, 3) ?? [];
-
-  const { tags, protocol } = opportunity.data;
+  const { tags, protocol } = opportunity;
 
   return (
     <>
       <EarnDetailsSection>
         <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
-        <EarnDetailsIntro data={opportunity.data} isLoading={false} />
+        <EarnDetailsIntro data={opportunity} isLoading={false} />
         <EarnDetailsAnalytics slug={slug} />
         <EarnDetailsRisks protocol={protocol} tags={tags} />
       </EarnDetailsSection>
       <EarnDetailsSection>
-        <EarnRelatedMarkets relatedMarkets={relatedMarketsData} />
+        <EarnRelatedMarkets relatedMarkets={relatedMarkets ?? []} />
       </EarnDetailsSection>
       <DepositFlowModal />
       <WithdrawFlowModal />
