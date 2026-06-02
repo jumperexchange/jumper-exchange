@@ -30,9 +30,10 @@ npx swagger-typescript-api generate \
   --output="src/types/"
 
 # patch generated file with the request parameters
-perl -i -pe "s|// \@ts-nocheck|// \@ts-nocheck\nimport config from '\@/config/env-config';|" src/types/jumper-backend.ts
-perl -i -pe "s|headers: \{\},|headers: { Referer: config.NEXT_PUBLIC_SITE_URL },|" src/types/jumper-backend.ts
-perl -i -pe 's|referrerPolicy: "no-referrer"|referrerPolicy: "strict-origin-when-cross-origin"|' src/types/jumper-backend.ts
+# -0777 slurps the whole file so `or die` fires when the pattern is absent anywhere
+perl -i -0777 -pe "s|// \@ts-nocheck|// \@ts-nocheck\nimport config from '\@/config/env-config';| or die \"Patch failed: '// \@ts-nocheck' not found in generated file\\n\"" src/types/jumper-backend.ts
+perl -i -0777 -pe "s|headers: \{\},|headers: { Referer: config.NEXT_PUBLIC_SITE_URL },|g or die \"Patch failed: 'headers: {}' not found in generated file\\n\"" src/types/jumper-backend.ts
+perl -i -0777 -pe 's|referrerPolicy: "no-referrer"|referrerPolicy: "strict-origin-when-cross-origin"|g or die "Patch failed: '\''referrerPolicy: \"no-referrer\"'\'' not found in generated file\n"' src/types/jumper-backend.ts
 
 # format
 npx prettier --write src/types/jumper-backend.ts
