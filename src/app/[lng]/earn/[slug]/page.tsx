@@ -86,16 +86,16 @@ export default async function Page({ params }: { params: Params }) {
           return result.data;
         },
       })
-      .catch(() => ({ data: null })),
-    queryClient.prefetchQuery({
-      queryKey: earnRelatedMarketsQueryKey(slug),
-      queryFn: async () => {
-        const result = await getOpportunityRelatedMarketCached(slug).catch(
-          () => ({ data: [] }),
-        );
-        return result.data;
-      },
-    }),
+      .catch(() => null),
+    queryClient
+      .prefetchQuery({
+        queryKey: earnRelatedMarketsQueryKey(slug),
+        queryFn: async () => {
+          const result = await getOpportunityRelatedMarketCached(slug);
+          return result.data;
+        },
+      })
+      .catch(() => []),
   ]);
 
   if (!opportunity) {
