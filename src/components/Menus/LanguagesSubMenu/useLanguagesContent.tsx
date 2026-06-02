@@ -6,16 +6,16 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { cookieName } from '@/i18n/i18next-settings';
+import { cookieName, fallbackLng } from '@/i18n/i18next-settings';
 import * as supportedLanguages from '@/i18n/translations';
 import type { LanguageKey } from '@/types/i18n';
-import { replaceLocaleInUrl } from '@/utils/replaceLocaleInUrl';
-import { usePathname } from 'next/navigation';
+import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import { SECONDS_IN_A_MONTH } from '@/const/time';
 
 export const useLanguagesContent = () => {
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
   const { i18n } = useTranslation();
   const [, setCookie] = useCookies([cookieName]);
   const { trackEvent } = useUserTracking();
@@ -27,8 +27,14 @@ export const useLanguagesContent = () => {
       data: { [TrackingEventParameter.SwitchedLanguage]: newLanguage },
     });
     i18n.changeLanguage(newLanguage);
-    setCookie(cookieName, newLanguage, { path: '/', sameSite: true });
-    pathname && replaceLocaleInUrl(pathname, newLanguage);
+    setCookie(cookieName, newLanguage, {
+      path: '/',
+      sameSite: true,
+      maxAge: SECONDS_IN_A_MONTH,
+    });
+    const newPath =
+      newLanguage === fallbackLng ? pathname : `/${newLanguage}${pathname}`;
+    window.history.replaceState(null, '', newPath);
   };
 
   const languages = Object.entries(supportedLanguages)
@@ -37,6 +43,9 @@ export const useLanguagesContent = () => {
       label: languageValue.language.value,
       checkIcon: i18n.language === language,
       onClick: () => {
+        if (language === i18n.language) {
+          return;
+        }
         handleSwitchLanguage(language as LanguageKey);
       },
     }));
