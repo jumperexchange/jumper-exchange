@@ -1,6 +1,6 @@
 'use client';
 
-import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { Quest } from 'src/types/loyaltyPass';
 import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import type { FC } from 'react';
