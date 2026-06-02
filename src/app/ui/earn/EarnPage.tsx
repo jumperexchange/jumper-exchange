@@ -14,14 +14,10 @@ import { ContactSupportEventProvider } from '@/components/Widgets/events/Contact
 import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
 import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
 import { EarnPageSkeleton } from './EarnPageSkeleton';
-import {
-  earnOpportunityBySlugQueryKey,
-  fetchEarnOpportunityBySlug,
-} from 'src/hooks/earn/useEarnOpportunityBySlug';
-import {
-  earnRelatedMarketsQueryKey,
-  fetchEarnRelatedMarkets,
-} from 'src/hooks/earn/useEarnRelatedMarkets';
+import { earnOpportunityBySlugQueryKey } from 'src/hooks/earn/useEarnOpportunityBySlug';
+import { earnRelatedMarketsQueryKey } from 'src/hooks/earn/useEarnRelatedMarkets';
+import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
+import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
 import { useQuery } from '@tanstack/react-query';
 import { FIVE_MINUTES_MS } from '@/const/time';
 
@@ -33,13 +29,13 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
   // TODO: LF-14853: Opportunity Details
   const { data: opportunity, isLoading: isOpportunityLoading } = useQuery({
     queryKey: earnOpportunityBySlugQueryKey(slug),
-    queryFn: () => fetchEarnOpportunityBySlug(slug),
+    queryFn: () => getOpportunityBySlug(slug),
     staleTime: FIVE_MINUTES_MS,
   });
 
   const { data: relatedMarkets } = useQuery({
     queryKey: earnRelatedMarketsQueryKey(slug),
-    queryFn: () => fetchEarnRelatedMarkets(slug),
+    queryFn: () => getOpportunityRelatedMarket(slug),
     staleTime: FIVE_MINUTES_MS,
   });
 

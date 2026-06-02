@@ -1,8 +1,8 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import { getMerklOpportunities } from 'src/app/lib/getMerklOpportunities';
-import { calculateMaxApy } from 'src/utils/merkl/merklHelper';
-import { MERKL_CACHE_TIME } from 'src/utils/merkl/merklApi';
+import { getMerklOpportunities } from '@/app/lib/getMerklOpportunities';
+import { calculateMaxApy } from '@/utils/merkl/merklHelper';
+import { MERKL_CACHE_TIME } from '@/utils/merkl/merklApi';
 
 export const useTaskApy = (campaignId: string | undefined) => {
   return useQuery({

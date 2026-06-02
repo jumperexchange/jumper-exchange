@@ -99,7 +99,7 @@ async function fetchOpportunitiesSettled(
   return successes;
 }
 
-async function getMerklOpportunitiesUncached({
+export async function getMerklOpportunities({
   campaignId,
   chainIds,
   searchQueries,
@@ -141,8 +141,8 @@ async function getMerklOpportunitiesUncached({
   return [];
 }
 
-export const getMerklOpportunities = unstable_cache(
-  getMerklOpportunitiesUncached,
+export const getMerklOpportunitiesCached = unstable_cache(
+  getMerklOpportunities,
   ['merkl-opportunities'],
   { revalidate: MERKL_STALE_TIME / 1000 },
 );

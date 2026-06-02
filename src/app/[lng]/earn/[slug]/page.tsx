@@ -3,7 +3,7 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
+import { getOpportunitiesFilteredCached } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnPage } from '@/app/ui/earn/EarnPage';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { notFound } from 'next/navigation';
@@ -14,14 +14,10 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import {
-  earnOpportunityBySlugQueryKey,
-  fetchEarnOpportunityBySlug,
-} from 'src/hooks/earn/useEarnOpportunityBySlug';
-import {
-  earnRelatedMarketsQueryKey,
-  fetchEarnRelatedMarkets,
-} from 'src/hooks/earn/useEarnRelatedMarkets';
+import { earnOpportunityBySlugQueryKey } from 'src/hooks/earn/useEarnOpportunityBySlug';
+import { earnRelatedMarketsQueryKey } from 'src/hooks/earn/useEarnRelatedMarkets';
+import { getOpportunityBySlugCached } from 'src/app/lib/getOpportunityBySlug';
+import { getOpportunityRelatedMarketCached } from 'src/app/lib/getOpportunityRelatedMarket';
 
 type Params = Promise<{ slug: string }>;
 
@@ -32,8 +28,8 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
     return [];
   }
-  const res = await getOpportunitiesFiltered({});
-  const rows = res.data?.data ?? [];
+  const res = await getOpportunitiesFilteredCached({});
+  const rows = res.data ?? [];
   const slugs = [
     ...new Set(
       rows
@@ -85,12 +81,12 @@ export default async function Page({ params }: { params: Params }) {
     queryClient
       .fetchQuery({
         queryKey: earnOpportunityBySlugQueryKey(slug),
-        queryFn: () => fetchEarnOpportunityBySlug(slug),
+        queryFn: () => getOpportunityBySlugCached(slug),
       })
       .catch(() => null),
     queryClient.prefetchQuery({
       queryKey: earnRelatedMarketsQueryKey(slug),
-      queryFn: () => fetchEarnRelatedMarkets(slug),
+      queryFn: () => getOpportunityRelatedMarketCached(slug).catch(() => []),
     }),
   ]);
 

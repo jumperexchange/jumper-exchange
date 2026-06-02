@@ -35,9 +35,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission }) => {
   const missionId = mission.documentId;
   const hasEnded = mission.hasEnded ?? false;
 
-  const tasks = useMemo(() => {
-    return mission.tasks_verification;
-  }, [mission]);
+  const tasks = mission.tasks_verification;
 
   const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',
