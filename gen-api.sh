@@ -29,10 +29,10 @@ npx swagger-typescript-api generate \
   --name="jumper-backend.ts" \
   --output="src/types/"
 
-# format
-npx prettier --write src/types/jumper-backend.ts
-
 # patch generated file with the request parameters
 perl -i -pe "s|// \@ts-nocheck|// \@ts-nocheck\nimport config from '\@/config/env-config';|" src/types/jumper-backend.ts
 perl -i -pe "s|headers: \{\},|headers: { Referer: config.NEXT_PUBLIC_SITE_URL },|" src/types/jumper-backend.ts
-perl -i -pe "s|referrerPolicy: 'no-referrer'|referrerPolicy: 'strict-origin-when-cross-origin'|" src/types/jumper-backend.ts
+perl -i -pe 's|referrerPolicy: "no-referrer"|referrerPolicy: "strict-origin-when-cross-origin"|' src/types/jumper-backend.ts
+
+# format
+npx prettier --write src/types/jumper-backend.ts

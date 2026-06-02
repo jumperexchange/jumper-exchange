@@ -722,21 +722,46 @@ export interface EarnOpportunityHistory {
   points: EarnOpportunityHistoryPoint[];
 }
 
-export interface WalletCallDto {
+export interface CallDataTxDto {
+  /**
+   * Address of the transaction recipient
+   * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+   */
   to: string;
+  /**
+   * Hex-encoded calldata, 0x-prefixed
+   * @example "0xabcdef"
+   */
   data: string;
+  /**
+   * Value (in wei) to send with the transaction
+   * @example "0"
+   */
   value?: string;
+  /**
+   * Chain ID of the transaction
+   * @example 1
+   */
   chainId: number;
 }
 
-export interface VaultsFYICallDataActionResponseDto {
+export interface CallDataActionDto {
+  /**
+   * Name of the action step
+   * @example "request-redeem"
+   */
   name: string;
-  tx: WalletCallDto;
+  tx: CallDataTxDto;
 }
 
-export interface VaultsFYICallDataResponseDto {
+export interface CallDataResponseDto {
+  /**
+   * Index of the current action in the actions array
+   * @example 0
+   */
   currentActionIndex: number;
-  actions: VaultsFYICallDataActionResponseDto[];
+  /** Ordered list of transaction steps to execute */
+  actions: CallDataActionDto[];
 }
 
 export interface TokenBalance {
@@ -1961,7 +1986,7 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: Record<string, any>;
+          data: Record<string, any> | null;
           /** @example "Success" */
           message: string;
           meta: {
@@ -1991,7 +2016,7 @@ export class JumperBackend<
      *
      * @tags Earn, Public
      * @name EarnControllerGetRequestRedeemCalldataV1
-     * @summary Request redeem an earn opportunity
+     * @summary Get request-redeem calldata for an earn opportunity
      * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
      */
     earnControllerGetRequestRedeemCalldataV1: (
@@ -2006,7 +2031,7 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: VaultsFYICallDataResponseDto;
+          data: CallDataResponseDto;
           /** @example "Success" */
           message: string;
           meta: {
@@ -2036,14 +2061,13 @@ export class JumperBackend<
      *
      * @tags Earn, Public
      * @name EarnControllerGetClaimRedeemCalldataV1
-     * @summary Request claim redeem an earn opportunity
+     * @summary Get claim-redeem calldata for an earn opportunity
      * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
      */
     earnControllerGetClaimRedeemCalldataV1: (
       slug: string,
       query: {
         address: string;
-        amount: string;
       },
       params: RequestParams = {},
     ) =>
@@ -2051,7 +2075,7 @@ export class JumperBackend<
         {
           /** @example 200 */
           status: number;
-          data: VaultsFYICallDataResponseDto;
+          data: CallDataResponseDto;
           /** @example "Success" */
           message: string;
           meta: {
@@ -2519,7 +2543,6 @@ export class JumperBackend<
       this.request<string, any>({
         path: `/v1/tradingview/udf/time`,
         method: 'GET',
-        format: 'json',
         ...params,
       }),
 

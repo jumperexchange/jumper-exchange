@@ -72,7 +72,6 @@ export const RequestRedeemModal: FC<RequestRedeemModalProps> = ({
         earnOpportunity.slug,
         {
           address: accountAddress as Hex,
-          amount: selectedClaim.assetAmount ?? '0',
         },
       );
 
