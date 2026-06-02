@@ -21,6 +21,7 @@ export function proxy(request: NextRequest) {
       path: '/',
       maxAge: 0,
       sameSite: 'lax',
+      secure: true,
     });
   }
 
