@@ -328,8 +328,11 @@ export default class MetaMaskPage extends WalletPage {
           predicate: (page) => matches(page.url()),
           timeout: timeoutMs,
         });
-      } catch {
-        return false;
+      } catch (error) {
+        if (error instanceof Error && error.name === 'TimeoutError') {
+          return false;
+        }
+        throw error;
       }
     }
 
