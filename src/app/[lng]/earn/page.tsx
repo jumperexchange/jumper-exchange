@@ -11,12 +11,12 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import {
-  earnFilterOpportunitiesQueryKey,
-  fetchEarnFilterOpportunities,
-} from '@/hooks/earn/useEarnFilterOpportunities';
+import { earnFilterOpportunitiesQueryKey } from '@/hooks/earn/useEarnFilterOpportunities';
+import { getOpportunitiesFilteredCached } from '@/app/lib/getOpportunitiesFiltered';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: pageMetadataFields.earn.title,
@@ -38,7 +38,7 @@ export default async function Page() {
 
   await queryClient.prefetchQuery({
     queryKey: earnFilterOpportunitiesQueryKey({}),
-    queryFn: () => fetchEarnFilterOpportunities({}),
+    queryFn: () => getOpportunitiesFilteredCached({}),
   });
 
   return (
