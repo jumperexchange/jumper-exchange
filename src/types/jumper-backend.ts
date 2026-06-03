@@ -11,6 +11,55 @@ import config from '@/config/env-config';
  * ---------------------------------------------------------------
  */
 
+export interface JumperStringResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string;
+  meta: Record<string, any>;
+}
+
+export interface JumperNullResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  /** @example null */
+  data: string | null;
+  meta: Record<string, any>;
+}
+
+export type EmptyMeta = object;
+
+export interface CacheClearDto {
+  /** @example "Redis key myKey cleared successfully" */
+  message: string;
+}
+
+export interface CacheClearResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: CacheClearDto;
+}
+
+export interface AuthTokenDto {
+  /** @example "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." */
+  access_token: string;
+}
+
+export interface AuthLoginResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: AuthTokenDto;
+}
+
 export interface WalletEVM {
   address: string;
   message: string;
@@ -35,11 +84,43 @@ export interface VerifyWalletDto {
   solana?: WalletSolana;
 }
 
+export interface VerifyWalletResponseDto {
+  /** @example true */
+  evm: boolean;
+  /** @example false */
+  solana: boolean;
+}
+
+export interface VerifyWalletResponseResult {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: VerifyWalletResponseDto;
+}
+
 export interface WalletVerificationDto {
   /** Origin wallet data */
   origin_wallet: WalletEVM;
   /** Destination wallet data */
   destination_wallet: WalletEVM;
+}
+
+export interface VerifyWalletsResponseDto {
+  /** @example true */
+  success: boolean;
+  /** @example 42 */
+  verification_id: number;
+}
+
+export interface VerifyWalletsResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: VerifyWalletsResponseDto;
 }
 
 export interface CreateUserTrackingDto {
@@ -110,6 +191,15 @@ export interface CreateUserTrackingDto {
   walletProvider?: string | null;
   abTestVariants?: object;
   abtests: object;
+}
+
+export interface JumperUndefinedResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string | null;
+  meta: Record<string, any>;
 }
 
 export interface RewardEntity {
@@ -396,22 +486,6 @@ export interface TaskVerificationEntity {
   additionalFields?: object;
 }
 
-export interface UserEntity {
-  /**
-   * Unique identifier for the user
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
-  /**
-   * Timestamp when the user was created
-   * @format date-time
-   * @example "2023-01-01T00:00:00Z"
-   */
-  timestamp: string;
-  /** List of wallets associated with the user */
-  wallets: WalletEntity[];
-}
-
 export interface UserTrackingEntity {
   /**
    * Unique identifier for the user tracking entry
@@ -521,6 +595,79 @@ export interface WalletEntity {
   user: UserEntity;
 }
 
+export interface UserEntity {
+  /**
+   * Unique identifier for the user
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id: string;
+  /**
+   * Timestamp when the user was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00Z"
+   */
+  timestamp: string;
+  /** List of wallets associated with the user */
+  wallets: WalletEntity[];
+}
+
+export interface UserItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: UserEntity;
+}
+
+export interface UserTraitListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTraitEntity[];
+}
+
+export interface PointsRangePaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
+}
+
+export interface LeaderboardEntity {
+  /**
+   * Unique identifier for the leaderboard entry
+   * @example "123e4567-e89b-12d3-a456-426614174000"
+   */
+  id: string;
+  /**
+   * Wallet address associated with the leaderboard entry
+   * @example "0x1234567890abcdef1234567890abcdef12345678"
+   */
+  walletAddress: string;
+  /**
+   * Points accumulated by the wallet
+   * @example 1500
+   */
+  points: number;
+  /**
+   * Position of the wallet in the leaderboard
+   * @example 1
+   */
+  position: number;
+}
+
+export interface PointsRangeListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: PointsRangePaginationMeta;
+  data: LeaderboardEntity[];
+}
+
 export interface CreateWalletTransactionDto {
   sessionId: string;
   /**
@@ -543,6 +690,8 @@ export interface CreateWalletTransactionDto {
   fromAmountUSD?: number;
   toAmountUSD?: number;
   toAmountFormatted?: string | null;
+  /** @min 0 */
+  tokenCount?: number;
   gasCost?: number;
   gasCostFormatted?: string | null;
   gasCostUSD?: number;
@@ -595,27 +744,114 @@ export interface CreateWalletTransactionDto {
   timestamp: string;
 }
 
-export interface LeaderboardEntity {
-  /**
-   * Unique identifier for the leaderboard entry
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
-  /**
-   * Wallet address associated with the leaderboard entry
-   * @example "0x1234567890abcdef1234567890abcdef12345678"
-   */
-  walletAddress: string;
-  /**
-   * Points accumulated by the wallet
-   * @example 1500
-   */
-  points: number;
-  /**
-   * Position of the wallet in the leaderboard
-   * @example 1
-   */
-  position: number;
+export interface WalletTransactionListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTransactionEntity[];
+}
+
+export interface WalletPaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
+}
+
+export interface WalletRewardsByNameListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: WalletPaginationMeta;
+  data: WalletRewardEntity[];
+}
+
+export interface WalletRewardsSummaryDto {
+  sum: number;
+  level: number;
+  walletRewards: WalletRewardEntity[];
+}
+
+export interface WalletRewardsSummaryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletRewardsSummaryDto;
+}
+
+export interface WalletTraitListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTraitEntity[];
+}
+
+export interface RewardTypeDto {
+  type: string;
+  currentRangeXP: number;
+  nextRangeXP: number;
+  currentValue: number;
+  min: number;
+  max: number;
+}
+
+export interface OngoingRewardsListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: RewardTypeDto[];
+}
+
+export interface JumperStringArrayResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string[];
+  meta: Record<string, any>;
+}
+
+export interface LeaderboardPaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
+}
+
+export interface LeaderboardListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: LeaderboardPaginationMeta;
+  data: LeaderboardEntity[];
+}
+
+export interface LeaderboardCenteredListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: LeaderboardEntity[];
+}
+
+export interface LeaderboardItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: LeaderboardEntity;
 }
 
 export interface Chain {
@@ -693,6 +929,24 @@ export interface EarnOpportunityWithLatestAnalytics {
   providerInternalId?: string;
 }
 
+export interface EarnListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityWithLatestAnalytics[];
+}
+
+export interface EarnItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityWithLatestAnalytics;
+}
+
 export interface ApyHistoryPoint {
   /** The timestamp of the data point */
   t: number;
@@ -711,6 +965,15 @@ export interface ApyAnalyticsHistory {
   points: ApyHistoryPoint[];
 }
 
+export interface ApyAnalyticsHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: ApyAnalyticsHistory;
+}
+
 export interface EarnOpportunityHistoryPoint {
   /** The timestamp of the data point */
   t: number;
@@ -721,6 +984,24 @@ export interface EarnOpportunityHistoryPoint {
 export interface EarnOpportunityHistory {
   /** The data points */
   points: EarnOpportunityHistoryPoint[];
+}
+
+export interface EarnOpportunityHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityHistory;
+}
+
+export interface JumperFreeFormResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: Record<string, any> | null;
+  meta: Record<string, any>;
 }
 
 export interface CallDataTxDto {
@@ -765,6 +1046,15 @@ export interface CallDataResponseDto {
   actions: CallDataActionDto[];
 }
 
+export interface CallDataResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: CallDataResponseDto;
+}
+
 export interface TokenBalance {
   name: string;
   symbol: string;
@@ -782,6 +1072,15 @@ export interface TokenBalances {
   balances: TokenBalance[];
   /** @format date-time */
   updatedAt: string;
+}
+
+export interface TokenBalancesResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TokenBalances;
 }
 
 export interface DefiToken {
@@ -913,6 +1212,10 @@ export interface MetadataWithUpdatedAt {
 }
 
 export interface WalletPositions {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
   meta: MetadataWithUpdatedAt;
   data: (
     | ({
@@ -951,6 +1254,40 @@ export interface TaskVerificationDto {
    * @example {"customKey1":"value1","customKey2":"value2"}
    */
   additionalFields: object;
+}
+
+export interface TaskVerificationItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TaskVerificationEntity;
+}
+
+export interface TaskVerificationListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TaskVerificationEntity[];
+}
+
+export interface MerklBoostEntryDto {
+  /** @example "0x1234567890123456789012345678901234567890" */
+  address: string;
+  /** @example "1000000000" */
+  boost: string;
+}
+
+export interface MerklBoostListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: MerklBoostEntryDto[];
 }
 
 export interface GetZapDataDto {
@@ -1026,6 +1363,10 @@ export interface EarnOpportunityWithScore {
 }
 
 export interface EarnOpportunities {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
   meta: MetadataWithUpdatedAt;
   data: EarnOpportunityWithScore[];
 }
@@ -1043,7 +1384,15 @@ export interface VaultScoredDto {
 export interface RecommendationDto {
   summary: object;
   scores: VaultScoredDto[];
-  opportunities: EarnOpportunityWithLatestAnalytics[];
+}
+
+export interface RecommendationScoresResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: RecommendationDto;
 }
 
 export interface WalletVerification {
@@ -1056,8 +1405,39 @@ export interface WalletVerification {
   valid: boolean;
 }
 
+export interface WalletVerificationListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletVerification[];
+}
+
 export interface UpdateValidityDto {
   valid: boolean;
+}
+
+export interface WalletVerificationItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletVerification;
+}
+
+export interface WalletVerificationPaginationMeta {
+  total: number;
+}
+
+export interface WalletVerificationsPageResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: WalletVerificationPaginationMeta;
+  data: WalletVerification[];
 }
 
 export interface PerkClaimDto {
@@ -1108,6 +1488,24 @@ export interface PerkClaimEntity {
   email: string;
 }
 
+export interface PerkClaimItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PerkClaimEntity;
+}
+
+export interface PerkClaimListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PerkClaimEntity[];
+}
+
 export interface FeatureFlagResponseDto {
   /** @example "a-b-test-trade-display" */
   key: string;
@@ -1119,6 +1517,24 @@ export interface FeatureFlagResponseDto {
   events?: string[];
   /** @example 639768 */
   posthogFlagId?: number;
+}
+
+export interface FeatureFlagListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: FeatureFlagResponseDto[];
+}
+
+export interface FeatureFlagItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: FeatureFlagResponseDto;
 }
 
 export interface UdfExchangeDto {
@@ -1572,28 +1988,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: LeaderboardEntity[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<LeaderboardListResponse, any>({
         path: `/v1/leaderboard`,
         method: 'GET',
         query: query,
@@ -1614,28 +2009,7 @@ export class JumperBackend<
       entries: number,
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: LeaderboardEntity;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        void
-      >({
+      this.request<LeaderboardCenteredListResponse, void>({
         path: `/v1/leaderboard/centered-pagination/${position}/${entries}`,
         method: 'GET',
         format: 'json',
@@ -1654,28 +2028,7 @@ export class JumperBackend<
       address: string,
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: LeaderboardEntity;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        void
-      >({
+      this.request<LeaderboardItemResponse, void>({
         path: `/v1/leaderboard/${address}`,
         method: 'GET',
         format: 'json',
@@ -1700,28 +2053,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithLatestAnalytics[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/tops`,
         method: 'GET',
         query: query,
@@ -1757,28 +2089,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithLatestAnalytics[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/all`,
         method: 'GET',
         query: query,
@@ -1795,28 +2106,7 @@ export class JumperBackend<
      * @request GET:/v1/earn/items/{slug}
      */
     earnControllerGetItemV1: (slug: string, params: RequestParams = {}) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithLatestAnalytics;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnItemResponse, any>({
         path: `/v1/earn/items/${slug}`,
         method: 'GET',
         format: 'json',
@@ -1835,28 +2125,7 @@ export class JumperBackend<
       slug: string,
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithLatestAnalytics[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/items/${slug}/related`,
         method: 'GET',
         format: 'json',
@@ -1887,28 +2156,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: ApyAnalyticsHistory;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<ApyAnalyticsHistoryResponse, any>({
         path: `/v1/earn/items/${slug}/analytics/apy`,
         method: 'GET',
         query: query,
@@ -1940,28 +2188,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityHistory;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnOpportunityHistoryResponse, any>({
         path: `/v1/earn/items/${slug}/analytics`,
         method: 'GET',
         query: query,
@@ -1984,28 +2211,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: Record<string, any> | null;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<JumperFreeFormResponse, any>({
         path: `/v1/earn/items/${slug}/vault-specific-data`,
         method: 'GET',
         query: query,
@@ -2029,28 +2235,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: CallDataResponseDto;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<CallDataResponse, any>({
         path: `/v1/earn/items/${slug}/request-redeem/call-data`,
         method: 'GET',
         query: query,
@@ -2073,28 +2258,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: CallDataResponseDto;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<CallDataResponse, any>({
         path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
         query: query,
@@ -2145,28 +2309,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: TokenBalances;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<TokenBalancesResponse, any>({
         path: `/v1/portfolio/tokens`,
         method: 'GET',
         query: query,
@@ -2242,37 +2385,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: (
-            | ({
-                source: 'chain';
-              } & ChainDefiPosition)
-            | ({
-                source: 'app';
-              } & AppDefiPosition)
-          )[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            /** @format date-time */
-            updatedAt: string;
-            cacheControl?: number;
-            isFresh?: boolean;
-            timestamp: string;
-            path: string;
-            method: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
         method: 'GET',
         query: query,
@@ -2292,28 +2405,7 @@ export class JumperBackend<
       data: GetZapDataDto,
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: GeneratePayloadDto;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<GeneratePayloadDto, any>({
         path: `/v1/zaps/get-zap-data`,
         method: 'POST',
         body: data,
@@ -2340,30 +2432,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithScore[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            /** @format date-time */
-            updatedAt: string;
-            cacheControl?: number;
-            isFresh?: boolean;
-            timestamp: string;
-            path: string;
-            method: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/tops`,
         method: 'GET',
         query: query,
@@ -2399,30 +2468,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: EarnOpportunityWithScore[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            /** @format date-time */
-            updatedAt: string;
-            cacheControl?: number;
-            isFresh?: boolean;
-            timestamp: string;
-            path: string;
-            method: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<EarnOpportunities, any>({
         path: `/v1/recommendation/all`,
         method: 'GET',
         query: query,
@@ -2444,28 +2490,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: FeatureFlagResponseDto[];
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<FeatureFlagListResponse, any>({
         path: `/v1/feature-flags`,
         method: 'GET',
         query: query,
@@ -2488,28 +2513,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<
-        {
-          /** @example 200 */
-          status: number;
-          data: FeatureFlagResponseDto;
-          /** @example "Success" */
-          message: string;
-          meta: {
-            timestamp: string;
-            path: string;
-            method: string;
-            /** @format date-time */
-            updatedAt?: string;
-            pagination?: {
-              page: number;
-              limit: number;
-              totalCount: number;
-            };
-          };
-        },
-        any
-      >({
+      this.request<FeatureFlagItemResponse, any>({
         path: `/v1/feature-flags/${key}`,
         method: 'GET',
         query: query,
