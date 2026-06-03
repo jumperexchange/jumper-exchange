@@ -4,6 +4,7 @@ export enum AB_TEST_NAME {
   A_B_TEST_TRADE_DISPLAY = 'a-b-test-trade-display',
   A_B_TEST_FEE_CONTRIBUTION_DISPLAY = 'a-b-test-fee-contribution-display',
   DUST_CONVERSION = 'dust-conversion',
+  REQUEST_REDEEM_FLOW = 'request-redeem-flow',
 }
 
 // Single source of truth for all A/B tests
@@ -26,6 +27,10 @@ export const AbTests = {
   },
   [AB_TEST_NAME.DUST_CONVERSION]: {
     name: 'dust-conversion',
+    enabled: true,
+  },
+  [AB_TEST_NAME.REQUEST_REDEEM_FLOW]: {
+    name: 'request-redeem-flow',
     enabled: true,
   },
   // Add more tests here as needed
