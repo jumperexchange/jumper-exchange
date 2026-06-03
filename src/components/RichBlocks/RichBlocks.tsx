@@ -6,7 +6,7 @@ import { ParagraphBlock } from './blocks/ParagraphBlock';
 import { HeadingBlock } from './blocks/HeadingBlock';
 import { QuoteBlock } from './blocks/QuoteBlock';
 import { ImageBlock } from './blocks/ImageBlock';
-import type { ImageProps, TrackingKeys } from './types';
+import type { CustomRenderer, ImageProps, TrackingKeys } from './types';
 import { RichBlocksVariant } from './types';
 import { createSlugIdGenerator } from '@/utils/richBlocks/createSlugIdGenerator';
 
@@ -18,6 +18,9 @@ interface RichBlocksProps {
     quote?: SxProps<Theme>;
     image?: SxProps<Theme>;
   };
+  customRenderer?: {
+    paragraph?: CustomRenderer;
+  };
   trackingKeys?: TrackingKeys;
   variant?: RichBlocksVariant;
 }
@@ -25,6 +28,7 @@ interface RichBlocksProps {
 export const RichBlocks: FC<RichBlocksProps> = ({
   content,
   blockSx,
+  customRenderer,
   trackingKeys,
   variant = RichBlocksVariant.Mission,
 }) => {
@@ -56,6 +60,7 @@ export const RichBlocks: FC<RichBlocksProps> = ({
           sx={blockSx?.paragraph}
           trackingKeys={trackingKeys}
           variant={variant}
+          customRenderer={customRenderer?.paragraph}
         />
       ),
       quote: (props) => (
