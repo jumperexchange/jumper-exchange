@@ -8,6 +8,8 @@ import type { BrowserContext, Page } from '@playwright/test';
 
 export type WalletSelectors = Record<string, unknown>;
 
+class PopupNotFoundError extends Error {}
+
 export default abstract class WalletPage<
   TSelectors extends WalletSelectors = WalletSelectors,
 > extends BasePage<TSelectors> {
@@ -102,7 +104,7 @@ export default abstract class WalletPage<
       await popupWallet.confirmTransaction();
       return true;
     } catch (error) {
-      if (optional) {
+      if (optional && error instanceof PopupNotFoundError) {
         return false;
       }
       throw error;
@@ -287,7 +289,7 @@ export default abstract class WalletPage<
         .catch(() => {});
     }
 
-    throw new Error(
+    throw new PopupNotFoundError(
       `Could not detect wallet popup. Matchers: [${urlMatchers.join(', ')}]`,
     );
   }
