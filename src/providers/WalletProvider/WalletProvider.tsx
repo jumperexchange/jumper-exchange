@@ -13,6 +13,8 @@ import {
   WalletManagementEvent,
   WalletManagementProviders,
 } from '@lifi/wallet-management';
+import { setTag, setUser } from '@sentry/nextjs';
+import { walletDigest } from '@/utils/walletDigest';
 import type { ExtendedChain } from '@lifi/sdk';
 import { type FC, type PropsWithChildren, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -96,6 +98,9 @@ const WalletTrackingClient = () => {
 
   useEffect(() => {
     const handleWalletConnected = async (data: WalletConnected) => {
+      setUser({ id: walletDigest(data.address) });
+      setTag('wallet.chainType', data.chainType);
+      setTag('wallet.chainId', String(data.chainId));
       trackEvent({
         category: TrackingCategory.Connect,
         action: TrackingAction.ConnectWallet,
@@ -108,16 +113,30 @@ const WalletTrackingClient = () => {
         },
       });
     };
+    const handleWalletDisconnected = () => {
+      setUser(null);
+      setTag('wallet.chainType', undefined);
+      setTag('wallet.chainId', undefined);
+    };
     walletManagementEvents.on(
       WalletManagementEvent.WalletConnected,
       handleWalletConnected,
     );
+    walletManagementEvents.on(
+      WalletManagementEvent.WalletDisconnected,
+      handleWalletDisconnected,
+    );
 
-    return () =>
+    return () => {
       walletManagementEvents.off(
         WalletManagementEvent.WalletConnected,
         handleWalletConnected,
       );
+      walletManagementEvents.off(
+        WalletManagementEvent.WalletDisconnected,
+        handleWalletDisconnected,
+      );
+    };
   }, [trackEvent, walletManagementEvents]);
 
   return null;

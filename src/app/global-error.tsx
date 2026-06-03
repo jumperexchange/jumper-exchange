@@ -1,6 +1,5 @@
 'use client';
 
-import { isProduction } from '@/utils/isProduction';
 import { captureException } from '@sentry/nextjs';
 import { useEffect } from 'react';
 
@@ -11,9 +10,7 @@ export default function GlobalError({
   reset: () => void;
 }) {
   useEffect(() => {
-    if (isProduction) {
-      captureException(error);
-    }
+    captureException(error);
   }, [error]);
 
   return (

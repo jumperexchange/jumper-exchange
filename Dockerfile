@@ -17,14 +17,12 @@ RUN rm .env*
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 ARG ENV_FILE=.env
-
-ARG SENTRY_AUTH_TOKEN
-ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
-ARG NEXT_PUBLIC_SENTRY_DSN
-ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 #NOTE: Make sure to put the following en variable after setting up corepack
 ENV NODE_ENV=production
 
+# Sentry (SENTRY_AUTH_TOKEN, NEXT_PUBLIC_SENTRY_DSN) is not set here on purpose:
+# add them to the file copied in as $ENV_FILE (e.g. .env.staging) and/or pass them
+# as environment variables in the docker build job so Next/Sentry read a single source of truth.
 COPY ./$ENV_FILE ./.env
 RUN pnpm build
 
