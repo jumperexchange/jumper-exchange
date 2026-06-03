@@ -13,6 +13,7 @@ export function proxy(request: NextRequest) {
   const response = i18nRouter(request, {
     ...i18nConfig,
     localeDetector: lookupI18nLocaleDetector,
+    serverSetCookie: 'if-empty',
   });
 
   const storedLocale = request.cookies.get(cookieName)?.value;
