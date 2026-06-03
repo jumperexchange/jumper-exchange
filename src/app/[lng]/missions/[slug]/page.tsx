@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import { Suspense } from 'react';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
@@ -8,10 +7,18 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
-import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
 import { MissionPage } from 'src/app/ui/mission/MissionPage';
 import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import envConfig from '@/config/env-config';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import {
+  questBySlugQueryKey,
+  fetchQuestBySlug,
+} from 'src/hooks/quests/useQuestBySlug';
 
 type Params = Promise<{ slug: string }>;
 
@@ -131,9 +138,22 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
+  const queryClient = new QueryClient();
+
+  const quest = await queryClient
+    .fetchQuery({
+      queryKey: questBySlugQueryKey(slug),
+      queryFn: () => fetchQuestBySlug(slug),
+    })
+    .catch(() => null);
+
+  if (!quest) {
+    return notFound();
+  }
+
   return (
-    <Suspense fallback={<MissionPageSkeleton />}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <MissionPage slug={slug} />
-    </Suspense>
+    </HydrationBoundary>
   );
 }

@@ -13,7 +13,11 @@ import {
 } from '@lifi/widget';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';
-import { formatUSD } from './formatNumbers';
+import {
+  formatTokenAmountWithDust,
+  formatUSD,
+  formatUSDWithDust,
+} from './formatNumbers';
 
 const isJumperToken = (
   token: StaticToken | JumperToken,
@@ -56,7 +60,7 @@ export class SimpleToken {
   }
 
   protected formatTokenWithSymbol(amount: string) {
-    return `${amount} ${this.symbol || '---'}`;
+    return formatTokenAmountWithDust(amount, this.symbol);
   }
 
   formatAmount(amount: string | number | bigint) {
@@ -123,7 +127,7 @@ export class ExtendedToken extends SimpleToken {
           this.priceUSD,
         )
       : 0;
-    return formatUSD(amount);
+    return formatUSDWithDust(amount);
   }
 
   formatAmountFromUSD(amountUSD: string | number | bigint) {

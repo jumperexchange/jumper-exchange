@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { PerksDataAttributes } from 'src/types/strapi';
+import { type PerksDataAttributes } from 'src/types/strapi';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 
 export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
@@ -20,6 +20,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       ClaimableStepProps,
       HowToUseDescription,
       NextStepsDescription,
+      HasCustomPromoCodes,
     } = perk;
 
     const bannerImageUrl = resolveStrapiMediaUrl(BannerImage?.url) ?? '';
@@ -41,6 +42,7 @@ export const useFormatDisplayPerkData = (perk: PerksDataAttributes) => {
       claimableStepProps: ClaimableStepProps ?? {},
       howToUsePerkDescription: HowToUseDescription,
       nextStepsDescription: NextStepsDescription,
+      hasCustomPromoCodes: !!HasCustomPromoCodes,
     };
   }, [perk]);
 };

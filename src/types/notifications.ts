@@ -25,8 +25,10 @@ export interface Notification {
 }
 
 export interface NotificationSummary {
+  /** Live (non-expired) notification count, computed server-side. */
   count: number;
-  latestCreatedAt: string | null;
+  /** Expired subset of the count, exposed for future client-side use. */
+  expiredCount: number;
 }
 
 export interface NotificationStoreData {

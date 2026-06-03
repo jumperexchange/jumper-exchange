@@ -32,6 +32,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     claimableStepProps,
     howToUsePerkDescription,
     nextStepsDescription,
+    hasCustomPromoCodes,
   } = useFormatDisplayPerkData(perk);
   const activeAccount = useActiveAccountByChainType();
   const activeAccountAddress = activeAccount?.address;
@@ -51,12 +52,20 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
     setIsOpen(true);
   }, []);
 
-  const isClaimed = useMemo(() => {
-    return (
-      claimedPerks?.some(
-        (claimedPerk) => claimedPerk.perkId === id.toString(),
-      ) ?? false
+  const { isClaimed, promoCode } = useMemo(() => {
+    const claimedPerk = claimedPerks?.find(
+      (claimedPerk) => claimedPerk.perkId === id.toString(),
     );
+    if (!claimedPerk) {
+      return {
+        isClaimed: false,
+        promoCode: undefined,
+      };
+    }
+    return {
+      isClaimed: true,
+      promoCode: claimedPerk.promoCode,
+    };
   }, [claimedPerks, id]);
 
   const isLocked = useMemo(() => {
@@ -127,6 +136,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
         {perkCard}
         <ClaimPerkModal
           perkId={id}
+          perkPromoCode={promoCode}
           isClaimed={isClaimed}
           isOpen={isOpen}
           onClose={handleCloseModal}
@@ -135,6 +145,7 @@ export const PerksCard: FC<PerksCardProps> = ({ perk }) => {
           permittedSteps={claimableSteps}
           nextStepsDescription={nextStepsDescription}
           howToUsePerkDescription={howToUsePerkDescription}
+          hasCustomPromoCodes={hasCustomPromoCodes}
         />
       </>
     );
