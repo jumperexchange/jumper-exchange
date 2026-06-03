@@ -32,7 +32,8 @@ const qaseReporter = [
       project: 'WJ',
       uploadAttachments: true,
       run: {
-        complete: true,
+        // completed once by the complete-qase-run CI job, not per-shard (avoids status races)
+        complete: false,
       },
     },
   },
