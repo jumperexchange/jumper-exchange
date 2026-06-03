@@ -1,18 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import config from '@/config/env-config';
 import { useGetClaimedPerks } from './useGetClaimedPerks';
 import {
   usePerkClaimStatusStore,
   PerkClaimStatus,
 } from 'src/stores/perkClaimStatus';
-import type {
-  HttpResponse,
-  PerkClaimDto,
-  PerkClaimEntity,
-} from 'src/types/jumper-backend';
+import type { PerkClaimDto } from 'src/types/jumper-backend';
 import { makeClient } from '@/app/lib/client';
-
-export type ClaimPerkResult = HttpResponse<PerkClaimEntity, unknown>;
 
 export async function claimPerkQuery(props: PerkClaimDto) {
   const client = makeClient();
