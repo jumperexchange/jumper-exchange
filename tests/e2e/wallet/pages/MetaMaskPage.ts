@@ -316,31 +316,7 @@ export default class MetaMaskPage extends WalletPage {
     context: BrowserContext,
     timeoutMs: number = 15_000,
   ): Promise<boolean> {
-    const matchers = this.getPopupUrlMatchers();
-    const matches = (url: string): boolean =>
-      url !== 'about:blank' && matchers.some((m) => url.includes(m));
-
-    let popupPage = context.pages().find((p) => matches(p.url()));
-
-    if (!popupPage) {
-      try {
-        popupPage = await context.waitForEvent('page', {
-          predicate: (page) => matches(page.url()),
-          timeout: timeoutMs,
-        });
-      } catch (error) {
-        if (error instanceof Error && error.name === 'TimeoutError') {
-          return false;
-        }
-        throw error;
-      }
-    }
-
-    await popupPage.waitForLoadState('domcontentloaded');
-    await popupPage.bringToFront().catch(() => {});
-    const popupWallet = this.createExtensionPageInstance(popupPage);
-    await popupWallet.confirmTransaction();
-    return true;
+    return this.confirmInPopup(context, { optional: true, timeoutMs });
   }
 
   /**
