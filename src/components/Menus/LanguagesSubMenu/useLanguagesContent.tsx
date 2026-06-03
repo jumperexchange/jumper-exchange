@@ -31,7 +31,7 @@ export const useLanguagesContent = () => {
     setCookie(cookieName, language, {
       path: '/',
       sameSite: 'lax',
-      secure: window.location.protocol === 'https:',
+      secure: true,
       maxAge: SECONDS_IN_A_MONTH,
     });
     replaceLocaleInUrl(pathname, language);
