@@ -10,7 +10,6 @@ import {
   resolveLocaleRouting,
 } from './i18n/resolveLocaleRequest';
 import { stripLocaleFromPathname } from './utils/urls/stripLocaleFromPathname';
-import { buildSameOriginRequestUrl } from './utils/urls/buildSameOriginRequestUrl';
 
 const LOCALE_HEADER = 'x-next-i18n-router-locale';
 
@@ -36,12 +35,12 @@ export function proxy(request: NextRequest) {
     },
   };
 
+  const pathWithSearch = `${decision.targetPath}${request.nextUrl.search}`;
+
   let response: NextResponse;
 
   if (decision.action === 'redirect') {
-    response = NextResponse.redirect(
-      buildSameOriginRequestUrl(request, decision.targetPath),
-    );
+    response = NextResponse.redirect(new URL(pathWithSearch, request.url));
   } else {
     const pathWithoutLocale = stripLocaleFromPathname(decision.targetPath);
     const internalPath = buildInternalLocalePath(
@@ -50,7 +49,7 @@ export function proxy(request: NextRequest) {
     );
 
     response = NextResponse.rewrite(
-      buildSameOriginRequestUrl(request, internalPath),
+      new URL(`${internalPath}${request.nextUrl.search}`, request.url),
       responseOptions,
     );
   }
