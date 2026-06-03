@@ -10,8 +10,8 @@ import {
   getClient,
   captureRouterTransitionStart,
 } from '@sentry/nextjs';
-import { isProduction } from './src/utils/isProduction';
-import './src/utils/instrumentation/lifiSdkConfig';
+import { isProduction } from '@/utils/isProduction';
+import '@/utils/instrumentation/lifiSdkConfig';
 
 init({
   enabled: !!process.env.NEXT_PUBLIC_SENTRY_DSN,

@@ -339,6 +339,8 @@ export default interface Resources {
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
+      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
+      dustUsd: '<{{value, currencyExt(currency: USD)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
