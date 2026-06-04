@@ -1,5 +1,4 @@
 import type { WidgetConfig } from '@lifi/widget';
-import { RequiredUI } from '@lifi/widget';
 import { useMemo } from 'react';
 
 import type { HookDependencies, ZapWidgetContext } from './types';
@@ -14,7 +13,7 @@ export function useZapWidgetConfig(
   return useMemo(() => {
     return {
       // UI configuration
-      requiredUI: [RequiredUI.ToAddress],
+      requiredUI: { toAddress: true },
       keyPrefix: context.keyPrefix ?? 'jumper-custom-zap',
 
       sdkConfig: {
@@ -26,7 +25,7 @@ export function useZapWidgetConfig(
 
       // Additional zap-specific config
       buildUrl: false,
-      useRecommendedRoute: true,
+      showSingleRoute: true,
       // contractCompactComponent: <></>,
 
       bridges: {

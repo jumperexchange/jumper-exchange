@@ -1,7 +1,7 @@
 import type { WidgetEvent, widgetEvents, WidgetEvents } from '@lifi/widget';
 
 export type WidgetEventsConfig = {
-  [K in WidgetEvent]?: (data: WidgetEvents[K]) => void;
+  [K in WidgetEvent]?: WidgetEvents[K];
 };
 
 export type WidgetEventEmitter = typeof widgetEvents; // delegate that type to the widget library

@@ -1,0 +1,29 @@
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@lifi/*'
+  - '@bigmi/*'
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  bigint-buffer: true
+  '@sentry/cli': true
+  '@reown/appkit': false
+  bufferutil: false
+  utf-8-validate: false
+  keccak: false
+  secp256k1: false
+  protobufjs: false
+  core-js-pure: false
+  sleep: false
+peerDependencyRules:
+  allowedVersions:
+    eslint: '10'
+overrides:
+  '@safe-global/safe-apps-provider': '>=0.18.6'
+  hono: ^4.12.7
+  systeminformation: ^5.31.6
+publicHoistPattern:
+  - '*import-in-the-middle*'
+  - '*require-in-the-middle*'
