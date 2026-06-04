@@ -757,6 +757,13 @@ export default interface Resources {
         cta: 'Try it';
         title: 'New on Jumper: {{toolName}}';
       };
+      perkLevelUp: {
+        body_one: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check it out in your Jumper Pass.';
+        body_other: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check them out in your Jumper Pass.';
+        cta: 'View Jumper Pass';
+        title_one: 'Perk unlocked: {{perks, listExt(prop: name)}}';
+        title_other: 'You unlocked {{count}} new perks!';
+      };
       title: 'Notifications';
       toolVerb: {
         BRIDGE: 'bridged';
