@@ -14,7 +14,7 @@ export const useWidgetExpanded = () => {
     return () => {
       widgetEvents.off(WidgetEvent.WidgetExpanded, handleWidgetExpanded);
     };
-  }, [widgetEvents, widgetExpanded]);
+  }, [widgetEvents]);
 
   return widgetExpanded;
 };
