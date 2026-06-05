@@ -1,9 +1,6 @@
-import type { JumperBackend } from '@/types/jumper-backend';
+import { unstable_cache } from 'next/cache';
+import type { EarnOpportunities, JumperBackend } from '@/types/jumper-backend';
 import { makeClient } from './client';
-
-export type GetOpportunityTopResult = ReturnType<
-  JumperBackend<unknown>['v1']['recommendationControllerAllV1']
->;
 
 export type EarnOpportunityFilter = Parameters<
   JumperBackend<unknown>['v1']['recommendationControllerAllV1']
@@ -11,8 +8,14 @@ export type EarnOpportunityFilter = Parameters<
 
 export async function getOpportunitiesFiltered(
   filter: EarnOpportunityFilter,
-): GetOpportunityTopResult {
+): Promise<EarnOpportunities> {
   const client = makeClient();
-  const opportunity = await client.v1.recommendationControllerAllV1(filter);
-  return opportunity;
+  const response = await client.v1.recommendationControllerAllV1(filter);
+  return response.data;
 }
+
+export const getOpportunitiesFilteredCached = unstable_cache(
+  getOpportunitiesFiltered,
+  ['opportunities-filtered'],
+  { revalidate: 60 },
+);

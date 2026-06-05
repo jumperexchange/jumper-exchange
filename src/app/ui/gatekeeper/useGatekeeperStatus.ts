@@ -25,8 +25,6 @@ const isEarnEnabledByDefault = (): boolean => {
 };
 
 export const useGatekeeperStatus = (flag: string): GatekeeperData => {
-  console.log('7. useGatekeeperStatus');
-
   const accountAddress = useAccountAddress();
   const earnEnabledByDefault = flag === 'hasEarn' && isEarnEnabledByDefault();
 

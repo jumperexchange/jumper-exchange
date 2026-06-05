@@ -1,6 +1,6 @@
 'use client';
 
-import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { Quest } from 'src/types/loyaltyPass';
 import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissionDefaultsFromChains';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import type { FC } from 'react';
@@ -29,12 +29,13 @@ import { useGoBack } from '@/hooks/routing/useGoBack';
 
 interface MissionDetailsProps {
   mission: Quest;
-  tasks: TaskVerificationWithApy[];
 }
 
-export const MissionDetails: FC<MissionDetailsProps> = ({ mission, tasks }) => {
+export const MissionDetails: FC<MissionDetailsProps> = ({ mission }) => {
   const missionId = mission.documentId;
   const hasEnded = mission.hasEnded ?? false;
+
+  const tasks = mission.tasks_verification;
 
   const { status } = useMissionTimeStatus(
     mission.StartDate ?? '',
