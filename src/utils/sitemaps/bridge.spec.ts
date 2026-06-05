@@ -12,6 +12,13 @@ import {
 import type { ExtendedChain, Token } from '@lifi/sdk';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+vi.mock('`@/config/env-config`', () => ({
+  default: {
+    NEXT_PUBLIC_VERCEL_BRANCH_URL: '',
+    NEXT_PUBLIC_SITE_URL: 'https://jumper.xyz',
+  },
+}));
+
 vi.mock('@/hooks/useChains', () => ({
   getChainsQuery: vi.fn(),
 }));
