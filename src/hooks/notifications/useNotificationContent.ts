@@ -23,34 +23,30 @@ export function resolveNotificationContent(
   notification: Notification,
   ctx: { t: TFunction; i18n: I18nInstance },
 ): NotificationContent {
-  const fallback: NotificationContent = {
-    title: notification.title,
-    body: notification.body,
-    ctaLabel: notification.ctaLabel,
-  };
-
   const ruleId = notification.sourceRuleId;
-  const titleKey = `notifications.${ruleId}.title`;
-  const bodyKey = `notifications.${ruleId}.body`;
-  if (!ruleId || !ctx.i18n.exists(titleKey) || !ctx.i18n.exists(bodyKey)) {
-    return fallback;
+  if (!ruleId) {
+    return {
+      title: notification.title,
+      body: notification.body,
+      ctaLabel: notification.ctaLabel,
+    };
   }
 
   // Dynamic union keys carrying interpolation options can't be narrowed by the
-  // typed-resources `t()`; the keys are validated above with `i18n.exists`.
+  // typed-resources `t()`; the keys are validated below with `i18n.exists`.
   const translate = ctx.t as unknown as (
     key: string,
     options?: Record<string, unknown>,
   ) => string;
   const params = notification.metadata ?? {};
-  const ctaKey = `notifications.${ruleId}.cta`;
+
+  const resolve = (key: string, fallbackValue: string): string =>
+    ctx.i18n.exists(key) ? translate(key, params) : fallbackValue;
 
   return {
-    title: translate(titleKey, params),
-    body: translate(bodyKey, params),
-    ctaLabel: ctx.i18n.exists(ctaKey)
-      ? translate(ctaKey, params)
-      : notification.ctaLabel,
+    title: resolve(`notifications.${ruleId}.title`, notification.title),
+    body: resolve(`notifications.${ruleId}.body`, notification.body),
+    ctaLabel: resolve(`notifications.${ruleId}.cta`, notification.ctaLabel),
   };
 }
 
