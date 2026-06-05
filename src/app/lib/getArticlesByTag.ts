@@ -1,7 +1,5 @@
 import type { BlogArticleData } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
 export async function getArticlesByTag(
   excludeId: number,
   tag: number | number[],
@@ -12,11 +10,7 @@ export async function getArticlesByTag(
     .filterByTag(tag)
     .sort('desc');
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     next: {
       revalidate: 60 * 5, // revalidate every 5 minutes
     },
