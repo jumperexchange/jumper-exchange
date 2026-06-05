@@ -60,7 +60,7 @@ const buildTotalApyItem = (
     return null;
   }
 
-  const formatted = formatApy(displayedApy / 100);
+  const formatted = formatApy(displayedApy);
   return {
     key: 'apr',
     dataTestId: `apr-${displayedApy}`,

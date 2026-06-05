@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
-import { useMissionTaskApy } from '../useMissionApy';
+import { useMissionTaskApy } from '@/hooks/mission/useMissionApy';
 
 export const useFormatDisplayTaskData = (
   missionSlug: string,

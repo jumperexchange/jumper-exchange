@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import type { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
 import type { RewardsInterface } from 'src/types/questDetails';
 import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { useMissionApy } from '../useMissionApy';
+import { useMissionApy } from '@/hooks/mission/useMissionApy';
+import { formatApy } from '@/utils/numbers/apy';
 
 export const useFormatDisplayRewardsData = (
   slug: string,
@@ -27,7 +28,7 @@ export const useFormatDisplayRewardsData = (
     if (apyValue) {
       return [
         {
-          value: `${toFixedFractionDigits(apyValue, 0, 2)}%`,
+          value: formatApy(apyValue),
           label: 'APR',
         },
       ];
