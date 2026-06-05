@@ -981,6 +981,42 @@ export interface PerkClaimDto {
   signature: string;
 }
 
+export interface PerkClaimResponseDto {
+  /**
+   * Unique identifier for the perk
+   * @example 1
+   */
+  id: number;
+  /**
+   * Timestamp when the perk claim was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00Z"
+   */
+  timestamp: string;
+  /**
+   * Perk id on strapi
+   * @example "test-perk-id"
+   */
+  perkId: string;
+  /** Wallet associated with the perk claim */
+  wallet: WalletEntity;
+  /**
+   * Inserted username for the perk claim
+   * @example "test-username"
+   */
+  username: string;
+  /**
+   * Inserted email for the perk claim
+   * @example "test-email@example.com"
+   */
+  email: string;
+  /**
+   * Promo code assigned to this claim, if the perk has a code pool
+   * @example "AIRALO-XYZ-2024"
+   */
+  promoCode?: string;
+}
+
 export interface PerkClaimEntity {
   /**
    * Unique identifier for the perk
@@ -1822,6 +1858,46 @@ export class JumperBackend<
         path: `/v1/recommendation/all`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Perks, Public
+     * @name PerksControllerPerkClaimV1
+     * @summary Claim new perk
+     * @request POST:/v1/perks/claim
+     */
+    perksControllerPerkClaimV1: (
+      data: PerkClaimDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<PerkClaimResponseDto, any>({
+        path: `/v1/perks/claim`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Perks, Public
+     * @name PerksControllerFindClaimedByAddressV1
+     * @summary Get user perks claimed list by wallet address
+     * @request GET:/v1/perks/claimed/address/{address}
+     */
+    perksControllerFindClaimedByAddressV1: (
+      address: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<PerkClaimResponseDto[], void>({
+        path: `/v1/perks/claimed/address/${address}`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),

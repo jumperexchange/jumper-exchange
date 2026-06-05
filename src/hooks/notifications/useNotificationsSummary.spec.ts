@@ -47,7 +47,7 @@ describe('useNotificationsSummary', () => {
       ok: true,
       json: async () => ({
         count: 2,
-        latestCreatedAt: '2026-04-16T10:30:00.000Z',
+        expiredCount: 1,
       }),
     } as Response);
 
@@ -106,7 +106,7 @@ describe('useNotificationsSummary', () => {
       ok: true,
       json: async () => ({
         count: 3,
-        latestCreatedAt: '2026-04-16T10:30:00.000Z',
+        expiredCount: 0,
       }),
     } as Response);
 

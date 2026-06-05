@@ -56,3 +56,8 @@ export interface CommonBlockProps {
   variant?: RichBlocksVariant;
   sx?: SxProps<Theme>;
 }
+
+export interface CustomRenderer {
+  validator: (text: string) => boolean;
+  render: (text: string) => ReactNode;
+}

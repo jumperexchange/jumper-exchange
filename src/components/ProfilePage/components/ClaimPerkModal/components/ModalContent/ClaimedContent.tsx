@@ -1,5 +1,6 @@
 import Typography from '@mui/material/Typography';
-import { FC } from 'react';
+import { type FC } from 'react';
+import type { Theme } from '@mui/material/styles';
 import {
   StyledModalContentContainer,
   StyledModalSectionContainer,
@@ -9,24 +10,46 @@ import {
 import { walletDigest } from 'src/utils/walletDigest';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { Badge } from 'src/components/Badge/Badge';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { RichBlocks } from 'src/components/RichBlocks/RichBlocks';
-import { ClaimedProps } from '../../ClaimPerkModal.types';
+import type { ClaimedProps } from '../../ClaimPerkModal.types';
+import {
+  isPromoPlaceholderParagraph,
+  PromoCodeRenderer,
+} from 'src/components/RichBlocks/renderers/PromoCodeRenderer';
+import { getParagraphLinkProps } from 'src/components/RichBlocks/renderers/LinkRenderer';
+import { ParagraphLink } from 'src/components/RichBlocks/RichBlocks.style';
+import { DISCORD_URL } from '@/const/urls';
 
-interface ClaimedContentProps
-  extends Pick<
-    ClaimedProps,
-    'nextStepsDescription' | 'howToUsePerkDescription'
-  > {
+const paragraphSx = (theme: Theme) => ({
+  ...theme.typography.bodyMedium,
+  color: (theme.vars || theme).palette.text.secondary,
+  '& a': { margin: 0 },
+});
+
+interface ClaimedContentProps extends Pick<
+  ClaimedProps,
+  'nextStepsDescription' | 'howToUsePerkDescription'
+> {
   walletAddress: string;
+  promoCode?: string;
+  isPromoCodeLoading: boolean;
+  hasCustomPromoCodes: boolean;
 }
 
 export const ClaimedContent: FC<ClaimedContentProps> = ({
   walletAddress,
   nextStepsDescription,
   howToUsePerkDescription,
+  promoCode,
+  isPromoCodeLoading,
+  hasCustomPromoCodes,
 }) => {
   const { t } = useTranslation();
+
+  const isPromoPoolExhausted =
+    hasCustomPromoCodes && !isPromoCodeLoading && !promoCode;
+
   return (
     <StyledModalSectionContainer>
       <StyledModalContentContainer>
@@ -50,18 +73,32 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
           <Typography variant="titleXSmall">
             {t('modal.perks.claimedPerk.nextSteps')}
           </Typography>
-          <RichBlocks
-            content={nextStepsDescription}
-            blockSx={{
-              paragraph: (theme) => ({
-                ...theme.typography.bodyMedium,
-                color: (theme.vars || theme).palette.text.secondary,
-                '& a': {
-                  margin: 0,
+          {isPromoPoolExhausted ? (
+            <Typography variant="bodyMedium" color="textSecondary">
+              <Trans
+                i18nKey="modal.perks.claimedPerk.nextStepsPromoCodesExhaustedDescription"
+                components={[
+                  <ParagraphLink {...getParagraphLinkProps(DISCORD_URL)} />,
+                ]}
+              />
+            </Typography>
+          ) : (
+            <RichBlocks
+              content={nextStepsDescription}
+              blockSx={{ paragraph: paragraphSx }}
+              customRenderer={{
+                paragraph: {
+                  validator: isPromoPlaceholderParagraph,
+                  render: () => (
+                    <PromoCodeRenderer
+                      promoCode={promoCode}
+                      isLoading={isPromoCodeLoading}
+                    />
+                  ),
                 },
-              }),
-            }}
-          />
+              }}
+            />
+          )}
         </StyledTextSectionContainer>
         <StyledTextSectionContainer>
           <Typography variant="titleXSmall">
@@ -69,15 +106,7 @@ export const ClaimedContent: FC<ClaimedContentProps> = ({
           </Typography>
           <RichBlocks
             content={howToUsePerkDescription}
-            blockSx={{
-              paragraph: (theme) => ({
-                ...theme.typography.bodyMedium,
-                color: (theme.vars || theme).palette.text.secondary,
-                '& a': {
-                  margin: 0,
-                },
-              }),
-            }}
+            blockSx={{ paragraph: paragraphSx }}
           />
         </StyledTextSectionContainer>
       </StyledModalContentContainer>

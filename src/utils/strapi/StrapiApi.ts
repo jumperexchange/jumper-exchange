@@ -394,6 +394,7 @@ type PerkField =
   | 'ClaimableSteps'
   | 'HowToUseDescription'
   | 'NextStepsDescription'
+  | 'HasCustomPromoCodes'
   | 'Featured'
   | 'createdAt'
   | 'updatedAt'
@@ -411,6 +412,7 @@ class PerkParams {
     'ClaimableSteps',
     'HowToUseDescription',
     'NextStepsDescription',
+    'HasCustomPromoCodes',
     'Featured',
     'createdAt',
     'updatedAt',

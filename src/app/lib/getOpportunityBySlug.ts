@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import type {
   EarnOpportunityWithLatestAnalytics,
   HttpResponse,
@@ -12,13 +13,14 @@ export type GetOpportunityBySlugResult = HttpResponse<
 export async function getOpportunityBySlug(
   slug: string,
 ): Promise<GetOpportunityBySlugResult> {
-  try {
-    const client = makeClient();
-    const opportunity = await client.v1.earnControllerGetItemV1(slug);
-    /* @ts-expect-error: see LF-15589 - we are transforming data in the backend */
-    return opportunity.data;
-  } catch (error) {
-    console.error('getOpportunityBySlug failed for slug', slug, error);
-    throw error;
-  }
+  const client = makeClient();
+  const response = await client.v1.earnControllerGetItemV1(slug);
+  /* @ts-expect-error: see LF-15589 */
+  return response.data;
 }
+
+export const getOpportunityBySlugCached = unstable_cache(
+  getOpportunityBySlug,
+  ['opportunity-by-slug'],
+  { revalidate: 300 },
+);

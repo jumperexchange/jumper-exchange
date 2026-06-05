@@ -3,6 +3,7 @@ import { subDays, subWeeks } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { NotificationCategory } from '@/types/notifications';
+import { isExpired } from '@/utils/notifications/isExpired';
 import { useNotifications } from './useNotifications';
 
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
@@ -56,7 +57,9 @@ export const useFilteredNotifications = ({
     if (!notifications) {
       return [];
     }
-    return notifications.filter((n) => !deletedIds.includes(n.id));
+    return notifications.filter(
+      (n) => !deletedIds.includes(n.id) && !isExpired(n),
+    );
   }, [notifications, deletedIds]);
 
   const unreadCount = useMemo(
