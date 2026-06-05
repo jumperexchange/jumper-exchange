@@ -438,6 +438,7 @@ export default interface Resources {
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
       overview: 'Overview';
+      promoCode: 'Promo code';
       protocol: 'Protocol';
       rewardsApy: 'Rewards APY';
       tvl: 'TVL';
@@ -536,6 +537,7 @@ export default interface Resources {
           howToUsePerk: 'How to use your perk ?';
           howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
           nextSteps: 'Next steps';
+          nextStepsPromoCodesExhaustedDescription: "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week.";
           title: 'Perk claimed!';
         };
         signatureFailed: {
@@ -807,7 +809,7 @@ export default interface Resources {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
         chainValidationError: {
           cancel: 'Cancel';
-          description: "Currently chain {{chain}} can't support this operation, but we're actively working on it.";
+          description: "Currently {{chain}} chain can't support this operation, but we're actively working on it.";
           title: 'Chain not supported';
         };
         error: {
@@ -1002,6 +1004,7 @@ export default interface Resources {
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       close: 'Close';
+      copied: 'Copied';
       deposit: 'The token on which the market is defined and yield accrues on.';
       depositDisabled: 'Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       deposited: 'The token you have deposited into this market.';

@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import type {
   EarnOpportunityWithLatestAnalytics,
   HttpResponse,
@@ -12,13 +13,14 @@ export type GetOpportunityRelatedMarketResult = HttpResponse<
 export async function getOpportunityRelatedMarket(
   slug: string,
 ): Promise<GetOpportunityRelatedMarketResult> {
-  try {
-    const client = makeClient();
-    const data = await client.v1.earnControllerGetRelatedItemsV1(slug);
-    // @ts-expect-error: see LF-15589 - we are transforming data in the backend
-    return data.data;
-  } catch (error) {
-    console.error('getOpportunityRelatedMarket failed for slug', slug, error);
-    throw error;
-  }
+  const client = makeClient();
+  const response = await client.v1.earnControllerGetRelatedItemsV1(slug);
+  /* @ts-expect-error: see LF-15589 */
+  return response.data;
 }
+
+export const getOpportunityRelatedMarketCached = unstable_cache(
+  getOpportunityRelatedMarket,
+  ['opportunity-related-market'],
+  { revalidate: 300 },
+);

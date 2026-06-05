@@ -391,7 +391,8 @@
     "priceImpact": "The estimated value difference between the source and destination tokens.",
     "slippage": "The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.",
     "minReceived": "The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.",
-    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer."
+    "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer.",
+    "copied": "Copied"
   },
   "labels": {
     "apy": "APY",
@@ -406,7 +407,8 @@
     "protocol": "Protocol",
     "category": "Category",
     "overview": "Overview",
-    "capInDollar": "Capacity"
+    "capInDollar": "Capacity",
+    "promoCode": "Promo code"
   },
   "search": {
     "placeholder": "Search...",
@@ -898,7 +900,8 @@
         "description": "You have verified this perk with the following address",
         "nextSteps": "Next steps",
         "howToUsePerk": "How to use your perk ?",
-        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website."
+        "howToUsePerkDescription": "Simply add the code we provide you in the checkout of the Nansen website.",
+        "nextStepsPromoCodesExhaustedDescription": "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week."
       },
       "signatureFailed": {
         "title": "Signature required",
