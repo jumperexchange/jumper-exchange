@@ -6,12 +6,14 @@ import { useAccount } from '@lifi/wallet-management';
 import { Stack } from '@mui/material';
 import NextLink from 'next/link';
 import type { FC, MouseEvent } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
 import { useNotificationContent } from '@/hooks/notifications/useNotificationContent';
+import { useNotificationTracking } from '@/hooks/notifications/useNotificationTracking';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { Notification } from '@/types/notifications';
 import { NotificationCategory } from '@/types/notifications';
@@ -53,11 +55,32 @@ export const NotificationItem: FC<NotificationItemProps> = ({
     state.markAsRead,
     state.deleteNotification,
   ]);
+  const { trackSeen, trackClicked, trackDismissed } = useNotificationTracking();
 
   const isRead = readIds.includes(notification.id);
   const isInternal =
     notification.ctaUrl.startsWith('/') &&
     !notification.ctaUrl.startsWith('//');
+
+  // Funnel: "seen" = impression. Fire once when the item scrolls into view.
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element || typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          trackSeen(notification);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [notification, trackSeen]);
 
   const handleClick = () => {
     if (!isRead) {
@@ -67,11 +90,13 @@ export const NotificationItem: FC<NotificationItemProps> = ({
 
   const handleDelete = (e: MouseEvent) => {
     e.stopPropagation();
+    trackDismissed(notification);
     deleteNotif(address, notification.id);
   };
 
   const handleCtaClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation();
+    trackClicked(notification);
     if (!isRead) {
       markAsRead(address, notification.id);
     }
@@ -79,7 +104,11 @@ export const NotificationItem: FC<NotificationItemProps> = ({
   };
 
   return (
-    <NotificationItemContainer onClick={handleClick} isRead={isRead}>
+    <NotificationItemContainer
+      ref={containerRef}
+      onClick={handleClick}
+      isRead={isRead}
+    >
       <UnreadDot sx={{ visibility: isRead ? 'hidden' : 'visible' }} />
       <NotificationContent>
         <NotificationTitle>{title}</NotificationTitle>
