@@ -1,7 +1,10 @@
+'use client';
+
 import Box from '@mui/material/Box';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { AnimatePresence } from 'motion/react';
 import Image from 'next/image';
+import { useEffect, useRef } from 'react';
 import { isVideoMime } from '@/utils/isVideoMime';
 import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
 
@@ -10,6 +13,56 @@ export interface AnimatedBackgroundImageProps {
   mime?: string | null;
   sx?: SxProps<Theme>;
 }
+
+const AnimatedBackgroundVideo = ({ src }: { src: string }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    video.muted = true;
+
+    const playVideo = () => {
+      void video.play().catch(() => undefined);
+    };
+
+    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      playVideo();
+      return;
+    }
+
+    video.addEventListener('loadeddata', playVideo);
+
+    return () => {
+      video.removeEventListener('loadeddata', playVideo);
+    };
+  }, [src]);
+
+  return (
+    <Box
+      component="video"
+      ref={videoRef}
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden
+      sx={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+      }}
+    />
+  );
+};
 
 export const AnimatedBackgroundImage = ({
   src,
@@ -31,21 +84,7 @@ export const AnimatedBackgroundImage = ({
           sx={sx}
         >
           {isVideoMime(mime) ? (
-            <Box
-              component="video"
-              src={src}
-              autoPlay
-              loop
-              playsInline
-              aria-hidden
-              sx={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-              }}
-            />
+            <AnimatedBackgroundVideo src={src} />
           ) : (
             <Image
               src={src}
