@@ -1,11 +1,11 @@
 import { useAccount } from '@lifi/wallet-management';
 import { subDays, subWeeks } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
+import { useNotificationTracking } from '@/hooks/userTracking/useNotificationTracking';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { NotificationCategory } from '@/types/notifications';
 import { isExpired } from '@/utils/notifications/isExpired';
 import { useNotifications } from './useNotifications';
-import { useNotificationTracking } from './useNotificationTracking';
 
 export type DateFilter = 'all' | 'today' | 'week' | 'month';
 

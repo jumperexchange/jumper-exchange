@@ -13,7 +13,7 @@ import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
 import { useNotificationContent } from '@/hooks/notifications/useNotificationContent';
-import { useNotificationTracking } from '@/hooks/notifications/useNotificationTracking';
+import { useNotificationTracking } from '@/hooks/userTracking/useNotificationTracking';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { Notification } from '@/types/notifications';
 import { NotificationCategory } from '@/types/notifications';
