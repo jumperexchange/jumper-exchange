@@ -1,6 +1,9 @@
 const toDisplayString = (item: unknown, prop?: string): string => {
-  if (prop && item !== null && typeof item === 'object' && prop in item) {
-    return String((item as Record<string, unknown>)[prop]);
+  if (prop) {
+    if (item !== null && typeof item === 'object' && prop in item) {
+      return String((item as Record<string, unknown>)[prop]);
+    }
+    return '';
   }
   return item == null ? '' : String(item);
 };
