@@ -19,14 +19,15 @@ import type { JumperEventData } from '@/utils/tracking/jumperTracking';
  * for read/unread state. The unread badge / summary count is driven separately
  * (see `NotificationStore` and, eventually, a backend `status` column).
  *
- * `received` and `seen` are impression-style events: a single notification
- * should only count once per session even if it re-renders or the panel is
- * re-opened, so they are de-duplicated through a session-scoped set keyed by
- * `action:address:notificationId`. The set is cleared on a full page reload,
- * which is acceptable for analytics. `clicked` and `dismissed` are explicit
- * user actions and are always emitted.
+ * `received`, `seen` and `dismissed` are "at most once per notification"
+ * events: a notification is received/seen at most once (re-renders, refetches
+ * and panel re-opens must not re-fire them) and can only be dismissed once.
+ * They are de-duplicated through a session-scoped set keyed by
+ * `action:address:notificationId`, cleared on a full page reload (acceptable
+ * for analytics). `clicked` is emitted every time, since a user can legitimately
+ * click a notification's CTA more than once (it is not removed on click).
  */
-const impressionsFired = new Set<string>();
+const firedOnce = new Set<string>();
 
 const buildEventData = (notification: Notification): JumperEventData => ({
   [TrackingEventParameter.NotificationId]: notification.id,
@@ -55,10 +56,10 @@ export const useNotificationTracking = () => {
   const emitOnce = useCallback(
     (action: TrackingAction, label: string, notification: Notification) => {
       const key = `${action}:${address}:${notification.id}`;
-      if (impressionsFired.has(key)) {
+      if (firedOnce.has(key)) {
         return;
       }
-      impressionsFired.add(key);
+      firedOnce.add(key);
       emit(action, label, notification);
     },
     [address, emit],
@@ -96,12 +97,12 @@ export const useNotificationTracking = () => {
 
   const trackDismissed = useCallback(
     (notification: Notification) =>
-      emit(
+      emitOnce(
         TrackingAction.NotificationDismissed,
         'notification-dismissed',
         notification,
       ),
-    [emit],
+    [emitOnce],
   );
 
   return { trackReceived, trackSeen, trackClicked, trackDismissed };

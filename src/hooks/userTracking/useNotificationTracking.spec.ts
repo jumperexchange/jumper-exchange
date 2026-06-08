@@ -69,14 +69,27 @@ describe('useNotificationTracking', () => {
     });
   });
 
-  it('emits dismissed events every time (user action, not deduped)', () => {
+  it('emits clicked events every time (a CTA can be clicked more than once)', () => {
+    const notification = makeNotification();
+    const { result } = renderHook(() => useNotificationTracking());
+
+    result.current.trackClicked(notification);
+    result.current.trackClicked(notification);
+
+    expect(trackEvent).toHaveBeenCalledTimes(2);
+    expect(trackEvent.mock.calls[0][0].action).toBe(
+      TrackingAction.NotificationClicked,
+    );
+  });
+
+  it('de-duplicates dismissed per notification (can only happen once)', () => {
     const notification = makeNotification();
     const { result } = renderHook(() => useNotificationTracking());
 
     result.current.trackDismissed(notification);
     result.current.trackDismissed(notification);
 
-    expect(trackEvent).toHaveBeenCalledTimes(2);
+    expect(trackEvent).toHaveBeenCalledTimes(1);
     expect(trackEvent.mock.calls[0][0].action).toBe(
       TrackingAction.NotificationDismissed,
     );
