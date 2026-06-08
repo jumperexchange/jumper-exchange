@@ -4,6 +4,7 @@ import DeleteOutlineRounded from '@mui/icons-material/DeleteOutlineRounded';
 import OpenInNewRounded from '@mui/icons-material/OpenInNewRounded';
 import { useAccount } from '@lifi/wallet-management';
 import { Stack } from '@mui/material';
+import { useInView } from 'motion/react';
 import NextLink from 'next/link';
 import type { FC, MouseEvent } from 'react';
 import { useEffect, useRef } from 'react';
@@ -64,23 +65,12 @@ export const NotificationItem: FC<NotificationItemProps> = ({
 
   // Funnel: "seen" = impression. Fire once when the item scrolls into view.
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.5 });
   useEffect(() => {
-    const element = containerRef.current;
-    if (!element || typeof IntersectionObserver === 'undefined') {
-      return;
+    if (isInView) {
+      trackSeen(notification);
     }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          trackSeen(notification);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [notification, trackSeen]);
+  }, [isInView, notification, trackSeen]);
 
   const handleClick = () => {
     if (!isRead) {
