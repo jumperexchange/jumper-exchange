@@ -9,14 +9,15 @@ import { useNotificationTracking } from './useNotificationTracking';
 
 const trackEvent = vi.fn();
 
+const DEFAULT_ADDRESS = '0x1111111111111111111111111111111111111111';
+const accountState = { address: DEFAULT_ADDRESS };
+
 vi.mock('@/hooks/userTracking/useUserTracking', () => ({
   useUserTracking: () => ({ trackEvent, trackTransaction: vi.fn() }),
 }));
 
 vi.mock('@lifi/wallet-management', () => ({
-  useAccount: () => ({
-    account: { address: '0x1111111111111111111111111111111111111111' },
-  }),
+  useAccount: () => ({ account: { address: accountState.address } }),
 }));
 
 let idCounter = 0;
@@ -47,6 +48,7 @@ const makeNotification = (
 describe('useNotificationTracking', () => {
   beforeEach(() => {
     trackEvent.mockClear();
+    accountState.address = DEFAULT_ADDRESS;
   });
 
   it('emits a clicked event with the consistent property schema', () => {
@@ -119,5 +121,19 @@ describe('useNotificationTracking', () => {
     expect(trackEvent.mock.calls[0][0].action).toBe(
       TrackingAction.NotificationSeen,
     );
+  });
+
+  it('scopes impression de-duplication per wallet address', () => {
+    const notification = makeNotification();
+    const { result, rerender } = renderHook(() => useNotificationTracking());
+
+    result.current.trackSeen(notification);
+
+    // Same notification, different connected wallet -> distinct dedupe key.
+    accountState.address = '0x2222222222222222222222222222222222222222';
+    rerender();
+    result.current.trackSeen(notification);
+
+    expect(trackEvent).toHaveBeenCalledTimes(2);
   });
 });
