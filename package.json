@@ -179,7 +179,7 @@
     "lint-staged": "lint-staged",
     "typecheck": "tsc --project ./tsconfig.json --noEmit",
     "tsc:tests": "tsc --noEmit -p ./tests/tsconfig.json",
-    "dupcheck:tests": "npx jscpd tests/e2e --min-lines 5 --min-tokens 50 --ignore 'tests/e2e/wallet/**'",
+    "dupcheck:tests": "npx jscpd tests/e2e --min-lines 5 --min-tokens 50 --ignore-pattern 'tests/e2e/wallet/**'",
     "fix:staged-files": "lint-staged --allow-empty",
     "fix:all-files": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "pre-commit": "lint-staged",
