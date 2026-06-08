@@ -1,15 +1,19 @@
-import { AnimatePresence } from 'motion/react';
-import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
-import Image from 'next/image';
+import Box from '@mui/material/Box';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { AnimatePresence } from 'motion/react';
+import Image from 'next/image';
+import { isVideoMime } from '@/utils/isVideoMime';
+import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
 
 export interface AnimatedBackgroundImageProps {
   src?: string | null;
+  mime?: string | null;
   sx?: SxProps<Theme>;
 }
 
 export const AnimatedBackgroundImage = ({
   src,
+  mime,
   sx,
 }: AnimatedBackgroundImageProps) => {
   return (
@@ -26,16 +30,34 @@ export const AnimatedBackgroundImage = ({
           }}
           sx={sx}
         >
-          <Image
-            src={src}
-            alt="Animated background image"
-            fill
-            priority
-            sizes="100vw"
-            style={{
-              objectFit: 'cover',
-            }}
-          />
+          {isVideoMime(mime) ? (
+            <Box
+              component="video"
+              src={src}
+              autoPlay
+              loop
+              playsInline
+              aria-hidden
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+              }}
+            />
+          ) : (
+            <Image
+              src={src}
+              alt="Animated background image"
+              fill
+              priority
+              sizes="100vw"
+              style={{
+                objectFit: 'cover',
+              }}
+            />
+          )}
         </AnimatedBackgroundImageContainer>
       )}
     </AnimatePresence>

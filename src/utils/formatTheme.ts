@@ -3,18 +3,33 @@ import { getStrapiUrl } from '@/hooks/useStrapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { PartnerThemesAttributes } from '@/types/strapi';
 
+function getThemeMedia(
+  theme: PartnerThemesAttributes,
+  imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
+  defaultMode: 'light' | 'dark' = 'dark',
+): { url: URL; mime: string } | null {
+  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
+
+  const imageLight = theme[`${imageType}Light`];
+  const imageDark = theme[`${imageType}Dark`];
+  const media = defaultMode === 'light' ? imageLight : imageDark;
+
+  if (!media?.url) {
+    return null;
+  }
+
+  return {
+    url: new URL(media.url, baseStrapiUrl),
+    mime: media.mime,
+  };
+}
+
 function getImageUrl(
   theme: PartnerThemesAttributes,
   imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
   defaultMode: 'light' | 'dark' = 'dark',
 ): URL | null {
-  const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
-
-  const imageLight = theme[`${imageType}Light`];
-  const imageDark = theme[`${imageType}Dark`];
-  const imageUrl = defaultMode === 'light' ? imageLight?.url : imageDark?.url;
-
-  return imageUrl ? new URL(imageUrl, baseStrapiUrl) : null;
+  return getThemeMedia(theme, imageType, defaultMode)?.url ?? null;
 }
 
 export function getAvailableThemeModes(
@@ -68,11 +83,13 @@ export function formatConfig(
 
   const defaultMode = isDarkOrLightThemeMode(theme);
   const themeModes = getAvailableThemeModes(theme);
+  const backgroundMedia = getThemeMedia(theme, 'BackgroundImage', defaultMode);
   const result = {
     availableThemeModes: themeModes,
     backgroundColor:
       theme.BackgroundColorDark || theme.BackgroundColorLight || null,
-    backgroundImageUrl: getImageUrl(theme, 'BackgroundImage', defaultMode),
+    backgroundImageUrl: backgroundMedia?.url ?? null,
+    backgroundImageMime: backgroundMedia?.mime ?? null,
     backgroundImagePosition:
       (theme.lightConfig || theme.darkConfig)?.customization
         ?.backgroundImagePosition || 'center',

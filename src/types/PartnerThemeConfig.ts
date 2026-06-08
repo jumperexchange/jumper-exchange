@@ -11,6 +11,7 @@ export interface PartnerThemeConfig {
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;
+  backgroundImageMime: string | null;
   backgroundImagePosition: string;
   footerImageUrl: URL | null;
   logo:
