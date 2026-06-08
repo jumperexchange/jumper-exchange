@@ -16,6 +16,7 @@ export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
 export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
+export const JUMPER_BUY_PATH = '/buy';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_PROFILE_PATH = '/profile';
 export const JUMPER_MISSIONS_PATH = '/missions';
@@ -51,6 +52,7 @@ export function getSiteUrl() {
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
   Gas = JUMPER_GAS_PATH,
+  Buy = JUMPER_BUY_PATH,
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
   Missions = JUMPER_MISSIONS_PATH,
