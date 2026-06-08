@@ -15,15 +15,18 @@ import {
 } from '@/stores/rewards/RewardsStore';
 import { useMenuStore } from '@/stores/menu/MenuStore';
 import type { DeFiReacherReward } from '@/types/rewards';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 
 import { BaseRewardClaim, type ClaimConfig } from './BaseRewardClaim';
 
 interface DefiReacherRewardClaimProps {
   availableReward: DeFiReacherReward;
+  balance: PortfolioBalance<WalletToken>;
 }
 
 export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   availableReward,
+  balance,
 }) => {
   const { t } = useTranslation();
   const { address } = useAccount();
@@ -124,6 +127,7 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   return (
     <BaseRewardClaim
       availableReward={availableReward}
+      balance={balance}
       prepareClaim={prepareClaim}
       postClaim={postClaim}
       afterConfirm={afterConfirm}
