@@ -21,6 +21,7 @@ import { EarnDetailsEstimatedYieldView } from './EarnDetailsEstimatedYieldView';
 import { useChainTypeData } from '@/hooks/chains/useChainTypeData';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
+import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 
 interface EarnDetailsPositionProps {
   earnOpportunity: EarnOpportunityExtended;
@@ -31,10 +32,13 @@ enum EarnDetailsPositionView {
   YIELD = 'yield',
 }
 
+const DEFAULT_ESTIMATED_YIELD_USD = '1000';
+
 export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
   earnOpportunity,
 }) => {
   const { t } = useTranslation();
+  const { toAmountFromPrice, toRawAmount } = useTokenAmountInput();
   const { account, isAccountConnected: isConnected } = useChainTypeData(
     earnOpportunity.lpToken.chain.chainId,
   );
@@ -121,6 +125,35 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
     );
   }, [depositAmount, earnOpportunity.lpToken, priceUSD]);
 
+  const yieldEstimateTokenBalance = useMemo(() => {
+    const token = createExtendedToken(earnOpportunity.lpToken, priceUSD ?? '0');
+    const depositAmountBigInt =
+      depositAmount !== undefined ? BigInt(depositAmount) : 0n;
+
+    if (depositAmountBigInt > 0n) {
+      return createTokenBalance(token, depositAmountBigInt);
+    }
+
+    if (priceUSD && Number(priceUSD) > 0) {
+      const tokenAmount = toAmountFromPrice(
+        DEFAULT_ESTIMATED_YIELD_USD,
+        priceUSD,
+      );
+      return createTokenBalance(
+        token,
+        toRawAmount(tokenAmount, token.decimals),
+      );
+    }
+
+    return createTokenBalance(token, 0n);
+  }, [
+    depositAmount,
+    earnOpportunity.lpToken,
+    priceUSD,
+    toAmountFromPrice,
+    toRawAmount,
+  ]);
+
   const tabs = useMemo(
     () => [
       {
@@ -193,7 +226,7 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
         if (value === EarnDetailsPositionView.YIELD) {
           return (
             <EarnDetailsEstimatedYieldView
-              depositTokenBalance={depositTokenBalance}
+              yieldEstimateTokenBalance={yieldEstimateTokenBalance}
               /** TODO: This needs to be properly implemented with JUM-543 */
               yieldBoost={earnOpportunity.latest?.apy?.total ?? 0}
             />

@@ -19,7 +19,7 @@ import {
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 interface EarnDetailsEstimatedYieldViewProps {
-  depositTokenBalance: Balance<ExtendedToken>;
+  yieldEstimateTokenBalance: Balance<ExtendedToken>;
   yieldBoost: number;
 }
 
@@ -33,13 +33,16 @@ const PERCENTAGE_DECIMALS = 4;
 
 export const EarnDetailsEstimatedYieldView: FC<
   EarnDetailsEstimatedYieldViewProps
-> = ({ depositTokenBalance, yieldBoost }) => {
-  const token = depositTokenBalance.token;
+> = ({ yieldEstimateTokenBalance, yieldBoost }) => {
+  const token = yieldEstimateTokenBalance.token;
 
   const { toDisplayAmountUSD } = useTokenFormatters();
   const { toRawAmount, toAmount } = useTokenAmountInput();
 
-  const initialAmount = toAmount(depositTokenBalance.amount, token.decimals);
+  const initialAmount = toAmount(
+    yieldEstimateTokenBalance.amount,
+    token.decimals,
+  );
 
   const [inputAmount, setInputAmount] = useState(initialAmount);
   const [inputKey, setInputKey] = useState(0);
@@ -84,7 +87,7 @@ export const EarnDetailsEstimatedYieldView: FC<
     );
   };
 
-  const canRefresh = rawInputAmount !== depositTokenBalance.amount;
+  const canRefresh = rawInputAmount !== yieldEstimateTokenBalance.amount;
 
   return (
     <>
@@ -92,7 +95,7 @@ export const EarnDetailsEstimatedYieldView: FC<
         id="your-yield-estimate"
         name="your-yield-estimate"
         key={inputKey.toString()}
-        tokenBalance={depositTokenBalance}
+        tokenBalance={yieldEstimateTokenBalance}
         onAmountChange={handleAmountChange}
         sx={(theme) => ({
           marginBottom: theme.spacing(1.75),
