@@ -964,6 +964,7 @@ export default interface Resources {
       availableRewards: 'Available Rewards';
       campaigns: 'Campaigns';
       copyAddress: 'Copy wallet address';
+      joined: 'Joined {{date}}';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
       levelWithValue: 'Level {{level, number}}';
@@ -995,6 +996,7 @@ export default interface Resources {
         unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
+      viewLeaderboard: 'View leaderboard';
     };
     promo: {
       new: 'New';

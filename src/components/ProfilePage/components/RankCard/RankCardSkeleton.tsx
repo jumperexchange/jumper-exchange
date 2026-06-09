@@ -1,48 +1,58 @@
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import {
-  RankCardContainer,
   BaseStyledSkeleton,
-  RankButtonContainer,
+  RankButton,
+  RankCardContainer,
   RankCardContentContainer,
+  rankCardSx,
 } from './RankCard.styles';
 
 export const RankCardSkeleton = () => {
   return (
     <RankCardContainer>
-      <SectionCard>
+      <SectionCard sx={rankCardSx}>
         <RankCardContentContainer>
           <BaseStyledSkeleton
             variant="rounded"
             animation="wave"
-            sx={{
-              height: 32,
-              width: 96,
-              borderRadius: 16,
-            }}
+            sx={(theme) => ({
+              height: theme.spacing(2),
+              width: theme.spacing(8),
+              borderRadius: `${theme.shape.radius8}px`,
+            })}
           />
           <BaseStyledSkeleton
             variant="rounded"
             animation="wave"
-            sx={{
-              height: 48,
-              width: 128,
-              borderRadius: 24,
+            sx={(theme) => ({
+              height: theme.spacing(6.5),
+              width: theme.spacing(12),
+              borderRadius: `${theme.shape.radius12}px`,
               mt: 1,
-              mb: 2,
-            }}
+            })}
           />
-          <RankButtonContainer>
-            <BaseStyledSkeleton
-              variant="rounded"
-              animation="wave"
-              sx={{
-                height: 40,
-                width: '100%',
-                borderRadius: 20,
-              }}
-            />
-          </RankButtonContainer>
+          <BaseStyledSkeleton
+            variant="rounded"
+            animation="wave"
+            sx={(theme) => ({
+              height: theme.spacing(2),
+              width: theme.spacing(15),
+              borderRadius: `${theme.shape.radius8}px`,
+              mt: 1,
+            })}
+          />
         </RankCardContentContainer>
+        <RankButton disabled>
+          <BaseStyledSkeleton
+            variant="rounded"
+            animation="wave"
+            sx={(theme) => ({
+              height: theme.spacing(2.25),
+              width: theme.spacing(15),
+              borderRadius: `${theme.shape.radius8}px`,
+            })}
+          />
+        </RankButton>
       </SectionCard>
     </RankCardContainer>
   );

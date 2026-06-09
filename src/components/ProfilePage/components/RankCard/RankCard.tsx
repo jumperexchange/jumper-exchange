@@ -6,14 +6,17 @@ import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
 import { Link } from 'src/components/Link/Link';
 import { AppPaths } from 'src/const/urls';
 import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
+import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { ProfileContext } from 'src/providers/ProfileProvider';
-import { CardBadgeHeader } from '../CardBadgeHeader/CardBadgeHeader';
+import { formatDateLocalized } from 'src/utils/formatDateLocalized';
 import {
   RankButton,
-  RankButtonContainer,
   RankCardContainer,
   RankCardContentContainer,
+  RankJoinedDate,
+  RankLabel,
   RankUserPosition,
+  rankCardSx,
 } from './RankCard.styles';
 import { RankCardSkeleton } from './RankCardSkeleton';
 
@@ -23,10 +26,22 @@ export const RankCard: FC<RankCardProps> = () => {
   const { walletAddress: address, isLoading } = useContext(ProfileContext);
   const { data: leaderboardUserData, isLoading: isLeaderboardUserDataLoading } =
     useLeaderboardUser(address);
+  const { pdas } = useLoyaltyPass(address);
   const { t } = useTranslation();
   const position = leaderboardUserData?.position;
   const userPage = Math.ceil(parseFloat(position) / LEADERBOARD_LENGTH);
   const isGtMillion = parseInt(position) >= 1000000;
+
+  // "Joined" = the date of the user's first collected XP (earliest PDA).
+  const firstXpTimestamp = (pdas ?? [])
+    .map((pda) => new Date(pda.timestamp).getTime())
+    .filter((time) => !Number.isNaN(time))
+    .sort((a, b) => a - b)[0];
+  const joinedLabel = firstXpTimestamp
+    ? t('profile_page.joined', {
+        date: formatDateLocalized(firstXpTimestamp, 'MMMM yyyy'),
+      })
+    : null;
 
   if (isLoading || isLeaderboardUserDataLoading) {
     return <RankCardSkeleton />;
@@ -70,23 +85,19 @@ export const RankCard: FC<RankCardProps> = () => {
 
   return (
     <RankCardContainer>
-      <SectionCard>
+      <SectionCard sx={rankCardSx}>
         <RankCardContentContainer>
-          <CardBadgeHeader
-            tooltip={t('profile_page.rankInfo')}
-            label={t('profile_page.rank')}
-          />
+          <RankLabel>{t('profile_page.rank')}</RankLabel>
           {renderRankPosition()}
-          <RankButtonContainer>
-            <RankButton
-              href={AppPaths.Leaderboard}
-              component={Link}
-              data-testid="leaderboard-button"
-            >
-              {t('leaderboard.title')}
-            </RankButton>
-          </RankButtonContainer>
+          {joinedLabel ? <RankJoinedDate>{joinedLabel}</RankJoinedDate> : null}
         </RankCardContentContainer>
+        <RankButton
+          href={AppPaths.Leaderboard}
+          component={Link}
+          data-testid="leaderboard-button"
+        >
+          {t('profile_page.viewLeaderboard')}
+        </RankButton>
       </SectionCard>
     </RankCardContainer>
   );
