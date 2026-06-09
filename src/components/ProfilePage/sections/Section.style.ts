@@ -3,7 +3,9 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
 
-export const IntroSectionContainer = styled(Box)(({ theme }) => ({
+// The hero row: Jumper Pass card (grows) + RankCard (fixed width), matching the
+// Figma. Stacks vertically below the lg breakpoint.
+export const IntroHeroRow = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   gap: theme.spacing(4),
