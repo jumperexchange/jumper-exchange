@@ -948,6 +948,11 @@ export default interface Resources {
         value: 'Value';
         wallet: 'Wallet';
       };
+      holdings: {
+        defiPositions: 'DeFi';
+        perps: 'Perps';
+        tokens: 'Tokens';
+      };
       overviewCard: {
         refreshTooltip: 'Click here to restart the indexing of your assets.';
         title: 'Portfolio';

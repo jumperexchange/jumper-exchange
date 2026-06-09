@@ -3,14 +3,20 @@ import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioCont
 import { TokenSummaryRow } from '@/components/composite/BalanceCard/components/TokenSummaryRow';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 import { PortfolioHoldingsSection } from './PortfolioHoldingsSection';
-import { HoldingItemRow } from './HoldingItemRow';
 import { useHoldingAmountProgress } from './useHoldingAmountProgress';
 import { defaultConfig } from './constants';
+import type { FC } from 'react';
 
 const getTokenValue = (balance: PortfolioBalance<WalletToken>) =>
   balance.amountUSD;
 
-export const PortfolioTokens = () => {
+interface PortfolioTokenHoldingsProps {
+  title: string;
+}
+
+export const PortfolioTokenHoldings: FC<PortfolioTokenHoldingsProps> = ({
+  title,
+}) => {
   const { data, isLoading, isEmpty } = useBalancesFiltering();
   const { totalPortfolioUsd } = usePortfolioSummary();
 
@@ -23,17 +29,15 @@ export const PortfolioTokens = () => {
 
   return (
     <PortfolioHoldingsSection
-      title="Tokens"
+      title={title}
       amount={amount}
       progress={progress}
       shouldExpand={!isEmpty || isLoading}
       isLoading={isLoading}
-    >
-      {balanceGroups.map(([symbol, balances]) => (
-        <HoldingItemRow key={symbol}>
-          <TokenSummaryRow balances={balances} config={defaultConfig} />
-        </HoldingItemRow>
-      ))}
-    </PortfolioHoldingsSection>
+      items={balanceGroups}
+      renderItem={([, balances]) => (
+        <TokenSummaryRow balances={balances} config={defaultConfig} />
+      )}
+    />
   );
 };

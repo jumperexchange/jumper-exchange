@@ -686,6 +686,11 @@
         "borrowed": "Borrowed"
       }
     },
+    "holdings": {
+      "tokens": "Tokens",
+      "defiPositions": "DeFi",
+      "perps": "Perps"
+    },
     "filter": {
       "wallet": "Wallet",
       "chain": "Chain",

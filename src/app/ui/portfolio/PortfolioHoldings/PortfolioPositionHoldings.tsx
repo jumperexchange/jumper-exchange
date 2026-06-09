@@ -7,24 +7,25 @@ import { PositionSummaryRow } from '@/components/composite/PositionCard/componen
 import type { PortfolioPosition } from '@/providers/PortfolioProvider/types';
 import type { FC } from 'react';
 import { PortfolioHoldingsSection } from './PortfolioHoldingsSection';
-import { HoldingItemRow } from './HoldingItemRow';
 import { useHoldingAmountProgress } from './useHoldingAmountProgress';
 
-interface PortfolioPositionsSectionProps {
+interface PortfolioPositionHoldingsProps {
   title: string;
   filter: (positions: PortfolioPosition[]) => boolean;
 }
 
+type PositionGroup = [string, PortfolioPosition[]];
+
 const getPositionValue = (position: PortfolioPosition) => position.netUsd;
 
-export const PortfolioPositionsSection: FC<PortfolioPositionsSectionProps> = ({
+export const PortfolioPositionHoldings: FC<PortfolioPositionHoldingsProps> = ({
   title,
   filter,
 }) => {
   const { data, isLoading, isEmpty } = usePositionsFiltering();
   const { totalPortfolioUsd } = usePortfolioSummary();
 
-  const positionGroups = useMemo(() => {
+  const positionGroups: PositionGroup[] = useMemo(() => {
     const filtered = pickBy(
       mapValues(data, (positions) =>
         positions.filter(hasPositionDataToDisplay),
@@ -48,12 +49,10 @@ export const PortfolioPositionsSection: FC<PortfolioPositionsSectionProps> = ({
       progress={progress}
       shouldExpand={!isEmpty || isLoading}
       isLoading={isLoading}
-    >
-      {positionGroups.map(([symbol, positions]) => (
-        <HoldingItemRow key={symbol}>
-          <PositionSummaryRow positions={positions} />
-        </HoldingItemRow>
-      ))}
-    </PortfolioHoldingsSection>
+      items={positionGroups}
+      renderItem={([, positions]) => (
+        <PositionSummaryRow positions={positions} />
+      )}
+    />
   );
 };
