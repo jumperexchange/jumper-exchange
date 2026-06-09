@@ -1,6 +1,5 @@
 import { useAccount } from '@lifi/wallet-management';
 import type { WidgetConfig } from '@lifi/widget';
-import { HiddenUI } from '@lifi/widget';
 import { useMemo } from 'react';
 
 import { TaskType } from '@/types/strapi';
@@ -31,22 +30,22 @@ export function useMissionWidgetConfig(
     return {
       // Variant configuration
       variant: context.variant ?? 'compact',
-      subvariant: isZapTask ? 'custom' : 'default',
-      subvariantOptions: isZapTask ? { custom: 'deposit' } : undefined,
+      mode: isZapTask ? 'custom' : 'default',
+      modeOptions: isZapTask ? { custom: { type: 'deposit' } } : undefined,
 
       // UI configuration
-      hiddenUI: [
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-        HiddenUI.ReverseTokensButton,
-        HiddenUI.History,
-        ...(isSupported && !isSafe ? [HiddenUI.ToAddress] : []),
+      hiddenUI: {
+        appearance: true,
+        language: true,
+        poweredBy: true,
+        walletMenu: true,
+        reverseTokensButton: true,
+        history: true,
+        ...(isSupported && !isSafe ? { toAddress: true } : {}),
         ...(isZapTask
-          ? [HiddenUI.LowAddressActivityConfirmation, HiddenUI.GasRefuelMessage]
-          : []),
-      ],
+          ? { lowAddressActivityConfirmation: true, gasRefuelMessage: true }
+          : {}),
+      },
 
       // Theme configuration
       theme: {
