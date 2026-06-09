@@ -1,14 +1,10 @@
-import { getOpportunityBySlug } from '@/app/lib/getOpportunityBySlug';
-import { FIVE_MINUTES_MS } from '@/const/time';
 import { useQuery } from '@tanstack/react-query';
 
-export const earnOpportunityBySlugQueryKey = (slug: string) =>
-  ['earn-opportunity-by-slug', slug] as const;
-
-export const fetchEarnOpportunityBySlug = async (slug: string) => {
-  const result = await getOpportunityBySlug(slug);
-  return result.data;
-};
+import {
+  earnOpportunityBySlugQueryKey,
+  fetchEarnOpportunityBySlug,
+} from '@/app/lib/earn/earnQueries';
+import { FIVE_MINUTES_MS } from '@/const/time';
 
 export const useEarnOpportunityBySlug = (slug: string) => {
   return useQuery({

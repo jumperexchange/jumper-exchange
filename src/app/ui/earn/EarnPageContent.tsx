@@ -4,8 +4,8 @@ import {
   fetchEarnRelatedMarketsForPage,
 } from '@/app/lib/earn/cachedEarnFetch';
 import { EarnPage } from '@/app/ui/earn/EarnPage';
-import { earnOpportunityBySlugQueryKey } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { earnRelatedMarketsQueryKey } from '@/hooks/earn/useEarnRelatedMarkets';
+import { earnOpportunityBySlugQueryKey } from '@/app/lib/earn/earnQueries';
+import { earnRelatedMarketsQueryKey } from '@/app/lib/earn/earnQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 

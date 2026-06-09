@@ -4,8 +4,8 @@ import {
   fetchEarnTopOpportunitiesForPage,
 } from '@/app/lib/earn/cachedEarnFetch';
 import { EarnsPage } from '@/app/ui/earn/EarnsPage';
-import { earnFilterOpportunitiesQueryKey } from '@/hooks/earn/useEarnFilterOpportunities';
-import { earnTopOpportunitiesQueryKey } from '@/hooks/earn/useEarnTopOpportunities';
+import { earnFilterOpportunitiesQueryKey } from '@/app/lib/earn/earnQueries';
+import { earnTopOpportunitiesQueryKey } from '@/app/lib/earn/earnQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 export const EarnsPageContent = async () => {

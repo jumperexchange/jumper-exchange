@@ -2,18 +2,12 @@ import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import {
-  type EarnOpportunityFilter,
-  getOpportunitiesFiltered,
-} from '@/app/lib/getOpportunitiesFiltered';
+  earnFilterOpportunitiesQueryKey,
+  fetchEarnFilterOpportunities,
+} from '@/app/lib/earn/earnQueries';
+import type { EarnOpportunityFilter } from '@/app/lib/getOpportunitiesFiltered';
 import { ONE_HOUR_MS } from '@/const/time';
 import type { EarnOpportunities } from '@/types/jumper-backend';
-
-export const earnFilterOpportunitiesQueryKey = (
-  filter: EarnOpportunityFilter,
-) => ['earn-filter-opportunities', filter] as const;
-
-export const fetchEarnFilterOpportunities = (filter: EarnOpportunityFilter) =>
-  getOpportunitiesFiltered(filter);
 
 export interface Props {
   filter: EarnOpportunityFilter;

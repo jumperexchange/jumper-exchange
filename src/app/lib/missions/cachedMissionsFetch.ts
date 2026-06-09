@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache';
 
-import { fetchQuestBySlug } from '@/hooks/quests/useQuestBySlug';
+import { fetchQuestBySlug } from '@/app/lib/missions/missionQueries';
 import type { PaginationProps } from '@/utils/strapi/StrapiApi';
 import { getProfileBannerCampaigns } from '@/app/lib/getProfileBannerCampaigns';
 import { getQuestsWithNoCampaignAttached } from '@/app/lib/getQuestsWithNoCampaignAttached';

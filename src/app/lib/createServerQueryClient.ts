@@ -1,11 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
-import { FIVE_MINUTES_MS } from '@/const/time';
+import { makeQueryClient } from '@/app/lib/makeQueryClient';
 
-export const createServerQueryClient = () =>
-  new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: FIVE_MINUTES_MS,
-      },
-    },
-  });
+export const createServerQueryClient = makeQueryClient;

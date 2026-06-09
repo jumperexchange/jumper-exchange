@@ -1,7 +1,7 @@
 import { createServerQueryClient } from '@/app/lib/createServerQueryClient';
 import { fetchQuestBySlugForPage } from '@/app/lib/missions/cachedMissionsFetch';
 import { MissionPage } from '@/app/ui/mission/MissionPage';
-import { questBySlugQueryKey } from '@/hooks/quests/useQuestBySlug';
+import { questBySlugQueryKey } from '@/app/lib/missions/missionQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 

@@ -3,36 +3,16 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
 import { EarnPageContent } from '@/app/ui/earn/EarnPageContent';
 import { EarnPageSkeleton } from '@/app/ui/earn/EarnPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next/types';
-import envConfig from '@/config/env-config';
 import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
 export const dynamicParams = true;
 export const revalidate = 300;
-
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
-    return [];
-  }
-  const res = await getOpportunitiesFiltered({});
-  const rows = res.data ?? [];
-  const slugs = [
-    ...new Set(
-      rows
-        .map(({ slug }) => slug)
-        .filter(
-          (slug): slug is string => typeof slug === 'string' && slug.length > 0,
-        ),
-    ),
-  ];
-  return slugs.map((slug) => ({ slug }));
-}
 
 export async function generateMetadata({
   params,

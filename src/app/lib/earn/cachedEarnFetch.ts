@@ -1,11 +1,13 @@
 import { unstable_cache } from 'next/cache';
 
 import type { EarnOpportunityFilter } from '@/app/lib/getOpportunitiesFiltered';
-import { fetchEarnFilterOpportunities } from '@/hooks/earn/useEarnFilterOpportunities';
-import { fetchEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { fetchEarnRelatedMarkets } from '@/hooks/earn/useEarnRelatedMarkets';
+import {
+  fetchEarnFilterOpportunities,
+  fetchEarnOpportunityBySlug,
+  fetchEarnRelatedMarkets,
+  fetchEarnTopOpportunities,
+} from '@/app/lib/earn/earnQueries';
 import type { Hex } from 'viem';
-import { fetchEarnTopOpportunities } from '@/hooks/earn/useEarnTopOpportunities';
 
 const EARN_PAGE_REVALIDATE_SECONDS = 300;
 
