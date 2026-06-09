@@ -1,4 +1,3 @@
-'use client';
 import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
 import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
