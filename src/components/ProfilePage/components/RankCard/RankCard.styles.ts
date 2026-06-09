@@ -22,10 +22,11 @@ export const rankCardSx: SxProps<Theme> = (theme: Theme) => {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
+    // Fill the wrapper, which the flex row stretches to match the Pass card.
+    height: '100%',
     padding: 0,
     overflow: 'hidden',
     border: 'none',
-    minHeight: theme.spacing(28.75),
     color: palette.white.main,
     // Always use the light-scheme accents so the gradient matches in dark mode.
     background: `radial-gradient(100% 102.09% at 100% 100%, ${brandColors.light.accent1} 29.33%, ${brandColors.light.accent2} 100%)`,

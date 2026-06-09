@@ -983,6 +983,7 @@ export default interface Resources {
       campaigns: 'Campaigns';
       copyAddress: 'Copy wallet address';
       joined: 'Joined {{date}}';
+      jumperPass: 'Jumper Pass';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
       levelWithValue: 'Level {{level, number}}';
@@ -995,8 +996,15 @@ export default interface Resources {
       };
       ongoing: 'Ongoing';
       open: 'Open {{tool}}';
+      passStats: {
+        perks_one: '{{count}} perk';
+        perks_other: '{{count}} perks';
+        thisWeek: 'this week';
+        unlocked: 'unlocked';
+      };
       perks: 'Perks';
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
+      progressTo: 'Your progress to';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
       rewards: 'Rewards Earned';
