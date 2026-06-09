@@ -1,6 +1,7 @@
 'use client';
 
 import { getMissionApy, getMissionTaskApy } from '@/app/lib/getMissionApy';
+import type { MissionApyResponse } from '@/types/jumper-backend';
 import { useQuery } from '@tanstack/react-query';
 
 export const missionApyQueryKeys = {
@@ -11,7 +12,7 @@ export const missionApyQueryKeys = {
 };
 
 export const useMissionApy = (slug?: string) => {
-  return useQuery({
+  return useQuery<MissionApyResponse | null>({
     queryKey: missionApyQueryKeys.byMission(slug ?? ''),
     queryFn: async () => {
       const result = await getMissionApy(slug!);
@@ -23,7 +24,7 @@ export const useMissionApy = (slug?: string) => {
 };
 
 export const useMissionTaskApy = (slug?: string, identifier?: string) => {
-  return useQuery({
+  return useQuery<MissionApyResponse | null>({
     queryKey: missionApyQueryKeys.byTask(slug ?? '', identifier ?? ''),
     queryFn: async () => {
       const result = await getMissionTaskApy(slug!, identifier!);
