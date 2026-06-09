@@ -4,8 +4,8 @@ import { NextResponse } from 'next/server';
 import envConfig from 'src/config/env-config';
 import { isValidAddress } from 'src/utils/regex-patterns';
 import {
+  INTERCOM_SESSION_MAX_AGE_SECONDS,
   INTERCOM_USER_ID_V2_COOKIE,
-  INTERCOM_USER_ID_V2_COOKIE_MAX_AGE,
 } from './constants';
 import {
   findContactByExternalId,
@@ -30,7 +30,9 @@ const signIntercomUserToken = (
     payload.wallet_address = walletAddress;
   }
 
-  return jwt.sign(payload, secret, { expiresIn: '1h' });
+  return jwt.sign(payload, secret, {
+    expiresIn: INTERCOM_SESSION_MAX_AGE_SECONDS,
+  });
 };
 
 const buildJsonResponse = (
@@ -46,7 +48,7 @@ const buildJsonResponse = (
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: INTERCOM_USER_ID_V2_COOKIE_MAX_AGE,
+      maxAge: INTERCOM_SESSION_MAX_AGE_SECONDS,
     });
   }
 
@@ -60,9 +62,40 @@ const syncWalletAddressToContact = async (
 ): Promise<void> => {
   const contact = await findContactByExternalId(userId, accessToken);
 
-  if (contact) {
-    await updateContactWalletAddress(contact.id, walletAddress, accessToken);
+  if (!contact) {
+    return;
   }
+
+  const updated = await updateContactWalletAddress(
+    contact.id,
+    walletAddress,
+    accessToken,
+  );
+
+  if (!updated) {
+    throw new Error(
+      `Intercom wallet_address update failed for contact ${contact.id}`,
+    );
+  }
+};
+
+const syncWalletAddressToContactWithRetry = async (
+  userId: string,
+  walletAddress: string,
+  accessToken: string,
+): Promise<void> => {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      await syncWalletAddressToContact(userId, walletAddress, accessToken);
+      return;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError;
 };
 
 export const POST = async (request: NextRequest) => {
@@ -90,11 +123,19 @@ export const POST = async (request: NextRequest) => {
 
     if (userIdV2FromCookie) {
       if (intercomAccessToken && validatedWallet) {
-        await syncWalletAddressToContact(
-          userIdV2FromCookie,
-          validatedWallet,
-          intercomAccessToken,
-        );
+        try {
+          await syncWalletAddressToContactWithRetry(
+            userIdV2FromCookie,
+            validatedWallet,
+            intercomAccessToken,
+          );
+        } catch (error) {
+          console.error('Intercom wallet_address sync failed after retry', {
+            userId: userIdV2FromCookie,
+            walletAddress: validatedWallet,
+            error,
+          });
+        }
       }
 
       const userHash = signIntercomUserToken(

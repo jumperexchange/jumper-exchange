@@ -18,8 +18,7 @@ export async function findContactByExternalId(
       return null;
     }
 
-    console.error('Intercom contact lookup failed:', error);
-    return null;
+    throw error;
   }
 }
 
