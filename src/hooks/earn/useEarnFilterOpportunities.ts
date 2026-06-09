@@ -12,6 +12,9 @@ export const earnFilterOpportunitiesQueryKey = (
   filter: EarnOpportunityFilter,
 ) => ['earn-filter-opportunities', filter] as const;
 
+export const fetchEarnFilterOpportunities = (filter: EarnOpportunityFilter) =>
+  getOpportunitiesFiltered(filter);
+
 export interface Props {
   filter: EarnOpportunityFilter;
 }
@@ -36,7 +39,7 @@ export const useEarnFilterOpportunities = (
 ): Result => {
   return useQuery({
     queryKey: earnFilterOpportunitiesQueryKey(filter),
-    queryFn: () => getOpportunitiesFiltered(filter),
+    queryFn: () => fetchEarnFilterOpportunities(filter),
     select: (payload) => {
       return {
         ...payload,
@@ -47,6 +50,7 @@ export const useEarnFilterOpportunities = (
       };
     },
     refetchInterval: ONE_HOUR_MS,
+    refetchOnMount: false,
     placeholderData: (previousData) =>
       !('enabled' in options) || options.enabled ? previousData : undefined,
     ...options,

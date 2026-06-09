@@ -15,5 +15,6 @@ export const useQuestBySlug = (slug: string) => {
     queryKey: questBySlugQueryKey(slug),
     queryFn: () => fetchQuestBySlug(slug),
     staleTime: FIVE_MINUTES_MS,
+    refetchOnMount: false,
   });
 };

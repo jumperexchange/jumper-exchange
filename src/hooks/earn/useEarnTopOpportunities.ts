@@ -13,19 +13,26 @@ export type Result = UseQueryResult<
   unknown
 >;
 
+export const earnTopOpportunitiesQueryKey = (address?: Hex) =>
+  ['earn-top-opportunities', address] as const;
+
+export const fetchEarnTopOpportunities = async (address?: Hex) => {
+  const result = await getOpportunitiesTop(address);
+  if (!result.ok) {
+    throw result.error;
+  }
+  return result.data.data;
+};
+
 export const useEarnTopOpportunities = ({}: Props): Result => {
   const address: Hex | undefined = useAccountAddress();
 
   return useQuery<EarnOpportunityWithLatestAnalytics[], unknown>({
-    queryKey: ['earn-top-opportunities', address],
-    queryFn: async () => {
-      const result = await getOpportunitiesTop(address);
-      if (!result.ok) {
-        throw result.error;
-      }
-      return result.data.data;
-    },
+    queryKey: earnTopOpportunitiesQueryKey(address),
+    queryFn: () => fetchEarnTopOpportunities(address),
+    staleTime: FIVE_MINUTES_MS,
     refetchInterval: FIVE_MINUTES_MS,
+    refetchOnMount: false,
     placeholderData: (previousData) => previousData,
   });
 };

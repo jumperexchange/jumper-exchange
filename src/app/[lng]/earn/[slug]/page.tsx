@@ -3,21 +3,13 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { getOpportunitiesFilteredCached } from '@/app/lib/getOpportunitiesFiltered';
-import { EarnPage } from '@/app/ui/earn/EarnPage';
+import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
+import { EarnPageContent } from '@/app/ui/earn/EarnPageContent';
+import { EarnPageSkeleton } from '@/app/ui/earn/EarnPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import envConfig from '@/config/env-config';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
-import { earnOpportunityBySlugQueryKey } from 'src/hooks/earn/useEarnOpportunityBySlug';
-import { earnRelatedMarketsQueryKey } from 'src/hooks/earn/useEarnRelatedMarkets';
-import { getOpportunityBySlugCached } from 'src/app/lib/getOpportunityBySlug';
-import { getOpportunityRelatedMarketCached } from 'src/app/lib/getOpportunityRelatedMarket';
+import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
@@ -28,7 +20,7 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
     return [];
   }
-  const res = await getOpportunitiesFilteredCached({});
+  const res = await getOpportunitiesFiltered({});
   const rows = res.data ?? [];
   const slugs = [
     ...new Set(
@@ -71,40 +63,9 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  if (!slug) {
-    return notFound();
-  }
-
-  const queryClient = new QueryClient();
-
-  const [opportunity] = await Promise.all([
-    queryClient
-      .fetchQuery({
-        queryKey: earnOpportunityBySlugQueryKey(slug),
-        queryFn: async () => {
-          const result = await getOpportunityBySlugCached(slug);
-          return result.data;
-        },
-      })
-      .catch(() => null),
-    queryClient
-      .prefetchQuery({
-        queryKey: earnRelatedMarketsQueryKey(slug),
-        queryFn: async () => {
-          const result = await getOpportunityRelatedMarketCached(slug);
-          return result.data;
-        },
-      })
-      .catch(() => []),
-  ]);
-
-  if (!opportunity) {
-    return notFound();
-  }
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <EarnPage slug={slug} />
-    </HydrationBoundary>
+    <Suspense fallback={<EarnPageSkeleton />}>
+      <EarnPageContent slug={slug} />
+    </Suspense>
   );
 }

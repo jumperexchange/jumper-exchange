@@ -7,18 +7,11 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
-import { MissionPage } from 'src/app/ui/mission/MissionPage';
+import { MissionPageContent } from 'src/app/ui/mission/MissionPageContent';
+import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
 import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import envConfig from '@/config/env-config';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
-import {
-  questBySlugQueryKey,
-  fetchQuestBySlug,
-} from 'src/hooks/quests/useQuestBySlug';
+import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
@@ -74,7 +67,6 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    // Validate slug
     const slugResult = questSlugSchema.safeParse(slug);
 
     if (!slugResult.success) {
@@ -129,7 +121,7 @@ export async function generateMetadata({
 }
 
 export const dynamicParams = true;
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
@@ -138,22 +130,9 @@ export default async function Page({ params }: { params: Params }) {
     return notFound();
   }
 
-  const queryClient = new QueryClient();
-
-  const quest = await queryClient
-    .fetchQuery({
-      queryKey: questBySlugQueryKey(slug),
-      queryFn: () => fetchQuestBySlug(slug),
-    })
-    .catch(() => null);
-
-  if (!quest) {
-    return notFound();
-  }
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <MissionPage slug={slug} />
-    </HydrationBoundary>
+    <Suspense fallback={<MissionPageSkeleton />}>
+      <MissionPageContent slug={slug} />
+    </Suspense>
   );
 }
