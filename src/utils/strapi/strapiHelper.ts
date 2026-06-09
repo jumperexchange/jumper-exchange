@@ -9,15 +9,6 @@ export function getStrapiBaseUrl() {
   return `${config.NEXT_PUBLIC_STRAPI_URL}`;
 }
 
-export function getStrapiApiAccessToken() {
-  // Check production token
-  if (!config.NEXT_PUBLIC_STRAPI_API_TOKEN) {
-    console.error('Strapi API token is not provided.');
-    throw new Error('Strapi API token is not provided.');
-  }
-  return config.NEXT_PUBLIC_STRAPI_API_TOKEN;
-}
-
 /**
  * Resolve a Strapi media URL.
  *
