@@ -2,7 +2,6 @@ import {
   DepositPoolCardContainer,
   DepositPoolHeaderContainer,
 } from './DepositPoolCard.style';
-import { useMissionsMaxAPY } from 'src/hooks/useMissionsMaxAPY';
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { CustomInformation } from 'src/types/loyaltyPass';
@@ -45,10 +44,6 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     return customInformation?.projectData;
   }, [customInformation?.projectData]);
 
-  const claimingIds = useMemo(() => {
-    return customInformation?.claimingIds;
-  }, [customInformation?.claimingIds]);
-
   const lpTokenDecimals = Number(depositTokenDecimals ?? 18);
 
   const analytics = useMemo(
@@ -86,9 +81,6 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
     [isZapDataSuccess, zapData],
   );
 
-  const { apy: boostedAPY } = useMissionsMaxAPY(claimingIds, [
-    token?.chainId ?? 0,
-  ]);
   const formattedLockupPeriod = formatLockupPeriod(
     analytics?.lockup_period ?? 0,
   );
@@ -116,7 +108,7 @@ export const DepositPoolCard: FC<DepositPoolCardProps> = ({
       value: analyticsBaseApy,
       label: t('widget.depositCard.apy'),
     };
-  }, [analytics?.boosted_apy, analytics?.base_apy, boostedAPY, t]);
+  }, [analytics?.boosted_apy, analytics?.base_apy, t]);
 
   if (!zapData || !token) {
     return <DepositPoolCardSkeleton />;

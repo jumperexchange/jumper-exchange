@@ -109,6 +109,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission }) => {
               key={task.uuid}
               task={task}
               missionId={missionId}
+              missionSlug={missionDisplayData.slug}
               onClick={() => setActiveTask(task)}
             />
           ))}
