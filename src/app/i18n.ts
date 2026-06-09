@@ -4,6 +4,10 @@ import { initReactI18next } from 'react-i18next/initReactI18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import i18nConfig from '../../i18n-config';
 import {
+  chainNameFormatter,
+  chainNamesFormatter,
+} from '@/utils/chains/chainNameFormatter';
+import {
   currencyFormatter,
   decimalFormatter,
   percentFormatter,
@@ -47,6 +51,14 @@ export default async function initTranslations(
   i18nInstance.services.formatter?.addCached('decimalExt', decimalFormatter);
   i18nInstance.services.formatter?.addCached('currencyExt', currencyFormatter);
   i18nInstance.services.formatter?.addCached('dateExt', dateFormatter);
+  i18nInstance.services.formatter?.addCached(
+    'chainNameExt',
+    chainNameFormatter,
+  );
+  i18nInstance.services.formatter?.addCached(
+    'chainNamesExt',
+    chainNamesFormatter,
+  );
 
   return {
     i18n: i18nInstance,

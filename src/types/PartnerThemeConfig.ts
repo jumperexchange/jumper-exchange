@@ -1,6 +1,6 @@
 import type {
   ChainId,
-  HiddenUIType,
+  HiddenUIConfig,
   WidgetChains,
   WidgetVariant,
 } from '@lifi/widget';
@@ -33,7 +33,7 @@ export interface PartnerThemeConfig {
   toChain?: ChainId;
   chains?: WidgetChains;
   variant?: WidgetVariant;
-  hiddenUI?: HiddenUIType[];
+  hiddenUI?: HiddenUIConfig;
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;

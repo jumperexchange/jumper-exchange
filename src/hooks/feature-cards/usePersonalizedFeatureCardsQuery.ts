@@ -1,10 +1,7 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 
 export interface UsePersonalizedFeatureCardsProps {
@@ -57,17 +54,12 @@ export const usePersonalizedFeatureCardsQuery =
 
     config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('status', 'draft');
-    const apiAccesToken = getStrapiApiAccessToken();
 
     const { data, isSuccess } = useQuery({
       queryKey: ['personalizedFeatureCardsOnAddress', account?.address],
 
       queryFn: async () => {
-        const response = await fetch(decodeURIComponent(apiUrl.href), {
-          headers: {
-            Authorization: `Bearer ${apiAccesToken}`,
-          },
-        });
+        const response = await fetch(decodeURIComponent(apiUrl.href));
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');

@@ -1,5 +1,5 @@
 import type { WidgetConfig } from '@lifi/widget';
-import { ChainId, HiddenUI, RequiredUI } from '@lifi/widget';
+import { ChainId } from '@lifi/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
@@ -58,22 +58,22 @@ export function useMainWidgetConfig(
       variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
       buildUrl: true,
       useRelayerRoutes: true,
-      subvariant:
+      mode:
         context.starterVariant === 'buy' ||
         context.starterVariant === 'private' ||
         isMemecoins
           ? 'default'
           : context.starterVariant,
-      subvariantOptions: {},
+      modeOptions: {},
 
       // UI configuration
-      hiddenUI: [
-        ...(deps.theme.configTheme?.hiddenUI ?? []),
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-      ],
+      hiddenUI: {
+        ...(deps.theme.configTheme?.hiddenUI ?? {}),
+        appearance: true,
+        language: true,
+        poweredBy: true,
+        walletMenu: true,
+      },
 
       // Theme configuration
       theme: {
@@ -125,14 +125,14 @@ export function useMainWidgetConfig(
       context.bridgeConditions?.isPrivateSwapSelected ||
       context.starterVariant === 'private'
     ) {
-      config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
+      config.requiredUI = { ...config.requiredUI, toAddress: true };
     }
 
     if (
       context.bridgeConditions?.isBridgeFromHypeToArbNativeUSDC ||
       context.bridgeConditions?.isBridgeFromEvmToHype
     ) {
-      config.hiddenUI = [...(config.hiddenUI || []), HiddenUI.ToAddress];
+      config.hiddenUI = { ...config.hiddenUI, toAddress: true };
     }
 
     if (context.isSafeContext) {

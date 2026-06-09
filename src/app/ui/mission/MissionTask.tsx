@@ -19,12 +19,14 @@ interface MissionTaskProps {
     isRequired: boolean;
   };
   missionId: string;
+  missionSlug: string;
   onClick: () => void;
 }
 
 export const MissionTask: FC<MissionTaskProps> = ({
   task,
   missionId,
+  missionSlug,
   onClick,
 }) => {
   const {
@@ -35,7 +37,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
     shouldVerify,
     isVerified,
     isRequired,
-  } = useFormatDisplayTaskData(task);
+  } = useFormatDisplayTaskData(missionSlug, task);
 
   const currentActiveTaskId = useMissionStore(
     (state) => state.currentActiveTaskId,

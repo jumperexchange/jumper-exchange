@@ -367,6 +367,7 @@
   "tooltips": {
     "tvl": "Total value of crypto assets deposited in this market.",
     "apy": "Expected yearly return rate of the tokens invested.",
+    "apr": "Expected yearly return rate of the tokens invested (incl. rewards if available).",
     "rewardsApy": "Expected yearly return rate distributed in reward token.",
     "deposit": "The token on which the market is defined and yield accrues on.",
     "deposited": "The token you have deposited into this market.",
@@ -396,6 +397,7 @@
   },
   "labels": {
     "apy": "APY",
+    "apr": "APR",
     "rewardsApy": "Rewards APY",
     "lockupPeriod": "Lockup Period",
     "tvl": "TVL",
@@ -1062,6 +1064,43 @@
     "aria": {
       "openPanel": "Notifications",
       "deleteNotification": "Delete notification"
+    },
+    "toolVerb": {
+      "BRIDGE": "bridged",
+      "SWAP": "swapped"
+    },
+    "idleAssets": {
+      "title": "Earn {{apy, percentExt}} APY on your idle {{symbol}}",
+      "body": "You have {{amountUsd, currencyExt(currency: USD)}} {{symbol}} on {{chainId, chainNameExt}} sitting idle. Deposit into {{opportunityName}} to earn {{apy, percentExt}} APY.",
+      "cta": "Start Earning"
+    },
+    "bridgeToEarn": {
+      "title": "Earn {{apy, percentExt}} APY on your {{symbol}}",
+      "body": "You just bridged {{amountUsd, currencyExt(currency: USD)}} {{symbol}} to {{chainId, chainNameExt}}. Earn {{apy, percentExt}} APY by depositing into {{opportunityName}} on Jumper Earn!",
+      "cta": "Start Earning"
+    },
+    "apyDrop": {
+      "title": "{{opportunityName}}: APY dropped",
+      "body": "The APY for {{opportunityName}} dropped from {{previousApy, percentExt}} to {{currentApy, percentExt}}. Consider reviewing your position on Jumper Earn.",
+      "cta": "View Position"
+    },
+    "newOpportunity": {
+      "title": "New Earn Opportunity: {{opportunityName}}",
+      "body": "Earn {{apy, percentExt}} APY on {{protocol}} ({{chainId, chainNameExt}}). You hold stablecoins on this chain — check it out!",
+      "cta": "Start Earning"
+    },
+    "newToolLaunch": {
+      "title": "New on Jumper: {{toolName}}",
+      "body": "{{toolName}} is now live on Jumper. You recently $t(notifications.toolVerb.{{toolType}}) on {{chainIds, chainNamesExt}} — try it now.",
+      "cta": "Try it"
+    },
+    "userLevelUp": {
+      "title": "You reached Level {{newLevel}}!",
+      "body": "Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.",
+      "cta": "View Jumper Pass"
     }
+  },
+  "alerts": {
+    "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."
   }
 }

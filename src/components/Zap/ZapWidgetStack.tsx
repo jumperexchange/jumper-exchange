@@ -2,7 +2,6 @@
 
 import Box from '@mui/material/Box';
 import type { FC } from 'react';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkeleton';
