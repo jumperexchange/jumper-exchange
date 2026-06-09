@@ -1,2 +1,3 @@
 export const isVideoMime = (mime?: string | null): boolean =>
-  typeof mime === 'string' && mime.startsWith('video/');
+  typeof mime === 'string' &&
+  mime.trim().toLowerCase().startsWith('video/');
