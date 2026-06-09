@@ -2,7 +2,7 @@ import { AppPaths } from '@/const/urls';
 import { getArticles } from '@/app/lib/getArticles';
 import type { BlogArticleData } from '@/types/strapi';
 import { buildUrl, toSitemapDate } from '@/utils/sitemap';
-import { getStrapiBaseUrl } from '@/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from '@/utils/strapi/strapiHelper';
 import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isProduction } from '@/utils/isProduction';
 
@@ -11,7 +11,6 @@ export const dynamic = 'force-static';
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
 const DEV_CHUNK_SIZE = 20;
-const strapiUrl = getStrapiBaseUrl();
 const chunkSize = isProduction ? SITEMAP_LIMIT : DEV_CHUNK_SIZE;
 
 const getArticlesTotal = async (): Promise<number> => {
@@ -55,11 +54,14 @@ export const getLearnSitemapEntriesForChunk = async (
 ): Promise<SitemapXmlEntry[]> => {
   const articles = await fetchArticlesChunk(chunkId);
 
-  return articles.map(({ Slug, updatedAt, publishedAt, Image }) => ({
-    loc: buildUrl(AppPaths.Learn, Slug),
-    lastModified: toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
-    changeFrequency: 'weekly',
-    priority: 0.8,
-    images: Image?.url && strapiUrl ? [`${strapiUrl}${Image.url}`] : undefined,
-  }));
+  return articles.map(({ Slug, updatedAt, publishedAt, Image }) => {
+    const imageUrl = resolveStrapiMediaUrl(Image?.url);
+    return {
+      loc: buildUrl(AppPaths.Learn, Slug),
+      lastModified: toSitemapDate(updatedAt ?? publishedAt ?? Date.now()),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+      images: imageUrl ? [imageUrl] : undefined,
+    };
+  });
 };

@@ -1,6 +1,6 @@
 import { captureRequestError } from '@sentry/nextjs';
-import { errorOperationFromRequestContext } from '@/utils/prometheus/errorOperations';
-import { recordServerError } from '@/utils/prometheus/recordError';
+import { errorOperationFromRequestContext } from '@/utils/telemetry/errorOperations';
+import { recordServerError } from '@/utils/telemetry/recordError';
 
 export const onRequestError: typeof captureRequestError = async (
   error,

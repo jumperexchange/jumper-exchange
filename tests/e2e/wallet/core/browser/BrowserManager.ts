@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 
 import { type BrowserContext, chromium } from '@playwright/test';
 
+import { attachCloudflareAccessHeaders } from '../../../utils/cloudflareAccess';
 import * as extensionConstants from '../../constants/extensionConstants';
 import { downloadAndExtractWalletAuto } from '../../utils/extensionUtils';
 import {
@@ -51,6 +52,8 @@ export async function launchBrowserWithExtension(
     // deviceScaleFactor on macOS — set an explicit viewport everywhere.
     viewport: { height: 720, width: 1280 },
   });
+
+  await attachCloudflareAccessHeaders(context);
 
   logBrowserVersion(context);
   return context;

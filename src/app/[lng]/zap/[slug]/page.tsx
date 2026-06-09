@@ -5,7 +5,7 @@ import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
 import { getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 
 type Params = Promise<{ slug: string }>;
 
@@ -23,20 +23,22 @@ export async function generateMetadata({
     if (!quest || !questData) {
       throw new Error();
     }
-    const baseUrl = getStrapiBaseUrl();
+    const imageUrl = resolveStrapiMediaUrl(questData.Image?.url);
     const openGraph: Metadata['openGraph'] = {
       title: `Jumper | Zaps - ${sliceStrToXChar(questData.Title, 45)}`,
       description: `${sliceStrToXChar(questData.Information || 'Zap description', 60)}`,
       siteName: siteName,
       url: `${getSiteUrl()}/zap/${slug}`,
-      images: [
-        {
-          url: `${baseUrl}${questData.Image?.url}`,
-          width: 900,
-          height: 450,
-          alt: 'banner image',
-        },
-      ],
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 900,
+              height: 450,
+              alt: 'banner image',
+            },
+          ]
+        : undefined,
       type: 'article',
     };
 

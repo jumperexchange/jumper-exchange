@@ -6,7 +6,7 @@ import type {
   RewardGroup,
 } from 'src/types/loyaltyPass';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { useFormatDisplayRewardsData } from './useFormatDisplayRewardsData';
 import type { QuestData } from 'src/types/strapi';
 import type { Chain } from 'src/types/questDetails';
@@ -62,7 +62,6 @@ export function useFormatDisplayQuestData(
   );
 
   return useMemo(() => {
-    const baseStrapiUrl = getStrapiBaseUrl();
     const {
       id,
       Title,
@@ -90,14 +89,10 @@ export function useFormatDisplayQuestData(
 
     if (useBannerImage) {
       imageUrl = isQuest(quest)
-        ? quest.BannerImage?.[0]?.url
-          ? `${baseStrapiUrl}${quest.BannerImage[0].url}`
-          : undefined
-        : quest.BannerImage?.url
-          ? `${baseStrapiUrl}${quest.BannerImage?.url}`
-          : undefined;
+        ? resolveStrapiMediaUrl(quest.BannerImage?.[0]?.url)
+        : resolveStrapiMediaUrl(quest.BannerImage?.url);
     } else {
-      imageUrl = quest.Image ? `${baseStrapiUrl}${quest.Image.url}` : undefined;
+      imageUrl = resolveStrapiMediaUrl(quest.Image?.url);
     }
 
     return {

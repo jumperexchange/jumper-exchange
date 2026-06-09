@@ -1,5 +1,5 @@
-import type { ErrorOperation } from '@/utils/prometheus/errorOperations';
-import { incrementPrometheusErrorCounter } from '@/utils/prometheus/getPrometheusCounter';
+import type { ErrorOperation } from '@/utils/telemetry/errorOperations';
+import { incrementErrorMetric } from '@/utils/telemetry/recordErrorMetric';
 
 type RecordErrorParams = {
   operation: ErrorOperation;
@@ -7,18 +7,18 @@ type RecordErrorParams = {
 };
 
 export const recordServerError = (operation: ErrorOperation) => {
-  incrementPrometheusErrorCounter(operation);
+  incrementErrorMetric(operation);
 };
 
 export const recordClientError = async (operation: ErrorOperation) => {
   try {
-    await fetch('/api/prom-counter-increase', {
+    await fetch('/api/metrics/error-increment', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ operation }),
     });
   } catch (error) {
-    console.error(error, 'Error recording prometheus error metric.');
+    console.error(error, 'Error recording OpenTelemetry error metric.');
   }
 };
 

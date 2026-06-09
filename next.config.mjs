@@ -7,7 +7,13 @@ const nextConfig = {
   trailingSlash: false,
   reactCompiler: true,
   productionBrowserSourceMaps: false,
-  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  serverExternalPackages: [
+    'pino',
+    'pino-pretty',
+    'thread-stream',
+    '@opentelemetry/exporter-metrics-otlp-grpc',
+    '@opentelemetry/host-metrics',
+  ],
   expireTime: 86400, // one day in seconds
   experimental: {
     serverSourceMaps: false,
@@ -101,6 +107,18 @@ const nextConfig = {
         hostname: 'storage.googleapis.com',
         port: '',
         pathname: '/jumper-strapi-media-dev/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-staging/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-prod/uploads/**',
       },
       // {
       //   protocol: 'https',
@@ -212,7 +230,7 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // This can increase your server load as well as your hosting bill.
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
-  // tunnelRoute: "/monitoring",
+  tunnelRoute: '/monitoring',
 
   sourcemaps: {
     disable: process.env.VERCEL === '1', // Disable on Vercel to avoid timeouts

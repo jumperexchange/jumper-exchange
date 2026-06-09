@@ -168,6 +168,28 @@ jobs:
           path: playwright-report
           retention-days: 2
 
+  # Closes the shared run once after all shards report; always() also rescues runs orphaned by cancellation.
+  complete-qase-run:
+    needs: [create-qase-run, test]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Complete Qase Test Run
+        env:
+          QASE_TOKEN: ${{ secrets.QASE_TOKEN }}
+          QASE_RUN_ID: ${{ needs.create-qase-run.outputs.run_id }}
+        run: |
+          if [ -z "$QASE_TOKEN" ] || [ -z "$QASE_RUN_ID" ]; then
+            echo "No Qase token or run id available, nothing to complete"
+            exit 0
+          fi
+
+          curl --silent --fail --show-error --request POST \
+            --url "https://api.qase.io/v1/run/WJ/$QASE_RUN_ID/complete" \
+            --header "Token: $QASE_TOKEN" \
+            --header 'accept: application/json'
+
   post-comment:
     needs: [create-qase-run, merge-reports]
     if: ${{ !cancelled() && github.event_name == 'pull_request' }}

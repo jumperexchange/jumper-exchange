@@ -11,6 +11,7 @@ import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
+import { useNotificationContent } from '@/hooks/notifications/useNotificationContent';
 import { useNotificationStore } from '@/stores/notifications/NotificationStore';
 import type { Notification } from '@/types/notifications';
 import { NotificationCategory } from '@/types/notifications';
@@ -44,6 +45,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
   alwaysShowDelete,
 }) => {
   const { t } = useTranslation();
+  const { title, body, ctaLabel } = useNotificationContent(notification);
   const { account } = useAccount();
   const address = account?.address ?? '';
   const [readIds, markAsRead, deleteNotif] = useNotificationStore((state) => [
@@ -80,7 +82,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
     <NotificationItemContainer onClick={handleClick} isRead={isRead}>
       <UnreadDot sx={{ visibility: isRead ? 'hidden' : 'visible' }} />
       <NotificationContent>
-        <NotificationTitle>{notification.title}</NotificationTitle>
+        <NotificationTitle>{title}</NotificationTitle>
         <Stack
           direction="row"
           sx={{
@@ -100,20 +102,18 @@ export const NotificationItem: FC<NotificationItemProps> = ({
           />
         </Stack>
 
-        <NotificationBody title={notification.body}>
-          {notification.body}
-        </NotificationBody>
+        <NotificationBody title={body}>{body}</NotificationBody>
 
         <NotificationFooter>
           {notification.ctaUrl &&
-            notification.ctaLabel &&
+            ctaLabel &&
             (isInternal ? (
               <CtaLink
                 as={NextLink}
                 href={notification.ctaUrl}
                 onClick={handleCtaClick}
               >
-                {notification.ctaLabel}
+                {ctaLabel}
                 <OpenInNewRounded />
               </CtaLink>
             ) : (
@@ -123,7 +123,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
                 rel="noopener noreferrer"
                 onClick={handleCtaClick}
               >
-                {notification.ctaLabel}
+                {ctaLabel}
                 <OpenInNewRounded />
               </CtaLink>
             ))}

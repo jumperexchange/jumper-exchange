@@ -22,7 +22,7 @@ import {
 } from './BlogArticle.style';
 
 import type { BlogArticleData } from '@/types/strapi';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { ShareArticleIcons } from './ShareArticleIcons';
 import { RichBlocks } from '@/components/RichBlocks/RichBlocks';
 import { RichBlocksVariant } from '@/components/RichBlocks/types';
@@ -79,7 +79,6 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
     faq_items,
     popup,
   } = article;
-  const baseUrl = getStrapiBaseUrl();
   const scrollHidesAppBar = useScrollTrigger(navbarHideOnScrollTriggerOptions);
   const { trackBlogArticleOpenPopupEvent } = useBlogArticleTracking();
 
@@ -205,7 +204,7 @@ export const BlogArticle = ({ article }: BlogArticleProps) => {
       <BlogArticleImageContainer>
         <WithSkeleton show={!!image} skeleton={<BlogArticleImageSkeleton />}>
           <BlogArticleImage
-            src={`${baseUrl}${image!.url}`}
+            src={resolveStrapiMediaUrl(image!.url)!}
             alt={image?.alternativeText ?? title}
             priority
             width={1200}
