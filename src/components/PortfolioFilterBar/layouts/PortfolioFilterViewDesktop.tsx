@@ -7,6 +7,8 @@ import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.st
 import { useTranslation } from 'react-i18next';
 import type { PortfolioFilterViewBaseProps } from '../types';
 import type { FC } from 'react';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 
 export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
   isDisabled,
@@ -22,16 +24,30 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
       'data-testid': 'portfolio-filter-tab-holdings',
     },
     {
-      value: PortfolioViewBarTab.PERFORMANCE,
-      label: t('portfolio.views.performance'),
-      disabled: true,
-      'data-testid': 'portfolio-filter-tab-performance',
-    },
-    {
       value: PortfolioViewBarTab.TRANSACTIONS,
       label: t('portfolio.views.transactions'),
       disabled: true,
       'data-testid': 'portfolio-filter-tab-transactions',
+      endAdornment: (
+        <Badge
+          size={BadgeSize.SM}
+          variant={BadgeVariant.Secondary}
+          label="Soon"
+        />
+      ),
+    },
+    {
+      value: PortfolioViewBarTab.PERFORMANCE,
+      label: t('portfolio.views.performance'),
+      disabled: true,
+      'data-testid': 'portfolio-filter-tab-performance',
+      endAdornment: (
+        <Badge
+          size={BadgeSize.SM}
+          variant={BadgeVariant.Secondary}
+          label="Soon"
+        />
+      ),
     },
   ];
   const handleChange = (_: React.SyntheticEvent, value: string) => {
