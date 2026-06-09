@@ -2,11 +2,17 @@ import { match } from '@formatjs/intl-localematcher';
 import type { Config } from 'next-i18n-router/dist/types';
 import type { NextRequest } from 'next/server';
 import Negotiator from 'negotiator';
+import { cookieName } from './i18next-settings';
 
 export const lookupI18nLocaleDetector = (
   request: NextRequest,
   config: Config,
 ): string => {
+  const cookieLocale = request.cookies.get(cookieName)?.value;
+  if (cookieLocale && config.locales.includes(cookieLocale)) {
+    return cookieLocale;
+  }
+
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => {
     negotiatorHeaders[key] = value;
