@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  getMissionApy,
-  getMissionTaskApy,
-  type GetMissionApyRequestParams,
-  type GetMissionTaskApyRequestParams,
-} from '@/app/lib/getMissionApy';
+import { getMissionApy, getMissionTaskApy } from '@/app/lib/getMissionApy';
 import { useQuery } from '@tanstack/react-query';
 
 export const missionApyQueryKeys = {
@@ -15,31 +10,24 @@ export const missionApyQueryKeys = {
     [...missionApyQueryKeys.all, 'task', slug, identifier] as const,
 };
 
-export const useMissionApy = (
-  slug?: string,
-  params: GetMissionApyRequestParams = {},
-) => {
+export const useMissionApy = (slug?: string) => {
   return useQuery({
     queryKey: missionApyQueryKeys.byMission(slug ?? ''),
     queryFn: async () => {
-      const result = await getMissionApy(slug!, params);
-      //@ts-expect-error
+      const result = await getMissionApy(slug!);
+      // @ts-expect-error: see LF-15589 - we are transforming data in the backend)
       return result.data.data;
     },
     enabled: !!slug,
   });
 };
 
-export const useMissionTaskApy = (
-  slug?: string,
-  identifier?: string,
-  params: GetMissionTaskApyRequestParams = {},
-) => {
+export const useMissionTaskApy = (slug?: string, identifier?: string) => {
   return useQuery({
     queryKey: missionApyQueryKeys.byTask(slug ?? '', identifier ?? ''),
     queryFn: async () => {
-      const result = await getMissionTaskApy(slug!, identifier!, params);
-      //@ts-expect-error
+      const result = await getMissionTaskApy(slug!, identifier!);
+      // @ts-expect-error: see LF-15589 - we are transforming data in the backend)
       return result.data.data;
     },
     enabled: !!slug && !!identifier,
