@@ -161,12 +161,13 @@ export const MultiSelectView = <TValue extends string | number>({
               onClick={() => handleToggle(option.value)}
             >
               <StyledMenuItemContentContainer size="medium">
-                {option.icon}
+                {option.startAdornment ?? option.icon}
                 <SelectorLabel
                   label={option.label}
                   labelVariant="bodyMedium"
                   size="medium"
                 />
+                {option.endAdornment}
               </StyledMenuItemContentContainer>
               {isSelected && (
                 <CheckIcon

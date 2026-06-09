@@ -62,12 +62,13 @@ export const SingleSelectView = <TValue extends string | number>({
             disabled={option.disabled}
           >
             <StyledMenuItemContentContainer size="medium">
-              {option.icon}
+              {option.startAdornment ?? option.icon}
               <SelectorLabel
                 label={option.label}
                 labelVariant="bodyMedium"
                 size="medium"
               />
+              {option.endAdornment}
             </StyledMenuItemContentContainer>
             {isSelected && (
               <CheckIcon

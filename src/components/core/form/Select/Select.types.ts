@@ -17,6 +17,9 @@ export interface SelectOption<T> {
   value: T;
   label: string;
   disabled?: boolean;
+  startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
+  /** @deprecated Use `startAdornment` instead. */
   icon?: React.ReactNode;
   sx?: SxProps<Theme>;
 }
@@ -30,6 +33,9 @@ export interface SelectBaseProps<T extends TData> {
   error?: boolean;
   helperText?: string;
   label?: string;
+  labelStartAdornment?: React.ReactNode;
+  labelEndAdornment?: React.ReactNode;
+  /** @deprecated Use `labelStartAdornment` instead. */
   labelIcon?: React.ReactNode;
   title?: string;
   required?: boolean;

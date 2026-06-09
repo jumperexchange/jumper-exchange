@@ -8,6 +8,8 @@ export const SingleSelect = <T extends string>({
   value: initialValue,
   label: initialLabel,
   title,
+  labelStartAdornment,
+  labelEndAdornment,
   labelIcon,
   debounceMs,
   onChange,
@@ -28,12 +30,14 @@ export const SingleSelect = <T extends string>({
     setValue(defaultValue);
   }, [defaultValue]);
 
-  const label =
-    rest.options.find((option) => option.value === value)?.label ||
-    initialLabel ||
-    '';
-  const icon =
-    labelIcon ?? rest.options.find((option) => option.value === value)?.icon;
+  const selectedOption = rest.options.find((option) => option.value === value);
+  const label = selectedOption?.label || initialLabel || '';
+  const startAdornment =
+    labelStartAdornment ??
+    selectedOption?.startAdornment ??
+    labelIcon ??
+    selectedOption?.icon;
+  const endAdornment = labelEndAdornment ?? selectedOption?.endAdornment;
 
   return (
     <SelectBase
@@ -41,7 +45,13 @@ export const SingleSelect = <T extends string>({
       value={value}
       onChange={handleChange}
       multiple={false}
-      selectorContent={<SelectorLabel label={label} icon={icon} />}
+      selectorContent={
+        <SelectorLabel
+          label={label}
+          startAdornment={startAdornment}
+          endAdornment={endAdornment}
+        />
+      }
     />
   );
 };

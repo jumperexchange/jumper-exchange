@@ -53,7 +53,7 @@ export const useHoldingsFilterCategories = () => {
           return {
             value: walletAddress,
             label: account?.connector?.name || walletAddress.slice(0, 8),
-            icon: connectorIcon ? (
+            startAdornment: connectorIcon ? (
               <Avatar
                 src={connectorIcon}
                 alt={account?.connector?.name || ''}
@@ -74,7 +74,7 @@ export const useHoldingsFilterCategories = () => {
           return {
             value: `${chainId}`,
             label: chain?.name || `Chain ${chainId}`,
-            icon: chain ? <EntityStack entities={[chain]} /> : null,
+            startAdornment: chain ? <EntityStack entities={[chain]} /> : null,
           };
         }),
       ),
@@ -87,7 +87,7 @@ export const useHoldingsFilterCategories = () => {
         allAssets.map((asset) => ({
           value: asset.symbol,
           label: asset.name,
-          icon: <EntityStack entities={[asset]} />,
+          startAdornment: <EntityStack entities={[asset]} />,
         })),
       ),
     [allAssets],

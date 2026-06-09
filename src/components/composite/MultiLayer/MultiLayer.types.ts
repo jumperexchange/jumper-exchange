@@ -48,6 +48,9 @@ export interface BaseCategoryConfig {
 export interface CategoryOption<T> {
   value: T;
   label: string;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
+  /** @deprecated Use `startAdornment` instead. */
   icon?: ReactNode;
   disabled?: boolean;
   sx?: SxProps<Theme>;
