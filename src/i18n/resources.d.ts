@@ -11,6 +11,9 @@ export default interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    alerts: {
+      extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping.';
+    };
     badge: {
       updated: 'Updated {{time}} ago';
     };
@@ -428,6 +431,7 @@ export default interface Resources {
       };
     };
     labels: {
+      apr: 'APR';
       apy: 'APY';
       assets_one: 'Asset';
       assets_other: 'Assets';
@@ -710,9 +714,19 @@ export default interface Resources {
       };
     };
     notifications: {
+      apyDrop: {
+        body: 'The APY for {{opportunityName}} dropped from {{previousApy, percentExt}} to {{currentApy, percentExt}}. Consider reviewing your position on Jumper Earn.';
+        cta: 'View Position';
+        title: '{{opportunityName}}: APY dropped';
+      };
       aria: {
         deleteNotification: 'Delete notification';
         openPanel: 'Notifications';
+      };
+      bridgeToEarn: {
+        body: 'You just bridged {{amountUsd, currencyExt(currency: USD)}} {{symbol}} to {{chainId, chainNameExt}}. Earn {{apy, percentExt}} APY by depositing into {{opportunityName}} on Jumper Earn!';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your {{symbol}}';
       };
       categories: {
         all: 'All Categories';
@@ -728,10 +742,34 @@ export default interface Resources {
         week: 'Past Week';
       };
       emptyState: 'No notifications';
+      idleAssets: {
+        body: 'You have {{amountUsd, currencyExt(currency: USD)}} {{symbol}} on {{chainId, chainNameExt}} sitting idle. Deposit into {{opportunityName}} to earn {{apy, percentExt}} APY.';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your idle {{symbol}}';
+      };
+      newOpportunity: {
+        body: 'Earn {{apy, percentExt}} APY on {{protocol}} ({{chainId, chainNameExt}}). You hold stablecoins on this chain — check it out!';
+        cta: 'Start Earning';
+        title: 'New Earn Opportunity: {{opportunityName}}';
+      };
+      newToolLaunch: {
+        body: '{{toolName}} is now live on Jumper. You recently $t(notifications.toolVerb.{{toolType}}) on {{chainIds, chainNamesExt}} — try it now.';
+        cta: 'Try it';
+        title: 'New on Jumper: {{toolName}}';
+      };
       title: 'Notifications';
+      toolVerb: {
+        BRIDGE: 'bridged';
+        SWAP: 'swapped';
+      };
       unread_one: '{{count}} unread notification';
       unread_other: '{{count}} unread notifications';
       unread_zero: 'No unread notifications';
+      userLevelUp: {
+        body: 'Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.';
+        cta: 'View Jumper Pass';
+        title: 'You reached Level {{newLevel}}!';
+      };
     };
     portfolio: {
       assetOverviewCard: {
@@ -995,6 +1033,7 @@ export default interface Resources {
       title: 'Limited Solana token support';
     };
     tooltips: {
+      apr: 'Expected yearly return rate of the tokens invested (incl. rewards if available).';
       apy: 'Expected yearly return rate of the tokens invested.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';

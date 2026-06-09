@@ -1,5 +1,5 @@
 import { useAccount } from '@lifi/wallet-management';
-import { ChainType, HiddenUI, type WidgetConfig } from '@lifi/widget';
+import { ChainType, type WidgetConfig } from '@lifi/widget';
 import merge from 'lodash/merge';
 import { useMemo } from 'react';
 import { AB_TEST_NAME } from '@/const/abtests';
@@ -20,7 +20,6 @@ import {
 } from './useSharedConfigs';
 import { useWidgetDependencies } from './useWidgetDependencies';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
-import FeeContribution from '../../FeeContribution/FeeContribution';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic
@@ -49,11 +48,6 @@ export function useWidgetConfig<T extends WidgetType>(
 
   const tradeABTest = useABTest({
     feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
-    address: account?.address ?? '',
-  });
-
-  const feeContributionABTest = useABTest({
-    feature: AB_TEST_NAME.A_B_TEST_FEE_CONTRIBUTION_DISPLAY,
     address: account?.address ?? '',
   });
 
@@ -111,35 +105,23 @@ export function useWidgetConfig<T extends WidgetType>(
     }
 
     if (context.disabledUI) {
-      baseConfig.disabledUI = [
-        ...(baseConfig.disabledUI ?? []),
+      baseConfig.disabledUI = {
+        ...(baseConfig.disabledUI ?? {}),
         ...context.disabledUI,
-      ];
+      };
     }
 
     if (context.hiddenUI) {
-      baseConfig.hiddenUI = [
-        ...(baseConfig.hiddenUI ?? []),
+      baseConfig.hiddenUI = {
+        ...(baseConfig.hiddenUI ?? {}),
         ...context.hiddenUI,
-      ];
+      };
     }
 
     if (priceImpactABTest.isEnabled && priceImpactABTest.value === 'test') {
-      baseConfig.hiddenUI = [
-        ...(baseConfig.hiddenUI ?? []),
-        HiddenUI.RouteCardPriceImpact,
-      ];
-    }
-
-    if (
-      type === 'main' &&
-      feeContributionABTest.isEnabled &&
-      feeContributionABTest.value
-    ) {
-      baseConfig.feeConfig = {
-        _vcComponent: () => (
-          <FeeContribution translationFn={deps.translation.t} />
-        ),
+      baseConfig.hiddenUI = {
+        ...(baseConfig.hiddenUI ?? {}),
+        routeCardPriceImpact: true,
       };
     }
 
@@ -153,19 +135,12 @@ export function useWidgetConfig<T extends WidgetType>(
     context.theme,
     context.disabledUI,
     context.hiddenUI,
-    deps.translation.t,
     priceImpactABTest.isEnabled,
     priceImpactABTest.value,
-    type,
-    feeContributionABTest.isEnabled,
-    feeContributionABTest.value,
   ]);
 
   return {
     config,
-    isReady:
-      !tradeABTest.isLoading &&
-      !priceImpactABTest.isLoading &&
-      !feeContributionABTest.isLoading,
+    isReady: !tradeABTest.isLoading && !priceImpactABTest.isLoading,
   };
 }

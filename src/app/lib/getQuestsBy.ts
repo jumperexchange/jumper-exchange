@@ -2,19 +2,13 @@ import { cache } from 'react';
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { Quest } from 'src/types/loyaltyPass';
 import type { StrapiResponse } from 'src/types/strapi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
 export const getQuestsBy = cache(async (key: string, value: string) => {
   const urlParams = new QuestStrapiApi()
     .filterBy(key, value)
     .populateCampaign();
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     next: {
       revalidate: 60 * 5, // revalidate every 5 minutes
     },

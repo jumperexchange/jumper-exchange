@@ -1,5 +1,4 @@
 import type { ChainId } from '@lifi/sdk';
-import { MerklOpportunity } from 'src/app/lib/getMerklOpportunities';
 import type { FaqProps } from 'src/components/AccordionFAQ';
 import type { Quest } from './loyaltyPass';
 
@@ -47,7 +46,6 @@ export interface QuestDetails {
   tokenRewards?: RewardsInterface[];
   missionType: string;
   traits: string[];
-  CTA: MerklOpportunity[];
   partner: { logo: string; name: string }[];
   marketIds?: string[];
   projectData: ProjectData;
