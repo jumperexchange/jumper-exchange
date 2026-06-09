@@ -14,13 +14,14 @@ import {
   usePositionsFiltering,
 } from '@/providers/PortfolioProvider/filtering/PositionsFilteringContext';
 import { useAccount } from '@lifi/wallet-management';
+import { PortfolioHoldings } from './PortfolioHoldings/PortfolioHoldings';
 
 export enum PortfolioFilterBarTab {
   TOKENS = 'tokens',
   DEFI_PROTOCOLS = 'defi-protocols',
 }
 
-const PortfolioAssetsSectionInner = () => {
+const PortfolioContentSectionInner = () => {
   const [tab, setTab] = useState<PortfolioFilterBarTab>(
     PortfolioFilterBarTab.TOKENS,
   );
@@ -41,6 +42,7 @@ const PortfolioAssetsSectionInner = () => {
         value={tab}
         onChange={setTab}
       />
+      {<PortfolioHoldings />}
       {!isDisabled &&
         (tab === PortfolioFilterBarTab.TOKENS ? (
           <PortfolioTokensList />
@@ -51,11 +53,11 @@ const PortfolioAssetsSectionInner = () => {
   );
 };
 
-export const PortfolioAssetsSection = () => {
+export const PortfolioContentSection = () => {
   return (
     <BalancesFilteringProvider>
       <PositionsFilteringProvider>
-        <PortfolioAssetsSectionInner />
+        <PortfolioContentSectionInner />
       </PositionsFilteringProvider>
     </BalancesFilteringProvider>
   );

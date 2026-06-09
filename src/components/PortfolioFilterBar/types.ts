@@ -1,5 +1,5 @@
 import type { SortByEnum } from '@/providers/PortfolioProvider/filtering/types';
-import type { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioAssetsSection';
+import type { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioContentSection';
 
 export interface PortfolioFilterViewBaseProps {
   isDisabled: boolean;
