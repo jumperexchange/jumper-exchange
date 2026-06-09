@@ -1097,5 +1097,8 @@
       "body": "Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.",
       "cta": "View Jumper Pass"
     }
+  },
+  "alerts": {
+    "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."
   }
 }

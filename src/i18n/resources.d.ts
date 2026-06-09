@@ -11,6 +11,9 @@ export default interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    alerts: {
+      extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping.';
+    };
     badge: {
       updated: 'Updated {{time}} ago';
     };
