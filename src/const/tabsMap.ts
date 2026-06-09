@@ -1,12 +1,12 @@
 'use client';
 
-import type { WidgetSubvariant } from '@lifi/widget';
+import type { WidgetMode } from '@lifi/widget';
 import { LinkMap } from './linkMap';
 
 interface TabsMapType {
   [key: string]: {
     index: number;
-    variant: WidgetSubvariant | 'buy' | 'private';
+    variant: WidgetMode | 'buy' | 'private';
     destination: string[];
   };
 }
