@@ -8,9 +8,12 @@ interface useMainPathsProps {
 export const useMainPaths = (): useMainPathsProps => {
   const pathname = usePathnameWithoutLocale();
 
-  const isGas = pathname?.includes(AppPaths.Gas);
-  const isBuy = pathname?.includes(AppPaths.Buy);
-  const isPrivate = pathname?.includes(AppPaths.Private);
+  const matchesPath = (route: AppPaths) =>
+    pathname === route || pathname?.startsWith(`${route}/`);
+
+  const isGas = matchesPath(AppPaths.Gas);
+  const isBuy = matchesPath(AppPaths.Buy);
+  const isPrivate = matchesPath(AppPaths.Private);
   const isExchange = pathname === AppPaths.Main;
 
   return {
