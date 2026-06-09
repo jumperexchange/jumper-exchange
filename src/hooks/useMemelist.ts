@@ -1,10 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { StrapiTokenInfo } from 'src/types/tokenList';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 
 export interface UseMemelistProps {
@@ -27,12 +24,7 @@ export const useMemelist = ({ enabled }: UseMemeProps): UseMemelistProps => {
       if (config.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
         apiUrl.searchParams.set('status', 'draft');
       }
-      const apiAccesToken = getStrapiApiAccessToken();
-      const response = await fetch(decodeURIComponent(apiUrl.href), {
-        headers: {
-          Authorization: `Bearer ${apiAccesToken}`,
-        },
-      });
+      const response = await fetch(decodeURIComponent(apiUrl.href));
       const result = await response.json();
       return result.data;
     },

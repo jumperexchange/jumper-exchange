@@ -1,8 +1,7 @@
 import { useAccount } from '@lifi/wallet-management';
-import { GppGood } from '@mui/icons-material';
 import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { useTheme } from '@mui/material';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { isAnonymousSwapEnabled } from '@/app/lib/getFeatureFlag';
@@ -17,7 +16,6 @@ import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
-  const theme = useTheme();
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -59,7 +57,7 @@ export const useVerticalTabs = () => {
           {
             tab: 'private/',
             label: t('navbar.links.private'),
-            icon: GppGood,
+            icon: VisibilityOffIcon,
           },
         ]
       : []),

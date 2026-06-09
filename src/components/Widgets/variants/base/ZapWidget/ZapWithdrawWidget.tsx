@@ -2,8 +2,6 @@ import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import {
   ChainType,
-  DisabledUI,
-  HiddenUI,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
@@ -80,8 +78,8 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       subTaskType: 'withdraw' as const,
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
-      disabledUI: [DisabledUI.FromToken],
-      hiddenUI: [HiddenUI.FromToken],
+      disabledUI: { fromToken: true },
+      hiddenUI: { fromToken: true },
       formData: {
         sourceToken: fromToken,
         sourceChain: fromChain,

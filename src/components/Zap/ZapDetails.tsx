@@ -1,13 +1,14 @@
 'use client';
 
-import { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { Quest, TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   ZapDetailsColumnContainer,
   ZapDetailsCardContainer,
   ZapDetailsInfoContainer,
 } from './ZapDetails.style';
-import { FC, useMemo } from 'react';
+import type { FC } from 'react';
+import { useMemo } from 'react';
 import Box from '@mui/material/Box';
 import { Badge } from '../Badge/Badge';
 import { AppPaths } from 'src/const/urls';
@@ -28,10 +29,9 @@ import { useSyncMissionDefaultsFromChains } from 'src/hooks/quests/useSyncMissio
 
 interface ZapDetailsProps {
   market: Quest;
-  tasks: TaskVerificationWithApy[];
 }
 
-export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
+export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
   const missionId = market.documentId;
   const hasEnded = market.hasEnded ?? false;
   const { status } = useMissionTimeStatus(
@@ -39,6 +39,11 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
     market?.EndDate ?? '',
     hasEnded,
   );
+
+  const tasks = useMemo(() => {
+    return market.tasks_verification;
+  }, [market]);
+
   const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
   const participants = useMemo(
     () => zapDisplayData.participants,
@@ -106,6 +111,7 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market, tasks }) => {
               key={task.uuid}
               task={task}
               missionId={missionId}
+              missionSlug={zapDisplayData.slug}
               onClick={() => setActiveTask(task)}
             />
           ))}

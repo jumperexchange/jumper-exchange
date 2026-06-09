@@ -7,10 +7,7 @@ import {
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import type { Account } from '@lifi/widget-provider';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 
 export interface UseStrapiProps<T> {
@@ -184,17 +181,10 @@ export const useStrapi = <T>({
   config.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
     apiUrl.searchParams.set('pagination[pageSize]', '50');
 
-  // use local strapi on develop || prod strapi
-  const apiAccesToken = getStrapiApiAccessToken();
-
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
     queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
     queryFn: async () => {
-      const response = await fetch(decodeURIComponent(apiUrl.href), {
-        headers: {
-          Authorization: `Bearer ${apiAccesToken}`,
-        },
-      });
+      const response = await fetch(decodeURIComponent(apiUrl.href));
       const result = await response.json();
       return result;
     },

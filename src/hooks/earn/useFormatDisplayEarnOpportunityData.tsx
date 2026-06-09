@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatLockupDuration } from 'src/utils/earn/utils';
 import type {
+  APYItem,
   Chain,
   EarnOpportunityWithLatestAnalytics,
   Protocol,
@@ -31,7 +32,7 @@ interface EarnCardOverviewItem {
 }
 
 const buildApyItem = (
-  apy: { total: number } | undefined,
+  apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
@@ -46,6 +47,26 @@ const buildApyItem = (
     label: t('labels.apy'),
     value: formatted,
     tooltip: t('tooltips.apy'),
+  };
+};
+
+const buildTotalApyItem = (
+  apy: APYItem | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem | null => {
+  const displayedApy = (apy?.base ?? 0) + (apy?.customReward ?? 0);
+  if (!displayedApy || isZeroApprox(displayedApy)) {
+    return null;
+  }
+
+  const formatted = formatApy(displayedApy);
+  return {
+    key: 'apr',
+    dataTestId: `apr-${displayedApy}`,
+    label: t('labels.apr'),
+    value: formatted,
+    tooltip: t('tooltips.apr'),
   };
 };
 
@@ -246,9 +267,14 @@ export const useFormatDisplayEarnOpportunityData = (
 
     const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
 
+    const apyItem =
+      !!apy?.customReward && apy.customReward > 0
+        ? buildTotalApyItem(apy, variant, t)
+        : buildApyItem(apy, variant, t);
+
     // Build all items, passing variant to each builder
     const overviewItems = [
-      buildApyItem(apy, variant, t),
+      apyItem,
       lockupMonths
         ? buildLockupItem(lockupMonths, variant, t)
         : capInDollar

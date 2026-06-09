@@ -140,7 +140,7 @@ export interface TaskVerification {
 }
 
 export interface TaskVerificationWithApy extends TaskVerification {
-  maxApy?: number;
+  apy?: number;
 }
 
 export interface Quest extends QuestAttributes {

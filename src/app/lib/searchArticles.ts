@@ -1,7 +1,5 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
 export async function searchArticles(
   searchText: string,
 ): Promise<StrapiResponse<BlogArticleData>> {
@@ -20,12 +18,7 @@ export async function searchArticles(
     .sort('desc');
 
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
-  const res = await fetch(apiUrl, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const res = await fetch(apiUrl);
 
   if (!res.ok) {
     throw new Error('Failed to search articles');
