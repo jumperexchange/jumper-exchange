@@ -154,6 +154,12 @@ export enum TrackingAction {
   ClickEarnRequestRedeemButton = 'action_click_earn_request_redeem_button',
   ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
   EarnPageOverview = 'action_earn_page_overview',
+
+  // Notifications engagement funnel: received, seen, clicked, dismissed
+  NotificationReceived = 'action_notification_received',
+  NotificationSeen = 'action_notification_seen',
+  NotificationClicked = 'action_notification_clicked',
+  NotificationDismissed = 'action_notification_dismissed',
 }
 
 export enum TrackingEventDataAction {
@@ -211,6 +217,7 @@ export enum TrackingCategory {
   Banner = 'cat_banner',
   CampaignBanner = 'cat_campaign_banner',
   Earn = 'cat_earn',
+  Notifications = 'cat_notifications',
 }
 
 // can be used as custom dimensions / metrics
@@ -378,4 +385,10 @@ export enum TrackingEventParameter {
 
   // Earn
   EarnOpportunitySlug = 'param_earn_opportunity_slug',
+
+  // Notifications
+  NotificationId = 'param_notification_id',
+  NotificationSourceRuleId = 'param_notification_source_rule_id',
+  NotificationCategory = 'param_notification_category',
+  NotificationCtaTarget = 'param_notification_cta_target',
 }
