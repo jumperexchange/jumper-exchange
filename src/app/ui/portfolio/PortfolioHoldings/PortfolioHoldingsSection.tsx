@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ExpandableSectionProps } from '@/components/core/sections/ExpandableSection/ExpandableSection';
 import { ExpandableSection } from '@/components/core/sections/ExpandableSection/ExpandableSection';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -8,14 +9,13 @@ import { useTranslation } from 'react-i18next';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { PortfolioHoldingsSectionHeaderSkeleton } from './PortfolioHoldingsSectionHeaderSkeleton';
 
-interface PortfolioHoldingsSectionProps<T> {
+interface PortfolioHoldingsSectionProps<T> extends Omit<
+  ExpandableSectionProps<T>,
+  'header'
+> {
   title: string;
   amount: number;
   progress: number;
-  items: T[];
-  renderItem: (item: T) => ReactNode;
-  onItemClick?: (item: T) => void;
-  shouldExpand?: boolean;
   isLoading?: boolean;
 }
 
@@ -28,6 +28,7 @@ export const PortfolioHoldingsSection = <T,>({
   onItemClick,
   shouldExpand,
   isLoading,
+  ...rest
 }: PortfolioHoldingsSectionProps<T>) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -70,6 +71,7 @@ export const PortfolioHoldingsSection = <T,>({
       })}
     >
       <ExpandableSection
+        {...rest}
         header={header}
         items={items}
         renderItem={renderItem}
