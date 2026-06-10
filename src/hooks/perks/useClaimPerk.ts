@@ -1,11 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
-import { useGetClaimedPerks } from './useGetClaimedPerks';
 import {
-  usePerkClaimStatusStore,
   PerkClaimStatus,
+  usePerkClaimStatusStore,
 } from 'src/stores/perkClaimStatus';
 import type { PerkClaimDto } from 'src/types/jumper-backend';
 import { makeClient } from '@/app/lib/client';
+import { useGetClaimedPerks } from './useGetClaimedPerks';
 
 export async function claimPerkQuery(props: PerkClaimDto) {
   const client = makeClient();
@@ -14,7 +14,7 @@ export async function claimPerkQuery(props: PerkClaimDto) {
     throw new Error('Invalid response');
   }
 
-  return response.data;
+  return response.data.data;
 }
 
 export const useClaimPerk = (address?: string, perkId?: string) => {

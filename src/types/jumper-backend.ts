@@ -20,16 +20,6 @@ export interface JumperStringResponse {
   meta: Record<string, any>;
 }
 
-export interface JumperNullResponse {
-  /** @example 200 */
-  status: number;
-  /** @example "Success" */
-  message: string;
-  /** @example null */
-  data: string | null;
-  meta: Record<string, any>;
-}
-
 export type EmptyMeta = object;
 
 export interface CacheClearDto {
@@ -190,7 +180,6 @@ export interface CreateUserTrackingDto {
    */
   walletProvider?: string | null;
   abTestVariants?: object;
-  abtests: object;
 }
 
 export interface JumperUndefinedResponse {
@@ -483,7 +472,7 @@ export interface TaskVerificationEntity {
    * Additional dynamic fields
    * @example {"customKey1":"value1","customKey2":"value2"}
    */
-  additionalFields?: object;
+  additionalFields: object;
 }
 
 export interface UserTrackingEntity {
@@ -690,7 +679,6 @@ export interface CreateWalletTransactionDto {
   fromAmountUSD?: number;
   toAmountUSD?: number;
   toAmountFormatted?: string | null;
-  /** @min 0 */
   tokenCount?: number;
   gasCost?: number;
   gasCostFormatted?: string | null;
@@ -700,26 +688,18 @@ export interface CreateWalletTransactionDto {
   feeCostUSD?: number;
   /** @default 0 */
   stepNumber?: number;
-  /** @default "" */
   steps?: string | null;
-  /** @default 1 */
   nbOfSteps?: number;
-  /** @default "" */
   stepIds?: string | null;
   lastStepAction?: string | null;
   routeId: string;
-  /** @default "" */
   exchange?: string | null;
-  /** @default 0 */
   slippage?: number;
-  /** @default "" */
   maxSlippage?: string | null;
   tags?: string | null;
-  /** @default 0 */
   time?: number;
   /** @default false */
   isFinal?: boolean;
-  /** @default "" */
   transactionId?: string | null;
   transactionLink?: string | null;
   errorCode?: object;
@@ -733,7 +713,6 @@ export interface CreateWalletTransactionDto {
    * @example "MetaMask"
    */
   walletProvider?: string | null;
-  /** @default "" */
   integrator?: string | null;
   url?: string | null;
   pathname?: string | null;
@@ -742,6 +721,16 @@ export interface CreateWalletTransactionDto {
   abTestVariants?: object;
   /** @format date-time */
   timestamp: string;
+}
+
+export interface JumperNullResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  /** @example null */
+  data: string | null;
+  meta: Record<string, any>;
 }
 
 export interface WalletTransactionListResponse {
@@ -915,7 +904,6 @@ export interface EarnOpportunityWithLatestAnalytics {
   name: string;
   asset: Token;
   protocol: Protocol;
-  /** @default true */
   isRedeemable: boolean;
   url?: string | null;
   description: string;
@@ -933,8 +921,6 @@ export interface EarnOpportunityWithLatestAnalytics {
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
-  provider?: 'vaultsfyi' | 'dialect';
-  providerInternalId?: string;
 }
 
 export interface EarnListResponse {
@@ -1115,11 +1101,10 @@ export interface LpToken {
 }
 
 export interface ChainDefiPosition {
-  /** @default "chain" */
   source: 'chain';
   name: string;
   /** Additional context about the position */
-  description?: string | number | null;
+  description?: string | null | number | null;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
@@ -1140,10 +1125,6 @@ export interface ChainDefiPosition {
   collateralTokens: DefiToken[];
   rewardTokens: DefiToken[];
   lpToken?: LpToken;
-  debankId?: string;
-  debankUiType?: string;
-  debankProjectId?: string;
-  dialectId?: string;
 }
 
 export interface App {
@@ -1181,11 +1162,10 @@ export interface PredictionDetails {
 }
 
 export interface AppDefiPosition {
-  /** @default "app" */
   source: 'app';
   name: string;
   /** Additional context about the position */
-  description?: string | number | null;
+  description?: string | null | number | null;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
@@ -1206,17 +1186,11 @@ export interface AppDefiPosition {
   collateralTokens: AppToken[];
   rewardTokens: AppToken[];
   predictionDetails?: PredictionDetails;
-  debankId?: string;
-  debankUiType?: string;
-  debankProjectId?: string;
-  dialectId?: string;
 }
 
 export interface MetadataWithUpdatedAt {
   /** @format date-time */
   updatedAt: string;
-  cacheControl?: number;
-  isFresh?: boolean;
 }
 
 export interface WalletPositions {
@@ -1303,12 +1277,12 @@ export interface GetZapDataDto {
    * Chain name
    * @example "ethereum"
    */
-  chain: 'ethereum' | 'mode' | 'base' | 'optimism' | 'hyperevm' | 'katana';
+  chain: string;
   /**
    * Project name
    * @example "mellow"
    */
-  project: 'ionic' | 'hyperwave' | 'morpho' | 'euler';
+  project: string;
   /**
    * Market address
    * @example "0x1234567890"
@@ -1321,12 +1295,12 @@ export interface GeneratePayloadDto {
    * Chain name
    * @example "ethereum"
    */
-  chain: 'ethereum' | 'mode' | 'base' | 'optimism' | 'hyperevm' | 'katana';
+  chain: string;
   /**
    * Project name
    * @example "mellow"
    */
-  project: 'ionic' | 'hyperwave' | 'morpho' | 'euler';
+  project: string;
   /**
    * Product name
    * @example "ethena_lrt_vault_susde"
@@ -1348,7 +1322,6 @@ export interface EarnOpportunityWithScore {
   name: string;
   asset: Token;
   protocol: Protocol;
-  /** @default true */
   isRedeemable: boolean;
   url?: string | null;
   description: string;
@@ -1366,9 +1339,6 @@ export interface EarnOpportunityWithScore {
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
-  provider?: 'vaultsfyi' | 'dialect';
-  providerInternalId?: string;
-  score: number;
 }
 
 export interface EarnOpportunities {
@@ -1404,15 +1374,7 @@ export interface RecommendationScoresResponse {
   data: RecommendationDto;
 }
 
-export interface WalletVerification {
-  id: number;
-  origin_wallet: string;
-  destination_wallet: string;
-  /** @format date-time */
-  timestamp: string;
-  migrated: boolean;
-  valid: boolean;
-}
+export type WalletVerification = object;
 
 export interface WalletVerificationListResponse {
   /** @example 200 */
@@ -1502,44 +1464,13 @@ export interface PerkClaimResponseDto {
   promoCode?: string;
 }
 
-export interface PerkClaimEntity {
-  /**
-   * Unique identifier for the perk
-   * @example 1
-   */
-  id: number;
-  /**
-   * Timestamp when the perk claim was created
-   * @format date-time
-   * @example "2023-01-01T00:00:00Z"
-   */
-  timestamp: string;
-  /**
-   * Perk id on strapi
-   * @example "test-perk-id"
-   */
-  perkId: string;
-  /** Wallet associated with the perk claim */
-  wallet: WalletEntity;
-  /**
-   * Inserted username for the perk claim
-   * @example "test-username"
-   */
-  username: string;
-  /**
-   * Inserted email for the perk claim
-   * @example "test-email@example.com"
-   */
-  email: string;
-}
-
 export interface PerkClaimItemResponse {
   /** @example 200 */
   status: number;
   /** @example "Success" */
   message: string;
   meta: EmptyMeta;
-  data: PerkClaimEntity;
+  data: PerkClaimResponseDto;
 }
 
 export interface PerkClaimListResponse {
@@ -1548,7 +1479,18 @@ export interface PerkClaimListResponse {
   /** @example "Success" */
   message: string;
   meta: EmptyMeta;
-  data: PerkClaimEntity[];
+  data: PerkClaimResponseDto[];
+}
+
+export interface PerkPromoCodeInventoryEntryDto {
+  /** @example "perk-1" */
+  perkId: string;
+  /** @example "Airalo" */
+  name: string;
+  /** @example 3 */
+  codesConsumed: number;
+  /** @example 2 */
+  codesLeft: number;
 }
 
 export interface FeatureFlagResponseDto {
@@ -1618,7 +1560,7 @@ export interface UdfConfigDto {
    * Resolutions supported by the datafeed (numeric = minutes, suffix S/D/W/M = seconds/days/weeks/months).
    * @example ["60","240","1D","1W"]
    */
-  supported_resolutions: ('60' | '240' | '1D' | '1W')[];
+  supported_resolutions: string[];
   /** @example false */
   supports_group_request: boolean;
   /** @example false */
@@ -1737,11 +1679,33 @@ export interface UdfHistoryResponseDto {
   nextTime?: number;
 }
 
-export interface MissionApyResponse {
+export interface TokenPriceChangeDto {
+  /**
+   * 1-day price change for the token
+   * @example 5.457897987
+   */
+  '1d': number;
+  /**
+   * 7-day price change for the token
+   * @example -0.5565
+   */
+  '7d': number;
+}
+
+export interface MissionApyDto {
   /** APY contributed by each reward link, keyed by identifier. */
   apy: Record<string, number>;
   /** Sum of all reward APY contributions. */
   total: number;
+}
+
+export interface MissionApyResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: MissionApyDto;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1780,12 +1744,15 @@ export interface ApiConfig<SecurityDataType = unknown> {
   customFetch?: typeof fetch;
 }
 
-export interface HttpResponse<D, E = unknown> extends Response {
+export interface HttpResponse<
+  D extends unknown,
+  E extends unknown = unknown,
+> extends Response {
   data: D;
   error: E;
 }
 
-type CancelToken = symbol | string | number;
+type CancelToken = Symbol | string | number;
 
 export enum ContentType {
   Json = 'application/json',
@@ -2006,7 +1973,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * Swagger documentation for Jumper API
  */
 export class JumperBackend<
-  SecurityDataType,
+  SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
   v1 = {
     /**
@@ -2021,16 +1988,11 @@ export class JumperBackend<
       query?: {
         /**
          * Page number of the pagination
-         * @min 1
-         * @default 1
          * @example 1
          */
         page?: number;
         /**
          * Maximum number of items per page
-         * @min 1
-         * @max 100
-         * @default 10
          * @example 10
          */
         limit?: number;
@@ -2528,42 +2490,6 @@ export class JumperBackend<
     /**
      * No description
      *
-     * @tags Mission, Public
-     * @name MissionControllerGetApyV1
-     * @summary Get reward APY breakdown for a mission
-     * @request GET:/v1/mission/{slug}/apy
-     */
-    missionControllerGetApyV1: (slug: string, params: RequestParams = {}) =>
-      this.request<MissionApyResponse, any>({
-        path: `/v1/mission/${slug}/apy`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Mission, Public
-     * @name MissionControllerGetTaskApyV1
-     * @summary Get reward APY breakdown for a single task within a mission
-     * @request GET:/v1/mission/{slug}/task/{identifier}/apy
-     */
-    missionControllerGetTaskApyV1: (
-      slug: string,
-      identifier: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<MissionApyResponse, any>({
-        path: `/v1/mission/${slug}/task/${identifier}/apy`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
      * @tags Perks, Public
      * @name PerksControllerPerkClaimV1
      * @summary Claim new perk
@@ -2573,7 +2499,7 @@ export class JumperBackend<
       data: PerkClaimDto,
       params: RequestParams = {},
     ) =>
-      this.request<PerkClaimResponseDto, any>({
+      this.request<PerkClaimItemResponse, any>({
         path: `/v1/perks/claim`,
         method: 'POST',
         body: data,
@@ -2594,7 +2520,7 @@ export class JumperBackend<
       address: string,
       params: RequestParams = {},
     ) =>
-      this.request<PerkClaimResponseDto[], void>({
+      this.request<PerkClaimListResponse, void>({
         path: `/v1/perks/claimed/address/${address}`,
         method: 'GET',
         format: 'json',
@@ -2720,8 +2646,6 @@ export class JumperBackend<
         query: string;
         /**
          * Maximum number of results to return
-         * @min 1
-         * @max 100
          * @example 30
          */
         limit: number;
@@ -2768,19 +2692,16 @@ export class JumperBackend<
         resolution: string;
         /**
          * Start of the bar timeframe (Unix seconds)
-         * @min 0
          * @example 1700000000
          */
         from: number;
         /**
          * End of the bar timeframe (Unix seconds). Defaults to the current server time when omitted.
-         * @min 0
          * @example 1700100000
          */
         to?: number;
         /**
          * Number of bars before "to". When present together with "to", "from" is disregarded.
-         * @min 1
          * @example 300
          */
         countback?: number;
@@ -2791,6 +2712,120 @@ export class JumperBackend<
         path: `/v1/tradingview/udf/history`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGet1DPriceChangeV1
+     * @summary Get 1-day price change for a token
+     * @request GET:/v1/tokens/extended/price-change/1d
+     */
+    priceChangeControllerGet1DPriceChangeV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, number>, any>({
+        path: `/v1/tokens/extended/price-change/1d`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGet7DPriceChangeV1
+     * @summary Get 7-day price change for a token
+     * @request GET:/v1/tokens/extended/price-change/7d
+     */
+    priceChangeControllerGet7DPriceChangeV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, number>, any>({
+        path: `/v1/tokens/extended/price-change/7d`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGetAllPriceChangesV1
+     * @summary Get all price changes for a token
+     * @request GET:/v1/tokens/extended/price-change/all
+     */
+    priceChangeControllerGetAllPriceChangesV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, TokenPriceChangeDto>, any>({
+        path: `/v1/tokens/extended/price-change/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Mission, Public
+     * @name MissionControllerGetApyV1
+     * @summary Get reward APY breakdown for a mission
+     * @request GET:/v1/mission/{slug}/apy
+     */
+    missionControllerGetApyV1: (slug: string, params: RequestParams = {}) =>
+      this.request<MissionApyResponse, any>({
+        path: `/v1/mission/${slug}/apy`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Mission, Public
+     * @name MissionControllerGetTaskApyV1
+     * @summary Get reward APY breakdown for a single task within a mission
+     * @request GET:/v1/mission/{slug}/task/{identifier}/apy
+     */
+    missionControllerGetTaskApyV1: (
+      slug: string,
+      identifier: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<MissionApyResponse, any>({
+        path: `/v1/mission/${slug}/task/${identifier}/apy`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),
