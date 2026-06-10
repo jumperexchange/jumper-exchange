@@ -23,4 +23,5 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   starterVariant: StarterVariantType;
   activeTheme?: string;
   autoHeight?: boolean;
+  isLoading?: boolean;
 }

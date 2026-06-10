@@ -25,7 +25,10 @@ const Page = () => {
 
   return (
     <MainWidgetContainer>
-      <Widget starterVariant={variant} />
+      <Widget
+        starterVariant={variant}
+        isLoading={privateSwapsFeatureFlag.isLoading}
+      />
       <Widgets widgetVariant={variant} />
     </MainWidgetContainer>
   );
