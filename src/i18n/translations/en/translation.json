@@ -1098,6 +1098,13 @@
       "title": "You reached Level {{newLevel}}!",
       "body": "Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.",
       "cta": "View Jumper Pass"
+    },
+    "perkLevelUp": {
+      "title_one": "Perk unlocked: {{perks, listExt(prop: name)}}",
+      "title_other": "You unlocked {{count}} new perks!",
+      "body_one": "Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check it out in your Jumper Pass.",
+      "body_other": "Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check them out in your Jumper Pass.",
+      "cta": "View Jumper Pass"
     }
   },
   "alerts": {

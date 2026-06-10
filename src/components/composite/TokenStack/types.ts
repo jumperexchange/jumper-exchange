@@ -1,6 +1,6 @@
 export interface TokenStackToken {
   address: string;
-  logoURI?: string;
+  logoURI?: string | null;
   name?: string;
   symbol?: string;
   chain: {

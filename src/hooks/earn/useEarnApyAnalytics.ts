@@ -1,9 +1,9 @@
-import type { ApyAnalyticsHistory } from '@/types/jumper-backend';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import type { ApyAnalyticsRangeField } from 'src/app/lib/getOpportunityApyAnalytics';
 import { getOpportunityApyAnalytics } from 'src/app/lib/getOpportunityApyAnalytics';
 import { FIVE_MINUTES_MS } from 'src/const/time';
+import type { ApyAnalyticsHistory } from '@/types/jumper-backend';
 
 export interface UseEarnApyAnalyticsProps {
   slug: string;
@@ -28,7 +28,6 @@ export const useEarnApyAnalytics = ({
       if (!result.ok) {
         throw result.error;
       }
-      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,

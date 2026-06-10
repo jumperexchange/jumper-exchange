@@ -12,6 +12,7 @@ import {
   decimalFormatter,
   percentFormatter,
 } from '@/utils/formatNumbers';
+import { listFormatter } from '@/utils/formatList';
 import { dateFormatter } from 'src/utils/formatDate';
 
 export default async function initTranslations(
@@ -59,6 +60,7 @@ export default async function initTranslations(
     'chainNamesExt',
     chainNamesFormatter,
   );
+  i18nInstance.services.formatter?.addCached('listExt', listFormatter);
 
   return {
     i18n: i18nInstance,
