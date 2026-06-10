@@ -49,7 +49,7 @@ RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Fix sharp install for image optimization
-RUN pnpm install sharp --allow-build=sharp
+RUN pnpm install sharp@0.34.5 --allow-build=sharp
 RUN chown -R nextjs:nodejs /app/node_modules
 ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 
