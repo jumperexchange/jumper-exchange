@@ -7,9 +7,10 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
-import { useGetClaimedPerks } from 'src/hooks/perks/useGetClaimedPerks';
+import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { ProfileContext } from 'src/providers/ProfileProvider';
+import type { PerksDataAttributes } from 'src/types/strapi';
 import { ProgressionBar } from '../../LevelBox/ProgressionBar';
 import { getLevelBasedOnPoints } from '../../utils/getLevelBasedOnPoints';
 import {
@@ -34,13 +35,15 @@ const statIconSx = (theme: Theme) => ({
   color: (theme.vars || theme).palette.text.primary,
 });
 
-interface JumperPassCardProps {}
+interface JumperPassCardProps {
+  perks: PerksDataAttributes[];
+}
 
-export const JumperPassCard: FC<JumperPassCardProps> = () => {
+export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
   const { walletAddress: address, isLoading: isWalletLoading } =
     useContext(ProfileContext);
   const { points = 0, pdas, isLoading } = useLoyaltyPass(address);
-  const { data: claimedPerks } = useGetClaimedPerks(address);
+  const { unlockedPerks } = useUnlockedPerks(perks);
   const { t } = useTranslation();
 
   const levelData = getLevelBasedOnPoints(points);
@@ -54,7 +57,7 @@ export const JumperPassCard: FC<JumperPassCardProps> = () => {
       ? sum + (pda.points ?? 0)
       : sum;
   }, 0);
-  const perksUnlocked = claimedPerks?.length ?? 0;
+  const perksUnlocked = unlockedPerks.length;
 
   if (isWalletLoading || isLoading) {
     return <JumperPassCardSkeleton />;
