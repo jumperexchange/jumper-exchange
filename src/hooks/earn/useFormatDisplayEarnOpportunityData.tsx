@@ -18,7 +18,7 @@ import type {
   Token,
 } from 'src/types/jumper-backend';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import { formatLockupPeriod } from 'src/utils/formatLockupPeriod';
+import { formatLockupPeriod } from '@/utils/formatLockupPeriod';
 import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
