@@ -1,4 +1,3 @@
-import { createServerQueryClient } from '@/app/lib/createServerQueryClient';
 import {
   fetchEarnFilterOpportunitiesForPage,
   fetchEarnTopOpportunitiesForPage,
@@ -7,9 +6,10 @@ import { EarnsPage } from '@/app/ui/earn/EarnsPage';
 import { earnFilterOpportunitiesQueryKey } from '@/app/lib/earn/earnQueries';
 import { earnTopOpportunitiesQueryKey } from '@/app/lib/earn/earnQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { makeQueryClient } from '@/app/lib/makeQueryClient';
 
 export const EarnsPageContent = async () => {
-  const queryClient = createServerQueryClient();
+  const queryClient = makeQueryClient();
 
   await Promise.all([
     queryClient.prefetchQuery({

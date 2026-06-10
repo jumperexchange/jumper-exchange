@@ -1,5 +1,4 @@
 import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
-import { PAGE_SIZE, UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import { MissionsList } from './MissionsList';
 import {
   fetchMissionsListForPage,
