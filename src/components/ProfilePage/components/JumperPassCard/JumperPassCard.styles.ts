@@ -34,22 +34,6 @@ export const JumperPassTitle = styled(Typography)(({ theme }) => {
   };
 });
 
-export const JumperPassSubtitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodySmall,
-  color: (theme.vars || theme).palette.text.secondary,
-}));
-
-export const JumperPassXp = styled(Typography)(({ theme }) => ({
-  ...theme.typography.titleLarge,
-  color: (theme.vars || theme).palette.text.primary,
-}));
-
-export const JumperPassXpUnit = styled('span')(({ theme }) => ({
-  ...theme.typography.bodyLargeStrong,
-  marginLeft: theme.spacing(0.5),
-  color: (theme.vars || theme).palette.text.secondary,
-}));
-
 export const JumperPassProgressContainer = styled(Box)(() => ({
   width: '100%',
 }));
@@ -59,11 +43,6 @@ export const JumperPassLevelLabels = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   width: '100%',
   marginTop: theme.spacing(1),
-}));
-
-export const JumperPassLevelLabel = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyXXSmall,
-  color: (theme.vars || theme).palette.text.primary,
 }));
 
 export const JumperPassStatsContainer = styled(Box)(({ theme }) => ({
@@ -88,16 +67,4 @@ export const PassStatChipText = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-}));
-
-export const PassStatChipValue = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyMediumStrong,
-  color: (theme.vars || theme).palette.text.primary,
-  whiteSpace: 'nowrap',
-}));
-
-export const PassStatChipCaption = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyXSmall,
-  color: (theme.vars || theme).palette.text.secondary,
-  whiteSpace: 'nowrap',
 }));

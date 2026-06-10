@@ -1,8 +1,6 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import type { SxProps, Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 
 export const unlockedPerksCardSx: SxProps<Theme> = (theme: Theme) => {
   const palette = (theme.vars || theme).palette;
@@ -32,16 +30,6 @@ export const InfoTop = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const UnlockedPerksTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.urbanistTitleXSmall,
-  color: (theme.vars || theme).palette.accent1.main,
-}));
-
-export const UnlockedPerksDescription = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyMediumParagraph,
-  color: (theme.vars || theme).palette.text.secondary,
-}));
-
 export const OpenHubWrapper = styled(Box)(({ theme }) => ({
   paddingTop: theme.spacing(2),
 }));
@@ -56,11 +44,6 @@ export const InfoDivider = styled(Box)(({ theme }) => ({
   width: '100%',
   height: '1px',
   backgroundColor: (theme.vars || theme).palette.border,
-}));
-
-export const UnlockedPerksCount = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodySmallParagraph,
-  color: (theme.vars || theme).palette.text.secondary,
 }));
 
 export const PerksColumn = styled(Box)(({ theme }) => ({
@@ -123,20 +106,6 @@ export const PerkCardHeader = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const PerkCardTitle = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyMediumStrong,
-  color: (theme.vars || theme).palette.text.primary,
-  // Clamp long titles to one line, matching the app's PerksCard.
-  ...getTextEllipsisStyles(1),
-}));
-
-export const PerkCardDescription = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyXSmall,
-  color: (theme.vars || theme).palette.text.secondary,
-  // Clamp to two lines so variable-length descriptions don't grow the card.
-  ...getTextEllipsisStyles(2, 32),
-}));
-
 export const PerkCardBadges = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -150,11 +119,6 @@ export const PerksControls = styled(Box)(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: theme.spacing(0, 2),
-}));
-
-export const PerksControlsLabel = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodySmallParagraph,
-  color: (theme.vars || theme).palette.text.secondary,
 }));
 
 export const PerksDots = styled(Box)(({ theme }) => ({

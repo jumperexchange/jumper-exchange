@@ -43,11 +43,6 @@ export const RankCardContentContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
 }));
 
-export const RankLabel = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyXSmallStrong,
-  color: (theme.vars || theme).palette.white.main,
-}));
-
 interface RankUserPositionProps extends TypographyProps {
   isGtMillion: boolean;
 }
@@ -59,11 +54,6 @@ export const RankUserPosition = styled(Typography, {
   color: (theme.vars || theme).palette.white.main,
   // Clamp very large ranks so they don't overflow the narrow card
   ...(isGtMillion && { fontSize: '38px !important' }),
-}));
-
-export const RankJoinedDate = styled(Typography)(({ theme }) => ({
-  ...theme.typography.bodyXSmall,
-  color: (theme.vars || theme).palette.alphaLight700.main,
 }));
 
 export const RankButton = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({

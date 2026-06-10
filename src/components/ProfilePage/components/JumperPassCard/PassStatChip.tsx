@@ -1,9 +1,8 @@
+import Typography from '@mui/material/Typography';
 import type { FC, ReactNode } from 'react';
 import {
-  PassStatChipCaption,
   PassStatChipContainer,
   PassStatChipText,
-  PassStatChipValue,
 } from './JumperPassCard.styles';
 
 interface PassStatChipProps {
@@ -21,8 +20,12 @@ export const PassStatChip: FC<PassStatChipProps> = ({
     <PassStatChipContainer>
       {icon}
       <PassStatChipText>
-        <PassStatChipValue>{value}</PassStatChipValue>
-        <PassStatChipCaption>{caption}</PassStatChipCaption>
+        <Typography variant="bodyMediumStrong" color="textPrimary" noWrap>
+          {value}
+        </Typography>
+        <Typography variant="bodyXSmall" color="textSecondary" noWrap>
+          {caption}
+        </Typography>
       </PassStatChipText>
     </PassStatChipContainer>
   );

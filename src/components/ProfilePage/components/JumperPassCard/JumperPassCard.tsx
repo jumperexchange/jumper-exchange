@@ -1,5 +1,5 @@
-import Box from '@mui/material/Box';
 import type { Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,14 +15,10 @@ import { ProgressionBar } from '../../LevelBox/ProgressionBar';
 import { getLevelBasedOnPoints } from '../../utils/getLevelBasedOnPoints';
 import {
   JumperPassCardContainer,
-  JumperPassLevelLabel,
   JumperPassLevelLabels,
   JumperPassProgressContainer,
   JumperPassStatsContainer,
-  JumperPassSubtitle,
   JumperPassTitle,
-  JumperPassXp,
-  JumperPassXpUnit,
   jumperPassCardSx,
 } from './JumperPassCard.styles';
 import { JumperPassCardSkeleton } from './JumperPassCardSkeleton';
@@ -81,23 +77,28 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
 
         <JumperPassTitle>{t('profile_page.jumperPass')}</JumperPassTitle>
 
-        <JumperPassSubtitle>
+        <Typography variant="bodySmall" color="textSecondary">
           {t('profile_page.progressTo')}{' '}
-          <Box
+          <Typography
             component="span"
-            sx={(theme) => ({
-              typography: 'bodySmallStrong',
-              color: (theme.vars || theme).palette.text.primary,
-            })}
+            variant="bodySmallStrong"
+            color="textPrimary"
           >
             {t('profile_page.levelWithValue', { level: nextLevel })}
-          </Box>
-        </JumperPassSubtitle>
+          </Typography>
+        </Typography>
 
-        <JumperPassXp>
+        <Typography variant="titleLarge" color="textPrimary">
           {t('format.decimal2Digit', { value: points })}
-          <JumperPassXpUnit>XP</JumperPassXpUnit>
-        </JumperPassXp>
+          <Typography
+            component="span"
+            variant="bodyLargeStrong"
+            color="textSecondary"
+            sx={{ ml: 0.5 }}
+          >
+            XP
+          </Typography>
+        </Typography>
 
         <JumperPassProgressContainer>
           <ProgressionBar
@@ -108,12 +109,12 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
         </JumperPassProgressContainer>
 
         <JumperPassLevelLabels>
-          <JumperPassLevelLabel>
+          <Typography variant="bodyXXSmall" color="textPrimary">
             {t('profile_page.levelWithValue', { level: currentLevel })}
-          </JumperPassLevelLabel>
-          <JumperPassLevelLabel>
+          </Typography>
+          <Typography variant="bodyXXSmall" color="textPrimary">
             {t('profile_page.levelWithValue', { level: nextLevel })}
-          </JumperPassLevelLabel>
+          </Typography>
         </JumperPassLevelLabels>
       </SectionCard>
     </JumperPassCardContainer>
