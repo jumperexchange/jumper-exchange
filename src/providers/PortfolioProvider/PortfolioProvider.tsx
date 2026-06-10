@@ -6,10 +6,12 @@ import {
   type BalancesState,
   type PositionsState,
 } from './PortfolioContext';
+import type { PnlState } from './types';
 import { useProcessBalances } from './hooks/useProcessBalances';
 import { useProcessedPositions } from './hooks/useProcessPositions';
 import { usePortfolioSummaryData } from './hooks/usePortfolioSummary';
 import { useOrchestrationState } from './hooks/useOrchestrationState';
+import { usePnlData } from './hooks/usePnlData';
 import compact from 'lodash/compact';
 
 export const PortfolioProvider = ({ children }: PropsWithChildren) => {
@@ -58,11 +60,29 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
     positionsByProtocol: positionsData.positionsByProtocol,
   });
 
-  const state = useOrchestrationState(balancesData, positionsData);
+  const pnlData = usePnlData();
+  const state = useOrchestrationState(balancesData, positionsData, pnlData);
+
+  const pnl: PnlState = useMemo(
+    () => ({
+      period: pnlData.period,
+      setPeriod: pnlData.setPeriod,
+      pnlValue: pnlData.pnlValue,
+      pnlPercentage: pnlData.pnlPercentage,
+      chartData: pnlData.chartData,
+    }),
+    [
+      pnlData.period,
+      pnlData.setPeriod,
+      pnlData.pnlValue,
+      pnlData.pnlPercentage,
+      pnlData.chartData,
+    ],
+  );
 
   const value = useMemo(
-    () => ({ balances, positions, summary, state }),
-    [balances, positions, summary, state],
+    () => ({ balances, positions, summary, state, pnl }),
+    [balances, positions, summary, state, pnl],
   );
 
   return (

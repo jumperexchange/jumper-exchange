@@ -3,10 +3,12 @@ import type { OrchestrationState, SourceState } from '../types';
 import { usePriceLookup } from './usePriceLookup';
 import type { useProcessBalances } from './useProcessBalances';
 import type { useProcessedPositions } from './useProcessPositions';
+import type { usePnlData } from './usePnlData';
 
 export const useOrchestrationState = (
   balances: ReturnType<typeof useProcessBalances>,
   positions: ReturnType<typeof useProcessedPositions>,
+  pnl: ReturnType<typeof usePnlData>,
 ): OrchestrationState => {
   const pricesData = usePriceLookup();
 
@@ -89,6 +91,29 @@ export const useOrchestrationState = (
     ],
   );
 
+  const pnlSource: SourceState = useMemo(
+    () => ({
+      isEmpty: pnl.pnlValue === null && pnl.chartData.length === 0,
+      isLoading: pnl.isPnlLoading || pnl.isChartLoading,
+      isRefreshing: pnl.isFetching && !pnl.isPnlLoading && !pnl.isChartLoading,
+      isStale: pnl.isPlaceholderData,
+      isSuccess: pnl.isSuccess,
+      updatedAt: pnl.updatedAt,
+      error: pnl.error,
+    }),
+    [
+      pnl.pnlValue,
+      pnl.chartData.length,
+      pnl.isPnlLoading,
+      pnl.isChartLoading,
+      pnl.isFetching,
+      pnl.isSuccess,
+      pnl.isPlaceholderData,
+      pnl.updatedAt,
+      pnl.error,
+    ],
+  );
+
   const isEmpty = balances.isEmpty && positions.isEmpty;
 
   const isInitialLoading =
@@ -124,7 +149,8 @@ export const useOrchestrationState = (
   const refresh = useCallback(() => {
     balances.refetch();
     positions.refetch();
-  }, [balances.refetch, positions.refetch]);
+    pnl.refetch();
+  }, [balances.refetch, positions.refetch, pnl.refetch]);
 
   const refreshByAddress = useCallback(
     (address: string) => {
@@ -157,6 +183,7 @@ export const useOrchestrationState = (
         balancesByAddress: balancesByAddressSource,
         positions: positionsSource,
         prices: pricesSource,
+        pnl: pnlSource,
       },
       refresh,
       refreshByAddress,
@@ -174,6 +201,7 @@ export const useOrchestrationState = (
       balancesByAddressSource,
       positionsSource,
       pricesSource,
+      pnlSource,
       refresh,
       refreshByAddress,
       refreshForTokens,

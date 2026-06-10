@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { PortfolioHeaderOverviewSkeleton } from './PortfolioHeaderOverviewSkeleton';
+import { PortfolioHeaderOverviewSkeleton } from './PortfolioHeaderOverview/PortfolioHeaderOverviewSkeleton';
 import { PortfolioHeaderBreakdownSkeleton } from './PortfolioHeaderBreakdownSkeleton';
 
 export const PortfolioHeaderSectionSkeleton = () => {

@@ -7,7 +7,7 @@ import {
   PortfolioHeaderOverviewContentContainer,
   PortfolioHeaderOverviewHeaderContainer,
   PortfolioHeaderOverviewValue,
-} from './PortfolioPage.styles';
+} from './PortfolioHeaderOverview.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
@@ -15,6 +15,7 @@ import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { useMemo } from 'react';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
+import { PortfolioHeaderOverviewPnLSection } from './PortfolioHeaderOverviewPnLSection';
 
 export const PortfolioHeaderOverview = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
@@ -74,6 +75,7 @@ export const PortfolioHeaderOverview = () => {
             {suffix}
           </>
         </PortfolioHeaderOverviewValue>
+        <PortfolioHeaderOverviewPnLSection />
       </PortfolioHeaderOverviewContentContainer>
     </PortfolioHeaderOverviewContainer>
   );
