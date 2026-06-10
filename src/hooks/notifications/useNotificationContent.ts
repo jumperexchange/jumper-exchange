@@ -23,30 +23,41 @@ export function resolveNotificationContent(
   notification: Notification,
   ctx: { t: TFunction; i18n: I18nInstance },
 ): NotificationContent {
+  const fallback: NotificationContent = {
+    title: notification.title,
+    body: notification.body,
+    ctaLabel: notification.ctaLabel,
+  };
+
   const ruleId = notification.sourceRuleId;
-  if (!ruleId) {
-    return {
-      title: notification.title,
-      body: notification.body,
-      ctaLabel: notification.ctaLabel,
-    };
+  const params = notification.metadata ?? {};
+  const titleKey = `notifications.${ruleId}.title`;
+  const bodyKey = `notifications.${ruleId}.body`;
+  // Pass `params` to `exists` so rules whose catalogue entry is plural-only
+  // (`_one`/`_other`, resolved via `params.count`) are detected. A rule missing
+  // its `count` resolves no plural form, so it falls back to the stored copy.
+  if (
+    !ruleId ||
+    !ctx.i18n.exists(titleKey, params) ||
+    !ctx.i18n.exists(bodyKey, params)
+  ) {
+    return fallback;
   }
 
   // Dynamic union keys carrying interpolation options can't be narrowed by the
-  // typed-resources `t()`; the keys are validated below with `i18n.exists`.
+  // typed-resources `t()`; the keys are validated above with `i18n.exists`.
   const translate = ctx.t as unknown as (
     key: string,
     options?: Record<string, unknown>,
   ) => string;
-  const params = notification.metadata ?? {};
-
-  const resolve = (key: string, fallbackValue: string): string =>
-    ctx.i18n.exists(key) ? translate(key, params) : fallbackValue;
+  const ctaKey = `notifications.${ruleId}.cta`;
 
   return {
-    title: resolve(`notifications.${ruleId}.title`, notification.title),
-    body: resolve(`notifications.${ruleId}.body`, notification.body),
-    ctaLabel: resolve(`notifications.${ruleId}.cta`, notification.ctaLabel),
+    title: translate(titleKey, params),
+    body: translate(bodyKey, params),
+    ctaLabel: ctx.i18n.exists(ctaKey, params)
+      ? translate(ctaKey, params)
+      : notification.ctaLabel,
   };
 }
 

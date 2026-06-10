@@ -92,6 +92,75 @@ describe('resolveNotificationContent', () => {
     );
   });
 
+  it('translates perkLevelUp (single) with the perk name and singular copy', () => {
+    const content = resolve(
+      makeNotification({
+        sourceRuleId: 'perkLevelUp',
+        ctaLabel: 'STORED CTA',
+        metadata: {
+          oldLevel: 4,
+          newLevel: 5,
+          count: 1,
+          perks: [
+            { name: 'Fee discount', slug: 'fee-discount', unlockLevel: 5 },
+          ],
+        },
+      }),
+    );
+
+    expect(content.title).toBe('Perk unlocked: Fee discount');
+    expect(content.body).toBe(
+      'Reaching Level 5 unlocked Fee discount. Check it out in your Jumper Pass.',
+    );
+    expect(content.ctaLabel).toBe('View Jumper Pass');
+  });
+
+  it('translates perkLevelUp (multiple) with a joined name list and plural copy', () => {
+    const content = resolve(
+      makeNotification({
+        sourceRuleId: 'perkLevelUp',
+        metadata: {
+          oldLevel: 4,
+          newLevel: 7,
+          count: 2,
+          perks: [
+            { name: 'Fee discount', slug: 'fee-discount', unlockLevel: 5 },
+            {
+              name: 'Priority support',
+              slug: 'priority-support',
+              unlockLevel: 7,
+            },
+          ],
+        },
+      }),
+    );
+
+    expect(content.title).toBe('You unlocked 2 new perks!');
+    expect(content.body).toBe(
+      'Reaching Level 7 unlocked Fee discount, Priority support. Check them out in your Jumper Pass.',
+    );
+  });
+
+  it('falls back to stored copy for perkLevelUp when count is absent', () => {
+    const content = resolve(
+      makeNotification({
+        sourceRuleId: 'perkLevelUp',
+        metadata: {
+          newLevel: 5,
+          perks: [
+            { name: 'Fee discount', slug: 'fee-discount', unlockLevel: 5 },
+          ],
+        },
+      }),
+    );
+
+    expect(content).toEqual({
+      title: 'STORED TITLE',
+      body: 'STORED BODY',
+      ctaLabel: 'STORED CTA',
+    });
+  });
+
   it('derives the verb (nesting) and joins chain names for newToolLaunch', () => {
     const content = resolve(
       makeNotification({
