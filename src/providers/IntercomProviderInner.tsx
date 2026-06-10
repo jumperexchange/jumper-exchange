@@ -9,7 +9,7 @@ import Intercom, {
 } from '@intercom/messenger-js-sdk';
 import { captureException } from '@sentry/nextjs';
 import type { FC, PropsWithChildren } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useIntercomUserHash } from 'src/app/lib/useIntercomUserHash';
 import envConfig from 'src/config/env-config';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
@@ -26,8 +26,6 @@ const commonIntercomConfig = {
 export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
   const activeAccount = useActiveAccountByChainType();
   const walletAddress = activeAccount?.address;
-  const walletAddressRef = useRef(walletAddress);
-  walletAddressRef.current = walletAddress;
   const previousAddress = usePrevious(walletAddress);
   const {
     mutate,
@@ -74,10 +72,7 @@ export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
     }
 
     mutate(walletAddress, {
-      onSuccess: ({ user_id, user_hash }, mutationWalletAddress) => {
-        if (mutationWalletAddress !== walletAddressRef.current) {
-          return;
-        }
+      onSuccess: ({ user_id, user_hash }) => {
         update({ user_id, user_hash });
       },
       onError: (error) => {
