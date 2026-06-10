@@ -1,6 +1,6 @@
 'use client';
 
-import { PortfolioViewBarTab } from '../../app/ui/portfolio/PortfolioContentSection';
+import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 import { type FC } from 'react';
 import {
   PortfolioFilterBarContainer,

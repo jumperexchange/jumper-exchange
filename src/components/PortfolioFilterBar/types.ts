@@ -1,5 +1,10 @@
 import type { SortByEnum } from '@/providers/PortfolioProvider/filtering/types';
-import type { PortfolioViewBarTab } from '../../app/ui/portfolio/PortfolioContentSection';
+
+export enum PortfolioViewBarTab {
+  HOLDINGS = 'holdings',
+  PERFORMANCE = 'performance',
+  TRANSACTIONS = 'transactions',
+}
 
 export interface PortfolioFilterViewBaseProps {
   isDisabled: boolean;

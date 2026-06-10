@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { ExpandableSection } from '@/components/core/sections/ExpandableSection/ExpandableSection';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -12,7 +13,7 @@ interface PortfolioHoldingsSectionProps<T> {
   amount: number;
   progress: number;
   items: T[];
-  renderItem: (item: T) => React.ReactNode;
+  renderItem: (item: T) => ReactNode;
   onItemClick?: (item: T) => void;
   shouldExpand?: boolean;
   isLoading?: boolean;

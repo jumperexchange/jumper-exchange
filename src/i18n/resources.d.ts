@@ -967,6 +967,7 @@ export default interface Resources {
       views: {
         holdings: 'Holdings';
         performance: 'Performance';
+        soon: 'Soon';
         transactions: 'Transactions';
         viewBy: 'View by';
       };

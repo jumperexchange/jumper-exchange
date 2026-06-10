@@ -9,12 +9,7 @@ import {
 } from '@/providers/PortfolioProvider/filtering/HoldingsFilteringContext';
 import { useAccount } from '@lifi/wallet-management';
 import { PortfolioHoldings } from './PortfolioHoldings/PortfolioHoldings';
-
-export enum PortfolioViewBarTab {
-  HOLDINGS = 'holdings',
-  PERFORMANCE = 'performance',
-  TRANSACTIONS = 'transactions',
-}
+import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 
 const PortfolioContentSectionInner = () => {
   const [tab, setTab] = useState<PortfolioViewBarTab>(

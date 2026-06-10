@@ -714,7 +714,8 @@
       "viewBy": "View by",
       "holdings": "Holdings",
       "performance": "Performance",
-      "transactions": "Transactions"
+      "transactions": "Transactions",
+      "soon": "Soon"
     },
     "dustConversion": {
       "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",

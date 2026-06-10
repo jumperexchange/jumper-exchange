@@ -1,6 +1,6 @@
 'use client';
 
-import { PortfolioViewBarTab } from '../../../app/ui/portfolio/PortfolioContentSection';
+import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 import type { HorizontalTabItem } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabs } from '@/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.style';
@@ -32,7 +32,7 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
         <Badge
           size={BadgeSize.SM}
           variant={BadgeVariant.Secondary}
-          label="Soon"
+          label={t('portfolio.views.soon')}
         />
       ),
     },
@@ -45,7 +45,7 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
         <Badge
           size={BadgeSize.SM}
           variant={BadgeVariant.Secondary}
-          label="Soon"
+          label={t('portfolio.views.soon')}
         />
       ),
     },
