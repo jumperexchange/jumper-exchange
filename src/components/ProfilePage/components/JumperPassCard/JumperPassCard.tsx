@@ -1,11 +1,11 @@
-import BoltIcon from '@mui/icons-material/Bolt';
-import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import Box from '@mui/material/Box';
 import type { Theme } from '@mui/material/styles';
 import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
+import { GiftIcon } from 'src/components/illustrations/GiftIcon';
+import { FatBoltIcon } from 'src/components/illustrations/FatBoltIcon';
 import { SECONDS_IN_A_DAY } from 'src/const/time';
 import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
@@ -32,7 +32,7 @@ const SEVEN_DAYS_MS = 7 * SECONDS_IN_A_DAY * 1000;
 
 const statIconSx = (theme: Theme) => ({
   fontSize: theme.spacing(3),
-  color: (theme.vars || theme).palette.text.primary,
+  color: (theme.vars || theme).palette.accent1.main,
 });
 
 interface JumperPassCardProps {
@@ -68,12 +68,12 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
       <SectionCard sx={jumperPassCardSx}>
         <JumperPassStatsContainer>
           <PassStatChip
-            icon={<BoltIcon sx={statIconSx} />}
+            icon={<FatBoltIcon sx={statIconSx} />}
             value={`${t('format.decimal2Digit', { value: xpThisWeek })} XP`}
             caption={t('profile_page.passStats.thisWeek')}
           />
           <PassStatChip
-            icon={<CardGiftcardIcon sx={statIconSx} />}
+            icon={<GiftIcon sx={statIconSx} />}
             value={t('profile_page.passStats.perks', { count: perksUnlocked })}
             caption={t('profile_page.passStats.unlocked')}
           />

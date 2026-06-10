@@ -32,7 +32,7 @@ import type { PositionCardProps, PositionGroup } from './types';
 import { isChainPortfolioPosition } from './types';
 import { useColumnDefinitions, usePositionGroups } from './hooks';
 import { formatTimeDifference } from './utils';
-import { RewardIcon } from '@/components/illustrations/RewardIcon';
+import { GiftIcon } from '@/components/illustrations/GiftIcon';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { useGetAddressExplorerUrl } from '@/hooks/useBlockchainExplorerURL';
 import { openInNewTab } from '@/utils/openInNewTab';
@@ -135,7 +135,7 @@ export const PositionCard: FC<PositionCardProps> = ({
               <Badge
                 variant={BadgeVariant.Alpha}
                 size={BadgeSize.MD}
-                startIcon={<RewardIcon sx={ICON_STYLES} />}
+                startIcon={<GiftIcon sx={ICON_STYLES} />}
               />
             )}
             <TitleWithHint
