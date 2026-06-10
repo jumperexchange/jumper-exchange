@@ -6,13 +6,15 @@ type IntercomUserHashResponse = {
 };
 
 export const fetchIntercomUserHash = async (
-  walletAddress: string,
+  walletAddress?: string,
 ): Promise<IntercomUserHashResponse> => {
   const response = await fetch('/api/intercom/user-hash', {
     method: 'POST',
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ wallet_address: walletAddress }),
+    body: JSON.stringify(
+      walletAddress ? { wallet_address: walletAddress } : {},
+    ),
   });
 
   if (!response.ok) {

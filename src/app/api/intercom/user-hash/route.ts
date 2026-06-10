@@ -10,7 +10,6 @@ import {
 import {
   findContactByExternalId,
   migrateContactToV2UserId,
-  updateContactWalletAddress,
 } from './intercom-contact';
 
 type RequestBody = {
@@ -55,49 +54,6 @@ const buildJsonResponse = (
   return response;
 };
 
-const syncWalletAddressToContact = async (
-  userId: string,
-  walletAddress: string,
-  accessToken: string,
-): Promise<void> => {
-  const contact = await findContactByExternalId(userId, accessToken);
-
-  if (!contact) {
-    return;
-  }
-
-  const updated = await updateContactWalletAddress(
-    contact.id,
-    walletAddress,
-    accessToken,
-  );
-
-  if (!updated) {
-    throw new Error(
-      `Intercom wallet_address update failed for contact ${contact.id}`,
-    );
-  }
-};
-
-const syncWalletAddressToContactWithRetry = async (
-  userId: string,
-  walletAddress: string,
-  accessToken: string,
-): Promise<void> => {
-  let lastError: unknown;
-
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      await syncWalletAddressToContact(userId, walletAddress, accessToken);
-      return;
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw lastError;
-};
-
 export const POST = async (request: NextRequest) => {
   try {
     const body = (await request.json()) as RequestBody;
@@ -122,22 +78,6 @@ export const POST = async (request: NextRequest) => {
     )?.value;
 
     if (userIdV2FromCookie) {
-      if (intercomAccessToken && validatedWallet) {
-        try {
-          await syncWalletAddressToContactWithRetry(
-            userIdV2FromCookie,
-            validatedWallet,
-            intercomAccessToken,
-          );
-        } catch (error) {
-          console.error('Intercom wallet_address sync failed after retry', {
-            userId: userIdV2FromCookie,
-            walletAddress: validatedWallet,
-            error,
-          });
-        }
-      }
-
       const userHash = signIntercomUserToken(
         userIdV2FromCookie,
         secret,
@@ -146,16 +86,9 @@ export const POST = async (request: NextRequest) => {
       return buildJsonResponse(userIdV2FromCookie, userHash);
     }
 
-    if (!validatedWallet) {
-      return NextResponse.json(
-        { error: 'wallet_address is required when no intercom user id exists' },
-        { status: 400 },
-      );
-    }
-
     let userIdV2 = generateV2UserId();
 
-    if (intercomAccessToken) {
+    if (intercomAccessToken && validatedWallet) {
       const existingV1Contact = await findContactByExternalId(
         validatedWallet,
         intercomAccessToken,
