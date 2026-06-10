@@ -1,32 +1,31 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import type { FC } from 'react';
-import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
-import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
-import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
-import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
-import { AppPaths } from 'src/const/urls';
-import { GoBack } from 'src/components/composite/GoBack/GoBack';
-import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
-import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
-import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
-import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
-import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
-import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
-import { EarnPageSkeleton } from './EarnPageSkeleton';
-import { earnOpportunityBySlugQueryKey } from 'src/hooks/earn/useEarnOpportunityBySlug';
-import { earnRelatedMarketsQueryKey } from 'src/hooks/earn/useEarnRelatedMarkets';
 import { getOpportunityBySlug } from 'src/app/lib/getOpportunityBySlug';
 import { getOpportunityRelatedMarket } from 'src/app/lib/getOpportunityRelatedMarket';
-import { useQuery } from '@tanstack/react-query';
+import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFlow';
+import { GoBack } from 'src/components/composite/GoBack/GoBack';
+import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
+import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
+import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
+import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
+import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
+import { AppPaths } from 'src/const/urls';
+import { earnOpportunityBySlugQueryKey } from 'src/hooks/earn/useEarnOpportunityBySlug';
+import { earnRelatedMarketsQueryKey } from 'src/hooks/earn/useEarnRelatedMarkets';
+import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
+import { WithdrawFlowModal } from '@/components/composite/WithdrawFlow/WithdrawFlow';
+import { EarnPageTracking } from '@/components/headless/tracking/EarnPageTracking';
+import { ContactSupportEventProvider } from '@/components/Widgets/events/ContactSupportEventProvider';
 import { FIVE_MINUTES_MS } from '@/const/time';
+import { EarnPageSkeleton } from './EarnPageSkeleton';
 
 interface EarnPageProps {
   slug: string;
 }
 
 export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
-  // TODO: LF-14853: Opportunity Details
   const { data: opportunity, isLoading: isOpportunityLoading } = useQuery({
     queryKey: earnOpportunityBySlugQueryKey(slug),
     queryFn: async () => {

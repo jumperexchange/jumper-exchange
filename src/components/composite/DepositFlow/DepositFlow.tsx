@@ -102,7 +102,7 @@ export const DepositFlowOnDemandButton: FC<
   Omit<DepositFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
     earnOpportunityInteractionFlags?: EarnInteractionFlags;
-    protocolUrl?: string;
+    protocolUrl?: string | null;
     protocolName?: string;
   }
 > = ({
