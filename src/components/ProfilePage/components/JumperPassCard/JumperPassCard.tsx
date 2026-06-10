@@ -3,10 +3,10 @@ import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isAfter, subDays } from 'date-fns';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { GiftIcon } from 'src/components/illustrations/GiftIcon';
 import { FatBoltIcon } from 'src/components/illustrations/FatBoltIcon';
-import { SECONDS_IN_A_DAY } from 'src/const/time';
 import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { ProfileContext } from 'src/providers/ProfileProvider';
@@ -23,8 +23,6 @@ import {
 } from './JumperPassCard.styles';
 import { JumperPassCardSkeleton } from './JumperPassCardSkeleton';
 import { PassStatChip } from './PassStatChip';
-
-const SEVEN_DAYS_MS = 7 * SECONDS_IN_A_DAY * 1000;
 
 const statIconSx = (theme: Theme) => ({
   fontSize: theme.spacing(3),
@@ -46,10 +44,10 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
   const currentLevel = levelData.level ?? 0;
   const nextLevel = currentLevel + 1;
 
-  const weekAgo = Date.now() - SEVEN_DAYS_MS;
+  const weekAgo = subDays(new Date(), 7);
   const xpThisWeek = (pdas ?? []).reduce((sum, pda) => {
-    const timestamp = new Date(pda.timestamp).getTime();
-    return !Number.isNaN(timestamp) && timestamp >= weekAgo
+    // isAfter returns false for invalid dates, so bad timestamps are skipped.
+    return isAfter(new Date(pda.timestamp), weekAgo)
       ? sum + (pda.points ?? 0)
       : sum;
   }, 0);
