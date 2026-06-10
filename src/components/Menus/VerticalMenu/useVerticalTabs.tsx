@@ -4,7 +4,6 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { isAnonymousSwapEnabled } from '@/app/lib/getFeatureFlag';
 import { AB_TEST_NAME } from '@/const/abtests';
 import {
   TrackingAction,
@@ -20,6 +19,11 @@ export const useVerticalTabs = () => {
   const { t } = useTranslation();
 
   const { account } = useAccount();
+
+  const privateSwapsFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.PRIVATE_SWAPS,
+    address: account?.address ?? '',
+  });
 
   const tradeABTest = useABTest({
     feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
@@ -52,7 +56,7 @@ export const useVerticalTabs = () => {
       label: t('navbar.links.refuel'),
       icon: EvStationOutlinedIcon,
     },
-    ...(isAnonymousSwapEnabled()
+    ...(privateSwapsFeatureFlag.isEnabled
       ? [
           {
             tab: 'private/',

@@ -103,7 +103,7 @@ export const useMainLinks = () => {
           tradeABTest.isEnabled && tradeABTest.value === 'test'
             ? t('navbar.links.trade')
             : t('navbar.links.exchange'),
-        subLinks: [AppPaths.Gas],
+        subLinks: [AppPaths.Gas, AppPaths.Private],
         testId: 'navbar-exchange-button',
       },
     ];
