@@ -1,9 +1,9 @@
-import type { EarnOpportunityHistory } from '@/types/jumper-backend';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import type { EarnOpportunityAnalyticsQuery } from 'src/app/lib/getOpportunityAnalytics';
 import { getOpportunityAnalytics } from 'src/app/lib/getOpportunityAnalytics';
 import { FIVE_MINUTES_MS } from 'src/const/time';
+import type { EarnOpportunityHistory } from '@/types/jumper-backend';
 
 export interface Props {
   slug: string;
@@ -20,7 +20,6 @@ export const useEarnAnalytics = ({ slug, query }: Props): Result => {
       if (!result.ok) {
         throw result.error;
       }
-      // @ts-expect-error: see LF-15589 - we are transforming data in the backend
       return result.data.data;
     },
     refetchInterval: FIVE_MINUTES_MS,

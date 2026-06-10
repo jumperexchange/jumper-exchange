@@ -37,7 +37,7 @@ export const AvatarImage: FC<AvatarImageItemProps> = ({
     <Avatar
       size={size}
       spacing={spacing}
-      src={avatar.src}
+      src={avatar.src ?? undefined}
       alt={avatar.alt}
       overlap={overlap}
       variant="circular"

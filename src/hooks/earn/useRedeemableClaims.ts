@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import { useAccountAddress } from './useAccountAddress';
 import type { Hex } from 'viem';
 import { makeClient } from '@/app/lib/client';
 import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
+import { useAccountAddress } from './useAccountAddress';
 
 interface ClaimDataEntry {
   id?: string;
@@ -35,8 +35,9 @@ export const useRedeemableClaims = (
       if (!result.ok) {
         throw result.error;
       }
-      // @ts-expect-error see LF-15589 - we are transforming data in the backend
-      const data = result.data.data ?? {};
+      // Temporary fix until we stabilize the API that vaults.fyi returns
+      // See task JUM-577
+      const data = (result.data.data ?? {}) as Partial<RedeemableClaimData>;
 
       return {
         ...data,

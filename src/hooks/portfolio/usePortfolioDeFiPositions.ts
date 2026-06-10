@@ -1,3 +1,4 @@
+import type { Account } from '@lifi/widget-provider';
 import { useQueries } from '@tanstack/react-query';
 import { min } from 'date-fns';
 import { useCallback, useMemo } from 'react';
@@ -12,9 +13,8 @@ import type { WalletPositions } from '@/types/jumper-backend';
 import type { DefiPosition } from '@/utils/positions/type-guards';
 import type { GetTokenUSDPrice } from '@/utils/positions/update-price';
 import { updateWalletPositionsPrice } from '@/utils/positions/update-price';
-import { useTokens } from '../useTokens';
-import type { Account } from '@lifi/widget-provider';
 import { useAccountGroupsByChainType } from '../accounts/useAccountGroupsByChainType';
+import { useTokens } from '../useTokens';
 
 export interface Props {
   accounts: Account[];
@@ -106,7 +106,12 @@ export const usePortfolioDeFiPositions = ({
     const oldestUpdatedAt =
       dates.length > 0 ? min(dates).toISOString() : new Date().toISOString();
 
-    return { data: allPositions, meta: { updatedAt: oldestUpdatedAt } };
+    return {
+      data: allPositions,
+      meta: { updatedAt: oldestUpdatedAt },
+      status: 200,
+      message: 'Success',
+    };
   }, [queries, isSuccess]);
 
   const refetch = () => {
