@@ -5,8 +5,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { ButtonPrimary } from '@/components/Button/Button.style';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';
-import Typography from '@mui/material/Typography';
-import { BaseIconButton } from '@/components/composite/WalletBalanceCard/WalletBalanceCard.styles';
 
 export const PortfolioAssetsListContainer = styled(Stack)(({ theme }) => ({
   gap: theme.spacing(3),
@@ -25,6 +23,7 @@ export const PortfolioAssetContainer = styled(SectionCardContainer)(
 export interface PortfolioPageOverlayContentContainerProps extends BoxProps {
   portfolioWelcomeScreenClosed: boolean;
 }
+
 export const PortfolioPageOverlayContentContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'portfolioWelcomeScreenClosed',
 })<PortfolioPageOverlayContentContainerProps>(({ theme }) => ({
@@ -63,45 +62,3 @@ export const PortfolioWelcomeScreenButton = styled(ButtonPrimary)(
     padding: theme.spacing(1.75, 2.75),
   }),
 );
-
-export const PortfolioHeaderOverviewContainer = styled(SectionCardContainer)(
-  ({ theme }) => ({
-    minHeight: 312,
-    height: '100%',
-    padding: theme.spacing(3),
-    backgroundColor: (theme.vars || theme).palette.surface1.main,
-    border: getSurfaceBorder(theme, 'surface1'),
-  }),
-);
-
-export const PortfolioHeaderOverviewHeaderContainer = styled(Stack)(
-  ({ theme }) => ({
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }),
-);
-
-export const PortfolioHeaderOverviewContentContainer = styled(Stack)(
-  ({ theme }) => ({
-    flexDirection: 'column',
-    alignItems: 'start',
-  }),
-);
-
-export const PortfolioHeaderOverviewValue = styled(Typography)(({ theme }) => ({
-  ...theme.typography.title2XLarge,
-  textOverflow: 'ellipsis',
-  userSelect: 'none',
-  '& .ticker-view > :not(.ticker-column-container)': {
-    marginLeft: `${theme.spacing(-0.5)} !important`,
-    marginRight: `${theme.spacing(-0.5)} !important`,
-  },
-}));
-
-export const LightIconButton = styled(BaseIconButton)(({ theme }) => ({
-  color: (theme.vars || theme).palette.buttonLightAction,
-  backgroundColor: (theme.vars || theme).palette.buttonLightBg,
-  height: 40,
-  width: 40,
-}));
