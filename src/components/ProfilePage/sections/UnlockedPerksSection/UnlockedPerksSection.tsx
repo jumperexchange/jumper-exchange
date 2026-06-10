@@ -1,4 +1,5 @@
 'use client';
+import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'src/components/Button/Button';
@@ -14,9 +15,6 @@ import {
   InfoDivider,
   InfoTop,
   OpenHubWrapper,
-  UnlockedPerksCount,
-  UnlockedPerksDescription,
-  UnlockedPerksTitle,
   unlockedPerksCardSx,
 } from './UnlockedPerksSection.styles';
 
@@ -37,12 +35,15 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
     <SectionCard sx={unlockedPerksCardSx}>
       <InfoColumn>
         <InfoTop>
-          <UnlockedPerksTitle>
+          <Typography
+            variant="urbanistTitleXSmall"
+            sx={{ color: 'accent1.main' }}
+          >
             {t('profile_page.unlockedPerks.title')}
-          </UnlockedPerksTitle>
-          <UnlockedPerksDescription>
+          </Typography>
+          <Typography variant="bodyMediumParagraph" color="textSecondary">
             {t('profile_page.unlockedPerks.description')}
-          </UnlockedPerksDescription>
+          </Typography>
           <OpenHubWrapper>
             {/* TODO: wire to the Perks hub once the route exists */}
             <Button variant="primary" size="medium">
@@ -52,11 +53,11 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
         </InfoTop>
         <InfoBottom>
           <InfoDivider />
-          <UnlockedPerksCount>
+          <Typography variant="bodySmallParagraph" color="textSecondary">
             {t('profile_page.unlockedPerks.count', {
               count: unlockedPerks.length,
             })}
-          </UnlockedPerksCount>
+          </Typography>
         </InfoBottom>
       </InfoColumn>
 

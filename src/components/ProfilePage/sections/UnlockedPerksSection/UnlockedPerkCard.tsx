@@ -7,15 +7,14 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { useFormatDisplayPerkData } from 'src/hooks/perks/useFormatDisplayPerkData';
 import type { PerksDataAttributes } from 'src/types/strapi';
+import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
 import {
   PerkCardBadges,
   PerkCardContainer,
   PerkCardContent,
-  PerkCardDescription,
   PerkCardHeader,
   PerkCardImage,
   PerkCardImagePlaceholder,
-  PerkCardTitle,
 } from './UnlockedPerksSection.styles';
 
 interface UnlockedPerkCardProps {
@@ -36,8 +35,16 @@ export const UnlockedPerkCard: FC<UnlockedPerkCardProps> = ({ perk }) => {
       )}
       <PerkCardContent>
         <PerkCardHeader>
-          <PerkCardTitle>{title}</PerkCardTitle>
-          <PerkCardDescription>{description}</PerkCardDescription>
+          <Typography variant="bodyMediumStrong" color="textPrimary" noWrap>
+            {title}
+          </Typography>
+          <Typography
+            variant="bodyXSmall"
+            color="textSecondary"
+            sx={getTextEllipsisStyles(2, 32)}
+          >
+            {description}
+          </Typography>
         </PerkCardHeader>
         <PerkCardBadges>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>

@@ -1,3 +1,4 @@
+import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +14,6 @@ import {
   RankButton,
   RankCardContainer,
   RankCardContentContainer,
-  RankJoinedDate,
-  RankLabel,
   RankUserPosition,
   rankCardSx,
 } from './RankCard.styles';
@@ -87,9 +86,18 @@ export const RankCard: FC<RankCardProps> = () => {
     <RankCardContainer>
       <SectionCard sx={rankCardSx}>
         <RankCardContentContainer>
-          <RankLabel>{t('profile_page.rank')}</RankLabel>
+          <Typography variant="bodyXSmallStrong">
+            {t('profile_page.rank')}
+          </Typography>
           {renderRankPosition()}
-          {joinedLabel ? <RankJoinedDate>{joinedLabel}</RankJoinedDate> : null}
+          {joinedLabel ? (
+            <Typography
+              variant="bodyXSmall"
+              sx={{ color: 'alphaLight700.main' }}
+            >
+              {joinedLabel}
+            </Typography>
+          ) : null}
         </RankCardContentContainer>
         <RankButton
           href={AppPaths.Leaderboard}

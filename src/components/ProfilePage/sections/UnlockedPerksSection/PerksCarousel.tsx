@@ -13,12 +13,12 @@ import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper/types';
 import 'swiper/css';
+import Typography from '@mui/material/Typography';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import {
   CarouselViewport,
   PerksColumn,
   PerksControls,
-  PerksControlsLabel,
   PerksDot,
   PerksDots,
   perksNavButtonSx,
@@ -110,9 +110,9 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
       </CarouselViewport>
 
       <PerksControls>
-        <PerksControlsLabel>
+        <Typography variant="bodySmallParagraph" color="textSecondary">
           {t('profile_page.unlockedPerks.showing', { shown, total })}
-        </PerksControlsLabel>
+        </Typography>
         {snapCount > 1 && (
           <PerksDots>
             {Array.from({ length: snapCount }).map((_, index) => (
