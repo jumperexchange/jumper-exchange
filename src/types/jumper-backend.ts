@@ -1,9 +1,7 @@
-import config from '@/config/env-config';
-import type { Hex } from 'viem';
-
 /* eslint-disable */
 /* tslint:disable */
 // @ts-nocheck
+import config from '@/config/env-config';
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -12,6 +10,45 @@ import type { Hex } from 'viem';
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+
+export interface JumperStringResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string;
+  meta: Record<string, any>;
+}
+
+export type EmptyMeta = object;
+
+export interface CacheClearDto {
+  /** @example "Redis key myKey cleared successfully" */
+  message: string;
+}
+
+export interface CacheClearResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: CacheClearDto;
+}
+
+export interface AuthTokenDto {
+  /** @example "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." */
+  access_token: string;
+}
+
+export interface AuthLoginResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: AuthTokenDto;
+}
 
 export interface WalletEVM {
   address: string;
@@ -37,11 +74,43 @@ export interface VerifyWalletDto {
   solana?: WalletSolana;
 }
 
+export interface VerifyWalletResponseDto {
+  /** @example true */
+  evm: boolean;
+  /** @example false */
+  solana: boolean;
+}
+
+export interface VerifyWalletResponseResult {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: VerifyWalletResponseDto;
+}
+
 export interface WalletVerificationDto {
   /** Origin wallet data */
   origin_wallet: WalletEVM;
   /** Destination wallet data */
   destination_wallet: WalletEVM;
+}
+
+export interface VerifyWalletsResponseDto {
+  /** @example true */
+  success: boolean;
+  /** @example 42 */
+  verification_id: number;
+}
+
+export interface VerifyWalletsResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: VerifyWalletsResponseDto;
 }
 
 export interface CreateUserTrackingDto {
@@ -69,7 +138,7 @@ export interface CreateUserTrackingDto {
    * The referrer of the tracking event
    * @example "https://example.com/login"
    */
-  referrer?: string;
+  referrer?: string | null;
   /**
    * The value associated with the tracking event
    * @example 1
@@ -109,8 +178,17 @@ export interface CreateUserTrackingDto {
    * Wallet provider of a user
    * @example "MetaMask"
    */
-  walletProvider?: string;
+  walletProvider?: string | null;
   abTestVariants?: object;
+}
+
+export interface JumperUndefinedResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string | null;
+  meta: Record<string, any>;
 }
 
 export interface RewardEntity {
@@ -397,22 +475,6 @@ export interface TaskVerificationEntity {
   additionalFields: object;
 }
 
-export interface UserEntity {
-  /**
-   * Unique identifier for the user
-   * @example "123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
-  /**
-   * Timestamp when the user was created
-   * @format date-time
-   * @example "2023-01-01T00:00:00Z"
-   */
-  timestamp: string;
-  /** List of wallets associated with the user */
-  wallets: WalletEntity[];
-}
-
 export interface UserTrackingEntity {
   /**
    * Unique identifier for the user tracking entry
@@ -522,69 +584,45 @@ export interface WalletEntity {
   user: UserEntity;
 }
 
-export interface CreateWalletTransactionDto {
-  sessionId: string;
+export interface UserEntity {
   /**
-   * The browser fingerprint of the user
-   * @example "abc123"
+   * Unique identifier for the user
+   * @example "123e4567-e89b-12d3-a456-426614174000"
    */
-  browserFingerprint?: string;
-  action: string;
-  /** Type of the transaction, e.g., 'evm', 'svm' */
-  type: string;
-  transactionHash?: string;
-  transactionStatus: string;
-  fromChainId: number;
-  toChainId: number;
-  fromToken: string;
-  toToken: string;
-  fromAmount: number;
-  toAmount: number;
-  toAmountMin?: number;
-  fromAmountUSD?: number;
-  toAmountUSD?: number;
-  toAmountFormatted?: string;
-  gasCost?: number;
-  gasCostFormatted?: string;
-  gasCostUSD?: number;
-  feeCost?: number;
-  feeCostFormatted?: string;
-  feeCostUSD?: number;
-  /** @default 0 */
-  stepNumber?: number;
-  steps?: string;
-  nbOfSteps?: number;
-  stepIds?: string;
-  lastStepAction?: string;
-  routeId: string;
-  exchange?: string;
-  slippage?: number;
-  maxSlippage?: string;
-  tags?: string;
-  time?: number;
-  /** @default false */
-  isFinal?: boolean;
-  transactionId?: string;
-  transactionLink?: string;
-  errorCode?: object;
-  errorCodeKey?: string;
-  errorMessage?: string;
-  message?: string;
-  status?: string;
-  walletAddress?: string;
+  id: string;
   /**
-   * Wallet provider of a user
-   * @example "MetaMask"
+   * Timestamp when the user was created
+   * @format date-time
+   * @example "2023-01-01T00:00:00Z"
    */
-  walletProvider?: string;
-  integrator?: string;
-  url?: string;
-  pathname?: string;
-  referrer?: string;
-  abtests?: object;
-  abTestVariants?: object;
-  /** @format date-time */
   timestamp: string;
+  /** List of wallets associated with the user */
+  wallets: WalletEntity[];
+}
+
+export interface UserItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: UserEntity;
+}
+
+export interface UserTraitListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTraitEntity[];
+}
+
+export interface PointsRangePaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
 }
 
 export interface LeaderboardEntity {
@@ -610,6 +648,201 @@ export interface LeaderboardEntity {
   position: number;
 }
 
+export interface PointsRangeListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: PointsRangePaginationMeta;
+  data: LeaderboardEntity[];
+}
+
+export interface CreateWalletTransactionDto {
+  sessionId: string;
+  /**
+   * The browser fingerprint of the user
+   * @example "abc123"
+   */
+  browserFingerprint?: string | null;
+  action: string;
+  /** Type of the transaction, e.g., 'evm', 'svm' */
+  type: string;
+  transactionHash?: string | null;
+  transactionStatus: string;
+  fromChainId: number;
+  toChainId: number;
+  fromToken: string;
+  toToken: string;
+  fromAmount: number;
+  toAmount: number;
+  toAmountMin?: number;
+  fromAmountUSD?: number;
+  toAmountUSD?: number;
+  toAmountFormatted?: string | null;
+  tokenCount?: number;
+  gasCost?: number;
+  gasCostFormatted?: string | null;
+  gasCostUSD?: number;
+  feeCost?: number;
+  feeCostFormatted?: string | null;
+  feeCostUSD?: number;
+  /** @default 0 */
+  stepNumber?: number;
+  steps?: string | null;
+  nbOfSteps?: number;
+  stepIds?: string | null;
+  lastStepAction?: string | null;
+  routeId: string;
+  exchange?: string | null;
+  slippage?: number;
+  maxSlippage?: string | null;
+  tags?: string | null;
+  time?: number;
+  /** @default false */
+  isFinal?: boolean;
+  transactionId?: string | null;
+  transactionLink?: string | null;
+  errorCode?: object;
+  errorCodeKey?: string;
+  errorMessage?: string | null;
+  message?: string | null;
+  status?: string | null;
+  walletAddress?: string | null;
+  /**
+   * Wallet provider of a user
+   * @example "MetaMask"
+   */
+  walletProvider?: string | null;
+  integrator?: string | null;
+  url?: string | null;
+  pathname?: string | null;
+  referrer?: string | null;
+  abtests?: object;
+  abTestVariants?: object;
+  /** @format date-time */
+  timestamp: string;
+}
+
+export interface JumperNullResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  /** @example null */
+  data: string | null;
+  meta: Record<string, any>;
+}
+
+export interface WalletTransactionListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTransactionEntity[];
+}
+
+export interface WalletPaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
+}
+
+export interface WalletRewardsByNameListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: WalletPaginationMeta;
+  data: WalletRewardEntity[];
+}
+
+export interface WalletRewardsSummaryDto {
+  sum: number;
+  level: number;
+  walletRewards: WalletRewardEntity[];
+}
+
+export interface WalletRewardsSummaryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletRewardsSummaryDto;
+}
+
+export interface WalletTraitListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletTraitEntity[];
+}
+
+export interface RewardTypeDto {
+  type: string;
+  currentRangeXP: number;
+  nextRangeXP: number;
+  currentValue: number;
+  min: number;
+  max: number;
+}
+
+export interface OngoingRewardsListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: RewardTypeDto[];
+}
+
+export interface JumperStringArrayResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: string[];
+  meta: Record<string, any>;
+}
+
+export interface LeaderboardPaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  pagesLength: number;
+}
+
+export interface LeaderboardListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: LeaderboardPaginationMeta;
+  data: LeaderboardEntity[];
+}
+
+export interface LeaderboardCenteredListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: LeaderboardEntity[];
+}
+
+export interface LeaderboardItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: LeaderboardEntity;
+}
+
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -619,18 +852,18 @@ export interface Token {
   name: string;
   symbol: string;
   decimals: number;
-  logo?: string;
+  logo?: string | null;
   address: string;
   chain: Chain;
 }
 
 export interface Protocol {
   name: string;
-  product?: string;
-  version?: string;
-  logo?: string;
-  riskDescription?: string;
-  url?: string;
+  product?: string | null;
+  version?: string | null;
+  logo?: string | null;
+  riskDescription?: string | null;
+  url?: string | null;
 }
 
 export interface EarnInteractionFlags {
@@ -672,14 +905,14 @@ export interface EarnOpportunityWithLatestAnalytics {
   asset: Token;
   protocol: Protocol;
   isRedeemable: boolean;
-  url?: string;
+  url?: string | null;
   description: string;
   tags: string[];
   rewards: Token[];
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupMonths?: number;
+  lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -688,6 +921,24 @@ export interface EarnOpportunityWithLatestAnalytics {
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
+}
+
+export interface EarnListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityWithLatestAnalytics[];
+}
+
+export interface EarnItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityWithLatestAnalytics;
 }
 
 export interface ApyHistoryPoint {
@@ -708,6 +959,15 @@ export interface ApyAnalyticsHistory {
   points: ApyHistoryPoint[];
 }
 
+export interface ApyAnalyticsHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: ApyAnalyticsHistory;
+}
+
 export interface EarnOpportunityHistoryPoint {
   /** The timestamp of the data point */
   t: number;
@@ -720,11 +980,80 @@ export interface EarnOpportunityHistory {
   points: EarnOpportunityHistoryPoint[];
 }
 
+export interface EarnOpportunityHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: EarnOpportunityHistory;
+}
+
+export interface JumperFreeFormResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  data: Record<string, any> | null;
+  meta: Record<string, any>;
+}
+
+export interface CallDataTxDto {
+  /**
+   * Address of the transaction recipient
+   * @example "0x742d35Cc6634C0532925a3b8D598C2FF000f5E58"
+   */
+  to: string;
+  /**
+   * Hex-encoded calldata, 0x-prefixed
+   * @example "0xabcdef"
+   */
+  data: string;
+  /**
+   * Value (in wei) to send with the transaction
+   * @example "0"
+   */
+  value?: string;
+  /**
+   * Chain ID of the transaction
+   * @example 1
+   */
+  chainId: number;
+}
+
+export interface CallDataActionDto {
+  /**
+   * Name of the action step
+   * @example "request-redeem"
+   */
+  name: string;
+  tx: CallDataTxDto;
+}
+
+export interface CallDataResponseDto {
+  /**
+   * Index of the current action in the actions array
+   * @example 0
+   */
+  currentActionIndex: number;
+  /** Ordered list of transaction steps to execute */
+  actions: CallDataActionDto[];
+}
+
+export interface CallDataResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: CallDataResponseDto;
+}
+
 export interface TokenBalance {
   name: string;
   symbol: string;
   decimals: number;
-  logo?: string;
+  logo?: string | null;
   address: string;
   chain: Chain;
   chainType: string;
@@ -739,11 +1068,20 @@ export interface TokenBalances {
   updatedAt: string;
 }
 
+export interface TokenBalancesResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TokenBalances;
+}
+
 export interface DefiToken {
   name: string;
   symbol: string;
   decimals: number;
-  logo?: string;
+  logo?: string | null;
   address: string;
   chain: Chain;
   chainType: string;
@@ -753,16 +1091,25 @@ export interface DefiToken {
   priceUSD: number;
 }
 
+export interface LpToken {
+  name: string;
+  symbol: string;
+  address: string;
+  decimals?: number;
+  logo?: string | null;
+  chain: Chain;
+}
+
 export interface ChainDefiPosition {
   source: 'chain';
   name: string;
   /** Additional context about the position */
-  description?: string;
+  description?: string | null | number | null;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
   address: string;
-  earn?: string;
+  earn?: string | null;
   earnInteractionFlags?: EarnInteractionFlags;
   latest?: EarnOpportunityHistoryItem;
   /** @format date-time */
@@ -777,14 +1124,14 @@ export interface ChainDefiPosition {
   assetTokens: DefiToken[];
   collateralTokens: DefiToken[];
   rewardTokens: DefiToken[];
-  lpToken?: Token;
+  lpToken?: LpToken;
 }
 
 export interface App {
   /** Unique identifier for the app, e.g., "hyperliquid", "polymarket" */
   key: string;
   /** URL to app logo */
-  logo?: string;
+  logo?: string | null;
   /** App website URL */
   url: string;
 }
@@ -798,7 +1145,7 @@ export interface AppToken {
   symbol: string;
   decimals: number;
   /** URL to token logo */
-  logo?: string;
+  logo?: string | null;
   address: string;
   app: App;
   priceUSD: number;
@@ -818,12 +1165,12 @@ export interface AppDefiPosition {
   source: 'app';
   name: string;
   /** Additional context about the position */
-  description?: string;
+  description?: string | null | number | null;
   assetUsd: number;
   debtUsd: number;
   netUsd: number;
   address: string;
-  earn?: string;
+  earn?: string | null;
   earnInteractionFlags?: EarnInteractionFlags;
   latest?: EarnOpportunityHistoryItem;
   /** @format date-time */
@@ -847,6 +1194,10 @@ export interface MetadataWithUpdatedAt {
 }
 
 export interface WalletPositions {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
   meta: MetadataWithUpdatedAt;
   data: (
     | ({
@@ -869,22 +1220,56 @@ export interface TaskVerificationDto {
    * Label on strapi
    * @example "test-quest-label"
    */
-  label?: string;
+  label?: string | null;
   /**
    * Slug on strapi
    * @example "test-quest-slug"
    */
-  slug?: string;
+  slug?: string | null;
   /**
    * Task name on strapi
    * @example "test-quest-task-name"
    */
-  taskName?: string;
+  taskName?: string | null;
   /**
    * Additional dynamic fields
    * @example {"customKey1":"value1","customKey2":"value2"}
    */
   additionalFields: object;
+}
+
+export interface TaskVerificationItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TaskVerificationEntity;
+}
+
+export interface TaskVerificationListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: TaskVerificationEntity[];
+}
+
+export interface MerklBoostEntryDto {
+  /** @example "0x1234567890123456789012345678901234567890" */
+  address: string;
+  /** @example "1000000000" */
+  boost: string;
+}
+
+export interface MerklBoostListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: MerklBoostEntryDto[];
 }
 
 export interface GetZapDataDto {
@@ -938,14 +1323,14 @@ export interface EarnOpportunityWithScore {
   asset: Token;
   protocol: Protocol;
   isRedeemable: boolean;
-  url?: string;
+  url?: string | null;
   description: string;
   tags: string[];
   rewards: Token[];
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupMonths?: number;
+  lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -957,20 +1342,73 @@ export interface EarnOpportunityWithScore {
 }
 
 export interface EarnOpportunities {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
   meta: MetadataWithUpdatedAt;
   data: EarnOpportunityWithScore[];
 }
 
+export interface VaultScoredDto {
+  chainTier: 'Tier 1' | 'Tier 2' | 'Tier 3';
+  protocolType: 'Yield' | 'Staked' | 'Locked';
+  tokenCategory: 'stable' | 'eth' | 'btc' | 'else';
+  protocolTier: 'Tier 1' | 'Tier 2' | 'Tier 3';
+  apyTotal7d: number;
+  id: string;
+  score: number;
+}
+
 export interface RecommendationDto {
   summary: object;
-  scores: string[];
-  opportunities: string[];
+  scores: VaultScoredDto[];
+}
+
+export interface RecommendationScoresResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: RecommendationDto;
 }
 
 export type WalletVerification = object;
 
+export interface WalletVerificationListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletVerification[];
+}
+
 export interface UpdateValidityDto {
   valid: boolean;
+}
+
+export interface WalletVerificationItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: WalletVerification;
+}
+
+export interface WalletVerificationPaginationMeta {
+  total: number;
+}
+
+export interface WalletVerificationsPageResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: WalletVerificationPaginationMeta;
+  data: WalletVerification[];
 }
 
 export interface PerkClaimDto {
@@ -979,13 +1417,13 @@ export interface PerkClaimDto {
   /** Message to sign */
   message: string;
   /** Wallet type */
-  walletType?: string;
+  walletType?: string | null;
   /** Perk id */
   perkId: string;
   /** Inserted username for the perk claim */
-  username?: string;
+  username?: string | null;
   /** Inserted email for the perk claim */
-  email?: string;
+  email?: string | null;
   /** Signature of the user for the perk claim */
   signature: string;
 }
@@ -1026,35 +1464,33 @@ export interface PerkClaimResponseDto {
   promoCode?: string;
 }
 
-export interface PerkClaimEntity {
-  /**
-   * Unique identifier for the perk
-   * @example 1
-   */
-  id: number;
-  /**
-   * Timestamp when the perk claim was created
-   * @format date-time
-   * @example "2023-01-01T00:00:00Z"
-   */
-  timestamp: string;
-  /**
-   * Perk id on strapi
-   * @example "test-perk-id"
-   */
+export interface PerkClaimItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PerkClaimResponseDto;
+}
+
+export interface PerkClaimListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PerkClaimResponseDto[];
+}
+
+export interface PerkPromoCodeInventoryEntryDto {
+  /** @example "perk-1" */
   perkId: string;
-  /** Wallet associated with the perk claim */
-  wallet: WalletEntity;
-  /**
-   * Inserted username for the perk claim
-   * @example "test-username"
-   */
-  username: string;
-  /**
-   * Inserted email for the perk claim
-   * @example "test-email@example.com"
-   */
-  email: string;
+  /** @example "Airalo" */
+  name: string;
+  /** @example 3 */
+  codesConsumed: number;
+  /** @example 2 */
+  codesLeft: number;
 }
 
 export interface FeatureFlagResponseDto {
@@ -1070,11 +1506,206 @@ export interface FeatureFlagResponseDto {
   posthogFlagId?: number;
 }
 
-export interface MissionApyResponse {
+export interface FeatureFlagListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: FeatureFlagResponseDto[];
+}
+
+export interface FeatureFlagItemResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: FeatureFlagResponseDto;
+}
+
+export interface UdfExchangeDto {
+  /**
+   * Exchange identifier
+   * @example "DEFILLAMA"
+   */
+  value: string;
+  /**
+   * Exchange display name
+   * @example "DefiLlama"
+   */
+  name: string;
+  /**
+   * Exchange description
+   * @example "DefiLlama price feed"
+   */
+  desc: string;
+}
+
+export interface UdfSymbolsTypeDto {
+  /**
+   * Symbol type display name
+   * @example "crypto"
+   */
+  name: string;
+  /**
+   * Symbol type identifier
+   * @example "crypto"
+   */
+  value: string;
+}
+
+export interface UdfConfigDto {
+  /**
+   * Resolutions supported by the datafeed (numeric = minutes, suffix S/D/W/M = seconds/days/weeks/months).
+   * @example ["60","240","1D","1W"]
+   */
+  supported_resolutions: string[];
+  /** @example false */
+  supports_group_request: boolean;
+  /** @example false */
+  supports_marks: boolean;
+  /** @example true */
+  supports_search: boolean;
+  /** @example false */
+  supports_timescale_marks: boolean;
+  /** @example true */
+  supports_time: boolean;
+  exchanges: UdfExchangeDto[];
+  symbols_types: UdfSymbolsTypeDto[];
+}
+
+export interface UdfSymbolInfoDto {
+  /** @example "ETH/USDC" */
+  name: string;
+  /** @example "DEFILLAMA:ETH/USDC" */
+  ticker: string;
+  /** @example "Ethereum / USD Coin" */
+  description: string;
+  /** @example "crypto" */
+  type: string;
+  /**
+   * Trading session in TradingView session format
+   * @example "24x7"
+   */
+  session: string;
+  /** @example "Etc/UTC" */
+  timezone: string;
+  /** @example "DEFILLAMA" */
+  exchange: string;
+  /** @example "DEFILLAMA" */
+  listed_exchange: string;
+  /**
+   * Value formatter used by the chart.
+   * @example "price"
+   */
+  format: 'price' | 'volume';
+  /**
+   * Minimum price movement (numerator).
+   * @example 1
+   */
+  minmov: number;
+  /**
+   * Price scale: 10^(decimal places shown).
+   * @example 100
+   */
+  pricescale: number;
+  /** @example true */
+  has_intraday: boolean;
+  /** @example ["60","240","1D","1W"] */
+  supported_resolutions: string[];
+  /** @example false */
+  has_no_volume?: boolean;
+  /**
+   * Allowed intraday resolution multipliers (in minutes).
+   * @example ["1","5","60"]
+   */
+  intraday_multipliers?: string[];
+  /** @example "USD" */
+  currency_code?: string;
+  /** @example "USD" */
+  original_currency_code?: string;
+  /** @example 8 */
+  volume_precision?: number;
+  /** @example "endofday" */
+  data_status?: 'streaming' | 'endofday' | 'pulsed' | 'delayed_streaming';
+}
+
+export interface UdfSearchResultDto {
+  /** @example "ETH/USDC" */
+  symbol: string;
+  /** @example "DEFILLAMA:ETH/USDC" */
+  full_name: string;
+  /** @example "Ethereum/USDC Coin" */
+  description: string;
+  /** @example "DEFILLAMA" */
+  exchange: string;
+  /** @example "ETH/USDC" */
+  ticker: string;
+  /** @example "crypto" */
+  type: string;
+}
+
+export interface UdfHistoryResponseDto {
+  /**
+   * UDF status. Bar arrays are only present when "ok".
+   * @example "ok"
+   */
+  s: 'ok' | 'no_data' | 'error';
+  /**
+   * Bar opening times (Unix seconds). Present when s = "ok".
+   * @example [1700000000,1700003600]
+   */
+  t?: number[];
+  /** @example [3000.5,3010.2] */
+  o?: number[];
+  /** @example [3050,3015.5] */
+  h?: number[];
+  /** @example [2990,3000] */
+  l?: number[];
+  /** @example [3010.2,3005] */
+  c?: number[];
+  /** @example [120.5,80.3] */
+  v?: number[];
+  /**
+   * Error message. Set when s = "error".
+   * @example "Symbol not found"
+   */
+  errmsg?: string;
+  /**
+   * Unix seconds of the next bar with data. Set when s = "no_data".
+   * @example 1700100000
+   */
+  nextTime?: number;
+}
+
+export interface TokenPriceChangeDto {
+  /**
+   * 1-day price change for the token
+   * @example 5.457897987
+   */
+  '1d': number;
+  /**
+   * 7-day price change for the token
+   * @example -0.5565
+   */
+  '7d': number;
+}
+
+export interface MissionApyDto {
   /** APY contributed by each reward link, keyed by identifier. */
   apy: Record<string, number>;
   /** Sum of all reward APY contributions. */
   total: number;
+}
+
+export interface MissionApyResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: MissionApyDto;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -1097,25 +1728,6 @@ export interface FullRequestParams extends Omit<RequestInit, 'body'> {
   baseUrl?: string;
   /** request cancellation token */
   cancelToken?: CancelToken;
-}
-
-export type VaultSpecificData = Record<string, any> | null;
-
-export type VaultsFYICallDataResponse = {
-  currentActionIndex: number;
-  actions: VaultsFYICallDataActionResponse[];
-};
-
-export type VaultsFYICallDataActionResponse = {
-  name: string;
-  tx: WalletCall;
-};
-
-export interface WalletCall {
-  to: Hex;
-  data: `0x${string}`;
-  value?: string;
-  chainId: number;
 }
 
 export type RequestParams = Omit<
@@ -1160,9 +1772,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   private baseApiParams: RequestParams = {
     credentials: 'same-origin',
-    headers: {
-      Referer: config.NEXT_PUBLIC_SITE_URL,
-    },
+    headers: { Referer: config.NEXT_PUBLIC_SITE_URL },
     redirect: 'follow',
     referrerPolicy: 'strict-origin-when-cross-origin',
   };
@@ -1389,7 +1999,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<LeaderboardEntity[], any>({
+      this.request<LeaderboardListResponse, any>({
         path: `/v1/leaderboard`,
         method: 'GET',
         query: query,
@@ -1410,7 +2020,7 @@ export class JumperBackend<
       entries: number,
       params: RequestParams = {},
     ) =>
-      this.request<LeaderboardEntity, void>({
+      this.request<LeaderboardCenteredListResponse, void>({
         path: `/v1/leaderboard/centered-pagination/${position}/${entries}`,
         method: 'GET',
         format: 'json',
@@ -1429,7 +2039,7 @@ export class JumperBackend<
       address: string,
       params: RequestParams = {},
     ) =>
-      this.request<LeaderboardEntity, void>({
+      this.request<LeaderboardItemResponse, void>({
         path: `/v1/leaderboard/${address}`,
         method: 'GET',
         format: 'json',
@@ -1454,7 +2064,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/tops`,
         method: 'GET',
         query: query,
@@ -1490,79 +2100,8 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/all`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Earn, Public
-     * @name earnControllerGetVaultSpecificDataV1
-     * @summary Get an earn opportunity by slug
-     * @request GET:/v1/earn/items/{slug}
-     */
-    earnControllerGetVaultSpecificDataV1: (
-      slug: string,
-      query?: {
-        address: Hex;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<VaultSpecificData, any>({
-        path: `/v1/earn/items/${slug}/vault-specific-data`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Earn, Public
-     * @name earnControllerGetRequestRedeemCallDataV1
-     * @summary Get an earn opportunity by slug
-     * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
-     */
-    earnControllerGetRequestRedeemCallDataV1: (
-      slug: string,
-      query?: {
-        address: Hex;
-        amount: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<{ data: VaultsFYICallDataResponse }, any>({
-        path: `/v1/earn/items/${slug}/request-redeem/call-data`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Earn, Public
-     * @name earnControllerGetClaimRedeemCalldataV1
-     * @summary Get an earn opportunity by slug
-     * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
-     */
-    earnControllerGetClaimRedeemCalldataV1: (
-      slug: string,
-      query?: {
-        address: Hex;
-        amount: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<{ data: VaultsFYICallDataResponse }, any>({
-        path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -1578,7 +2117,7 @@ export class JumperBackend<
      * @request GET:/v1/earn/items/{slug}
      */
     earnControllerGetItemV1: (slug: string, params: RequestParams = {}) =>
-      this.request<EarnOpportunityWithLatestAnalytics, any>({
+      this.request<EarnItemResponse, any>({
         path: `/v1/earn/items/${slug}`,
         method: 'GET',
         format: 'json',
@@ -1597,7 +2136,7 @@ export class JumperBackend<
       slug: string,
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityWithLatestAnalytics[], any>({
+      this.request<EarnListResponse, any>({
         path: `/v1/earn/items/${slug}/related`,
         method: 'GET',
         format: 'json',
@@ -1628,7 +2167,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<ApyAnalyticsHistory, any>({
+      this.request<ApyAnalyticsHistoryResponse, any>({
         path: `/v1/earn/items/${slug}/analytics/apy`,
         method: 'GET',
         query: query,
@@ -1660,8 +2199,78 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<EarnOpportunityHistory, any>({
+      this.request<EarnOpportunityHistoryResponse, any>({
         path: `/v1/earn/items/${slug}/analytics`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetVaultSpecificDataV1
+     * @summary Get the vault specific data for a user in a given earn opportunity
+     * @request GET:/v1/earn/items/{slug}/vault-specific-data
+     */
+    earnControllerGetVaultSpecificDataV1: (
+      slug: string,
+      query: {
+        address: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<JumperFreeFormResponse, any>({
+        path: `/v1/earn/items/${slug}/vault-specific-data`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetRequestRedeemCalldataV1
+     * @summary Get request-redeem calldata for an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/request-redeem/call-data
+     */
+    earnControllerGetRequestRedeemCalldataV1: (
+      slug: string,
+      query: {
+        address: string;
+        amount: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CallDataResponse, any>({
+        path: `/v1/earn/items/${slug}/request-redeem/call-data`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Earn, Public
+     * @name EarnControllerGetClaimRedeemCalldataV1
+     * @summary Get claim-redeem calldata for an earn opportunity
+     * @request GET:/v1/earn/items/{slug}/claim-redeem/call-data
+     */
+    earnControllerGetClaimRedeemCalldataV1: (
+      slug: string,
+      query: {
+        address: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<CallDataResponse, any>({
+        path: `/v1/earn/items/${slug}/claim-redeem/call-data`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -1711,7 +2320,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<TokenBalances, any>({
+      this.request<TokenBalancesResponse, any>({
         path: `/v1/portfolio/tokens`,
         method: 'GET',
         query: query,
@@ -1783,7 +2392,7 @@ export class JumperBackend<
          * The earn opportunity slug to filter for
          * @example "gauntlet-usdc-prime-on-base"
          */
-        earn?: string;
+        earn?: string | null;
       },
       params: RequestParams = {},
     ) =>
@@ -1881,6 +2490,313 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Perks, Public
+     * @name PerksControllerPerkClaimV1
+     * @summary Claim new perk
+     * @request POST:/v1/perks/claim
+     */
+    perksControllerPerkClaimV1: (
+      data: PerkClaimDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<PerkClaimItemResponse, any>({
+        path: `/v1/perks/claim`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Perks, Public
+     * @name PerksControllerFindClaimedByAddressV1
+     * @summary Get user perks claimed list by wallet address
+     * @request GET:/v1/perks/claimed/address/{address}
+     */
+    perksControllerFindClaimedByAddressV1: (
+      address: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<PerkClaimListResponse, void>({
+        path: `/v1/perks/claimed/address/${address}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetAllV1
+     * @summary Get all active feature flags evaluated for a user
+     * @request GET:/v1/feature-flags
+     */
+    featureFlagControllerGetAllV1: (
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagListResponse, any>({
+        path: `/v1/feature-flags`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Feature Flags, Public
+     * @name FeatureFlagControllerGetOneV1
+     * @summary Get a single feature flag evaluated for a user
+     * @request GET:/v1/feature-flags/{key}
+     */
+    featureFlagControllerGetOneV1: (
+      key: string,
+      query: {
+        distinctId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<FeatureFlagItemResponse, any>({
+        path: `/v1/feature-flags/${key}`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TradingView UDF, Public
+     * @name UdfControllerConfigV1
+     * @summary Datafeed configuration
+     * @request GET:/v1/tradingview/udf/config
+     */
+    udfControllerConfigV1: (params: RequestParams = {}) =>
+      this.request<UdfConfigDto, any>({
+        path: `/v1/tradingview/udf/config`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TradingView UDF, Public
+     * @name UdfControllerTimeV1
+     * @summary Server time as Unix seconds (text/plain per UDF spec)
+     * @request GET:/v1/tradingview/udf/time
+     */
+    udfControllerTimeV1: (params: RequestParams = {}) =>
+      this.request<string, any>({
+        path: `/v1/tradingview/udf/time`,
+        method: 'GET',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TradingView UDF, Public
+     * @name UdfControllerSymbolsV1
+     * @summary Resolve symbol info by name or ticker
+     * @request GET:/v1/tradingview/udf/symbols
+     */
+    udfControllerSymbolsV1: (
+      query: {
+        /**
+         * Symbol name or full name (e.g. EXCHANGE:SYMBOL)
+         * @example "ETH/USDC"
+         */
+        symbol: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UdfSymbolInfoDto, any>({
+        path: `/v1/tradingview/udf/symbols`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TradingView UDF, Public
+     * @name UdfControllerSearchV1
+     * @summary Search symbols
+     * @request GET:/v1/tradingview/udf/search
+     */
+    udfControllerSearchV1: (
+      query: {
+        /**
+         * User input from the search box
+         * @example "ETH"
+         */
+        query: string;
+        /**
+         * Maximum number of results to return
+         * @example 30
+         */
+        limit: number;
+        /**
+         * Symbol type filter (matches /config symbols_types[].value)
+         * @example "crypto"
+         */
+        type?: string;
+        /**
+         * Exchange filter (matches /config exchanges[].value)
+         * @example "DEFILLAMA"
+         */
+        exchange?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UdfSearchResultDto[], any>({
+        path: `/v1/tradingview/udf/search`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags TradingView UDF, Public
+     * @name UdfControllerHistoryV1
+     * @summary OHLCV history bars
+     * @request GET:/v1/tradingview/udf/history
+     */
+    udfControllerHistoryV1: (
+      query: {
+        /**
+         * Symbol name or full name
+         * @example "ETH/USDC"
+         */
+        symbol: string;
+        /**
+         * Resolution string (e.g. "1", "5", "60", "1D", "1W", "1M", "30S"). Unsupported values surface as a UDF `{ s: "error" }` response, not HTTP 400.
+         * @example "60"
+         */
+        resolution: string;
+        /**
+         * Start of the bar timeframe (Unix seconds)
+         * @example 1700000000
+         */
+        from: number;
+        /**
+         * End of the bar timeframe (Unix seconds). Defaults to the current server time when omitted.
+         * @example 1700100000
+         */
+        to?: number;
+        /**
+         * Number of bars before "to". When present together with "to", "from" is disregarded.
+         * @example 300
+         */
+        countback?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UdfHistoryResponseDto, any>({
+        path: `/v1/tradingview/udf/history`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGet1DPriceChangeV1
+     * @summary Get 1-day price change for a token
+     * @request GET:/v1/tokens/extended/price-change/1d
+     */
+    priceChangeControllerGet1DPriceChangeV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, number>, any>({
+        path: `/v1/tokens/extended/price-change/1d`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGet7DPriceChangeV1
+     * @summary Get 7-day price change for a token
+     * @request GET:/v1/tokens/extended/price-change/7d
+     */
+    priceChangeControllerGet7DPriceChangeV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, number>, any>({
+        path: `/v1/tokens/extended/price-change/7d`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Extended Tokens, Public
+     * @name PriceChangeControllerGetAllPriceChangesV1
+     * @summary Get all price changes for a token
+     * @request GET:/v1/tokens/extended/price-change/all
+     */
+    priceChangeControllerGetAllPriceChangesV1: (
+      query: {
+        /**
+         * DefiLlama coin IDs to filter by (e.g. coingecko:ethereum). Returns all coins when omitted.
+         * @example ["coingecko:ethereum","coingecko:bitcoin"]
+         */
+        coinIds: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Record<string, TokenPriceChangeDto>, any>({
+        path: `/v1/tokens/extended/price-change/all`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Mission, Public
      * @name MissionControllerGetApyV1
      * @summary Get reward APY breakdown for a mission
@@ -1910,91 +2826,6 @@ export class JumperBackend<
       this.request<MissionApyResponse, any>({
         path: `/v1/mission/${slug}/task/${identifier}/apy`,
         method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Perks, Public
-     * @name PerksControllerPerkClaimV1
-     * @summary Claim new perk
-     * @request POST:/v1/perks/claim
-     */
-    perksControllerPerkClaimV1: (
-      data: PerkClaimDto,
-      params: RequestParams = {},
-    ) =>
-      this.request<PerkClaimResponseDto, any>({
-        path: `/v1/perks/claim`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Perks, Public
-     * @name PerksControllerFindClaimedByAddressV1
-     * @summary Get user perks claimed list by wallet address
-     * @request GET:/v1/perks/claimed/address/{address}
-     */
-    perksControllerFindClaimedByAddressV1: (
-      address: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<PerkClaimResponseDto[], void>({
-        path: `/v1/perks/claimed/address/${address}`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feature Flags, Public
-     * @name FeatureFlagControllerGetAllV1
-     * @summary Get all active feature flags evaluated for a user
-     * @request GET:/v1/feature-flags
-     */
-    featureFlagControllerGetAllV1: (
-      query: {
-        distinctId: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FeatureFlagResponseDto[], any>({
-        path: `/v1/feature-flags`,
-        method: 'GET',
-        query: query,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Feature Flags, Public
-     * @name FeatureFlagControllerGetOneV1
-     * @summary Get a single feature flag evaluated for a user
-     * @request GET:/v1/feature-flags/{key}
-     */
-    featureFlagControllerGetOneV1: (
-      key: string,
-      query: {
-        distinctId: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<FeatureFlagResponseDto, any>({
-        path: `/v1/feature-flags/${key}`,
-        method: 'GET',
-        query: query,
         format: 'json',
         ...params,
       }),

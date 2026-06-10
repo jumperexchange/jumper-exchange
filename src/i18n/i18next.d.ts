@@ -13,6 +13,8 @@ declare module 'i18next' {
       [K in `chainNameExt${string}`]: number;
     } & {
       [K in `chainNamesExt${string}`]: number[];
+    } & {
+      [K in `listExt${string}`]: unknown[];
     };
   }
 }

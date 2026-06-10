@@ -50,10 +50,10 @@ export class SimpleToken {
 
     if (isJumperToken(token)) {
       this.chainId = token.chain.chainId;
-      this.logoURI = token.logo;
+      this.logoURI = token.logo ?? undefined;
     } else {
       this.chainId = token.chainId;
-      this.logoURI = token.logoURI;
+      this.logoURI = token.logoURI ?? undefined;
       this.coinKey = token.coinKey;
       this.tags = token.tags;
     }

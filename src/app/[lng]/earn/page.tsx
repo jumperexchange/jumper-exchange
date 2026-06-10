@@ -3,16 +3,9 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { EarnsPage } from '@/app/ui/earn/EarnsPage';
+import { EarnsPageContent } from '@/app/ui/earn/EarnsPageContent';
 import { EarnsPageSkeleton } from '@/app/ui/earn/EarnsPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
-import { earnFilterOpportunitiesQueryKey } from '@/hooks/earn/useEarnFilterOpportunities';
-import { getOpportunitiesFilteredCached } from '@/app/lib/getOpportunitiesFiltered';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
@@ -33,19 +26,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: earnFilterOpportunitiesQueryKey({}),
-    queryFn: () => getOpportunitiesFilteredCached({}),
-  });
-
+export default function Page() {
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<EarnsPageSkeleton />}>
-        <EarnsPage />
-      </Suspense>
-    </HydrationBoundary>
+    <Suspense fallback={<EarnsPageSkeleton />}>
+      <EarnsPageContent />
+    </Suspense>
   );
 }
