@@ -57,6 +57,7 @@ export function useFormatDisplayQuestData(
   baseNavPath: string = AppPaths.Missions,
 ) {
   const rewardGroups = useFormatDisplayRewardsData(
+    quest.Slug,
     quest.CustomInformation,
     quest.Points ?? undefined,
   );

@@ -1,10 +1,7 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 import { getLevelBasedOnPoints } from '@/components/ProfilePage/utils/getLevelBasedOnPoints';
 
@@ -41,16 +38,11 @@ export const usePersonalizedFeatureOnLevel = ({
 
   config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
     apiUrl.searchParams.set('status', 'draft');
-  const apiAccesToken = getStrapiApiAccessToken();
   const { data, isSuccess } = useQuery({
     queryKey: ['personalizedFeatureCardsOnLevel'],
 
     queryFn: async () => {
-      const response = await fetch(decodeURIComponent(apiUrl.href), {
-        headers: {
-          Authorization: `Bearer ${apiAccesToken}`,
-        },
-      });
+      const response = await fetch(decodeURIComponent(apiUrl.href));
       const result = await response.json();
       return result.data;
     },

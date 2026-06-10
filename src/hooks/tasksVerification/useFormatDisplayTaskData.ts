@@ -1,12 +1,15 @@
 import { useMemo } from 'react';
-import { TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
+import { useMissionTaskApy } from '@/hooks/mission/useMissionApy';
 
 export const useFormatDisplayTaskData = (
+  missionSlug: string,
   task: TaskVerificationWithApy & {
     isVerified: boolean;
     isRequired: boolean;
   },
 ) => {
+  const { data: apyData } = useMissionTaskApy(missionSlug, task.uuid);
   return useMemo(() => {
     const {
       id,
@@ -18,7 +21,6 @@ export const useFormatDisplayTaskData = (
       TaskType,
       uuid,
       hasTask,
-      maxApy,
       isVerified,
       isRequired,
     } = task;
@@ -33,9 +35,9 @@ export const useFormatDisplayTaskData = (
       linkLabel: CTAText,
       shouldVerify: hasTask,
       taskType: TaskType,
-      maxApy,
+      apy: apyData?.total || 0,
       isVerified,
       isRequired,
     };
-  }, [task]);
+  }, [task, apyData]);
 };
