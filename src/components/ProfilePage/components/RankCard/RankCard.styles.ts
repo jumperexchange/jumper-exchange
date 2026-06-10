@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import MuiButton, {
   type ButtonProps as MuiButtonProps,
 } from '@mui/material/Button';
-import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import type { SxProps, Theme } from '@mui/material/styles';
 import type { TypographyProps } from '@mui/material/Typography';
@@ -80,8 +79,4 @@ export const RankButton = styled(MuiButton)<MuiButtonProps>(({ theme }) => ({
   '&:hover': {
     backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
   },
-}));
-
-export const BaseStyledSkeleton = styled(Skeleton)(({ theme }) => ({
-  backgroundColor: (theme.vars || theme).palette.alphaLight300.main,
 }));
