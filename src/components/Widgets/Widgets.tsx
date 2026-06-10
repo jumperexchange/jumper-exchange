@@ -1,9 +1,5 @@
 'use client';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import {
-  TrackingAction,
-  TrackingEventDataAction,
-} from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { ChainAlert } from '@/components/Alerts';
 import { LinkMap } from '@/const/linkMap';
@@ -76,29 +72,7 @@ export function Widgets({ widgetVariant }: WidgetsProps) {
       <ChainAlert />
       <PartnerThemeFooterImage />
       <WidgetTrackingProvider
-        trackingActionKeys={{
-          destinationChainAndTokenSelection:
-            TrackingAction.OnDestinationChainAndTokenSelection,
-          sourceChainAndTokenSelection:
-            TrackingAction.OnSourceChainAndTokenSelection,
-          availableRoutes: TrackingAction.OnAvailableRoutes,
-          routeExecutionStarted: TrackingAction.OnRouteExecutionStarted,
-          routeExecutionUpdated: TrackingAction.OnRouteExecutionUpdated,
-          routeExecutionCompleted: TrackingAction.OnRouteExecutionCompleted,
-          routeExecutionFailed: TrackingAction.OnRouteExecutionFailed,
-          changeSettings: TrackingAction.OnChangeSettings,
-          routeHighValueLoss: TrackingAction.OnRouteHighValueLoss,
-          lowAddressActivityConfirmed:
-            TrackingAction.OnLowAddressActivityConfirmed,
-          sendToWalletToggled: TrackingAction.OnSendToWalletToggled,
-          formFieldChanged: TrackingAction.OnFormFieldChanged,
-        }}
-        trackingDataActionKeys={{
-          routeExecutionStarted: TrackingEventDataAction.ExecutionStart,
-          routeExecutionUpdated: TrackingEventDataAction.ExecutionUpdated,
-          routeExecutionCompleted: TrackingEventDataAction.ExecutionCompleted,
-          routeExecutionFailed: TrackingEventDataAction.ExecutionFailed,
-        }}
+        variant={starterVariant === 'private' ? 'private' : 'main'}
       >
         <WidgetEvents />
       </WidgetTrackingProvider>

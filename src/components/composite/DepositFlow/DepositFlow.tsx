@@ -8,7 +8,6 @@ import { DepositButton } from '../DepositButton/DepositButton';
 import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
 import { DepositModal } from '../DepositModal/DepositModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
@@ -25,27 +24,7 @@ export const DepositFlowModal = () => {
   }
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        sourceChainAndTokenSelection:
-          TrackingAction.OnSourceChainAndTokenSelectionEarnDeposit,
-        availableRoutes: TrackingAction.OnAvailableRoutesEarnDeposit,
-        routeExecutionStarted:
-          TrackingAction.OnRouteExecutionStartedEarnDeposit,
-        routeExecutionCompleted:
-          TrackingAction.OnRouteExecutionCompletedEarnDeposit,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnDeposit,
-        changeSettings: TrackingAction.OnChangeSettingsEarnDeposit,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted:
-          TrackingEventDataAction.ExecutionStartEarnDeposit,
-        routeExecutionCompleted:
-          TrackingEventDataAction.ExecutionCompletedEarnDeposit,
-        routeExecutionFailed:
-          TrackingEventDataAction.ExecutionFailedEarnDeposit,
-      }}
-    >
+    <WidgetTrackingProvider variant="earnDeposit">
       <DepositModal
         isOpen={isModalOpen}
         onClose={closeModal}

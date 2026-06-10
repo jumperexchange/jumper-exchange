@@ -6,10 +6,6 @@ import { WidgetSkeleton } from 'src/components/Widgets/variants/base/WidgetSkele
 import { MissionBaseWidget } from 'src/components/Widgets/variants/mission/MissionBaseWidget';
 import { ZapWidgetStack } from 'src/components/Zap/ZapWidgetStack';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
-import {
-  TrackingAction,
-  TrackingEventDataAction,
-} from 'src/const/trackingKeys';
 import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
 import type { CustomInformation } from 'src/types/loyaltyPass';
@@ -61,24 +57,7 @@ export const MissionWidget: FC<MissionWidgetProps> = ({
     }
 
     return (
-      <WidgetTrackingProvider
-        trackingActionKeys={{
-          sourceChainAndTokenSelection:
-            TrackingAction.OnSourceChainAndTokenSelectionMission,
-          availableRoutes: TrackingAction.OnAvailableRoutesMission,
-          routeExecutionStarted: TrackingAction.OnRouteExecutionStartedMission,
-          routeExecutionCompleted:
-            TrackingAction.OnRouteExecutionCompletedMission,
-          routeExecutionFailed: TrackingAction.OnRouteExecutionFailedMission,
-          changeSettings: TrackingAction.OnChangeSettingsMission,
-        }}
-        trackingDataActionKeys={{
-          routeExecutionStarted: TrackingEventDataAction.ExecutionStartMission,
-          routeExecutionCompleted:
-            TrackingEventDataAction.ExecutionCompletedMission,
-          routeExecutionFailed: TrackingEventDataAction.ExecutionFailedMission,
-        }}
-      >
+      <WidgetTrackingProvider variant="mission">
         <MissionBaseWidget />
       </WidgetTrackingProvider>
     );
