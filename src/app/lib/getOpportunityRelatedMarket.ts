@@ -1,4 +1,3 @@
-import { unstable_cache } from 'next/cache';
 import type {
   EarnOpportunityWithLatestAnalytics,
   HttpResponse,
@@ -15,9 +14,3 @@ export async function getOpportunityRelatedMarket(slug: string) {
   const response = await client.v1.earnControllerGetRelatedItemsV1(slug);
   return response.data;
 }
-
-export const getOpportunityRelatedMarketCached = unstable_cache(
-  getOpportunityRelatedMarket,
-  ['opportunity-related-market'],
-  { revalidate: 300 },
-);

@@ -1,17 +1,16 @@
-import { getOpportunityRelatedMarket } from '@/app/lib/getOpportunityRelatedMarket';
 import { useQuery } from '@tanstack/react-query';
-import { FIVE_MINUTES_MS } from '@/const/time';
 
-export const earnRelatedMarketsQueryKey = (slug: string) =>
-  ['earn-related-markets', slug] as const;
+import {
+  earnRelatedMarketsQueryKey,
+  fetchEarnRelatedMarkets,
+} from '@/app/lib/earn/earnQueries';
+import { FIVE_MINUTES_MS } from '@/const/time';
 
 export const useEarnRelatedMarkets = (slug: string) => {
   return useQuery({
     queryKey: earnRelatedMarketsQueryKey(slug),
-    queryFn: async () => {
-      const result = await getOpportunityRelatedMarket(slug);
-      return result.data;
-    },
+    queryFn: () => fetchEarnRelatedMarkets(slug),
     staleTime: FIVE_MINUTES_MS,
+    refetchOnMount: false,
   });
 };
