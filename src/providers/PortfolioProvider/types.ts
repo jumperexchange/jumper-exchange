@@ -81,12 +81,17 @@ export interface PositionsMetadata {
   valueRange: { min: number; max: number };
 }
 
+export type PnlChartPoint = {
+  date: string;
+  value: number | string | null;
+};
+
 export interface PnlState {
   period: BalanceHistoryPeriod;
   setPeriod: (period: BalanceHistoryPeriod) => void;
   pnlValue: number | null;
   pnlPercentage: number | null;
-  chartData: { date: string; value: number | string | null }[];
+  pnlChart: PnlChartPoint[];
 }
 
 /**
@@ -128,6 +133,7 @@ export interface OrchestrationState {
     positions: SourceState;
     prices: SourceState;
     pnl: SourceState;
+    pnlChart: SourceState;
   };
   /** Refresh all data sources */
   refresh: () => void;

@@ -93,24 +93,44 @@ export const useOrchestrationState = (
 
   const pnlSource: SourceState = useMemo(
     () => ({
-      isEmpty: pnl.pnlValue === null && pnl.chartData.length === 0,
-      isLoading: pnl.isPnlLoading || pnl.isChartLoading,
-      isRefreshing: pnl.isFetching && !pnl.isPnlLoading && !pnl.isChartLoading,
-      isStale: pnl.isPlaceholderData,
-      isSuccess: pnl.isSuccess,
-      updatedAt: pnl.updatedAt,
-      error: pnl.error,
+      isEmpty: pnl.pnlValue === null,
+      isLoading: pnl.pnlState.isLoading,
+      isRefreshing: pnl.pnlState.isFetching && !pnl.pnlState.isLoading,
+      isStale: pnl.pnlState.isPlaceholderData,
+      isSuccess: pnl.pnlState.isSuccess,
+      updatedAt: pnl.pnlState.updatedAt,
+      error: pnl.pnlState.error,
     }),
     [
       pnl.pnlValue,
-      pnl.chartData.length,
-      pnl.isPnlLoading,
-      pnl.isChartLoading,
-      pnl.isFetching,
-      pnl.isSuccess,
-      pnl.isPlaceholderData,
-      pnl.updatedAt,
-      pnl.error,
+      pnl.pnlState.isLoading,
+      pnl.pnlState.isFetching,
+      pnl.pnlState.isPlaceholderData,
+      pnl.pnlState.isSuccess,
+      pnl.pnlState.updatedAt,
+      pnl.pnlState.error,
+    ],
+  );
+
+  const pnlChartSource: SourceState = useMemo(
+    () => ({
+      isEmpty: pnl.pnlChart.length === 0,
+      isLoading: pnl.pnlChartState.isLoading,
+      isRefreshing:
+        pnl.pnlChartState.isFetching && !pnl.pnlChartState.isLoading,
+      isStale: pnl.pnlChartState.isPlaceholderData,
+      isSuccess: pnl.pnlChartState.isSuccess,
+      updatedAt: pnl.pnlChartState.updatedAt,
+      error: pnl.pnlChartState.error,
+    }),
+    [
+      pnl.pnlChart.length,
+      pnl.pnlChartState.isLoading,
+      pnl.pnlChartState.isFetching,
+      pnl.pnlChartState.isPlaceholderData,
+      pnl.pnlChartState.isSuccess,
+      pnl.pnlChartState.updatedAt,
+      pnl.pnlChartState.error,
     ],
   );
 
@@ -184,6 +204,7 @@ export const useOrchestrationState = (
         positions: positionsSource,
         prices: pricesSource,
         pnl: pnlSource,
+        pnlChart: pnlChartSource,
       },
       refresh,
       refreshByAddress,
@@ -202,6 +223,7 @@ export const useOrchestrationState = (
       positionsSource,
       pricesSource,
       pnlSource,
+      pnlChartSource,
       refresh,
       refreshByAddress,
       refreshForTokens,

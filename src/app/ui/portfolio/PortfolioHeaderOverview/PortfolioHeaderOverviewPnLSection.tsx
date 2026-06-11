@@ -1,5 +1,6 @@
 'use client';
 
+import { LineChart } from '@/components/core/charts/LineChart/LineChart';
 import {
   usePortfolioPnl,
   usePortfolioState,
@@ -10,15 +11,20 @@ import { usePortfolioChartTheme } from './hooks';
 import { PortfolioChartContainer } from './PortfolioHeaderOverview.styles';
 import { PortfolioPnlDisplay } from './PortfolioPnlDisplay';
 import { PortfolioPnlPeriodSelector } from './PortfolioPnlPeriodSelector';
-import { LineChart } from '@/components/core/charts/LineChart/LineChart';
 
 export const PortfolioHeaderOverviewPnLSection = () => {
-  const { period, setPeriod, pnlValue, pnlPercentage, chartData } =
-    usePortfolioPnl();
+  const { pnlValue, pnlPercentage, pnlChart } = usePortfolioPnl();
   const {
-    sources: { pnl: pnlSource },
+    sources: { pnl: pnlSource, pnlChart: pnlChartSource },
   } = usePortfolioState();
   const chartTheme = usePortfolioChartTheme();
+
+  const showPnlValue = !pnlSource.isEmpty || pnlSource.isLoading;
+  const showPnlChart = !pnlChartSource.isEmpty || pnlChartSource.isLoading;
+
+  if (!showPnlValue && !showPnlChart) {
+    return null;
+  }
 
   return (
     <Stack sx={{ gap: 0, width: '100%' }}>
@@ -27,9 +33,6 @@ export const PortfolioHeaderOverviewPnLSection = () => {
           gap: {
             xs: 1,
             sm: 0,
-          },
-          justifyContent: {
-            sm: 'space-between',
           },
           alignItems: {
             sm: 'center',
@@ -40,27 +43,28 @@ export const PortfolioHeaderOverviewPnLSection = () => {
           },
         }}
       >
-        <PortfolioPnlDisplay
-          isLoading={pnlSource.isLoading || pnlSource.isRefreshing}
-          pnlValue={pnlValue}
-          pnlPercentage={pnlPercentage}
-        />
-        <PortfolioPnlPeriodSelector
-          period={period}
-          onPeriodChange={setPeriod}
-        />
+        {showPnlValue ? (
+          <PortfolioPnlDisplay
+            isLoading={pnlSource.isLoading || pnlSource.isRefreshing}
+            pnlValue={pnlValue}
+            pnlPercentage={pnlPercentage}
+          />
+        ) : null}
+        <PortfolioPnlPeriodSelector />
       </Stack>
-      <PortfolioChartContainer>
-        <LineChart
-          isLoading={pnlSource.isLoading || pnlSource.isRefreshing}
-          data={chartData}
-          theme={chartTheme}
-          valueFormatConfig={TVL_FORMAT_CONFIG}
-          enableXAxis={false}
-          enableYAxis={false}
-          enableGridY={false}
-        />
-      </PortfolioChartContainer>
+      {showPnlChart ? (
+        <PortfolioChartContainer>
+          <LineChart
+            isLoading={pnlChartSource.isLoading || pnlChartSource.isRefreshing}
+            data={pnlChart}
+            theme={chartTheme}
+            valueFormatConfig={TVL_FORMAT_CONFIG}
+            enableXAxis={false}
+            enableYAxis={false}
+            enableGridY={false}
+          />
+        </PortfolioChartContainer>
+      ) : null}
     </Stack>
   );
 };

@@ -10,12 +10,14 @@ import {
 } from './PortfolioHeaderOverview.styles';
 import PortfolioRefreshBalance from './PortfolioRefreshBalance';
 import { useTranslation } from 'react-i18next';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { useMemo } from 'react';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
 import { PortfolioHeaderOverviewPnLSection } from './PortfolioHeaderOverviewPnLSection';
+import { PortfolioPnlChartDisclaimer } from './PortfolioPnlChartDisclaimer';
 
 export const PortfolioHeaderOverview = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
@@ -37,14 +39,23 @@ export const PortfolioHeaderOverview = () => {
   return (
     <PortfolioHeaderOverviewContainer>
       <PortfolioHeaderOverviewHeaderContainer>
-        <Typography
-          variant="bodyMediumStrong"
+        <Stack
+          direction="row"
           sx={{
-            color: 'text.secondary',
+            alignItems: 'center',
+            gap: 0.5,
           }}
         >
-          {t('portfolio.overviewCard.title')}
-        </Typography>
+          <Typography
+            variant="bodyMediumStrong"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {t('portfolio.overviewCard.title')}
+          </Typography>
+          <PortfolioPnlChartDisclaimer />
+        </Stack>
         {portfolioWelcomeScreenClosed && <PortfolioRefreshBalance />}
       </PortfolioHeaderOverviewHeaderContainer>
       <PortfolioHeaderOverviewContentContainer>

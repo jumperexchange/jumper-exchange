@@ -12,7 +12,7 @@ export const usePnlData = () => {
   const pnlQuery = usePortfolioPnlQuery(period);
   const historyQuery = usePortfolioBalanceHistoryQuery(period);
 
-  const chartData = useMemo(
+  const pnlChart = useMemo(
     () =>
       dropWhile(
         historyQuery.data?.points.map((point) => ({
@@ -29,31 +29,29 @@ export const usePnlData = () => {
     historyQuery.refetch();
   }, [pnlQuery.refetch, historyQuery.refetch]);
 
-  const updatedAt = useMemo(() => {
-    const timestamps = [
-      pnlQuery.dataUpdatedAt || null,
-      historyQuery.dataUpdatedAt || null,
-    ].filter((t): t is number => t !== null);
-    return timestamps.length > 0 ? Math.min(...timestamps) : null;
-  }, [pnlQuery.dataUpdatedAt, historyQuery.dataUpdatedAt]);
-
-  const error = (pnlQuery.error ?? historyQuery.error ?? null) as Error | null;
-
   return useMemo(
     () => ({
       period,
       setPeriod,
       pnlValue: pnlQuery.data?.pnl ?? null,
       pnlPercentage: pnlQuery.data?.pnlPercentage ?? null,
-      chartData,
-      isPnlLoading: pnlQuery.isLoading,
-      isChartLoading: historyQuery.isLoading,
-      isFetching: pnlQuery.isFetching || historyQuery.isFetching,
-      isSuccess: pnlQuery.isSuccess || historyQuery.isSuccess,
-      isPlaceholderData:
-        pnlQuery.isPlaceholderData || historyQuery.isPlaceholderData,
-      updatedAt,
-      error,
+      pnlChart,
+      pnlState: {
+        isLoading: pnlQuery.isLoading,
+        isFetching: pnlQuery.isFetching,
+        isSuccess: pnlQuery.isSuccess,
+        isPlaceholderData: pnlQuery.isPlaceholderData,
+        updatedAt: pnlQuery.dataUpdatedAt || null,
+        error: (pnlQuery.error ?? null) as Error | null,
+      },
+      pnlChartState: {
+        isLoading: historyQuery.isLoading,
+        isFetching: historyQuery.isFetching,
+        isSuccess: historyQuery.isSuccess,
+        isPlaceholderData: historyQuery.isPlaceholderData,
+        updatedAt: historyQuery.dataUpdatedAt || null,
+        error: (historyQuery.error ?? null) as Error | null,
+      },
       refetch,
     }),
     [
@@ -63,13 +61,15 @@ export const usePnlData = () => {
       pnlQuery.isFetching,
       pnlQuery.isSuccess,
       pnlQuery.isPlaceholderData,
+      pnlQuery.dataUpdatedAt,
+      pnlQuery.error,
       historyQuery.isLoading,
       historyQuery.isFetching,
       historyQuery.isSuccess,
       historyQuery.isPlaceholderData,
-      chartData,
-      updatedAt,
-      error,
+      historyQuery.dataUpdatedAt,
+      historyQuery.error,
+      pnlChart,
       refetch,
     ],
   );

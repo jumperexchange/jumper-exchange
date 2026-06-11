@@ -69,14 +69,14 @@ export const PortfolioProvider = ({ children }: PropsWithChildren) => {
       setPeriod: pnlData.setPeriod,
       pnlValue: pnlData.pnlValue,
       pnlPercentage: pnlData.pnlPercentage,
-      chartData: pnlData.chartData,
+      pnlChart: pnlData.pnlChart,
     }),
     [
       pnlData.period,
       pnlData.setPeriod,
       pnlData.pnlValue,
       pnlData.pnlPercentage,
-      pnlData.chartData,
+      pnlData.pnlChart,
     ],
   );
 
