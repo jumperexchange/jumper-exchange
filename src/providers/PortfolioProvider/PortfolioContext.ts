@@ -98,6 +98,7 @@ const defaultOrchestrationState: OrchestrationState = {
     positions: defaultSourceState,
     prices: defaultSourceState,
     pnl: defaultSourceState,
+    pnlChart: defaultSourceState,
   },
   refresh: () => {},
   refreshByAddress: () => {},
@@ -109,7 +110,7 @@ const defaultPnlState: PnlState = {
   setPeriod: () => {},
   pnlValue: null,
   pnlPercentage: null,
-  chartData: [],
+  pnlChart: [],
 };
 
 export const PortfolioContext = createContext<PortfolioContextValue>({

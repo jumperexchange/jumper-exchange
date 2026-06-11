@@ -956,6 +956,7 @@ export default interface Resources {
         tokens: 'Tokens';
       };
       overviewCard: {
+        pnlChartDisclaimer: 'The chart reflects wallet token balances over time. DeFi positions are included at their current value but are not retro-priced historically.';
         refreshTooltip: 'Click here to restart the indexing of your assets.';
         title: 'Portfolio';
       };

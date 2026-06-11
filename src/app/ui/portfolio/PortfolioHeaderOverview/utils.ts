@@ -21,7 +21,7 @@ export const formatPnl = (
   t: TFunction,
 ): string => {
   const amount = t('format.currencyCompact', {
-    value: Math.abs(pnlValue ?? 0),
+    value: pnlValue ?? 0,
   });
   const pct = t('format.percent', { value: (pnlPercentage ?? 0) / 100 });
   return `${pct} • ${amount}`;

@@ -66,10 +66,11 @@ export const PortfolioChartButton = styled(ButtonPrimary, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<PortfolioChartButtonProps>(({ theme }) => ({
   ...theme.typography.bodyXXSmallStrong,
+  lineHeight: '100%',
   padding: theme.spacing(0.5),
-  height: 'fit-content',
+  height: 20,
   width: 'fit-content',
-  minWidth: 'fit-content',
+  minWidth: 28,
   variants: [
     {
       props: { isActive: false },

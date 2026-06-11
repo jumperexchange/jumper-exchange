@@ -608,7 +608,8 @@
     },
     "overviewCard": {
       "title": "Portfolio",
-      "refreshTooltip": "Click here to restart the indexing of your assets."
+      "refreshTooltip": "Click here to restart the indexing of your assets.",
+      "pnlChartDisclaimer": "The chart reflects wallet token balances over time. DeFi positions are included at their current value but are not retro-priced historically."
     },
     "emptyList": {
       "title": "No results",
