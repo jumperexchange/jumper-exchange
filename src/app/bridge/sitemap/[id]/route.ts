@@ -1,9 +1,14 @@
+import { captureException } from '@sentry/nextjs';
 import { toSitemapDate } from '@/utils/sitemap';
 import {
   getBridgeSitemapChunkIds,
   getBridgeSitemapEntriesForChunk,
+  isBridgeSitemapChunkInRange,
 } from '@/utils/sitemaps/bridge';
-import { createSitemapXmlResponse } from '@/utils/sitemaps/xml';
+import {
+  createSitemapServiceUnavailableResponse,
+  createSitemapXmlResponse,
+} from '@/utils/sitemaps/xml';
 
 export const dynamic = 'force-static';
 export const revalidate = 86400;
@@ -24,8 +29,13 @@ const parseChunkIndex = (id: string): number | null => {
 };
 
 export async function generateStaticParams() {
-  const ids = await getBridgeSitemapChunkIds();
-  return ids.map((id) => ({ id: `${id}.xml` }));
+  try {
+    const ids = await getBridgeSitemapChunkIds();
+    return ids.map((id) => ({ id: `${id}.xml` }));
+  } catch (error) {
+    captureException(error);
+    return [];
+  }
 }
 
 export async function GET(
@@ -39,9 +49,20 @@ export async function GET(
     return new Response('Not Found', { status: 404 });
   }
 
-  const entries = await getBridgeSitemapEntriesForChunk(
-    chunkIndex,
-    lastModified,
-  );
-  return createSitemapXmlResponse(entries);
+  try {
+    const inRange = await isBridgeSitemapChunkInRange(chunkIndex);
+
+    if (!inRange) {
+      return new Response('Not Found', { status: 404 });
+    }
+
+    const entries = await getBridgeSitemapEntriesForChunk(
+      chunkIndex,
+      lastModified,
+    );
+    return createSitemapXmlResponse(entries);
+  } catch (error) {
+    captureException(error);
+    return createSitemapServiceUnavailableResponse();
+  }
 }
