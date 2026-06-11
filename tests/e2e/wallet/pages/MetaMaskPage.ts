@@ -306,6 +306,20 @@ export default class MetaMaskPage extends WalletPage {
   }
 
   /**
+   * Signs the next wallet popup if one appears within `timeoutMs`. Returns
+   * true when a popup was signed, false when none appeared. Use for flows
+   * where a second signature is conditional — e.g. an ERC-20 approval before
+   * a swap, where the approval popup is skipped on wallets with sufficient
+   * existing allowance.
+   */
+  async signPopupIfPresent(
+    context: BrowserContext,
+    timeoutMs: number = 15_000,
+  ): Promise<boolean> {
+    return this.confirmInPopup(context, { optional: true, timeoutMs });
+  }
+
+  /**
    * Skips the "Redeem Rewards" notification in MetaMask
    * @returns {Promise<void>}
    */
