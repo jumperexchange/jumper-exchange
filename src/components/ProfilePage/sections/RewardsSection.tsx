@@ -7,22 +7,18 @@ import {
   RewardsSectionHeaderContainer,
 } from './Section.style';
 import Typography from '@mui/material/Typography';
-import { useContext, useMemo } from 'react';
-import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
+import { useContext } from 'react';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/components/RewardClaimCardSkeleton';
 import type { MerklRewardsData } from 'src/types/strapi';
-import type { RewardItem } from '@/types/rewards';
 import { MerklRewardClaim } from '../components/RewardsCarousel/components/MerklRewardClaim';
 import { DefiReacherRewardClaim } from '../components/RewardsCarousel/components/DefiReacherRewardClaim';
-import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
-import { fromMerklRewardsData } from '@/utils/rewards/rewardFilterAdapters';
-import { orderBy } from 'lodash';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { RewardsCarouselNavButtons } from '../components/RewardsCarousel/components/RewardsCarouselNavButtons';
 import Box from '@mui/material/Box';
 import { RewardsCarouselRoot } from '../components/RewardsCarousel/RewardsCarouselContext';
+import { useAvailableRewards } from '@/hooks/rewards/useAvailableRewards';
 
 export const RewardsSection = ({
   merklRewards,
@@ -33,51 +29,12 @@ export const RewardsSection = ({
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { walletAddress: address } = useContext(ProfileContext);
 
-  const filterCriteria = useMemo(
-    () => fromMerklRewardsData(merklRewards),
-    [merklRewards],
-  );
-
-  const {
-    availableRewards: merklAvailableRewards,
-    isSuccess: isMerklSuccess,
-    isLoading: isMerklLoading,
-  } = useMerklRewards({
+  const { rewards, isLoading, isSuccess } = useAvailableRewards({
     userAddress: address,
-    claimableOnly: true,
-    filterCriteria,
+    merklRewardsData: merklRewards,
   });
 
-  const {
-    data: deFiReacherAvailableRewards = [],
-    isSuccess: isDeFiReacherSuccess,
-    isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards({ userAddress: address, filterCriteria });
-
-  const rewards = useMemo((): RewardItem[] => {
-    const _merkl: RewardItem[] = merklAvailableRewards.map((reward) => ({
-      type: 'merkl',
-      reward,
-    }));
-
-    const _defiReacher: RewardItem[] = deFiReacherAvailableRewards.map(
-      (reward) => ({
-        type: 'defi-reacher',
-        reward,
-      }),
-    );
-
-    const combined: RewardItem[] = [..._merkl, ..._defiReacher];
-    return orderBy(combined, 'reward.amountToClaim', 'desc').filter(
-      (r) => r.reward.amountToClaim > 0,
-    );
-  }, [merklAvailableRewards, deFiReacherAvailableRewards]);
-
-  const isLoading = isMerklLoading || isDeFiReacherLoading;
-  const hasNoRewards = !rewards.length;
-  const isSuccess = isMerklSuccess || isDeFiReacherSuccess;
-
-  if (hasNoRewards || !isSuccess) {
+  if (!rewards.length || !isSuccess) {
     return null;
   }
 
@@ -106,11 +63,13 @@ export const RewardsSection = ({
                   <MerklRewardClaim
                     key={`merkl-${i}-${r.reward.address}`}
                     availableReward={r.reward}
+                    balance={r.balance}
                   />
                 ) : (
                   <DefiReacherRewardClaim
                     key={`defireacher-${i}-${r.reward.address}`}
                     availableReward={r.reward}
+                    balance={r.balance}
                   />
                 ),
               )}
