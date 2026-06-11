@@ -9,6 +9,12 @@ declare module 'i18next' {
       [K in `currencyExt${string}` | `decimalExt${string}` | `percentExt${string}`]: number;
     } & {
       [K in `dateExt${string}`]: Date;
+    } & {
+      [K in `chainNameExt${string}`]: number;
+    } & {
+      [K in `chainNamesExt${string}`]: number[];
+    } & {
+      [K in `listExt${string}`]: unknown[];
     };
   }
 }

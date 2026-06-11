@@ -1,9 +1,13 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
-import { HttpResponse, PerkClaimEntity } from 'src/types/jumper-backend';
+import type {
+  HttpResponse,
+  PerkClaimResponseDto,
+} from 'src/types/jumper-backend';
 
-type ClaimedPerksResult = HttpResponse<PerkClaimEntity[], unknown>;
+type ClaimedPerksResult = HttpResponse<PerkClaimResponseDto[], unknown>;
 
 const QUERY_KEY = ['perks', 'claimed'];
 

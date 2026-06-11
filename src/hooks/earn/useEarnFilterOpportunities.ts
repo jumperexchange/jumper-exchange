@@ -2,22 +2,12 @@ import type { UseQueryOptions, UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import {
-  type EarnOpportunityFilter,
-  getOpportunitiesFiltered,
-} from '@/app/lib/getOpportunitiesFiltered';
+  earnFilterOpportunitiesQueryKey,
+  fetchEarnFilterOpportunities,
+} from '@/app/lib/earn/earnQueries';
+import type { EarnOpportunityFilter } from '@/app/lib/getOpportunitiesFiltered';
 import { ONE_HOUR_MS } from '@/const/time';
 import type { EarnOpportunities } from '@/types/jumper-backend';
-
-export const earnFilterOpportunitiesQueryKey = (
-  filter: EarnOpportunityFilter,
-) => ['earn-filter-opportunities', filter] as const;
-
-export const fetchEarnFilterOpportunities = async (
-  filter: EarnOpportunityFilter,
-) => {
-  const result = await getOpportunitiesFiltered(filter);
-  return result.data;
-};
 
 export interface Props {
   filter: EarnOpportunityFilter;
@@ -54,6 +44,7 @@ export const useEarnFilterOpportunities = (
       };
     },
     refetchInterval: ONE_HOUR_MS,
+    refetchOnMount: false,
     placeholderData: (previousData) =>
       !('enabled' in options) || options.enabled ? previousData : undefined,
     ...options,

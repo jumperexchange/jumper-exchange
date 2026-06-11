@@ -516,6 +516,7 @@ export interface PerksDataAttributes {
   ClaimableStepProps?: Record<string, string>;
   HowToUseDescription?: BlocksContent;
   NextStepsDescription?: BlocksContent;
+  HasCustomPromoCodes?: boolean;
   createdAt: string;
   publishedAt?: string;
   updatedAt: string;

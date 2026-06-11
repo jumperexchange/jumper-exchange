@@ -1,14 +1,14 @@
-import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { ExtendedChain } from '@lifi/sdk';
-import type { CountEntity, DisplayableEntity } from './types';
-import type { Token } from '@/types/tokens';
-import { isExtendedToken, isPositionToken } from '@/types/tokens';
+import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
 import type {
-  Chain,
   App,
-  Protocol,
   Token as BackendToken,
+  Chain,
+  Protocol,
 } from '@/types/jumper-backend';
+import type { Token } from '@/types/tokens';
+import { isPositionToken } from '@/types/tokens';
+import type { CountEntity, DisplayableEntity } from './types';
 
 export const isCountType = (e: DisplayableEntity): e is CountEntity =>
   'count' in e && typeof e.count === 'number';

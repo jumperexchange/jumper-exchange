@@ -1,7 +1,5 @@
 import type { StrapiResponse, TagAttributes } from '@/types/strapi';
 import { TagStrapiApi } from '@/utils/strapi/StrapiApi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
 const predefinedOrder = ['Announcement', 'Partner', 'Bridge'];
 
 // Helper function to sort tags based on predefined order
@@ -44,11 +42,7 @@ export async function getTags(): Promise<StrapiResponse<TagAttributes>> {
     withCount: false,
   });
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     next: {
       revalidate: 60 * 5, // revalidate every 5 minutes
     },

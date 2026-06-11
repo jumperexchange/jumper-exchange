@@ -22,7 +22,7 @@ export type AvatarOverlap = 'left' | 'right' | 'top' | 'bottom' | 'none';
 
 export interface AvatarImageProps {
   id: string;
-  src?: string;
+  src?: string | null;
   alt: string;
 }
 

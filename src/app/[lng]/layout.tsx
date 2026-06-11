@@ -34,6 +34,9 @@ import {
   THEME_COLOR_SCHEME_STORAGE_KEY,
   THEME_MODE_STORAGE_KEY,
 } from '@/providers/ThemeProvider/constants';
+import { ExtensionDetectionProvider } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
+import { getPocketUniverseHtmlDataCsnSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/detectors/pocketUniverse/htmlDataCsnDetector';
+import { getPostMessageNativeSnapshotInlineScript } from '@/providers/ExtensionDetectionProvider/detectors/pocketUniverse/postMessageProxyDetector';
 
 const PUBLIC_URL = envConfig.NEXT_PUBLIC_SITE_URL as string;
 export const metadata: Metadata = {
@@ -124,6 +127,20 @@ export default async function RootLayout({
       style={{ scrollBehavior: 'smooth' }}
     >
       <head>
+        <script
+          id="extension-detection-postmessage-snapshot"
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: getPostMessageNativeSnapshotInlineScript(),
+          }}
+        />
+        <script
+          id="pocket-universe-html-data-csn-snapshot"
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: getPocketUniverseHtmlDataCsnSnapshotInlineScript(),
+          }}
+        />
         <script
           id="theme-bootstrap"
           data-cfasync="false"
@@ -233,13 +250,15 @@ export default async function RootLayout({
                     <SettingsStoreProvider>
                       <NuqsAdapter>
                         <PortfolioProvider>
-                          <Suspense>
-                            <ReferrerCapture />
-                            <FeatureFlagsBootstrap />
-                          </Suspense>
-                          <NavbarWrapper />
-                          <IntercomProvider />
-                          <main>{children}</main>
+                          <ExtensionDetectionProvider>
+                            <Suspense>
+                              <ReferrerCapture />
+                              <FeatureFlagsBootstrap />
+                            </Suspense>
+                            <NavbarWrapper />
+                            <IntercomProvider />
+                            <main>{children}</main>
+                          </ExtensionDetectionProvider>
                         </PortfolioProvider>
                       </NuqsAdapter>
                     </SettingsStoreProvider>

@@ -11,6 +11,9 @@ export default interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    alerts: {
+      extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping.';
+    };
     badge: {
       updated: 'Updated {{time}} ago';
     };
@@ -428,6 +431,7 @@ export default interface Resources {
       };
     };
     labels: {
+      apr: 'APR';
       apy: 'APY';
       assets_one: 'Asset';
       assets_other: 'Assets';
@@ -438,6 +442,7 @@ export default interface Resources {
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
       overview: 'Overview';
+      promoCode: 'Promo code';
       protocol: 'Protocol';
       rewardsApy: 'Rewards APY';
       tvl: 'TVL';
@@ -536,6 +541,7 @@ export default interface Resources {
           howToUsePerk: 'How to use your perk ?';
           howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
           nextSteps: 'Next steps';
+          nextStepsPromoCodesExhaustedDescription: "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week.";
           title: 'Perk claimed!';
         };
         signatureFailed: {
@@ -708,9 +714,19 @@ export default interface Resources {
       };
     };
     notifications: {
+      apyDrop: {
+        body: 'The APY for {{opportunityName}} dropped from {{previousApy, percentExt}} to {{currentApy, percentExt}}. Consider reviewing your position on Jumper Earn.';
+        cta: 'View Position';
+        title: '{{opportunityName}}: APY dropped';
+      };
       aria: {
         deleteNotification: 'Delete notification';
         openPanel: 'Notifications';
+      };
+      bridgeToEarn: {
+        body: 'You just bridged {{amountUsd, currencyExt(currency: USD)}} {{symbol}} to {{chainId, chainNameExt}}. Earn {{apy, percentExt}} APY by depositing into {{opportunityName}} on Jumper Earn!';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your {{symbol}}';
       };
       categories: {
         all: 'All Categories';
@@ -726,10 +742,41 @@ export default interface Resources {
         week: 'Past Week';
       };
       emptyState: 'No notifications';
+      idleAssets: {
+        body: 'You have {{amountUsd, currencyExt(currency: USD)}} {{symbol}} on {{chainId, chainNameExt}} sitting idle. Deposit into {{opportunityName}} to earn {{apy, percentExt}} APY.';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your idle {{symbol}}';
+      };
+      newOpportunity: {
+        body: 'Earn {{apy, percentExt}} APY on {{protocol}} ({{chainId, chainNameExt}}). You hold stablecoins on this chain — check it out!';
+        cta: 'Start Earning';
+        title: 'New Earn Opportunity: {{opportunityName}}';
+      };
+      newToolLaunch: {
+        body: '{{toolName}} is now live on Jumper. You recently $t(notifications.toolVerb.{{toolType}}) on {{chainIds, chainNamesExt}} — try it now.';
+        cta: 'Try it';
+        title: 'New on Jumper: {{toolName}}';
+      };
+      perkLevelUp: {
+        body_one: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check it out in your Jumper Pass.';
+        body_other: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check them out in your Jumper Pass.';
+        cta: 'View Jumper Pass';
+        title_one: 'Perk unlocked: {{perks, listExt(prop: name)}}';
+        title_other: 'You unlocked {{count}} new perks!';
+      };
       title: 'Notifications';
+      toolVerb: {
+        BRIDGE: 'bridged';
+        SWAP: 'swapped';
+      };
       unread_one: '{{count}} unread notification';
       unread_other: '{{count}} unread notifications';
       unread_zero: 'No unread notifications';
+      userLevelUp: {
+        body: 'Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.';
+        cta: 'View Jumper Pass';
+        title: 'You reached Level {{newLevel}}!';
+      };
     };
     portfolio: {
       assetOverviewCard: {
@@ -807,7 +854,7 @@ export default interface Resources {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
         chainValidationError: {
           cancel: 'Cancel';
-          description: "Currently chain {{chain}} can't support this operation, but we're actively working on it.";
+          description: "Currently {{chain}} chain can't support this operation, but we're actively working on it.";
           title: 'Chain not supported';
         };
         error: {
@@ -993,7 +1040,8 @@ export default interface Resources {
       title: 'Limited Solana token support';
     };
     tooltips: {
-      apy: 'Expected yearly return rate of the tokens invested.';
+      apr: 'Expected yearly return rate of the tokens invested (incl. rewards if available).';
+      apy: 'Expected yearly return rate of the tokens invested on a 7 day trailing basis, incl. temporary rewards.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
@@ -1002,6 +1050,7 @@ export default interface Resources {
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       close: 'Close';
+      copied: 'Copied';
       deposit: 'The token on which the market is defined and yield accrues on.';
       depositDisabled: 'Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       deposited: 'The token you have deposited into this market.';

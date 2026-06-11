@@ -6,7 +6,7 @@ import { EmptyComponent } from '@/components/core/EmptyComponent/EmptyComponent'
 interface DisabledEarnFeatureTooltipProps {
   i18nKey: ParseKeys<'translation'>;
   protocolName?: string;
-  protocolUrl?: string;
+  protocolUrl?: string | null;
 }
 
 export const DisabledEarnFeatureTooltip = ({

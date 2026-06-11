@@ -29,6 +29,7 @@ const commonArgs = {
       usernameType: 'discord',
     },
   },
+  hasCustomPromoCodes: false,
   nextStepsDescription: [
     {
       type: 'paragraph',

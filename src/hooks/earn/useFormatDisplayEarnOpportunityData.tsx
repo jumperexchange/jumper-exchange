@@ -1,25 +1,27 @@
+import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
+import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { SECONDS_IN_A_DAY } from '@/const/time';
+import { useChains } from '@/hooks/useChains';
+import { getChainName } from '@/utils/chains/getChainName';
+import { formatCapInDollar } from '@/utils/numbers/capInDollar';
+import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { formatLockupDuration } from 'src/utils/earn/utils';
+import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type {
+  APYItem,
   Chain,
   EarnOpportunityWithLatestAnalytics,
   Protocol,
   Token,
 } from 'src/types/jumper-backend';
+import { capitalizeString } from 'src/utils/capitalizeString';
+import { formatLockupPeriod } from '@/utils/formatLockupPeriod';
 import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
-import { capitalizeString } from 'src/utils/capitalizeString';
-import type { TFunction } from 'i18next';
-import { useChains } from '@/hooks/useChains';
-import { getChainName } from '@/utils/chains/getChainName';
-import { formatCapInDollar } from '@/utils/numbers/capInDollar';
-import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
-import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -31,7 +33,7 @@ interface EarnCardOverviewItem {
 }
 
 const buildApyItem = (
-  apy: { total: number } | undefined,
+  apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
@@ -46,6 +48,26 @@ const buildApyItem = (
     label: t('labels.apy'),
     value: formatted,
     tooltip: t('tooltips.apy'),
+  };
+};
+
+const buildTotalApyItem = (
+  apy: APYItem | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem | null => {
+  const displayedApy = (apy?.base ?? 0) + (apy?.customReward ?? 0);
+  if (!displayedApy || isZeroApprox(displayedApy)) {
+    return null;
+  }
+
+  const formatted = formatApy(displayedApy);
+  return {
+    key: 'apr',
+    dataTestId: `apr-${displayedApy}`,
+    label: t('labels.apr'),
+    value: formatted,
+    tooltip: t('tooltips.apr'),
   };
 };
 
@@ -69,19 +91,22 @@ const buildRewardsApyItem = (
 };
 
 const buildLockupItem = (
-  lockupMonths: number | string | undefined,
+  lockupDays: number | string | undefined,
   variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem | null => {
-  const lockupMonthsNumber = Number(lockupMonths);
-  if (isNaN(lockupMonthsNumber) || !lockupMonthsNumber) {
+  const lockupDaysNumber = Number(lockupDays);
+  if (isNaN(lockupDaysNumber) || !lockupDaysNumber) {
     return null;
   }
 
-  const formatted = formatLockupDuration(lockupMonthsNumber);
+  const { value, unit } = formatLockupPeriod(
+    lockupDaysNumber * SECONDS_IN_A_DAY,
+  );
+  const formatted = `${value} ${unit}`;
   return {
     key: 'lockupPeriod',
-    dataTestId: `lockupPeriod-${lockupMonthsNumber}`,
+    dataTestId: `lockupPeriod-${lockupDaysNumber}`,
     label: t('labels.lockupPeriod'),
     value: formatted,
     tooltip: t('tooltips.lockupPeriod', {
@@ -233,7 +258,7 @@ export const useFormatDisplayEarnOpportunityData = (
   const { getChainById } = useChains();
 
   return useMemo(() => {
-    const lockupMonths = earnOpportunity?.lockupMonths;
+    const lockupDays = earnOpportunity?.lockupDays;
     const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
@@ -246,11 +271,16 @@ export const useFormatDisplayEarnOpportunityData = (
 
     const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
 
+    const apyItem =
+      !!apy?.customReward && apy.customReward > 0
+        ? buildTotalApyItem(apy, variant, t)
+        : buildApyItem(apy, variant, t);
+
     // Build all items, passing variant to each builder
     const overviewItems = [
-      buildApyItem(apy, variant, t),
-      lockupMonths
-        ? buildLockupItem(lockupMonths, variant, t)
+      apyItem,
+      lockupDays
+        ? buildLockupItem(lockupDays, variant, t)
         : capInDollar
           ? buildCapInDollarItem(capInDollar, variant, t)
           : buildRewardsApyItem(rewardsApy, variant, t),

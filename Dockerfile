@@ -1,4 +1,4 @@
-FROM node:22-alpine AS builder
+FROM node:24-alpine AS builder
 
 RUN apk add --no-cache ca-certificates openssl python3 make g++ libc6-compat
 
@@ -7,14 +7,13 @@ ENV ENV_NAME=$ENV_NAME
 ARG NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_PUBLIC_LATEST_COMMIT_SHA=$NEXT_PUBLIC_LATEST_COMMIT_SHA
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PNPM_VERSION=10.33.4
+ENV PNPM_VERSION=11.5.1
 RUN corepack enable && corepack install -g pnpm@$PNPM_VERSION
 
 WORKDIR /app
 
 COPY . .
 RUN rm .env*
-COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 ARG ENV_FILE=.env
 #NOTE: Make sure to put the following en variable after setting up corepack
@@ -27,8 +26,8 @@ COPY ./$ENV_FILE ./.env
 RUN pnpm build
 
 # Production image, copy all the files and run next
-FROM node:22-alpine AS runner
-ENV PNPM_VERSION=10.33.4
+FROM node:24-alpine AS runner
+ENV PNPM_VERSION=11.5.1
 
 WORKDIR /app
 
@@ -50,7 +49,7 @@ RUN mkdir .next
 RUN chown nextjs:nodejs .next
 
 # Fix sharp install for image optimization
-RUN pnpm install sharp
+RUN pnpm install sharp@0.34.5 --allow-build=sharp
 RUN chown -R nextjs:nodejs /app/node_modules
 ENV NEXT_SHARP_PATH="/app/node_modules/sharp"
 

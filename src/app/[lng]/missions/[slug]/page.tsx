@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import { Suspense } from 'react';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
 import { siteName } from 'src/app/lib/metadata';
@@ -8,10 +7,11 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
+import { MissionPageContent } from 'src/app/ui/mission/MissionPageContent';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
-import { MissionPage } from 'src/app/ui/mission/MissionPage';
 import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import envConfig from '@/config/env-config';
+import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
@@ -67,7 +67,6 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    // Validate slug
     const slugResult = questSlugSchema.safeParse(slug);
 
     if (!slugResult.success) {
@@ -122,7 +121,7 @@ export async function generateMetadata({
 }
 
 export const dynamicParams = true;
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
@@ -133,7 +132,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <Suspense fallback={<MissionPageSkeleton />}>
-      <MissionPage slug={slug} />
+      <MissionPageContent slug={slug} />
     </Suspense>
   );
 }
