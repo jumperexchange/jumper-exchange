@@ -4,8 +4,8 @@ import Box from '@mui/material/Box';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { AnimatePresence } from 'motion/react';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
-import { isVideoMime } from '@/utils/isVideoMime';
+import { useEffect, useRef, useState } from 'react';
+import { canBrowserPlayVideoMime, isVideoMime } from '@/utils/isVideoMime';
 import { AnimatedBackgroundImageContainer } from './AnimatedBackgroundImage.styles';
 
 export interface AnimatedBackgroundImageProps {
@@ -14,10 +14,25 @@ export interface AnimatedBackgroundImageProps {
   sx?: SxProps<Theme>;
 }
 
-const AnimatedBackgroundVideo = ({ src }: { src: string }) => {
+interface AnimatedBackgroundVideoProps {
+  src: string;
+  mime: string;
+  onPlaybackUnavailable: () => void;
+}
+
+const AnimatedBackgroundVideo = ({
+  src,
+  mime,
+  onPlaybackUnavailable,
+}: AnimatedBackgroundVideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
+    if (!canBrowserPlayVideoMime(mime)) {
+      onPlaybackUnavailable();
+      return;
+    }
+
     const video = videoRef.current;
 
     if (!video) {
@@ -26,21 +41,27 @@ const AnimatedBackgroundVideo = ({ src }: { src: string }) => {
 
     video.muted = true;
 
-    const playVideo = () => {
-      void video.play().catch(() => undefined);
+    const handlePlaybackFailure = () => {
+      onPlaybackUnavailable();
     };
+
+    const playVideo = () => {
+      void video.play().catch(handlePlaybackFailure);
+    };
+
+    video.addEventListener('error', handlePlaybackFailure);
 
     if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
       playVideo();
-      return;
+    } else {
+      video.addEventListener('loadeddata', playVideo);
     }
 
-    video.addEventListener('loadeddata', playVideo);
-
     return () => {
+      video.removeEventListener('error', handlePlaybackFailure);
       video.removeEventListener('loadeddata', playVideo);
     };
-  }, [src]);
+  }, [mime, onPlaybackUnavailable, src]);
 
   return (
     <Box
@@ -69,6 +90,18 @@ export const AnimatedBackgroundImage = ({
   mime,
   sx,
 }: AnimatedBackgroundImageProps) => {
+  const [isVideoPlaybackUnavailable, setIsVideoPlaybackUnavailable] =
+    useState(false);
+
+  const videoBackground =
+    src && mime && isVideoMime(mime) && !isVideoPlaybackUnavailable
+      ? { src, mime }
+      : null;
+
+  useEffect(() => {
+    setIsVideoPlaybackUnavailable(false);
+  }, [mime, src]);
+
   return (
     <AnimatePresence mode="wait">
       {src && (
@@ -83,9 +116,13 @@ export const AnimatedBackgroundImage = ({
           }}
           sx={sx}
         >
-          {isVideoMime(mime) ? (
-            <AnimatedBackgroundVideo src={src} />
-          ) : (
+          {videoBackground ? (
+            <AnimatedBackgroundVideo
+              src={videoBackground.src}
+              mime={videoBackground.mime}
+              onPlaybackUnavailable={() => setIsVideoPlaybackUnavailable(true)}
+            />
+          ) : !isVideoMime(mime) ? (
             <Image
               src={src}
               alt="Animated background image"
@@ -96,7 +133,7 @@ export const AnimatedBackgroundImage = ({
                 objectFit: 'cover',
               }}
             />
-          )}
+          ) : null}
         </AnimatedBackgroundImageContainer>
       )}
     </AnimatePresence>
