@@ -1,6 +1,6 @@
 import type { ChainTokenSelected } from '@lifi/widget';
 import type { MutableRefObject } from 'react';
-import type { TrackTransactionDataProps } from 'src/types/userTracking';
+import type { TrackTransactionDataProps } from '@/types/userTracking';
 
 export interface WidgetTrackingUrlParams {
   sourceChainToken: { chainId: number | undefined; token: string | undefined };

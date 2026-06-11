@@ -1,8 +1,8 @@
-import { TrackingCategory } from 'src/const/trackingKeys';
-import type { UserTracking } from 'src/hooks/userTracking';
-import type { TrackTransactionDataProps } from 'src/types/userTracking';
-import type { JumperEventData } from 'src/utils/tracking/jumperTracking';
-import type { WidgetEventConfig } from 'src/components/Widgets/tracking/types';
+import { TrackingCategory } from '@/const/trackingKeys';
+import type { UserTracking } from '@/hooks/userTracking';
+import type { TrackTransactionDataProps } from '@/types/userTracking';
+import type { JumperEventData } from '@/utils/tracking/jumperTracking';
+import type { WidgetEventConfig } from '@/components/Widgets/tracking/types';
 
 interface TrackWidgetOptions {
   enableAddressable?: boolean;

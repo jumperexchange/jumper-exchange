@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { WidgetTrackingProvider } from 'src/providers/WidgetTrackingProvider';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { ChainAlert } from '@/components/Alerts';
 import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';

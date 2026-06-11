@@ -1,9 +1,9 @@
-import type { WidgetEventsConfig } from 'src/components/Widgets/WidgetEventsManager';
-import { createAvailableRoutesHandler } from 'src/components/Widgets/tracking/handlers/availableRoutes';
+import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
+import { createAvailableRoutesHandler } from '@/components/Widgets/tracking/handlers/availableRoutes';
 import {
   createDestinationChainTokenHandler,
   createSourceChainTokenHandler,
-} from 'src/components/Widgets/tracking/handlers/chainTokenHandlers';
+} from '@/components/Widgets/tracking/handlers/chainTokenHandlers';
 import {
   createChainPinnedHandler,
   createRouteExecutionCompletedHandler,
@@ -11,20 +11,20 @@ import {
   createRouteExecutionStartedHandler,
   createRouteExecutionUpdatedHandler,
   createRouteSelectedHandler,
-} from 'src/components/Widgets/tracking/handlers/routeHandlers';
+} from '@/components/Widgets/tracking/handlers/routeHandlers';
 import {
   createChangeSettingsHandler,
   createFormFieldChangedHandler,
   createLowAddressActivityConfirmedHandler,
   createRouteHighValueLossHandler,
   createSendToWalletToggledHandler,
-} from 'src/components/Widgets/tracking/handlers/widgetInteractionHandlers';
+} from '@/components/Widgets/tracking/handlers/widgetInteractionHandlers';
 import type {
   HandlerContext,
   RouteExecutionEventConfig,
   WidgetEventConfig,
   WidgetEventTrackerConfig,
-} from 'src/components/Widgets/tracking/types';
+} from '@/components/Widgets/tracking/types';
 
 type HandlerFactory = (
   config: WidgetEventConfig | RouteExecutionEventConfig,

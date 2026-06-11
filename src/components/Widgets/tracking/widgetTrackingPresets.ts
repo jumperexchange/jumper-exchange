@@ -1,8 +1,5 @@
-import {
-  TrackingAction,
-  TrackingEventDataAction,
-} from 'src/const/trackingKeys';
-import type { WidgetEventTrackerConfig } from 'src/components/Widgets/tracking/types';
+import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
+import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/types';
 
 export type WidgetTrackingVariant =
   | 'main'

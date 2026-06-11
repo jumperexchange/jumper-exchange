@@ -3,17 +3,17 @@ import type {
   RouteHighValueLossUpdate,
   SettingUpdated,
 } from '@lifi/widget';
-import { TrackingEventParameter } from 'src/const/trackingKeys';
-import type { WidgetEventsConfig } from 'src/components/Widgets/WidgetEventsManager';
-import { trackWidgetEvent } from 'src/components/Widgets/tracking/trackWidgetEvent';
+import { TrackingEventParameter } from '@/const/trackingKeys';
+import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
+import { trackWidgetEvent } from '@/components/Widgets/tracking/trackWidgetEvent';
 import type {
   HandlerContext,
   WidgetEventConfig,
-} from 'src/components/Widgets/tracking/types';
+} from '@/components/Widgets/tracking/types';
 import {
   parseFormFieldChangedToTrackingData,
   parseWidgetSettingsToTrackingData,
-} from 'src/utils/tracking/widget';
+} from '@/utils/tracking/widget';
 
 export const createChangeSettingsHandler = (
   config: WidgetEventConfig,

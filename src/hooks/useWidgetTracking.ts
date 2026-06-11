@@ -1,16 +1,16 @@
 import { useWidgetEvents } from '@lifi/widget';
 import { useEffect, useMemo, useRef } from 'react';
 import { useUrlParams } from '@/hooks/useUrlParams';
-import { composeWidgetTrackingHandlers } from 'src/components/Widgets/tracking/composeWidgetTrackingHandlers';
-import type { WidgetTrackingUrlParams } from 'src/components/Widgets/tracking/WidgetTrackingSession';
-import { createWidgetTrackingSession } from 'src/components/Widgets/tracking/WidgetTrackingSession';
-import type { WidgetEventTrackerConfig } from 'src/components/Widgets/tracking/types';
+import { composeWidgetTrackingHandlers } from '@/components/Widgets/tracking/composeWidgetTrackingHandlers';
+import type { WidgetTrackingUrlParams } from '@/components/Widgets/tracking/WidgetTrackingSession';
+import { createWidgetTrackingSession } from '@/components/Widgets/tracking/WidgetTrackingSession';
+import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/types';
 import {
   setupWidgetEvents,
   teardownWidgetEvents,
-} from 'src/components/Widgets/WidgetEventsManager';
-import { useUserTracking } from 'src/hooks/userTracking';
-import { useTokens } from 'src/hooks/useTokens';
+} from '@/components/Widgets/WidgetEventsManager';
+import { useUserTracking } from '@/hooks/userTracking';
+import { useTokens } from '@/hooks/useTokens';
 
 export const useWidgetTracking = (trackerConfig: WidgetEventTrackerConfig) => {
   const tracking = useUserTracking();

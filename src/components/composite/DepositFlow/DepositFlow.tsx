@@ -2,8 +2,8 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { EarnOpportunityExtended } from 'src/stores/depositFlow/DepositFlowStore';
-import { useDepositFlowStore } from 'src/stores/depositFlow/DepositFlowStore';
+import type { EarnOpportunityExtended } from '@/stores/depositFlow/DepositFlowStore';
+import { useDepositFlowStore } from '@/stores/depositFlow/DepositFlowStore';
 import { DepositButton } from '../DepositButton/DepositButton';
 import type { DepositButtonProps } from '../DepositButton/DepositButton.types';
 import { DepositModal } from '../DepositModal/DepositModal';

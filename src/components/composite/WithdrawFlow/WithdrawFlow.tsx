@@ -2,8 +2,8 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { EarnOpportunityExtended } from 'src/stores/withdrawFlow/WithdrawFlowStore';
-import { useWithdrawFlowStore } from 'src/stores/withdrawFlow/WithdrawFlowStore';
+import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
+import { useWithdrawFlowStore } from '@/stores/withdrawFlow/WithdrawFlowStore';
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';

@@ -1,15 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { composeWidgetTrackingHandlers } from 'src/components/Widgets/tracking/composeWidgetTrackingHandlers';
-import { createWidgetTrackingSession } from 'src/components/Widgets/tracking/WidgetTrackingSession';
-import { createWidgetTrackerConfig } from 'src/components/Widgets/tracking/widgetTrackingPresets';
-import type { HandlerContext } from 'src/components/Widgets/tracking/types';
-import type { WidgetEventTrackerConfig } from 'src/components/Widgets/tracking/types';
+import { composeWidgetTrackingHandlers } from '@/components/Widgets/tracking/composeWidgetTrackingHandlers';
+import { createWidgetTrackingSession } from '@/components/Widgets/tracking/WidgetTrackingSession';
+import { createWidgetTrackerConfig } from '@/components/Widgets/tracking/widgetTrackingPresets';
+import type { HandlerContext } from '@/components/Widgets/tracking/types';
+import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/types';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventDataAction,
   TrackingEventParameter,
-} from 'src/const/trackingKeys';
+} from '@/const/trackingKeys';
 import type { Route, RouteExecutionUpdate } from '@lifi/widget';
 
 vi.mock('src/utils/routes', () => ({
@@ -372,12 +372,61 @@ describe('composeWidgetTrackingHandlers', () => {
         }),
       );
     });
+
+    it('calls trackTransaction and removes route from session', async () => {
+      const ctx = makeContext();
+      ctx.session.setTrackedRoute('r-fail', { routeId: 'r-fail' } as never);
+
+      const update: RouteExecutionUpdate = {
+        route: makeRoute({ id: 'r-fail' }),
+        action: { error: undefined, message: 'out of gas' } as never,
+      };
+      const handlers = composeWidgetTrackingHandlers(
+        {
+          routeExecutionFailed: {
+            action: TrackingAction.OnRouteExecutionFailed,
+            dataAction: TrackingEventDataAction.ExecutionFailed,
+          },
+        },
+        ctx,
+      );
+
+      await handlers.routeExecutionFailed!(update);
+
+      expect(ctx.tracking.trackTransaction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: TrackingAction.OnRouteExecutionFailed,
+        }),
+      );
+      expect(ctx.session.getTrackedRoute('r-fail')).toBeUndefined();
+    });
   });
 
   describe('routeExecutionUpdated', () => {
     it('is not defined when routeExecutionUpdated config is absent', () => {
       const handlers = composeWidgetTrackingHandlers({}, makeContext());
       expect(handlers.routeExecutionUpdated).toBeUndefined();
+    });
+
+    it('does not fire when route was not previously tracked', async () => {
+      const ctx = makeContext();
+      const handlers = composeWidgetTrackingHandlers(
+        {
+          routeExecutionUpdated: {
+            action: TrackingAction.OnRouteExecutionUpdated,
+            dataAction: TrackingEventDataAction.ExecutionUpdated,
+          },
+        },
+        ctx,
+      );
+      const update: RouteExecutionUpdate = {
+        route: makeRoute({ id: 'r-1' }),
+        action: {} as never,
+      };
+
+      await handlers.routeExecutionUpdated!(update);
+
+      expect(ctx.tracking.trackTransaction).not.toHaveBeenCalled();
     });
 
     it('does not fire when route data has not changed (isEqual guard)', async () => {

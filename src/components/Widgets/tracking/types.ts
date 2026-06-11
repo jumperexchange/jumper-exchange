@@ -3,9 +3,9 @@ import type { Address } from 'viem';
 import type {
   TrackingAction,
   TrackingEventDataAction,
-} from 'src/const/trackingKeys';
-import type { UserTracking } from 'src/hooks/userTracking';
-import type { WidgetTrackingSession } from 'src/components/Widgets/tracking/WidgetTrackingSession';
+} from '@/const/trackingKeys';
+import type { UserTracking } from '@/hooks/userTracking';
+import type { WidgetTrackingSession } from '@/components/Widgets/tracking/WidgetTrackingSession';
 
 export interface WidgetEventConfig {
   action: TrackingAction;

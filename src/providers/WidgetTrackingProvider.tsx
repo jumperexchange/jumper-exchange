@@ -7,9 +7,9 @@ import {
   createWidgetTrackerConfig,
   type CreateWidgetTrackerConfigOptions,
   type WidgetTrackingVariant,
-} from 'src/components/Widgets/tracking/widgetTrackingPresets';
-import type { WidgetEventTrackerConfig } from 'src/components/Widgets/tracking/types';
-import { useWidgetTracking } from 'src/hooks/useWidgetTracking';
+} from '@/components/Widgets/tracking/widgetTrackingPresets';
+import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/types';
+import { useWidgetTracking } from '@/hooks/useWidgetTracking';
 
 interface WidgetTrackingState {
   setDestinationChainTokenForTracking: (

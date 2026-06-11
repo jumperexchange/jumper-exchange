@@ -1,18 +1,17 @@
 import type { Route, RouteExecutionUpdate } from '@lifi/widget';
 import { isEqual, omit } from 'lodash';
-import { TrackingEventParameter } from 'src/const/trackingKeys';
-import type { WidgetEventsConfig } from 'src/components/Widgets/WidgetEventsManager';
+import { TrackingEventParameter } from '@/const/trackingKeys';
+import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
 import {
   trackWidgetEvent,
   trackWidgetTransaction,
-} from 'src/components/Widgets/tracking/trackWidgetEvent';
+} from '@/components/Widgets/tracking/trackWidgetEvent';
 import type {
   HandlerContext,
   RouteExecutionEventConfig,
   WidgetEventConfig,
-} from 'src/components/Widgets/tracking/types';
-import type { TrackTransactionDataProps } from 'src/types/userTracking';
-import { handleRouteData } from 'src/utils/routes';
+} from '@/components/Widgets/tracking/types';
+import { handleRouteData } from '@/utils/routes';
 
 const ROUTE_DIFF_OMIT_KEYS = [
   TrackingEventParameter.TransactionStatus,
@@ -51,6 +50,10 @@ export const createRouteExecutionUpdatedHandler = (
       ...config.extraData,
     });
     const routeData = ctx.session.getTrackedRoute(update.route.id);
+    if (!routeData) {
+      return;
+    }
+
     const shouldTrack = !isEqual(
       omit(routeData, ROUTE_DIFF_OMIT_KEYS),
       omit(updatedRouteData, ROUTE_DIFF_OMIT_KEYS),
@@ -65,7 +68,7 @@ export const createRouteExecutionUpdatedHandler = (
       ctx.tracking,
       config,
       'execution_updated',
-      routeData as TrackTransactionDataProps,
+      updatedRouteData,
     );
   },
 });
@@ -95,6 +98,10 @@ export const createRouteExecutionFailedHandler = (
   ctx: HandlerContext,
 ): WidgetEventsConfig => ({
   routeExecutionFailed: async (update: RouteExecutionUpdate) => {
+    if (update.route.id) {
+      ctx.session.clearTrackedRoute(update.route.id);
+    }
+
     trackWidgetTransaction(
       ctx.tracking,
       config,
