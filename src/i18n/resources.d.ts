@@ -1027,6 +1027,25 @@ export default interface Resources {
         title: 'Unlocked Perks';
       };
       viewLeaderboard: 'View leaderboard';
+      yourAchievements: {
+        description: 'Explore all your <bold>completed</bold> missions and XP earned through using Jumper.';
+        noActivity: {
+          caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
+          cta: 'Start swapping';
+          description: "You have no recorded activity yet. Let's change that!";
+        };
+        noMissions: {
+          caption: 'Start collecting XP by completing missions. The more XP you earn, the more Perks you unlock!';
+          cta: 'View all missions';
+          description: "You have not completed any missions yet. Let's change that!";
+        };
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Your achievements';
+        xpEarned: '{{xp}} XP earned';
+      };
     };
     promo: {
       new: 'New';

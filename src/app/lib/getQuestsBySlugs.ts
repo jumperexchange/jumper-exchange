@@ -1,25 +1,29 @@
-import type { PaginationProps } from '@/utils/strapi/StrapiApi';
 import { QuestStrapiApi } from '@/utils/strapi/StrapiApi';
 import type { QuestData, StrapiResponse } from 'src/types/strapi';
 import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
 
-export async function getQuestsWithNoCampaignAttached(
-  pagination: PaginationProps = {
-    page: 1,
-    pageSize: 25,
-    withCount: false,
-  },
-  daysAhead: number = 0,
+interface GetQuestsBySlugsOptions {
+  // Also populate the campaign relation (needed by the detail pages).
+  withCampaign?: boolean;
+}
+
+// The quest payload is typed as QuestData in list contexts and as Quest
+// (src/types/loyaltyPass) on the detail pages; the type parameter lets each
+// caller keep its existing shape.
+export async function getQuestsBySlugs<T = QuestData>(
+  slugs: string[],
+  { withCampaign = false }: GetQuestsBySlugsOptions = {},
 ) {
   const urlParams = new QuestStrapiApi()
-    .filterByNoCampaignAttached()
-    .filterByStartAndEndDateIncludingUpcoming(daysAhead)
-    .filterByNotEnded()
+    .filterBySlugs(slugs)
     .addPaginationParams({
-      page: pagination.page,
-      pageSize: pagination.pageSize,
-      withCount: pagination.withCount,
+      page: 1,
+      pageSize: slugs.length,
+      withCount: false,
     });
+  if (withCampaign) {
+    urlParams.populateCampaign();
+  }
   const apiUrl = urlParams.getApiUrl();
   const accessToken = getStrapiApiAccessToken();
 
@@ -36,7 +40,7 @@ export async function getQuestsWithNoCampaignAttached(
     throw new Error('Failed to fetch data');
   }
 
-  const data: StrapiResponse<QuestData> = await res.json();
+  const data: StrapiResponse<T> = await res.json();
 
   return { data };
 }
