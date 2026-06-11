@@ -6,6 +6,7 @@ import { SelectVariant } from '@/components/core/form/Select/Select.types';
 import {
   type FormState,
   LiFiWidget,
+  WidgetSkeleton as LifiWidgetSkeleton,
   useWidgetEvents,
   WidgetEvent,
 } from '@lifi/widget';
@@ -28,6 +29,7 @@ import { useMenuStore } from '@/stores/menu';
 import { ZapDepositSettings } from '../base/ZapWidget/ZapDepositSettings';
 import { usePortfolioWidgetConfig } from '../widgetConfig/usePortfolioWidgetConfig';
 import { PortfolioWidgetVariants } from './types';
+import { useTranslation } from 'react-i18next';
 
 interface PortfolioWidgetProps {
   widgetVariants: PortfolioWidgetVariants[];
@@ -46,6 +48,7 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
   minFromAmountUSD,
   onRouteCompleted,
 }) => {
+  const { t } = useTranslation();
   const formRef = useRef<FormState>(null);
   const [selectedView, setSelectedView] = useState<
     'main' | 'market' | 'position'
@@ -122,13 +125,16 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
     setSelectedView('main');
   };
 
-  const { config: widgetConfig, depositContractProps } =
-    usePortfolioWidgetConfig(
-      widgetVariant,
-      selectedEarnOpportunity,
-      selectedPosition,
-      minFromAmountUSD,
-    );
+  const {
+    config: widgetConfig,
+    depositContractProps,
+    isReady,
+  } = usePortfolioWidgetConfig(
+    widgetVariant,
+    selectedEarnOpportunity,
+    selectedPosition,
+    minFromAmountUSD,
+  );
 
   return (
     <SectionCard
@@ -143,13 +149,6 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
             display: 'none',
           },
         }),
-        ...(isLifiWidgetMainPage &&
-          widgetVariant !== 'deposit' &&
-          widgetVariant !== 'withdraw' && {
-            '& [id^="widget-app-expanded-container"]': {
-              mt: 2,
-            },
-          }),
         ...(selectedView !== 'main' && {
           '& [id^="widget-app-expanded-container"]': {
             display: 'none',
@@ -172,11 +171,12 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
       )}
       {isLifiWidgetMainPage &&
         widgetVariant === PortfolioWidgetVariants.Deposit &&
-        selectedView === 'main' && (
+        selectedView === 'main' &&
+        isReady && (
           <PortfolioSelectField
             item={selectedEarnOpportunity}
-            label="Deposit to"
-            placeholder="Select market"
+            label={t('widget.portfolio.labels.depositTo')}
+            placeholder={t('widget.portfolio.labels.selectMarket')}
             renderStartAdornment={(i) => (
               <EntityStackWithBadge
                 addressOverride={i.lpToken?.address}
@@ -189,16 +189,18 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
               />
             )}
             onClick={() => setSelectedView('market')}
+            sx={{ paddingTop: 1.5, paddingBottom: 0.5 }}
           />
         )}
 
       {isLifiWidgetMainPage &&
         widgetVariant === PortfolioWidgetVariants.Withdraw &&
-        selectedView === 'main' && (
+        selectedView === 'main' &&
+        isReady && (
           <PortfolioSelectField
             item={selectedPosition}
-            label="Select position"
-            placeholder="Select position"
+            label={t('widget.portfolio.labels.selectPosition')}
+            placeholder={t('widget.portfolio.labels.selectPosition')}
             renderStartAdornment={(i) => (
               <EntityStackWithBadge
                 addressOverride={i.lpToken?.token.address}
@@ -215,28 +217,34 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
             // TODO: add renderEndAdornment with TitleWithHint showing token amount/amountUSD
             // once the target token for position balance display is determined
             onClick={() => setSelectedView('position')}
+            sx={{ paddingTop: 1.5, paddingBottom: 0.5 }}
           />
         )}
 
-      <LiFiWidget
-        formRef={formRef}
-        config={widgetConfig}
-        integrator={widgetConfig.integrator}
-        {...(depositContractProps && {
-          contractComponent: (
-            <ZapDepositSettings
-              toChainId={depositContractProps.toChainId}
-              toTokenAddress={depositContractProps.toTokenAddress}
-              contractCalls={[]}
-            />
-          ),
-        })}
-      />
+      {isReady ? (
+        <LiFiWidget
+          key={widgetVariant}
+          formRef={formRef}
+          config={widgetConfig}
+          integrator={widgetConfig.integrator}
+          {...(depositContractProps && {
+            contractComponent: (
+              <ZapDepositSettings
+                toChainId={depositContractProps.toChainId}
+                toTokenAddress={depositContractProps.toTokenAddress}
+                contractCalls={[]}
+              />
+            ),
+          })}
+        />
+      ) : (
+        <LifiWidgetSkeleton config={widgetConfig} />
+      )}
 
       {widgetVariant === PortfolioWidgetVariants.Deposit &&
         selectedView === 'market' && (
           <PortfolioSelectView
-            header="Select market"
+            header={t('widget.portfolio.labels.selectMarket')}
             inputId="market"
             onBack={() => setSelectedView('main')}
             onSelect={handleSelectMarket}
@@ -264,7 +272,7 @@ export const PortfolioWidget: FC<PortfolioWidgetProps> = ({
       {widgetVariant === PortfolioWidgetVariants.Withdraw &&
         selectedView === 'position' && (
           <PortfolioSelectView
-            header="Select position"
+            header={t('widget.portfolio.labels.selectPosition')}
             inputId="position"
             onBack={() => setSelectedView('main')}
             onSelect={handleSelectPosition}

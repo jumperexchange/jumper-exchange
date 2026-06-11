@@ -4,6 +4,8 @@ import { ContentContainer } from '@/components/composite/JumperWidget/JumperWidg
 import { EntityStackWithBadgeSkeleton } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadgeSkeleton';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { ReactNode } from 'react';
+import type { SxProps, Theme } from '@mui/material/styles';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 interface PortfolioSelectFieldProps<T> {
   label: string;
@@ -13,6 +15,7 @@ interface PortfolioSelectFieldProps<T> {
   renderEndAdornment?: (item: T) => ReactNode;
   skeletonAnimation?: 'pulse' | 'wave' | false;
   onClick: () => void;
+  sx?: SxProps<Theme>;
 }
 
 export function PortfolioSelectField<T>({
@@ -23,9 +26,10 @@ export function PortfolioSelectField<T>({
   renderEndAdornment,
   skeletonAnimation = false,
   onClick,
+  sx,
 }: PortfolioSelectFieldProps<T>) {
   return (
-    <ContentContainer sx={{ paddingBottom: 2 }}>
+    <ContentContainer sx={mergeSx({ paddingBottom: 2 }, sx)}>
       <SelectCard
         label={label}
         // When an item is selected, EntityStackWithBadge owns the content display

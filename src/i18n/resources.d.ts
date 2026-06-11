@@ -91,6 +91,7 @@ export default interface Resources {
       okay: 'Okay';
     };
     buttons: {
+      buy: 'Buy';
       close: 'Close';
       convertDust: 'Convert dust';
       deposit: 'Deposit';
@@ -100,6 +101,7 @@ export default interface Resources {
       requestRedeemButtonLabel: 'Request redeem';
       requestWithdraw: 'Request withdraw';
       reviewConversion: 'Review conversion';
+      swap: 'Swap';
       withdraw: 'Withdraw';
       withdrawButtonLabel: 'Withdraw';
     };
@@ -1271,6 +1273,14 @@ export default interface Resources {
       };
       exchange: {
         title: 'Exchange';
+      };
+      portfolio: {
+        labels: {
+          depositTo: 'Deposit to';
+          select: 'Select';
+          selectMarket: 'Select market';
+          selectPosition: 'Select position';
+        };
       };
       private: {
         title: 'Private Swap';

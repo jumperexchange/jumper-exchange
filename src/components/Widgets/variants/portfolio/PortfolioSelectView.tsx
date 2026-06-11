@@ -14,6 +14,7 @@ import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { SelectViewProps } from './types';
+import MenuList from '@mui/material/MenuList';
 
 interface PortfolioSelectViewProps<T> extends SelectViewProps<T> {
   header: string;
@@ -99,14 +100,16 @@ export function PortfolioSelectView<T>({
             }}
           />
         </FormControl>
-        {filteredList.map((item) => (
-          <MenuItemWrapper
-            key={getItemKey(item)}
-            onClick={() => onSelect(item)}
-          >
-            {renderItem(item)}
-          </MenuItemWrapper>
-        ))}
+        <MenuList sx={{ padding: 0, margin: 0 }}>
+          {filteredList.map((item) => (
+            <MenuItemWrapper
+              key={getItemKey(item)}
+              onClick={() => onSelect(item)}
+            >
+              {renderItem(item)}
+            </MenuItemWrapper>
+          ))}
+        </MenuList>
       </ContentContainer>
     </>
   );

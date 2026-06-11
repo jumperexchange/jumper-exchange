@@ -3,11 +3,16 @@ import type { PortfolioPosition } from '@/providers/PortfolioProvider/types';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { TaskType } from '@/types/strapi';
 import type { WidgetConfig } from '@lifi/widget';
-import { DisabledUI, HiddenUI } from '@lifi/widget';
+import merge from 'lodash/merge';
 import { useMemo } from 'react';
-import type { MainWidgetContext, ZapWidgetContext } from './types';
+import type {
+  MainWidgetContext,
+  ZapWidgetContext,
+  HookDependencies,
+} from './types';
 import { useWidgetConfig } from './useWidgetConfig';
 import { PortfolioWidgetVariants } from '../portfolio/types';
+import { useTranslation } from 'react-i18next';
 
 export interface DepositContractProps {
   toChainId: number;
@@ -20,6 +25,8 @@ function buildDepositContext(
   opportunity: EarnOpportunityWithLatestAnalytics | null,
   minFromAmountUSD?: number,
 ): ZapWidgetContext {
+  const lpToken = opportunity?.lpToken;
+  const assetToken = opportunity?.asset;
   return {
     taskType: TaskType.Zap,
     zapPoolName: opportunity
@@ -29,16 +36,28 @@ function buildDepositContext(
     keyPrefix: 'zap.backend',
     formData: {
       minFromAmountUSD,
-      sourceToken: opportunity
+      sourceToken: assetToken
         ? {
-            tokenAddress: opportunity.asset.address,
-            tokenSymbol: opportunity.asset.symbol,
+            tokenAddress: assetToken.address,
+            tokenSymbol: assetToken.symbol,
           }
         : undefined,
-      sourceChain: opportunity
+      sourceChain: assetToken
         ? {
-            chainId: opportunity.asset.chain.chainId.toString(),
-            chainKey: opportunity.asset.chain.chainKey,
+            chainId: assetToken.chain.chainId.toString(),
+            chainKey: assetToken.chain.chainKey,
+          }
+        : undefined,
+      destinationToken: lpToken
+        ? {
+            tokenAddress: lpToken.address,
+            tokenSymbol: lpToken.symbol,
+          }
+        : undefined,
+      destinationChain: lpToken
+        ? {
+            chainId: lpToken.chain.chainId.toString(),
+            chainKey: lpToken.chain?.chainKey ?? '',
           }
         : undefined,
     },
@@ -54,8 +73,8 @@ function buildWithdrawContext(
     subTaskType: 'withdraw',
     integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
     keyPrefix: 'zap.backend',
-    disabledUI: [DisabledUI.FromToken],
-    hiddenUI: [HiddenUI.FromToken],
+    disabledUI: { fromToken: true },
+    hiddenUI: { fromToken: true },
     formData: {
       sourceToken: lpToken
         ? {
@@ -88,11 +107,60 @@ function buildSwapBuyContext(
   };
 }
 
+type PortfolioButtonLabels = {
+  exchange: string;
+  swap: string;
+  bridge: string;
+  buy: string;
+  deposit: string;
+  depositReview: string;
+  swapReview: string;
+  bridgeReview: string;
+  checkoutReview: string;
+  startSwapping: string;
+  startBridging: string;
+};
+
+function createPortfolioButtonLabels(label: string): PortfolioButtonLabels {
+  return {
+    exchange: label,
+    swap: label,
+    bridge: label,
+    buy: label,
+    deposit: label,
+    depositReview: label,
+    swapReview: label,
+    bridgeReview: label,
+    checkoutReview: label,
+    startSwapping: label,
+    startBridging: label,
+  };
+}
+
+function getPortfolioButtonLabels(
+  variant: PortfolioWidgetVariants,
+  t: HookDependencies['translation']['t'],
+): PortfolioButtonLabels | undefined {
+  switch (variant) {
+    case PortfolioWidgetVariants.Deposit:
+      return createPortfolioButtonLabels(t('buttons.deposit'));
+    case PortfolioWidgetVariants.Withdraw:
+      return createPortfolioButtonLabels(t('buttons.withdraw'));
+    case PortfolioWidgetVariants.Swap:
+      return createPortfolioButtonLabels(t('buttons.swap'));
+    case PortfolioWidgetVariants.Buy:
+      return createPortfolioButtonLabels(t('buttons.buy'));
+    default:
+      return undefined;
+  }
+}
+
 // --- Hook ---
 
 interface UsePortfolioWidgetConfigResult {
   config: WidgetConfig;
   depositContractProps: DepositContractProps | null;
+  isReady: boolean;
 }
 
 export function usePortfolioWidgetConfig(
@@ -101,6 +169,8 @@ export function usePortfolioWidgetConfig(
   position: PortfolioPosition | null,
   minFromAmountUSD?: number,
 ): UsePortfolioWidgetConfigResult {
+  const { t } = useTranslation();
+
   const { widgetType, widgetContext } = useMemo(() => {
     switch (variant) {
       case PortfolioWidgetVariants.Deposit:
@@ -121,11 +191,7 @@ export function usePortfolioWidgetConfig(
     }
   }, [variant, earnOpportunity, position, minFromAmountUSD]);
 
-  // Cast needed: TS cannot narrow the conditional type param at call site
-  const { config, isReady } = useWidgetConfig(
-    widgetType,
-    widgetContext as MainWidgetContext & ZapWidgetContext,
-  );
+  const { config, isReady } = useWidgetConfig(widgetType, widgetContext);
 
   const depositContractProps = useMemo((): DepositContractProps | null => {
     if (variant !== PortfolioWidgetVariants.Deposit || !earnOpportunity) {
@@ -137,6 +203,8 @@ export function usePortfolioWidgetConfig(
     };
   }, [variant, earnOpportunity]);
 
+  const buttonLabels = getPortfolioButtonLabels(variant, t);
+
   return {
     config: {
       ...config,
@@ -144,7 +212,16 @@ export function usePortfolioWidgetConfig(
         ...config.theme,
         container: { width: '100%', minWidth: '100%', maxWidth: '100%' },
       },
+      ...(buttonLabels && {
+        languageResources: {
+          ...config.languageResources,
+          en: merge({}, config.languageResources?.en, {
+            button: buttonLabels,
+          }),
+        },
+      }),
     },
     depositContractProps,
+    isReady,
   };
 }

@@ -1016,6 +1016,14 @@
         }
       }
     },
+    "portfolio": {
+      "labels": {
+        "depositTo": "Deposit to",
+        "select": "Select",
+        "selectMarket": "Select market",
+        "selectPosition": "Select position"
+      }
+    },
     "earn": {
       "depositSuccess": "You will be able to see and manage your position in a few seconds by clicking on <bold>Manage your positions</bold>"
     },
@@ -1047,6 +1055,8 @@
     "depositNow": "Deposit now",
     "requestWithdraw": "Request withdraw",
     "withdraw": "Withdraw",
+    "swap": "Swap",
+    "buy": "Buy",
     "close": "Close",
     "reviewConversion": "Review conversion",
     "convertDust": "Convert dust"
