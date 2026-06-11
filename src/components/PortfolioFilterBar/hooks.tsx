@@ -3,12 +3,14 @@
 import { useHoldingsFiltering } from '../../providers/PortfolioProvider/filtering/HoldingsFilteringContext';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
-import type { SortByEnum } from '../../providers/PortfolioProvider/filtering/types';
-import {
-  type HoldingsFilterUI,
-  SortByOptions,
+import type { NullableFields } from '@/types/internal';
+import type {
+  HoldingsFilterUI,
+  SortByEnum,
 } from '../../providers/PortfolioProvider/filtering/types';
+import { SortByOptions } from '../../providers/PortfolioProvider/filtering/types';
 import { useMemo } from 'react';
+import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useChains } from '@/hooks/useChains';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
@@ -21,6 +23,7 @@ import {
   createSingleSelectCategory,
 } from '../composite/MultiLayer/utils';
 import { countBadge, valueBadge } from './utils';
+import { buildHoldingsFilterPatchFromPending } from '../../providers/PortfolioProvider/filtering/utils';
 
 export const useHoldingsFilterCategories = () => {
   const { t } = useTranslation();
@@ -105,8 +108,8 @@ export const useHoldingsFilterCategories = () => {
     [t],
   );
 
-  const handleApplyAllFilters = (values: Partial<HoldingsFilterUI>) => {
-    updateFilter({ ...values });
+  const handleApplyAllFilters = (values: NullableFields<HoldingsFilterUI>) => {
+    updateFilter(values);
   };
 
   const handleSortBy = (value: string) => {
@@ -136,39 +139,54 @@ export const useHoldingsFilterCategories = () => {
   const filtersCount = arrayFiltersCount + valueFilterCount;
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;
 
+  const appliedValues = useMemo(
+    () => ({
+      wallets: filter?.wallets ?? [],
+      chains: filter?.chains?.map(String) ?? [],
+      assets: filter?.assets ?? [],
+      value: [valueMin, valueMax] as [number, number],
+      sortBy,
+    }),
+    [
+      filter?.wallets,
+      filter?.chains,
+      filter?.assets,
+      valueMin,
+      valueMax,
+      sortBy,
+    ],
+  );
+
   const {
     pendingValues,
     setPendingValue,
     applyFilters,
     clearAll,
     resetPending,
-    hasPendingFiltersApplied,
   } = usePendingFilters<HoldingsPendingFilterValues>({
-    initialValues: {
-      wallets: filter?.wallets ?? [],
-      chains: filter?.chains?.map(String) ?? [],
-      assets: filter?.assets ?? [],
-      value: [valueMin, valueMax],
-      sortBy,
-    },
+    initialValues: appliedValues,
     onApply: (values) => {
-      handleApplyAllFilters({
-        wallets: values.wallets,
-        chains: values.chains.map(Number),
-        assets: values.assets,
-        minValue: values.value[0],
-        maxValue: values.value[1],
-      });
+      handleApplyAllFilters(
+        buildHoldingsFilterPatchFromPending(
+          values,
+          {
+            allWallets,
+            allChains,
+            allAssets,
+            allValueRange,
+          },
+          filter,
+        ),
+      );
       handleSortBy(values.sortBy);
     },
     onClear: clearFilters,
-    isFilterApplied: (values) =>
-      values.wallets.length > 0 ||
-      values.chains.length > 0 ||
-      values.assets.length > 0 ||
-      values.value[0] !== allValueRange.min ||
-      values.value[1] !== allValueRange.max,
   });
+
+  const hasPendingChanges = useMemo(
+    () => !isEqual(pendingValues, appliedValues),
+    [pendingValues, appliedValues],
+  );
 
   const usedMin = pendingValues.value[0] ?? valueMin;
   const usedMax = pendingValues.value[1] ?? valueMax;
@@ -263,6 +281,6 @@ export const useHoldingsFilterCategories = () => {
     applyFilters,
     clearAll,
     resetPending,
-    hasPendingFiltersApplied,
+    hasPendingChanges,
   };
 };

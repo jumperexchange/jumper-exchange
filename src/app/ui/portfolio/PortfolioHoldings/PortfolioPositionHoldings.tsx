@@ -51,12 +51,15 @@ export const PortfolioPositionHoldings: FC<PortfolioPositionHoldingsProps> = ({
       title={title}
       amount={amount}
       progress={progress}
-      shouldExpand={!isEmpty || isLoading}
+      shouldExpand={!isEmpty && positionGroups.length > 0 && !isLoading}
       isLoading={isLoading}
       items={positionGroups}
       renderItem={([, positions]) => (
         <PositionSummaryRow positions={positions} />
       )}
+      detailsItemSx={{
+        cursor: 'default',
+      }}
     />
   );
 };

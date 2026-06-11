@@ -27,7 +27,8 @@ export const PortfolioFilterBarHoldings = () => {
     applyFilters,
     clearAll,
     resetPending,
-    hasPendingFiltersApplied,
+    hasPendingChanges,
+    hasFilterApplied,
   } = useHoldingsFilterCategories();
   const { t } = useTranslation();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -46,8 +47,8 @@ export const PortfolioFilterBarHoldings = () => {
           onClear={clearAll}
           onClose={resetPending}
           appliedFiltersCount={filtersCount}
-          disableApply={!hasPendingFiltersApplied}
-          disableClear={!hasPendingFiltersApplied}
+          disableApply={!hasPendingChanges}
+          disableClear={!hasFilterApplied && !hasPendingChanges}
           testId="portfolio-filters-mobile-drawer"
           defaultTriggerSx={{ justifyContent: 'flex-end' }}
         />
@@ -61,8 +62,8 @@ export const PortfolioFilterBarHoldings = () => {
           onClear={clearAll}
           onClose={resetPending}
           appliedFiltersCount={filtersCount}
-          disableApply={!hasPendingFiltersApplied}
-          disableClear={!hasPendingFiltersApplied}
+          disableApply={!hasPendingChanges}
+          disableClear={!hasFilterApplied && !hasPendingChanges}
           testId="portfolio-filters-desktop-modal"
           defaultTriggerSx={{ justifyContent: 'flex-end' }}
         />

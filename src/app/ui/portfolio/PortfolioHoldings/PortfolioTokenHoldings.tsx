@@ -36,7 +36,7 @@ export const PortfolioTokenHoldings: FC<PortfolioTokenHoldingsProps> = ({
       title={title}
       amount={amount}
       progress={progress}
-      shouldExpand={!isEmpty || isLoading}
+      shouldExpand={!isEmpty && !isLoading}
       isLoading={isLoading}
       items={balanceGroups}
       renderItem={([, balances]) => (

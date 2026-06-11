@@ -13,14 +13,14 @@ import {
 import { useQueryStates } from 'nuqs';
 import { isEqual } from 'lodash';
 import {
-  holdingsSearchParamsParsers,
+  extractHoldingsFilteringParams,
   filterSortBalancesData,
   filterSortPositionsData,
-  getEffectiveValueRange,
+  holdingsSearchParamsParsers,
   removeNullValuesFromFilter,
-  sanitizeHoldingsFilter,
+  resolveHoldingsFilter,
+  serializeHoldingsFilterForUrl,
 } from './utils';
-import { EMPTY_HOLDINGS_FILTERING_PARAMS } from './constants';
 import type {
   HoldingsFilteringParams,
   HoldingsFilter,
@@ -37,7 +37,6 @@ import {
 } from '../PortfolioContext';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 import type { PortfolioPosition } from '../types';
-import { useProcessedPositions } from '../hooks/useProcessPositions';
 
 export interface HoldingsFilteringContextType extends HoldingsFilteringParams {
   sortBy: SortByEnum;
@@ -90,33 +89,37 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
     holdingsMaxValue,
   } = searchParamsState;
 
+  const filterSearchParams = useMemo(
+    () => ({
+      wallets: holdingsWallets,
+      chains: holdingsChains,
+      assets: holdingsAssets,
+      minValue: holdingsMinValue,
+      maxValue: holdingsMaxValue,
+    }),
+    [
+      holdingsWallets,
+      holdingsChains,
+      holdingsAssets,
+      holdingsMinValue,
+      holdingsMaxValue,
+    ],
+  );
+
   const initialFilter = useMemo(
-    () =>
-      removeNullValuesFromFilter<HoldingsFilter>({
-        wallets: holdingsWallets,
-        chains: holdingsChains,
-        assets: holdingsAssets,
-        minValue: holdingsMinValue,
-        maxValue: holdingsMaxValue,
-      }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    () => removeNullValuesFromFilter<HoldingsFilter>(filterSearchParams),
+    [filterSearchParams],
   );
 
   const [order, setOrder] = useState<OrderEnum>(initialOrder);
   const [sortBy, setSortByState] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] = useState<HoldingsFilter>(initialFilter);
 
-  const prevStatsRef = useRef<HoldingsFilteringParams>(
-    EMPTY_HOLDINGS_FILTERING_PARAMS,
-  );
-  const hasInitialFilterRangeRef = useRef<boolean | null>(null);
-  if (hasInitialFilterRangeRef.current === null) {
-    hasInitialFilterRangeRef.current =
+  const hasExplicitValueRangeRef = useRef<boolean | null>(null);
+  if (hasExplicitValueRangeRef.current === null) {
+    hasExplicitValueRangeRef.current =
       holdingsMinValue != null || holdingsMaxValue !== null;
   }
-
-  // ─── Data sources ─────────────────────────────────────────────────────────
 
   const balancesState = usePortfolioBalances();
   const positionsState = usePortfolioPositions();
@@ -130,110 +133,40 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
   const isAllBalancesDataLoading =
     balancesSourceState.isLoading || balancesSourceState.isRefreshing;
 
-  // ─── Merged stats from both sources ───────────────────────────────────────
-
-  const stats = useMemo((): HoldingsFilteringParams => {
-    const bothEmpty = balancesIsEmpty && positionsIsEmpty;
-    if (bothEmpty) {
-      return EMPTY_HOLDINGS_FILTERING_PARAMS;
-    }
-
-    // Merge chains from both sources
-    const mergedChains = Array.from(
-      new Set([
-        ...(balancesIsEmpty ? [] : balancesState.metadata.chains),
-        ...(positionsIsEmpty ? [] : positionsState.metadata.chains),
-      ]),
-    );
-
-    // Merge assets by symbol — prefer WalletToken (balance asset) over PositionToken
-    const assetsBySymbol = new Map<
-      string,
-      | (typeof balancesState.metadata.assets)[number]
-      | (typeof positionsState.metadata.assets)[number]
-    >();
-    if (!positionsIsEmpty) {
-      positionsState.metadata.assets.forEach((a) =>
-        assetsBySymbol.set(a.symbol, a),
-      );
-    }
-    if (!balancesIsEmpty) {
-      balancesState.metadata.assets.forEach((a) =>
-        assetsBySymbol.set(a.symbol, a),
-      );
-    }
-    const mergedAssets = Array.from(assetsBySymbol.values());
-
-    // Merge value ranges
-    const balancesRange = balancesIsEmpty
-      ? null
-      : balancesState.metadata.valueRange;
-    const positionsRange = positionsIsEmpty
-      ? null
-      : positionsState.metadata.valueRange;
-
-    const allValueRange =
-      balancesRange && positionsRange
-        ? {
-            min: Math.min(balancesRange.min, positionsRange.min),
-            max: Math.max(balancesRange.max, positionsRange.max),
-          }
-        : (balancesRange ?? positionsRange ?? { min: 0, max: 0 });
-
-    return {
-      allWallets: balancesIsEmpty ? [] : balancesState.metadata.wallets,
-      allChains: mergedChains,
-      allAssets: mergedAssets,
-      allValueRange,
-    };
-  }, [
-    balancesIsEmpty,
-    positionsIsEmpty,
-    balancesState.metadata,
-    positionsState.metadata,
-  ]);
-
-  // ─── Sync filter when stats change ────────────────────────────────────────
+  const stats = useMemo(
+    () =>
+      extractHoldingsFilteringParams({
+        balancesIsEmpty,
+        positionsIsEmpty,
+        balancesMetadata: balancesState.metadata,
+        positionsMetadata: positionsState.metadata,
+      }),
+    [
+      balancesIsEmpty,
+      positionsIsEmpty,
+      balancesState.metadata,
+      positionsState.metadata,
+    ],
+  );
 
   useEffect(() => {
-    if (isEqual(prevStatsRef.current, stats)) {
-      return;
+    const nextFilter = resolveHoldingsFilter(filter, stats, {
+      hasExplicitValueRange: !!hasExplicitValueRangeRef.current,
+      isAllBalancesDataLoading,
+    });
+
+    if (!isEqual(nextFilter, filter)) {
+      setFilter(nextFilter);
+      setSearchParamsState(
+        serializeHoldingsFilterForUrl(
+          nextFilter,
+          stats,
+          !!hasExplicitValueRangeRef.current,
+        ),
+      );
     }
-
-    if (!isAllBalancesDataLoading) {
-      prevStatsRef.current = stats;
-    }
-
-    const shouldClampRangeFilter =
-      !!hasInitialFilterRangeRef.current && !isAllBalancesDataLoading;
-
-    const sanitized = sanitizeHoldingsFilter(
-      filter,
-      stats,
-      shouldClampRangeFilter,
-    );
-    const effectiveValueRange = getEffectiveValueRange(stats.allValueRange);
-
-    const withDefaults = {
-      ...sanitized,
-      minValue: hasInitialFilterRangeRef.current
-        ? sanitized.minValue
-        : effectiveValueRange.min,
-    };
-
-    if (!isEqual(withDefaults, filter)) {
-      setFilter(removeNullValuesFromFilter(withDefaults));
-      setSearchParamsState({
-        holdingsWallets: withDefaults.wallets,
-        holdingsChains: withDefaults.chains,
-        holdingsAssets: withDefaults.assets,
-        holdingsMinValue: withDefaults.minValue,
-        holdingsMaxValue: withDefaults.maxValue,
-      });
-    }
-  }, [stats, setSearchParamsState, isAllBalancesDataLoading, filter]);
-
-  // ─── Filter & sort balances ────────────────────────────────────────────────
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mirror Earn: sanitize when stats/loading change
+  }, [stats, isAllBalancesDataLoading, setSearchParamsState]);
 
   const balancesData = useMemo(
     () =>
@@ -246,44 +179,34 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
     [balancesState.balancesByAddress, filter, sortBy, order],
   );
 
-  // ─── Filter & sort positions ───────────────────────────────────────────────
-
-  // chains/assets pre-filtered here; value range handled in filterSortPositionsData
-  const processedPositions = useProcessedPositions({
-    filter: {
-      chains: filter?.chains,
-      assets: filter?.assets,
-      sortBy,
-      order,
-    },
-  });
-
   const positionsData = useMemo(
     () =>
-      filterSortPositionsData(
-        processedPositions.positions,
-        filter,
-        sortBy,
-        order,
-      ),
-    [processedPositions.positions, filter, sortBy, order],
+      filterSortPositionsData(positionsState.positions, filter, sortBy, order),
+    [positionsState.positions, filter, sortBy, order],
   );
-
-  // ─── Filter update helpers ─────────────────────────────────────────────────
 
   const updateFilter = useCallback(
     (newFilter: NullableFields<HoldingsFilter>) => {
-      const newFilterValue = { ...filter, ...newFilter };
-      setFilter(removeNullValuesFromFilter(newFilterValue));
-      setSearchParamsState({
-        holdingsWallets: newFilterValue.wallets,
-        holdingsChains: newFilterValue.chains,
-        holdingsAssets: newFilterValue.assets,
-        holdingsMinValue: newFilterValue.minValue,
-        holdingsMaxValue: newFilterValue.maxValue,
+      if ('minValue' in newFilter || 'maxValue' in newFilter) {
+        hasExplicitValueRangeRef.current = true;
+      }
+
+      const merged = removeNullValuesFromFilter({ ...filter, ...newFilter });
+      const nextFilter = resolveHoldingsFilter(merged, stats, {
+        hasExplicitValueRange: !!hasExplicitValueRangeRef.current,
+        isAllBalancesDataLoading: false,
       });
+
+      setFilter(nextFilter);
+      setSearchParamsState(
+        serializeHoldingsFilterForUrl(
+          nextFilter,
+          stats,
+          !!hasExplicitValueRangeRef.current,
+        ),
+      );
     },
-    [filter, setSearchParamsState],
+    [filter, setSearchParamsState, stats],
   );
 
   const clearFilters = useCallback(() => {
@@ -312,14 +235,12 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
     [setSearchParamsState],
   );
 
-  // ─── Loading states ────────────────────────────────────────────────────────
-
   const balancesIsLoading =
     (balancesSourceState.isLoading && balancesSourceState.isEmpty) ||
     balancesSourceState.isRefreshing;
 
   const positionsIsLoading =
-    processedPositions.isLoading || positionsSourceState.isLoading;
+    positionsSourceState.isLoading || positionsSourceState.isRefreshing;
 
   // ─── Context value ─────────────────────────────────────────────────────────
 
