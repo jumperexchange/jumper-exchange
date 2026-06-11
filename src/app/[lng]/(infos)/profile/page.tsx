@@ -39,18 +39,11 @@ export default async function Page() {
     ]);
 
   const perks = perksResponse.data;
-  const totalPerks = perksResponse.meta.pagination?.total || 0;
-  const hasMorePerks = totalPerks > perks.length;
 
   const merklRewards = merklRewardsResponse.data;
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>
-      <ProfilePage
-        isPublic={true}
-        perks={perks}
-        hasMorePerks={hasMorePerks}
-        merklRewards={merklRewards}
-      />
+      <ProfilePage isPublic={true} perks={perks} merklRewards={merklRewards} />
     </Suspense>
   );
 }

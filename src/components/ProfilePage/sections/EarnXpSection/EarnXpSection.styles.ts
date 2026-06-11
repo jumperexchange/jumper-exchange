@@ -58,16 +58,6 @@ export const XpStat = styled(Box)(({ theme }) => ({
   flexShrink: 0,
 }));
 
-// Keeps the tab pill group left-aligned and intrinsically sized (the shared
-// HorizontalTabs container otherwise stretches to fill the row).
-export const earnXpTabsSx: SxProps<Theme> = (theme: Theme) => ({
-  width: 'fit-content',
-  flex: 'unset',
-  '& button:not(.Mui-selected)': {
-    color: `${(theme.vars || theme).palette.text.secondary} !important`,
-  },
-});
-
 // Placeholder while the Activity tab has no data source yet; matches the
 // mission card height so switching tabs doesn't jump the layout.
 export const ActivityPlaceholder = styled(Box)(({ theme }) => ({
