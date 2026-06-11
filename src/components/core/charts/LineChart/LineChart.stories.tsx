@@ -143,24 +143,6 @@ export const ApySameWithNulls: Story = {
   },
 };
 
-export const TrailingNullData: Story = {
-  render: DefaultRenderer,
-  args: {
-    ...commonArgs,
-    dateFormat: 'dd MMM',
-    data: [
-      { date: '2026-06-04', value: 100 },
-      { date: '2026-06-05', value: 230 },
-      { date: '2026-06-06', value: 120 },
-      { date: '2026-06-07', value: 150 },
-      { date: '2026-06-08', value: 100 },
-      { date: '2026-06-09', value: 167 },
-      { date: '2026-06-10', value: 142 },
-      { date: '2026-06-11', value: null },
-    ] as unknown as LineChartProps<number>['data'],
-  },
-};
-
 export const OnlyWithBaseLayers: Story = {
   render: DefaultRenderer,
   args: {

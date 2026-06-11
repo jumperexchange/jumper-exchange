@@ -125,29 +125,6 @@ export const MonthlyView: Story = {
   },
 };
 
-export const TrailingNullData: Story = {
-  render: DefaultRenderer,
-  args: {
-    ...commonArgs,
-    data: [
-      { date: '2026-06-04', base: 3.5, reward: 1.2, intrinsic: 0, total: 4.7 },
-      { date: '2026-06-05', base: 3.8, reward: 1.5, intrinsic: 0, total: 5.3 },
-      { date: '2026-06-06', base: 3.2, reward: 1.8, intrinsic: 0, total: 5.0 },
-      { date: '2026-06-07', base: 3.6, reward: 2.1, intrinsic: 0, total: 5.7 },
-      { date: '2026-06-08', base: 3.4, reward: 1.9, intrinsic: 0, total: 5.3 },
-      { date: '2026-06-09', base: 4.0, reward: 2.3, intrinsic: 0, total: 6.3 },
-      { date: '2026-06-10', base: 3.7, reward: 2.0, intrinsic: 0, total: 5.7 },
-      {
-        date: '2026-06-11',
-        base: null,
-        reward: null,
-        intrinsic: null,
-        total: null,
-      },
-    ],
-  },
-};
-
 export const OnlyWithBaseLayers: Story = {
   render: DefaultRenderer,
   args: {
