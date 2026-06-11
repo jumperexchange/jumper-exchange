@@ -11,4 +11,5 @@ export interface WidgetProps extends EntityWidgetProps {
   ctx: WidgetContext;
   type: WidgetType;
   formRef?: FormRef;
+  isLoading?: boolean;
 }

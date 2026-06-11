@@ -5,6 +5,7 @@ export enum AB_TEST_NAME {
   A_B_TEST_FEE_CONTRIBUTION_DISPLAY = 'a-b-test-fee-contribution-display',
   DUST_CONVERSION = 'dust-conversion',
   REQUEST_REDEEM_FLOW = 'request-redeem-flow',
+  PRIVATE_SWAPS = 'private-swaps',
 }
 
 // Single source of truth for all A/B tests
@@ -33,7 +34,10 @@ export const AbTests = {
     name: 'request-redeem-flow',
     enabled: true,
   },
-  // Add more tests here as needed
+  [AB_TEST_NAME.PRIVATE_SWAPS]: {
+    name: 'private-swaps',
+    enabled: true,
+  },
 } as const;
 
 // Global switch for all tests

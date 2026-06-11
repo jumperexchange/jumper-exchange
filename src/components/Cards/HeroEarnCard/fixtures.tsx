@@ -40,7 +40,7 @@ export const commonArgs = {
       },
     },
     slug: 'moonwell-flagship-usdc-on-base',
-    lockupMonths: 2,
+    lockupDays: 60,
     capInDollar: '1000000000000000000',
     featured: true,
     forYou: true,
