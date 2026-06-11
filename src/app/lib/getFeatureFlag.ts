@@ -32,7 +32,3 @@ export const isPortfolioFeatureEnabled = () => {
 export const isNewsletterFeatureEnabled = () => {
   return true;
 };
-
-export const isAnonymousSwapEnabled = () => {
-  return config.NEXT_PUBLIC_ENVIRONMENT !== 'production';
-};
