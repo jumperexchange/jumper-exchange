@@ -18,15 +18,3 @@ export interface MerklReward extends BaseReward {
   accumulatedAmountForContractBN: string;
   amountAccumulated: number;
 }
-
-export interface DeFiReacherReward extends BaseReward {
-  campaignId: string;
-  contractAddress: string;
-}
-
-export type MerklRewardItem = { type: 'merkl'; reward: MerklReward };
-export type DeFiReacherRewardItem = {
-  type: 'defi-reacher';
-  reward: DeFiReacherReward;
-};
-export type RewardItem = MerklRewardItem | DeFiReacherRewardItem;
