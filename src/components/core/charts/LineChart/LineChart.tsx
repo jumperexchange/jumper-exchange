@@ -1,4 +1,5 @@
 import { styled, useTheme } from '@mui/material/styles';
+import { dropRightWhile } from 'lodash';
 import {
   AreaChart,
   Area,
@@ -104,6 +105,13 @@ export const LineChart = <
     payload: T;
   } | null>(null);
 
+  // Trailing days without data would stretch the x-axis past the last drawn
+  // point (reads as a drop to zero), so trim them off the chart entirely.
+  const chartData = useMemo(
+    () => dropRightWhile(data, (point) => point.value == null),
+    [data],
+  );
+
   const {
     minValue,
     maxValue,
@@ -111,7 +119,7 @@ export const LineChart = <
     maxValueWithOffset,
     isSymmetricRange,
     isNegative,
-  } = calculateVisibleYRange(data);
+  } = calculateVisibleYRange(chartData);
 
   const dateFormatter = useCallback(
     (date: string) => {
@@ -144,14 +152,14 @@ export const LineChart = <
   }, [minValue, maxValue]);
 
   const xAxisTicks = useMemo(() => {
-    return calculateEvenXAxisTicks(data, dateFormatter);
-  }, [data, dateFormatter]);
+    return calculateEvenXAxisTicks(chartData, dateFormatter);
+  }, [chartData, dateFormatter]);
 
   const handleMouseLeave = useCallback(() => {
     setActiveDot(null);
   }, []);
 
-  if (isLoading || !data || !data.length) {
+  if (isLoading || !chartData.length) {
     return <LineChartSkeleton />;
   }
 
@@ -175,7 +183,7 @@ export const LineChart = <
         {...props}
       >
         <AreaChart
-          data={data}
+          data={chartData}
           accessibilityLayer={false}
           onMouseLeave={handleMouseLeave}
         >

@@ -1,4 +1,5 @@
 import { styled, useTheme } from '@mui/material/styles';
+import { dropRightWhile } from 'lodash';
 import {
   AreaChart,
   Area,
@@ -113,20 +114,27 @@ export const StackedAreaChart = ({
     payload: StackedChartDataPoint;
   } | null>(null);
 
+  // Trailing days without data would stretch the x-axis past the last drawn
+  // point (reads as a drop to zero), so trim them off the chart entirely.
+  const chartData = useMemo(
+    () => dropRightWhile(data, (point) => point.total == null),
+    [data],
+  );
+
   const enrichedData = useMemo(
     () =>
-      data.map((point) => ({
+      chartData.map((point) => ({
         ...point,
         baseReward:
           point.base != null || point.reward != null
             ? (point.base ?? 0) + (point.reward ?? 0)
             : null,
       })),
-    [data],
+    [chartData],
   );
 
   const { minValue, maxValue, minValueWithOffset, maxValueWithOffset } =
-    calculateStackedVisibleYRange(data);
+    calculateStackedVisibleYRange(chartData);
 
   const dateFormatter = useCallback(
     (date: string) => {
@@ -223,7 +231,7 @@ export const StackedAreaChart = ({
     );
   };
 
-  if (isLoading || !data || !data.length) {
+  if (isLoading || !chartData.length) {
     return <LineChartSkeleton />;
   }
 
