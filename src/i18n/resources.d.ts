@@ -1041,7 +1041,7 @@ export default interface Resources {
     };
     tooltips: {
       apr: 'Expected yearly return rate of the tokens invested (incl. rewards if available).';
-      apy: 'Expected yearly return rate of the tokens invested.';
+      apy: 'Expected yearly return rate of the tokens invested on a 7 day trailing basis, incl. temporary rewards.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';

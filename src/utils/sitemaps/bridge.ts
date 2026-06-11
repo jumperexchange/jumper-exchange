@@ -10,10 +10,11 @@ import {
 import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
 import { isAlphanumeric } from '@/utils/validation-schemas';
 import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import { cache } from 'react';
 
 export const dynamic = 'force-static';
 
-const SITEMAP_LIMIT = 10_000;
+export const SITEMAP_LIMIT = 10_000;
 
 const getFilteredCoins = (
   availableChainIds: number[],
@@ -44,7 +45,7 @@ const generateBridgePairs = (tokens: Token[]): Array<[Token, Token]> => {
   return pairs;
 };
 
-const getChainData = async () => {
+const getChainData = cache(async () => {
   const [{ chains }, availableTokens] = await Promise.all([
     getChainsQuery(),
     getTokensQuery(),
@@ -53,7 +54,7 @@ const getChainData = async () => {
   const filteredCoins = getFilteredCoins(availableChainIds, availableTokens);
   const pairs = generateBridgePairs(filteredCoins);
   return { chains, pairs };
-};
+});
 
 const toRouteEntry = (
   chains: ExtendedChain[],
@@ -80,10 +81,14 @@ const toRouteEntry = (
   };
 };
 
-export const getBridgeSitemapChunkIds = async (): Promise<string[]> => {
+export const getBridgeSitemapChunkCount = async (): Promise<number> => {
   const { pairs } = await getChainData();
-  const numberOfChunks = Math.ceil(pairs.length / SITEMAP_LIMIT);
-  return Array.from({ length: numberOfChunks }, (_, index) => String(index));
+  return Math.ceil(pairs.length / SITEMAP_LIMIT);
+};
+
+export const getBridgeSitemapChunkIds = async (): Promise<string[]> => {
+  const chunkCount = await getBridgeSitemapChunkCount();
+  return Array.from({ length: chunkCount }, (_, index) => String(index));
 };
 
 export const getBridgeSitemapEntriesForChunk = async (
@@ -91,6 +96,11 @@ export const getBridgeSitemapEntriesForChunk = async (
   lastModified = toSitemapDate(Date.now()),
 ): Promise<SitemapXmlEntry[]> => {
   const { chains, pairs } = await getChainData();
+  const chunkCount = Math.ceil(pairs.length / SITEMAP_LIMIT);
+
+  if (chunkIndex < 0 || chunkIndex >= chunkCount) {
+    return [];
+  }
 
   return pairs
     .slice(chunkIndex * SITEMAP_LIMIT, (chunkIndex + 1) * SITEMAP_LIMIT)
@@ -98,4 +108,15 @@ export const getBridgeSitemapEntriesForChunk = async (
       const entry = toRouteEntry(chains, pair, lastModified);
       return entry ? [entry] : [];
     });
+};
+
+export const isBridgeSitemapChunkInRange = async (
+  chunkIndex: number,
+): Promise<boolean> => {
+  if (chunkIndex < 0) {
+    return false;
+  }
+
+  const chunkCount = await getBridgeSitemapChunkCount();
+  return chunkIndex < chunkCount;
 };

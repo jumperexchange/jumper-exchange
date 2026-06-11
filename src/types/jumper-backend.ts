@@ -912,7 +912,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupMonths?: number | null;
+  lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -1330,7 +1330,7 @@ export interface EarnOpportunityWithScore {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupMonths?: number | null;
+  lockupDays?: number | null;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
