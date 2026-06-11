@@ -963,7 +963,22 @@ export default interface Resources {
       achievements: 'Achievements';
       availableRewards: 'Available Rewards';
       campaigns: 'Campaigns';
+      carousel: {
+        showing: 'Showing {{shown}} of {{total}}';
+      };
       copyAddress: 'Copy wallet address';
+      earnXp: {
+        activityComingSoon: 'Activity tracking is coming soon.';
+        description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
+        openHub: 'Open Mission Hub';
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Earn XP';
+        xpAmount: '{{xp}} XP';
+        xpEarned: 'earned so far this month';
+      };
       joined: 'Joined {{date}}';
       jumperPass: 'Jumper Pass';
       level: 'Level';
@@ -1009,7 +1024,6 @@ export default interface Resources {
         count_other: 'You have {{count}} unlocked perks';
         description: 'Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.';
         openHub: 'Open Perks Hub';
-        showing: 'Showing {{shown}} of {{total}}';
         title: 'Unlocked Perks';
       };
       viewLeaderboard: 'View leaderboard';

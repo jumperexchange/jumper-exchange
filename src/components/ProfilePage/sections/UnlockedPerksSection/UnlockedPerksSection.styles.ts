@@ -3,22 +3,18 @@ import { styled } from '@mui/material/styles';
 import type { SxProps, Theme } from '@mui/material/styles';
 
 // Two-column card (info | perks carousel). Stacks on small screens. The surface
-// itself comes from SectionCard (surface2); we add the grid + inset highlight.
-export const unlockedPerksCardSx: SxProps<Theme> = (theme: Theme) => {
-  const palette = (theme.vars || theme).palette;
-  return {
-    display: 'grid',
-    // minmax(0, …) (not bare 1fr) so the column can't be widened past the card
-    // by the carousel's intrinsic content width — otherwise cards bleed out.
-    gridTemplateColumns: 'minmax(0, 1fr)',
-    rowGap: theme.spacing(4),
-    columnGap: theme.spacing(4),
-    boxShadow: `inset 0px 1px 0px 0px ${palette.white.main}, 0px 4px 24px 0px ${palette.alphaDark200.main}`,
-    [theme.breakpoints.up('lg')]: {
-      gridTemplateColumns: 'minmax(0, 0.5fr) minmax(0, 1fr)',
-    },
-  };
-};
+// and elevation come from SectionCard (surface2); we add the grid.
+export const unlockedPerksCardSx: SxProps<Theme> = (theme: Theme) => ({
+  display: 'grid',
+  // minmax(0, …) (not bare 1fr) so the column can't be widened past the card
+  // by the carousel's intrinsic content width — otherwise cards bleed out.
+  gridTemplateColumns: 'minmax(0, 1fr)',
+  rowGap: theme.spacing(4),
+  columnGap: theme.spacing(4),
+  [theme.breakpoints.up('lg')]: {
+    gridTemplateColumns: 'minmax(0, 0.5fr) minmax(0, 1fr)',
+  },
+});
 
 export const InfoColumn = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -50,33 +46,6 @@ export const InfoDivider = styled(Box)(({ theme }) => ({
   height: '1px',
   backgroundColor: (theme.vars || theme).palette.border,
 }));
-
-export const PerksColumn = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(3),
-  // Lets the Swiper compute available width inside the grid cell.
-  minWidth: 0,
-}));
-
-// Relative wrapper so the nav buttons can sit centered on the carousel edges
-// (its overflow stays visible so the straddling buttons aren't clipped; the
-// Swiper clips its own slides).
-export const CarouselViewport = styled(Box)(() => ({
-  position: 'relative',
-  minWidth: 0,
-}));
-
-// Nav button centered on the left/right edge of the carousel, with the Figma
-// "halo": a 4px surface-2 ring around the light button (no edge fade).
-export const perksNavButtonSx = (side: 'left' | 'right') => (theme: Theme) => ({
-  position: 'absolute',
-  top: '50%',
-  [side]: 0,
-  transform: `translate(${side === 'left' ? '-50%' : '50%'}, -50%)`,
-  zIndex: 2,
-  border: `${theme.spacing(0.5)} solid ${(theme.vars || theme).palette.surface2.main}`,
-});
 
 // --- Compact perk card ---
 
@@ -132,31 +101,4 @@ export const PerkCardBadges = styled(Box)(({ theme }) => ({
   // side by side (otherwise the right badge spills past the card edge).
   flexWrap: 'wrap',
   gap: theme.spacing(1),
-}));
-
-// --- Carousel controls (Showing X of Y + dots) ---
-
-export const PerksControls = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  padding: theme.spacing(0, 2),
-}));
-
-export const PerksDots = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
-}));
-
-export const PerksDot = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  width: theme.spacing(1),
-  height: theme.spacing(1),
-  borderRadius: theme.shape.radiusRoundedFull,
-  cursor: 'pointer',
-  backgroundColor: active
-    ? (theme.vars || theme).palette.accent1.main
-    : (theme.vars || theme).palette.alpha300.main,
 }));
