@@ -29,7 +29,10 @@ describe('canBrowserPlayVideoMime', () => {
   });
 
   it('falls back to the playable MIME whitelist when document is unavailable', () => {
+    vi.stubGlobal('document', undefined);
+
     expect(canBrowserPlayVideoMime('video/mp4')).toBe(true);
+    expect(canBrowserPlayVideoMime('video/webm')).toBe(true);
     expect(canBrowserPlayVideoMime('video/quicktime')).toBe(false);
   });
 

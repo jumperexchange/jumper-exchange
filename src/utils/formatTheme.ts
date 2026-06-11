@@ -7,7 +7,7 @@ function getThemeMedia(
   theme: PartnerThemesAttributes,
   imageType: 'BackgroundImage' | 'FooterImage' | 'Logo',
   defaultMode: 'light' | 'dark' = 'dark',
-): { url: URL; mime: string } | null {
+): { url: URL; mime: string | null } | null {
   const baseStrapiUrl = getStrapiUrl(STRAPI_PARTNER_THEMES);
 
   const imageLight = theme[`${imageType}Light`];
@@ -20,7 +20,7 @@ function getThemeMedia(
 
   return {
     url: new URL(media.url, baseStrapiUrl),
-    mime: media.mime,
+    mime: media.mime?.trim() || null,
   };
 }
 
