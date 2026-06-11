@@ -113,6 +113,11 @@ export default interface Resources {
         totalRewards: 'Total rewards';
       };
     };
+    common: {
+      days_one: '{{count}} day';
+      days_other: '{{count}} days';
+      noData: 'No data';
+    };
     completedMissionsInformation: {
       description: 'As Jumper organize ad-hoc campaigns, the missions are updated on a monthly basis to create the associated graphics. Keep in mind: XP coming from specific campaigns will be updated on a monthly basis as well.';
       title: '';

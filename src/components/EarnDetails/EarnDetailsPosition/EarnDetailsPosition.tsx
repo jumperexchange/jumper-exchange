@@ -97,7 +97,8 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
   const isRequestRedeemFlowEnabled =
     !requestRedeemFlowFeatureFlag.isLoading &&
     requestRedeemFlowFeatureFlag.isEnabled &&
-    !!requestRedeemFlowFeatureFlag.value;
+    (requestRedeemFlowFeatureFlag.value === true ||
+      requestRedeemFlowFeatureFlag.value === 'test');
 
   const depositAmountUSD = useMemo(() => {
     if (isLoadingPositions || !positionsData || !positionsData.data) {
@@ -244,7 +245,7 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
           return (
             <RequestRedeemFlowIconButton
               variant={IconButtonVariant.Success}
-              tooltipContent={t('tooltips.claimRedeemPending')}
+              tooltipContent={t('tooltips.claimRedeemAvailable')}
               earnOpportunity={earnOpportunity}
               refetchCallback={handleRefreshBalances}
             >
@@ -257,7 +258,7 @@ export const EarnDetailsPosition: FC<EarnDetailsPositionProps> = ({
           return (
             <RequestRedeemFlowIconButton
               variant={IconButtonVariant.AlphaDark}
-              tooltipContent={t('tooltips.claimRedeemAvailable')}
+              tooltipContent={t('tooltips.claimRedeemPending')}
               earnOpportunity={earnOpportunity}
               refetchCallback={handleRefreshBalances}
             >

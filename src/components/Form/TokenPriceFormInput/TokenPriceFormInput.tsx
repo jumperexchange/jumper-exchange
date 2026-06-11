@@ -2,7 +2,7 @@ import type { Balance, ExtendedToken } from '@/types/tokens';
 import type { FormInputProps } from '../FormInput/FormInput';
 import { FormInputField } from '../FormInput/FormInput.styles';
 import type { ChangeEvent, FC } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { EntityChainStack } from '@/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '@/components/composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
@@ -47,7 +47,7 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const inputValue = event.target.value.replace('$', '');
+    const inputValue = event.target.value.replace('$', '').replace('-', '');
 
     const usdAmountFormatted = toInputAmount(inputValue, usdDecimals, true);
 

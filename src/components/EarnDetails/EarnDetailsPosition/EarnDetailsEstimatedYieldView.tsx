@@ -17,6 +17,7 @@ import {
   Size as IconButtonSize,
 } from '@/components/core/buttons/types';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from 'react-i18next';
 
 interface EarnDetailsEstimatedYieldViewProps {
   yieldEstimateTokenBalance: Balance<ExtendedToken>;
@@ -35,6 +36,8 @@ export const EarnDetailsEstimatedYieldView: FC<
   EarnDetailsEstimatedYieldViewProps
 > = ({ yieldEstimateTokenBalance, yieldBoost }) => {
   const token = yieldEstimateTokenBalance.token;
+
+  const { t } = useTranslation();
 
   const { toDisplayAmountUSD } = useTokenFormatters();
   const { toRawAmount, toAmount } = useTokenAmountInput();
@@ -116,9 +119,13 @@ export const EarnDetailsEstimatedYieldView: FC<
         {DURATION_DAY_OPTIONS.map((duration) => (
           <TitleWithHint
             key={duration}
-            title={formatYieldAmount(duration, yieldBoost)}
+            title={
+              yieldBoost
+                ? formatYieldAmount(duration, yieldBoost)
+                : t('common.noData')
+            }
             titleVariant="bodyLargeStrong"
-            hint={`${duration} days`}
+            hint={t('common.days', { count: duration })}
             hintVariant="bodyXSmall"
             gap={6}
             sx={{

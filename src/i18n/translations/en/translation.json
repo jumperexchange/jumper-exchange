@@ -1299,5 +1299,10 @@
   },
   "alerts": {
     "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."
+  },
+  "common": {
+    "noData": "No data",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days"
   }
 }
