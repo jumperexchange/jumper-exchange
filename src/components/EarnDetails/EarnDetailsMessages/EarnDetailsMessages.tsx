@@ -13,17 +13,17 @@ const SEVERITY_TO_VARIANT: Record<VaultMessageSeverity, BaseAlertVariant> = {
 };
 
 interface EarnDetailsMessagesProps {
-  messages: VaultMessage[];
+  messages?: VaultMessage[];
 }
 
 export const EarnDetailsMessages: FC<EarnDetailsMessagesProps> = ({
   messages,
 }) => {
-  if (!messages.length) {
+  if (!messages?.length) {
     return null;
   }
 
-  return (
+
     <Stack spacing={1}>
       {messages.map((message, index) => (
         <BaseAlert
