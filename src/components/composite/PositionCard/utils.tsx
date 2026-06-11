@@ -224,11 +224,5 @@ export const renderBorrowedActions = ({}: {
 );
 
 export const hasPositionDataToDisplay = (position: PortfolioPosition) => {
-  // For now, we no longer need this check as we're not expanding the position card, as we previously did.
-  // return (
-  //   position.supplyTokens?.length > 0 ||
-  //   position.borrowTokens?.length > 0 ||
-  //   position.rewardTokens?.length > 0
-  // );
   return true;
 };
