@@ -986,7 +986,32 @@ export default interface Resources {
       claimed: 'Claimed';
       copyAddress: 'Copy wallet address';
       earnXp: {
-        activityComingSoon: 'Activity tracking is coming soon.';
+        activity: {
+          nextTier: {
+            bridge_oor: 'Bridge {{count}} USD more for {{xp}} XP';
+            chain_oor_one: 'Explore {{count}} more chain for {{xp}} XP';
+            chain_oor_other: 'Explore {{count}} more chains for {{xp}} XP';
+            earn_oor: 'Deposit {{count}} USD more for {{xp}} XP';
+            swap_oor: 'Swap {{count}} USD more for {{xp}} XP';
+          };
+          outstanding_one: 'You have <bold>{{count}} outstanding</bold> activity goal to complete this month';
+          outstanding_other: 'You have <bold>{{count}} outstanding</bold> activity goals to complete this month';
+          progress: {
+            bridge_oor: 'You have bridged {{count}} USD';
+            chain_oor_one: 'You have explored {{count}} chain';
+            chain_oor_other: 'You have explored {{count}} chains';
+            earn_oor: 'You have deposited {{count}} USD';
+            swap_oor: 'You have swapped {{count}} USD';
+          };
+          topTier: 'You have reached the top tier for this month!';
+          types: {
+            bridge_oor: 'Bridge_oor';
+            chain_oor: 'Chain_oor';
+            earn_oor: 'Earn_oor';
+            swap_oor: 'Swap_oor';
+          };
+          xpAvailable: '{{xp}} XP available';
+        };
         description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
         openHub: 'Open Mission Hub';
         tabs: {
@@ -1030,9 +1055,6 @@ export default interface Resources {
         previous: 'Previous';
       };
       shareProfile: 'Share profile';
-      tooltips: {
-        ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
-      };
       unlocked: 'Unlocked';
       unlockedPerks: {
         count_one: 'You have {{count}} unlocked perk';

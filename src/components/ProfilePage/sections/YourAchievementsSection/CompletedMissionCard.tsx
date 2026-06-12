@@ -11,7 +11,7 @@ import {
   TileContent,
   TileImage,
   TileImagePlaceholder,
-} from './YourAchievementsSection.styles';
+} from '../Section.style';
 
 interface CompletedMissionCardProps {
   mission: CompletedMission;
