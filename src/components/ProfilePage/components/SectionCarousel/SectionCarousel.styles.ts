@@ -30,12 +30,12 @@ export const carouselNavButtonSx =
     border: `${theme.spacing(0.5)} solid ${(theme.vars || theme).palette.surface2.main}`,
   });
 
-// --- Carousel controls (Showing X of Y + dots) ---
+// --- Carousel controls (page dots) ---
 
 export const CarouselControls = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   padding: theme.spacing(0, 2),
 }));
 

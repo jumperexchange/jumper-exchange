@@ -9,11 +9,9 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper/types';
 import 'swiper/css';
-import Typography from '@mui/material/Typography';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import {
   CarouselColumn,
@@ -24,20 +22,26 @@ import {
   carouselNavButtonSx,
 } from './SectionCarousel.styles';
 
+interface SectionCarouselProps extends PropsWithChildren {
+  // Slides per view from the `lg` breakpoint (1 on mobile, 2 from `sm` stay
+  // fixed). Defaults to the regular 2-up layout.
+  desktopSlidesPerView?: number;
+}
+
 // Generic paged carousel: 1 card on mobile, 2 from the `sm` breakpoint, with
-// edge nav buttons, a "Showing X of Y" status line and page dots. Each child is
-// a slide. Shared by the profile page sections (perks, missions, …).
-export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
-  const { t } = useTranslation();
+// edge nav buttons and page dots. Each child is a slide. Shared by the profile
+// page sections (perks, missions, …).
+export const SectionCarousel: FC<SectionCarouselProps> = ({
+  children,
+  desktopSlidesPerView = 2,
+}) => {
   const theme = useTheme();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
   const [snapCount, setSnapCount] = useState(1);
   const [activeSnap, setActiveSnap] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(1);
 
   const slides = Children.toArray(children);
-  const total = slides.length;
 
   useEffect(() => {
     if (!swiper) {
@@ -47,8 +51,6 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
       setNavState({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd });
       setSnapCount(Math.max(1, swiper.snapGrid?.length ?? 1));
       setActiveSnap(swiper.snapIndex ?? 0);
-      const perView = swiper.slidesPerViewDynamic?.() ?? 1;
-      setVisibleCount(Math.max(1, Math.round(perView)));
     };
     update();
     const events = [
@@ -63,7 +65,6 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
     };
   }, [swiper]);
 
-  const shown = Math.min(visibleCount, total);
   // snapIndex is page-based (slidesPerGroup = slidesPerView), so a dot maps to
   // the slide that starts its page.
   const goToPage = (page: number) =>
@@ -85,6 +86,12 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
               slidesPerView: 2,
               slidesPerGroup: 2,
             },
+            ...(desktopSlidesPerView !== 2 && {
+              [theme.breakpoints.values.lg]: {
+                slidesPerView: desktopSlidesPerView,
+                slidesPerGroup: desktopSlidesPerView,
+              },
+            }),
           }}
         >
           {slides.map((child, index) => (
@@ -112,11 +119,8 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
         )}
       </CarouselViewport>
 
-      <CarouselControls>
-        <Typography variant="bodySmallParagraph" color="textSecondary">
-          {t('profile_page.carousel.showing', { shown, total })}
-        </Typography>
-        {snapCount > 1 && (
+      {snapCount > 1 && (
+        <CarouselControls>
           <CarouselDots>
             {Array.from({ length: snapCount }).map((_, index) => (
               <CarouselDot
@@ -128,8 +132,8 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
               />
             ))}
           </CarouselDots>
-        )}
-      </CarouselControls>
+        </CarouselControls>
+      )}
     </CarouselColumn>
   );
 };

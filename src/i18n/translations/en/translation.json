@@ -293,7 +293,7 @@
     "jumperPass": "Jumper Pass",
     "progressTo": "Your progress to",
     "passStats": {
-      "thisWeek": "this week",
+      "lastMonth": "last month",
       "unlocked": "unlocked",
       "perks_one": "{{count}} perk",
       "perks_other": "{{count}} perks"
@@ -305,9 +305,6 @@
       "count_one": "You have {{count}} unlocked perk",
       "count_other": "You have {{count}} unlocked perks"
     },
-    "carousel": {
-      "showing": "Showing {{shown}} of {{total}}"
-    },
     "earnXp": {
       "title": "Earn XP",
       "description": "Complete missions and increase your activity to earn XP and unlock more perks!",
@@ -318,7 +315,32 @@
         "missions": "Missions",
         "activity": "Activity"
       },
-      "activityComingSoon": "Activity tracking is coming soon."
+      "activity": {
+        "types": {
+          "swap_oor": "Swap_oor",
+          "earn_oor": "Earn_oor",
+          "bridge_oor": "Bridge_oor",
+          "chain_oor": "Chain_oor"
+        },
+        "progress": {
+          "swap_oor": "You have swapped {{count}} USD",
+          "earn_oor": "You have deposited {{count}} USD",
+          "bridge_oor": "You have bridged {{count}} USD",
+          "chain_oor_one": "You have explored {{count}} chain",
+          "chain_oor_other": "You have explored {{count}} chains"
+        },
+        "xpAvailable": "{{xp}} XP available",
+        "nextTier": {
+          "swap_oor": "Swap {{count}} USD more for {{xp}} XP",
+          "earn_oor": "Deposit {{count}} USD more for {{xp}} XP",
+          "bridge_oor": "Bridge {{count}} USD more for {{xp}} XP",
+          "chain_oor_one": "Explore {{count}} more chain for {{xp}} XP",
+          "chain_oor_other": "Explore {{count}} more chains for {{xp}} XP"
+        },
+        "topTier": "You have reached the top tier for this month!",
+        "outstanding_one": "You have <bold>{{count}} outstanding</bold> activity goal to complete this month",
+        "outstanding_other": "You have <bold>{{count}} outstanding</bold> activity goals to complete this month"
+      }
     },
     "yourAchievements": {
       "title": "Your achievements",
@@ -345,10 +367,7 @@
     "shareProfile": "Share profile",
     "open": "Open {{tool}}",
     "unlocked": "Unlocked",
-    "levelWithValue": "Level {{level, number}}",
-    "tooltips": {
-      "ongoingAchievement": "This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month."
-    }
+    "levelWithValue": "Level {{level, number}}"
   },
   "campaign": {
     "missions": {

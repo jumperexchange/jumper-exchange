@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography';
 import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { isAfter, subDays } from 'date-fns';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { GiftIcon } from 'src/components/illustrations/GiftIcon';
 import { FatBoltIcon } from 'src/components/illustrations/FatBoltIcon';
@@ -12,6 +11,7 @@ import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import type { PerksDataAttributes } from 'src/types/strapi';
 import { ProgressionBar } from '../../LevelBox/ProgressionBar';
+import { getLastSettledMonthXP } from '../../utils/getLastSettledMonthXP';
 import { getLevelBasedOnPoints } from '../../utils/getLevelBasedOnPoints';
 import {
   JumperPassCardContainer,
@@ -44,13 +44,7 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
   const currentLevel = levelData.level ?? 0;
   const nextLevel = currentLevel + 1;
 
-  const weekAgo = subDays(new Date(), 7);
-  const xpThisWeek = (pdas ?? []).reduce((sum, pda) => {
-    // isAfter returns false for invalid dates, so bad timestamps are skipped.
-    return isAfter(new Date(pda.timestamp), weekAgo)
-      ? sum + (pda.points ?? 0)
-      : sum;
-  }, 0);
+  const xpLastMonth = getLastSettledMonthXP(pdas ?? []);
   const perksUnlocked = unlockedPerks.length;
 
   if (isWalletLoading || isLoading) {
@@ -63,8 +57,8 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
         <JumperPassStatsContainer>
           <PassStatChip
             icon={<FatBoltIcon sx={statIconSx} />}
-            value={`${t('format.decimal2Digit', { value: xpThisWeek })} XP`}
-            caption={t('profile_page.passStats.thisWeek')}
+            value={`${t('format.decimal2Digit', { value: xpLastMonth })} XP`}
+            caption={t('profile_page.passStats.lastMonth')}
           />
           <PassStatChip
             icon={<GiftIcon sx={statIconSx} />}
