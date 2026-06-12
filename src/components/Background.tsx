@@ -24,14 +24,16 @@ function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
   const { shouldShowForTheme } = useThemeConditionsMet();
 
-  const backgroundImageUrl = useGetPartnerThemeImage();
+  const { url: backgroundImageUrl, mime: backgroundImageMime } =
+    useGetPartnerThemeImage();
 
   return (
     <BackgroundContainer id="background-root">
       <AnimatedBackgroundImage
         src={backgroundImageUrl}
+        mime={backgroundImageMime}
         sx={{
-          '& > img': {
+          '& > img, & > video': {
             objectPosition: configTheme?.backgroundImagePosition ?? 'center',
           },
         }}
