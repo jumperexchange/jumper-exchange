@@ -108,6 +108,24 @@ export const NavbarButtonLabel = styled(Typography)(() => ({
   color: 'inherit',
 }));
 
+export const NavbarButtonLabelColumn = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  textAlign: 'left',
+}));
+
+export const PassProgressChip = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(0.75),
+  borderRadius: theme.shape.buttonBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+  boxShadow: theme.shadows[2],
+  color: (theme.vars || theme).palette.statusProgress,
+}));
+
 export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
   theme,
 }) => {
@@ -155,13 +173,3 @@ export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) =>
 export const BurgerMenuIcon = styled(MuiMenuRoundedIcon)(({ theme }) =>
   getIconProps(theme),
 );
-
-export const LevelIconBox = styled(Box)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  borderRadius: theme.shape.buttonBorderRadius,
-  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
-  color: (theme.vars || theme).palette.buttonPrimaryAction,
-  alignContent: 'center',
-  justifySelf: 'center',
-}));

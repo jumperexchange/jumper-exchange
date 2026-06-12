@@ -32,6 +32,8 @@
       }
     },
     "pass": "Pass",
+    "perksUnlocked_one": "{{count}} Perk unlocked",
+    "perksUnlocked_other": "{{count}} Perks unlocked",
     "wallets": "Wallets",
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
