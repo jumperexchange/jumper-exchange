@@ -1,26 +1,29 @@
-import { useTranslation } from 'react-i18next';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslation } from 'react-i18next';
+import { ProgressRing } from '@/components/core/ProgressRing/ProgressRing';
 import { AppPaths } from 'src/const/urls';
-import { useLevelDisplayData } from '../../hooks';
-import { LabelButton } from './LabelButton';
 import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
-import Typography from '@mui/material/Typography';
-import { LevelIconBox } from './Buttons.style';
+import { usePassDisplayData } from '../../hooks';
+import { PassProgressChip } from './Buttons.style';
+import { LabelButton } from './LabelButton';
 
-export const LevelButton = () => {
+const RING_SIZE = 20;
+
+export const PassButton = () => {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const pathname = usePathnameWithoutLocale();
-  const { value, isLoading } = useLevelDisplayData();
+  const { progress, unlockedPerksCount, isLoading } = usePassDisplayData();
 
   return (
     <LabelButton
       icon={
-        <LevelIconBox>
-          <Typography variant="bodyXSmallStrong">{value ?? 0}</Typography>
-        </LevelIconBox>
+        <PassProgressChip>
+          <ProgressRing progress={progress} size={RING_SIZE} />
+        </PassProgressChip>
       }
       label={t('navbar.pass')}
+      caption={t('navbar.perksUnlocked', { count: unlockedPerksCount })}
       href={AppPaths.Profile}
       id="wallet-digest-button-xp"
       isActive={pathname === AppPaths.Profile}
