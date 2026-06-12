@@ -52,19 +52,20 @@ Read these first when picking up new work in this repo:
 
 ## Where new things go
 
-| New thing                        | Goes in                                                                          |
-| -------------------------------- | -------------------------------------------------------------------------------- |
-| New page                         | `src/app/[lng]/<segment>/page.tsx` (+ `layout.tsx` if it has children)           |
-| New API route handler            | `src/app/api/<name>/route.ts`                                                    |
-| New feature component            | `src/components/<FeatureName>/` (subfolder; one component per file, no barrels)  |
-| New zustand store                | `src/stores/<feature>/`                                                          |
-| New react-query hook             | `src/hooks/<feature>/use<Thing>.ts`                                              |
-| New wallet connector             | `src/providers/WalletProvider/` + relevant `src/config/<connector>.ts`           |
-| New translation key              | `src/i18n/translations/en/<namespace>.json` then `pnpm i18next-resources-for-ts` |
-| New unit test                    | `<file>.spec.ts(x)` next to the source                                           |
-| New E2E test                     | `tests/<feature>.spec.ts`                                                        |
-| New theme token / palette change | `src/theme/`                                                                     |
-| New env variable                 | `src/config/env-config.ts` + document in `.env.example`                          |
+| New thing                        | Goes in                                                                                                                                                     |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| New page                         | `src/app/[lng]/<segment>/page.tsx` (+ `layout.tsx` if it has children)                                                                                      |
+| New API route handler            | `src/app/api/<name>/route.ts`                                                                                                                               |
+| New feature component            | `src/components/<FeatureName>/` (subfolder; one component per file, no barrels)                                                                             |
+| New zustand store                | `src/stores/<feature>/`                                                                                                                                     |
+| New react-query hook             | `src/hooks/<feature>/use<Thing>.ts`                                                                                                                         |
+| New wallet connector             | `src/providers/WalletProvider/` + relevant `src/config/<connector>.ts`                                                                                      |
+| New translation key              | `src/i18n/translations/en/<namespace>.json` then `pnpm i18next-resources-for-ts`                                                                            |
+| New unit test                    | `<file>.spec.ts(x)` next to the source                                                                                                                      |
+| New E2E test                     | `tests/<feature>.spec.ts`                                                                                                                                   |
+| New theme token / palette change | `src/theme/`                                                                                                                                                |
+| New env variable                 | `src/config/env-config.ts` + document in `.env.example`                                                                                                     |
+| New canvas background scene      | `src/components/CanvasBackground/scenes/<id>/` — see [docs/workflows/canvas-background-scene/README.md](./docs/workflows/canvas-background-scene/README.md) |
 
 If a change does not fit any of the above, stop and ask — do not invent a new top-level folder.
 
@@ -81,6 +82,7 @@ If a change does not fit any of the above, stop and ask — do not invent a new 
 - [README.md](./README.md) — getting started, tools, lint, translations.
 - [ARCHITECTURE.md](./ARCHITECTURE.md) — app shape, route map, dependency rules.
 - [tests/README.md](./tests/README.md) — Playwright E2E setup and run commands.
+- [docs/workflows/README.md](./docs/workflows/README.md) — task workflows (canvas backgrounds, etc.).
 
 <!-- local overrides (gitignored) -->
 

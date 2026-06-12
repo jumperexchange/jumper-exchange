@@ -288,6 +288,10 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
   hasThemeModeSwitch?: boolean;
   themeModeIcon?: string;
+  canvasBackground?: {
+    id: string;
+    options?: Record<string, unknown>;
+  };
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
