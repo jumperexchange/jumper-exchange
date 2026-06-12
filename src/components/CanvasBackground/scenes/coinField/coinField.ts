@@ -22,6 +22,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import type { CanvasBackgroundHandle } from '@/components/CanvasBackground/types';
 import { COIN_FIELD_DEFAULTS } from './coinFieldDefaults';
+import { coinFieldOptionsSchema } from './coinFieldOptionsSchema';
 
 type CoinConf = {
   token: string;
@@ -257,17 +258,19 @@ export function initCoinField(
   canvas: HTMLCanvasElement,
   options: Record<string, unknown> = {},
 ): CanvasBackgroundHandle {
-  const partial = options as Partial<CoinFieldOptions>;
-  const opts: CoinFieldOptions = {
+  const merged = {
     ...DEFAULTS,
-    ...partial,
-    cell: { ...DEFAULTS.cell, ...(partial.cell || {}) },
-    bloom: { ...DEFAULTS.bloom, ...(partial.bloom || {}) },
-    coins: (partial.coins || DEFAULTS.coins).map((c) => ({
-      ...c,
-      rot: { ...c.rot },
-    })),
+    ...options,
+    cell: { ...DEFAULTS.cell, ...(options.cell || {}) },
+    bloom: { ...DEFAULTS.bloom, ...(options.bloom || {}) },
   };
+  const parseResult = coinFieldOptionsSchema.safeParse(merged);
+  if (!parseResult.success) {
+    console.error('Invalid coinField options:', parseResult.error);
+  }
+  const opts: CoinFieldOptions = parseResult.success
+    ? parseResult.data
+    : DEFAULTS;
   const reduceMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)',
   ).matches;
