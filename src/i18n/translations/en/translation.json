@@ -717,6 +717,16 @@
       "transactions": "Transactions",
       "soon": "Soon"
     },
+    "transactionSummary": {
+      "columns": {
+        "amount": "Amount",
+        "action": "Action",
+        "assetIn": "Asset in",
+        "assetOut": "Asset out",
+        "fee": "Fee",
+        "date": "Date"
+      }
+    },
     "dustConversion": {
       "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",
       "title": "Convert dust",

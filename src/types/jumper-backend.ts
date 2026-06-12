@@ -1209,6 +1209,81 @@ export interface WalletPositions {
   )[];
 }
 
+export interface TransactionsPaginationMeta {
+  next: string | null;
+  pagesLength: number;
+}
+
+export type TokenDto = {
+  address: string;
+  chainId: number;
+  symbol: string;
+  decimals: number;
+  name: string;
+  coinKey: CoinKey;
+  logoURI: string;
+  priceUSD: string;
+};
+
+export interface BalanceDto {
+  /** Token info */
+  token: TokenDto | null;
+  /** Token amount */
+  amount: number;
+  /** Token amount in USD */
+  amountUsd: number;
+}
+
+export interface TransactionsDto {
+  /** Total transaction value in USD */
+  amountUsd: number | null;
+  /** Tokens sent in this transaction */
+  fromBalances: BalanceDto[];
+  /** Tokens received in this transaction */
+  toBalances: BalanceDto[];
+  /** Transaction operation type */
+  action:
+    | 'approve'
+    | 'bid'
+    | 'burn'
+    | 'claim'
+    | 'delegate'
+    | 'deploy'
+    | 'deposit'
+    | 'execute'
+    | 'mint'
+    | 'receive'
+    | 'revoke'
+    | 'revoke_delegation'
+    | 'send'
+    | 'trade'
+    | 'withdraw';
+  /** Gas fee raw amount */
+  fee: number | null;
+  /** Gas fee in USD */
+  feeUsd: number | null;
+  /** Token used to pay the gas fee in this transaction */
+  feeToken: TokenDto;
+  /**
+   * Transaction timestamp
+   * @format date-time
+   */
+  time: string;
+  /** Transaction hash */
+  txHash: string;
+  /** Chain ID where the transaction occurred */
+  chainId: number;
+}
+
+export interface TransactionsDtoResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: TransactionsPaginationMeta;
+  data: TransactionsDto[];
+}
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -2398,6 +2473,42 @@ export class JumperBackend<
     ) =>
       this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserTransactionsV1
+     * @summary Get transactions for a set of addresses
+     * @request GET:/v1/portfolio/transactions
+     */
+    portfolioControllerGetUserTransactionsV1: (
+      query?: {
+        /** EVM address to get transactions */
+        evm?: string | null;
+        /** Solana Virtual Machine (SVM) address to get transactions */
+        svm?: string | null;
+        /** Move Virtual Machine (MVM) address to get transactions */
+        mvm?: string | null;
+        /** Unspent transaction output (UTXO) address to get transactions */
+        utxo?: string | null;
+        /** Tron Virtual Machine (TVM) address to get transactions */
+        tvm?: string | null;
+        /**
+         * Pagination cursor for fetching the next transactions
+         * @example "6"
+         */
+        next?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TransactionsDtoResponse, any>({
+        path: `/v1/portfolio/transactions`,
         method: 'GET',
         query: query,
         format: 'json',

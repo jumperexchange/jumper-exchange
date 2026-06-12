@@ -964,6 +964,16 @@ export default interface Resources {
         sortBy: 'Sort by';
         totalValue: 'Total Value';
       };
+      transactionSummary: {
+        columns: {
+          action: 'Action';
+          amount: 'Amount';
+          assetIn: 'Asset in';
+          assetOut: 'Asset out';
+          date: 'Date';
+          fee: 'Fee';
+        };
+      };
       views: {
         holdings: 'Holdings';
         performance: 'Performance';
