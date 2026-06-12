@@ -960,6 +960,7 @@ export default interface Resources {
       };
     };
     profile_page: {
+      availableRewards: 'Available Rewards';
       campaigns: 'Campaigns';
       copyAddress: 'Copy wallet address';
       earnXp: {
@@ -1017,6 +1018,14 @@ export default interface Resources {
       progressTo: 'Your progress to';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
+      rewardsClaim: {
+        action: {
+          claim: 'Claim';
+          claiming: 'Claiming';
+          retry: 'Retry';
+        };
+        error: 'An unknown error occurred. Please try again.';
+      };
       shareProfile: 'Share profile';
       unlocked: 'Unlocked';
       unlockedPerks: {

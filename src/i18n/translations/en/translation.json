@@ -292,6 +292,15 @@
     "viewLeaderboard": "View leaderboard",
     "jumperPass": "Jumper Pass",
     "progressTo": "Your progress to",
+    "availableRewards": "Available Rewards",
+    "rewardsClaim": {
+      "action": {
+        "claiming": "Claiming",
+        "retry": "Retry",
+        "claim": "Claim"
+      },
+      "error": "An unknown error occurred. Please try again."
+    },
     "passStats": {
       "lastMonth": "last month",
       "unlocked": "unlocked",
