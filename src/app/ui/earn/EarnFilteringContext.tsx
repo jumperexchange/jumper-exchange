@@ -193,7 +193,7 @@ export const EarnFilteringProvider = ({
     accounts: tab === EarnFilterTab.YOUR_POSITIONS && account ? [account] : [],
   });
 
-  const earnSlugWithPositionWorthDisplaying = useMemo(() => {
+  const earnSlugsWithPositionWorthDisplaying = useMemo(() => {
     const positions = yourPositions.data?.data ?? [];
 
     return new Set(
@@ -242,7 +242,7 @@ export const EarnFilteringProvider = ({
     let worthDisplaying = filtered;
     if (tab === EarnFilterTab.YOUR_POSITIONS) {
       worthDisplaying = worthDisplaying.filter((opportunity) =>
-        earnSlugWithPositionWorthDisplaying.has(opportunity.slug),
+        earnSlugsWithPositionWorthDisplaying.has(opportunity.slug),
       );
     }
 
@@ -253,7 +253,7 @@ export const EarnFilteringProvider = ({
     );
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab, earnSlugWithPositionWorthDisplaying]);
+  }, [sourceData, filter, sortBy, tab, earnSlugsWithPositionWorthDisplaying]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
