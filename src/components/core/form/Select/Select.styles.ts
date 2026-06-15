@@ -63,6 +63,9 @@ export const StyledLabelContainer = styled(Box, {
       props: ({ size }) => size === 'medium',
       style: {
         padding: 0,
+        flex: 1,
+        minWidth: 0,
+        overflow: 'hidden',
       },
     },
   ],
@@ -100,6 +103,7 @@ export const StyledMenuItemContentContainer = styled(Box, {
 })<BaseSizeProps>(({ theme, size }) => ({
   display: 'flex',
   alignItems: 'center',
+  minWidth: 0,
   variants: [
     {
       props: ({ size }) => !size || size === 'small',
