@@ -77,7 +77,7 @@ describe('createThemeStore', () => {
   });
 
   describe('selectAvailablePartnerThemes', () => {
-    it('returns only themes whose uid has isSelected: true', () => {
+    it('returns themes that have a configThemeStates entry regardless of isSelected', () => {
       const state = {
         partnerThemes: [
           makePartnerTheme('a'),
@@ -87,21 +87,21 @@ describe('createThemeStore', () => {
         configThemeStates: {
           a: { isSelected: true },
           b: { isSelected: false },
-          c: { isSelected: true },
         },
       } as unknown as ThemeState;
 
       const result = selectAvailablePartnerThemes(state);
-      expect(result.map((t) => t.uid)).toEqual(['a', 'c']);
+      expect(result.map((t) => t.uid)).toEqual(['a', 'b']);
     });
 
-    it('returns empty array when no theme is selected', () => {
+    it('keeps partner themes visible after deselecting (isSelected: false)', () => {
+      const partnerTheme = makePartnerTheme('a');
       const state = {
-        partnerThemes: [makePartnerTheme('a')],
+        partnerThemes: [partnerTheme],
         configThemeStates: { a: { isSelected: false } },
       } as unknown as ThemeState;
 
-      expect(selectAvailablePartnerThemes(state)).toEqual([]);
+      expect(selectAvailablePartnerThemes(state)).toEqual([partnerTheme]);
     });
 
     it('returns empty array when configThemeStates is empty', () => {
