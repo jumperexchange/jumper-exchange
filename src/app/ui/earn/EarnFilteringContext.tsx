@@ -187,21 +187,20 @@ export const EarnFilteringProvider = ({
     [allNoFilter.data],
   );
 
-  // Summed net USD per earn slug, used to apply the $0.10 display floor on the
-  // "Your positions" tab (the backend filters by hasPositions, not by value).
+  // Per-position $0.10 floor on the "Your positions" tab (the backend filters
+  // by hasPositions, not by value). Consistent with the Portfolio positions list.
   const yourPositions = usePortfolioDeFiPositions({
     accounts: tab === EarnFilterTab.YOUR_POSITIONS && account ? [account] : [],
   });
 
-  const positionValueBySlug = useMemo(() => {
-    const map = new Map<string, number>();
-    for (const position of yourPositions.data?.data ?? []) {
-      if (!position.earn) {
-        continue;
-      }
-      map.set(position.earn, (map.get(position.earn) ?? 0) + position.netUsd);
-    }
-    return map;
+  const displayableEarnSlugs = useMemo(() => {
+    const positions = yourPositions.data?.data ?? [];
+    return new Set(
+      positions
+        .filter(isValueWorthDisplaying)
+        .map((position) => position.earn)
+        .filter((earn): earn is string => !!earn),
+    );
   }, [yourPositions.data?.data]);
 
   const totalMarkets = allNoFilterData.length;
@@ -237,21 +236,19 @@ export const EarnFilteringProvider = ({
 
     const filtered = filterOpportunities(sourceData, filter);
 
-    // Hard floor on the "Your positions" tab: drop opportunities whose summed
-    // position value rounds below $0.10. Opportunities with no matching
-    // position value are dropped too (nothing worth showing).
+    // Hard floor on the "Your positions" tab: keep opportunities where the user
+    // holds at least one position worth displaying (>= $0.10).
     const floored =
       tab === EarnFilterTab.YOUR_POSITIONS
-        ? filtered.filter((opportunity) => {
-            const value = positionValueBySlug.get(opportunity.slug);
-            return value !== undefined && isValueWorthDisplaying(value);
-          })
+        ? filtered.filter((opportunity) =>
+            displayableEarnSlugs.has(opportunity.slug),
+          )
         : filtered;
 
     const sorted = sortOpportunities(floored, sortBy, OrderOptions.DESC);
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab, positionValueBySlug]);
+  }, [sourceData, filter, sortBy, tab, displayableEarnSlugs]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
