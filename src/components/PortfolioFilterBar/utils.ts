@@ -1,9 +1,32 @@
 import { formatSliderValue } from '@/components/core/form/Select/utils';
 import { toFixedFractionDigits } from '@/utils/formatNumbers';
-import type { CategoryConfig } from '@/components/composite/MultiLayer/MultiLayer.types';
+import { differenceInDays } from 'date-fns';
 
 export const countBadge = (count: number): string | undefined =>
   count > 0 ? count.toString() : undefined;
+
+export const datesBadge = (
+  usedMin: Date,
+  usedMax: Date,
+  rangeMin: Date,
+  rangeMax: Date,
+  pendingValue: (Date | null)[],
+): string | undefined => {
+  if (
+    differenceInDays(usedMin, rangeMin) === 0 &&
+    differenceInDays(usedMax, rangeMax) === 0
+  ) {
+    return;
+  }
+
+  const [start, end] = pendingValue;
+
+  if (!start && !end) {
+    return;
+  }
+
+  return '1 range';
+};
 
 export const valueBadge = (
   usedMin: number,

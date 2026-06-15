@@ -2,18 +2,24 @@
 
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { PortfolioFilterBar } from '@/components/PortfolioFilterBar/PortfolioFilterBar';
-import { useState } from 'react';
+import { parseAsStringEnum, useQueryState } from 'nuqs';
 import {
   HoldingsFilteringProvider,
   useHoldingsFiltering,
 } from '@/providers/PortfolioProvider/filtering/HoldingsFilteringContext';
+import { TransactionFilteringProvider } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
 import { useAccount } from '@lifi/wallet-management';
 import { PortfolioHoldings } from './PortfolioHoldings/PortfolioHoldings';
+import { PortfolioTransactions } from './PortfolioTransactions/PortfolioTransactions';
+import { PortfolioTransactionPagination } from './PortfolioTransactions/PortfolioTransactionPagination';
 import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 
 const PortfolioContentSectionInner = () => {
-  const [tab, setTab] = useState<PortfolioViewBarTab>(
-    PortfolioViewBarTab.HOLDINGS,
+  const [tab, setTab] = useQueryState(
+    'tab',
+    parseAsStringEnum<PortfolioViewBarTab>(
+      Object.values(PortfolioViewBarTab),
+    ).withDefault(PortfolioViewBarTab.HOLDINGS),
   );
   const {
     balancesIsLoading,
@@ -28,21 +34,29 @@ const PortfolioContentSectionInner = () => {
   const isDisabled = isDisconnected || (isEmpty && !isLoading);
 
   return (
-    <SectionCard>
-      <PortfolioFilterBar
-        isDisabled={isDisabled}
-        value={tab}
-        onChange={setTab}
-      />
-      {tab === PortfolioViewBarTab.HOLDINGS && <PortfolioHoldings />}
-    </SectionCard>
+    <>
+      <SectionCard>
+        <PortfolioFilterBar
+          isDisabled={isDisabled}
+          value={tab}
+          onChange={setTab}
+        />
+        {tab === PortfolioViewBarTab.HOLDINGS && <PortfolioHoldings />}
+        {tab === PortfolioViewBarTab.TRANSACTIONS && <PortfolioTransactions />}
+      </SectionCard>
+      {tab === PortfolioViewBarTab.TRANSACTIONS && (
+        <PortfolioTransactionPagination />
+      )}
+    </>
   );
 };
 
 export const PortfolioContentSection = () => {
   return (
     <HoldingsFilteringProvider>
-      <PortfolioContentSectionInner />
+      <TransactionFilteringProvider>
+        <PortfolioContentSectionInner />
+      </TransactionFilteringProvider>
     </HoldingsFilteringProvider>
   );
 };

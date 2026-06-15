@@ -7,6 +7,7 @@ import {
   PortfolioFilterBarHeaderContainer,
 } from './PortfolioFilterBar.styles';
 import { PortfolioFilterBarHoldings } from './layouts/PortfolioFilterBarHoldings';
+import { PortfolioFilterBarTransactions } from './layouts/PortfolioFilterBarTransactions';
 import { PortfolioFilterBarEmpty } from './layouts/PortfolioFilterBarEmpty';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AnimatePresence } from 'motion/react';
@@ -44,6 +45,8 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
             <PortfolioFilterBarEmpty key="empty" />
           ) : value === PortfolioViewBarTab.HOLDINGS ? (
             <PortfolioFilterBarHoldings key="holdings" />
+          ) : value === PortfolioViewBarTab.TRANSACTIONS ? (
+            <PortfolioFilterBarTransactions key="transactions" />
           ) : null}
         </AnimatePresence>
       </PortfolioFilterBarHeaderContainer>

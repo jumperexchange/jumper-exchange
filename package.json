@@ -63,6 +63,7 @@
     "@strapi/blocks-react-renderer": "^1.0.2",
     "@tanstack/react-form": "^1.33.0",
     "@tanstack/react-query": "^5.101.1",
+    "@tanstack/react-virtual": "^3.14.2",
     "@tronweb3/tronwallet-adapter-react-hooks": "^1.1.12",
     "@turtledev/api": "1.4.5",
     "@wagmi/core": "^3.5.4",
