@@ -45,7 +45,7 @@ export const useTokenFormatters = () => {
     ): string => {
       const value = Number(toAmountUSD(balance));
       if (value > 0 && value < DUST_USD_THRESHOLD) {
-        return formatUSDWithDust(value);
+        return formatUSDWithDust(value, t);
       }
       if (options.compact) {
         return t('format.currencyCompact', { value });
@@ -70,7 +70,7 @@ export const useTokenFormatters = () => {
       const amount = toAmount(balance);
       const numeric = parseFloat(amount);
       if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-        return formatTokenAmountWithDust(amount, symbol ?? '');
+        return formatTokenAmountWithDust(amount, symbol ?? '', t);
       }
       const formatted = t('format.decimal', {
         value: Number(amount),

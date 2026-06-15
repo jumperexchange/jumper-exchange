@@ -1,10 +1,36 @@
+import { createInstance } from 'i18next';
 import { describe, expect, it } from 'vitest';
 import {
+  currencyFormatter,
+  decimalFormatter,
   formatTokenAmountWithDust,
   formatUSDWithDust,
   formatValueWithConfig,
 } from './formatNumbers';
 import { APY_FORMAT_CONFIG } from './numbers/apy';
+
+async function buildFrT() {
+  const i18n = createInstance();
+  await i18n.init({
+    lng: 'fr',
+    resources: {
+      fr: {
+        translation: {
+          format: {
+            dustAmount:
+              '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}',
+            dustUsd: '<{{value, currencyExt(currency: USD)}}',
+          },
+        },
+      },
+    },
+    defaultNS: 'translation',
+    ns: ['translation'],
+  });
+  i18n.services.formatter?.addCached('decimalExt', decimalFormatter);
+  i18n.services.formatter?.addCached('currencyExt', currencyFormatter);
+  return i18n.t.bind(i18n);
+}
 
 describe('formatTokenAmountWithDust', () => {
   it('should collapse dust amount to <0.0001 SYMBOL', () => {
@@ -59,6 +85,36 @@ describe('formatUSDWithDust', () => {
 
   it('should treat empty string as zero', () => {
     expect(formatUSDWithDust('')).toBe('$0.00');
+  });
+});
+
+describe('formatTokenAmountWithDust with fr locale', () => {
+  it('renders dust amount with fr decimal separator when t is provided', async () => {
+    const t = await buildFrT();
+    const result = formatTokenAmountWithDust(
+      '0.000000000000000001',
+      'WAVAX',
+      t,
+    );
+    expect(result).toBe('<0,0001 WAVAX');
+  });
+
+  it('falls back to en-US literal when t is omitted', () => {
+    expect(formatTokenAmountWithDust('0.000000000000000001', 'WAVAX')).toBe(
+      '<0.0001 WAVAX',
+    );
+  });
+});
+
+describe('formatUSDWithDust with fr locale', () => {
+  it('renders dust USD with fr locale formatting when t is provided', async () => {
+    const t = await buildFrT();
+    const result = formatUSDWithDust(0.001, t);
+    expect(result).toBe('<0,01\u00a0$US');
+  });
+
+  it('falls back to en-US literal when t is omitted', () => {
+    expect(formatUSDWithDust(0.001)).toBe('<$0.01');
   });
 });
 
