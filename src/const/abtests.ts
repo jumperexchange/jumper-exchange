@@ -6,6 +6,7 @@ export enum AB_TEST_NAME {
   DUST_CONVERSION = 'dust-conversion',
   REQUEST_REDEEM_FLOW = 'request-redeem-flow',
   PRIVATE_SWAPS = 'private-swaps',
+  THEME_PARTNER_DEFAULT = 'theme-partner-default',
 }
 
 // Single source of truth for all A/B tests
@@ -36,6 +37,10 @@ export const AbTests = {
   },
   [AB_TEST_NAME.PRIVATE_SWAPS]: {
     name: 'private-swaps',
+    enabled: true,
+  },
+  [AB_TEST_NAME.THEME_PARTNER_DEFAULT]: {
+    name: 'theme-partner-default',
     enabled: true,
   },
 } as const;

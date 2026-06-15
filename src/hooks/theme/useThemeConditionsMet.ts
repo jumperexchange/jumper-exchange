@@ -1,5 +1,7 @@
+'use client';
 import { useMemo } from 'react';
-import { isBefore } from 'date-fns';
+import { AB_TEST_NAME } from 'src/const/abtests';
+import { useABTest } from 'src/hooks/useABTest';
 import { useThemeStore } from 'src/stores/theme';
 
 export const useThemeConditionsMet = () => {
@@ -7,6 +9,10 @@ export const useThemeConditionsMet = () => {
     state.configTheme,
     state.configThemeStates,
   ]);
+
+  const { isEnabled: isThemePartnerDefaultEnabled } = useABTest({
+    feature: AB_TEST_NAME.THEME_PARTNER_DEFAULT,
+  });
 
   const activeConfigThemeState = useMemo(() => {
     const entry = Object.entries(configThemeStates).find(
@@ -20,12 +26,8 @@ export const useThemeConditionsMet = () => {
       return false;
     }
 
-    if (!activeConfigThemeState.expirationDate) {
-      return false;
-    }
-
-    return isBefore(new Date(), activeConfigThemeState.expirationDate);
-  }, [activeConfigThemeState]);
+    return isThemePartnerDefaultEnabled;
+  }, [activeConfigThemeState, isThemePartnerDefaultEnabled]);
 
   return {
     shouldShowForTheme,
