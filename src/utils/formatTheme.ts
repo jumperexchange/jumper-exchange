@@ -1,4 +1,5 @@
 import { STRAPI_PARTNER_THEMES } from '@/const/strapiContentKeys';
+import { resolveCanvasBackgroundConfig } from '@/components/CanvasBackground/resolveCanvasBackgroundConfig';
 import { getStrapiUrl } from '@/hooks/useStrapi';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { PartnerThemesAttributes } from '@/types/strapi';
@@ -78,21 +79,22 @@ export function formatConfig(
       availableThemeModes: getAvailableThemeModes(),
       hasThemeModeSwitch: true,
       hasBackgroundGradient: true,
+      canvasBackground: null,
     };
   }
 
   const defaultMode = isDarkOrLightThemeMode(theme);
   const themeModes = getAvailableThemeModes(theme);
   const backgroundMedia = getThemeMedia(theme, 'BackgroundImage', defaultMode);
+  const backgroundColor =
+    theme.BackgroundColorDark || theme.BackgroundColorLight || null;
+  const customization = (theme.lightConfig || theme.darkConfig)?.customization;
   const result = {
     availableThemeModes: themeModes,
-    backgroundColor:
-      theme.BackgroundColorDark || theme.BackgroundColorLight || null,
+    backgroundColor,
     backgroundImageUrl: backgroundMedia?.url ?? null,
     backgroundImageMime: backgroundMedia?.mime ?? null,
-    backgroundImagePosition:
-      (theme.lightConfig || theme.darkConfig)?.customization
-        ?.backgroundImagePosition || 'center',
+    backgroundImagePosition: customization?.backgroundImagePosition || 'center',
     footerImageUrl: getImageUrl(theme, 'FooterImage', defaultMode),
     logo: getLogoData(theme),
     partnerName: theme.PartnerName,
@@ -101,19 +103,16 @@ export function formatConfig(
     createdAt: theme.createdAt,
     publishedAt: theme.publishedAt,
     uid: theme.uid,
-    themeModeIcon: (theme.lightConfig || theme.darkConfig)?.customization
-      ?.themeModeIcon,
+    themeModeIcon: customization?.themeModeIcon,
     defaultThemeMode: (theme.lightConfig || theme.darkConfig)?.config
       ?.appearance as 'light' | 'dark',
-    hasThemeModeSwitch:
-      (theme.lightConfig || theme.darkConfig)?.customization
-        ?.hasThemeModeSwitch ?? true,
-    hasBlurredNavigation:
-      (theme.lightConfig || theme.darkConfig)?.customization
-        ?.hasBlurredNavigation ?? false,
-    hasBackgroundGradient:
-      (theme.lightConfig || theme.darkConfig)?.customization
-        ?.hasBackgroundGradient ?? false,
+    hasThemeModeSwitch: customization?.hasThemeModeSwitch ?? true,
+    hasBlurredNavigation: customization?.hasBlurredNavigation ?? false,
+    hasBackgroundGradient: customization?.hasBackgroundGradient ?? false,
+    canvasBackground: resolveCanvasBackgroundConfig(
+      customization?.canvasBackground,
+      backgroundColor,
+    ),
     integrator:
       (theme.lightConfig || theme.darkConfig)?.config?.integrator ?? undefined,
     fromChain:

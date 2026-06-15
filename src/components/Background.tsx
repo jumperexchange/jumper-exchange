@@ -1,4 +1,6 @@
 'use client';
+import { CanvasBackground } from '@/components/CanvasBackground/CanvasBackground';
+import { ClientOnly } from '@/components/ClientOnly';
 import { useThemeStore } from '@/stores/theme';
 import { styled } from '@mui/material/styles';
 import {
@@ -23,26 +25,40 @@ const BackgroundContainer = styled('div', {
 function Background() {
   const configTheme = useThemeStore((state) => state.configTheme);
   const { shouldShowForTheme } = useThemeConditionsMet();
+  const canvasBackground = configTheme?.canvasBackground;
+  const showCanvas = shouldShowForTheme && canvasBackground?.id;
 
   const { url: backgroundImageUrl, mime: backgroundImageMime } =
     useGetPartnerThemeImage();
 
   return (
     <BackgroundContainer id="background-root">
-      <AnimatedBackgroundImage
-        src={backgroundImageUrl}
-        mime={backgroundImageMime}
-        sx={{
-          '& > img, & > video': {
-            objectPosition: configTheme?.backgroundImagePosition ?? 'center',
-          },
-        }}
-      />
-
-      {!shouldShowForTheme && (
+      {showCanvas ? (
+        <ClientOnly>
+          <CanvasBackground
+            id={canvasBackground.id}
+            options={canvasBackground.options}
+          />
+        </ClientOnly>
+      ) : (
         <>
-          <BackgroundGradientBottomLeft />
-          <BackgroundGradientBottomRight />
+          <AnimatedBackgroundImage
+            src={backgroundImageUrl}
+            mime={backgroundImageMime}
+            sx={{
+              '& > img, & > video': {
+                objectPosition:
+                  configTheme?.backgroundImagePosition ?? 'center',
+              },
+            }}
+          />
+
+          {!shouldShowForTheme && (
+            <>
+              <BackgroundGradientBottomLeft />
+              <BackgroundGradientBottomRight />
+            </>
+          )}
         </>
       )}
     </BackgroundContainer>

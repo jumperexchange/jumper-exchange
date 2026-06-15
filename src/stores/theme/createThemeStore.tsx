@@ -9,8 +9,7 @@ import type {
   ThemeState,
   WidgetThemeVariants,
 } from '@/types/theme';
-import { addDays, isBefore } from 'date-fns';
-import { isEqual } from 'lodash';
+import { isAfter } from 'date-fns';
 import superjson from 'superjson';
 import Cookies from 'universal-cookie';
 import { persist } from 'zustand/middleware';
@@ -19,32 +18,20 @@ import { createWithEqualityFn } from 'zustand/traditional';
 export const selectAvailablePartnerThemes = (
   state: ThemeState,
 ): PartnerThemesData[] => {
-  const availableUids = Object.entries(state.configThemeStates)
-    .filter(
-      ([_, themeState]) =>
-        themeState.expirationDate &&
-        isBefore(new Date(), themeState.expirationDate),
-    )
+  const selectedUids = Object.entries(state.configThemeStates)
+    .filter(([_, themeState]) => themeState.isSelected)
     .map(([uid]) => uid);
 
   return state.partnerThemes.filter((theme) =>
-    availableUids.some((uid) => uid === theme.uid),
+    selectedUids.some((uid) => uid === theme.uid),
   );
 };
-
-const CONFIG_THEME_EXPIRATION_DAYS = 7;
 
 const getLocalStorage = () =>
   typeof window === 'undefined' ? undefined : localStorage;
 
 const defaultConfigThemeState: ConfigThemeState = {
-  expirationDate: undefined,
   isSelected: false,
-};
-
-const calculateExpirationDate = (publishedAt?: string): Date => {
-  const baseDate = publishedAt ? new Date(publishedAt) : new Date();
-  return addDays(baseDate, CONFIG_THEME_EXPIRATION_DAYS);
 };
 
 const getOrCreateConfigThemeState = (
@@ -63,25 +50,14 @@ const initializeConfigThemeStates = (
   }
 
   const currentThemeUid = configTheme.uid;
-  const expirationDate = calculateExpirationDate(configTheme.publishedAt);
 
-  const existingState = persistedStates[currentThemeUid];
-  const existingExpirationDate = existingState?.expirationDate
-    ? new Date(existingState.expirationDate)
-    : undefined;
-
-  if (
-    existingState &&
-    (!configTheme.publishedAt ||
-      isEqual(existingExpirationDate, expirationDate))
-  ) {
+  if (persistedStates[currentThemeUid]) {
     return persistedStates;
   }
 
   return {
     ...persistedStates,
     [currentThemeUid]: {
-      expirationDate,
       // We select it by default only if there is a partner name
       // This will make sure the default fallback config will not trigger any changes in the UI
       isSelected: !!configTheme.partnerName,
@@ -131,7 +107,7 @@ export const createThemeStore = (props: ThemeProps) =>
       }),
       {
         name: 'jumper-theme-store',
-        version: 3,
+        version: 4,
         storage: {
           getItem: (name) => {
             const str = getLocalStorage()?.getItem(name);
@@ -149,7 +125,7 @@ export const createThemeStore = (props: ThemeProps) =>
           version: number,
         ): PersistedThemeState => {
           const state = persistedState as Partial<PersistedThemeState> & {
-            configThemeState?: ConfigThemeState & { uid?: string };
+            configThemeState?: { uid?: string; isSelected: boolean };
             // v2 structure
             widgetTheme?: { config: unknown };
           };
@@ -186,18 +162,9 @@ export const createThemeStore = (props: ThemeProps) =>
           }
 
           if (version === 1 && state.configThemeState?.uid) {
-            const migratedState = state.configThemeState;
             const uid = state.configThemeState.uid;
-            if (typeof migratedState.expirationDate === 'string') {
-              migratedState.expirationDate = new Date(
-                migratedState.expirationDate,
-              );
-            }
             newStore.configThemeStates = {
-              [uid]: {
-                expirationDate: migratedState.expirationDate,
-                isSelected: migratedState.isSelected,
-              },
+              [uid]: { isSelected: state.configThemeState.isSelected },
             };
           }
 
@@ -212,11 +179,31 @@ export const createThemeStore = (props: ThemeProps) =>
             console.debug('widgetTheme migrated from v2 to v3');
           }
 
-          Object.values(newStore.configThemeStates).forEach((themeState) => {
-            if (typeof themeState.expirationDate === 'string') {
-              themeState.expirationDate = new Date(themeState.expirationDate);
-            }
-          });
+          // v3 → v4: Strip expirationDate from all configThemeStates.
+          // v3 entries that pre-date isSelected only stored expirationDate, so
+          // s.isSelected can be undefined. Fall back to the expirationDate: if
+          // it is still in the future the selection is still valid; if it has
+          // already passed, treat the theme as unselected.
+          if (version === 3) {
+            newStore.configThemeStates = Object.fromEntries(
+              Object.entries(
+                newStore.configThemeStates as Record<
+                  string,
+                  { isSelected?: boolean; expirationDate?: Date | string }
+                >,
+              ).map(([uid, s]) => {
+                let isSelected: boolean;
+                if (s.isSelected !== undefined) {
+                  isSelected = s.isSelected;
+                } else if (s.expirationDate) {
+                  isSelected = isAfter(s.expirationDate, new Date());
+                } else {
+                  isSelected = true;
+                }
+                return [uid, { isSelected }];
+              }),
+            );
+          }
 
           return newStore;
         },
