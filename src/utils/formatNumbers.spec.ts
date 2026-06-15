@@ -1,6 +1,7 @@
 import { createInstance } from 'i18next';
 import { describe, expect, it } from 'vitest';
 import {
+  NBSP,
   currencyFormatter,
   decimalFormatter,
   formatTokenAmountWithDust,
@@ -17,8 +18,7 @@ async function buildFrT() {
       fr: {
         translation: {
           format: {
-            dustAmount:
-              '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}',
+            dustAmount: `<{{value, decimalExt(maximumFractionDigits: 4)}}${NBSP}{{symbol}}`,
             dustUsd: '<{{value, currencyExt(currency: USD)}}',
           },
         },
@@ -35,29 +35,33 @@ async function buildFrT() {
 describe('formatTokenAmountWithDust', () => {
   it('should collapse dust amount to <0.0001 SYMBOL', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', 'eETH')).toBe(
-      '<0.0001 eETH',
+      `<0.0001${NBSP}eETH`,
     );
   });
 
   it('should not collapse amount exactly at boundary', () => {
-    expect(formatTokenAmountWithDust('0.0001', 'eETH')).toBe('0.0001 eETH');
+    expect(formatTokenAmountWithDust('0.0001', 'eETH')).toBe(
+      `0.0001${NBSP}eETH`,
+    );
   });
 
   it('should not collapse zero', () => {
-    expect(formatTokenAmountWithDust('0', 'eETH')).toBe('0 eETH');
+    expect(formatTokenAmountWithDust('0', 'eETH')).toBe(`0${NBSP}eETH`);
   });
 
   it('should not collapse normal amount', () => {
-    expect(formatTokenAmountWithDust('12.345', 'eETH')).toBe('12.345 eETH');
+    expect(formatTokenAmountWithDust('12.345', 'eETH')).toBe(
+      `12.345${NBSP}eETH`,
+    );
   });
 
   it('should use --- fallback for missing symbol on normal amount', () => {
-    expect(formatTokenAmountWithDust('1', '')).toBe('1 ---');
+    expect(formatTokenAmountWithDust('1', '')).toBe(`1${NBSP}---`);
   });
 
   it('should use --- fallback for missing symbol on dust amount', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', '')).toBe(
-      '<0.0001 ---',
+      `<0.0001${NBSP}---`,
     );
   });
 });
@@ -96,12 +100,12 @@ describe('formatTokenAmountWithDust with fr locale', () => {
       'WAVAX',
       t,
     );
-    expect(result).toBe('<0,0001 WAVAX');
+    expect(result).toBe(`<0,0001${NBSP}WAVAX`);
   });
 
   it('falls back to en-US literal when t is omitted', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', 'WAVAX')).toBe(
-      '<0.0001 WAVAX',
+      `<0.0001${NBSP}WAVAX`,
     );
   });
 });
@@ -110,7 +114,7 @@ describe('formatUSDWithDust with fr locale', () => {
   it('renders dust USD with fr locale formatting when t is provided', async () => {
     const t = await buildFrT();
     const result = formatUSDWithDust(0.001, t);
-    expect(result).toBe('<0,01\u00a0$US');
+    expect(result).toBe(`<0,01${NBSP}$US`);
   });
 
   it('falls back to en-US literal when t is omitted', () => {

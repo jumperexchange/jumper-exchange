@@ -123,6 +123,8 @@ export const formatValueWithConfig = (
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
 
+export const NBSP = '\u00a0'; // non-breaking space
+
 export const DUST_AMOUNT_THRESHOLD = 0.0001;
 export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
 
@@ -146,10 +148,10 @@ export const formatTokenAmountWithDust = (
       symbol: label,
     });
     return !translated || translated.startsWith('format.dustAmount')
-      ? `${DUST_AMOUNT_LABEL} ${label}`
+      ? `${DUST_AMOUNT_LABEL}${NBSP}${label}`
       : translated;
   }
-  return `${amount} ${label}`;
+  return `${amount}${NBSP}${label}`;
 };
 
 export const formatUSD = currencyFormatter('en-US', {

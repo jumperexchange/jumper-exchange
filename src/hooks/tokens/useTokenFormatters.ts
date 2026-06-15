@@ -2,6 +2,7 @@ import type { Balance, PricedToken } from '@/types/tokens';
 import {
   DUST_AMOUNT_THRESHOLD,
   DUST_USD_THRESHOLD,
+  NBSP,
   formatTokenAmountWithDust,
   formatUSDWithDust,
 } from '@/utils/formatNumbers';
@@ -80,7 +81,7 @@ export const useTokenFormatters = () => {
       if (!symbol) {
         return formatted;
       }
-      return `${formatted} ${symbol}`;
+      return `${formatted}${NBSP}${symbol}`;
     },
     [t, toAmount],
   );
