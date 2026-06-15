@@ -74,6 +74,12 @@ export enum TrackingAction {
   OnRouteExecutionFailedEarnWithdraw = 'action_on_route_exec_failed_earn_withdraw',
   OnChangeSettingsEarnWithdraw = 'action_change_settings_earn_withdraw',
 
+  // Private (Incognito) Widget
+  OnAvailableRoutesPrivate = 'action_available_routes_private',
+  OnRouteExecutionStartedPrivate = 'action_on_route_exec_started_private',
+  OnRouteExecutionCompletedPrivate = 'action_on_route_exec_completed_private',
+  OnRouteExecutionFailedPrivate = 'action_on_route_exec_failed_private',
+
   // Dust conversion
   OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
   OnRouteExecutionCompletedDust = 'action_on_route_exec_completed_dust',
@@ -179,6 +185,9 @@ export enum TrackingEventDataAction {
   ExecutionStartEarnWithdraw = 'execution_start_earn_withdraw',
   ExecutionCompletedEarnWithdraw = 'execution_completed_earn_withdraw',
   ExecutionFailedEarnWithdraw = 'execution_failed_earn_withdraw',
+  ExecutionStartPrivate = 'execution_start_private',
+  ExecutionCompletedPrivate = 'execution_completed_private',
+  ExecutionFailedPrivate = 'execution_failed_private',
   ExecutionStartDust = 'execution_start_dust',
   ExecutionCompletedDust = 'execution_completed_dust',
   ExecutionFailedDust = 'execution_failed_dust',

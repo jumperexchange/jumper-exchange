@@ -6,7 +6,6 @@ import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { RequestRedeemModal } from '../RequestRedeemModal/RequestRedeemModal';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 import type { EarnOpportunityExtended } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
 import { useRequestRedeemFlowStore } from '@/stores/requestRedeemFlow/RequestRedeemFlowStore';
@@ -23,27 +22,7 @@ export const RequestRedeemFlowModal = () => {
   }
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        destinationChainAndTokenSelection:
-          TrackingAction.OnDestinationChainAndTokenSelectionEarnWithdraw,
-        availableRoutes: TrackingAction.OnAvailableRoutesEarnWithdraw,
-        routeExecutionStarted:
-          TrackingAction.OnRouteExecutionStartedEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingAction.OnRouteExecutionCompletedEarnWithdraw,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnWithdraw,
-        changeSettings: TrackingAction.OnChangeSettingsEarnWithdraw,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted:
-          TrackingEventDataAction.ExecutionStartEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingEventDataAction.ExecutionCompletedEarnWithdraw,
-        routeExecutionFailed:
-          TrackingEventDataAction.ExecutionFailedEarnWithdraw,
-      }}
-    >
+    <WidgetTrackingProvider variant="earnWithdraw">
       <RequestRedeemModal
         isOpen={isModalOpen}
         onClose={closeModal}
