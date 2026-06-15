@@ -44,7 +44,9 @@ for (const { name, size } of [
 
           await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST);
           await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.LABEL);
-          await settings.expectItem(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST, {
+          // Collapsing the submenu renders the chosen value as a summary <p>,
+          // not a Tab button (cf. the slippage step below).
+          await settings.expectSetting(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST, {
             visible: true,
           });
           await settings.expectInfoBadgeVisible();
@@ -61,7 +63,8 @@ for (const { name, size } of [
 
           await settings.clickItem(SETTINGS_MENU.GAS_PRICE.SLOW);
           await settings.clickItem(SETTINGS_MENU.GAS_PRICE.LABEL);
-          await settings.expectItem(SETTINGS_MENU.GAS_PRICE.SLOW, {
+          // Same as route priority: the collapsed value is a summary <p>.
+          await settings.expectSetting(SETTINGS_MENU.GAS_PRICE.SLOW, {
             visible: true,
           });
         });
