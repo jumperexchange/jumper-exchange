@@ -86,7 +86,7 @@ export const POST = async (request: NextRequest) => {
       return buildJsonResponse(userIdV2FromCookie, userHash);
     }
 
-    let userIdV2 = generateV2UserId();
+    const userIdV2 = generateV2UserId();
 
     if (intercomAccessToken && validatedWallet) {
       const existingV1Contact = await findContactByExternalId(
@@ -95,17 +95,12 @@ export const POST = async (request: NextRequest) => {
       );
 
       if (existingV1Contact) {
-        const migratedUserIdV2 = generateV2UserId();
-        const migrated = await migrateContactToV2UserId(
+        await migrateContactToV2UserId(
           existingV1Contact.id,
-          migratedUserIdV2,
+          userIdV2,
           validatedWallet,
           intercomAccessToken,
         );
-
-        if (migrated) {
-          userIdV2 = migratedUserIdV2;
-        }
       }
     }
 
