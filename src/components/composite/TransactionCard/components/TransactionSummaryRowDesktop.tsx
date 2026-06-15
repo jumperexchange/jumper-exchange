@@ -1,19 +1,38 @@
 import type { FC } from 'react';
+import type { SxProps, Theme } from '@mui/material/styles';
 import { TRANSACTION_SUMMARY_ROW_CONFIG } from '../constants';
-import type { TransactionSummaryContent } from '../hooks';
-import type { TransactionSummaryRowConfig } from '../types';
-import { TransactionSummaryColumnValue } from './TransactionSummaryColumn';
+import type {
+  TransactionSummaryRowConfig,
+  TransactionSummaryRowProps,
+} from '../types';
+import { COLUMN_DEFINITIONS } from './TransactionSummaryColumn';
 import { StyledDesktopRow, StyledValueCell } from '../TransactionTable.styles';
 import { getTransactionSummaryColumnTestId } from '../utils';
 
-interface TransactionSummaryRowDesktopProps {
-  content: TransactionSummaryContent;
-  config?: TransactionSummaryRowConfig;
-}
+export const TransactionSummaryRowDesktopSkeleton: FC<{
+  config: TransactionSummaryRowConfig;
+}> = ({ config }) => (
+  <StyledDesktopRow>
+    {config.columns.map((slot) => (
+      <StyledValueCell
+        key={slot.id}
+        sx={
+          [
+            slot.sx,
+            COLUMN_DEFINITIONS[slot.id].skeletonCellSx,
+          ] as SxProps<Theme>
+        }
+      >
+        {COLUMN_DEFINITIONS[slot.id].renderSkeleton(config)}
+      </StyledValueCell>
+    ))}
+  </StyledDesktopRow>
+);
 
-export const TransactionSummaryRowDesktop: FC<
-  TransactionSummaryRowDesktopProps
-> = ({ content, config = TRANSACTION_SUMMARY_ROW_CONFIG }) => (
+export const TransactionSummaryRowDesktop: FC<TransactionSummaryRowProps> = ({
+  content,
+  config = TRANSACTION_SUMMARY_ROW_CONFIG,
+}) => (
   <StyledDesktopRow data-testid="transaction-summary-row">
     {config.columns.map((slot) => (
       <StyledValueCell
@@ -21,11 +40,7 @@ export const TransactionSummaryRowDesktop: FC<
         data-testid={getTransactionSummaryColumnTestId(slot.id, config.testId)}
         sx={slot.sx}
       >
-        <TransactionSummaryColumnValue
-          columnId={slot.id}
-          content={content}
-          config={config}
-        />
+        {COLUMN_DEFINITIONS[slot.id].render(content, config)}
       </StyledValueCell>
     ))}
   </StyledDesktopRow>

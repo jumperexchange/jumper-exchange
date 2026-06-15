@@ -70,7 +70,3 @@ export const useTransactionSummaryContent = (
     toTokens: toBalances.map((b) => createBaseToken(b.token)),
   };
 };
-
-export type TransactionSummaryContent = ReturnType<
-  typeof useTransactionSummaryContent
->;

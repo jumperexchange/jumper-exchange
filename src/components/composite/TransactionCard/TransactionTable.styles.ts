@@ -13,27 +13,41 @@ export const StyledTableContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export const StyledCard = styled(Stack)(({ theme }) => ({
+interface StyledCardProps {
+  disableInteraction?: boolean;
+}
+
+export const StyledCard = styled(Stack, {
+  shouldForwardProp: (prop) => prop !== 'disableInteraction',
+})<StyledCardProps>(({ theme }) => ({
   borderRadius: `${theme.shape.borderRadius}px`,
   boxShadow: theme.shadows[3],
   background: (theme.vars || theme).palette.surface1.main,
   padding: theme.spacing(1.5),
-  cursor: 'pointer',
-  '& > :first-child': {
-    transition: 'background-color 300ms ease-in-out',
-  },
-  '&:not(:has([data-hint-hover-active]))': {
-    '&:hover, &:focus-visible, &:focus': {
-      '& > :first-child': {
-        backgroundColor: (theme.vars || theme).palette.alpha100.main,
-      },
-    },
-  },
+
   [theme.breakpoints.up('sm')]: {
     boxShadow: 'none',
     borderRadius: 0,
     padding: 0,
   },
+  variants: [
+    {
+      props: ({ disableInteraction }) => !disableInteraction,
+      style: {
+        cursor: 'pointer',
+        '& > :first-child': {
+          transition: 'background-color 300ms ease-in-out',
+        },
+        '&:not(:has([data-hint-hover-active]))': {
+          '&:hover, &:focus-visible, &:focus': {
+            '& > :first-child': {
+              backgroundColor: (theme.vars || theme).palette.alpha100.main,
+            },
+          },
+        },
+      },
+    },
+  ],
 }));
 
 export const StyledRowContainer = styled(Stack)(({ theme }) => ({

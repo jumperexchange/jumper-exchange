@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { TransactionTable } from './TransactionTable';
+import { TransactionTableSkeleton } from './TransactionTableSkeleton';
 import { TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG } from './constants';
 import {
   mockMultiTokenTradeTransaction,
@@ -27,53 +28,57 @@ export default meta;
 type Story = StoryObj<typeof TransactionTable>;
 
 export const Trade: Story = {
-  render: () => (
-    <TransactionTable
-      transactions={[mockTradeTransaction]}
-      onTransactionClick={(tx) => console.log('clicked', tx.txHash)}
-    />
-  ),
+  args: {
+    transactions: [mockTradeTransaction],
+    onTransactionClick: (tx) => console.log('clicked', tx.txHash),
+  },
 };
 
 export const Send: Story = {
-  render: () => <TransactionTable transactions={[mockSendTransaction]} />,
+  args: {
+    transactions: [mockSendTransaction],
+  },
 };
 
 export const Receive: Story = {
-  render: () => <TransactionTable transactions={[mockReceiveTransaction]} />,
+  args: {
+    transactions: [mockReceiveTransaction],
+  },
 };
 
 export const MultiTokenTrade: Story = {
-  render: () => (
-    <TransactionTable transactions={[mockMultiTokenTradeTransaction]} />
-  ),
+  args: {
+    transactions: [mockMultiTokenTradeTransaction],
+  },
 };
 
 export const TransactionList: Story = {
-  render: () => (
-    <TransactionTable
-      transactions={mockTransactions}
-      onTransactionClick={(tx) => console.log('clicked', tx.txHash)}
-    />
-  ),
+  args: {
+    transactions: mockTransactions,
+    onTransactionClick: (tx) => console.log('clicked', tx.txHash),
+  },
 };
 
 export const TransactionListWithHeader: Story = {
-  render: () => (
-    <TransactionTable
-      transactions={mockTransactions}
-      showHeader
-      onTransactionClick={(tx) => console.log('clicked', tx.txHash)}
-    />
-  ),
+  args: {
+    transactions: mockTransactions,
+    showHeader: true,
+    onTransactionClick: (tx) => console.log('clicked', tx.txHash),
+  },
 };
 
 export const CompactLayout: Story = {
-  render: () => (
-    <TransactionTable
-      transactions={mockTransactions}
-      config={TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG}
-      onTransactionClick={(tx) => console.log('clicked', tx.txHash)}
-    />
-  ),
+  args: {
+    transactions: mockTransactions,
+    config: TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG,
+    onTransactionClick: (tx) => console.log('clicked', tx.txHash),
+  },
+};
+
+export const Skeleton: Story = {
+  render: () => <TransactionTableSkeleton />,
+};
+
+export const SkeletonWithHeader: Story = {
+  render: () => <TransactionTableSkeleton showHeader />,
 };

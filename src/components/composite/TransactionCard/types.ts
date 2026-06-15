@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
 import type { SxProps, Theme } from '@mui/material/styles';
 import type { TypographyProps } from '@mui/material/Typography';
 import type { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import type { Token } from '@/types/tokens';
 import type { BalanceDto, TransactionsDto } from '@/types/jumper-backend';
 
 export type TransactionOperationType = TransactionsDto['action'];
@@ -27,16 +29,48 @@ export interface TransactionSummarySection {
   sx?: SxProps<Theme>;
 }
 
-export interface TransactionSummaryRowConfig {
-  titleVariant: TypographyProps['variant'];
-  descriptionVariant: TypographyProps['variant'];
-  valueGap: number;
+export interface TransactionSummaryTokenConfig {
   tokenSize: AvatarSize;
   badgeSize: AvatarSize;
   inlineBadgeSize: AvatarSize;
   badgeSpacing: number;
+}
+
+export interface TransactionSummaryRowConfig extends TransactionSummaryTokenConfig {
+  titleVariant: TypographyProps['variant'];
+  descriptionVariant: TypographyProps['variant'];
+  valueGap: number;
   columns: readonly TransactionSummaryColumnSlot[];
   sections: readonly TransactionSummarySection[];
   showColumnHeader: boolean;
   testId?: string;
+}
+
+export interface TransactionSummaryContent {
+  amountTitle: string;
+  amountHint?: string;
+  actionTitle: string;
+  feeTitle: string;
+  feeHint?: string;
+  dateTitle: string;
+  dateHint: string;
+  fromTokens: Token[];
+  toTokens: Token[];
+}
+
+export type TransactionSummaryRenderFn = (
+  content: TransactionSummaryContent,
+  config: TransactionSummaryRowConfig,
+) => ReactNode;
+
+export type TransactionSummarySkeletonFn = (
+  config: TransactionSummaryRowConfig,
+) => ReactNode;
+
+export interface TransactionSummaryBaseProps {
+  config?: TransactionSummaryRowConfig;
+}
+
+export interface TransactionSummaryRowProps extends TransactionSummaryBaseProps {
+  content: TransactionSummaryContent;
 }

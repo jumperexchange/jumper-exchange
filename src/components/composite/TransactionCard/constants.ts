@@ -74,12 +74,3 @@ export const TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG: TransactionSummaryRowConfig
       },
     ],
   };
-
-export const COLUMN_LABEL_KEYS = {
-  amount: 'portfolio.transactionSummary.columns.amount',
-  action: 'portfolio.transactionSummary.columns.action',
-  assetsIn: 'portfolio.transactionSummary.columns.assetIn',
-  assetsOut: 'portfolio.transactionSummary.columns.assetOut',
-  fee: 'portfolio.transactionSummary.columns.fee',
-  date: 'portfolio.transactionSummary.columns.date',
-} as const;
