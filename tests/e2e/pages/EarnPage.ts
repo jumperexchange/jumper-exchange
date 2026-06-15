@@ -189,9 +189,7 @@ export class EarnPage {
     await this.page.getByTestId(dropdownTestId).click();
     await this.clearButton.waitFor({ state: 'visible' });
     await this.page.getByRole('option', { name: option }).click();
-    // eslint-disable-next-line playwright/no-wait-for-timeout -- settle for MUI dropdown re-render before body-click dismiss
-    await this.page.waitForTimeout(1000);
-    await this.page.locator('body').click();
+    await this.page.keyboard.press('Escape');
   }
 
   async selectYourPositionsTab(): Promise<void> {
