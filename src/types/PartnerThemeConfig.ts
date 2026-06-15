@@ -38,6 +38,7 @@ export interface PartnerThemeConfig {
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;
+  canvasBackground: { id: string; options: Record<string, unknown> } | null;
   allowedBridges: string[];
   allowedExchanges: string[];
 }

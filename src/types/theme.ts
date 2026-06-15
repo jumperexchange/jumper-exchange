@@ -8,7 +8,6 @@ import type { CreateJumperThemeOptions } from 'src/theme/theme';
 export type ActiveTheme = 'default' | string;
 
 export interface ConfigThemeState {
-  expirationDate: Date | undefined;
   isSelected: boolean;
 }
 
