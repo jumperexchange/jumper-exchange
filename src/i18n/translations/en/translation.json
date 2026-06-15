@@ -293,6 +293,15 @@
     "jumperPass": "Jumper Pass",
     "beginJourney": "Begin your Jumper journey",
     "progressTo": "Your progress to",
+    "availableRewards": "Available Rewards",
+    "rewardsClaim": {
+      "action": {
+        "claiming": "Claiming",
+        "retry": "Retry",
+        "claim": "Claim"
+      },
+      "error": "An unknown error occurred. Please try again."
+    },
     "passStats": {
       "lastMonth": "last month",
       "unlocked": "unlocked",
@@ -348,30 +357,11 @@
     "copyAddress": "Copy wallet address",
     "shareProfile": "Share profile",
     "open": "Open {{tool}}",
-    "rewards": "Rewards Earned",
-    "availableRewards": "Available Rewards",
-    "perks": "Perks",
-    "achievements": "Achievements",
     "unlocked": "Unlocked",
     "claimed": "Claimed",
     "levelWithValue": "Level {{level, number}}",
-    "ongoing": "Ongoing",
     "tooltips": {
-      "unlockAtLevel": "Unlocked at Level {{level, number}}",
       "ongoingAchievement": "This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month."
-    },
-    "noData": {
-      "description": "No {{entity}} yet? Let's change that!",
-      "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
-      "cta": "Start swapping"
-    },
-    "rewardsClaim": {
-      "action": {
-        "claiming": "Claiming",
-        "retry": "Retry",
-        "claim": "Claim"
-      },
-      "error": "An unknown error occurred. Please try again."
     }
   },
   "campaign": {

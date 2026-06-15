@@ -2,7 +2,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
-import { carouselNavButtonSx } from '../RewardsCarousel.style';
 import { useRewardsCarouselContext } from '../RewardsCarouselContext';
 
 export const RewardsCarouselNavButtons = () => {
@@ -14,7 +13,14 @@ export const RewardsCarouselNavButtons = () => {
         aria-label="previous"
         className={classNames.navigationPrev}
         disabled={navState.isBeginning}
-        sx={carouselNavButtonSx(navState.isBeginning)}
+        sx={(theme) => ({
+          pointerEvents: navState.isBeginning ? 'none' : 'auto',
+          zIndex: 1,
+          [theme.breakpoints.up('sm')]: {
+            marginBottom: theme.spacing(1.5),
+            visibility: navState.isBeginning ? 'hidden' : 'visible',
+          },
+        })}
       >
         <ArrowBackIcon sx={{ width: 20, height: 20 }} />
       </IconButton>
@@ -22,7 +28,14 @@ export const RewardsCarouselNavButtons = () => {
         aria-label="next"
         className={classNames.navigationNext}
         disabled={navState.isEnd}
-        sx={carouselNavButtonSx(navState.isEnd)}
+        sx={(theme) => ({
+          pointerEvents: navState.isEnd ? 'none' : 'auto',
+          zIndex: 1,
+          [theme.breakpoints.up('sm')]: {
+            marginBottom: theme.spacing(1.5),
+            visibility: navState.isEnd ? 'hidden' : 'visible',
+          },
+        })}
       >
         <ArrowForwardIcon sx={{ width: 20, height: 20 }} />
       </IconButton>
