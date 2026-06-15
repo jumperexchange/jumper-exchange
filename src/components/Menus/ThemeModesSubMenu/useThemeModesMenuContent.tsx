@@ -18,6 +18,8 @@ import {
 import { isDarkOrLightThemeMode } from '@/utils/formatTheme';
 import Avatar from '@mui/material/Avatar';
 import { selectAvailablePartnerThemes } from '@/stores/theme/createThemeStore';
+import { AB_TEST_NAME } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
 
 interface SubmenuItem {
   label: string;
@@ -54,11 +56,18 @@ export const useThemeModesMenuContent = () => {
     state.configThemeStates,
   ]);
   const availablePartnerThemes = useThemeStore(selectAvailablePartnerThemes);
+  const { isEnabled: isThemePartnerDefaultEnabled } = useABTest({
+    feature: AB_TEST_NAME.THEME_PARTNER_DEFAULT,
+  });
 
   const defaultMode = isMainPaths ? 'system' : 'light';
   const selectedThemeMode = mode ?? defaultMode;
 
   const { activeConfigThemeUid, activeConfigTheme } = useMemo(() => {
+    if (!isThemePartnerDefaultEnabled) {
+      return { activeConfigThemeUid: undefined, activeConfigTheme: undefined };
+    }
+
     for (const [uid, state] of Object.entries(configThemeStates)) {
       if (state.isSelected) {
         const theme = availablePartnerThemes.find((t) => t.uid === uid);
@@ -66,7 +75,17 @@ export const useThemeModesMenuContent = () => {
       }
     }
     return { activeConfigThemeUid: undefined, activeConfigTheme: undefined };
-  }, [configThemeStates, availablePartnerThemes]);
+  }, [configThemeStates, availablePartnerThemes, isThemePartnerDefaultEnabled]);
+
+  useEffect(() => {
+    if (!isThemePartnerDefaultEnabled) {
+      for (const [uid, state] of Object.entries(configThemeStates)) {
+        if (state.isSelected) {
+          setConfigThemeState(uid, { isSelected: false });
+        }
+      }
+    }
+  }, [isThemePartnerDefaultEnabled, configThemeStates, setConfigThemeState]);
 
   useEffect(() => {
     if (!activeConfigTheme) {
@@ -132,8 +151,12 @@ export const useThemeModesMenuContent = () => {
 
   const displayablePartnerThemes = useMemo(
     () =>
-      availablePartnerThemes.filter((t) => t.SelectableInMenu && t.PartnerName),
-    [availablePartnerThemes],
+      isThemePartnerDefaultEnabled
+        ? availablePartnerThemes.filter(
+            (t) => t.SelectableInMenu && t.PartnerName,
+          )
+        : [],
+    [availablePartnerThemes, isThemePartnerDefaultEnabled],
   );
 
   const standardModeItems = useMemo<SubmenuItem[]>(
