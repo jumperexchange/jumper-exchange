@@ -1,6 +1,5 @@
 import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
-import { SECONDS_IN_A_DAY } from '@/const/time';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { formatCapInDollar } from '@/utils/numbers/capInDollar';
@@ -18,7 +17,7 @@ import type {
   Token,
 } from 'src/types/jumper-backend';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import { formatLockupPeriod } from '@/utils/formatLockupPeriod';
+import { formatLockupInDay } from '@/utils/formatLockupInDay';
 import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
@@ -100,10 +99,7 @@ const buildLockupItem = (
     return null;
   }
 
-  const { value, unit } = formatLockupPeriod(
-    lockupDaysNumber * SECONDS_IN_A_DAY,
-  );
-  const formatted = `${value} ${unit}`;
+  const formatted = formatLockupInDay(lockupDaysNumber, t);
   return {
     key: 'lockupPeriod',
     dataTestId: `lockupPeriod-${lockupDaysNumber}`,

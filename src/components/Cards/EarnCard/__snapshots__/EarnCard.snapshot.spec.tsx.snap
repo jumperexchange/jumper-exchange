@@ -239,7 +239,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -561,7 +561,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -887,7 +887,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
                 >
-                  2 months
+                  labels.lockupPeriodValue
                 </p>
               </div>
             </div>
@@ -1267,7 +1267,7 @@ exports[`EarnCard snapshot > compact card with lockup days and cap in dollar mat
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -1589,7 +1589,7 @@ exports[`EarnCard snapshot > compact card with lockup days matches snapshot 1`] 
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -1906,7 +1906,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -2254,7 +2254,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               <p
                 class="MuiTypography-root MuiTypography-bodyLargeStrong css-1rh746t-MuiTypography-root"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
           </div>
@@ -2795,7 +2795,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -3029,7 +3029,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -3241,7 +3241,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                 class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
                 data-testid="lockupPeriod-60"
               >
-                2 months
+                labels.lockupPeriodValue
               </p>
             </div>
             <div
@@ -3512,7 +3512,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -3720,7 +3720,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -3897,7 +3897,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -4131,7 +4131,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="lockupPeriod-60"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
           <div
@@ -4271,7 +4271,7 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
         </div>
@@ -4655,7 +4655,7 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
         </div>
@@ -5451,7 +5451,7 @@ exports[`EarnCard snapshot > overview card with lockup days and cap in dollar ma
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
         </div>
@@ -5832,7 +5832,7 @@ exports[`EarnCard snapshot > overview card with lockup days matches snapshot 1`]
             <p
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
-              2 months
+              labels.lockupPeriodValue
             </p>
           </div>
         </div>
