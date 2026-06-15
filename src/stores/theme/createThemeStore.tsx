@@ -9,6 +9,7 @@ import type {
   ThemeState,
   WidgetThemeVariants,
 } from '@/types/theme';
+import { isAfter } from 'date-fns';
 import superjson from 'superjson';
 import Cookies from 'universal-cookie';
 import { persist } from 'zustand/middleware';
@@ -178,13 +179,29 @@ export const createThemeStore = (props: ThemeProps) =>
             console.debug('widgetTheme migrated from v2 to v3');
           }
 
-          // v3 → v4: Strip expirationDate from all configThemeStates
+          // v3 → v4: Strip expirationDate from all configThemeStates.
+          // v3 entries that pre-date isSelected only stored expirationDate, so
+          // s.isSelected can be undefined. Fall back to the expirationDate: if
+          // it is still in the future the selection is still valid; if it has
+          // already passed, treat the theme as unselected.
           if (version === 3) {
             newStore.configThemeStates = Object.fromEntries(
-              Object.entries(newStore.configThemeStates).map(([uid, s]) => [
-                uid,
-                { isSelected: s.isSelected },
-              ]),
+              Object.entries(
+                newStore.configThemeStates as Record<
+                  string,
+                  { isSelected?: boolean; expirationDate?: Date | string }
+                >,
+              ).map(([uid, s]) => {
+                let isSelected: boolean;
+                if (s.isSelected !== undefined) {
+                  isSelected = s.isSelected;
+                } else if (s.expirationDate) {
+                  isSelected = isAfter(s.expirationDate, new Date());
+                } else {
+                  isSelected = true;
+                }
+                return [uid, { isSelected }];
+              }),
             );
           }
 

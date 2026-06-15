@@ -238,6 +238,108 @@ describe('createThemeStore', () => {
     });
   });
 
+  describe('migration v3 → v4', () => {
+    it('preserves isSelected: true from v3 entries that had both fields', async () => {
+      mockStorage['jumper-theme-store'] = superjson.stringify({
+        state: {
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          configThemeStates: {
+            ab: { expirationDate: new Date('2099-01-01'), isSelected: true },
+          },
+          widgetTheme: emptyWidgetTheme,
+          jumperTheme: emptyJumperTheme,
+        },
+        version: 3,
+      });
+
+      const store = createThemeStore(
+        makeProps({
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          partnerThemes: [makePartnerTheme('ab')],
+        }),
+      );
+      await waitForHydration();
+
+      expect(store.getState().configThemeStates['ab']).toEqual({
+        isSelected: true,
+      });
+    });
+
+    it('defaults isSelected to true for v3 entries with a future expirationDate and no isSelected', async () => {
+      mockStorage['jumper-theme-store'] = superjson.stringify({
+        state: {
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          configThemeStates: { ab: { expirationDate: new Date('2099-01-01') } },
+          widgetTheme: emptyWidgetTheme,
+          jumperTheme: emptyJumperTheme,
+        },
+        version: 3,
+      });
+
+      const store = createThemeStore(
+        makeProps({
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          partnerThemes: [makePartnerTheme('ab')],
+        }),
+      );
+      await waitForHydration();
+
+      expect(store.getState().configThemeStates['ab']).toEqual({
+        isSelected: true,
+      });
+    });
+
+    it('defaults isSelected to false for v3 entries with an expired expirationDate and no isSelected', async () => {
+      mockStorage['jumper-theme-store'] = superjson.stringify({
+        state: {
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          configThemeStates: { ab: { expirationDate: new Date('2000-01-01') } },
+          widgetTheme: emptyWidgetTheme,
+          jumperTheme: emptyJumperTheme,
+        },
+        version: 3,
+      });
+
+      const store = createThemeStore(
+        makeProps({
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          partnerThemes: [makePartnerTheme('ab')],
+        }),
+      );
+      await waitForHydration();
+
+      expect(store.getState().configThemeStates['ab']).toEqual({
+        isSelected: false,
+      });
+    });
+
+    it('preserves explicit isSelected: false from v3 entries', async () => {
+      mockStorage['jumper-theme-store'] = superjson.stringify({
+        state: {
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          configThemeStates: {
+            ab: { expirationDate: new Date('2099-01-01'), isSelected: false },
+          },
+          widgetTheme: emptyWidgetTheme,
+          jumperTheme: emptyJumperTheme,
+        },
+        version: 3,
+      });
+
+      const store = createThemeStore(
+        makeProps({
+          configTheme: { uid: 'ab', partnerName: 'AB' },
+          partnerThemes: [makePartnerTheme('ab')],
+        }),
+      );
+      await waitForHydration();
+
+      expect(store.getState().configThemeStates['ab']).toEqual({
+        isSelected: false,
+      });
+    });
+  });
+
   describe('store actions', () => {
     it('setConfigThemeState updates isSelected for an existing uid', async () => {
       const store = createThemeStore(
