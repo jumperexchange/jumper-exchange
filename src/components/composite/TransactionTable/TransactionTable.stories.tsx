@@ -11,7 +11,7 @@ import {
 } from './fixtures';
 
 const meta: Meta<typeof TransactionTable> = {
-  title: 'components/Composite/TransactionCard/TransactionTable',
+  title: 'components/Composite/TransactionTable',
   component: TransactionTable,
   tags: ['autodocs'],
   parameters: {
