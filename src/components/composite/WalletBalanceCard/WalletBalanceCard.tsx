@@ -67,7 +67,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
       .map(
         ([symbol, group]): BalanceGroup => [
           symbol,
-          group.filter((balance) => isValueWorthDisplaying(balance.amountUSD)),
+          group.filter((balance) => isValueWorthDisplaying(balance)),
         ],
       )
       .filter(([, group]) => group.length > 0);

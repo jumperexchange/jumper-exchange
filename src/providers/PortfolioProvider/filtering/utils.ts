@@ -183,7 +183,7 @@ export const filterSortBalancesData = (
 
   // Hard floor: hide dust below the $0.10 display threshold regardless of slider
   allBalances = allBalances.filter((balance) =>
-    isValueWorthDisplaying(balance.amountUSD),
+    isValueWorthDisplaying(balance),
   );
 
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
@@ -288,9 +288,7 @@ export const filterSortPositionsData = (
   order: OrderEnum,
 ): Record<string, PortfolioPosition[]> => {
   // Hard floor: hide dust below the $0.10 display threshold regardless of slider
-  let result = positions.filter((position) =>
-    isValueWorthDisplaying(position.netUsd),
-  );
+  let result = positions.filter((position) => isValueWorthDisplaying(position));
 
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     result = result.filter((position) => {

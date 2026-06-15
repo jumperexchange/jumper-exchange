@@ -41,4 +41,24 @@ describe('isValueWorthDisplaying', () => {
     expect(isValueWorthDisplaying(Infinity)).toBe(true);
     expect(isValueWorthDisplaying(NaN)).toBe(false);
   });
+
+  it('accepts a balance object { amountUSD } and applies the same floor', () => {
+    expect(isValueWorthDisplaying({ amountUSD: 0 })).toBe(false);
+    expect(isValueWorthDisplaying({ amountUSD: 0.094 })).toBe(false);
+    expect(isValueWorthDisplaying({ amountUSD: 0.099 })).toBe(true);
+    expect(isValueWorthDisplaying({ amountUSD: MIN_DISPLAY_VALUE_USD })).toBe(
+      true,
+    );
+    expect(isValueWorthDisplaying({ amountUSD: 1 })).toBe(true);
+  });
+
+  it('accepts a position object { netUsd } and applies the same floor', () => {
+    expect(isValueWorthDisplaying({ netUsd: 0 })).toBe(false);
+    expect(isValueWorthDisplaying({ netUsd: 0.094 })).toBe(false);
+    expect(isValueWorthDisplaying({ netUsd: 0.099 })).toBe(true);
+    expect(isValueWorthDisplaying({ netUsd: MIN_DISPLAY_VALUE_USD })).toBe(
+      true,
+    );
+    expect(isValueWorthDisplaying({ netUsd: 1 })).toBe(true);
+  });
 });
