@@ -193,8 +193,9 @@ export const EarnFilteringProvider = ({
     accounts: tab === EarnFilterTab.YOUR_POSITIONS && account ? [account] : [],
   });
 
-  const displayableEarnSlugs = useMemo(() => {
+  const earnSlugWithPositionWorthDisplaying = useMemo(() => {
     const positions = yourPositions.data?.data ?? [];
+
     return new Set(
       positions
         .filter(isValueWorthDisplaying)
@@ -238,17 +239,21 @@ export const EarnFilteringProvider = ({
 
     // Hard floor on the "Your positions" tab: keep opportunities where the user
     // holds at least one position worth displaying (>= $0.10).
-    const floored =
-      tab === EarnFilterTab.YOUR_POSITIONS
-        ? filtered.filter((opportunity) =>
-            displayableEarnSlugs.has(opportunity.slug),
-          )
-        : filtered;
+    let worthDisplaying = filtered;
+    if (tab === EarnFilterTab.YOUR_POSITIONS) {
+      worthDisplaying = worthDisplaying.filter((opportunity) =>
+        earnSlugWithPositionWorthDisplaying.has(opportunity.slug),
+      );
+    }
 
-    const sorted = sortOpportunities(floored, sortBy, OrderOptions.DESC);
+    const sorted = sortOpportunities(
+      worthDisplaying,
+      sortBy,
+      OrderOptions.DESC,
+    );
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab, displayableEarnSlugs]);
+  }, [sourceData, filter, sortBy, tab, earnSlugWithPositionWorthDisplaying]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
