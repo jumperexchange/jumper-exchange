@@ -342,7 +342,7 @@ export default interface Resources {
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
-      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
+      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
       dustUsd: '<{{value, currencyExt(currency: USD)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
@@ -786,6 +786,10 @@ export default interface Resources {
         title: 'You reached Level {{newLevel}}!';
       };
     };
+    pagination: {
+      next: 'Next';
+      previous: 'Previous';
+    };
     perks_page: {
       empty: {
         all: {
@@ -968,8 +972,16 @@ export default interface Resources {
         description: 'Unfortunately there are no results for your search, try clearing your filters.';
         title: 'No results';
       };
+      emptyPage: {
+        clearFilters: 'Clear filters';
+        description: 'There are no results on this page. Go back to the previous page or clear your filters.';
+        goToPreviousPage: 'Previous page';
+        title: 'No results on this page';
+      };
       filter: {
         asset: 'Asset';
+        assetIn: 'Asset In';
+        assetOut: 'Asset Out';
         chain: 'Chain';
         clearAll: 'Clear all';
         filterAndSort: 'Filter and sort';
@@ -991,8 +1003,10 @@ export default interface Resources {
         title: 'Portfolio';
       };
       sorting: {
+        action: 'Action';
         asset: 'Asset';
         chain: 'Chain';
+        date: 'Date';
         sort: 'Sort';
         sortBy: 'Sort by';
         totalValue: 'Total Value';
@@ -1009,6 +1023,23 @@ export default interface Resources {
         nftAmount: 'Amount: {{amount}}';
         nftCount_one: '{{count}} NFT';
         nftCount_other: '{{count}} NFTs';
+      };
+      transactionTypes: {
+        approve: 'Approve';
+        bid: 'Bid';
+        burn: 'Burn';
+        claim: 'Claim';
+        delegate: 'Delegate';
+        deploy: 'Deploy';
+        deposit: 'Deposit';
+        execute: 'Execute';
+        mint: 'Mint';
+        receive: 'Receive';
+        revoke: 'Revoke';
+        revoke_delegation: 'Revoke Delegation';
+        send: 'Send';
+        trade: 'Trade';
+        withdraw: 'Withdraw';
       };
       views: {
         holdings: 'Holdings';

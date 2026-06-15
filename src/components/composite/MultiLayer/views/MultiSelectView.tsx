@@ -1,11 +1,13 @@
 import type { ChangeEvent } from 'react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import MenuList from '@mui/material/MenuList';
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import type {
   RendererSlotProps,
   MultiSelectLeafCategory,
@@ -20,6 +22,9 @@ import {
 import { SelectorLabel } from 'src/components/core/form/Select/components/SelectLabel';
 import { useTranslation } from 'react-i18next';
 import { mergeSx } from '@/utils/theme/mergeSx';
+
+const VIRTUAL_THRESHOLD = 50;
+const VIRTUAL_LIST_HEIGHT = 360;
 
 export interface MultiSelectViewProps<TValue extends string | number> {
   category: MultiSelectLeafCategory<TValue>;
@@ -81,6 +86,18 @@ export const MultiSelectView = <TValue extends string | number>({
 
   const isValueSelected = value.length > 0;
 
+  const shouldVirtualize = filteredOptions.length > VIRTUAL_THRESHOLD;
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const virtualizer = useVirtualizer({
+    count: shouldVirtualize ? filteredOptions.length : 0,
+    getScrollElement: () => listRef.current,
+    estimateSize: () => 48,
+    measureElement: (el: Element | null) =>
+      el?.getBoundingClientRect().height ?? 48,
+    overscan: 5,
+  });
+
   return (
     <Stack
       direction="column"
@@ -136,49 +153,87 @@ export const MultiSelectView = <TValue extends string | number>({
         </StyledMultiSelectFiltersContainer>
       )}
       <MenuList
+        ref={listRef}
         disablePadding
         sx={mergeSx(
           {
             flex: 1,
             overflowY: 'auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: listSpacing,
+            ...(shouldVirtualize
+              ? { height: VIRTUAL_LIST_HEIGHT }
+              : { display: 'flex', flexDirection: 'column', gap: listSpacing }),
           },
           slotProps?.listSx,
         )}
       >
-        {filteredOptions.map((option) => {
-          const isSelected = value.includes(option.value);
-
-          return (
-            <StyledMenuItem
-              size="medium"
-              disableRipple
-              key={option.value.toString()}
-              value={option.value}
-              sx={mergeSx(option.sx, slotProps?.itemSx)}
-              onClick={() => handleToggle(option.value)}
-            >
-              <StyledMenuItemContentContainer size="medium">
-                {option.startAdornment ?? option.icon}
-                <SelectorLabel
-                  label={option.label}
-                  labelVariant="bodyMedium"
+        {shouldVirtualize ? (
+          <Box
+            sx={{
+              height: virtualizer.getTotalSize(),
+              position: 'relative',
+              width: '100%',
+            }}
+          >
+            {virtualizer.getVirtualItems().map((virtualRow) => {
+              const option = filteredOptions[virtualRow.index];
+              const isSelected = value.includes(option.value);
+              return (
+                <StyledMenuItem
+                  ref={virtualizer.measureElement}
+                  data-index={virtualRow.index}
                   size="medium"
-                />
-                {option.endAdornment}
-              </StyledMenuItemContentContainer>
-              {isSelected && (
-                <CheckIcon
-                  sx={{
-                    marginLeft: 'auto',
-                  }}
-                />
-              )}
-            </StyledMenuItem>
-          );
-        })}
+                  disableRipple
+                  key={option.value.toString()}
+                  value={option.value}
+                  sx={mergeSx(option.sx, slotProps?.itemSx, {
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    transform: `translateY(${virtualRow.start}px)`,
+                  })}
+                  onClick={() => handleToggle(option.value)}
+                >
+                  <StyledMenuItemContentContainer size="medium">
+                    {option.startAdornment ?? option.icon}
+                    <SelectorLabel
+                      label={option.label}
+                      labelVariant="bodyMedium"
+                      size="medium"
+                    />
+                    {option.endAdornment}
+                  </StyledMenuItemContentContainer>
+                  {isSelected && <CheckIcon sx={{ marginLeft: 'auto' }} />}
+                </StyledMenuItem>
+              );
+            })}
+          </Box>
+        ) : (
+          filteredOptions.map((option) => {
+            const isSelected = value.includes(option.value);
+            return (
+              <StyledMenuItem
+                size="medium"
+                disableRipple
+                key={option.value.toString()}
+                value={option.value}
+                sx={mergeSx(option.sx, slotProps?.itemSx)}
+                onClick={() => handleToggle(option.value)}
+              >
+                <StyledMenuItemContentContainer size="medium">
+                  {option.startAdornment ?? option.icon}
+                  <SelectorLabel
+                    label={option.label}
+                    labelVariant="bodyMedium"
+                    size="medium"
+                  />
+                  {option.endAdornment}
+                </StyledMenuItemContentContainer>
+                {isSelected && <CheckIcon sx={{ marginLeft: 'auto' }} />}
+              </StyledMenuItem>
+            );
+          })
+        )}
       </MenuList>
     </Stack>
   );

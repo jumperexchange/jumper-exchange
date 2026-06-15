@@ -25,15 +25,8 @@ export const PortfolioFilterViewTablet: FC<PortfolioFilterViewBaseProps> = ({
     {
       value: PortfolioViewBarTab.TRANSACTIONS,
       label: t('portfolio.views.transactions'),
-      disabled: true,
+      disabled: isDisabled,
       'data-testid': 'portfolio-filter-tab-transactions',
-      endAdornment: (
-        <Badge
-          size={BadgeSize.SM}
-          variant={BadgeVariant.Secondary}
-          label={t('portfolio.views.soon')}
-        />
-      ),
     },
     {
       value: PortfolioViewBarTab.PERFORMANCE,
