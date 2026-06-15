@@ -18,13 +18,9 @@ import { createWithEqualityFn } from 'zustand/traditional';
 export const selectAvailablePartnerThemes = (
   state: ThemeState,
 ): PartnerThemesData[] => {
-  const selectedUids = Object.entries(state.configThemeStates)
-    .filter(([_, themeState]) => themeState.isSelected)
-    .map(([uid]) => uid);
+  const availableUids = new Set(Object.keys(state.configThemeStates));
 
-  return state.partnerThemes.filter((theme) =>
-    selectedUids.some((uid) => uid === theme.uid),
-  );
+  return state.partnerThemes.filter((theme) => availableUids.has(theme.uid));
 };
 
 const getLocalStorage = () =>
