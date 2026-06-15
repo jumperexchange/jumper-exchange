@@ -113,17 +113,19 @@ export class LandingPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  // RegExp form is for AB-tested labels (see `EXCHANGE_TAB_LABEL_PATTERN`).
   async navigateAndExpectTab(
     tabKey: number | string,
     expected: RegExp | string,
   ): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await this.page.getByTestId(`tab-key-${tabKey}`).click();
+    // The RegExp form targets the AB-tested Exchange label; scope it to the
+    // navbar button so it can't collide with the widget header, which renders
+    // the same "Swap & Bridge" text page-wide.
     const label =
       typeof expected === 'string'
         ? this.page.getByText(expected, { exact: true })
-        : this.page.getByText(expected);
+        : this.page.getByTestId('navbar-exchange-button').getByText(expected);
     await expect(label).toBeVisible();
   }
 
