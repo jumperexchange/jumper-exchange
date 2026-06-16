@@ -1,7 +1,7 @@
 import { useContext } from 'react';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { ProfileContext } from 'src/providers/ProfileProvider';
-import type { PerksDataAttributes } from 'src/types/strapi';
+import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import type { PerksDataAttributes } from '@/types/strapi';
 
 /**
  * The perks a wallet has unlocked: those whose `UnlockLevel` is at or below the

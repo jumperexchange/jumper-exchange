@@ -4,15 +4,15 @@ import type { FC } from 'react';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isAfter, subDays } from 'date-fns';
-import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
-import { GiftIcon } from 'src/components/illustrations/GiftIcon';
-import { FatBoltIcon } from 'src/components/illustrations/FatBoltIcon';
-import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { ProfileContext } from 'src/providers/ProfileProvider';
-import type { PerksDataAttributes } from 'src/types/strapi';
-import { ProgressionBar } from '../../LevelBox/ProgressionBar';
-import { getLevelBasedOnPoints } from '../../utils/getLevelBasedOnPoints';
+import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { GiftIcon } from '@/components/illustrations/GiftIcon';
+import { FatBoltIcon } from '@/components/illustrations/FatBoltIcon';
+import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
+import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import type { PerksDataAttributes } from '@/types/strapi';
+import { ProgressionBar } from '@/components/ProfilePage/LevelBox/ProgressionBar';
+import { getLevelBasedOnPoints } from '@/components/ProfilePage/utils/getLevelBasedOnPoints';
 import {
   JumperPassCardContainer,
   JumperPassLevelLabels,

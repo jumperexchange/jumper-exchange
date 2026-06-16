@@ -1,4 +1,4 @@
-import { BaseSurfaceSkeleton } from 'src/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { JumperPassCardContainer } from './JumperPassCard.styles';
 
 export const JumperPassCardSkeleton = () => {
