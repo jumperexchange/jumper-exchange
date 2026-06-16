@@ -1,0 +1,59 @@
+name: Label changes
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  label-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply change labels
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          DIFF="$(git diff --name-only "$BASE_SHA"..."$HEAD_SHA")"
+
+          # Snapshot current state once. These gh calls must succeed; if auth /
+          # rate-limit / network fails here, the step fails (no error swallowing).
+          repo_labels="$(gh label list --limit 200 --json name --jq '.[].name')"
+          pr_labels="$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name')"
+
+          has() { grep -qxF "$2" <<< "$1"; }
+
+          apply() {
+            local name="$1" color="$2" desc="$3" pattern="$4"
+            if grep -qE "$pattern" <<< "$DIFF"; then
+              # Create the label only if the repo doesn't already have it, so we
+              # never rely on swallowing an "already exists" error.
+              if ! has "$repo_labels" "$name"; then
+                gh label create "$name" --color "$color" --description "$desc"
+                repo_labels="$repo_labels"$'\n'"$name"
+              fi
+              # Add only if not already on the PR.
+              if ! has "$pr_labels" "$name"; then
+                gh pr edit "$PR_NUMBER" --add-label "$name"
+              fi
+            else
+              # Remove only if actually on the PR, so --remove-label can never
+              # fail on a missing label.
+              if has "$pr_labels" "$name"; then
+                gh pr edit "$PR_NUMBER" --remove-label "$name"
+              fi
+            fi
+          }
+
+          apply "env-change" "B60205" "PR modifies src/config/env-config.ts" '^src/config/env-config\.ts$'
