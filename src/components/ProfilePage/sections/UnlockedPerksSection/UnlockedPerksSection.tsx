@@ -2,7 +2,7 @@
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'src/components/Button/Button';
+import { Button } from '@/components/core/buttons/Button/Button';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { ProfileContext } from 'src/providers/ProfileProvider';
@@ -46,9 +46,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
           </Typography>
           <OpenHubWrapper>
             {/* TODO: wire to the Perks hub once the route exists */}
-            <Button variant="primary" size="medium">
-              {t('profile_page.unlockedPerks.openHub')}
-            </Button>
+            <Button>{t('profile_page.unlockedPerks.openHub')}</Button>
           </OpenHubWrapper>
         </InfoTop>
         <InfoBottom>
