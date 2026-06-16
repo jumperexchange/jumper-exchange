@@ -54,31 +54,45 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
   return (
     <JumperPassCardContainer>
       <SectionCard sx={jumperPassCardSx}>
-        <JumperPassStatsContainer>
-          <PassStatChip
-            icon={<FatBoltIcon sx={statIconSx} />}
-            value={`${t('format.decimal2Digit', { value: xpLastMonth })} XP`}
-            caption={t('profile_page.passStats.lastMonth')}
-          />
-          <PassStatChip
-            icon={<GiftIcon sx={statIconSx} />}
-            value={t('profile_page.passStats.perks', { count: perksUnlocked })}
-            caption={t('profile_page.passStats.unlocked')}
-          />
-        </JumperPassStatsContainer>
+        {(xpLastMonth > 0 || perksUnlocked > 0) && (
+          <JumperPassStatsContainer>
+            {xpLastMonth > 0 && (
+              <PassStatChip
+                icon={<FatBoltIcon sx={statIconSx} />}
+                value={`${t('format.decimal2Digit', { value: xpLastMonth })} XP`}
+                caption={t('profile_page.passStats.lastMonth')}
+              />
+            )}
+            {perksUnlocked > 0 && (
+              <PassStatChip
+                icon={<GiftIcon sx={statIconSx} />}
+                value={t('profile_page.passStats.perks', {
+                  count: perksUnlocked,
+                })}
+                caption={t('profile_page.passStats.unlocked')}
+              />
+            )}
+          </JumperPassStatsContainer>
+        )}
 
         <JumperPassTitle>{t('profile_page.jumperPass')}</JumperPassTitle>
 
-        <Typography variant="bodySmall" color="textSecondary">
-          {t('profile_page.progressTo')}{' '}
-          <Typography
-            component="span"
-            variant="bodySmallStrong"
-            color="textPrimary"
-          >
-            {t('profile_page.levelWithValue', { level: nextLevel })}
+        {points === 0 ? (
+          <Typography variant="bodySmall" color="textSecondary">
+            {t('profile_page.beginJourney')}
           </Typography>
-        </Typography>
+        ) : (
+          <Typography variant="bodySmall" color="textSecondary">
+            {t('profile_page.progressTo')}{' '}
+            <Typography
+              component="span"
+              variant="bodySmallStrong"
+              color="textPrimary"
+            >
+              {t('profile_page.levelWithValue', { level: nextLevel })}
+            </Typography>
+          </Typography>
+        )}
 
         <Typography variant="titleLarge" color="textPrimary">
           {t('format.decimal2Digit', { value: points })}

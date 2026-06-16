@@ -980,6 +980,7 @@ export default interface Resources {
     profile_page: {
       achievements: 'Achievements';
       availableRewards: 'Available Rewards';
+      beginJourney: 'Begin your Jumper journey';
       campaigns: 'Campaigns';
       copyAddress: 'Copy wallet address';
       joined: 'Joined {{date}}';
