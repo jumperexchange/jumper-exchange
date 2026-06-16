@@ -52,8 +52,8 @@ describe('getLastSettledMonthXP', () => {
         pda('2026-04-01T02:31:45.306Z', 30),
       ]),
     ).toBe(0);
-    expect(getLastSettledMonthXP([pda('2026-06-16T02:03:44.337Z', 40, true)])).toBe(
-      0,
-    );
+    expect(
+      getLastSettledMonthXP([pda('2026-06-16T02:03:44.337Z', 40, true)]),
+    ).toBe(0);
   });
 });
