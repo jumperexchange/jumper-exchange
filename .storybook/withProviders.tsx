@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import type { Decorator } from '@storybook/react';
+import type { Resource } from 'i18next';
+import { type ReactNode, useEffect, useState } from 'react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { ReactQueryProvider } from '../src/providers/ReactQueryProvider';
 import { DefaultThemeProvider } from '../src/providers/ThemeProvider/DefaultThemeProvider';
@@ -16,7 +18,7 @@ const ThemeBridge = ({
   children,
   theme,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   theme: string;
 }) => {
   const { setMode } = useColorScheme();
@@ -28,15 +30,22 @@ const ThemeBridge = ({
   return <>{children}</>;
 };
 
-export const withProviders = (Story: () => ReactNode, context) => {
-  const [resources, setResources] = useState<any>(null);
+export const withProviders: Decorator = (Story, context) => {
+  const [resources, setResources] = useState<Resource | null>(null);
+
+  const activeLocale = (context.globals.locale as string) || fallbackLng;
 
   useEffect(() => {
+    let cancelled = false;
+    setResources(null);
     (async () => {
-      const { resources } = await initTranslations(fallbackLng, namespaces);
-      setResources(resources);
+      const { resources } = await initTranslations(activeLocale, namespaces);
+      if (!cancelled) setResources(resources);
     })();
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [activeLocale]);
 
   if (!resources) return <div>Loading...</div>;
 
@@ -46,8 +55,9 @@ export const withProviders = (Story: () => ReactNode, context) => {
     <NuqsAdapter>
       <ReactQueryProvider>
         <TranslationsProvider
+          key={activeLocale}
           namespaces={[defaultNS]}
-          locale={fallbackLng}
+          locale={activeLocale}
           resources={resources}
         >
           <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
