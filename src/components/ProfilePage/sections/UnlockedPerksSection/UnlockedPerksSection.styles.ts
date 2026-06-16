@@ -46,26 +46,6 @@ export const InfoDivider = styled(Box)(({ theme }) => ({
   backgroundColor: (theme.vars || theme).palette.border,
 }));
 
-export const PerksColumn = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  gap: theme.spacing(3),
-}));
-
-export const CarouselViewport = styled(Box)(() => ({
-  position: 'relative',
-  minWidth: 0,
-}));
-
-export const perksNavButtonSx = (side: 'left' | 'right') => (theme: Theme) => ({
-  position: 'absolute',
-  top: '50%',
-  [side]: 0,
-  transform: `translate(${side === 'left' ? '-50%' : '50%'}, -50%)`,
-  zIndex: 2,
-  border: `${theme.spacing(0.5)} solid ${(theme.vars || theme).palette.surface2.main}`,
-});
-
 export const PerkCardContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -112,29 +92,4 @@ export const PerkCardBadges = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between',
   flexWrap: 'wrap',
   gap: theme.spacing(1),
-}));
-
-export const PerksControls = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 2),
-}));
-
-export const PerksDots = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
-}));
-
-export const PerksDot = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<{ active?: boolean }>(({ theme, active }) => ({
-  width: theme.spacing(1),
-  height: theme.spacing(1),
-  borderRadius: theme.shape.radiusRoundedFull,
-  cursor: 'pointer',
-  backgroundColor: active
-    ? (theme.vars || theme).palette.accent1.main
-    : (theme.vars || theme).palette.alpha300.main,
 }));

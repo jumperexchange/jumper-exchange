@@ -7,8 +7,8 @@ import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import type { PerksDataAttributes } from 'src/types/strapi';
+import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
 import { PerkCard } from './PerkCard';
-import { PerksCarousel } from './PerksCarousel';
 import {
   InfoBottom,
   InfoColumn,
@@ -59,11 +59,11 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
         </InfoBottom>
       </InfoColumn>
 
-      <PerksCarousel>
+      <SectionCarousel>
         {unlockedPerks.map((perk) => (
           <PerkCard key={perk.id} perk={perk} status="unlocked" />
         ))}
-      </PerksCarousel>
+      </SectionCarousel>
     </SectionCard>
   );
 };

@@ -14,15 +14,18 @@ import type { Swiper as SwiperType } from 'swiper/types';
 import 'swiper/css';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import {
+  CarouselColumn,
+  CarouselControls,
+  CarouselDot,
+  CarouselDots,
   CarouselViewport,
-  PerksColumn,
-  PerksControls,
-  PerksDot,
-  PerksDots,
-  perksNavButtonSx,
-} from './UnlockedPerksSection.styles';
+  carouselNavButtonSx,
+} from './SectionCarousel.styles';
 
-export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
+// Generic paged carousel: 1 card on mobile, 2 from the `sm` breakpoint, with
+// edge nav buttons and page dots. Each child is a slide. Shared by the profile
+// page sections (perks, missions, …).
+export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
   const theme = useTheme();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
@@ -59,7 +62,7 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
     swiper?.slideTo(page * (swiper.params.slidesPerGroup ?? 1));
 
   return (
-    <PerksColumn>
+    <CarouselColumn>
       <CarouselViewport>
         <Swiper
           onSwiper={setSwiper}
@@ -84,7 +87,7 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
         {!navState.isBeginning && (
           <IconButton
             aria-label="previous"
-            sx={perksNavButtonSx('left')}
+            sx={carouselNavButtonSx('left')}
             onClick={() => swiper?.slidePrev()}
           >
             <ArrowBackIcon sx={{ width: 20, height: 20 }} />
@@ -93,7 +96,7 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
         {!navState.isEnd && (
           <IconButton
             aria-label="next"
-            sx={perksNavButtonSx('right')}
+            sx={carouselNavButtonSx('right')}
             onClick={() => swiper?.slideNext()}
           >
             <ArrowForwardIcon sx={{ width: 20, height: 20 }} />
@@ -102,15 +105,15 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
       </CarouselViewport>
 
       {snapCount > 1 && (
-        <PerksControls>
-          <PerksDots>
+        <CarouselControls>
+          <CarouselDots>
             {Array.from({ length: snapCount }).map((_, index) => (
-              <PerksDot
+              <CarouselDot
                 key={index}
                 active={index === activeSnap}
                 role="button"
                 tabIndex={0}
-                aria-label={`Go to perk page ${index + 1}`}
+                aria-label={`Go to page ${index + 1}`}
                 onClick={() => goToPage(index)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
@@ -120,9 +123,9 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
                 }}
               />
             ))}
-          </PerksDots>
-        </PerksControls>
+          </CarouselDots>
+        </CarouselControls>
       )}
-    </PerksColumn>
+    </CarouselColumn>
   );
 };
