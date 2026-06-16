@@ -3,14 +3,14 @@ import type { FC } from 'react';
 import { useContext } from 'react';
 import { isValid, min } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
-import { LEADERBOARD_LENGTH } from 'src/components/Leaderboard/Leaderboard';
-import { Link } from 'src/components/Link/Link';
-import { AppPaths } from 'src/const/urls';
-import { useLeaderboardUser } from 'src/hooks/useLeaderboard';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import { ProfileContext } from 'src/providers/ProfileProvider';
-import { formatDateLocalized } from 'src/utils/formatDateLocalized';
+import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { LEADERBOARD_LENGTH } from '@/components/Leaderboard/Leaderboard';
+import { Link } from '@/components/Link/Link';
+import { AppPaths } from '@/const/urls';
+import { useLeaderboardUser } from '@/hooks/useLeaderboard';
+import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import { formatDateLocalized } from '@/utils/formatDateLocalized';
 import {
   RankButton,
   RankCardContainer,

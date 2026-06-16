@@ -109,8 +109,15 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
                 key={index}
                 active={index === activeSnap}
                 role="button"
+                tabIndex={0}
                 aria-label={`Go to perk page ${index + 1}`}
                 onClick={() => goToPage(index)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    goToPage(index);
+                  }
+                }}
               />
             ))}
           </PerksDots>

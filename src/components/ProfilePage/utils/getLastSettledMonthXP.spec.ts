@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type { PDA } from 'src/types/loyaltyPass';
+import type { PDA } from '@/types/loyaltyPass';
 import { getLastSettledMonthXP } from './getLastSettledMonthXP';
 
 const pda = (timestamp: string, points: number, ongoing = false): PDA =>

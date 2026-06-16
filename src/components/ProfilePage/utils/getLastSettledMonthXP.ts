@@ -1,4 +1,4 @@
-import type { PDA } from 'src/types/loyaltyPass';
+import type { PDA } from '@/types/loyaltyPass';
 
 // XP earned in the previous calendar month. The monthly rewards batch is settled
 // by a backend run early in the *following* month (e.g. May's rewards are
