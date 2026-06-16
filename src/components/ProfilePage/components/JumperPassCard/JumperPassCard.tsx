@@ -54,26 +54,22 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
   return (
     <JumperPassCardContainer>
       <SectionCard sx={jumperPassCardSx}>
-        {(xpLastMonth > 0 || perksUnlocked > 0) && (
-          <JumperPassStatsContainer>
-            {xpLastMonth > 0 && (
-              <PassStatChip
-                icon={<FatBoltIcon sx={statIconSx} />}
-                value={`${t('format.decimal2Digit', { value: xpLastMonth })} XP`}
-                caption={t('profile_page.passStats.lastMonth')}
-              />
-            )}
-            {perksUnlocked > 0 && (
-              <PassStatChip
-                icon={<GiftIcon sx={statIconSx} />}
-                value={t('profile_page.passStats.perks', {
-                  count: perksUnlocked,
-                })}
-                caption={t('profile_page.passStats.unlocked')}
-              />
-            )}
-          </JumperPassStatsContainer>
-        )}
+        <JumperPassStatsContainer>
+          <PassStatChip
+            icon={<FatBoltIcon sx={statIconSx} />}
+            value={`${t('format.decimal2Digit', { value: xpLastMonth })} XP`}
+            caption={t('profile_page.passStats.lastMonth')}
+          />
+          {perksUnlocked > 0 && (
+            <PassStatChip
+              icon={<GiftIcon sx={statIconSx} />}
+              value={t('profile_page.passStats.perks', {
+                count: perksUnlocked,
+              })}
+              caption={t('profile_page.passStats.unlocked')}
+            />
+          )}
+        </JumperPassStatsContainer>
 
         <JumperPassTitle>{t('profile_page.jumperPass')}</JumperPassTitle>
 
