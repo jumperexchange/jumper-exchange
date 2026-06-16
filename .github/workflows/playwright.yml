@@ -88,9 +88,9 @@ jobs:
         shard: [1, 2, 3, 4, 5]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@008330803749db0355799c700092d9a85fd074e9 # v6.0.9
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: "pnpm"
@@ -123,7 +123,7 @@ jobs:
           fi
       - name: Upload blob report to Github Actions Artifacts
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: blob-report-${{ matrix.shard }}
           path: blob-report
@@ -138,16 +138,16 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@008330803749db0355799c700092d9a85fd074e9 # v6.0.9
+      - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
       - name: Download blob reports from GitHub Actions Articfacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: all-blob-reports
           pattern: blob-report-*
@@ -162,7 +162,7 @@ jobs:
           report-file: ./report.json
           create-comment: false
       - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
@@ -195,7 +195,7 @@ jobs:
     if: ${{ !cancelled() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         with:
           message: |
             ${{ needs.merge-reports.outputs.summary }}

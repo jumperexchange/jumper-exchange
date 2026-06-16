@@ -7,7 +7,7 @@ jobs:
   slack-notify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with: { fetch-depth: 0 }          # we need full history for diff
 
       # Detect the previous tag (if any)
