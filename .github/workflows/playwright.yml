@@ -108,6 +108,7 @@ jobs:
           QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
           QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
           SHARD: ${{ matrix.shard }}/${{ strategy.job-total }}
+          E2E_PROD_BUILD: "1" # serve a plain prod build (not the dev server) — JUM-1116
           TEST_WALLET_SEED_PHRASE: ${{ secrets.TEST_WALLET_SEED_PHRASE }}
           TEST_WALLET_PASSWORD: ${{ secrets.TEST_WALLET_PASSWORD }}
         if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed
