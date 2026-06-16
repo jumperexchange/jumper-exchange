@@ -49,8 +49,13 @@ export const JumperPassStatsContainer = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(3),
   right: theme.spacing(3),
-  display: 'flex',
+  // Hidden on the smallest screens where the chips would clash with the
+  // title/subtitle; shown from the sm breakpoint up.
+  display: 'none',
   gap: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    display: 'flex',
+  },
 }));
 
 export const PassStatChipContainer = styled(Box)(({ theme }) => ({
