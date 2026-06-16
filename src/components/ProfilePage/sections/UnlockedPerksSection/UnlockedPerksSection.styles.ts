@@ -117,7 +117,7 @@ export const PerkCardBadges = styled(Box)(({ theme }) => ({
 export const PerksControls = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   padding: theme.spacing(0, 2),
 }));
 

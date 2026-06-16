@@ -9,11 +9,9 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper/types';
 import 'swiper/css';
-import Typography from '@mui/material/Typography';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import {
   CarouselViewport,
@@ -25,16 +23,13 @@ import {
 } from './UnlockedPerksSection.styles';
 
 export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
-  const { t } = useTranslation();
   const theme = useTheme();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
   const [snapCount, setSnapCount] = useState(1);
   const [activeSnap, setActiveSnap] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(1);
 
   const slides = Children.toArray(children);
-  const total = slides.length;
 
   useEffect(() => {
     if (!swiper) {
@@ -44,8 +39,6 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
       setNavState({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd });
       setSnapCount(Math.max(1, swiper.snapGrid?.length ?? 1));
       setActiveSnap(swiper.snapIndex ?? 0);
-      const perView = swiper.slidesPerViewDynamic?.() ?? 1;
-      setVisibleCount(Math.max(1, Math.round(perView)));
     };
     update();
     const events = [
@@ -60,7 +53,6 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
     };
   }, [swiper]);
 
-  const shown = Math.min(visibleCount, total);
   // snapIndex is page-based (slidesPerGroup = slidesPerView), so a dot maps to
   // the slide that starts its page.
   const goToPage = (page: number) =>
@@ -109,11 +101,8 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
         )}
       </CarouselViewport>
 
-      <PerksControls>
-        <Typography variant="bodySmallParagraph" color="textSecondary">
-          {t('profile_page.unlockedPerks.showing', { shown, total })}
-        </Typography>
-        {snapCount > 1 && (
+      {snapCount > 1 && (
+        <PerksControls>
           <PerksDots>
             {Array.from({ length: snapCount }).map((_, index) => (
               <PerksDot
@@ -125,8 +114,8 @@ export const PerksCarousel: FC<PropsWithChildren> = ({ children }) => {
               />
             ))}
           </PerksDots>
-        )}
-      </PerksControls>
+        </PerksControls>
+      )}
     </PerksColumn>
   );
 };

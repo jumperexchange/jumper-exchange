@@ -1027,7 +1027,6 @@ export default interface Resources {
         count_other: 'You have {{count}} unlocked perks';
         description: 'Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.';
         openHub: 'Open Perks Hub';
-        showing: 'Showing {{shown}} of {{total}}';
         title: 'Unlocked Perks';
       };
       viewLeaderboard: 'View leaderboard';

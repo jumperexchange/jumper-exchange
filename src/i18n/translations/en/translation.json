@@ -303,8 +303,7 @@
       "description": "Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.",
       "openHub": "Open Perks Hub",
       "count_one": "You have {{count}} unlocked perk",
-      "count_other": "You have {{count}} unlocked perks",
-      "showing": "Showing {{shown}} of {{total}}"
+      "count_other": "You have {{count}} unlocked perks"
     },
     "pointsInfo": "XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.",
     "levelInfo": "A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.",
