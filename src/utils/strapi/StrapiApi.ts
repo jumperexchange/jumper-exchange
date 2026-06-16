@@ -485,15 +485,18 @@ class ArticleStrapiApi extends StrapiApi {
   constructor({
     includeFields,
     excludeFields,
+    populate,
   }: {
     includeFields?: ArticleField[];
     excludeFields?: ArticleField[];
+    populate?: string[];
   } = {}) {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
     const articleParams = new ArticleParams(this.apiUrl);
     this.apiUrl = articleParams.addParams({
       includeFields,
       excludeFields,
+      populate,
     });
   }
 
