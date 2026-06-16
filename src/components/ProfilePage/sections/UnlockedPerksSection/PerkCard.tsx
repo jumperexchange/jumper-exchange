@@ -26,15 +26,14 @@ interface PerkCardProps {
   status?: PerkCardStatus;
 }
 
-// Dim the banner of a locked perk so it reads as not-yet-available.
-const lockedImageSx = { filter: 'brightness(0.65)' } as const;
+const dimmedImageSx = { filter: 'brightness(0.65)' } as const;
 
 export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
   const { t } = useTranslation();
   const { title, description, imageUrl, perkItems } =
     useFormatDisplayPerkData(perk);
 
-  const isLocked = status === 'locked';
+  const isDimmed = status !== 'unlocked';
 
   const statusBadge: Record<
     PerkCardStatus,
@@ -65,10 +64,10 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
         <PerkCardImage
           src={imageUrl}
           alt={title}
-          sx={isLocked ? lockedImageSx : undefined}
+          sx={isDimmed ? dimmedImageSx : undefined}
         />
       ) : (
-        <PerkCardImagePlaceholder sx={isLocked ? lockedImageSx : undefined} />
+        <PerkCardImagePlaceholder sx={isDimmed ? dimmedImageSx : undefined} />
       )}
       <PerkCardContent>
         <PerkCardHeader>
