@@ -3,7 +3,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import type { FC, ReactNode } from 'react';
+import type { FC, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
@@ -37,7 +37,7 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
 
   const statusBadge: Record<
     PerkCardStatus,
-    { icon: ReactNode; label: string; variant: BadgeVariant }
+    { icon: ReactElement; label: string; variant: BadgeVariant }
   > = {
     unlocked: {
       icon: <LockOpenIcon />,
