@@ -81,7 +81,7 @@ jobs:
     # 25 min headroom — `swapActions.spec.ts` and `mainMenu.spec.ts` use
     # `test.slow()` (3× per-test timeout) and one Hyperliquid case has
     # `timeoutMs: 90_000`. 20 min was tight against worst-case shard timing.
-    timeout-minutes: 25
+    timeout-minutes: 40 # +cold prod build per shard (e2e now serves a prod build; see playwright.config webServer)
     runs-on: ubuntu-latest
     strategy:
       matrix:

@@ -74,9 +74,17 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'pnpm run dev',
+        // Under CI (or local E2E_PROD_BUILD) serve a production build, not the
+        // Turbopack dev server: dev-mode compilation starves React re-renders on
+        // the loaded runner, dropping the settings slippage warning (JUM-1116).
+        // Mirrors playwright.perf.config.
+        command:
+          process.env.E2E_PROD_BUILD || process.env.CI
+            ? 'pnpm run build && pnpm run start'
+            : 'pnpm run dev',
         url: 'http://localhost:3000',
-        timeout: 300 * 1000,
+        timeout:
+          (process.env.E2E_PROD_BUILD || process.env.CI ? 900 : 300) * 1000,
         reuseExistingServer: !process.env.CI,
       },
 
