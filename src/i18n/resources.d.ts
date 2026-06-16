@@ -997,9 +997,9 @@ export default interface Resources {
       ongoing: 'Ongoing';
       open: 'Open {{tool}}';
       passStats: {
+        lastMonth: 'last month';
         perks_one: '{{count}} perk';
         perks_other: '{{count}} perks';
-        thisWeek: 'this week';
         unlocked: 'unlocked';
       };
       perks: 'Perks';

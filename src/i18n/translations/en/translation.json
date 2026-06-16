@@ -293,7 +293,7 @@
     "jumperPass": "Jumper Pass",
     "progressTo": "Your progress to",
     "passStats": {
-      "thisWeek": "this week",
+      "lastMonth": "last month",
       "unlocked": "unlocked",
       "perks_one": "{{count}} perk",
       "perks_other": "{{count}} perks"
