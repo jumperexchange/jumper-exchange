@@ -10,7 +10,7 @@ export const dynamic = 'force-static';
 
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
-const DEV_CHUNK_SIZE = 100;
+const DEV_CHUNK_SIZE = 20;
 const FETCH_CONCURRENCY = 5;
 const chunkSize = isProduction ? SITEMAP_LIMIT : DEV_CHUNK_SIZE;
 
