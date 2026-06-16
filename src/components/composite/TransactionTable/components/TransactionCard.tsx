@@ -43,7 +43,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const content = useTransactionSummaryContent(transaction, {
-    compact: isMobile,
+    compact: true,
   });
 
   return (

@@ -3,7 +3,15 @@ import type { SxProps, Theme } from '@mui/material/styles';
 import type { TypographyProps } from '@mui/material/Typography';
 import type { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { Token } from '@/types/tokens';
-import type { BalanceDto, TransactionsDto } from '@/types/jumper-backend';
+import type {
+  BalanceDto,
+  NftDto,
+  TokenDto,
+  TransactionsDto,
+} from '@/types/jumper-backend';
+
+export const isTokenDto = (token: TokenDto | NftDto): token is TokenDto =>
+  'symbol' in token;
 
 export type TransactionOperationType = TransactionsDto['action'];
 
