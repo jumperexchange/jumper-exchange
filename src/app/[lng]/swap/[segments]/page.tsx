@@ -1,7 +1,6 @@
 import { siteName } from '@/app/lib/metadata';
 import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
-import { getTokensQuery } from '@/hooks/useTokens';
 import { getChainByName } from '@/utils/tokenAndChain';
 import { slugify } from '@/utils/urls/slugify';
 import { chainNameSchema } from '@/utils/validation-schemas';
@@ -71,10 +70,7 @@ export default async function Page({ params }: { params: Params }) {
       return notFound();
     }
 
-    const [{ chains }, tokens] = await Promise.all([
-      getChainsQuery(),
-      getTokensQuery(),
-    ]);
+    const { chains } = await getChainsQuery();
 
     const sourceChain = getChainByName(chains, result.data);
 
@@ -82,21 +78,11 @@ export default async function Page({ params }: { params: Params }) {
       return notFound();
     }
 
-    const chainTokens = tokens[sourceChain.id];
-    let sourceToken, destinationToken;
-    if (chainTokens) {
-      sourceToken = chainTokens[0];
-      destinationToken = chainTokens[1];
-    }
-
     return (
       <SwapPage
         sourceChain={sourceChain}
-        sourceToken={sourceToken}
         destinationChain={sourceChain}
         chainName={result.data}
-        destinationToken={destinationToken}
-        tokens={tokens}
       />
     );
   } catch (e) {

@@ -64,7 +64,6 @@ export default async function Page({ params }: { params: Params }) {
       destinationChain={route.destinationChain}
       destinationToken={route.destinationToken}
       chains={route.chains}
-      tokens={route.tokens}
     />
   );
 }

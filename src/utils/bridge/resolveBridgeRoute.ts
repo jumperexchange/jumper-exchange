@@ -1,11 +1,9 @@
 import { getChainsQuery } from '@/hooks/useChains';
-import { getTokensQuery } from '@/hooks/useTokens';
-import {
-  getChainByName,
-  getTokenBySymbolOnSpecificChain,
-} from '@/utils/tokenAndChain';
+import { getChainByName } from '@/utils/tokenAndChain';
+import { fetchTokenBySymbol } from '@/utils/image-generation/fetchTokenData';
 import { bridgeSegmentsSchema, slugToLabel } from '@/utils/validation-schemas';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import type { ExtendedChain, Token } from '@lifi/sdk';
+import { cache } from 'react';
 
 export type ResolvedBridgeRoute = {
   segments: string;
@@ -18,73 +16,62 @@ export type ResolvedBridgeRoute = {
   destinationChain: ExtendedChain;
   destinationToken: Token;
   chains: ExtendedChain[];
-  tokens: TokensResponse['tokens'];
 };
 
-export const resolveBridgeRoute = async (
-  segments: string,
-): Promise<ResolvedBridgeRoute | null> => {
-  const result = bridgeSegmentsSchema.safeParse(segments);
+export const resolveBridgeRoute = cache(
+  async (segments: string): Promise<ResolvedBridgeRoute | null> => {
+    const result = bridgeSegmentsSchema.safeParse(segments);
 
-  if (!result.success) {
-    return null;
-  }
-
-  const {
-    sourceChain: sourceChainNameParam,
-    sourceToken: sourceTokenSymbolParam,
-    destinationChain: destinationChainNameParam,
-    destinationToken: destinationTokenSymbolParam,
-  } = result.data;
-
-  try {
-    const [{ chains }, tokens] = await Promise.all([
-      getChainsQuery(),
-      getTokensQuery(),
-    ]);
-
-    const sourceChain = getChainByName(
-      chains,
-      slugToLabel(sourceChainNameParam),
-    );
-    const sourceToken = getTokenBySymbolOnSpecificChain(
-      tokens,
-      sourceChain?.id ?? 0,
-      sourceTokenSymbolParam,
-    );
-    const destinationChain = getChainByName(
-      chains,
-      slugToLabel(destinationChainNameParam),
-    );
-    const destinationToken = getTokenBySymbolOnSpecificChain(
-      tokens,
-      destinationChain?.id ?? 0,
-      destinationTokenSymbolParam,
-    );
-
-    if (
-      !sourceChain ||
-      !sourceToken ||
-      !destinationChain ||
-      !destinationToken
-    ) {
+    if (!result.success) {
       return null;
     }
 
-    return {
-      segments,
-      sourceChainNameParam,
-      sourceTokenSymbolParam,
-      destinationChainNameParam,
-      destinationTokenSymbolParam,
-      sourceChain,
-      sourceToken,
-      destinationChain,
-      destinationToken,
-      chains,
-      tokens,
-    };
-  } catch {
-    return null;
-  }
-};
+    const {
+      sourceChain: sourceChainNameParam,
+      sourceToken: sourceTokenSymbolParam,
+      destinationChain: destinationChainNameParam,
+      destinationToken: destinationTokenSymbolParam,
+    } = result.data;
+
+    try {
+      const { chains } = await getChainsQuery();
+
+      const sourceChain = getChainByName(
+        chains,
+        slugToLabel(sourceChainNameParam),
+      );
+      const destinationChain = getChainByName(
+        chains,
+        slugToLabel(destinationChainNameParam),
+      );
+
+      if (!sourceChain || !destinationChain) {
+        return null;
+      }
+
+      const [sourceToken, destinationToken] = await Promise.all([
+        fetchTokenBySymbol(sourceChain.id, sourceTokenSymbolParam),
+        fetchTokenBySymbol(destinationChain.id, destinationTokenSymbolParam),
+      ]);
+
+      if (!sourceToken || !destinationToken) {
+        return null;
+      }
+
+      return {
+        segments,
+        sourceChainNameParam,
+        sourceTokenSymbolParam,
+        destinationChainNameParam,
+        destinationTokenSymbolParam,
+        sourceChain,
+        sourceToken,
+        destinationChain,
+        destinationToken,
+        chains,
+      };
+    } catch {
+      return null;
+    }
+  },
+);
