@@ -984,6 +984,18 @@ export default interface Resources {
       campaigns: 'Campaigns';
       claimed: 'Claimed';
       copyAddress: 'Copy wallet address';
+      earnXp: {
+        activityComingSoon: 'Activity tracking is coming soon.';
+        description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
+        openHub: 'Open Mission Hub';
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Earn XP';
+        xpAmount: '{{xp}} XP';
+        xpEarned: 'earned so far this month';
+      };
       joined: 'Joined {{date}}';
       jumperPass: 'Jumper Pass';
       level: 'Level';
