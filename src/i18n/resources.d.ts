@@ -982,6 +982,7 @@ export default interface Resources {
       availableRewards: 'Available Rewards';
       beginJourney: 'Begin your Jumper journey';
       campaigns: 'Campaigns';
+      claimed: 'Claimed';
       copyAddress: 'Copy wallet address';
       joined: 'Joined {{date}}';
       jumperPass: 'Jumper Pass';
