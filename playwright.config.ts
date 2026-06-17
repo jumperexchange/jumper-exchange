@@ -75,7 +75,7 @@ export default defineConfig({
     ? undefined
     : {
         // Serve a prod build under CI/E2E_PROD_BUILD — the Turbopack dev server
-        // intermittently boot-hangs on CI runners (300s webServer timeout). JUM-1116.
+        // intermittently boot-hangs on CI runners (300s webServer timeout).
         command:
           process.env.E2E_PROD_BUILD || process.env.CI
             ? 'pnpm run build && pnpm run start'
