@@ -31,9 +31,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
-  const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
-  const [snapCount, setSnapCount] = useState(1);
-  const [activeSnap, setActiveSnap] = useState(0);
+  const [pageState, setPageState] = useState({ pageCount: 1, activePage: 0 });
 
   const slides = Children.toArray(children);
 
@@ -41,10 +39,18 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
     if (!swiper) {
       return;
     }
+    // `loop` duplicates slides, so the snap grid no longer maps to real pages —
+    // derive pages from the real slide count and `realIndex` instead.
     const update = () => {
-      setNavState({ isBeginning: swiper.isBeginning, isEnd: swiper.isEnd });
-      setSnapCount(Math.max(1, swiper.snapGrid?.length ?? 1));
-      setActiveSnap(swiper.snapIndex ?? 0);
+      const perGroup = swiper.params.slidesPerGroup ?? 1;
+      const pageCount = Math.max(1, Math.ceil(slides.length / perGroup));
+      setPageState({
+        pageCount,
+        activePage: Math.min(
+          pageCount - 1,
+          Math.floor(swiper.realIndex / perGroup),
+        ),
+      });
     };
     update();
     const events = [
@@ -57,23 +63,22 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       events.forEach((event) => swiper.off(event, update));
     };
-  }, [swiper]);
+  }, [swiper, slides.length]);
 
-  // snapIndex is page-based (slidesPerGroup = slidesPerView), so a dot maps to
-  // the slide that starts its page.
+  // `slideToLoop` targets the real slide index, so dots stay correct under loop.
   const goToPage = (page: number) =>
-    swiper?.slideTo(page * (swiper.params.slidesPerGroup ?? 1));
+    swiper?.slideToLoop(page * (swiper.params.slidesPerGroup ?? 1));
 
   return (
     <CarouselColumn>
       <CarouselViewport>
         <Swiper
           onSwiper={setSwiper}
+          loop
           freeMode={false}
           spaceBetween={24}
           grabCursor
-          // Page by the full set of visible cards so snaps/dots/`isEnd` are all
-          // page-based and in agreement.
+          // Page by the full set of visible cards so each dot maps to one page.
           breakpoints={{
             0: { slidesPerView: 1, slidesPerGroup: 1 },
             [theme.breakpoints.values.sm]: {
@@ -93,36 +98,38 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
           ))}
         </Swiper>
 
-        {!navState.isBeginning && (
-          <IconButton
-            aria-label={t('profile_page.sectionCarousel.previous')}
-            sx={sectionCarouselNavButtonSx('left')}
-            onClick={() => swiper?.slidePrev()}
-          >
-            <ArrowBackIcon sx={{ width: 20, height: 20 }} />
-          </IconButton>
-        )}
-        {!navState.isEnd && (
-          <IconButton
-            aria-label={t('profile_page.sectionCarousel.next')}
-            sx={sectionCarouselNavButtonSx('right')}
-            onClick={() => swiper?.slideNext()}
-          >
-            <ArrowForwardIcon sx={{ width: 20, height: 20 }} />
-          </IconButton>
+        {pageState.pageCount > 1 && (
+          <>
+            <IconButton
+              aria-label={t('profile_page.sectionCarousel.previous')}
+              sx={sectionCarouselNavButtonSx('left')}
+              onClick={() => swiper?.slidePrev()}
+            >
+              <ArrowBackIcon sx={{ width: 20, height: 20 }} />
+            </IconButton>
+            <IconButton
+              aria-label={t('profile_page.sectionCarousel.next')}
+              sx={sectionCarouselNavButtonSx('right')}
+              onClick={() => swiper?.slideNext()}
+            >
+              <ArrowForwardIcon sx={{ width: 20, height: 20 }} />
+            </IconButton>
+          </>
         )}
       </CarouselViewport>
 
-      {snapCount > 1 && (
+      {pageState.pageCount > 1 && (
         <CarouselControls>
           <CarouselDots>
-            {Array.from({ length: snapCount }).map((_, index) => (
+            {Array.from({ length: pageState.pageCount }).map((_, index) => (
               <CarouselDot
                 key={index}
-                active={index === activeSnap}
+                active={index === pageState.activePage}
                 role="button"
                 tabIndex={0}
-                aria-current={index === activeSnap ? 'page' : undefined}
+                aria-current={
+                  index === pageState.activePage ? 'page' : undefined
+                }
                 aria-label={t('profile_page.sectionCarousel.goToPage', {
                   page: index + 1,
                 })}
