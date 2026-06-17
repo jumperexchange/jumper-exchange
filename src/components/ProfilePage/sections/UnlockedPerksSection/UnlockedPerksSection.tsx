@@ -3,11 +3,11 @@ import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/core/buttons/Button/Button';
-import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
-import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
-import { ProfileContext } from 'src/providers/ProfileProvider';
-import type { PerksDataAttributes } from 'src/types/strapi';
-import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
+import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { SectionCarousel } from '@/components/ProfilePage/components/SectionCarousel/SectionCarousel';
+import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import type { PerksDataAttributes } from '@/types/strapi';
 import { PerkCard } from './PerkCard';
 import {
   InfoBottom,

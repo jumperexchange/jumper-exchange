@@ -5,11 +5,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import type { FC, ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from 'src/components/Badge/Badge';
-import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import { useFormatDisplayPerkData } from 'src/hooks/perks/useFormatDisplayPerkData';
-import type { PerksDataAttributes } from 'src/types/strapi';
-import { getTextEllipsisStyles } from 'src/utils/styles/getTextEllipsisStyles';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import { useFormatDisplayPerkData } from '@/hooks/perks/useFormatDisplayPerkData';
+import type { PerksDataAttributes } from '@/types/strapi';
+import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
 import {
   PerkCardBadges,
   PerkCardContainer,
