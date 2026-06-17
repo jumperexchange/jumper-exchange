@@ -5,6 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import {
   Children,
   type FC,
+  isValidElement,
   type PropsWithChildren,
   useEffect,
   useState,
@@ -82,7 +83,13 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
           }}
         >
           {slides.map((child, index) => (
-            <SwiperSlide key={index}>{child}</SwiperSlide>
+            <SwiperSlide
+              key={
+                isValidElement(child) && child.key != null ? child.key : index
+              }
+            >
+              {child}
+            </SwiperSlide>
           ))}
         </Swiper>
 
