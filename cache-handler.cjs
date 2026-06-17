@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 'use strict';
+/* eslint-disable @typescript-eslint/no-require-imports */
 const Redis = require('ioredis');
 
 const prefix = process.env.REDIS_PREFIX ?? 'jumper:cache:';
@@ -10,23 +10,35 @@ const client = new Redis({
   password: process.env.REDIS_PASSWORD || undefined,
   lazyConnect: false,
   maxRetriesPerRequest: 1,
+  connectTimeout: 500,
+  enableOfflineQueue: false,
 });
 client.on('error', (err) => console.error('[cache-handler] Redis error:', err));
 
 const key = (k) => `${prefix}${k}`;
 
-// Local cache of tag invalidation timestamps, synced from Redis on each request
-// via refreshTags(). Avoids a Redis round-trip per getExpiration() call.
 const localTagTimestamps = new Map();
 
 module.exports = {
-  async get(cacheKey, softTags) {
+  async get(cacheKey, softTags = []) {
     try {
       const stored = await client.get(key(cacheKey));
       if (!stored) {
         return undefined;
       }
       const data = JSON.parse(stored);
+
+      if (softTags.length) {
+        const tagExpiration = Math.max(...softTags.map((t) => localTagTimestamps.get(t) ?? 0), 0);
+        if (tagExpiration > data.timestamp) {
+          return undefined;
+        }
+      }
+
+      if (typeof data.revalidate === 'number' && Date.now() > data.timestamp + data.revalidate * 1000) {
+        return undefined;
+      }
+
       return {
         value: new ReadableStream({
           start(controller) {
@@ -85,11 +97,15 @@ module.exports = {
     } catch {}
   },
 
-  // Called before each request — syncs tag invalidation timestamps from Redis
-  // into the local map so getExpiration() can read without extra round-trips.
   async refreshTags() {
     try {
-      const tagNames = await client.smembers(key('revalidated-tags'));
+      const now = Date.now();
+      const retentionMs = 24 * 60 * 60 * 1000;
+      const tagNames = await client.zrangebyscore(
+        key('revalidated-tags'),
+        now - retentionMs,
+        '+inf',
+      );
       if (!tagNames.length) {
         return;
       }
@@ -100,7 +116,6 @@ module.exports = {
     } catch {}
   },
 
-  // Reads from the local map synced by refreshTags() — no Redis round-trip.
   async getExpiration(tags) {
     return Math.max(...tags.map((t) => localTagTimestamps.get(t) ?? 0), 0);
   },
@@ -111,12 +126,12 @@ module.exports = {
       const pipe = client.pipeline();
       for (const tag of tags) {
         pipe.set(key(`tag-ts:${tag}`), String(now));
-        pipe.sadd(key('revalidated-tags'), tag);
+        pipe.zadd(key('revalidated-tags'), now, tag);
         localTagTimestamps.set(tag, now);
       }
+      pipe.zremrangebyscore(key('revalidated-tags'), '-inf', now - 24 * 60 * 60 * 1000);
       await pipe.exec();
 
-      // Invalidate all cache keys associated with these tags
       for (const tag of tags) {
         const memberKeys = await client.smembers(key(`tag-keys:${tag}`));
         if (memberKeys.length) {
