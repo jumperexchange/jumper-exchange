@@ -23,7 +23,7 @@ export const jumperPassCardSx: SxProps<Theme> = (theme: Theme) => ({
 export const JumperPassTitle = styled(Typography)(({ theme }) => {
   const palette = (theme.vars || theme).palette;
   return {
-    ...theme.typography.urbanistBodyXLarge,
+    ...theme.typography.bodyXLarge,
     fontWeight: theme.typography.fontWeightBold,
     width: 'fit-content',
     background: `linear-gradient(90deg, ${palette.accent1.main}, ${palette.accent2.main})`,

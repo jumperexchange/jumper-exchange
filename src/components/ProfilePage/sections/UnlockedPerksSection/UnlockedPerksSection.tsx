@@ -35,10 +35,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
     <SectionCard sx={unlockedPerksCardSx}>
       <InfoColumn>
         <InfoTop>
-          <Typography
-            variant="urbanistTitleXSmall"
-            sx={{ color: 'accent1.main' }}
-          >
+          <Typography variant="titleXSmall" sx={{ color: 'accent1.main' }}>
             {t('profile_page.unlockedPerks.title')}
           </Typography>
           <Typography variant="bodyMediumParagraph" color="textSecondary">
