@@ -1018,6 +1018,11 @@ export default interface Resources {
         };
         error: 'An unknown error occurred. Please try again.';
       };
+      sectionCarousel: {
+        goToPage: 'Go to page {{page}}';
+        next: 'Next';
+        previous: 'Previous';
+      };
       shareProfile: 'Share profile';
       tooltips: {
         ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';

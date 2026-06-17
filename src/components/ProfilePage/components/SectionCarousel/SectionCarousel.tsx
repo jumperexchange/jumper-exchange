@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import type { Swiper as SwiperType } from 'swiper/types';
 import 'swiper/css';
@@ -27,6 +28,7 @@ import {
 // page sections (perks, missions, …).
 export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
   const theme = useTheme();
+  const { t } = useTranslation();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
   const [navState, setNavState] = useState({ isBeginning: true, isEnd: true });
   const [snapCount, setSnapCount] = useState(1);
@@ -86,7 +88,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
 
         {!navState.isBeginning && (
           <IconButton
-            aria-label="previous"
+            aria-label={t('profile_page.sectionCarousel.previous')}
             sx={sectionCarouselNavButtonSx('left')}
             onClick={() => swiper?.slidePrev()}
           >
@@ -95,7 +97,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
         )}
         {!navState.isEnd && (
           <IconButton
-            aria-label="next"
+            aria-label={t('profile_page.sectionCarousel.next')}
             sx={sectionCarouselNavButtonSx('right')}
             onClick={() => swiper?.slideNext()}
           >
@@ -113,7 +115,10 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
                 active={index === activeSnap}
                 role="button"
                 tabIndex={0}
-                aria-label={`Go to page ${index + 1}`}
+                aria-current={index === activeSnap ? 'page' : undefined}
+                aria-label={t('profile_page.sectionCarousel.goToPage', {
+                  page: index + 1,
+                })}
                 onClick={() => goToPage(index)}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
