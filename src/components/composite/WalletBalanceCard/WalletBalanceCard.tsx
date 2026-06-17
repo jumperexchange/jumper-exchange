@@ -24,11 +24,12 @@ import { useSettingsStore } from '@/stores/settings';
 import { BalanceCardSize } from '../BalanceCard/types';
 import { BalanceCardSkeleton } from '../BalanceCard/components/BalanceCardSkeleton';
 import { BalanceCard } from '../BalanceCard/BalanceCard';
-import { flatMap } from 'lodash';
+import { flatMap, mapValues, pickBy } from 'lodash';
 import {
   balanceGroupSortAccessors,
   sortPortfolioItems,
 } from '@/providers/PortfolioProvider/filtering/utils';
+import { isValueWorthDisplaying } from '@/utils/numbers/displayValueThreshold';
 import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
 import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
 import { AppPaths } from '@/const/urls';
@@ -59,8 +60,18 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   const { setWalletMenuState } = useMenuStore((state) => state);
 
   const balanceGroups = useMemo(() => {
+    // Hard floor: hide dust below the $0.10 display threshold and drop emptied
+    // groups. The per-wallet total below stays computed from unfiltered data.
+    const worthDisplaying = mapValues(data, (group) =>
+      group.filter(isValueWorthDisplaying),
+    );
+    const worthDisplayingAndNonEmpty = pickBy(
+      worthDisplaying,
+      (group) => group.length > 0,
+    );
+
     return sortPortfolioItems(
-      Object.entries(data),
+      Object.entries(worthDisplayingAndNonEmpty),
       'value',
       'desc',
       balanceGroupSortAccessors,
