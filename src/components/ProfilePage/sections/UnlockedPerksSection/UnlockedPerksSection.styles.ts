@@ -52,6 +52,7 @@ export const PerkCardContainer = styled(Box)(({ theme }) => ({
   gap: theme.spacing(3),
   // We need to fit the arrows
   boxSizing: 'border-box',
+  height: theme.spacing(35.5),
   padding: theme.spacing(2),
   borderRadius: `${theme.shape.radius12}px`,
   backgroundColor: (theme.vars || theme).palette.surface1.main,
