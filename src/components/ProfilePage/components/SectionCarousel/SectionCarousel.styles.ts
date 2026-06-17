@@ -13,7 +13,7 @@ export const CarouselViewport = styled(Box)(() => ({
   minWidth: 0,
 }));
 
-export const carouselNavButtonSx =
+export const sectionCarouselNavButtonSx =
   (side: 'left' | 'right') => (theme: Theme) => ({
     position: 'absolute',
     top: '50%',

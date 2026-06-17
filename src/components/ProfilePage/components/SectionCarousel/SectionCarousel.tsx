@@ -19,7 +19,7 @@ import {
   CarouselDot,
   CarouselDots,
   CarouselViewport,
-  carouselNavButtonSx,
+  sectionCarouselNavButtonSx,
 } from './SectionCarousel.styles';
 
 // Generic paged carousel: 1 card on mobile, 2 from the `sm` breakpoint, with
@@ -87,7 +87,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
         {!navState.isBeginning && (
           <IconButton
             aria-label="previous"
-            sx={carouselNavButtonSx('left')}
+            sx={sectionCarouselNavButtonSx('left')}
             onClick={() => swiper?.slidePrev()}
           >
             <ArrowBackIcon sx={{ width: 20, height: 20 }} />
@@ -96,7 +96,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
         {!navState.isEnd && (
           <IconButton
             aria-label="next"
-            sx={carouselNavButtonSx('right')}
+            sx={sectionCarouselNavButtonSx('right')}
             onClick={() => swiper?.slideNext()}
           >
             <ArrowForwardIcon sx={{ width: 20, height: 20 }} />
