@@ -78,10 +78,9 @@ jobs:
     needs: [create-qase-run]
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
-    # 25 min headroom — `swapActions.spec.ts` and `mainMenu.spec.ts` use
-    # `test.slow()` (3× per-test timeout) and one Hyperliquid case has
-    # `timeoutMs: 90_000`. 20 min was tight against worst-case shard timing.
-    timeout-minutes: 25
+    # 40 min: per-shard cold prod build (~5-8 min) on top of the existing headroom
+    # for `test.slow()` specs (swapActions/mainMenu) + a 90s Hyperliquid case.
+    timeout-minutes: 40
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -108,6 +107,7 @@ jobs:
           QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
           QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
           SHARD: ${{ matrix.shard }}/${{ strategy.job-total }}
+          E2E_PROD_BUILD: "1" # serve a plain prod build (not the dev server)
           TEST_WALLET_SEED_PHRASE: ${{ secrets.TEST_WALLET_SEED_PHRASE }}
           TEST_WALLET_PASSWORD: ${{ secrets.TEST_WALLET_PASSWORD }}
         if: ${{ !cancelled()}} # Always attempt to run the tests even if cache setup failed

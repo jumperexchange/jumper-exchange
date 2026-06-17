@@ -3,7 +3,9 @@ import withBundleAnalyzer from '@next/bundle-analyzer';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Standalone is for the Docker image; for the e2e prod-build server we want a
+  // plain build that `next start` serves cleanly (E2E_PROD_BUILD).
+  output: process.env.E2E_PROD_BUILD ? undefined : 'standalone',
   trailingSlash: false,
   reactCompiler: true,
   productionBrowserSourceMaps: false,
@@ -75,18 +77,6 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'strapi-develop.jumper.xyz',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'strapi-develop.jumper.exchange',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'strapi.jumper.exchange',
         port: '',
         pathname: '/uploads/**',
       },
