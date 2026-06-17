@@ -30,10 +30,6 @@ export const InfoTop = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
-export const OpenHubWrapper = styled(Box)(({ theme }) => ({
-  paddingTop: theme.spacing(2),
-}));
-
 export const InfoBottom = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',

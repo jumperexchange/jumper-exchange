@@ -2,7 +2,6 @@
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/core/buttons/Button/Button';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { SectionCarousel } from '@/components/ProfilePage/components/SectionCarousel/SectionCarousel';
 import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
@@ -14,7 +13,6 @@ import {
   InfoColumn,
   InfoDivider,
   InfoTop,
-  OpenHubWrapper,
   unlockedPerksCardSx,
 } from './UnlockedPerksSection.styles';
 
@@ -41,10 +39,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
           <Typography variant="bodyMediumParagraph" color="textSecondary">
             {t('profile_page.unlockedPerks.description')}
           </Typography>
-          <OpenHubWrapper>
-            {/* TODO: wire to the Perks hub once the route exists */}
-            <Button>{t('profile_page.unlockedPerks.openHub')}</Button>
-          </OpenHubWrapper>
+          {/* The Open Perks Hub button is hidden until the hub route exists. */}
         </InfoTop>
         <InfoBottom>
           <InfoDivider />
