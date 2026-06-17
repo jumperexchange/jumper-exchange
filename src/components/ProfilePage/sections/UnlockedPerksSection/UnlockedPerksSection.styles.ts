@@ -8,7 +8,7 @@ export const unlockedPerksCardSx: SxProps<Theme> = (theme: Theme) => {
     display: 'grid',
     rowGap: theme.spacing(4),
     columnGap: theme.spacing(4),
-    boxShadow: `inset 0px 1px 0px 0px ${palette.white.main}, 0px 4px 24px 0px ${palette.alphaDark200.main}`,
+    boxShadow: `0px 4px 24px 0px ${palette.alphaDark200.main}`,
     [theme.breakpoints.up('lg')]: {
       gridTemplateColumns: 'minmax(0, 0.5fr) minmax(0, 1fr)',
     },
