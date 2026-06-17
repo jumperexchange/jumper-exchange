@@ -11,6 +11,7 @@ export const defaultWalletConnectConfig: WalletConnectParameters = {
     url: JUMPER_URL,
     icons: [`${JUMPER_URL}/logo-144x144.svg`],
   },
+  showQrModal: true,
   qrModalOptions: {
     themeVariables: {
       '--wcm-z-index': '3000',
