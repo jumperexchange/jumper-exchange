@@ -78,10 +78,9 @@ jobs:
     needs: [create-qase-run]
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
-    # 25 min headroom — `swapActions.spec.ts` and `mainMenu.spec.ts` use
-    # `test.slow()` (3× per-test timeout) and one Hyperliquid case has
-    # `timeoutMs: 90_000`. 20 min was tight against worst-case shard timing.
-    timeout-minutes: 40 # +cold prod build per shard (e2e now serves a prod build; see playwright.config webServer)
+    # 40 min: per-shard cold prod build (~5-8 min) on top of the existing headroom
+    # for `test.slow()` specs (swapActions/mainMenu) + a 90s Hyperliquid case.
+    timeout-minutes: 40
     runs-on: ubuntu-latest
     strategy:
       matrix:
