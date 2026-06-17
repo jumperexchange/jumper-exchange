@@ -7,12 +7,16 @@ import {
   HoldingsFilteringProvider,
   useHoldingsFiltering,
 } from '@/providers/PortfolioProvider/filtering/HoldingsFilteringContext';
-import { TransactionFilteringProvider } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
+import {
+  TransactionFilteringProvider,
+  useTransactionFiltering,
+} from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
 import { useAccount } from '@lifi/wallet-management';
 import { PortfolioHoldings } from './PortfolioHoldings/PortfolioHoldings';
 import { PortfolioTransactions } from './PortfolioTransactions/PortfolioTransactions';
 import { PortfolioTransactionPagination } from './PortfolioTransactions/PortfolioTransactionPagination';
 import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
+import { useEffect } from 'react';
 
 const PortfolioContentSectionInner = () => {
   const [tab, setTab] = useQueryState(
@@ -28,10 +32,16 @@ const PortfolioContentSectionInner = () => {
     positionsIsEmpty,
   } = useHoldingsFiltering();
   const { account } = useAccount();
+  const { setIsActive } = useTransactionFiltering();
+
   const isDisconnected = !account.isConnected;
   const isLoading = balancesIsLoading || positionsIsLoading;
   const isEmpty = balancesIsEmpty && positionsIsEmpty;
   const isDisabled = isDisconnected || (isEmpty && !isLoading);
+
+  useEffect(() => {
+    setIsActive(tab === PortfolioViewBarTab.TRANSACTIONS);
+  }, [tab, setIsActive]);
 
   return (
     <>

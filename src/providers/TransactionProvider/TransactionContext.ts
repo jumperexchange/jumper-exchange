@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { TransactionsDto } from '@/types/jumper-backend';
+import type { RateLimitInfo } from './hooks/useTransactionsData';
 
 export interface TransactionContextValue {
   transactions: TransactionsDto[];
@@ -10,6 +11,8 @@ export interface TransactionContextValue {
   isLoading: boolean;
   error: Error | null;
   refetch: () => void;
+  triggerForceRefresh: () => void;
+  rateLimit: RateLimitInfo | null;
 }
 
 export const TransactionContext = createContext<TransactionContextValue>({
@@ -21,6 +24,8 @@ export const TransactionContext = createContext<TransactionContextValue>({
   isLoading: false,
   error: null,
   refetch: () => {},
+  triggerForceRefresh: () => {},
+  rateLimit: null,
 });
 
 export const useTransactions = (): TransactionContextValue =>

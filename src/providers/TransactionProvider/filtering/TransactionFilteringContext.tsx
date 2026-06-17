@@ -80,6 +80,7 @@ interface TransactionFilteringContextType {
   goToPreviousPage: () => void;
   isLoading: boolean;
   metadata: TransactionFilterMetadata;
+  setIsActive: (active: boolean) => void;
 }
 
 const transactionSearchParamsParsers = {
@@ -128,12 +129,14 @@ export const TransactionFilteringContext =
     goToPreviousPage: () => {},
     isLoading: false,
     metadata: defaultMetadata,
+    setIsActive: () => {},
   });
 
 export const TransactionFilteringProvider = ({
   children,
 }: PropsWithChildren) => {
   const { account, accounts } = useAccount();
+  const [isActive, setIsActive] = useState(false);
   const accountGroups = useAccountGroupsByChainType(accounts);
   const [searchParams, setSearchParams] = useQueryStates(
     transactionSearchParamsParsers,
@@ -284,6 +287,7 @@ export const TransactionFilteringProvider = ({
       chainIds={chainIds}
       types={filter.types?.length ? filter.types : undefined}
       assets={assets}
+      enabled={isActive}
     >
       <TransactionFilteringInner
         filter={filter}
@@ -293,6 +297,7 @@ export const TransactionFilteringProvider = ({
         updateFilter={updateFilter}
         clearFilters={clearFilters}
         setSortBy={setSortBy}
+        setIsActive={setIsActive}
         chainKeyToId={chainKeyToId}
         tokens={tokens}
         onRawTransactionsUpdate={handleRawTransactionsUpdate}
@@ -311,6 +316,7 @@ interface TransactionFilteringInnerProps extends PropsWithChildren {
   updateFilter: (patch: Partial<TransactionFilterUI>) => void;
   clearFilters: () => void;
   setSortBy: (sortBy: TransactionSortBy) => void;
+  setIsActive: (active: boolean) => void;
   chainKeyToId: Map<string, number>;
   tokens: ReturnType<typeof useTokens>['tokens'];
   onRawTransactionsUpdate: (
@@ -328,6 +334,7 @@ const TransactionFilteringInner = ({
   updateFilter,
   clearFilters,
   setSortBy,
+  setIsActive,
   chainKeyToId,
   tokens,
   onRawTransactionsUpdate,
@@ -451,6 +458,7 @@ const TransactionFilteringInner = ({
       goToPreviousPage,
       isLoading,
       metadata,
+      setIsActive,
     }),
     [
       filter,
@@ -466,6 +474,7 @@ const TransactionFilteringInner = ({
       goToPreviousPage,
       isLoading,
       metadata,
+      setIsActive,
     ],
   );
 
