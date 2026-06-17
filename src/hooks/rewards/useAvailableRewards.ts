@@ -8,8 +8,6 @@ import {
   type PortfolioBalance,
   type WalletToken,
 } from '@/types/tokens';
-import type { MerklRewardsData } from 'src/types/strapi';
-import { fromMerklRewardsData } from '@/utils/rewards/rewardFilterAdapters';
 import { orderBy } from 'lodash';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
@@ -22,29 +20,20 @@ export type RewardItemWithBalance = RewardItem & {
 
 interface UseAvailableRewardsProps {
   userAddress?: string;
-  merklRewardsData?: MerklRewardsData[];
 }
 
-export const useAvailableRewards = ({
-  userAddress,
-  merklRewardsData,
-}: UseAvailableRewardsProps) => {
-  const filterCriteria = useMemo(
-    () => fromMerklRewardsData(merklRewardsData),
-    [merklRewardsData],
-  );
-
+export const useAvailableRewards = ({ userAddress }: UseAvailableRewardsProps) => {
   const {
     availableRewards: merklAvailableRewards,
     isSuccess: isMerklSuccess,
     isLoading: isMerklLoading,
-  } = useMerklRewards({ userAddress, claimableOnly: true, filterCriteria });
+  } = useMerklRewards({ userAddress });
 
   const {
     data: deFiReacherAvailableRewards = [],
     isSuccess: isDeFiReacherSuccess,
     isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards({ userAddress, filterCriteria });
+  } = useDeFiReacherRewards({ userAddress });
 
   const { getToken } = useTokens();
   const { toRawAmount } = useTokenAmountInput();
@@ -92,12 +81,7 @@ export const useAvailableRewards = ({
       (item) => item.balance.amountUSD,
       'desc',
     );
-  }, [
-    merklAvailableRewards,
-    deFiReacherAvailableRewards,
-    getToken,
-    toRawAmount,
-  ]);
+  }, [merklAvailableRewards, deFiReacherAvailableRewards, getToken, toRawAmount]);
 
   return {
     rewards,

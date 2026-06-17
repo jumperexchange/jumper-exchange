@@ -843,6 +843,46 @@ export interface LeaderboardItemResponse {
   data: LeaderboardEntity;
 }
 
+export interface MerklUserRewardDto {
+  chainId: number;
+  /** Token contract address */
+  address: string;
+  symbol: string;
+  logoURI: string;
+  amountToClaim: number;
+  tokenDecimals: number;
+  type: 'merkl';
+  amountAccumulated: number;
+  /** Raw amount for the claiming contract (no decimals applied) */
+  accumulatedAmountForContractBN: string;
+  proof: string[];
+  claimingAddress: string;
+}
+
+export interface DeFiReacherUserRewardDto {
+  chainId: number;
+  /** Token contract address */
+  address: string;
+  symbol: string;
+  logoURI: string;
+  amountToClaim: number;
+  tokenDecimals: number;
+  type: 'defi-reacher';
+  campaignId: string;
+  contractAddress: string;
+}
+
+export interface UserRewardsResponseDto {
+  rewards: (
+    | ({
+        type: 'merkl';
+      } & MerklUserRewardDto)
+    | ({
+        type: 'defi-reacher';
+      } & DeFiReacherUserRewardDto)
+  )[];
+}
+
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -912,7 +952,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupDays?: number | null;
+  lockupDays?: number;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -1330,7 +1370,7 @@ export interface EarnOpportunityWithScore {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupDays?: number | null;
+  lockupDays?: number;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -1471,6 +1511,38 @@ export interface PerkClaimItemResponse {
   message: string;
   meta: EmptyMeta;
   data: PerkClaimResponseDto;
+}
+
+export interface ActivePerkDto {
+  /**
+   * Strapi document id of the perk
+   * @example "abc123documentId"
+   */
+  id: string;
+  /**
+   * Perk display name
+   * @example "Airalo"
+   */
+  name: string;
+  /**
+   * Jumper Pass level at which this perk unlocks
+   * @example 3
+   */
+  unlockLevel: number;
+  /**
+   * URL-friendly perk slug
+   * @example "airalo-esim"
+   */
+  slug: string;
+}
+
+export interface ActivePerkListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: ActivePerkDto[];
 }
 
 export interface PerkClaimListResponse {
@@ -2041,6 +2113,25 @@ export class JumperBackend<
     ) =>
       this.request<LeaderboardItemResponse, void>({
         path: `/v1/leaderboard/${address}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Rewards, Public
+     * @name UserRewardsControllerGetUserRewardsV1
+     * @summary Get claimable rewards for a wallet address
+     * @request GET:/v1/rewards/users/{address}
+     */
+    userRewardsControllerGetUserRewardsV1: (
+      address: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<UserRewardsResponseDto, any>({
+        path: `/v1/rewards/users/${address}`,
         method: 'GET',
         format: 'json',
         ...params,

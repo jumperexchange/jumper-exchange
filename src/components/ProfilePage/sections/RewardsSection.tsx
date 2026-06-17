@@ -11,7 +11,6 @@ import { useContext } from 'react';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { RewardsCarousel } from '../components/RewardsCarousel/RewardsCarousel';
 import { RewardClaimCardSkeleton } from '../components/RewardsCarousel/components/RewardClaimCardSkeleton';
-import type { MerklRewardsData } from 'src/types/strapi';
 import { MerklRewardClaim } from '../components/RewardsCarousel/components/MerklRewardClaim';
 import { DefiReacherRewardClaim } from '../components/RewardsCarousel/components/DefiReacherRewardClaim';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -20,18 +19,13 @@ import Box from '@mui/material/Box';
 import { RewardsCarouselRoot } from '../components/RewardsCarousel/RewardsCarouselContext';
 import { useAvailableRewards } from '@/hooks/rewards/useAvailableRewards';
 
-export const RewardsSection = ({
-  merklRewards,
-}: {
-  merklRewards: MerklRewardsData[] | undefined;
-}) => {
+export const RewardsSection = () => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { walletAddress: address } = useContext(ProfileContext);
 
   const { rewards, isLoading, isSuccess } = useAvailableRewards({
     userAddress: address,
-    merklRewardsData: merklRewards,
   });
 
   if (!rewards.length || !isSuccess) {

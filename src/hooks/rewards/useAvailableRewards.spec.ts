@@ -19,9 +19,6 @@ vi.mock('@/hooks/tokens/useTokenAmountInput', () => ({
   useTokenAmountInput: vi.fn(),
 }));
 vi.mock('@/types/tokens', () => ({ createWalletToken: vi.fn() }));
-vi.mock('@/utils/rewards/rewardFilterAdapters', () => ({
-  fromMerklRewardsData: vi.fn(),
-}));
 
 const makeMerklReward = (
   overrides: Partial<MerklReward> = {},
@@ -58,7 +55,6 @@ beforeEach(() => {
     availableRewards: [],
     isSuccess: true,
     isLoading: false,
-    pastCampaigns: [],
   });
   vi.mocked(useDeFiReacherRewards).mockReturnValue({
     data: [],
@@ -78,7 +74,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [makeMerklReward({ amountToClaim: 1 })],
       isSuccess: true,
       isLoading: false,
-      pastCampaigns: [],
     });
     mockGetToken.mockReturnValue({ priceUSD: '0.05' });
 
@@ -92,7 +87,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [makeMerklReward()],
       isSuccess: true,
       isLoading: false,
-      pastCampaigns: [],
     });
     mockGetToken.mockReturnValue(undefined);
 
@@ -111,7 +105,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [merklReward],
       isSuccess: true,
       isLoading: false,
-      pastCampaigns: [],
     });
     vi.mocked(useDeFiReacherRewards).mockReturnValue({
       data: [defiReward],
@@ -134,7 +127,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [],
       isSuccess: false,
       isLoading: false,
-      pastCampaigns: [],
     });
     vi.mocked(useDeFiReacherRewards).mockReturnValue({
       data: [makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })],
@@ -155,7 +147,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [makeMerklReward({ symbol: 'MKL', amountToClaim: 1 })],
       isSuccess: true,
       isLoading: false,
-      pastCampaigns: [],
     });
     vi.mocked(useDeFiReacherRewards).mockReturnValue({
       data: [],
@@ -176,7 +167,6 @@ describe('useAvailableRewards', () => {
       availableRewards: [makeMerklReward({ amountToClaim: 3 })],
       isSuccess: true,
       isLoading: false,
-      pastCampaigns: [],
     });
     mockGetToken.mockReturnValue({ priceUSD: '4' });
 
