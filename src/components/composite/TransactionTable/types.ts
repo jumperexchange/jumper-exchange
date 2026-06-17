@@ -13,6 +13,17 @@ import type {
 export const isTokenDto = (token: TokenDto | NftDto): token is TokenDto =>
   'symbol' in token;
 
+export const isNftDto = (token: TokenDto | NftDto): token is NftDto =>
+  'tokenId' in token;
+
+export interface NftBalance {
+  address: string;
+  chainId: number;
+  tokenId: string;
+  amount: number;
+  amountUsd?: number | null;
+}
+
 export type TransactionOperationType = TransactionsDto['action'];
 
 export type TransactionBalance = BalanceDto;
@@ -64,6 +75,8 @@ export interface TransactionSummaryContent {
   dateHint: string;
   fromTokens: Token[];
   toTokens: Token[];
+  fromNfts: NftBalance[];
+  toNfts: NftBalance[];
 }
 
 export type TransactionSummaryRenderFn = (

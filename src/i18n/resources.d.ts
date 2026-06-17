@@ -973,6 +973,8 @@ export default interface Resources {
           date: 'Date';
           fee: 'Fee';
         };
+        nftCount_one: '{{count}} NFT';
+        nftCount_other: '{{count}} NFTs';
       };
       views: {
         holdings: 'Holdings';

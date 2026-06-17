@@ -1,9 +1,9 @@
 import { sumBy } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { createBaseToken } from '@/types/tokens';
-import type { BalanceDto, TokenDto } from '@/types/jumper-backend';
-import type { PortfolioTransaction } from './types';
-import { isTokenDto } from './types';
+import type { BalanceDto, NftDto, TokenDto } from '@/types/jumper-backend';
+import type { NftBalance, PortfolioTransaction } from './types';
+import { isNftDto, isTokenDto } from './types';
 import {
   formatTransactionAction,
   formatTransactionDateHint,
@@ -16,9 +16,21 @@ interface UseTransactionSummaryContentOptions {
 }
 
 type BalanceWithTokenDto = BalanceDto & { token: TokenDto };
+type BalanceWithNftDto = BalanceDto & { token: NftDto };
 
 const hasTokenDto = (balance: BalanceDto): balance is BalanceWithTokenDto =>
   balance.token != null && isTokenDto(balance.token);
+
+const hasNftDto = (balance: BalanceDto): balance is BalanceWithNftDto =>
+  balance.token != null && isNftDto(balance.token);
+
+const toNftBalance = (b: BalanceWithNftDto): NftBalance => ({
+  address: b.token.address,
+  chainId: b.token.chainId,
+  tokenId: b.token.tokenId,
+  amount: b.amount,
+  amountUsd: b.amountUsd,
+});
 
 const getTokenLogo = (logo: unknown): string | undefined => {
   if (logo instanceof URL) {
@@ -69,6 +81,8 @@ export const useTransactionSummaryContent = (
 
   const toBalances = transaction.toBalances.filter(hasTokenDto);
   const fromBalances = transaction.fromBalances.filter(hasTokenDto);
+  const fromNfts = transaction.fromBalances.filter(hasNftDto).map(toNftBalance);
+  const toNfts = transaction.toBalances.filter(hasNftDto).map(toNftBalance);
 
   // Sends have no incoming balances — show what was sent instead of $0.
   const amountBalances = toBalances.length ? toBalances : fromBalances;
@@ -95,5 +109,7 @@ export const useTransactionSummaryContent = (
     dateHint: formatTransactionDateHint(transaction.time),
     fromTokens: fromBalances.map((b) => toBaseToken(b.token)),
     toTokens: toBalances.map((b) => toBaseToken(b.token)),
+    fromNfts,
+    toNfts,
   };
 };

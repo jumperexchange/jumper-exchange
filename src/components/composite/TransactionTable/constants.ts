@@ -1,12 +1,12 @@
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import type {
-  TransactionSummaryColumnId,
-  TransactionSummaryRowConfig,
-} from './types';
+import type { TransactionSummaryRowConfig } from './types';
 
 // Fits a two-token XL overlay stack so the column width stays constant
 // regardless of how many tokens (or none) a transaction has.
 const COMPACT_ASSETS_COLUMN_WIDTH = 72;
+
+export const NFT_TOKEN_URL =
+  'https://static.debank.com/image/eth_nft/local_url/2a035fec5441cb85b98db0a8ebb46c62/191e91adff47463d2f9b37e6b255e2bb.svg';
 
 export const TRANSACTION_SUMMARY_ROW_CONFIG: TransactionSummaryRowConfig = {
   testId: 'transaction-table',

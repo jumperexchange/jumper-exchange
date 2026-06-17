@@ -7,31 +7,35 @@ import type { ParseKeys } from 'i18next';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { getAvatarSize } from '@/components/core/AvatarStack/AvatarStack.styles';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 import { EntityStackWithBadgeSkeleton } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadgeSkeleton';
 import { EntityStackBadgePlacement } from '@/components/composite/EntityStackWithBadge/types';
 import type { Token } from '@/types/tokens';
+import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import type {
+  NftBalance,
   TransactionSummaryColumnId,
   TransactionSummaryRenderFn,
   TransactionSummaryRowConfig,
   TransactionSummarySkeletonFn,
-  TransactionSummaryTokenConfig,
 } from '../types';
 import {
   StyledColumnHeaderDivider,
   StyledRowSection,
 } from '../TransactionTable.styles';
+import { NFT_TOKEN_URL } from '../constants';
 
 interface TransactionSummaryColumnHeaderProps {
   columnId: TransactionSummaryColumnId;
   config: TransactionSummaryRowConfig;
 }
 
-interface TransactionTokenStackProps {
+interface TransactionAssetStackProps {
   tokens: Token[];
-  config: TransactionSummaryTokenConfig;
+  nfts: NftBalance[];
+  config: TransactionSummaryRowConfig;
 }
 
 interface ColumnDefinition {
@@ -59,35 +63,102 @@ export const TransactionSummaryColumnHeader: FC<
   );
 };
 
-const TransactionTokenStack: FC<TransactionTokenStackProps> = ({
+const toChainEntities = (chainIds: number[]) =>
+  [...new Set(chainIds)].map((chainId) => ({
+    chainId,
+    chainKey: chainId.toString(),
+  }));
+
+const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   tokens,
+  nfts,
   config,
 }) => {
-  if (!tokens.length) {
+  const { t } = useTranslation();
+
+  if (!tokens.length && !nfts.length) {
     const { width, height } = getAvatarSize(config.tokenSize);
     return <Box sx={{ width, height, display: 'flex' }}>-</Box>;
   }
 
-  const chainEntities = tokens.map((token) => ({
-    chainId: token.chainId,
-    chainKey: token.chainId.toString(),
-  }));
-  const hasMultipleChains = chainEntities.length > 1;
+  const tokenChains = toChainEntities(tokens.map((t) => t.chainId));
+  const nftChains = toChainEntities(nfts.map((n) => n.chainId));
+  const nftAmount = nfts.reduce((sum, nft) => sum + nft.amount, 0);
 
   return (
-    <EntityStackWithBadge
-      entities={tokens}
-      badgeEntities={chainEntities}
-      placement={
-        hasMultipleChains
-          ? EntityStackBadgePlacement.Inline
-          : EntityStackBadgePlacement.Overlay
-      }
-      size={config.tokenSize}
-      badgeSize={hasMultipleChains ? config.inlineBadgeSize : config.badgeSize}
-      isContentVisible={false}
-      spacing={{ badge: config.badgeSpacing }}
-    />
+    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+      {tokens.length > 0 && (
+        <EntityStackWithBadge
+          entities={tokens}
+          badgeEntities={tokenChains}
+          placement={
+            tokenChains.length > 1
+              ? EntityStackBadgePlacement.Inline
+              : EntityStackBadgePlacement.Overlay
+          }
+          size={config.tokenSize}
+          limit={4}
+          badgeSize={
+            tokenChains.length > 1 ? config.inlineBadgeSize : config.badgeSize
+          }
+          isContentVisible={false}
+          spacing={{ badge: config.badgeSpacing }}
+        />
+      )}
+      {nfts.length > 0 && (
+        <Tooltip
+          title={
+            <Stack spacing={0.5}>
+              {nfts.map((nft) => (
+                <Stack>
+                  <Typography
+                    key={`${nft.address}-${nft.tokenId}`}
+                    variant="bodyXSmallStrong"
+                  >
+                    {nft.amount > 0 ? `Amount: ${nft.amount}` : ''}
+                  </Typography>
+                  <Typography
+                    key={`${nft.address}-${nft.tokenId}`}
+                    variant="bodyXSmall"
+                  >
+                    {truncateAddress(nft.address)} #{nft.tokenId}
+                  </Typography>
+                </Stack>
+              ))}
+            </Stack>
+          }
+        >
+          <Box>
+            <EntityStackWithBadge
+              entities={[
+                {
+                  logo: NFT_TOKEN_URL,
+                  name: 'NFT',
+                },
+              ]}
+              badgeEntities={nftChains}
+              placement={
+                nftChains.length > 1
+                  ? EntityStackBadgePlacement.Inline
+                  : EntityStackBadgePlacement.Overlay
+              }
+              size={config.tokenSize}
+              badgeSize={
+                nftChains.length > 1 ? config.inlineBadgeSize : config.badgeSize
+              }
+              content={{
+                titleVariant: config.titleVariant,
+                title: t('portfolio.transactionSummary.nftCount', {
+                  count: nftAmount,
+                }),
+                hint: '',
+              }}
+              spacing={{ badge: config.badgeSpacing }}
+            />
+          </Box>
+        </Tooltip>
+      )}
+    </Stack>
   );
 };
 
@@ -131,7 +202,11 @@ export const COLUMN_DEFINITIONS: Record<
   assetsIn: {
     label: 'portfolio.transactionSummary.columns.assetIn',
     render: (content, config) => (
-      <TransactionTokenStack tokens={content.fromTokens} config={config} />
+      <TransactionAssetStack
+        tokens={content.fromTokens}
+        nfts={content.fromNfts}
+        config={config}
+      />
     ),
     renderSkeleton: (config) => (
       <EntityStackWithBadgeSkeleton size={config.tokenSize} />
@@ -140,7 +215,11 @@ export const COLUMN_DEFINITIONS: Record<
   assetsOut: {
     label: 'portfolio.transactionSummary.columns.assetOut',
     render: (content, config) => (
-      <TransactionTokenStack tokens={content.toTokens} config={config} />
+      <TransactionAssetStack
+        tokens={content.toTokens}
+        nfts={content.toNfts}
+        config={config}
+      />
     ),
     renderSkeleton: (config) => (
       <EntityStackWithBadgeSkeleton size={config.tokenSize} />
