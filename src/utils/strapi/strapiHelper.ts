@@ -1,4 +1,13 @@
-import config from '@/config/env-config';
+import config, { getEnvVars } from '@/config/env-config';
+
+export function getStrapiApiAccessToken() {
+  const token = getEnvVars().STRAPI_API_TOKEN;
+  if (!token) {
+    console.error('Strapi API token is not provided.');
+    throw new Error('Strapi API token is not provided.');
+  }
+  return token;
+}
 
 export function getStrapiBaseUrl() {
   // Use default Strapi URL for other environments
