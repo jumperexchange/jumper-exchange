@@ -21,7 +21,7 @@ const nextConfig = {
     'ioredis',
   ],
   cacheHandlers: process.env.NODE_ENV === 'production'
-    ? { default: require.resolve('./cache-handler.js') }
+    ? { default: require.resolve('./cache-handler.cjs') }
     : undefined,
   expireTime: 86400, // one day in seconds
   experimental: {
