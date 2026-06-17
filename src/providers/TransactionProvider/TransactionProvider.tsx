@@ -18,6 +18,7 @@ interface TransactionProviderProps extends PropsWithChildren {
   chainIds?: number[];
   types?: TransactionsDto['action'][];
   assets?: string[];
+  enabled?: boolean;
 }
 
 export const TransactionProvider = ({
@@ -28,6 +29,7 @@ export const TransactionProvider = ({
   chainIds,
   types,
   assets,
+  enabled,
 }: TransactionProviderProps) => {
   const [page, setPageState] = useState(0);
   const [cursors, setCursors] = useState<Map<number, string>>(new Map());
@@ -39,15 +41,17 @@ export const TransactionProvider = ({
 
   const cursor = page === 0 ? undefined : (cursors.get(page) ?? null);
 
-  const { data, isLoading, error, refetch } = useTransactionsData({
-    walletAddress,
-    minDate,
-    maxDate,
-    cursor,
-    chainIds,
-    types,
-    assets,
-  });
+  const { data, isLoading, error, refetch, triggerForceRefresh, rateLimit } =
+    useTransactionsData({
+      walletAddress,
+      minDate,
+      maxDate,
+      cursor,
+      chainIds,
+      types,
+      assets,
+      enabled,
+    });
 
   useEffect(() => {
     if (data?.meta?.next) {
@@ -91,6 +95,8 @@ export const TransactionProvider = ({
       isLoading,
       error: error as Error | null,
       refetch,
+      triggerForceRefresh,
+      rateLimit,
     }),
     [
       data?.data,
@@ -101,6 +107,8 @@ export const TransactionProvider = ({
       isLoading,
       error,
       refetch,
+      triggerForceRefresh,
+      rateLimit,
     ],
   );
 
