@@ -8,18 +8,21 @@ import {
 } from 'nuqs';
 import { sortBy, orderBy, groupBy, sumBy, minBy } from 'lodash';
 import type {
-  BalancesFilteringParams,
-  BalancesFilter,
-  PositionsFilteringParams,
-  PositionsFilter,
+  HoldingsFilteringParams,
+  HoldingsFilter,
   SortByEnum,
   OrderEnum,
 } from './types';
 import { OrderOptions, SortByOptions } from './types';
-import { DEFAULT_POSITIONS_MIN_VALUE } from './constants';
+import {
+  DEFAULT_MIN_VALUE,
+  EMPTY_HOLDINGS_FILTERING_PARAMS,
+} from './constants';
 import type { PortfolioPosition } from '../types';
+import type { BalancesMetadata, PositionsMetadata } from '../types';
 import { balanceAccessors, positionAccessors } from '../utils';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
+import type { NullableFields } from '@/types/internal';
 
 export type SortAccessors<T> = Partial<
   Record<SortByEnum, (item: T) => string | number>
@@ -88,18 +91,18 @@ export const isWithinValueRange = (
   return meetsMin && meetsMax;
 };
 
-export const balancesSearchParamsParsers = {
-  balancesSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
+export const holdingsSearchParamsParsers = {
+  holdingsSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
     SortByOptions.VALUE,
   ),
-  balancesOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
+  holdingsOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,
   ),
-  balancesWallets: parseAsArrayOf(parseAsString),
-  balancesChains: parseAsArrayOf(parseAsInteger),
-  balancesAssets: parseAsArrayOf(parseAsString),
-  balancesMinValue: parseAsFloat,
-  balancesMaxValue: parseAsFloat,
+  holdingsWallets: parseAsArrayOf(parseAsString),
+  holdingsChains: parseAsArrayOf(parseAsInteger),
+  holdingsAssets: parseAsArrayOf(parseAsString),
+  holdingsMinValue: parseAsFloat,
+  holdingsMaxValue: parseAsFloat,
 };
 
 export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
@@ -108,41 +111,57 @@ export const removeNullValuesFromFilter = <T>(filter: Nullable<T>): T => {
   ) as T;
 };
 
-export const sanitizeBalancesFilter = (
-  filter: BalancesFilter,
-  stats: BalancesFilteringParams,
+export const sanitizeHoldingsFilter = (
+  filter: HoldingsFilter,
+  stats: HoldingsFilteringParams,
   shouldClampRangeFilter?: boolean,
-): Nullable<BalancesFilter> => {
-  if (
-    !stats.allWallets.length ||
-    !stats.allChains.length ||
-    !stats.allAssets.length
-  ) {
-    return filter;
-  }
-
+  shouldSanitizeChainsAndWallets: boolean = true,
+): Nullable<HoldingsFilter> => {
   const validWalletAddresses = new Set(stats.allWallets);
   const validChainIds = new Set(stats.allChains);
   const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
   const { min: valueMin, max: valueMax } = stats.allValueRange;
 
+  const sanitizeWallets =
+    shouldSanitizeChainsAndWallets && stats.allWallets.length > 0;
+  const sanitizeChains =
+    shouldSanitizeChainsAndWallets && stats.allChains.length > 0;
+  const sanitizeAssets = stats.allAssets.length > 0;
+
+  if (
+    !sanitizeWallets &&
+    !sanitizeChains &&
+    !sanitizeAssets &&
+    !shouldClampRangeFilter
+  ) {
+    return filter;
+  }
+
   return {
     ...filter,
-    wallets: filter.wallets?.filter((w) => validWalletAddresses.has(w)) ?? null,
-    chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
-    assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
+    wallets: sanitizeWallets
+      ? (filter.wallets?.filter((w) => validWalletAddresses.has(w)) ?? null)
+      : filter.wallets,
+    chains: sanitizeChains
+      ? (filter.chains?.filter((id) => validChainIds.has(id)) ?? null)
+      : filter.chains,
+    assets: sanitizeAssets
+      ? (filter.assets?.filter((a) => validAssets.has(a)) ?? null)
+      : filter.assets,
     minValue:
       filter.minValue !== undefined
         ? shouldClampRangeFilter
-          ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
+          ? filter.minValue < valueMin
+            ? filter.minValue
+            : Math.max(Math.min(filter.minValue, valueMax), valueMin)
           : filter.minValue
-        : null,
+        : filter.minValue,
     maxValue:
       filter.maxValue !== undefined
         ? shouldClampRangeFilter
           ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
           : filter.maxValue
-        : null,
+        : filter.maxValue,
   };
 };
 
@@ -151,7 +170,7 @@ export const filterSortBalancesData = (
     string,
     Record<string, PortfolioBalance<WalletToken>[]>
   >,
-  filter: BalancesFilter,
+  filter: HoldingsFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
 ): Record<string, PortfolioBalance<WalletToken>[]> => {
@@ -209,62 +228,9 @@ export const filterSortBalancesData = (
   return Object.fromEntries(sortedGroups);
 };
 
-export const positionsSearchParamsParsers = {
-  positionsSortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
-    SortByOptions.VALUE,
-  ),
-  positionsOrder: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
-    OrderOptions.DESC,
-  ),
-  positionsChains: parseAsArrayOf(parseAsInteger),
-  positionsProtocols: parseAsArrayOf(parseAsString),
-  positionsTypes: parseAsArrayOf(parseAsString),
-  positionsAssets: parseAsArrayOf(parseAsString),
-  positionsMinValue: parseAsFloat,
-  positionsMaxValue: parseAsFloat,
-};
-
-export const sanitizePositionsFilter = (
-  filter: PositionsFilter,
-  stats: PositionsFilteringParams,
-): Nullable<PositionsFilter> => {
-  if (
-    !stats.allChains.length ||
-    !stats.allProtocols.length ||
-    !stats.allTypes.length ||
-    !stats.allAssets.length
-  ) {
-    return filter;
-  }
-
-  const validChainIds = new Set(stats.allChains);
-  const validProtocols = new Set(
-    stats.allProtocols.map((protocol) => protocol.name),
-  );
-  const validTypes = new Set(stats.allTypes);
-  const validAssets = new Set(stats.allAssets.map((asset) => asset.symbol));
-  const { min: valueMin, max: valueMax } = stats.allValueRange;
-
-  return {
-    ...filter,
-    chains: filter.chains?.filter((id) => validChainIds.has(id)) ?? null,
-    protocols: filter.protocols?.filter((p) => validProtocols.has(p)) ?? null,
-    types: filter.types?.filter((t) => validTypes.has(t)) ?? null,
-    assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
-    minValue:
-      filter.minValue !== undefined
-        ? Math.max(Math.min(filter.minValue, valueMax), valueMin)
-        : null,
-    maxValue:
-      filter.maxValue !== undefined
-        ? Math.max(Math.min(filter.maxValue, valueMax), valueMin)
-        : null,
-  };
-};
-
 export const getEffectiveValueRange = (
   allValueRange: { min: number; max: number },
-  defaultMinValue: number = DEFAULT_POSITIONS_MIN_VALUE,
+  defaultMinValue: number = DEFAULT_MIN_VALUE,
 ) => {
   if (allValueRange.max < defaultMinValue) {
     return allValueRange;
@@ -276,19 +242,221 @@ export const getEffectiveValueRange = (
   };
 };
 
+export interface ExtractHoldingsFilteringParamsInput {
+  balancesIsEmpty: boolean;
+  positionsIsEmpty: boolean;
+  balancesMetadata: BalancesMetadata;
+  positionsMetadata: PositionsMetadata;
+}
+
+export const extractHoldingsFilteringParams = ({
+  balancesIsEmpty,
+  positionsIsEmpty,
+  balancesMetadata,
+  positionsMetadata,
+}: ExtractHoldingsFilteringParamsInput): HoldingsFilteringParams => {
+  const bothEmpty = balancesIsEmpty && positionsIsEmpty;
+  if (bothEmpty) {
+    return EMPTY_HOLDINGS_FILTERING_PARAMS;
+  }
+
+  const mergedChains = Array.from(
+    new Set([
+      ...(balancesIsEmpty ? [] : balancesMetadata.chains),
+      ...(positionsIsEmpty ? [] : positionsMetadata.chains),
+    ]),
+  );
+
+  const assetsBySymbol = new Map<
+    string,
+    | (typeof balancesMetadata.assets)[number]
+    | (typeof positionsMetadata.assets)[number]
+  >();
+  if (!positionsIsEmpty) {
+    positionsMetadata.assets.forEach((asset) =>
+      assetsBySymbol.set(asset.symbol, asset),
+    );
+  }
+  if (!balancesIsEmpty) {
+    balancesMetadata.assets.forEach((asset) =>
+      assetsBySymbol.set(asset.symbol, asset),
+    );
+  }
+
+  const balancesRange = balancesIsEmpty ? null : balancesMetadata.valueRange;
+  const positionsRange = positionsIsEmpty ? null : positionsMetadata.valueRange;
+
+  const allValueRange =
+    balancesRange && positionsRange
+      ? {
+          min: Math.min(balancesRange.min, positionsRange.min),
+          max: Math.max(balancesRange.max, positionsRange.max),
+        }
+      : (balancesRange ?? positionsRange ?? { min: 0, max: 0 });
+
+  return {
+    allWallets: balancesIsEmpty ? [] : balancesMetadata.wallets,
+    allChains: mergedChains,
+    allAssets: Array.from(assetsBySymbol.values()),
+    allValueRange,
+  };
+};
+
+export interface ResolveHoldingsFilterContext {
+  hasExplicitValueRange: boolean;
+  isAllBalancesDataLoading: boolean;
+}
+
+export const resolveHoldingsFilter = (
+  filter: HoldingsFilter,
+  stats: HoldingsFilteringParams,
+  context: ResolveHoldingsFilterContext,
+): HoldingsFilter => {
+  const shouldClampRangeFilter =
+    context.hasExplicitValueRange && !context.isAllBalancesDataLoading;
+  const shouldSanitizeChainsAndWallets = !context.isAllBalancesDataLoading;
+
+  const sanitized = sanitizeHoldingsFilter(
+    filter,
+    stats,
+    shouldClampRangeFilter,
+    shouldSanitizeChainsAndWallets,
+  );
+
+  const withDefaults = context.hasExplicitValueRange
+    ? sanitized
+    : {
+        ...sanitized,
+        minValue:
+          sanitized.minValue ?? getEffectiveValueRange(stats.allValueRange).min,
+      };
+
+  return removeNullValuesFromFilter<HoldingsFilter>(withDefaults);
+};
+
+export const serializeHoldingsFilterForUrl = (
+  filter: HoldingsFilter,
+  stats: HoldingsFilteringParams,
+  hasExplicitValueRange: boolean,
+) => {
+  const { max: rangeMax } = stats.allValueRange;
+  const defaultMin = getEffectiveValueRange(stats.allValueRange).min;
+
+  const holdingsMinValue =
+    hasExplicitValueRange && filter.minValue !== undefined
+      ? filter.minValue
+      : !hasExplicitValueRange &&
+          filter.minValue !== undefined &&
+          filter.minValue !== defaultMin
+        ? filter.minValue
+        : null;
+
+  const holdingsMaxValue =
+    filter.maxValue !== undefined && filter.maxValue < rangeMax
+      ? filter.maxValue
+      : null;
+
+  return {
+    holdingsWallets: filter.wallets?.length ? filter.wallets : null,
+    holdingsChains: filter.chains?.length ? filter.chains : null,
+    holdingsAssets: filter.assets?.length ? filter.assets : null,
+    holdingsMinValue,
+    holdingsMaxValue,
+  };
+};
+
+export const buildHoldingsFilterPatchFromPending = (
+  values: {
+    wallets: string[];
+    chains: string[];
+    assets: string[];
+    value: number[];
+  },
+  stats: HoldingsFilteringParams,
+  currentFilter: HoldingsFilter = {},
+): NullableFields<HoldingsFilter> => {
+  const pendingMin = values.value[0] ?? stats.allValueRange.min;
+  const pendingMax = values.value[1] ?? stats.allValueRange.max;
+  const { min: rangeMin, max: rangeMax } = stats.allValueRange;
+  const defaultMin = getEffectiveValueRange(stats.allValueRange).min;
+  const isFullValueRange = pendingMin === rangeMin && pendingMax === rangeMax;
+
+  const patch: NullableFields<HoldingsFilter> = {
+    wallets: values.wallets.length ? values.wallets : null,
+    chains: values.chains.length ? values.chains.map(Number) : null,
+    assets: values.assets.length ? values.assets : null,
+  };
+
+  if (isFullValueRange) {
+    patch.minValue = null;
+    patch.maxValue = null;
+    return patch;
+  }
+
+  if (pendingMin === rangeMin && pendingMin !== defaultMin) {
+    patch.minValue = pendingMin;
+  } else if (pendingMin !== defaultMin) {
+    patch.minValue = pendingMin;
+  }
+
+  if (pendingMax !== rangeMax) {
+    patch.maxValue = pendingMax;
+  } else if (currentFilter.maxValue !== undefined) {
+    patch.maxValue = null;
+  }
+
+  return patch;
+};
+
+const getPositionAssetSymbols = (position: PortfolioPosition): string[] => {
+  const balances = [
+    ...position.supplyTokens,
+    ...position.borrowTokens,
+    ...position.assetTokens,
+    ...position.collateralTokens,
+    ...position.rewardTokens,
+    ...(position.lpToken ? [position.lpToken] : []),
+  ];
+
+  return balances.map((balance) => balance.token.symbol);
+};
+
 export const filterSortPositionsData = (
   positions: PortfolioPosition[],
-  filter: PositionsFilter,
+  filter: HoldingsFilter,
   sortByValue: SortByEnum,
   order: OrderEnum,
 ): Record<string, PortfolioPosition[]> => {
   let result = [...positions];
 
+  if (filter.wallets?.length) {
+    const walletsToInclude = new Set(
+      filter.wallets.map((wallet) => wallet.toLowerCase()),
+    );
+    result = result.filter((position) =>
+      walletsToInclude.has(position.address.toLowerCase()),
+    );
+  }
+
+  if (filter.chains?.length) {
+    result = result.filter((position) => {
+      const chainId = positionAccessors.chainId(position);
+      return chainId !== undefined && filter.chains!.includes(chainId);
+    });
+  }
+
+  if (filter.assets?.length) {
+    result = result.filter((position) =>
+      getPositionAssetSymbols(position).some((symbol) =>
+        filter.assets!.includes(symbol),
+      ),
+    );
+  }
+
   if (filter.minValue !== undefined || filter.maxValue !== undefined) {
     result = result.filter((position) => {
-      const value = position.netUsd;
       return isWithinValueRange(
-        sanitizeValue(value),
+        sanitizeValue(position.netUsd),
         filter.minValue,
         filter.maxValue,
       );

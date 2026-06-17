@@ -3,10 +3,11 @@
 import type { PortfolioFilterViewBaseProps } from '../types';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useMemo } from 'react';
-import { PortfolioFilterBarTab } from '../../../app/ui/portfolio/PortfolioAssetsSection';
+import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 import { Select } from '@/components/core/form/Select/Select';
 import { SelectVariant } from '@/components/core/form/Select/Select.types';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 
 export const PortfolioFilterViewTablet: FC<PortfolioFilterViewBaseProps> = ({
   isDisabled,
@@ -14,25 +15,43 @@ export const PortfolioFilterViewTablet: FC<PortfolioFilterViewBaseProps> = ({
   onChange,
 }) => {
   const { t } = useTranslation();
-  const options = useMemo(() => {
-    return [
-      {
-        value: PortfolioFilterBarTab.TOKENS,
-        label: t('portfolio.views.tokens'),
-        disabled: isDisabled,
-        'data-testid': 'portfolio-filter-tab-tokens',
-      },
-      {
-        value: PortfolioFilterBarTab.DEFI_PROTOCOLS,
-        label: t('portfolio.views.defiProtocols'),
-        disabled: isDisabled,
-        'data-testid': 'portfolio-filter-tab-defi-protocols',
-      },
-    ];
-  }, [t, isDisabled]);
+  const options = [
+    {
+      value: PortfolioViewBarTab.HOLDINGS,
+      label: t('portfolio.views.holdings'),
+      disabled: isDisabled,
+      'data-testid': 'portfolio-filter-tab-holdings',
+    },
+    {
+      value: PortfolioViewBarTab.TRANSACTIONS,
+      label: t('portfolio.views.transactions'),
+      disabled: true,
+      'data-testid': 'portfolio-filter-tab-transactions',
+      endAdornment: (
+        <Badge
+          size={BadgeSize.SM}
+          variant={BadgeVariant.Secondary}
+          label={t('portfolio.views.soon')}
+        />
+      ),
+    },
+    {
+      value: PortfolioViewBarTab.PERFORMANCE,
+      label: t('portfolio.views.performance'),
+      disabled: true,
+      'data-testid': 'portfolio-filter-tab-performance',
+      endAdornment: (
+        <Badge
+          size={BadgeSize.SM}
+          variant={BadgeVariant.Secondary}
+          label={t('portfolio.views.soon')}
+        />
+      ),
+    },
+  ];
 
   const handleChange = (value: string) => {
-    const _value = value as PortfolioFilterBarTab;
+    const _value = value as PortfolioViewBarTab;
     onChange(_value);
   };
   return (

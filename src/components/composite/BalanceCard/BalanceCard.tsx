@@ -1,11 +1,7 @@
 import type { FC } from 'react';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { EntityStackWithBadge } from '../EntityStackWithBadge/EntityStackWithBadge';
-import { EntityStackBadgePlacement } from '../EntityStackWithBadge/types';
-import { TokenAmount } from '../TokenAmount/TokenAmount';
 import {
   StyledAccordion,
   StyledAccordionDetails,
@@ -13,11 +9,11 @@ import {
   StyledContent,
 } from './BalanceCard.styles';
 import { BalanceStackItem } from './components/BalanceStackItem';
+import { TokenSummaryRow } from './components/TokenSummaryRow';
 import { BALANCE_CARD_CONFIG } from './constants';
 import type { BalanceCardProps } from './types';
 import { BalanceCardSize } from './types';
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
-import { getResponsiveValue, getUniqueChains } from './utils';
 
 export const BalanceCard: FC<BalanceCardProps> = ({
   balances,
@@ -26,16 +22,11 @@ export const BalanceCard: FC<BalanceCardProps> = ({
   shouldShowExpandedEndDivider = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const config = BALANCE_CARD_CONFIG[size];
   const hasMultipleChains = balances.length > 1;
 
   const primaryBalance = balances[0];
-
-  const chainEntities = useMemo(() => getUniqueChains(balances), [balances]);
-
-  const resolvedChainsLimit = getResponsiveValue(config.chainsLimit, isMobile);
 
   const handlePrimaryClick = () => {
     if (!hasMultipleChains) {
@@ -77,59 +68,19 @@ export const BalanceCard: FC<BalanceCardProps> = ({
               : [config.primary.itemSx]),
           ]}
         >
-          <EntityStackWithBadge
-            disableBorder
-            entities={[primaryBalance.token]}
-            badgeEntities={chainEntities}
-            placement={
-              hasMultipleChains
-                ? EntityStackBadgePlacement.Inline
-                : EntityStackBadgePlacement.Overlay
-            }
-            size={config.primary.tokenSize}
-            badgeSize={
-              hasMultipleChains
-                ? config.primary.inlineChainsSize
-                : config.primary.chainsSize
-            }
-            badgeLimit={resolvedChainsLimit}
-            content={{
-              title: primaryBalance.token.symbol,
+          <TokenSummaryRow
+            balances={balances}
+            config={{
+              tokenSize: config.primary.tokenSize,
+              chainsSize: config.primary.chainsSize,
+              inlineChainsSize: config.primary.inlineChainsSize,
               titleVariant: config.primary.titleVariant,
-              hintVariant: config.primary.descriptionVariant,
-            }}
-            spacing={{
-              badge: config.chainsSpacing,
+              descriptionVariant: config.primary.descriptionVariant,
               infoContainerGap: config.primary.infoContainerGap,
+              chainsLimit: config.chainsLimit,
+              chainsSpacing: config.chainsSpacing,
             }}
           />
-          {hasMultipleChains ? (
-            <TokenAmount
-              balances={balances}
-              amountUSDVariant={config.primary.titleVariant}
-              amountVariant={config.primary.descriptionVariant}
-              compact={isMobile}
-              gap={config.primary.infoContainerGap}
-              sx={{
-                textAlign: 'right',
-                marginLeft: 'auto',
-                minWidth: 0,
-              }}
-            />
-          ) : (
-            <TokenAmount
-              balance={primaryBalance}
-              amountUSDVariant={config.primary.titleVariant}
-              amountVariant={config.primary.descriptionVariant}
-              compact={isMobile}
-              gap={config.primary.infoContainerGap}
-              sx={{
-                textAlign: 'right',
-                marginLeft: 'auto',
-                minWidth: 0,
-              }}
-            />
-          )}
         </StyledContent>
       </StyledAccordionSummary>
       <StyledAccordionDetails>

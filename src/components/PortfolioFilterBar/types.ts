@@ -1,24 +1,20 @@
 import type { SortByEnum } from '@/providers/PortfolioProvider/filtering/types';
-import type { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioAssetsSection';
+
+export enum PortfolioViewBarTab {
+  HOLDINGS = 'holdings',
+  PERFORMANCE = 'performance',
+  TRANSACTIONS = 'transactions',
+}
 
 export interface PortfolioFilterViewBaseProps {
   isDisabled: boolean;
-  value: PortfolioFilterBarTab;
-  onChange: (value: PortfolioFilterBarTab) => void;
+  value: PortfolioViewBarTab;
+  onChange: (value: PortfolioViewBarTab) => void;
 }
 
-export interface BalancesPendingFilterValues {
+export interface HoldingsPendingFilterValues {
   wallets: string[];
   chains: string[];
-  assets: string[];
-  value: number[];
-  sortBy: SortByEnum;
-}
-
-export interface PositionsPendingFilterValues {
-  chains: string[];
-  protocols: string[];
-  types: string[];
   assets: string[];
   value: number[];
   sortBy: SortByEnum;

@@ -1,21 +1,21 @@
 'use client';
 
-import { PortfolioFilterBarTab } from '../../app/ui/portfolio/PortfolioAssetsSection';
-import { Fragment, type FC } from 'react';
+import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
+import { type FC } from 'react';
 import {
   PortfolioFilterBarContainer,
   PortfolioFilterBarHeaderContainer,
 } from './PortfolioFilterBar.styles';
-import { PortfolioFilterBarPositions } from './layouts/PortfolioFilterBarPositions';
-import { PortfolioFilterBarBalances } from './layouts/PortfolioFilterBarBalances';
+import { PortfolioFilterBarHoldings } from './layouts/PortfolioFilterBarHoldings';
 import { PortfolioFilterBarEmpty } from './layouts/PortfolioFilterBarEmpty';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AnimatePresence } from 'motion/react';
 import { PortfolioFilterViewDesktop } from './layouts/PortfolioFilterViewDesktop';
 import { PortfolioFilterViewTablet } from './layouts/PortfolioFilterViewTablet';
+
 export interface PortfolioFilterBarProps {
-  value: PortfolioFilterBarTab;
-  onChange: (value: PortfolioFilterBarTab) => void;
+  value: PortfolioViewBarTab;
+  onChange: (value: PortfolioViewBarTab) => void;
   isDisabled: boolean;
 }
 
@@ -25,12 +25,6 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
-
-  const PortfolioFilterBarContent = isDisabled
-    ? PortfolioFilterBarEmpty
-    : value === PortfolioFilterBarTab.TOKENS
-      ? PortfolioFilterBarBalances
-      : PortfolioFilterBarPositions;
 
   const PortfolioFilterView = isTablet
     ? PortfolioFilterViewTablet
@@ -46,7 +40,11 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
         />
 
         <AnimatePresence mode="wait">
-          <PortfolioFilterBarContent key={value} />
+          {isDisabled ? (
+            <PortfolioFilterBarEmpty key="empty" />
+          ) : value === PortfolioViewBarTab.HOLDINGS ? (
+            <PortfolioFilterBarHoldings key="holdings" />
+          ) : null}
         </AnimatePresence>
       </PortfolioFilterBarHeaderContainer>
     </PortfolioFilterBarContainer>

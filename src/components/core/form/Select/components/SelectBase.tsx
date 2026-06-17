@@ -116,11 +116,13 @@ export const SelectBase = <T extends TData>({
           disableRipple
           key={option.value}
           value={option.value}
+          disabled={option.disabled}
           sx={option.sx}
         >
           <StyledMenuItemContentContainer>
-            {option.icon}
+            {option.startAdornment ?? option.icon}
             <SelectorLabel label={option.label} />
+            {option.endAdornment}
           </StyledMenuItemContentContainer>
           {((Array.isArray(value) &&
             (value as (string | number)[]).includes(option.value)) ||

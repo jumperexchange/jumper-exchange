@@ -948,6 +948,11 @@ export default interface Resources {
         value: 'Value';
         wallet: 'Wallet';
       };
+      holdings: {
+        defiPositions: 'DeFi';
+        perps: 'Perps';
+        tokens: 'Tokens';
+      };
       overviewCard: {
         refreshTooltip: 'Click here to restart the indexing of your assets.';
         title: 'Portfolio';
@@ -960,8 +965,10 @@ export default interface Resources {
         totalValue: 'Total Value';
       };
       views: {
-        defiProtocols: 'DeFi Protocols';
-        tokens: 'Tokens';
+        holdings: 'Holdings';
+        performance: 'Performance';
+        soon: 'Soon';
+        transactions: 'Transactions';
         viewBy: 'View by';
       };
       welcome: {
