@@ -819,7 +819,11 @@
       "clearAll": "Clear all",
       "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "refresh": "Refresh",
+      "refreshTooltipAvailable": "Refresh transactions ({{remaining}} left)",
+      "refreshTooltipExhausted": "Rate limit reached. Try again after {{resetAt}}",
+      "refreshTooltipUnknown": "Refresh transactions"
     },
     "sorting": {
       "sortBy": "Sort by",

@@ -987,6 +987,10 @@ export default interface Resources {
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         protocol: 'Protocol';
+        refresh: 'Refresh';
+        refreshTooltipAvailable: 'Refresh transactions ({{remaining}} left)';
+        refreshTooltipExhausted: 'Rate limit reached. Try again after {{resetAt}}';
+        refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
         type: 'Type';
         value: 'Value';
