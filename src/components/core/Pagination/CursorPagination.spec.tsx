@@ -16,29 +16,21 @@ describe('CursorPagination', () => {
   it('renders previous and next buttons with labels', () => {
     render(<CursorPagination {...defaultProps} />);
 
-    expect(screen.getByRole('button', { name: 'Previous' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Previous' }),
+    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
   });
 
   it('disables previous when hasPrevious is false', () => {
-    render(
-      <CursorPagination
-        {...defaultProps}
-        hasPrevious={false}
-      />,
-    );
+    render(<CursorPagination {...defaultProps} hasPrevious={false} />);
 
     expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Next' })).toBeEnabled();
   });
 
   it('disables next when hasNext is false', () => {
-    render(
-      <CursorPagination
-        {...defaultProps}
-        hasNext={false}
-      />,
-    );
+    render(<CursorPagination {...defaultProps} hasNext={false} />);
 
     expect(screen.getByRole('button', { name: 'Previous' })).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
@@ -64,12 +56,7 @@ describe('CursorPagination', () => {
   });
 
   it('disables both buttons when disabled is true', () => {
-    render(
-      <CursorPagination
-        {...defaultProps}
-        disabled
-      />,
-    );
+    render(<CursorPagination {...defaultProps} disabled />);
 
     expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();

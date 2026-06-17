@@ -93,7 +93,8 @@ export const MultiSelectView = <TValue extends string | number>({
     count: shouldVirtualize ? filteredOptions.length : 0,
     getScrollElement: () => listRef.current,
     estimateSize: () => 48,
-    measureElement: (el: Element | null) => el?.getBoundingClientRect().height ?? 48,
+    measureElement: (el: Element | null) =>
+      el?.getBoundingClientRect().height ?? 48,
     overscan: 5,
   });
 
@@ -166,7 +167,13 @@ export const MultiSelectView = <TValue extends string | number>({
         )}
       >
         {shouldVirtualize ? (
-          <Box sx={{ height: virtualizer.getTotalSize(), position: 'relative', width: '100%' }}>
+          <Box
+            sx={{
+              height: virtualizer.getTotalSize(),
+              position: 'relative',
+              width: '100%',
+            }}
+          >
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const option = filteredOptions[virtualRow.index];
               const isSelected = value.includes(option.value);
@@ -196,9 +203,7 @@ export const MultiSelectView = <TValue extends string | number>({
                     />
                     {option.endAdornment}
                   </StyledMenuItemContentContainer>
-                  {isSelected && (
-                    <CheckIcon sx={{ marginLeft: 'auto' }} />
-                  )}
+                  {isSelected && <CheckIcon sx={{ marginLeft: 'auto' }} />}
                 </StyledMenuItem>
               );
             })}
@@ -224,9 +229,7 @@ export const MultiSelectView = <TValue extends string | number>({
                   />
                   {option.endAdornment}
                 </StyledMenuItemContentContainer>
-                {isSelected && (
-                  <CheckIcon sx={{ marginLeft: 'auto' }} />
-                )}
+                {isSelected && <CheckIcon sx={{ marginLeft: 'auto' }} />}
               </StyledMenuItem>
             );
           })

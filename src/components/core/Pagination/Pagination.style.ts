@@ -1,11 +1,6 @@
 import type { IconButtonProps } from '@mui/material';
 import { alpha, Box, Button, IconButton } from '@mui/material';
-import {
-  darken,
-  lighten,
-  styled,
-  type Theme,
-} from '@mui/material/styles';
+import { darken, lighten, styled, type Theme } from '@mui/material/styles';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 
 export const paginationArrowIconSx = (theme: Theme) => ({
