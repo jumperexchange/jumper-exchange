@@ -80,7 +80,7 @@ export const PerkCardContent = styled(Box)(({ theme }) => ({
 export const PerkCardHeader = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(1),
+  gap: theme.spacing(2),
 }));
 
 export const PerkCardBadges = styled(Box)(({ theme }) => ({

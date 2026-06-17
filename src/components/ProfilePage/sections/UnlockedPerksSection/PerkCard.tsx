@@ -87,13 +87,9 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
             {perkItems.map((perkItem, index) => (
               <Badge
                 key={`${perkItem}-${index}`}
-                label={
-                  <Typography component="span" variant="bodySmallStrong">
-                    {perkItem}
-                  </Typography>
-                }
+                label={perkItem}
                 variant={BadgeVariant.Alpha}
-                size={BadgeSize.LG}
+                size={BadgeSize.MD}
               />
             ))}
           </Box>
@@ -101,7 +97,7 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
             startIcon={badge.icon}
             label={badge.label}
             variant={badge.variant}
-            size={BadgeSize.LG}
+            size={BadgeSize.MD}
           />
         </PerkCardBadges>
       </PerkCardContent>
