@@ -71,7 +71,9 @@ export const JumperPassCard: FC<JumperPassCardProps> = ({ perks }) => {
           )}
         </JumperPassStatsContainer>
 
-        <JumperPassTitle>{t('profile_page.jumperPass')}</JumperPassTitle>
+        <JumperPassTitle variant="bodyXLarge">
+          {t('profile_page.jumperPass')}
+        </JumperPassTitle>
 
         {points === 0 ? (
           <Typography variant="bodySmall" color="textSecondary">
