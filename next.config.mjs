@@ -1,5 +1,8 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import withBundleAnalyzer from '@next/bundle-analyzer';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,7 +18,11 @@ const nextConfig = {
     'thread-stream',
     '@opentelemetry/exporter-metrics-otlp-grpc',
     '@opentelemetry/host-metrics',
+    'ioredis',
   ],
+  cacheHandlers: process.env.NODE_ENV === 'production'
+    ? { default: require.resolve('./cache-handler.js') }
+    : undefined,
   // expireTime: 86400, // one day in seconds
   expireTime: 900, // 15 minutes in seconds
   experimental: {
