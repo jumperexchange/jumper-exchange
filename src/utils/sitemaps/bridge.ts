@@ -1,5 +1,5 @@
 import { getChainsQuery } from '@/hooks/useChains';
-import { getTokensQuery } from '@/hooks/useTokens';
+import { fetchTokensForPage } from '@/app/lib/tokens/cachedTokensFetch';
 import coins from '@/utils/coins';
 import { getBridgeUrl } from '@/utils/getBridgeUrl';
 import { buildUrl, toSitemapDate } from '@/utils/sitemap';
@@ -48,7 +48,7 @@ const generateBridgePairs = (tokens: Token[]): Array<[Token, Token]> => {
 const getChainData = cache(async () => {
   const [{ chains }, availableTokens] = await Promise.all([
     getChainsQuery(),
-    getTokensQuery(),
+    fetchTokensForPage(),
   ]);
   const availableChainIds = chains.map((chain) => chain.id);
   const filteredCoins = getFilteredCoins(availableChainIds, availableTokens);

@@ -1,5 +1,5 @@
 import { getChainsQuery } from '@/hooks/useChains';
-import { getTokensQuery } from '@/hooks/useTokens';
+import { fetchTokensForPage } from '@/app/lib/tokens/cachedTokensFetch';
 import { getChainByName } from '@/utils/tokenAndChain';
 import { bridgeSegmentsSchema, slugToLabel } from '@/utils/validation-schemas';
 import {
@@ -23,8 +23,8 @@ vi.mock('@/hooks/useChains', () => ({
   getChainsQuery: vi.fn(),
 }));
 
-vi.mock('@/hooks/useTokens', () => ({
-  getTokensQuery: vi.fn(),
+vi.mock('@/app/lib/tokens/cachedTokensFetch', () => ({
+  fetchTokensForPage: vi.fn(),
 }));
 
 vi.mock('@/utils/coins', () => ({
@@ -81,7 +81,7 @@ describe('bridge sitemap generation', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(getChainsQuery).mockResolvedValue({ chains: mockChains });
-    vi.mocked(getTokensQuery).mockResolvedValue(mockTokens);
+    vi.mocked(fetchTokensForPage).mockResolvedValue(mockTokens);
   });
 
   it('returns chunk ids for filtered cross-chain pairs', async () => {

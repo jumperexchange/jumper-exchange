@@ -26,9 +26,13 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  // Set a cookie with the pathname that was used on the first page load
-  const pathname = request.nextUrl.pathname;
-  response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
+  // Set once on first page load; re-setting on every request causes cf-cache-status: BYPASS
+  if (!request.cookies.get('pathname')?.value) {
+    response.cookies.set('pathname', request.nextUrl.pathname, {
+      path: '/',
+      sameSite: 'strict',
+    });
+  }
 
   return response;
 }
