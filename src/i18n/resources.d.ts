@@ -973,6 +973,7 @@ export default interface Resources {
           date: 'Date';
           fee: 'Fee';
         };
+        nftAmount: 'Amount: {{amount}}';
         nftCount_one: '{{count}} NFT';
         nftCount_other: '{{count}} NFTs';
       };

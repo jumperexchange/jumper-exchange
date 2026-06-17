@@ -727,7 +727,8 @@
         "date": "Date"
       },
       "nftCount_one": "{{count}} NFT",
-      "nftCount_other": "{{count}} NFTs"
+      "nftCount_other": "{{count}} NFTs",
+      "nftAmount": "Amount: {{amount}}"
     },
     "dustConversion": {
       "banner": "You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!",

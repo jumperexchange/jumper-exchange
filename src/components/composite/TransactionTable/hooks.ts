@@ -86,7 +86,12 @@ export const useTransactionSummaryContent = (
 
   // Sends have no incoming balances — show what was sent instead of $0.
   const amountBalances = toBalances.length ? toBalances : fromBalances;
-  const amountTitle = toDisplayAmountUSD(sumBy(amountBalances, 'amountUsd'));
+  const derivedAmountUsd = sumBy(amountBalances, 'amountUsd');
+  const effectiveAmountUsd =
+    amountBalances.length === 0 && transaction.amountUsd != null
+      ? transaction.amountUsd
+      : derivedAmountUsd;
+  const amountTitle = toDisplayAmountUSD(effectiveAmountUsd);
   const amountHint = amountBalances
     .map((b) => toDisplayAmount(b.amount, b.token.symbol))
     .join('\n');
@@ -96,7 +101,7 @@ export const useTransactionSummaryContent = (
     amountHint: amountHint || undefined,
     actionTitle: formatTransactionAction(transaction.action),
     feeTitle:
-      transaction.fee?.amountUsd !== null
+      transaction.fee?.amountUsd != null
         ? toDisplayAmountUSD(transaction.fee?.amountUsd ?? 0)
         : '-',
     feeHint:

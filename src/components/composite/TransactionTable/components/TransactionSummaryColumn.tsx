@@ -110,12 +110,16 @@ const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
           title={
             <Stack spacing={0.5}>
               {nfts.map((nft) => (
-                <Stack>
+                <Stack key={`${nft.address}-${nft.tokenId}`}>
                   <Typography
                     key={`${nft.address}-${nft.tokenId}`}
                     variant="bodyXSmallStrong"
                   >
-                    {nft.amount > 0 ? `Amount: ${nft.amount}` : ''}
+                    {nft.amount > 0
+                      ? t('portfolio.transactionSummary.nftAmount', {
+                          amount: nft.amount,
+                        })
+                      : ''}
                   </Typography>
                   <Typography
                     key={`${nft.address}-${nft.tokenId}`}

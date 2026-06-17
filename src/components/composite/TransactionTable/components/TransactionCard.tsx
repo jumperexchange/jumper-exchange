@@ -41,6 +41,7 @@ export const TransactionCard: FC<TransactionCardProps> = ({
   config,
   onClick,
 }) => {
+  const isInteractive = Boolean(onClick);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const content = useTransactionSummaryContent(transaction, {
     compact: true,
@@ -48,15 +49,20 @@ export const TransactionCard: FC<TransactionCardProps> = ({
 
   return (
     <StyledCard
-      tabIndex={0}
-      role="button"
-      onClick={() => onClick?.(transaction)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onClick?.(transaction);
-        }
-      }}
+      disableInteraction={!isInteractive}
+      tabIndex={isInteractive ? 0 : undefined}
+      role={isInteractive ? 'button' : undefined}
+      onClick={isInteractive ? () => onClick?.(transaction) : undefined}
+      onKeyDown={
+        isInteractive
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick?.(transaction);
+              }
+            }
+          : undefined
+      }
     >
       {isMobile ? (
         <TransactionSummaryRowMobile content={content} config={config} />
