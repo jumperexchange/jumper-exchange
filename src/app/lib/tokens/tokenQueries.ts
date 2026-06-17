@@ -25,7 +25,11 @@ export const getTokensQuery = async (
   const { results } = createBatchFetcher<ChainType, TokensResponse>(
     tokensBatchesByChainType,
     async (_batchKey, chainTypes) => {
-      const data = await getTokens(sdkClient, { chainTypes: [...chainTypes] });
+      const data = await getTokens(
+        sdkClient,
+        { chainTypes: [...chainTypes] },
+        { signal },
+      );
       return [data];
     },
     {},

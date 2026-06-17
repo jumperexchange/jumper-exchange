@@ -24,7 +24,7 @@ import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetAmountsImage from 'src/components/ImageGeneration/WidgetAmountImage';
 import { getSiteUrl } from 'src/const/urls';
 import { getChainsQuery } from 'src/hooks/useChains';
-import { fetchChainTokensForPage } from 'src/app/lib/tokens/cachedTokensFetch';
+import { fetchChainTokensForPage } from '@/app/lib/tokens/cachedTokensFetch';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
 import {
