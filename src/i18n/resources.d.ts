@@ -1088,7 +1088,7 @@ export default interface Resources {
         title: 'Exchange';
       };
       private: {
-        title: 'Anonymous Swap';
+        title: 'Private Swap';
       };
       swapBridge: {
         title: 'Swap & Bridge';
