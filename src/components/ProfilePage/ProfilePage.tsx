@@ -2,7 +2,7 @@
 
 import { useAccount } from '@lifi/wallet-management';
 import { ProfileProvider } from 'src/providers/ProfileProvider';
-import {
+import type {
   MerklRewardsData,
   PerksDataAttributes,
   StrapiResponseData,
@@ -10,6 +10,7 @@ import {
 import { PageContainer } from '../Containers/PageContainer';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
+import { UnlockedPerksSection } from './sections/UnlockedPerksSection/UnlockedPerksSection';
 import { TabsSection } from './TabsSection/TabsSection';
 import { AvailableTabs } from './TabsSection/constants';
 import { PerksList } from './components/PerksList/PerksList';
@@ -41,7 +42,8 @@ export const ProfilePage = ({
       isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <PageContainer>
-        <IntroSection />
+        <IntroSection perks={perks} />
+        <UnlockedPerksSection perks={perks} />
         {isPublic && <RewardsSection merklRewards={merklRewards} />}
         <TabsSection>
           {(activeTab: string) => {

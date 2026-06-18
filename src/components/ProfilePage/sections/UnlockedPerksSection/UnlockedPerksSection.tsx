@@ -1,0 +1,61 @@
+'use client';
+import Typography from '@mui/material/Typography';
+import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { SectionCarousel } from '@/components/ProfilePage/components/SectionCarousel/SectionCarousel';
+import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
+import { ProfileContext } from '@/providers/ProfileProvider';
+import type { PerksDataAttributes } from '@/types/strapi';
+import { PerkCard } from './PerkCard';
+import {
+  InfoBottom,
+  InfoColumn,
+  InfoDivider,
+  InfoTop,
+  unlockedPerksCardSx,
+} from './UnlockedPerksSection.styles';
+
+interface UnlockedPerksSectionProps {
+  perks: PerksDataAttributes[];
+}
+
+export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
+  const { t } = useTranslation();
+  const { isLoading: isWalletLoading } = useContext(ProfileContext);
+  const { unlockedPerks, isLoading } = useUnlockedPerks(perks);
+
+  if (isWalletLoading || isLoading || unlockedPerks.length === 0) {
+    return null;
+  }
+
+  return (
+    <SectionCard sx={unlockedPerksCardSx}>
+      <InfoColumn>
+        <InfoTop>
+          <Typography variant="titleXSmall" sx={{ color: 'accent1.main' }}>
+            {t('profile_page.unlockedPerks.title')}
+          </Typography>
+          <Typography variant="bodyMediumParagraph" color="textSecondary">
+            {t('profile_page.unlockedPerks.description')}
+          </Typography>
+          {/* The Open Perks Hub button is hidden until the hub route exists. */}
+        </InfoTop>
+        <InfoBottom>
+          <InfoDivider />
+          <Typography variant="bodySmallParagraph" color="textSecondary">
+            {t('profile_page.unlockedPerks.count', {
+              count: unlockedPerks.length,
+            })}
+          </Typography>
+        </InfoBottom>
+      </InfoColumn>
+
+      <SectionCarousel>
+        {unlockedPerks.map((perk) => (
+          <PerkCard key={perk.id} perk={perk} status="unlocked" />
+        ))}
+      </SectionCarousel>
+    </SectionCard>
+  );
+};
