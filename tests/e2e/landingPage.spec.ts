@@ -34,7 +34,10 @@ test.describe('Landing page and navigation', () => {
     },
   );
 
-  test(
+  // JUM-1116: the WalletConnect QR needs a live wss relay handshake (relay.walletconnect.org)
+  // the CI runner can't reach → modal stays "Connecting", QR never renders (0/15 in CI; confirmed
+  // via trace + local relay-block A/B). Re-enable when CI egress to the WC relay is restored.
+  test.fixme(
     qase(35, 'QR code should be visible when select wallet connect option'),
     async ({ page }) => {
       const connectWalletPage = new ConnectWalletPage(page);

@@ -27,6 +27,13 @@ for (const { name, size } of [
         'Should verify all settings menu functionality',
       ),
       async ({ page }) => {
+        // JUM-1116: the Desktop variant (qase 8) hard-fails 12/12 in CI at the slippage step — a
+        // load-sensitive renderer stall on the 2-vCPU runner (proven not-CPU / not dev-vs-prod).
+        // Mobile (qase 7) is unaffected. Re-enable when the runner gains headroom or the step is hardened.
+        test.fixme(
+          name === 'Desktop',
+          'JUM-1116: settings Desktop slippage step load-flakes in CI',
+        );
         const settings = new SettingsPage(page);
 
         await test.step('Open settings menu', async () => {
