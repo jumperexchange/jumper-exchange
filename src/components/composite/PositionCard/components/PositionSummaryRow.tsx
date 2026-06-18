@@ -5,7 +5,7 @@ import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { EntityStackWithBadge } from '../../EntityStackWithBadge/EntityStackWithBadge';
 import { StyledTagsRow } from '../PositionCard.styles';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
-import { RewardIcon } from '@/components/illustrations/RewardIcon';
+import { GiftIcon } from '@/components/illustrations/GiftIcon';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { COLUMN_SPACING, ICON_STYLES, TYPOGRAPHY_VARIANTS } from '../constants';
 import { isChainPortfolioPosition } from '../types';
@@ -59,7 +59,7 @@ export const PositionSummaryRow: FC<PositionSummaryRowProps> = ({
           <Badge
             variant={BadgeVariant.Alpha}
             size={BadgeSize.MD}
-            startIcon={<RewardIcon sx={ICON_STYLES} />}
+            startIcon={<GiftIcon sx={ICON_STYLES} />}
           />
         )}
         <TitleWithHint

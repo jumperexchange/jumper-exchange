@@ -6,6 +6,7 @@ import type { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
+import { UnlockedPerksSection } from './sections/UnlockedPerksSection/UnlockedPerksSection';
 import { TabsSection } from './TabsSection/TabsSection';
 import { AvailableTabs } from './TabsSection/constants';
 import { PerksList } from './components/PerksList/PerksList';
@@ -35,7 +36,8 @@ export const ProfilePage = ({
       isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <PageContainer>
-        <IntroSection />
+        <IntroSection perks={perks} />
+        <UnlockedPerksSection perks={perks} />
         {isPublic && <RewardsSection />}
         <TabsSection>
           {(activeTab: string) => {
