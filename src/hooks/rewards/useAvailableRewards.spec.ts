@@ -90,7 +90,10 @@ describe('useAvailableRewards', () => {
 
   it('sorts combined Merkl and DeFi Reacher rewards by amountUSD descending', () => {
     const merklReward = makeMerklReward({ symbol: 'MKL', amountToClaim: 1 });
-    const defiReward = makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 });
+    const defiReward = makeDeFiReacherReward({
+      symbol: 'DFI',
+      amountToClaim: 1,
+    });
     vi.mocked(useMerklRewards).mockReturnValue({
       availableRewards: [merklReward, defiReward],
       isSuccess: true,
@@ -109,7 +112,9 @@ describe('useAvailableRewards', () => {
 
   it('returns only DeFi Reacher rewards when Merkl rewards are absent', () => {
     vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })],
+      availableRewards: [
+        makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 }),
+      ],
       isSuccess: true,
       isLoading: false,
     });

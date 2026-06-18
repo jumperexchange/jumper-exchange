@@ -16,7 +16,9 @@ export const useDeFiReacherValidateHash = (
 ): UseDeFiReacherValidateHashResult => {
   return useMutation<DeFiReacherValidateHashResponse | null, Error, Hex>({
     mutationFn: (txHash: Hex) => {
-      if (!address) return Promise.resolve(null);
+      if (!address) {
+        return Promise.resolve(null);
+      }
       return getDeFiReacherValidateHash(address, txHash);
     },
   });

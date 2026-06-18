@@ -31,7 +31,8 @@ export const useMerklRewards = ({
     refetchInterval: CACHE_TIME,
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
-    select: (res) => (res?.rewards ?? []) as (MerklReward | DeFiReacherReward)[],
+    select: (res) =>
+      (res?.rewards ?? []) as (MerklReward | DeFiReacherReward)[],
   });
 
   if (!isValidAddress) {

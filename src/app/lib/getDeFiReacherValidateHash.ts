@@ -3,7 +3,9 @@ import type { Hex } from 'viem';
 import { makeClient } from './client';
 
 type ValidateHttpResponse = Awaited<
-  ReturnType<JumperBackend<unknown>['v1']['userRewardsControllerValidateRewardV1']>
+  ReturnType<
+    JumperBackend<unknown>['v1']['userRewardsControllerValidateRewardV1']
+  >
 >;
 export type DeFiReacherValidateHashResponse = ValidateHttpResponse['data'];
 
