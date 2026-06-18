@@ -237,9 +237,36 @@ export const getEffectiveValueRange = (
   }
 
   return {
-    min: Math.max(defaultMinValue, allValueRange.min),
-    max: Math.max(defaultMinValue, allValueRange.max),
+    min: defaultMinValue,
+    max: allValueRange.max,
   };
+};
+
+export const getDefaultHoldingsMinValue = (allValueRange: {
+  min: number;
+  max: number;
+}): number | undefined => {
+  if (allValueRange.max < DEFAULT_MIN_VALUE) {
+    return undefined;
+  }
+
+  return DEFAULT_MIN_VALUE;
+};
+
+export const isFullHoldingsValueRange = (
+  filter: HoldingsFilter,
+  stats: HoldingsFilteringParams,
+): boolean => {
+  const { min: rangeMin, max: rangeMax } = stats.allValueRange;
+
+  if (filter.minValue === undefined && filter.maxValue === undefined) {
+    return true;
+  }
+
+  const effectiveMin = filter.minValue ?? rangeMin;
+  const effectiveMax = filter.maxValue ?? rangeMax;
+
+  return effectiveMin === rangeMin && effectiveMax === rangeMax;
 };
 
 export interface ExtractHoldingsFilteringParamsInput {
@@ -323,13 +350,18 @@ export const resolveHoldingsFilter = (
     shouldSanitizeChainsAndWallets,
   );
 
-  const withDefaults = context.hasExplicitValueRange
-    ? sanitized
-    : {
+  const defaultMin = getDefaultHoldingsMinValue(stats.allValueRange);
+  const shouldApplyDefaultMin =
+    !context.hasExplicitValueRange &&
+    defaultMin !== undefined &&
+    stats.allValueRange.max > 0;
+
+  const withDefaults = shouldApplyDefaultMin
+    ? {
         ...sanitized,
-        minValue:
-          sanitized.minValue ?? getEffectiveValueRange(stats.allValueRange).min,
-      };
+        minValue: sanitized.minValue ?? defaultMin,
+      }
+    : sanitized;
 
   return removeNullValuesFromFilter<HoldingsFilter>(withDefaults);
 };
@@ -337,18 +369,16 @@ export const resolveHoldingsFilter = (
 export const serializeHoldingsFilterForUrl = (
   filter: HoldingsFilter,
   stats: HoldingsFilteringParams,
-  hasExplicitValueRange: boolean,
 ) => {
-  const { max: rangeMax } = stats.allValueRange;
-  const defaultMin = getEffectiveValueRange(stats.allValueRange).min;
+  const { min: rangeMin, max: rangeMax } = stats.allValueRange;
+  const defaultMin = getDefaultHoldingsMinValue(stats.allValueRange);
 
-  const holdingsMinValue =
-    hasExplicitValueRange && filter.minValue !== undefined
+  const holdingsMinValue = isFullHoldingsValueRange(filter, stats)
+    ? null
+    : filter.minValue !== undefined
       ? filter.minValue
-      : !hasExplicitValueRange &&
-          filter.minValue !== undefined &&
-          filter.minValue !== defaultMin
-        ? filter.minValue
+      : defaultMin !== undefined
+        ? defaultMin
         : null;
 
   const holdingsMaxValue =
@@ -378,7 +408,7 @@ export const buildHoldingsFilterPatchFromPending = (
   const pendingMin = values.value[0] ?? stats.allValueRange.min;
   const pendingMax = values.value[1] ?? stats.allValueRange.max;
   const { min: rangeMin, max: rangeMax } = stats.allValueRange;
-  const defaultMin = getEffectiveValueRange(stats.allValueRange).min;
+  const defaultMin = getDefaultHoldingsMinValue(stats.allValueRange);
   const isFullValueRange = pendingMin === rangeMin && pendingMax === rangeMax;
 
   const patch: NullableFields<HoldingsFilter> = {
@@ -393,9 +423,16 @@ export const buildHoldingsFilterPatchFromPending = (
     return patch;
   }
 
-  if (pendingMin === rangeMin && pendingMin !== defaultMin) {
-    patch.minValue = pendingMin;
-  } else if (pendingMin !== defaultMin) {
+  if (defaultMin !== undefined && pendingMin === defaultMin) {
+    const wasAtFullRange = isFullHoldingsValueRange(currentFilter, stats);
+    if (
+      wasAtFullRange ||
+      (currentFilter.minValue !== undefined &&
+        currentFilter.minValue !== defaultMin)
+    ) {
+      patch.minValue = defaultMin;
+    }
+  } else {
     patch.minValue = pendingMin;
   }
 
