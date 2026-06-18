@@ -23,7 +23,10 @@ interface UseAvailableRewardsProps {
   jumperCampaignId?: string;
 }
 
-export const useAvailableRewards = ({ userAddress, jumperCampaignId }: UseAvailableRewardsProps) => {
+export const useAvailableRewards = ({
+  userAddress,
+  jumperCampaignId,
+}: UseAvailableRewardsProps) => {
   const {
     availableRewards: merklAvailableRewards,
     isSuccess: isMerklSuccess,
@@ -82,7 +85,12 @@ export const useAvailableRewards = ({ userAddress, jumperCampaignId }: UseAvaila
       (item) => item.balance.amountUSD,
       'desc',
     );
-  }, [merklAvailableRewards, deFiReacherAvailableRewards, getToken, toRawAmount]);
+  }, [
+    merklAvailableRewards,
+    deFiReacherAvailableRewards,
+    getToken,
+    toRawAmount,
+  ]);
 
   return {
     rewards,

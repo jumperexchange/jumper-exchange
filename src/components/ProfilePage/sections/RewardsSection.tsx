@@ -23,7 +23,9 @@ interface RewardsSectionProps {
   jumperCampaignId?: string;
 }
 
-export const RewardsSection = ({ jumperCampaignId }: RewardsSectionProps = {}) => {
+export const RewardsSection = ({
+  jumperCampaignId,
+}: RewardsSectionProps = {}) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { walletAddress: address } = useContext(ProfileContext);

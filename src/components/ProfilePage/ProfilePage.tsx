@@ -2,7 +2,7 @@
 
 import { useAccount } from '@lifi/wallet-management';
 import { ProfileProvider } from 'src/providers/ProfileProvider';
-import { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
+import type { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
