@@ -2128,11 +2128,16 @@ export class JumperBackend<
      */
     userRewardsControllerGetUserRewardsV1: (
       address: string,
+      query?: {
+        /** Strapi campaign documentId — when provided, uses that campaign's merkl_rewards as the filter instead of the global config */
+        jumperCampaignId?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<UserRewardsResponseDto, any>({
         path: `/v1/rewards/users/${address}`,
         method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),

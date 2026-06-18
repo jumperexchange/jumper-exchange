@@ -19,7 +19,7 @@ export const CampaignPageContent = ({
     <PageContainer>
       <CampaignHero campaign={campaign} />
 
-      <RewardsSection />
+      <RewardsSection jumperCampaignId={campaign.documentId} />
 
       {!!quests.length && (
         <MissionsSection>

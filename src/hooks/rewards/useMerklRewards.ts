@@ -9,6 +9,7 @@ const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 interface UseMerklRewardsProps {
   userAddress?: string;
+  jumperCampaignId?: string;
 }
 
 interface UseMerklRewardsResult {
@@ -19,12 +20,13 @@ interface UseMerklRewardsResult {
 
 export const useMerklRewards = ({
   userAddress,
+  jumperCampaignId,
 }: UseMerklRewardsProps): UseMerklRewardsResult => {
   const isValidAddress = !!userAddress && isAddress(userAddress);
 
   const { data, isSuccess, isLoading } = useQuery({
-    queryKey: ['MerklUserRewards', userAddress],
-    queryFn: () => getUserRewards(userAddress!),
+    queryKey: ['MerklUserRewards', userAddress, jumperCampaignId],
+    queryFn: () => getUserRewards(userAddress!, jumperCampaignId),
     enabled: isValidAddress,
     refetchInterval: CACHE_TIME,
     staleTime: STALE_TIME,

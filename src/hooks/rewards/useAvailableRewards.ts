@@ -20,14 +20,15 @@ export type RewardItemWithBalance = RewardItem & {
 
 interface UseAvailableRewardsProps {
   userAddress?: string;
+  jumperCampaignId?: string;
 }
 
-export const useAvailableRewards = ({ userAddress }: UseAvailableRewardsProps) => {
+export const useAvailableRewards = ({ userAddress, jumperCampaignId }: UseAvailableRewardsProps) => {
   const {
     availableRewards: merklAvailableRewards,
     isSuccess: isMerklSuccess,
     isLoading: isMerklLoading,
-  } = useMerklRewards({ userAddress });
+  } = useMerklRewards({ userAddress, jumperCampaignId });
 
   const {
     data: deFiReacherAvailableRewards = [],

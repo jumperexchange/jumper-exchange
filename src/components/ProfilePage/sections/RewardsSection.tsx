@@ -19,13 +19,18 @@ import Box from '@mui/material/Box';
 import { RewardsCarouselRoot } from '../components/RewardsCarousel/RewardsCarouselContext';
 import { useAvailableRewards } from '@/hooks/rewards/useAvailableRewards';
 
-export const RewardsSection = () => {
+interface RewardsSectionProps {
+  jumperCampaignId?: string;
+}
+
+export const RewardsSection = ({ jumperCampaignId }: RewardsSectionProps = {}) => {
   const { t } = useTranslation();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { walletAddress: address } = useContext(ProfileContext);
 
   const { rewards, isLoading, isSuccess } = useAvailableRewards({
     userAddress: address,
+    jumperCampaignId,
   });
 
   if (!rewards.length || !isSuccess) {
