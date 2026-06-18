@@ -4,9 +4,8 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/core/buttons/Button/Button';
-import { MissionCard } from 'src/components/Campaign/MissionsSection/MissionCard';
-import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
+import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import {
   HorizontalTabs,
   type HorizontalTabItem,
@@ -15,6 +14,7 @@ import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { useMissionsInfinite } from 'src/hooks/useMissionsInfinite';
 import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
+import { MissionXpCard } from './MissionXpCard';
 import {
   ActivityPlaceholder,
   earnXpCardSx,
@@ -35,8 +35,9 @@ enum EarnXpTab {
 
 // TODO: wire to the real "XP earned this month" value once the endpoint exists.
 const PLACEHOLDER_XP_EARNED = 5;
-// Skeleton placeholders shown while the first page of missions loads.
-const SKELETON_COUNT = 2;
+// Skeleton placeholders shown while the first page of missions loads; matches
+// the 3-up carousel layout.
+const SKELETON_COUNT = 3;
 
 export const EarnXpSection = () => {
   const { t } = useTranslation();
@@ -102,18 +103,21 @@ export const EarnXpSection = () => {
 
         {activeTab === EarnXpTab.Missions ? (
           (isLoading || missions.length > 0) && (
-            <SectionCarousel>
+            <SectionCarousel maxSlidesPerView={3}>
               {isLoading
                 ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-                    <EntityCard
+                    <BaseSurfaceSkeleton
                       key={index}
-                      variant="compact"
-                      isLoading
-                      fullWidth
+                      variant="rounded"
+                      sx={(theme) => ({
+                        width: '100%',
+                        height: theme.spacing(35.5),
+                        borderRadius: `${theme.shape.radius12}px`,
+                      })}
                     />
                   ))
                 : missions.map((mission) => (
-                    <MissionCard key={mission.id} mission={mission} />
+                    <MissionXpCard key={mission.id} mission={mission} />
                   ))}
             </SectionCarousel>
           )

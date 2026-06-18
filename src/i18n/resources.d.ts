@@ -994,6 +994,7 @@ export default interface Resources {
         };
         title: 'Earn XP';
         xpAmount: '{{xp}} XP';
+        xpAvailable: '{{xp}} XP available';
         xpEarned: 'earned so far this month';
       };
       joined: 'Joined {{date}}';

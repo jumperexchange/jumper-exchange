@@ -317,6 +317,7 @@
       "openHub": "Open Mission Hub",
       "xpAmount": "{{xp}} XP",
       "xpEarned": "earned so far this month",
+      "xpAvailable": "{{xp}} XP available",
       "tabs": {
         "missions": "Missions",
         "activity": "Activity"
