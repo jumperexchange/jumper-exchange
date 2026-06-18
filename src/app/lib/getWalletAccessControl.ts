@@ -1,6 +1,8 @@
 import type { StrapiResponse } from '@/types/strapi';
 import type { WalletAccessControlData } from '@/types/walletAccessControl';
 import { WalletAccessControlStrapiApi } from '@/utils/strapi/StrapiApi';
+import { getStrapiApiAccessToken } from '@/utils/strapi/strapiHelper';
+
 export async function getWalletAccessControl(
   address: string,
 ): Promise<StrapiResponse<WalletAccessControlData>> {
@@ -8,7 +10,11 @@ export async function getWalletAccessControl(
 
   const apiUrl = urlParams.getApiUrl();
 
-  const res = await fetch(decodeURIComponent(apiUrl));
+  const res = await fetch(decodeURIComponent(apiUrl), {
+    headers: {
+      Authorization: `Bearer ${getStrapiApiAccessToken()}`,
+    },
+  });
 
   if (!res.ok) {
     throw new Error('Failed to fetch wallet access control data');
