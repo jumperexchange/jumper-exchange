@@ -5,7 +5,7 @@ import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFl
 import { GoBack } from 'src/components/composite/GoBack/GoBack';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
-import { EarnDetailsMessages } from 'src/components/EarnDetails/EarnDetailsMessages/EarnDetailsMessages';
+import { EarnDetailsMessages } from '@/components/EarnDetails/EarnDetailsMessages/EarnDetailsMessages';
 import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';

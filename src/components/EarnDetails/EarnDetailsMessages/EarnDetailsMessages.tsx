@@ -13,22 +13,24 @@ const SEVERITY_TO_VARIANT: Record<VaultMessageSeverity, BaseAlertVariant> = {
 };
 
 interface EarnDetailsMessagesProps {
-  messages: VaultMessage[];
+  messages?: VaultMessage[];
 }
 
 export const EarnDetailsMessages: FC<EarnDetailsMessagesProps> = ({
   messages,
 }) => {
-  if (!messages.length) {
+  if (!messages?.length) {
     return null;
   }
 
   return (
     <Stack spacing={1}>
-      {messages.map((message, index) => (
+      {messages.map((message) => (
         <BaseAlert
-          key={`${index}-${message.publishedAt}-${message.content}`}
-          variant={SEVERITY_TO_VARIANT[message.severity]}
+          key={`${message.publishedAt}-${message.content}`}
+          variant={
+            SEVERITY_TO_VARIANT[message.severity] ?? BaseAlertVariant.Warning
+          }
           description={message.content}
         />
       ))}
