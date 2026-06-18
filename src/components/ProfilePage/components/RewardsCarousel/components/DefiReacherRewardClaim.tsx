@@ -40,7 +40,7 @@ export const DefiReacherRewardClaim: FC<DefiReacherRewardClaimProps> = ({
   const { refetch: fetchClaimCalldata, isFetching } =
     useDeFiReacherRewardClaimCalldata(address, availableReward.campaignId);
   const { mutate: validateHash, isPending: isPendingValidation } =
-    useDeFiReacherValidateHash();
+    useDeFiReacherValidateHash(address);
 
   const pendingClaimedRewardKey = useMemo(
     () =>

@@ -11,9 +11,13 @@ type UseDeFiReacherValidateHashResult = UseMutationResult<
   Hex
 >;
 
-export const useDeFiReacherValidateHash =
-  (): UseDeFiReacherValidateHashResult => {
-    return useMutation<DeFiReacherValidateHashResponse | null, Error, Hex>({
-      mutationFn: (txHash: Hex) => getDeFiReacherValidateHash(txHash),
-    });
-  };
+export const useDeFiReacherValidateHash = (
+  address?: string,
+): UseDeFiReacherValidateHashResult => {
+  return useMutation<DeFiReacherValidateHashResponse | null, Error, Hex>({
+    mutationFn: (txHash: Hex) => {
+      if (!address) return Promise.resolve(null);
+      return getDeFiReacherValidateHash(address, txHash);
+    },
+  });
+};

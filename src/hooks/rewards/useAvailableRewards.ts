@@ -1,8 +1,7 @@
-import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
 import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokens } from '@/hooks/useTokens';
-import type { RewardItem } from '@/types/rewards';
+import type { DeFiReacherReward, MerklReward, RewardItem } from '@/types/rewards';
 import {
   createWalletToken,
   type PortfolioBalance,
@@ -28,31 +27,20 @@ export const useAvailableRewards = ({
   jumperCampaignId,
 }: UseAvailableRewardsProps) => {
   const {
-    availableRewards: merklAvailableRewards,
-    isSuccess: isMerklSuccess,
-    isLoading: isMerklLoading,
+    availableRewards,
+    isSuccess,
+    isLoading,
   } = useMerklRewards({ userAddress, jumperCampaignId });
-
-  const {
-    data: deFiReacherAvailableRewards = [],
-    isSuccess: isDeFiReacherSuccess,
-    isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards({ userAddress });
 
   const { getToken } = useTokens();
   const { toRawAmount } = useTokenAmountInput();
 
   const rewards = useMemo((): RewardItemWithBalance[] => {
-    const combined: RewardItem[] = [
-      ...merklAvailableRewards.map((reward) => ({
-        type: 'merkl' as const,
-        reward,
-      })),
-      ...deFiReacherAvailableRewards.map((reward) => ({
-        type: 'defi-reacher' as const,
-        reward,
-      })),
-    ];
+    const combined: RewardItem[] = availableRewards.map((reward) =>
+      reward.type === 'merkl'
+        ? { type: 'merkl' as const, reward: reward as MerklReward }
+        : { type: 'defi-reacher' as const, reward: reward as DeFiReacherReward },
+    );
 
     return orderBy(
       combined
@@ -85,16 +73,7 @@ export const useAvailableRewards = ({
       (item) => item.balance.amountUSD,
       'desc',
     );
-  }, [
-    merklAvailableRewards,
-    deFiReacherAvailableRewards,
-    getToken,
-    toRawAmount,
-  ]);
+  }, [availableRewards, getToken, toRawAmount]);
 
-  return {
-    rewards,
-    isLoading: isMerklLoading || isDeFiReacherLoading,
-    isSuccess: isMerklSuccess || isDeFiReacherSuccess,
-  };
+  return { rewards, isLoading, isSuccess };
 };

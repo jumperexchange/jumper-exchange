@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
 import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokens } from '@/hooks/useTokens';
@@ -11,9 +10,6 @@ import { useAvailableRewards } from './useAvailableRewards';
 vi.mock('@/hooks/rewards/useMerklRewards', () => ({
   useMerklRewards: vi.fn(),
 }));
-vi.mock('@/hooks/rewards/useDeFiReacherRewards', () => ({
-  useDeFiReacherRewards: vi.fn(),
-}));
 vi.mock('@/hooks/useTokens', () => ({ useTokens: vi.fn() }));
 vi.mock('@/hooks/tokens/useTokenAmountInput', () => ({
   useTokenAmountInput: vi.fn(),
@@ -23,6 +19,7 @@ vi.mock('@/types/tokens', () => ({ createWalletToken: vi.fn() }));
 const makeMerklReward = (
   overrides: Partial<MerklReward> = {},
 ): MerklReward => ({
+  type: 'merkl',
   chainId: 1,
   address: '0x1111111111111111111111111111111111111111',
   symbol: 'TKN',
@@ -38,6 +35,7 @@ const makeMerklReward = (
 const makeDeFiReacherReward = (
   overrides: Partial<DeFiReacherReward> = {},
 ): DeFiReacherReward => ({
+  type: 'defi-reacher',
   chainId: 1,
   address: '0x2222222222222222222222222222222222222222',
   symbol: 'TKN2',
@@ -56,11 +54,6 @@ beforeEach(() => {
     isSuccess: true,
     isLoading: false,
   });
-  vi.mocked(useDeFiReacherRewards).mockReturnValue({
-    data: [],
-    isSuccess: true,
-    isLoading: false,
-  } as any);
   vi.mocked(useTokens).mockReturnValue({ getToken: mockGetToken } as any);
   vi.mocked(useTokenAmountInput).mockReturnValue({
     toRawAmount: vi.fn().mockReturnValue(0n),
@@ -97,20 +90,12 @@ describe('useAvailableRewards', () => {
 
   it('sorts combined Merkl and DeFi Reacher rewards by amountUSD descending', () => {
     const merklReward = makeMerklReward({ symbol: 'MKL', amountToClaim: 1 });
-    const defiReward = makeDeFiReacherReward({
-      symbol: 'DFI',
-      amountToClaim: 1,
-    });
+    const defiReward = makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 });
     vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [merklReward],
+      availableRewards: [merklReward, defiReward],
       isSuccess: true,
       isLoading: false,
     });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [defiReward],
-      isSuccess: true,
-      isLoading: false,
-    } as any);
     mockGetToken.mockImplementation((_, address) =>
       address === merklReward.address ? { priceUSD: '1' } : { priceUSD: '10' },
     );
@@ -122,17 +107,12 @@ describe('useAvailableRewards', () => {
     expect(result.current.rewards[1].reward.symbol).toBe('MKL');
   });
 
-  it('returns DeFi Reacher rewards when Merkl fails', () => {
+  it('returns only DeFi Reacher rewards when Merkl rewards are absent', () => {
     vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [],
-      isSuccess: false,
-      isLoading: false,
-    });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })],
+      availableRewards: [makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })],
       isSuccess: true,
       isLoading: false,
-    } as any);
+    });
     mockGetToken.mockReturnValue({ priceUSD: '1' });
 
     const { result } = renderHook(() => useAvailableRewards({}));
@@ -142,17 +122,12 @@ describe('useAvailableRewards', () => {
     expect(result.current.isSuccess).toBe(true);
   });
 
-  it('returns Merkl rewards when DeFi Reacher fails', () => {
+  it('returns only Merkl rewards when no DeFi Reacher rewards are present', () => {
     vi.mocked(useMerklRewards).mockReturnValue({
       availableRewards: [makeMerklReward({ symbol: 'MKL', amountToClaim: 1 })],
       isSuccess: true,
       isLoading: false,
     });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [],
-      isSuccess: false,
-      isLoading: false,
-    } as any);
     mockGetToken.mockReturnValue({ priceUSD: '1' });
 
     const { result } = renderHook(() => useAvailableRewards({}));
