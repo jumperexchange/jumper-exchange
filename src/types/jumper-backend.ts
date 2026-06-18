@@ -883,19 +883,19 @@ export interface UserRewardsResponseDto {
   )[];
 }
 
-export interface DeFiReacherClaimArgsDto {
+export interface RewardClaimArgsDto {
   index: string;
   account: string;
   amount: string;
   merkleProof: string[];
 }
 
-export interface DeFiReacherCalldataResponseDto {
+export interface RewardClaimDataDto {
   calldata: string;
   contractAddress: string;
   chainId: number;
   functionName: string;
-  args: DeFiReacherClaimArgsDto;
+  args: RewardClaimArgsDto;
 }
 
 export interface ValidateRewardBodyDto {
@@ -903,7 +903,7 @@ export interface ValidateRewardBodyDto {
   txHash: string;
 }
 
-export interface DeFiReacherValidateResponseDto {
+export interface RewardValidationResultDto {
   success: boolean;
   status: string;
   campaignId?: string;
@@ -2426,7 +2426,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<DeFiReacherCalldataResponseDto, any>({
+      this.request<RewardClaimDataDto, any>({
         path: `/v1/rewards/users/${address}/calldata`,
         method: 'GET',
         query: query,
@@ -2445,7 +2445,7 @@ export class JumperBackend<
       data: ValidateRewardBodyDto,
       params: RequestParams = {},
     ) =>
-      this.request<DeFiReacherValidateResponseDto, any>({
+      this.request<RewardValidationResultDto, any>({
         path: `/v1/rewards/users/${address}/validate`,
         method: 'POST',
         body: data,

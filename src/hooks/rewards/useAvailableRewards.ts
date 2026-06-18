@@ -1,7 +1,11 @@
 import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokens } from '@/hooks/useTokens';
-import type { DeFiReacherReward, MerklReward, RewardItem } from '@/types/rewards';
+import type {
+  DeFiReacherReward,
+  MerklReward,
+  RewardItem,
+} from '@/types/rewards';
 import {
   createWalletToken,
   type PortfolioBalance,
@@ -26,11 +30,10 @@ export const useAvailableRewards = ({
   userAddress,
   jumperCampaignId,
 }: UseAvailableRewardsProps) => {
-  const {
-    availableRewards,
-    isSuccess,
-    isLoading,
-  } = useMerklRewards({ userAddress, jumperCampaignId });
+  const { availableRewards, isSuccess, isLoading } = useMerklRewards({
+    userAddress,
+    jumperCampaignId,
+  });
 
   const { getToken } = useTokens();
   const { toRawAmount } = useTokenAmountInput();
@@ -39,7 +42,10 @@ export const useAvailableRewards = ({
     const combined: RewardItem[] = availableRewards.map((reward) =>
       reward.type === 'merkl'
         ? { type: 'merkl' as const, reward: reward as MerklReward }
-        : { type: 'defi-reacher' as const, reward: reward as DeFiReacherReward },
+        : {
+            type: 'defi-reacher' as const,
+            reward: reward as DeFiReacherReward,
+          },
     );
 
     return orderBy(
@@ -56,7 +62,7 @@ export const useAvailableRewards = ({
           const balance: PortfolioBalance<WalletToken> = {
             token: createWalletToken({
               address: item.reward.address,
-              logoURI: item.reward.logoURI,
+              logoURI: item.reward.logoURI || token?.logoURI || '',
               name: item.reward.symbol,
               symbol: item.reward.symbol,
               decimals: item.reward.tokenDecimals,
