@@ -22,6 +22,7 @@ import {
   CarouselDots,
   CarouselViewport,
   sectionCarouselNavButtonSx,
+  SWIPER_SHADOW_SPACING,
 } from './SectionCarousel.styles';
 
 // Generic paged carousel: 1 card on mobile, 2 from the `sm` breakpoint, with
@@ -86,6 +87,7 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
               slidesPerGroup: 2,
             },
           }}
+          style={{ padding: `${SWIPER_SHADOW_SPACING}px` }}
         >
           {slides.map((child, index) => (
             <SwiperSlide
