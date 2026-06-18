@@ -3,7 +3,6 @@
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@/components/core/buttons/Button/Button';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import {
@@ -72,8 +71,6 @@ export const EarnXpSection = () => {
               {t('profile_page.earnXp.description')}
             </Typography>
           </HeaderText>
-          {/* TODO: wire to the Mission hub once the route exists. */}
-          <Button>{t('profile_page.earnXp.openHub')}</Button>
         </HeaderRow>
         <HeaderDivider />
       </HeaderGroup>
