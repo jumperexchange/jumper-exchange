@@ -25,10 +25,14 @@ import {
   SWIPER_SHADOW_SPACING,
 } from './SectionCarousel.styles';
 
-// Generic paged carousel: 1 card on mobile, 2 from the `sm` breakpoint, with
-// edge nav buttons and page dots. Each child is a slide. Shared by the profile
-// page sections (perks, missions, …).
-export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
+interface SectionCarouselProps extends PropsWithChildren {
+  maxSlidesPerView?: number;
+}
+
+export const SectionCarousel: FC<SectionCarouselProps> = ({
+  children,
+  maxSlidesPerView = 2,
+}) => {
   const theme = useTheme();
   const { t } = useTranslation();
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
@@ -86,6 +90,12 @@ export const SectionCarousel: FC<PropsWithChildren> = ({ children }) => {
               slidesPerView: 2,
               slidesPerGroup: 2,
             },
+            ...(maxSlidesPerView > 2 && {
+              [theme.breakpoints.values.md]: {
+                slidesPerView: maxSlidesPerView,
+                slidesPerGroup: maxSlidesPerView,
+              },
+            }),
           }}
           style={{ padding: `${SWIPER_SHADOW_SPACING}px` }}
         >
