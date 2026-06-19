@@ -311,6 +311,19 @@
       "next": "Next",
       "goToPage": "Go to page {{page}}"
     },
+    "earnXp": {
+      "title": "Earn XP",
+      "description": "Complete missions and increase your activity to earn XP and unlock more perks!",
+      "openHub": "Open Mission Hub",
+      "xpAmount": "{{xp}} XP",
+      "xpEarned": "earned so far this month",
+      "xpAvailable": "{{xp}} XP available",
+      "tabs": {
+        "missions": "Missions",
+        "activity": "Activity"
+      },
+      "activityComingSoon": "Activity tracking is coming soon."
+    },
     "pointsInfo": "XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.",
     "levelInfo": "A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.",
     "copyAddress": "Copy wallet address",
