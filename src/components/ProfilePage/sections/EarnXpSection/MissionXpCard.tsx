@@ -1,11 +1,13 @@
 'use client';
 
-import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { CarouselCard } from '@/components/Cards/CarouselCard/CarouselCard';
+import { EntityAvatar } from '@/components/composite/EntityAvatar/EntityAvatar';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { Link } from '@/components/Link/Link';
 import {
   TrackingAction,
@@ -53,16 +55,19 @@ export const MissionXpCard: FC<MissionXpCardProps> = ({ mission }) => {
       titleLines={2}
       imageUrl={missionDisplayData.imageUrl}
       mediaOverlay={
-        chain?.avatarUrl ? (
-          <Avatar
-            src={chain.avatarUrl}
-            alt={chain.label}
+        chain ? (
+          <Box
             sx={(theme) => ({
-              width: theme.spacing(4),
-              height: theme.spacing(4),
+              display: 'flex',
+              borderRadius: '50%',
               border: `4px solid ${(theme.vars || theme).palette.surface2.main}`,
             })}
-          />
+          >
+            <EntityAvatar
+              entity={{ chainId: chain.id, chainKey: chain.label }}
+              size={AvatarSize.MD}
+            />
+          </Box>
         ) : undefined
       }
       badges={
