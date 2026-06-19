@@ -1,5 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import { compareDesc, max } from 'date-fns';
+import {
+  compact,
+  every,
+  filter,
+  groupBy,
+  map,
+  mapValues,
+  max,
+  orderBy,
+} from 'lodash';
 import { getQuestsBySlugs } from 'src/app/lib/getQuestsBySlugs';
 import { useGetVerifiedTasks } from 'src/hooks/tasksVerification/useGetVerifiedTasks';
 import type { QuestData } from 'src/types/strapi';
@@ -25,36 +34,30 @@ export const deriveCompletedMissions = (
   verifiedTasks: VerifiedTask[],
   quests: QuestData[],
 ): CompletedMission[] => {
-  const verificationsByQuest = new Map<
-    string,
-    { stepIds: Set<string>; timestamps: Date[] }
-  >();
-  for (const task of verifiedTasks) {
-    const entry = verificationsByQuest.get(task.slug) ?? {
-      stepIds: new Set<string>(),
-      timestamps: [],
-    };
-    entry.stepIds.add(task.stepId);
-    entry.timestamps.push(new Date(task.timestamp));
-    verificationsByQuest.set(task.slug, entry);
-  }
+  const verificationsByQuest = mapValues(
+    groupBy(verifiedTasks, 'slug'),
+    (tasks) => ({
+      stepIds: new Set(map(tasks, 'stepId')),
+      timestamps: map(tasks, (task) => new Date(task.timestamp)),
+    }),
+  );
 
-  return quests
-    .map((quest) => {
-      const verifications = verificationsByQuest.get(quest.Slug);
-      const verifiableTasks =
-        quest.tasks_verification?.filter((task) => task.hasTask) ?? [];
+  const missions = compact(
+    quests.map((quest) => {
+      const verifications = verificationsByQuest[quest.Slug];
+      const verifiableTasks = filter(quest.tasks_verification, 'hasTask');
       const isCompleted =
         verifications &&
         verifiableTasks.length > 0 &&
-        verifiableTasks.every((task) => verifications.stepIds.has(task.uuid));
+        every(verifiableTasks, (task) => verifications.stepIds.has(task.uuid));
       if (!isCompleted) {
         return null;
       }
-      return { quest, completedAt: max(verifications.timestamps) };
-    })
-    .filter((mission) => mission != null)
-    .sort((a, b) => compareDesc(a.completedAt, b.completedAt));
+      return { quest, completedAt: max(verifications.timestamps) as Date };
+    }),
+  );
+
+  return orderBy(missions, 'completedAt', 'desc');
 };
 
 // Missions the wallet has completed. The task verifications only carry the
