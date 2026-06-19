@@ -32,9 +32,9 @@ export const ProfilePage = ({
     >
       <PageContainer>
         <IntroSection perks={perks} />
+        {isPublic && <RewardsSection />}
         <UnlockedPerksSection perks={perks} />
         <EarnXpSection />
-        {isPublic && <RewardsSection />}
         <YourAchievementsSection />
       </PageContainer>
     </ProfileProvider>

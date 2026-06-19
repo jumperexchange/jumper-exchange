@@ -993,7 +993,6 @@ export default interface Resources {
       };
     };
     profile_page: {
-      achievements: 'Achievements';
       availableRewards: 'Available Rewards';
       beginJourney: 'Begin your Jumper journey';
       campaigns: 'Campaigns';
@@ -1019,12 +1018,6 @@ export default interface Resources {
       levelWithValue: 'Level {{level, number}}';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       mobileTitle: 'Only available on Desktop';
-      noData: {
-        caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
-        cta: 'Start swapping';
-        description: "No {{entity}} yet? Let's change that!";
-      };
-      ongoing: 'Ongoing';
       open: 'Open {{tool}}';
       passStats: {
         lastMonth: 'last month';
@@ -1032,12 +1025,10 @@ export default interface Resources {
         perks_other: '{{count}} perks';
         unlocked: 'unlocked';
       };
-      perks: 'Perks';
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
       progressTo: 'Your progress to';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
-      rewards: 'Rewards Earned';
       rewardsClaim: {
         action: {
           claim: 'Claim';
@@ -1054,7 +1045,6 @@ export default interface Resources {
       shareProfile: 'Share profile';
       tooltips: {
         ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
-        unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
       unlockedPerks: {

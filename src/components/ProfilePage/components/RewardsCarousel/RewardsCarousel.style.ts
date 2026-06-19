@@ -1,17 +1,5 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import type { Theme } from '@mui/material/styles';
-
-// Shared styling for the prev/next nav buttons that overlay a carousel's edges.
-// `disabled` hides the button (at the end/beginning) while keeping the layout.
-export const carouselNavButtonSx = (disabled: boolean) => (theme: Theme) => ({
-  pointerEvents: disabled ? 'none' : 'auto',
-  zIndex: 1,
-  [theme.breakpoints.up('sm')]: {
-    marginBottom: theme.spacing(1.5),
-    visibility: disabled ? 'hidden' : 'visible',
-  },
-});
 
 const blurEdge = (direction: 'left' | 'right', color: string) => ({
   content: '""',
