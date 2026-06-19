@@ -1,15 +1,15 @@
-import { getQuestsBy } from '@/app/lib/getQuestsBy';
+import { cache } from 'react';
+import { getQuestsBySlugs } from '@/app/lib/getQuestsBySlugs';
+import type { Quest } from 'src/types/loyaltyPass';
 
-export async function getQuestBySlug(slug: string) {
-  const quests = await getQuestsBy('Slug', slug);
-
-  if (!quests) {
-    return {
-      data: undefined,
-    };
-  }
+// Cached so the detail pages can call it from both generateMetadata and the
+// page render without fetching twice.
+export const getQuestBySlug = cache(async (slug: string) => {
+  const { data } = await getQuestsBySlugs<Quest>([slug], {
+    withCampaign: true,
+  });
 
   return {
-    data: quests.data.data.find((quest) => quest.Slug === slug),
+    data: data.data.find((quest) => quest.Slug === slug),
   };
-}
+});
