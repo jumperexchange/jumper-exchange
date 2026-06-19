@@ -324,6 +324,25 @@
       },
       "activityComingSoon": "Activity tracking is coming soon."
     },
+    "yourAchievements": {
+      "title": "Your achievements",
+      "description": "Explore all your <bold>completed</bold> missions and XP earned through using Jumper.",
+      "tabs": {
+        "missions": "Missions",
+        "activity": "Activity"
+      },
+      "xpEarned": "{{xp}} XP earned",
+      "noMissions": {
+        "description": "You have not completed any missions yet. Let's change that!",
+        "caption": "Start collecting XP by completing missions. The more XP you earn, the more Perks you unlock!",
+        "cta": "View all missions"
+      },
+      "noActivity": {
+        "description": "You have no recorded activity yet. Let's change that!",
+        "caption": "Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.",
+        "cta": "Start swapping"
+      }
+    },
     "pointsInfo": "XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.",
     "levelInfo": "A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.",
     "copyAddress": "Copy wallet address",
