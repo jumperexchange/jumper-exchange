@@ -55,16 +55,16 @@ export const MissionXpCard: FC<MissionXpCardProps> = ({ mission }) => {
       titleLines={2}
       imageUrl={missionDisplayData.imageUrl}
       mediaOverlay={
-        chain ? (
+        chain && chain.id ? (
           <Box
             sx={(theme) => ({
               display: 'flex',
-              borderRadius: '50%',
-              border: `4px solid ${(theme.vars || theme).palette.surface2.main}`,
+              borderRadius: theme.shape.radiusRoundedFull,
+              border: `2px solid ${(theme.vars || theme).palette.surface1.main}`,
             })}
           >
             <EntityAvatar
-              entity={{ chainId: chain.id, chainKey: chain.label }}
+              entity={{ chainId: chain.id, chainKey: chain.label ?? '' }}
               size={AvatarSize.MD}
             />
           </Box>
