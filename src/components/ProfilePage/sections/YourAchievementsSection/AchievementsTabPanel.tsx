@@ -1,11 +1,11 @@
 'use client';
 
 import { type ReactNode, useState } from 'react';
-import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
 import { NoDataPlaceholder } from '../../components/NoDataPlaceholder/NoDataPlaceholder';
+import { AchievementCardSkeleton } from './AchievementCardSkeleton';
 import {
   AchievementsGrid,
   paginationSx,
@@ -13,6 +13,9 @@ import {
 
 // 2 rows of 4 cards at the desktop content width.
 const PAGE_SIZE = 8;
+
+// One row of placeholder cards while data loads.
+const SKELETON_COUNT = 4;
 
 interface EmptyState {
   heroImage: string;
@@ -42,10 +45,11 @@ export const AchievementsTabPanel = <T,>({
 
   if (isLoading) {
     return (
-      <BaseSurfaceSkeleton
-        variant="rounded"
-        sx={(theme) => ({ width: '100%', height: theme.spacing(36) })}
-      />
+      <AchievementsGrid>
+        {Array.from({ length: SKELETON_COUNT }, (_, i) => (
+          <AchievementCardSkeleton key={i} />
+        ))}
+      </AchievementsGrid>
     );
   }
 
