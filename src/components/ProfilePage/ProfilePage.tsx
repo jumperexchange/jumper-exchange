@@ -12,17 +12,12 @@ import { EarnXpSection } from './sections/EarnXpSection/EarnXpSection';
 import { IntroSection } from './sections/IntroSection';
 import { RewardsSection } from './sections/RewardsSection';
 import { UnlockedPerksSection } from './sections/UnlockedPerksSection/UnlockedPerksSection';
-import { TabsSection } from './TabsSection/TabsSection';
-import { AvailableTabs } from './TabsSection/constants';
-import { PerksList } from './components/PerksList/PerksList';
-import { GridContainer } from '../Containers/GridContainer';
-import { AchievementsList } from './components/AchievementsList/AchievementsList';
+import { YourAchievementsSection } from './sections/YourAchievementsSection/YourAchievementsSection';
 
 interface ProfilePageProps {
   walletAddress?: string;
   isPublic?: boolean;
   perks: StrapiResponseData<PerksDataAttributes>;
-  hasMorePerks: boolean;
   merklRewards?: StrapiResponseData<MerklRewardsData>;
 }
 
@@ -30,7 +25,6 @@ export const ProfilePage = ({
   walletAddress,
   isPublic,
   perks,
-  hasMorePerks,
   merklRewards,
 }: ProfilePageProps) => {
   const { account } = useAccount();
@@ -47,26 +41,7 @@ export const ProfilePage = ({
         <UnlockedPerksSection perks={perks} />
         <EarnXpSection />
         {isPublic && <RewardsSection merklRewards={merklRewards} />}
-        <TabsSection>
-          {(activeTab: string) => {
-            if (activeTab === AvailableTabs.Achievements) {
-              return (
-                <GridContainer gridTemplateColumns="repeat(auto-fit, minmax(322px, 1fr))">
-                  <AchievementsList />
-                </GridContainer>
-              );
-            } else if (activeTab === AvailableTabs.Perks) {
-              return (
-                <GridContainer>
-                  <PerksList
-                    initialPerks={perks}
-                    shouldLoadMore={hasMorePerks}
-                  />
-                </GridContainer>
-              );
-            }
-          }}
-        </TabsSection>
+        <YourAchievementsSection />
       </PageContainer>
     </ProfileProvider>
   );
