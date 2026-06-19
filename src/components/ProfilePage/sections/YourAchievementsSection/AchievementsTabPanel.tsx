@@ -15,7 +15,7 @@ import {
 const PAGE_SIZE = 8;
 
 interface EmptyState {
-  imageUrl: string;
+  heroImage: string;
   description: string;
   caption: string;
   ctaText: string;
@@ -52,7 +52,7 @@ export const AchievementsTabPanel = <T,>({
   if (items.length === 0) {
     return (
       <NoDataPlaceholder
-        imageUrl={emptyState.imageUrl}
+        heroImage={emptyState.heroImage}
         description={emptyState.description}
         caption={emptyState.caption}
         ctaText={emptyState.ctaText}
