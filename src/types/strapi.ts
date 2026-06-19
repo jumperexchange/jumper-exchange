@@ -337,6 +337,9 @@ interface TaskVerification {
   name: string;
   task: any; // Custom field type
   description: string;
+  uuid: string;
+  hasTask: boolean;
+  isRequired?: boolean;
   CTALink: string;
   CTAText: string;
   TaskType?: TaskType;

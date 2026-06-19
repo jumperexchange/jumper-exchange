@@ -70,16 +70,10 @@ export default async function Page({ params }: { params: Params }) {
   });
 
   const perks = perksResponse.data;
-  const totalPerks = perksResponse.meta.pagination?.total || 0;
-  const hasMorePerks = totalPerks > perks.length;
 
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>
-      <ProfilePage
-        walletAddress={sanitizedAddress}
-        perks={perks}
-        hasMorePerks={hasMorePerks}
-      />
+      <ProfilePage walletAddress={sanitizedAddress} perks={perks} />
     </Suspense>
   );
 }

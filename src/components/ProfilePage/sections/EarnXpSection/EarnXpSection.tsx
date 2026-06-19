@@ -13,11 +13,11 @@ import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.
 import { XPIcon } from 'src/components/illustrations/XPIcon';
 import { useMissionsInfinite } from 'src/hooks/useMissionsInfinite';
 import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
+import { sectionTabsSx } from '../Section.style';
 import { MissionXpCard } from './MissionXpCard';
 import {
   ActivityPlaceholder,
   earnXpCardSx,
-  earnXpTabsSx,
   HeaderDivider,
   HeaderGroup,
   HeaderRow,
@@ -82,7 +82,7 @@ export const EarnXpSection = () => {
             value={activeTab}
             onChange={(_, value) => setActiveTab(value)}
             size={HorizontalTabSize.MD}
-            sx={earnXpTabsSx}
+            sx={sectionTabsSx}
             id="earn-xp-tabs"
           />
           <XpStat>

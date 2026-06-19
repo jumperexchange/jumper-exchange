@@ -1,10 +1,12 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
 
 interface VerifyTaskResponse {
   id: number;
   questId: string;
+  slug: string;
   stepId: string;
   timestamp: Date;
 }

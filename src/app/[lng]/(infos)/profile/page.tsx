@@ -34,12 +34,10 @@ export default async function Page() {
   });
 
   const perks = perksResponse.data;
-  const totalPerks = perksResponse.meta.pagination?.total || 0;
-  const hasMorePerks = totalPerks > perks.length;
 
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>
-      <ProfilePage isPublic={true} perks={perks} hasMorePerks={hasMorePerks} />
+      <ProfilePage isPublic={true} perks={perks} />
     </Suspense>
   );
 }
