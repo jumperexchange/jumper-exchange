@@ -39,8 +39,8 @@ export default async function Page() {
     ]);
 
   const perks = perksResponse.data;
-
   const merklRewards = merklRewardsResponse.data;
+
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>
       <ProfilePage isPublic={true} perks={perks} merklRewards={merklRewards} />
