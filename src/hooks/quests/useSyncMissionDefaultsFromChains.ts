@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useMissionStore } from 'src/stores/mission/MissionStore';
-import { ParticipantChain } from 'src/types/loyaltyPass';
+import type { ParticipantChain } from 'src/types/loyaltyPass';
 
 export const useSyncMissionDefaultsFromChains = (
   participatingChains?: ParticipantChain[],
@@ -17,7 +17,7 @@ export const useSyncMissionDefaultsFromChains = (
       ...new Set(
         participatingChains
           .map((participatingChain) => participatingChain.id)
-          .filter(Boolean),
+          .filter((id): id is number => id != null),
       ),
     ];
   }, [participatingChains]);
