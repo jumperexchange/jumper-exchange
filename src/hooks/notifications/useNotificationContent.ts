@@ -10,7 +10,7 @@ import type { Notification } from '@/types/notifications';
 export interface NotificationContent {
   title: string;
   body: string;
-  ctaLabel: string;
+  ctaLabel?: string | null;
 }
 
 /**
