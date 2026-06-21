@@ -47,7 +47,15 @@ export async function generateMetadata({
   };
 }
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 86400;
+export const dynamicParams = true;
+export const dynamic = 'force-static';
+
+// Prerender nothing at build time (the full pair matrix added ~15 min to the
+// build); generate each URL on first request and cache it (ISR).
+export function generateStaticParams() {
+  return [];
+}
 
 export default async function Page({ params }: { params: Params }) {
   const { segments } = await params;
