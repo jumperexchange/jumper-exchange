@@ -26,10 +26,6 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  // Set a cookie with the pathname that was used on the first page load
-  const pathname = request.nextUrl.pathname;
-  response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
-
   return response;
 }
 
