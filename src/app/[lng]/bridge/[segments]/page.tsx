@@ -47,7 +47,10 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 86400;
+// Bridge pages are SEO landing pages with effectively static content, so they
+// only need to refresh once a month. Trigger an earlier refresh manually with
+// on-demand revalidation (revalidatePath/revalidateTag) when content changes.
+export const revalidate = 2592000; // 30 days
 export const dynamicParams = true;
 export const dynamic = 'force-static';
 
