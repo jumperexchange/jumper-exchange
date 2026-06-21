@@ -5,7 +5,12 @@
 // so it is shared across replicas and bounded by a TTL, instead of growing on
 // each pod's local filesystem cache. This is distinct from `cacheHandlers`
 // (plural) in cache-handler.cjs, which only backs the `"use cache"` directive.
-const { client, withPrefix } = require('./cache-handler-redis.cjs');
+const {
+  client,
+  withPrefix,
+  compress,
+  decompress,
+} = require('./cache-handler-redis.cjs');
 
 const DEFAULT_EXPIRE_SECONDS = 60 * 60 * 24; // fallback TTL to bound Redis memory
 
@@ -42,11 +47,11 @@ module.exports = class IncrementalCacheHandler {
 
   async get(cacheKey) {
     try {
-      const stored = await client.get(key(cacheKey));
+      const stored = await client.getBuffer(key(cacheKey));
       if (!stored) {
         return null;
       }
-      const entry = JSON.parse(stored, reviver);
+      const entry = JSON.parse(await decompress(stored), reviver);
       return { lastModified: entry.lastModified, value: entry.value };
     } catch {
       return null;
@@ -68,7 +73,7 @@ module.exports = class IncrementalCacheHandler {
         { value: data, lastModified: Date.now(), tags },
         replacer,
       );
-      await client.set(key(cacheKey), payload, 'EX', expire);
+      await client.set(key(cacheKey), await compress(payload), 'EX', expire);
       if (tags.length) {
         const pipe = client.pipeline();
         for (const tag of tags) {
