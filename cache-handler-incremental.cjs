@@ -5,26 +5,12 @@
 // so it is shared across replicas and bounded by a TTL, instead of growing on
 // each pod's local filesystem cache. This is distinct from `cacheHandlers`
 // (plural) in cache-handler.cjs, which only backs the `"use cache"` directive.
-const Redis = require('ioredis');
+const { client, withPrefix } = require('./cache-handler-redis.cjs');
 
-const prefix = process.env.REDIS_PREFIX ?? 'jumper:cache:';
 const DEFAULT_EXPIRE_SECONDS = 60 * 60 * 24; // fallback TTL to bound Redis memory
 
-const client = new Redis({
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT ?? 6379),
-  password: process.env.REDIS_PASSWORD || undefined,
-  lazyConnect: false,
-  maxRetriesPerRequest: 1,
-  connectTimeout: 500,
-  enableOfflineQueue: false,
-});
-client.on('error', (err) =>
-  console.error('[incremental-cache] Redis error:', err),
-);
-
-const key = (k) => `${prefix}route:${k}`;
-const tagKey = (t) => `${prefix}route-tag:${t}`;
+const key = (k) => withPrefix(`route:${k}`);
+const tagKey = (t) => withPrefix(`route-tag:${t}`);
 
 // Buffer (rscData/body/image buffer) and Map (segmentData) are not JSON-safe.
 function replacer(_k, value) {

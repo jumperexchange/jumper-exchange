@@ -1,21 +1,6 @@
 'use strict';
 /* eslint-disable @typescript-eslint/no-require-imports */
-const Redis = require('ioredis');
-
-const prefix = process.env.REDIS_PREFIX ?? 'jumper:cache:';
-
-const client = new Redis({
-  host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT ?? 6379),
-  password: process.env.REDIS_PASSWORD || undefined,
-  lazyConnect: false,
-  maxRetriesPerRequest: 1,
-  connectTimeout: 500,
-  enableOfflineQueue: false,
-});
-client.on('error', (err) => console.error('[cache-handler] Redis error:', err));
-
-const key = (k) => `${prefix}${k}`;
+const { client, withPrefix: key } = require('./cache-handler-redis.cjs');
 
 const localTagTimestamps = new Map();
 
