@@ -251,9 +251,12 @@ const buildProtocolItem = (
 const buildCapacityItems = (
   capacity: VaultCapacity | undefined,
   asset: Token | undefined,
-  _variant: EarnCardVariant,
+  variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem[] => {
+  if (variant !== 'overview') {
+    return [];
+  }
   if (!capacity) {
     return [];
   }
@@ -317,8 +320,12 @@ const buildFeeItem = (
 
 const buildFeeItems = (
   fees: VaultFees | undefined,
+  variant: EarnCardVariant,
   t: TFunction,
 ): EarnCardOverviewItem[] => {
+  if (variant !== 'overview') {
+    return [];
+  }
   if (!fees) {
     return [];
   }
@@ -393,7 +400,7 @@ export const useFormatDisplayEarnOpportunityData = (
       ),
       buildProtocolItem(protocol, chains, variant, t),
       ...buildCapacityItems(capacity, earnOpportunity?.asset, variant, t),
-      ...buildFeeItems(fees, t),
+      ...buildFeeItems(fees, variant, t),
     ].filter((item): item is EarnCardOverviewItem => item !== null);
 
     return {
