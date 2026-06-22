@@ -3,7 +3,7 @@ import { useMetaTag } from '@/hooks/useMetaTag';
 import { ThemeStoreProvider } from '@/stores/theme';
 import { buildInitialConfigThemeStates } from '@/stores/theme/createThemeStore';
 import { formatConfig, formatTheme } from '@/utils/formatTheme';
-import { useMemo } from 'react';
+import { useMemo, useLayoutEffect } from 'react';
 import type { ThemeProviderProps } from './types';
 import { getPartnerTheme } from './utils';
 import { applySelectedPartnerColorMode } from './partnerThemeMode';
@@ -55,8 +55,6 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
       themes ?? [],
     );
 
-    applySelectedPartnerColorMode(configThemeStates, themes ?? []);
-
     return {
       configTheme: routeConfig,
       partnerThemes: themes!,
@@ -73,6 +71,10 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
       configThemeStates,
     };
   }, [themes, partnerThemeConfig]);
+
+  useLayoutEffect(() => {
+    applySelectedPartnerColorMode(themeStore.configThemeStates, themes ?? []);
+  }, [themeStore.configThemeStates, themes]);
 
   return <ThemeStoreProvider value={themeStore}>{children}</ThemeStoreProvider>;
 }
