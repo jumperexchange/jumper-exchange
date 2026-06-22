@@ -63,8 +63,16 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
     return perk.UnlockLevel <= currentLevel ? 'unlocked' : 'locked';
   };
 
+  // Keep locked perks at the end while preserving the incoming Featured/level
+  // order within each group (Array.prototype.sort is stable).
+  const lockedLast = (perks: PerksDataAttributes[]) =>
+    [...perks].sort(
+      (a, b) =>
+        Number(getStatus(a) === 'locked') - Number(getStatus(b) === 'locked'),
+    );
+
   const items: Record<PerksTab, PerksDataAttributes[]> = {
-    [PerksTab.All]: perks,
+    [PerksTab.All]: lockedLast(perks),
     [PerksTab.Unlocked]: unlockedPerks,
     [PerksTab.Claimed]: perks.filter((perk) => isClaimed(perk, claimedIds)),
   };
