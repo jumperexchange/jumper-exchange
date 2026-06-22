@@ -1,6 +1,22 @@
 import { metrics } from '@opentelemetry/api';
 
-const METER_NAME = 'jumper-exchange';
+const meter = metrics.getMeter('jumper-exchange');
+
+const cacheStatusCounter = meter.createCounter(
+  'strapi_fetch_cf_cache_status_total',
+  {
+    description: 'Count of Strapi fetches by Cloudflare cache status.',
+  },
+);
+
+const cacheAgeHistogram = meter.createHistogram(
+  'strapi_fetch_cf_cache_age_seconds',
+  {
+    description:
+      'Age in seconds of CF-cached Strapi API responses at fetch time.',
+    unit: 's',
+  },
+);
 
 export const recordFetchCacheMetric = ({
   endpoint,
@@ -12,22 +28,13 @@ export const recordFetchCacheMetric = ({
   ageSeconds: number | null;
 }) => {
   try {
-    const meter = metrics.getMeter(METER_NAME);
-
-    meter
-      .createCounter('strapi_fetch_cf_cache_status_total', {
-        description: 'Count of Strapi fetches by Cloudflare cache status.',
-      })
-      .add(1, { endpoint, cf_cache_status: cfCacheStatus });
+    cacheStatusCounter.add(1, { endpoint, cf_cache_status: cfCacheStatus });
 
     if (ageSeconds !== null) {
-      meter
-        .createHistogram('strapi_fetch_cf_cache_age_seconds', {
-          description:
-            'Age in seconds of CF-cached Strapi API responses at fetch time.',
-          unit: 's',
-        })
-        .record(ageSeconds, { endpoint, cf_cache_status: cfCacheStatus });
+      cacheAgeHistogram.record(ageSeconds, {
+        endpoint,
+        cf_cache_status: cfCacheStatus,
+      });
     }
   } catch (error) {
     console.error(error, 'Error recording fetch cache metric.');

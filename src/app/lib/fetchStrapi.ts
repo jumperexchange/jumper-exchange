@@ -11,7 +11,9 @@ export async function fetchStrapi(
   try {
     const cfCacheStatus = res.headers.get('cf-cache-status') ?? 'none';
     const ageRaw = res.headers.get('age');
-    const ageSeconds = ageRaw !== null ? Number(ageRaw) : null;
+    const ageParsed = ageRaw !== null ? Number(ageRaw) : NaN;
+    const ageSeconds =
+      Number.isFinite(ageParsed) && ageParsed >= 0 ? ageParsed : null;
     const cacheControl = res.headers.get('cache-control') ?? 'none';
 
     recordFetchCacheMetric({ endpoint, cfCacheStatus, ageSeconds });
