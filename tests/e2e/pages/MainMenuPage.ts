@@ -81,7 +81,12 @@ export class MainMenuPage {
       trigger(),
     ]);
     try {
-      await newPage.waitForLoadState('domcontentloaded');
+      // Don't block on the external tab finishing load — t.me / x.com / discord etc. are slow or
+      // unreachable from CI, which hung qase 18 (Telegram) for the whole test timeout. Wait briefly,
+      // then assert the URL Jumper opened (toHaveURL polls page.url(), set on navigation). JUM-1116.
+      await newPage
+        .waitForLoadState('domcontentloaded', { timeout: 5_000 })
+        .catch(() => {});
       await expect(newPage).toHaveURL(url);
     } finally {
       // Close the popup explicitly so its in-flight requests don't keep

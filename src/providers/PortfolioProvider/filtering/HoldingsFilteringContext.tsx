@@ -157,16 +157,9 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
 
     if (!isEqual(nextFilter, filter)) {
       setFilter(nextFilter);
-      setSearchParamsState(
-        serializeHoldingsFilterForUrl(
-          nextFilter,
-          stats,
-          !!hasExplicitValueRangeRef.current,
-        ),
-      );
+      setSearchParamsState(serializeHoldingsFilterForUrl(nextFilter, stats));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- mirror Earn: sanitize when stats/loading change
-  }, [stats, isAllBalancesDataLoading, setSearchParamsState]);
+  }, [filter, stats, isAllBalancesDataLoading, setSearchParamsState]);
 
   const balancesData = useMemo(
     () =>
@@ -198,13 +191,7 @@ export const HoldingsFilteringProvider = ({ children }: PropsWithChildren) => {
       });
 
       setFilter(nextFilter);
-      setSearchParamsState(
-        serializeHoldingsFilterForUrl(
-          nextFilter,
-          stats,
-          !!hasExplicitValueRangeRef.current,
-        ),
-      );
+      setSearchParamsState(serializeHoldingsFilterForUrl(nextFilter, stats));
     },
     [filter, setSearchParamsState, stats],
   );

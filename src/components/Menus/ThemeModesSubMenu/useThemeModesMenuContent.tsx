@@ -16,8 +16,8 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { isDarkOrLightThemeMode } from '@/utils/formatTheme';
-import Avatar from '@mui/material/Avatar';
 import { selectAvailablePartnerThemes } from '@/stores/theme/createThemeStore';
+import { PartnerThemeIcon } from './PartnerThemeIcon';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
 
@@ -179,15 +179,7 @@ export const useThemeModesMenuContent = () => {
         return {
           label: theme.PartnerName,
           prefixIcon: themeModeIcon ? (
-            <Avatar
-              src={themeModeIcon}
-              alt={theme.PartnerName}
-              sx={{
-                height: 24,
-                width: 24,
-                filter: 'grayscale(100%) contrast(2)',
-              }}
-            />
+            <PartnerThemeIcon src={themeModeIcon} alt={theme.PartnerName} />
           ) : (
             <FlareRoundedIcon />
           ),
