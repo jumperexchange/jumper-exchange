@@ -125,7 +125,11 @@ describe('createThemeStore', () => {
 
       const store = createThemeStore(
         makeProps({
-          configTheme: { uid: 'cd', partnerName: 'CD' },
+          configTheme: {
+            uid: 'cd',
+            partnerName: 'CD',
+            selectableInMenu: true,
+          },
           partnerThemes: [makePartnerTheme('cd')],
         }),
       );
