@@ -506,7 +506,14 @@
     "slippage": "The maximum percentage difference between the expected price, and the actual price at which a transfer is executed.",
     "minReceived": "The estimated minimum amount may change until the swapping/bridging transaction is signed. For 2-step transfers, this applies until the second step transaction is signed.",
     "gasless": "We handle the gas, so you can transfer assets without holding native tokens. Network costs are included in the transfer.",
-    "copied": "Copied"
+    "copied": "Copied",
+    "remainingCapacity": "Available capacity remaining in this vault",
+    "maxCapacity": "Maximum capacity of this vault",
+    "capacityUnlimited": "This vault has no capacity limit",
+    "performanceFee": "Fee charged on profits earned",
+    "managementFee": "Annual fee charged on assets under management",
+    "withdrawalFee": "Fee charged when withdrawing funds",
+    "depositFee": "Fee charged when depositing funds"
   },
   "labels": {
     "apy": "APY",
@@ -525,7 +532,14 @@
     "category": "Category",
     "overview": "Overview",
     "capInDollar": "Capacity",
-    "promoCode": "Promo code"
+    "promoCode": "Promo code",
+    "remainingCapacity": "Remaining Capacity",
+    "maxCapacity": "Max Capacity",
+    "capacityUnlimited": "Unlimited",
+    "performanceFee": "Performance Fee",
+    "managementFee": "Management Fee",
+    "withdrawalFee": "Withdrawal Fee",
+    "depositFee": "Deposit Fee"
   },
   "search": {
     "placeholder": "Search...",

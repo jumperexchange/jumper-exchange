@@ -15,6 +15,8 @@ import type {
   EarnOpportunityWithLatestAnalytics,
   Protocol,
   Token,
+  VaultCapacity,
+  VaultFees,
 } from 'src/types/jumper-backend';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { formatLockupInDay } from '@/utils/formatLockupInDay';
@@ -246,6 +248,109 @@ const buildProtocolItem = (
   };
 };
 
+const buildCapacityItems = (
+  capacity: VaultCapacity | undefined,
+  asset: Token | undefined,
+  _variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem[] => {
+  if (!capacity) {
+    return [];
+  }
+
+  if (capacity.unlimited) {
+    return [
+      {
+        key: 'capacityUnlimited',
+        dataTestId: 'capacity-unlimited',
+        label: t('labels.maxCapacity'),
+        value: t('labels.capacityUnlimited'),
+        tooltip: t('tooltips.capacityUnlimited'),
+      },
+    ];
+  }
+
+  if (!capacity.remaining || !capacity.max) {
+    return [];
+  }
+
+  const decimals = asset?.decimals ?? 18;
+  const remaining = Number(BigInt(capacity.remaining)) / 10 ** decimals;
+  const max = Number(BigInt(capacity.max)) / 10 ** decimals;
+
+  return [
+    {
+      key: 'remainingCapacity',
+      dataTestId: `remainingCapacity-${remaining}`,
+      label: t('labels.remainingCapacity'),
+      value: formatTvl(remaining),
+      tooltip: t('tooltips.remainingCapacity'),
+    },
+    {
+      key: 'maxCapacity',
+      dataTestId: `maxCapacity-${max}`,
+      label: t('labels.maxCapacity'),
+      value: formatTvl(max),
+      tooltip: t('tooltips.maxCapacity'),
+    },
+  ];
+};
+
+const buildFeeItem = (
+  feeKey: keyof VaultFees,
+  feeValue: number | undefined,
+  label: string,
+  tooltip: string,
+): EarnCardOverviewItem | null => {
+  if (feeValue === undefined || feeValue === null || feeValue === 0) {
+    return null;
+  }
+
+  return {
+    key: feeKey,
+    dataTestId: `fee-${feeKey}-${feeValue}`,
+    label,
+    value: formatApy(feeValue),
+    tooltip,
+  };
+};
+
+const buildFeeItems = (
+  fees: VaultFees | undefined,
+  t: TFunction,
+): EarnCardOverviewItem[] => {
+  if (!fees) {
+    return [];
+  }
+
+  return [
+    buildFeeItem(
+      'performance',
+      fees.performance,
+      t('labels.performanceFee'),
+      t('tooltips.performanceFee'),
+    ),
+    buildFeeItem(
+      'management',
+      fees.management,
+      t('labels.managementFee'),
+      t('tooltips.managementFee'),
+    ),
+    buildFeeItem(
+      'withdrawal',
+      fees.withdrawal,
+      t('labels.withdrawalFee'),
+      t('tooltips.withdrawalFee'),
+    ),
+    buildFeeItem(
+      'deposit',
+      fees.deposit,
+      t('labels.depositFee'),
+      t('tooltips.depositFee'),
+    ),
+  ].filter((item): item is EarnCardOverviewItem => item !== null);
+};
+
 export const useFormatDisplayEarnOpportunityData = (
   earnOpportunity: EarnOpportunityWithLatestAnalytics | null,
   variant: EarnCardVariant,
@@ -259,6 +364,7 @@ export const useFormatDisplayEarnOpportunityData = (
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
     const rewardsApy = earnOpportunity?.latest.apy.jumperReward;
+    const { capacity, fees } = earnOpportunity ?? {};
 
     const chains = uniqBy(
       assets.map((asset) => asset.chain),
@@ -286,6 +392,8 @@ export const useFormatDisplayEarnOpportunityData = (
         getChainName(chain, getChainById),
       ),
       buildProtocolItem(protocol, chains, variant, t),
+      ...buildCapacityItems(capacity, earnOpportunity?.asset, variant, t),
+      ...buildFeeItems(fees, t),
     ].filter((item): item is EarnCardOverviewItem => item !== null);
 
     return {
