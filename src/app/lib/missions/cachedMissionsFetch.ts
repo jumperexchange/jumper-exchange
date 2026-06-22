@@ -1,4 +1,4 @@
-import { unstable_cache } from 'next/cache';
+import { cacheLife, cacheTag } from 'next/cache';
 
 import { fetchQuestBySlug } from '@/app/lib/missions/missionQueries';
 import type { PaginationProps } from '@/utils/strapi/StrapiApi';
@@ -7,29 +7,24 @@ import { getQuestsWithNoCampaignAttached } from '@/app/lib/getQuestsWithNoCampai
 
 const MISSIONS_PAGE_REVALIDATE_SECONDS = 300;
 
-export const fetchMissionsListForPage = (
+export async function fetchMissionsListForPage(
   pagination: PaginationProps,
   daysAhead: number,
-) =>
-  unstable_cache(
-    () => getQuestsWithNoCampaignAttached(pagination, daysAhead),
-    ['missions-page-list', JSON.stringify(pagination), String(daysAhead)],
-    { revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS },
-  )();
+) {
+  'use cache';
+  cacheLife({ revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS });
+  return getQuestsWithNoCampaignAttached(pagination, daysAhead);
+}
 
-export const fetchQuestBySlugForPage = (slug: string) =>
-  unstable_cache(
-    () => fetchQuestBySlug(slug),
-    ['missions-page-quest-by-slug', slug],
-    {
-      revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS,
-      tags: [`quest:slug:${slug}`],
-    },
-  )();
+export async function fetchQuestBySlugForPage(slug: string) {
+  'use cache';
+  cacheTag(`quest:slug:${slug}`);
+  cacheLife({ revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS });
+  return fetchQuestBySlug(slug);
+}
 
-export const fetchProfileBannerCampaignsForPage = () =>
-  unstable_cache(
-    () => getProfileBannerCampaigns(),
-    ['missions-page-banner-campaigns'],
-    { revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS },
-  )();
+export async function fetchProfileBannerCampaignsForPage() {
+  'use cache';
+  cacheLife({ revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS });
+  return getProfileBannerCampaigns();
+}

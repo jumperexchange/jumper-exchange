@@ -20,6 +20,7 @@ const nextConfig = {
   expireTime: 900, // 15 minutes in seconds
   experimental: {
     serverSourceMaps: false,
+    useCache: true,
     optimizePackageImports: [],
   },
   webpack: (config) => {
