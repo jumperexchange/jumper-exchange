@@ -60,6 +60,7 @@ export const NotificationItem: FC<NotificationItemProps> = ({
 
   const isRead = readIds.includes(notification.id);
   const isInternal =
+    !!notification.ctaUrl &&
     notification.ctaUrl.startsWith('/') &&
     !notification.ctaUrl.startsWith('//');
 

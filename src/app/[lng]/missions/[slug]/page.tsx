@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import { fetchQuestBySlugForPage } from 'src/app/lib/missions/cachedMissionsFetch';
 import { siteName } from 'src/app/lib/metadata';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
@@ -73,13 +73,13 @@ export async function generateMetadata({
       throw new Error('Invalid mission slug');
     }
 
-    const mission = await getQuestBySlug(slugResult.data);
+    const mission = await fetchQuestBySlugForPage(slugResult.data);
 
-    if (!mission || !mission.data) {
+    if (!mission) {
       throw new Error('Mission not found');
     }
 
-    const missionData = mission.data;
+    const missionData = mission;
     const imageUrl = resolveStrapiMediaUrl(missionData.Image?.url);
 
     const pageUrl = `${getSiteUrl()}${AppPaths.Missions}/${slug}`;

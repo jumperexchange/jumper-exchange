@@ -96,8 +96,9 @@ export const useHoldingsFilterCategories = () => {
     [allAssets],
   );
 
-  const valueMin = filter?.minValue ?? allValueRange.min;
-  const valueMax = filter?.maxValue ?? allValueRange.max;
+  const { min: rangeMin, max: rangeMax } = allValueRange;
+  const valueMin = filter?.minValue ?? rangeMin;
+  const valueMax = filter?.maxValue ?? rangeMax;
 
   const sortByOptions = useMemo(
     () => [
@@ -133,8 +134,7 @@ export const useHoldingsFilterCategories = () => {
     filter?.assets,
   ].reduce((count, arr) => count + (arr?.length || 0), 0);
 
-  const hasValueFilterApplied =
-    valueMin !== allValueRange.min || valueMax !== allValueRange.max;
+  const hasValueFilterApplied = valueMin !== rangeMin || valueMax !== rangeMax;
   const valueFilterCount = hasValueFilterApplied ? 1 : 0;
   const filtersCount = arrayFiltersCount + valueFilterCount;
   const hasFilterApplied = filtersCount > 0 && optionsCount > 0;

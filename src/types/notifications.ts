@@ -11,8 +11,8 @@ export interface Notification {
   title: string;
   body: string;
   category: NotificationCategory;
-  ctaLabel: string;
-  ctaUrl: string;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
   createdAt: string;
   updatedAt: string;
   expiresAt: string | null;
