@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
+import { makeClient } from '@/app/lib/client';
 import {
   ACTIVITY_REWARD_TYPES,
   type ActivityRewardType,
@@ -133,21 +133,15 @@ export const sumEarnedXP = (activities: OngoingActivity[]): number =>
 // The running month's activity progress per category. Settled months live in
 // the "Your achievements" section (see useActivityRewards).
 export const useOngoingActivity = (walletAddress?: string) => {
-  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
-
   const { data, isLoading } = useQuery({
     queryKey: ['ongoing-activity', walletAddress],
     queryFn: async (): Promise<OngoingReward[]> => {
-      const res = await fetch(
-        `${apiBaseUrl}/wallets/${walletAddress}/ongoing-rewards`,
-      );
-
-      if (!res.ok) {
-        throw new Error('Failed to fetch ongoing rewards');
-      }
-
-      const jsonResponse = await res.json();
-      return jsonResponse?.data ?? [];
+      const client = makeClient();
+      const res =
+        await client.v1.walletControllerFindWalletOngoingRewardsByAddressV1(
+          walletAddress!,
+        );
+      return res.data.data ?? [];
     },
     enabled: !!walletAddress,
     refetchInterval: ONE_HOUR_MS,
