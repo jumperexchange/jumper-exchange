@@ -783,6 +783,30 @@ export default interface Resources {
         title: 'You reached Level {{newLevel}}!';
       };
     };
+    perks_page: {
+      empty: {
+        all: {
+          caption: 'Check back soon for new perks from Jumper partners.';
+          cta: 'Explore missions';
+          description: 'No perks available right now.';
+        };
+        claimed: {
+          caption: 'Once you unlock a perk, claim it here to start enjoying your rewards.';
+          cta: 'Earn XP';
+          description: "You haven't claimed any perks yet.";
+        };
+        unlocked: {
+          caption: 'Earn XP by completing missions and using Jumper to level up your Pass and unlock perks.';
+          cta: 'Earn XP';
+          description: "You haven't unlocked any perks yet.";
+        };
+      };
+      tabs: {
+        all: 'All Perks';
+        claimed: 'Claimed';
+        unlocked: 'Unlocked';
+      };
+    };
     portfolio: {
       assetOverviewCard: {
         navigation: {

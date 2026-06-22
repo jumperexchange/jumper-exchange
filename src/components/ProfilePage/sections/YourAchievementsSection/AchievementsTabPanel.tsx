@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, useState } from 'react';
+import { Fragment, type ReactNode, useState } from 'react';
 import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
@@ -30,6 +30,9 @@ interface AchievementsTabPanelProps<T> {
   isLoading: boolean;
   emptyState: EmptyState;
   renderItem: (item: T) => ReactNode;
+  // Per-card loading placeholder. Defaults to the achievement tile skeleton;
+  // other grids (e.g. perks) pass a skeleton matching their own card.
+  skeleton?: ReactNode;
 }
 
 // Shared shell for a single achievements tab: loading skeleton, empty
@@ -40,6 +43,7 @@ export const AchievementsTabPanel = <T,>({
   isLoading,
   emptyState,
   renderItem,
+  skeleton = <AchievementCardSkeleton />,
 }: AchievementsTabPanelProps<T>) => {
   const [page, setPage] = useState(0);
 
@@ -47,7 +51,7 @@ export const AchievementsTabPanel = <T,>({
     return (
       <AchievementsGrid>
         {Array.from({ length: SKELETON_COUNT }, (_, i) => (
-          <AchievementCardSkeleton key={i} />
+          <Fragment key={i}>{skeleton}</Fragment>
         ))}
       </AchievementsGrid>
     );
