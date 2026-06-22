@@ -16,7 +16,8 @@ const nextConfig = {
     '@opentelemetry/exporter-metrics-otlp-grpc',
     '@opentelemetry/host-metrics',
   ],
-  expireTime: 86400, // one day in seconds
+  // expireTime: 86400, // one day in seconds
+  expireTime: 900, // 15 minutes in seconds
   experimental: {
     serverSourceMaps: false,
     optimizePackageImports: [],

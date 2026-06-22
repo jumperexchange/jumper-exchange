@@ -21,7 +21,10 @@ export const fetchQuestBySlugForPage = (slug: string) =>
   unstable_cache(
     () => fetchQuestBySlug(slug),
     ['missions-page-quest-by-slug', slug],
-    { revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS },
+    {
+      revalidate: MISSIONS_PAGE_REVALIDATE_SECONDS,
+      tags: [`quest:slug:${slug}`],
+    },
   )();
 
 export const fetchProfileBannerCampaignsForPage = () =>
