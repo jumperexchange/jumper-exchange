@@ -10,6 +10,7 @@ import {
 import { HorizontalTabSize } from '@/components/HorizontalTabs/HorizontalTabs.style';
 import { sectionTabsSx } from '@/components/ProfilePage/sections/Section.style';
 import { AchievementsTabPanel } from '@/components/ProfilePage/sections/YourAchievementsSection/AchievementsTabPanel';
+import { PerkClaimModalProvider } from '@/components/ProfilePage/components/ClaimPerkModal/PerkClaimModalProvider';
 import {
   PerkCard,
   type PerkCardStatus,
@@ -92,31 +93,33 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
     (!!walletAddress && (isLevelLoading || isClaimedLoading));
 
   return (
-    <SectionCard sx={perksSectionCardSx}>
-      <HorizontalTabs
-        tabs={tabs}
-        value={activeTab}
-        onChange={(_, value) => setActiveTab(value)}
-        size={HorizontalTabSize.MD}
-        sx={sectionTabsSx}
-        id="perks-tabs"
-      />
+    <PerkClaimModalProvider>
+      <SectionCard sx={perksSectionCardSx}>
+        <HorizontalTabs
+          tabs={tabs}
+          value={activeTab}
+          onChange={(_, value) => setActiveTab(value)}
+          size={HorizontalTabSize.MD}
+          sx={sectionTabsSx}
+          id="perks-tabs"
+        />
 
-      <AchievementsTabPanel
-        items={items[tab]}
-        isLoading={isLoading}
-        skeleton={<PerkCardSkeleton />}
-        emptyState={{
-          heroImage: '/perks-empty-hero',
-          description: t(`perks_page.empty.${tab}.description`),
-          caption: t(`perks_page.empty.${tab}.caption`),
-          ctaText: t(`perks_page.empty.${tab}.cta`),
-          ctaLink: AppPaths.Missions,
-        }}
-        renderItem={(perk) => (
-          <PerkCard key={perk.id} perk={perk} status={getStatus(perk)} />
-        )}
-      />
-    </SectionCard>
+        <AchievementsTabPanel
+          items={items[tab]}
+          isLoading={isLoading}
+          skeleton={<PerkCardSkeleton />}
+          emptyState={{
+            heroImage: '/perks-empty-hero',
+            description: t(`perks_page.empty.${tab}.description`),
+            caption: t(`perks_page.empty.${tab}.caption`),
+            ctaText: t(`perks_page.empty.${tab}.cta`),
+            ctaLink: AppPaths.Missions,
+          }}
+          renderItem={(perk) => (
+            <PerkCard key={perk.id} perk={perk} status={getStatus(perk)} />
+          )}
+        />
+      </SectionCard>
+    </PerkClaimModalProvider>
   );
 };
