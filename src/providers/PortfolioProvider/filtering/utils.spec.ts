@@ -3,6 +3,9 @@ import { EMPTY_HOLDINGS_FILTERING_PARAMS } from './constants';
 import {
   extractHoldingsFilteringParams,
   filterSortPositionsData,
+  getDefaultHoldingsMinValue,
+  getEffectiveValueRange,
+  isFullHoldingsValueRange,
   resolveHoldingsFilter,
   sanitizeHoldingsFilter,
   serializeHoldingsFilterForUrl,
@@ -33,6 +36,12 @@ const createPosition = (
     rewardTokens: [],
   }) as PortfolioPosition;
 
+const statsAboveOne = {
+  ...EMPTY_HOLDINGS_FILTERING_PARAMS,
+  allAssets: [{ symbol: 'ETH' } as never],
+  allValueRange: { min: 0.00003492862, max: 5000 },
+};
+
 describe('extractHoldingsFilteringParams', () => {
   it('returns empty params when both sources are empty', () => {
     expect(
@@ -57,6 +66,58 @@ describe('extractHoldingsFilteringParams', () => {
   });
 });
 
+describe('getEffectiveValueRange', () => {
+  it('uses a default min of 1 when any asset is above 1', () => {
+    expect(getEffectiveValueRange({ min: 0.05, max: 100 })).toEqual({
+      min: 1,
+      max: 100,
+    });
+  });
+
+  it('returns the portfolio range when all assets are below 1', () => {
+    expect(getEffectiveValueRange({ min: 0.05, max: 0.85 })).toEqual({
+      min: 0.05,
+      max: 0.85,
+    });
+  });
+});
+
+describe('getDefaultHoldingsMinValue', () => {
+  it('returns 1 when the portfolio max is at least 1', () => {
+    expect(getDefaultHoldingsMinValue({ min: 0.05, max: 100 })).toBe(1);
+  });
+
+  it('returns undefined when all holdings are below 1', () => {
+    expect(
+      getDefaultHoldingsMinValue({ min: 0.05, max: 0.85 }),
+    ).toBeUndefined();
+  });
+});
+
+describe('isFullHoldingsValueRange', () => {
+  it('treats an empty value filter as the full range', () => {
+    expect(isFullHoldingsValueRange({}, statsAboveOne)).toBe(true);
+  });
+
+  it('treats explicit portfolio endpoints as the full range', () => {
+    expect(
+      isFullHoldingsValueRange(
+        {
+          minValue: statsAboveOne.allValueRange.min,
+          maxValue: statsAboveOne.allValueRange.max,
+        },
+        statsAboveOne,
+      ),
+    ).toBe(true);
+  });
+
+  it('does not treat the default min filter as the full range', () => {
+    expect(isFullHoldingsValueRange({ minValue: 1 }, statsAboveOne)).toBe(
+      false,
+    );
+  });
+});
+
 describe('resolveHoldingsFilter', () => {
   it('applies the default min value when no explicit range preference exists', () => {
     const stats = {
@@ -73,7 +134,7 @@ describe('resolveHoldingsFilter', () => {
     ).toEqual({ minValue: 1 });
   });
 
-  it('preserves an explicit cleared value range', () => {
+  it('does not re-apply the default min after the value range was cleared', () => {
     const stats = {
       ...EMPTY_HOLDINGS_FILTERING_PARAMS,
       allAssets: [{ symbol: 'ETH' } as never],
@@ -87,15 +148,69 @@ describe('resolveHoldingsFilter', () => {
       }),
     ).toEqual({});
   });
+
+  it('does not apply a default min when stats are still empty', () => {
+    const stats = {
+      ...EMPTY_HOLDINGS_FILTERING_PARAMS,
+      allValueRange: { min: 0, max: 0 },
+    };
+
+    expect(
+      resolveHoldingsFilter({}, stats, {
+        hasExplicitValueRange: false,
+        isAllBalancesDataLoading: false,
+      }),
+    ).toEqual({});
+  });
+
+  it('applies the default min while balances are loading once stats are available', () => {
+    const stats = {
+      ...EMPTY_HOLDINGS_FILTERING_PARAMS,
+      allAssets: [{ symbol: 'ETH' } as never],
+      allValueRange: { min: 0, max: 100 },
+    };
+
+    expect(
+      resolveHoldingsFilter({}, stats, {
+        hasExplicitValueRange: false,
+        isAllBalancesDataLoading: true,
+      }),
+    ).toEqual({ minValue: 1 });
+  });
+
+  it('does not apply a default min when all holdings are below 1', () => {
+    const stats = {
+      ...EMPTY_HOLDINGS_FILTERING_PARAMS,
+      allAssets: [{ symbol: 'ETH' } as never],
+      allValueRange: { min: 0.05, max: 0.85 },
+    };
+
+    expect(
+      resolveHoldingsFilter({}, stats, {
+        hasExplicitValueRange: false,
+        isAllBalancesDataLoading: false,
+      }),
+    ).toEqual({});
+  });
+
+  it('applies the default min alongside other filters when no explicit range exists', () => {
+    const stats = {
+      ...EMPTY_HOLDINGS_FILTERING_PARAMS,
+      allAssets: [{ symbol: 'ETH' } as never],
+      allValueRange: { min: 0, max: 100 },
+    };
+
+    expect(
+      resolveHoldingsFilter({ chains: [1] }, stats, {
+        hasExplicitValueRange: false,
+        isAllBalancesDataLoading: false,
+      }),
+    ).toEqual({ chains: [1], minValue: 1 });
+  });
 });
 
 describe('serializeHoldingsFilterForUrl', () => {
-  const stats = {
-    ...EMPTY_HOLDINGS_FILTERING_PARAMS,
-    allValueRange: { min: 0.00003492862, max: 5000 },
-  };
-
-  it('omits default min, portfolio max, and empty array params', () => {
+  it('persists the default min in the URL when it is applied', () => {
     expect(
       serializeHoldingsFilterForUrl(
         {
@@ -105,12 +220,21 @@ describe('serializeHoldingsFilterForUrl', () => {
           chains: [1],
           assets: [],
         },
-        stats,
-        false,
+        statsAboveOne,
       ),
     ).toEqual({
       holdingsWallets: null,
       holdingsChains: [1],
+      holdingsAssets: null,
+      holdingsMinValue: 1,
+      holdingsMaxValue: null,
+    });
+  });
+
+  it('omits value params when the filter uses the full available range', () => {
+    expect(serializeHoldingsFilterForUrl({}, statsAboveOne)).toEqual({
+      holdingsWallets: null,
+      holdingsChains: null,
       holdingsAssets: null,
       holdingsMinValue: null,
       holdingsMaxValue: null,
@@ -119,26 +243,21 @@ describe('serializeHoldingsFilterForUrl', () => {
 
   it('persists an explicit max below the portfolio top', () => {
     expect(
-      serializeHoldingsFilterForUrl({ maxValue: 100 }, stats, true)
+      serializeHoldingsFilterForUrl({ maxValue: 100 }, statsAboveOne)
         .holdingsMaxValue,
     ).toBe(100);
   });
 
-  it('persists an explicit min opt-out at the portfolio floor', () => {
+  it('persists an explicit min below the default threshold', () => {
     expect(
-      serializeHoldingsFilterForUrl({ minValue: 0 }, stats, true)
+      serializeHoldingsFilterForUrl({ minValue: 0 }, statsAboveOne)
         .holdingsMinValue,
     ).toBe(0);
   });
 });
 
 describe('buildHoldingsFilterPatchFromPending', () => {
-  const stats = {
-    ...EMPTY_HOLDINGS_FILTERING_PARAMS,
-    allValueRange: { min: 0.00003492862, max: 5000 },
-  };
-
-  it('does not include value params when only chains change at default slider', () => {
+  it('does not include value params when only chains change at the default min', () => {
     expect(
       buildHoldingsFilterPatchFromPending(
         {
@@ -147,7 +266,7 @@ describe('buildHoldingsFilterPatchFromPending', () => {
           assets: [],
           value: [1, 5000],
         },
-        stats,
+        statsAboveOne,
         { minValue: 1 },
       ),
     ).toEqual({
@@ -166,7 +285,7 @@ describe('buildHoldingsFilterPatchFromPending', () => {
           assets: [],
           value: [0.00003492862, 5000],
         },
-        stats,
+        statsAboveOne,
         { minValue: 1 },
       ),
     ).toEqual({
@@ -175,6 +294,46 @@ describe('buildHoldingsFilterPatchFromPending', () => {
       assets: null,
       minValue: null,
       maxValue: null,
+    });
+  });
+
+  it('applies the default min after the slider was reset to the full range', () => {
+    expect(
+      buildHoldingsFilterPatchFromPending(
+        {
+          wallets: [],
+          chains: [],
+          assets: [],
+          value: [1, 5000],
+        },
+        statsAboveOne,
+        {},
+      ),
+    ).toEqual({
+      wallets: null,
+      chains: null,
+      assets: null,
+      minValue: 1,
+    });
+  });
+
+  it('resets minValue when the slider returns to the default min from a higher value', () => {
+    expect(
+      buildHoldingsFilterPatchFromPending(
+        {
+          wallets: [],
+          chains: [],
+          assets: [],
+          value: [1, 5000],
+        },
+        statsAboveOne,
+        { minValue: 2 },
+      ),
+    ).toEqual({
+      wallets: null,
+      chains: null,
+      assets: null,
+      minValue: 1,
     });
   });
 });

@@ -600,6 +600,8 @@ export default interface Resources {
         confirm: 'Confirm';
         disclaimer1: "The address is correct and not an exchange wallet. Tokens sent to the wrong address can't be retrieved.";
         disclaimer2: "This transaction is fulfilled by a centralized provider who might ask for KYC if it's flagged.";
+        noRouteMinAmountSubtitle: 'Private swap routes typically appear for $40+ transactions.';
+        noRouteMinAmountTitle: 'No private route available';
         paste: 'Paste';
         subtitle: 'Set recipient address to keep it private.';
         title: "You're going Incognito";
@@ -1108,7 +1110,7 @@ export default interface Resources {
         title: 'Exchange';
       };
       private: {
-        title: 'Anonymous Swap';
+        title: 'Private Swap';
       };
       swapBridge: {
         title: 'Swap & Bridge';

@@ -39,7 +39,6 @@ export const widgetProviders = [
     walletConnect: defaultWalletConnectConfig,
     coinbase: defaultCoinbaseConfig,
     metaMask: defaultMetaMaskConfig,
-    porto: true,
     baseAccount: true,
   }),
   SolanaWidgetProvider(),

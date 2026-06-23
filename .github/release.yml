@@ -1,0 +1,8 @@
+changelog:
+  categories:
+    - title: Requires Environment Change
+      labels:
+        - env-change
+    - title: Other Changes
+      labels:
+        - "*"

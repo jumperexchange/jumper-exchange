@@ -182,7 +182,11 @@ test.describe('Main Menu flows', () => {
     },
   );
 
-  test(
+  // JUM-1116: Intercom is gated behind the LCP web-vital (IntercomProvider.tsx), which doesn't
+  // reliably fire in headless CI → Intercom never boots and the messenger iframe never mounts, so
+  // this assertion can't pass (8/15 in CI; confirmed via trace + local LCP-block A/B). Re-enable
+  // when Intercom boots deterministically in CI (test-side LCP trigger or an app test-flag).
+  test.fixme(
     qase(20, 'Should be able to click on the Support button'),
     async ({ page }) => {
       const mainMenu = new MainMenuPage(page);
