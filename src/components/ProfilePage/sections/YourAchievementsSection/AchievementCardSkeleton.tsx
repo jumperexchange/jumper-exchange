@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 import { BadgeSize } from 'src/components/Badge/Badge.styles';
 import { BadgeSkeleton } from 'src/components/Badge/BadgeSkeleton';
-import { AchievementTile, TileContent } from './YourAchievementsSection.styles';
+import { AchievementTile, TileContent } from '../Section.style';
 
 // Loading placeholder mirroring the achievement tile shell (image + title +
 // badge), so the skeleton grid matches the real card layout while data loads.
