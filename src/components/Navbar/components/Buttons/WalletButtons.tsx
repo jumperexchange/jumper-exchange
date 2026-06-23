@@ -2,7 +2,7 @@ import dynamic from 'next/dynamic';
 
 import { useIsDisconnected } from '../../hooks';
 import ConnectButton from './ConnectButton';
-import { LevelButton } from './LevelButton';
+import { PassButton } from './PassButton';
 
 const WalletMenuToggle = dynamic(
   () => import('./WalletMenuToggle').then((mod) => mod.WalletMenuToggle),
@@ -18,7 +18,7 @@ export const WalletButtons = () => {
     <ConnectButton />
   ) : (
     <>
-      <LevelButton />
+      <PassButton />
       <WalletMenuToggle />
     </>
   );

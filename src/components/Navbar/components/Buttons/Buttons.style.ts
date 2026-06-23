@@ -40,6 +40,11 @@ interface NavbarButtonProps {
   isActive?: boolean;
 }
 
+// Applied to the caption-variant label so NavbarButton can drive its color
+// from the button's selected/hover state: muted (alpha600) by default, primary
+// once the button is selected or hovered.
+export const navbarLabelClassName = 'JumperNavbarLabel';
+
 export const NavbarButton = styled(ButtonTransparent, {
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<NavbarButtonProps>(({ theme }) => ({
@@ -57,8 +62,14 @@ export const NavbarButton = styled(ButtonTransparent, {
       props: ({ isActive }) => !isActive,
       style: {
         color: (theme.vars || theme).palette.text.primary,
+        [`& .${navbarLabelClassName}`]: {
+          color: (theme.vars || theme).palette.alpha600.main,
+        },
         '&:hover': {
           background: (theme.vars || theme).palette.alphaLight100.main,
+          [`& .${navbarLabelClassName}`]: {
+            color: (theme.vars || theme).palette.text.primary,
+          },
         },
         ...theme.applyStyles('light', {
           background: 'transparent',
@@ -76,6 +87,9 @@ export const NavbarButton = styled(ButtonTransparent, {
         border: getSurfaceBorder(theme, 'surface2'),
         color: (theme.vars || theme).palette.text.primary,
         pointerEvents: 'none',
+        [`& .${navbarLabelClassName}`]: {
+          color: (theme.vars || theme).palette.text.primary,
+        },
         ...theme.applyStyles('light', {
           background: (theme.vars || theme).palette.buttonLightBg,
           color: (theme.vars || theme).palette.buttonLightAction,
@@ -106,6 +120,24 @@ export const NavbarButtonLabel = styled(Typography)(() => ({
   display: 'block',
   width: 'auto',
   color: 'inherit',
+}));
+
+export const NavbarButtonLabelColumn = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  textAlign: 'left',
+}));
+
+export const PassProgressChip = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: theme.spacing(0.75),
+  borderRadius: theme.shape.buttonBorderRadius,
+  backgroundColor: (theme.vars || theme).palette.buttonLightBg,
+  boxShadow: theme.shadows[2],
+  color: (theme.vars || theme).palette.statusProgress,
 }));
 
 export const NavbarMenuToggleButton = styled(ButtonSecondary)<ButtonProps>(({
@@ -155,13 +187,3 @@ export const DotsMenuIcon = styled(MuiMoreHorizIcon)(({ theme }) =>
 export const BurgerMenuIcon = styled(MuiMenuRoundedIcon)(({ theme }) =>
   getIconProps(theme),
 );
-
-export const LevelIconBox = styled(Box)(({ theme }) => ({
-  width: 32,
-  height: 32,
-  borderRadius: theme.shape.buttonBorderRadius,
-  backgroundColor: (theme.vars || theme).palette.buttonPrimaryBg,
-  color: (theme.vars || theme).palette.buttonPrimaryAction,
-  alignContent: 'center',
-  justifySelf: 'center',
-}));
