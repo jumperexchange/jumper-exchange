@@ -1,12 +1,10 @@
-import { Widgets } from '@/components/Widgets/Widgets';
-import { Widget } from '@/components/Widgets/Widget';
-import { MainWidgetContainer } from 'src/components/Containers/MainWidgetContainer';
+import Box from '@mui/material/Box';
+import { MainWidgetPageContent } from '@/app/ui/widget/MainWidgetPageContent';
 
 export default async function Page() {
   return (
-    <MainWidgetContainer>
-      <Widget starterVariant="default" />
-      <Widgets />
-    </MainWidgetContainer>
+    <Box sx={{ paddingBottom: { xs: 6, sm: 0 } }}>
+      <MainWidgetPageContent variant="default" />
+    </Box>
   );
 }

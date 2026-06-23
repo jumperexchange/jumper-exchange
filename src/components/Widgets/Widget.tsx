@@ -41,6 +41,7 @@ export function Widget({
   autoHeight,
   isLoading,
   disableTabNavigation = false,
+  useLayoutWelcomeScreenMargins,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
@@ -182,6 +183,7 @@ export function Widget({
       welcomeScreenClosed={welcomeScreenClosed || !enabled}
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
+      useLayoutWelcomeScreenMargins={useLayoutWelcomeScreenMargins}
     >
       <BaseWidget
         type="main"
