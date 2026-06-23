@@ -18,11 +18,13 @@ export interface PortfolioFilterBarProps {
   value: PortfolioViewBarTab;
   onChange: (value: PortfolioViewBarTab) => void;
   isDisabled: boolean;
+  areTransactionsEnabled: boolean;
 }
 
 export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   value,
   isDisabled,
+  areTransactionsEnabled,
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -36,6 +38,7 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       <PortfolioFilterBarHeaderContainer>
         <PortfolioFilterView
           isDisabled={isDisabled}
+          areTransactionsEnabled={areTransactionsEnabled}
           value={value}
           onChange={onChange}
         />

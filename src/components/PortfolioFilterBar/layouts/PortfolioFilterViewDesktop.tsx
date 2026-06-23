@@ -12,6 +12,7 @@ import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 
 export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
   isDisabled,
+  areTransactionsEnabled,
   value,
   onChange,
 }) => {
@@ -26,8 +27,17 @@ export const PortfolioFilterViewDesktop: FC<PortfolioFilterViewBaseProps> = ({
     {
       value: PortfolioViewBarTab.TRANSACTIONS,
       label: t('portfolio.views.transactions'),
-      disabled: isDisabled,
+      disabled: isDisabled || !areTransactionsEnabled,
       'data-testid': 'portfolio-filter-tab-transactions',
+      ...(!areTransactionsEnabled && {
+        endAdornment: (
+          <Badge
+            size={BadgeSize.SM}
+            variant={BadgeVariant.Secondary}
+            label={t('portfolio.views.soon')}
+          />
+        ),
+      }),
     },
     {
       value: PortfolioViewBarTab.PERFORMANCE,
