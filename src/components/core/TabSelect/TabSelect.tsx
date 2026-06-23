@@ -1,4 +1,5 @@
-import { FC, SyntheticEvent } from 'react';
+import type { FC, SyntheticEvent } from 'react';
+import Tooltip from '@mui/material/Tooltip';
 import {
   StyledTabs,
   StyledTab,
@@ -6,7 +7,7 @@ import {
   StyledBadge,
   IconWrapper,
 } from './TabSelect.styles';
-import { TabSelectProps } from './TabSelect.types';
+import type { TabSelectProps, TabOption } from './TabSelect.types';
 
 export const TabSelect: FC<TabSelectProps> = ({
   options,
@@ -36,31 +37,41 @@ export const TabSelect: FC<TabSelectProps> = ({
 
   const currentValue = value || (options.length > 0 ? options[0].value : '');
 
-  const renderTabLabel = (option: any) => {
+  const renderTabLabel = (option: TabOption) => {
     const icon = option.icon ? <IconWrapper>{option.icon}</IconWrapper> : null;
     const label = <span>{option.label}</span>;
 
+    let content: React.ReactNode;
     if (!icon) {
-      return option.badge ? (
+      content = option.badge ? (
         <StyledBadge badgeContent={option.badge}>{label}</StyledBadge>
       ) : (
         label
       );
+    } else {
+      const iconAndLabel = (
+        <>
+          {iconPosition === 'start' || iconPosition === 'top' ? icon : null}
+          {label}
+          {iconPosition === 'end' || iconPosition === 'bottom' ? icon : null}
+        </>
+      );
+      content = option.badge ? (
+        <StyledBadge badgeContent={option.badge}>{iconAndLabel}</StyledBadge>
+      ) : (
+        iconAndLabel
+      );
     }
 
-    const content = (
-      <>
-        {iconPosition === 'start' || iconPosition === 'top' ? icon : null}
-        {label}
-        {iconPosition === 'end' || iconPosition === 'bottom' ? icon : null}
-      </>
-    );
+    if (option.tooltip) {
+      return (
+        <Tooltip title={option.tooltip} arrow>
+          <span>{content}</span>
+        </Tooltip>
+      );
+    }
 
-    return option.badge ? (
-      <StyledBadge badgeContent={option.badge}>{content}</StyledBadge>
-    ) : (
-      content
-    );
+    return content;
   };
 
   return (

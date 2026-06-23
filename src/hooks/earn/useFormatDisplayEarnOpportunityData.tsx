@@ -8,6 +8,7 @@ import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
+import type { ApyWindow } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type {
   APYItem,
@@ -32,24 +33,38 @@ interface EarnCardOverviewItem {
   value: string;
   valuePrepend?: React.ReactElement;
   tooltip: string;
+  onClick?: () => void;
+}
+
+interface ApyWindowOptions {
+  apyWindow: ApyWindow;
+  onToggleApyWindow: () => void;
 }
 
 const buildApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
+  windowOptions?: ApyWindowOptions,
 ): EarnCardOverviewItem | null => {
   if (!apy?.total || isZeroApprox(apy.total)) {
     return null;
   }
 
   const formatted = formatApy(apy.total);
+  const label = windowOptions
+    ? t('earn.apyWindow.apyLabel', { window: t(`earn.apyWindow.label${windowOptions.apyWindow}`) })
+    : t('labels.apy');
+  const tooltip = windowOptions
+    ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
+    : t('tooltips.apy');
   return {
     key: 'apy',
     dataTestId: `apy-${apy.total}`,
-    label: t('labels.apy'),
+    label,
     value: formatted,
-    tooltip: t('tooltips.apy'),
+    tooltip,
+    onClick: windowOptions?.onToggleApyWindow,
   };
 };
 
@@ -57,6 +72,7 @@ const buildTotalApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
+  windowOptions?: ApyWindowOptions,
 ): EarnCardOverviewItem | null => {
   const displayedApy = (apy?.base ?? 0) + (apy?.customReward ?? 0);
   if (!displayedApy || isZeroApprox(displayedApy)) {
@@ -64,12 +80,19 @@ const buildTotalApyItem = (
   }
 
   const formatted = formatApy(displayedApy);
+  const label = windowOptions
+    ? t('earn.apyWindow.apyLabel', { window: t(`earn.apyWindow.label${windowOptions.apyWindow}`) })
+    : t('labels.apr');
+  const tooltip = windowOptions
+    ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
+    : t('tooltips.apr');
   return {
     key: 'apr',
     dataTestId: `apr-${displayedApy}`,
-    label: t('labels.apr'),
+    label,
     value: formatted,
-    tooltip: t('tooltips.apr'),
+    tooltip,
+    onClick: windowOptions?.onToggleApyWindow,
   };
 };
 
@@ -351,6 +374,7 @@ const buildFeeItems = (
 export const useFormatDisplayEarnOpportunityData = (
   earnOpportunity: EarnOpportunityWithLatestAnalytics | null,
   variant: EarnCardVariant,
+  windowOptions?: ApyWindowOptions,
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
@@ -374,8 +398,8 @@ export const useFormatDisplayEarnOpportunityData = (
 
     const apyItem =
       !!apy?.customReward && apy.customReward > 0
-        ? buildTotalApyItem(apy, variant, t)
-        : buildApyItem(apy, variant, t);
+        ? buildTotalApyItem(apy, variant, t, windowOptions)
+        : buildApyItem(apy, variant, t, windowOptions);
 
     // Build all items, passing variant to each builder
     const overviewItems = [
@@ -397,5 +421,12 @@ export const useFormatDisplayEarnOpportunityData = (
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t, getChainById, capacityDisplay]);
+  }, [
+    earnOpportunity,
+    variant,
+    t,
+    getChainById,
+    capacityDisplay,
+    windowOptions,
+  ]);
 };

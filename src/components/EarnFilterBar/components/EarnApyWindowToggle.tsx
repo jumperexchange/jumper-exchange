@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { IconSelect } from '../../core/IconSelect/IconSelect';
+import { TabSelect } from '../../core/TabSelect/TabSelect';
 
 export const ApyWindowOptions = {
   SEVEN_DAY: '7d',
@@ -22,29 +22,22 @@ export const EarnApyWindowToggle: React.FC<Props> = ({
   const { t } = useTranslation();
 
   return (
-    <IconSelect
+    <TabSelect
       options={[
         {
           value: ApyWindowOptions.SEVEN_DAY,
-          icon: null,
           label: t('earn.apyWindow.label7d'),
           tooltip: t('earn.apyWindow.tooltip7d'),
         },
         {
           value: ApyWindowOptions.THIRTY_DAY,
-          icon: null,
           label: t('earn.apyWindow.label30d'),
           tooltip: t('earn.apyWindow.tooltip30d'),
         },
       ]}
       value={value}
       onChange={(v) => onChange(v as ApyWindow)}
-      selectionMode="radio"
-      variant="text"
       size="small"
-      showLabel
-      showTooltip
-      color="primary"
       disabled={disabled}
       data-testid="earn-filter-apy-window-select"
     />

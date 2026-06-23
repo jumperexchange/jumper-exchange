@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { useState } from 'react';
 import { EarnCard } from './EarnCard';
 import {
   commonArgs,
@@ -9,6 +10,10 @@ import {
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import {
+  ApyWindowOptions,
+  type ApyWindow,
+} from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 
 const meta = {
   component: EarnCard,
@@ -184,5 +189,24 @@ export const OverviewWithBadge: Story = {
         label="Updated 12 hours ago"
       />
     ),
+  },
+};
+
+export const OverviewWithApyWindowToggle: Story = {
+  render: (args) => {
+    const [apyWindow, setApyWindow] = useState<ApyWindow>(
+      ApyWindowOptions.SEVEN_DAY,
+    );
+    return (
+      <EarnCard
+        {...args}
+        variant="overview"
+        apyWindow={apyWindow}
+        setApyWindow={setApyWindow}
+      />
+    );
+  },
+  args: {
+    ...commonArgs,
   },
 };

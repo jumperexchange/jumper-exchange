@@ -1,4 +1,5 @@
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
+import type { ApyWindow } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 
 export type EarnCardVariant = 'compact' | 'list-item' | 'overview';
 
@@ -8,6 +9,8 @@ interface CommonEarnCardProps {
   primaryAction?: React.ReactNode;
   headerBadge?: React.ReactNode;
   href?: string;
+  apyWindow?: ApyWindow;
+  setApyWindow?: (apyWindow: ApyWindow) => void;
 }
 
 export interface EarnCardNotEmptyProps extends CommonEarnCardProps {

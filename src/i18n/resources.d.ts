@@ -141,6 +141,7 @@ export default interface Resources {
         viewAllMarkets: 'View all markets';
       };
       apyWindow: {
+        apyLabel: 'APY ({{window}})';
         label30d: '30d';
         label7d: '7d';
         tooltip30d: 'Average APY over the last 30 days';

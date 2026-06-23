@@ -4,6 +4,7 @@ export interface TabOption {
   icon?: React.ReactNode;
   disabled?: boolean;
   badge?: string | number;
+  tooltip?: string;
 }
 
 export interface TabSelectProps {

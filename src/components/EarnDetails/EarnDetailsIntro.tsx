@@ -1,7 +1,7 @@
 'use client';
 
 import type { FC } from 'react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { EarnCard } from '../Cards/EarnCard/EarnCard';
 import { Badge } from '../Badge/Badge';
@@ -16,6 +16,10 @@ import { EarnDetailsActions } from './EarnDetailsActions';
 import { formatDistance } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
+import {
+  ApyWindowOptions,
+  type ApyWindow,
+} from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
@@ -28,6 +32,9 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
 }) => {
   useZapEarnOpportunitySlugStorage(data.slug);
   const { t } = useTranslation();
+  const [apyWindow, setApyWindow] = useState<ApyWindow>(
+    ApyWindowOptions.SEVEN_DAY,
+  );
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const updateBadgeLabel = useMemo(() => {
     if (!data.latest.date) {
@@ -63,6 +70,8 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
                 ) : null
               }
               fullWidth={isMobile}
+              apyWindow={apyWindow}
+              setApyWindow={setApyWindow}
             />
             <EarnDetailsActions
               earnOpportunity={{

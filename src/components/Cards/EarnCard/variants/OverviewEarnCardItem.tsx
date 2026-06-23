@@ -1,3 +1,4 @@
+import ButtonBase from '@mui/material/ButtonBase';
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
@@ -21,6 +22,7 @@ interface OverviewEarnCardItemProps {
   valueAppend?: ReactNode;
   contentStyles?: SxProps<Theme>;
   shouldExpand?: boolean;
+  onClick?: () => void;
 }
 
 export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
@@ -32,18 +34,41 @@ export const OverviewEarnCardItem: FC<OverviewEarnCardItemProps> = ({
   valueAppend,
   contentStyles,
   shouldExpand,
+  onClick,
 }) => {
   return (
     <Grid size={{ xs: 12, sm: shouldExpand ? 12 : 6 }} data-testid={dataTestId}>
       <OverviewEarnCardItemHeaderContainer sx={{ display: 'flex', gap: 1 }}>
-        <Typography
-          variant="bodyXSmall"
-          sx={{
-            color: 'text.secondary',
-          }}
-        >
-          {title}
-        </Typography>
+        {onClick ? (
+          <ButtonBase
+            onClick={onClick}
+            sx={{
+              typography: 'bodyXSmall',
+              color: 'text.secondary',
+              cursor: 'pointer',
+              textDecoration: 'underline',
+              textDecorationStyle: 'dashed',
+              textUnderlineOffset: '3px',
+              borderRadius: '2px',
+              '&:focus-visible': {
+                outline: '2px solid',
+                outlineOffset: '2px',
+              },
+            }}
+            aria-label={title}
+          >
+            {title}
+          </ButtonBase>
+        ) : (
+          <Typography
+            variant="bodyXSmall"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {title}
+          </Typography>
+        )}
         <Tooltip title={tooltip} placement={'top'} enterTouchDelay={0} arrow>
           <TooltipIcon />
         </Tooltip>

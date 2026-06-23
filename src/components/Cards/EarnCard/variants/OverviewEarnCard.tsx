@@ -1,5 +1,6 @@
-import { FC } from 'react';
-import { EarnCardProps } from '../EarnCard.types';
+import { useCallback } from 'react';
+import type { FC } from 'react';
+import type { EarnCardProps } from '../EarnCard.types';
 import {
   OverviewEarnCardContainer,
   OverviewEarnCardContentContainer,
@@ -12,19 +13,36 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { OverviewEarnSkeleton } from './OverviewEarnSkeleton';
 import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
+import { ApyWindowOptions } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 
 export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
   isLoading,
   fullWidth,
   headerBadge,
+  apyWindow,
+  setApyWindow,
 }) => {
   const isEmpty = !data || isLoading;
   const { t } = useTranslation();
 
+  const hasApyWindow = apyWindow && setApyWindow;
+
+  const onToggleApyWindow = useCallback(() => {
+    if (!setApyWindow || !apyWindow) {
+      return;
+    }
+    setApyWindow(
+      apyWindow === ApyWindowOptions.SEVEN_DAY
+        ? ApyWindowOptions.THIRTY_DAY
+        : ApyWindowOptions.SEVEN_DAY,
+    );
+  }, [apyWindow, setApyWindow]);
+
   const { overviewItems } = useFormatDisplayEarnOpportunityData(
     data,
     'overview',
+    hasApyWindow ? { apyWindow, onToggleApyWindow } : undefined,
   );
 
   const items = overviewItems.map((item, index) => {
@@ -39,6 +57,7 @@ export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
         valuePrepend={item.valuePrepend}
         tooltip={item.tooltip}
         shouldExpand={shouldExpand}
+        onClick={item.onClick}
       />
     );
   });
