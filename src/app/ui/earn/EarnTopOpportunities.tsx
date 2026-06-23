@@ -7,13 +7,15 @@ import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
-import { AppPaths } from 'src/const/urls';
+import { useApyWindow } from 'src/components/EarnFilterBar/components/useApyWindow';
+import { buildEarnHref } from '@/app/ui/earn/utils';
 
 interface EarnTopOpportunities {}
 
 export const EarnTopOpportunities = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { data, isLoading, error, isError } = useEarnTopOpportunities({});
+  const { apyWindow } = useApyWindow();
   const items = AtLeastNWhenLoading(data, isLoading, 2);
   const isSingleItem = items?.length === 1;
 
@@ -37,7 +39,7 @@ export const EarnTopOpportunities = () => {
             ) : (
               <HeroEarnCard
                 key={item.slug}
-                href={`${AppPaths.Earn}/${item.slug}`}
+                href={buildEarnHref(item, apyWindow)}
                 isLoading={isLoading}
                 data={item}
                 copy={ithCopy(index)}

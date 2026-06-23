@@ -7,7 +7,11 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import {
+  ApyWindowOptions,
+  type ApyWindow,
+} from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { AppPaths } from '@/const/urls';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 import type {
@@ -56,6 +60,14 @@ export const searchParamsParsers = {
   minRewardsAPY: parseAsFloat,
   maxRewardsAPY: parseAsFloat,
 };
+
+export const buildEarnHref = (
+  item: Pick<EarnOpportunityWithLatestAnalytics, 'slug'>,
+  apyWindow?: ApyWindow,
+): string =>
+  apyWindow && apyWindow !== ApyWindowOptions.SEVEN_DAY
+    ? `${AppPaths.Earn}/${item.slug}?apyWindow=${apyWindow}`
+    : `${AppPaths.Earn}/${item.slug}`;
 
 export const enrichDataWithFlag = <
   T extends { slug: string },
