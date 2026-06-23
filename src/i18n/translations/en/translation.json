@@ -316,7 +316,11 @@
       "description": "Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.",
       "openHub": "Open Perks Hub",
       "count_one": "You have {{count}} unlocked perk",
-      "count_other": "You have {{count}} unlocked perks"
+      "count_other": "You have {{count}} unlocked perks",
+      "empty": {
+        "title": "Out of Perks!",
+        "description": "Looks like there are no perks available right now. Check back later!"
+      }
     },
     "sectionCarousel": {
       "previous": "Previous",
