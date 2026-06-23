@@ -17,27 +17,19 @@ export const PassButton = () => {
   const { progress, unlockedPerksCount, points, isLoading } =
     usePassDisplayData();
 
-  const ring = (
-    <PassProgressChip>
-      <ProgressRing progress={progress} size={RING_SIZE} />
-    </PassProgressChip>
-  );
-
   return (
     <LabelButton
       icon={
-        points !== undefined ? (
-          <Tooltip
-            title={t('navbar.passXp', {
-              xp: t('format.decimal2Digit', { value: points }),
-            })}
-            placement="bottom"
-          >
-            {ring}
-          </Tooltip>
-        ) : (
-          ring
-        )
+        <Tooltip
+          title={t('navbar.passXp', {
+            xp: t('format.decimal2Digit', { value: points ?? 0 }),
+          })}
+          placement="bottom"
+        >
+          <PassProgressChip>
+            <ProgressRing progress={progress} size={RING_SIZE} />
+          </PassProgressChip>
+        </Tooltip>
       }
       label={t('navbar.pass')}
       caption={t('navbar.perksUnlocked', { count: unlockedPerksCount })}
