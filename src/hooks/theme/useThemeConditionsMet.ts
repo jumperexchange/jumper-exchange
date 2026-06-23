@@ -31,6 +31,7 @@ export const useThemeConditionsMet = () => {
 
   return {
     shouldShowForTheme,
-    shouldShowFeatureCardBackground: configTheme?.allowFeatureCardBackground ?? true,
+    shouldShowFeatureCardBackground:
+      configTheme?.allowFeatureCardBackground ?? true,
   };
 };
