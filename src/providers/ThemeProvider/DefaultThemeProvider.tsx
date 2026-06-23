@@ -1,10 +1,12 @@
 'use client';
 import { useMetaTag } from '@/hooks/useMetaTag';
 import { ThemeStoreProvider } from '@/stores/theme';
+import { buildInitialConfigThemeStates } from '@/stores/theme/createThemeStore';
 import { formatConfig, formatTheme } from '@/utils/formatTheme';
-import { useMemo } from 'react';
+import { useMemo, useLayoutEffect } from 'react';
 import type { ThemeProviderProps } from './types';
 import { getPartnerTheme } from './utils';
+import { applySelectedPartnerColorMode } from './partnerThemeMode';
 import type { ThemeProps } from 'src/types/theme';
 import { getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
 import { deepmerge } from '@mui/utils';
@@ -12,8 +14,19 @@ import { deepmerge } from '@mui/utils';
 export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
   const metaTheme = useMetaTag('partner-theme');
 
-  const partnerTheme = metaTheme || 'default';
-  const partnerThemeConfig = getPartnerTheme(themes, partnerTheme);
+  const partnerThemeConfig = useMemo(() => {
+    if (!metaTheme) {
+      return getPartnerTheme(themes, 'default');
+    }
+
+    const matched = getPartnerTheme(themes, metaTheme);
+    if (matched) {
+      return matched;
+    }
+
+    // Meta uid not in Strapi — treat as no route partner theme; fall back to default.
+    return getPartnerTheme(themes, 'default');
+  }, [metaTheme, themes]);
 
   const themeStore = useMemo((): ThemeProps => {
     // Get formatted partner theme data
@@ -36,9 +49,14 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
 
     // Compute jumper themes
     const partnerJumperTheme = formatted?.jumperTheme ?? {};
+    const routeConfig = formatConfig(partnerThemeConfig);
+    const configThemeStates = buildInitialConfigThemeStates(
+      routeConfig,
+      themes ?? [],
+    );
 
     return {
-      configTheme: formatConfig(partnerThemeConfig),
+      configTheme: routeConfig,
       partnerThemes: themes!,
       widgetTheme: {
         light: defaultWidgetLight,
@@ -50,9 +68,13 @@ export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
         default: {},
         partner: partnerJumperTheme,
       },
-      configThemeStates: {},
+      configThemeStates,
     };
   }, [themes, partnerThemeConfig]);
+
+  useLayoutEffect(() => {
+    applySelectedPartnerColorMode(themeStore.configThemeStates, themes ?? []);
+  }, [themeStore.configThemeStates, themes]);
 
   return <ThemeStoreProvider value={themeStore}>{children}</ThemeStoreProvider>;
 }

@@ -1,3 +1,5 @@
+import { formatConfig } from '@/utils/formatTheme';
+import { applySelectedPartnerColorMode } from '@/providers/ThemeProvider/partnerThemeMode';
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { PartnerThemesData } from '@/types/strapi';
 import type {
@@ -37,6 +39,9 @@ const getOrCreateConfigThemeState = (
   return states[uid] ?? { ...defaultConfigThemeState };
 };
 
+const isMenuSelectablePartnerTheme = (config?: Partial<PartnerThemeConfig>) =>
+  !!(config?.selectableInMenu && config?.partnerName);
+
 const initializeConfigThemeStates = (
   configTheme: Partial<PartnerThemeConfig>,
   persistedStates: ConfigThemeStates = {},
@@ -54,12 +59,43 @@ const initializeConfigThemeStates = (
   return {
     ...persistedStates,
     [currentThemeUid]: {
-      // We select it by default only if there is a partner name
-      // This will make sure the default fallback config will not trigger any changes in the UI
-      isSelected: !!configTheme.partnerName,
+      isSelected: isMenuSelectablePartnerTheme(configTheme),
     },
   };
 };
+
+const buildInitialConfigThemeStates = (
+  configTheme: Partial<PartnerThemeConfig>,
+  partnerThemes: PartnerThemesData[] = [],
+  persistedStates: ConfigThemeStates = {},
+): ConfigThemeStates => {
+  const defaultMenuPartnerConfig = formatConfig(
+    partnerThemes.find((theme) => theme.uid === 'default'),
+  );
+
+  const useDefaultMenuPartner =
+    !!configTheme?.uid && configTheme.selectableInMenu === false;
+
+  const selectionConfig = useDefaultMenuPartner
+    ? defaultMenuPartnerConfig
+    : configTheme;
+
+  let configThemeStates = initializeConfigThemeStates(
+    selectionConfig,
+    persistedStates,
+  );
+
+  if (useDefaultMenuPartner && configTheme.uid) {
+    configThemeStates = {
+      ...configThemeStates,
+      [configTheme.uid]: { isSelected: false },
+    };
+  }
+
+  return configThemeStates;
+};
+
+export { buildInitialConfigThemeStates };
 
 // Default empty widget theme config
 const emptyWidgetThemeConfig = { config: {} };
@@ -241,11 +277,22 @@ export const createThemeStore = (props: ThemeProps) =>
           return {
             ...persisted,
             ...currentState,
-            configThemeStates: initializeConfigThemeStates(
+            configThemeStates: buildInitialConfigThemeStates(
               currentState.configTheme,
+              currentState.partnerThemes,
               cleanedConfigThemeStates,
             ),
           };
+        },
+        onRehydrateStorage: () => (state) => {
+          if (!state) {
+            return;
+          }
+
+          applySelectedPartnerColorMode(
+            state.configThemeStates,
+            state.partnerThemes,
+          );
         },
       },
     ),
