@@ -51,6 +51,21 @@ export const TabBarRow = styled(Box)(({ theme }) => ({
   flexWrap: 'wrap',
 }));
 
+// Static grid for the Activity loading state — mirrors the carousel's
+// 1 / 2 / 4-up breakpoints (and its 24px gap) but without the swiper chrome,
+// so all four skeleton cards show at once while data loads.
+export const ActivitySkeletonGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gap: theme.spacing(3),
+  gridTemplateColumns: '1fr',
+  [theme.breakpoints.up('sm')]: {
+    gridTemplateColumns: 'repeat(2, 1fr)',
+  },
+  [theme.breakpoints.up('md')]: {
+    gridTemplateColumns: 'repeat(4, 1fr)',
+  },
+}));
+
 export const XpStat = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
