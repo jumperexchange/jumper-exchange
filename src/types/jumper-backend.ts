@@ -1049,6 +1049,186 @@ export interface CallDataResponse {
   data: CallDataResponseDto;
 }
 
+export interface NftDto {
+  /**
+   * Token contract address
+   * @example "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+   */
+  address: string;
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /**
+   * Token ID
+   * @example "115224"
+   */
+  tokenId: string;
+}
+
+export interface TokenDto {
+  /**
+   * Token contract address
+   * @example "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+   */
+  address: string;
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /**
+   * Token ticker symbol
+   * @example "USDC"
+   */
+  symbol: string;
+  /**
+   * Number of decimals
+   * @example 6
+   */
+  decimals: number;
+  /**
+   * Full token name
+   * @example "USD Coin"
+   */
+  name: string;
+  /**
+   * LI.FI CoinKey identifier
+   * @example "USDC"
+   */
+  coinKey?:
+    | 'ETH'
+    | 'MATIC'
+    | 'POL'
+    | 'BNB'
+    | 'DAI'
+    | 'FTM'
+    | 'AVAX'
+    | 'ONE'
+    | 'FSN'
+    | 'MOVR'
+    | 'CELO'
+    | 'FUSE'
+    | 'TLOS'
+    | 'CRO'
+    | 'RBTC'
+    | 'VLX'
+    | 'GLMR'
+    | 'METIS'
+    | 'EVM'
+    | 'MNT'
+    | 'SEI'
+    | 'G'
+    | 'IMX'
+    | 'KAIA'
+    | 'OKB'
+    | 'WLD'
+    | 'LSK'
+    | 'BERA'
+    | 'S'
+    | 'APE'
+    | 'GHO'
+    | 'WGHO'
+    | 'XTZ'
+    | 'HYPE'
+    | 'XDC'
+    | 'VIC'
+    | 'FLR'
+    | 'VAN'
+    | 'RON'
+    | 'PLUME'
+    | 'NIBI'
+    | 'SOPH'
+    | 'XPL'
+    | 'FLOW'
+    | 'MON'
+    | 'GUSDT'
+    | 'SOL'
+    | 'wSOL'
+    | 'FOGO'
+    | 'wFOGO'
+    | 'SUI'
+    | 'BTC'
+    | 'BCH'
+    | 'LTC'
+    | 'DOGE'
+    | 'ZEC'
+    | 'TRX'
+    | 'WTRX'
+    | 'XAUt'
+    | 'HEMI'
+    | 'USDT'
+    | 'USDC'
+    | 'BUSD'
+    | 'USDCe'
+    | 'USDCs'
+    | 'USDCn'
+    | 'USDe'
+    | 'USDB'
+    | 'FRAX'
+    | 'axlUSDC'
+    | 'FDUSD'
+    | 'HONEY'
+    | 'BYUSD'
+    | 'APEUSD'
+    | 'FEUSD'
+    | 'USDT0'
+    | 'USDF'
+    | 'USDm'
+    | 'USD1'
+    | 'PathUSD'
+    | 'WBTC'
+    | 'WETH'
+    | 'SUSHI'
+    | 'DODO'
+    | 'MCB'
+    | 'CELR'
+    | 'IF'
+    | 'RUNE'
+    | 'WMNT'
+    | 'frxETH'
+    | 'wfrxETH'
+    | 'WSEI'
+    | 'WG'
+    | 'WIMX'
+    | 'WPOL'
+    | 'WKAIA'
+    | 'WOKB'
+    | 'WBNB'
+    | 'WCRO'
+    | 'WBERA'
+    | 'wS'
+    | 'WAPE'
+    | 'WXTZ'
+    | 'WHYPE'
+    | 'WXDC'
+    | 'WVIC'
+    | 'WFLR'
+    | 'WVAN'
+    | 'WRON'
+    | 'WPLUME'
+    | 'WNIBI'
+    | 'WSOPH'
+    | 'WFRAX'
+    | 'WXPL'
+    | 'WFLOW'
+    | 'WMON'
+    | 'pBTC'
+    | 'WTLOS'
+    | null;
+  /**
+   * Token logo URL
+   * @example "https://assets.coingecko.com/coins/images/6319/thumb/usdc.png"
+   */
+  logoURI?: string | null;
+  /**
+   * Token price in USD as a string
+   * @example "1.00"
+   */
+  priceUSD: string;
+}
+
 export interface TokenBalance {
   name: string;
   symbol: string;
@@ -1207,6 +1387,66 @@ export interface WalletPositions {
         source: 'app';
       } & AppDefiPosition)
   )[];
+}
+
+export interface TransactionsPaginationMeta {
+  next: string | null;
+  pagesLength: number;
+}
+
+export interface BalanceDto {
+  /** Token or NFT info */
+  token?: TokenDto | NftDto | null;
+  /** Token amount */
+  amount: number;
+  /** Token amount in USD */
+  amountUsd?: number | null;
+}
+
+export interface TransactionsDto {
+  /** Total transaction value in USD */
+  amountUsd: number | null;
+  /** Tokens sent in this transaction */
+  fromBalances: BalanceDto[];
+  /** Tokens received in this transaction */
+  toBalances: BalanceDto[];
+  /** Transaction operation type */
+  action:
+    | 'approve'
+    | 'bid'
+    | 'burn'
+    | 'claim'
+    | 'delegate'
+    | 'deploy'
+    | 'deposit'
+    | 'execute'
+    | 'mint'
+    | 'receive'
+    | 'revoke'
+    | 'revoke_delegation'
+    | 'send'
+    | 'trade'
+    | 'withdraw';
+  /** Gas Fee paid in this transaction */
+  fee: BalanceDto | null;
+  /**
+   * Transaction timestamp
+   * @format date-time
+   */
+  time: string;
+  /** Transaction hash */
+  txHash: string;
+  /** Chain ID where the transaction occurred */
+  chainId: number;
+}
+
+export interface TransactionsDtoResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: TransactionsPaginationMeta;
+  data: TransactionsDto[];
 }
 
 export interface TaskVerificationDto {
@@ -2398,6 +2638,88 @@ export class JumperBackend<
     ) =>
       this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserTransactionsV1
+     * @summary Get transactions for a set of addresses
+     * @request GET:/v1/portfolio/transactions
+     */
+    portfolioControllerGetUserTransactionsV1: (
+      query?: {
+        /** EVM address to get transactions */
+        evm?: string | null;
+        /** Solana Virtual Machine (SVM) address to get transactions */
+        svm?: string | null;
+        /** Move Virtual Machine (MVM) address to get transactions */
+        mvm?: string | null;
+        /** Unspent transaction output (UTXO) address to get transactions */
+        utxo?: string | null;
+        /** Tron Virtual Machine (TVM) address to get transactions */
+        tvm?: string | null;
+        /**
+         * Pagination cursor for fetching the next transactions
+         * @example "6"
+         */
+        next?: string | null;
+        /**
+         * Force refresh the cache
+         * @example true
+         */
+        forceRefresh?: boolean;
+        /**
+         * Array of operation types to filter by
+         * @example ["trade","send"]
+         */
+        types?: (
+          | 'approve'
+          | 'bid'
+          | 'burn'
+          | 'claim'
+          | 'delegate'
+          | 'deploy'
+          | 'deposit'
+          | 'execute'
+          | 'mint'
+          | 'receive'
+          | 'revoke'
+          | 'revoke_delegation'
+          | 'send'
+          | 'trade'
+          | 'withdraw'
+        )[];
+        /**
+         * Return transactions at or after this ISO 8601 date
+         * @format date-time
+         */
+        minDate?: string;
+        /**
+         * Return transactions at or before this ISO 8601 date
+         * @format date-time
+         */
+        maxDate?: string;
+        /**
+         * Array of Lifi Chain Ids to filter by (e.g. [1, 8543])
+         * @example ["1","8543"]
+         */
+        chains?: number[];
+        /**
+         * Asset filter as repeated "chainId:address" params (e.g. ?assets=1:0xabc&assets=137:0xdef)
+         * @example ["1:0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"]
+         */
+        assets?: string[];
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<TransactionsDtoResponse, any>({
+        path: `/v1/portfolio/transactions`,
         method: 'GET',
         query: query,
         format: 'json',
