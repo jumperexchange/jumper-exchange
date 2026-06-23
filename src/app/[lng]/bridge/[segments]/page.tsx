@@ -47,7 +47,18 @@ export async function generateMetadata({
   };
 }
 
-export const dynamic = 'force-dynamic';
+// Bridge pages are SEO landing pages with effectively static content, so they
+// only need to refresh once a month. Trigger an earlier refresh manually with
+// on-demand revalidation (revalidatePath/revalidateTag) when content changes.
+export const revalidate = 2592000; // 30 days
+export const dynamicParams = true;
+export const dynamic = 'force-static';
+
+// Prerender nothing at build time (the full pair matrix added ~15 min to the
+// build); generate each URL on first request and cache it (ISR).
+export function generateStaticParams() {
+  return [];
+}
 
 export default async function Page({ params }: { params: Params }) {
   const { segments } = await params;
