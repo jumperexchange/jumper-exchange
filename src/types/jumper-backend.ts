@@ -969,7 +969,7 @@ export interface ApyAnalyticsHistoryResponse {
 }
 
 export interface HistoryPoint {
-  /** The timestamp of the data point */
+  /** The timestamp of the data point, in milliseconds (Unix epoch ms). */
   t: number;
   /** The value of the data point. Null when data is unavailable. */
   v: number | string | null;
@@ -1389,9 +1389,18 @@ export interface WalletPositions {
   )[];
 }
 
+export interface BalanceHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: HistoryGraph;
+}
+
 export interface PnlResponseDto {
   /** The PnL value in USD */
-  pnl: number;
+  pnl?: number;
   /** The PnL percentage. When multiple addresses are provided, this field will be undefined */
   pnlPercentage?: number;
 }
@@ -1454,6 +1463,15 @@ export interface TransactionsDtoResponse {
   message: string;
   meta: TransactionsPaginationMeta;
   data: TransactionsDto[];
+}
+
+export interface PnlResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PnlResponseDto;
 }
 
 export interface TaskVerificationDto {
@@ -2679,7 +2697,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<HistoryGraph, any>({
+      this.request<BalanceHistoryResponse, any>({
         path: `/v1/portfolio/balance/history`,
         method: 'GET',
         query: query,
@@ -2715,7 +2733,7 @@ export class JumperBackend<
       },
       params: RequestParams = {},
     ) =>
-      this.request<PnlResponseDto, any>({
+      this.request<PnlResponse, any>({
         path: `/v1/portfolio/balance/pnl`,
         method: 'GET',
         query: query,
