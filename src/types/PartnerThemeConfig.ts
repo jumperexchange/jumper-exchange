@@ -41,4 +41,5 @@ export interface PartnerThemeConfig {
   canvasBackground: { id: string; options: Record<string, unknown> } | null;
   allowedBridges: string[];
   allowedExchanges: string[];
+  allowFeatureCardBackground: boolean;
 }

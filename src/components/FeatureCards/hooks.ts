@@ -199,17 +199,18 @@ export const useFeatureCardDisable = (data: FeatureCardData) => {
 };
 
 export const useFeatureCardStyles = (): SxProps<Theme> => {
-  const { shouldShowForTheme } = useThemeConditionsMet();
+  const { shouldShowForTheme, shouldShowFeatureCardBackground } =
+    useThemeConditionsMet();
 
   return useMemo(
     () =>
-      shouldShowForTheme
+      shouldShowForTheme && !shouldShowFeatureCardBackground
         ? {
             background: (theme: Theme) =>
               (theme.vars || theme).palette.surface1.main,
             border: (theme: Theme) => getSurfaceBorder(theme, 'surface1'),
           }
         : {},
-    [shouldShowForTheme],
+    [shouldShowForTheme, shouldShowFeatureCardBackground],
   );
 };

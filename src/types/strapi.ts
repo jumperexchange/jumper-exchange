@@ -292,6 +292,7 @@ export interface Customization {
     id: string;
     options?: Record<string, unknown>;
   };
+  allowFeatureCardBackground?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
