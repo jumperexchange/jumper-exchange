@@ -1,6 +1,7 @@
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { ProgressRing } from '@/components/core/ProgressRing/ProgressRing';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { AppPaths } from 'src/const/urls';
 import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
 import { usePassDisplayData } from '../../hooks';
@@ -13,14 +14,30 @@ export const PassButton = () => {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const pathname = usePathnameWithoutLocale();
-  const { progress, unlockedPerksCount, isLoading } = usePassDisplayData();
+  const { progress, unlockedPerksCount, points, isLoading } =
+    usePassDisplayData();
+
+  const ring = (
+    <PassProgressChip>
+      <ProgressRing progress={progress} size={RING_SIZE} />
+    </PassProgressChip>
+  );
 
   return (
     <LabelButton
       icon={
-        <PassProgressChip>
-          <ProgressRing progress={progress} size={RING_SIZE} />
-        </PassProgressChip>
+        points !== undefined ? (
+          <Tooltip
+            title={t('navbar.passXp', {
+              xp: t('format.decimal2Digit', { value: points }),
+            })}
+            placement="bottom"
+          >
+            {ring}
+          </Tooltip>
+        ) : (
+          ring
+        )
       }
       label={t('navbar.pass')}
       caption={t('navbar.perksUnlocked', { count: unlockedPerksCount })}

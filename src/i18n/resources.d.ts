@@ -649,6 +649,7 @@ export default interface Resources {
         theme: 'Theme';
       };
       pass: 'Pass';
+      passXp: '{{xp}} XP';
       perksUnlocked_one: '{{count}} Perk unlocked';
       perksUnlocked_other: '{{count}} Perks unlocked';
       seeAllWallets: 'See all wallets';

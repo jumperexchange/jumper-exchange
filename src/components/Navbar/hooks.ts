@@ -35,6 +35,7 @@ export const usePassDisplayData = () => {
   return {
     progress: getLevelProgress(points, levelData),
     unlockedPerksCount: unlockedPerks.length,
+    points,
     isLoading: isLoading || arePerksLoading,
   };
 };

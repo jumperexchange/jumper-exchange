@@ -32,6 +32,7 @@
       }
     },
     "pass": "Pass",
+    "passXp": "{{xp}} XP",
     "perksUnlocked_one": "{{count}} Perk unlocked",
     "perksUnlocked_other": "{{count}} Perks unlocked",
     "wallets": "Wallets",

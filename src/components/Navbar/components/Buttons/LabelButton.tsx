@@ -5,6 +5,7 @@ import {
   NavbarButtonContentContainer,
   NavbarButtonLabel,
   NavbarButtonLabelColumn,
+  navbarLabelClassName,
 } from './Buttons.style';
 import { Link } from 'src/components/Link/Link';
 import Skeleton from '@mui/material/Skeleton';
@@ -40,9 +41,7 @@ export const LabelButton: FC<LabelButtonProps> = ({
       <Typography
         variant="bodySmallStrong"
         noWrap
-        sx={(theme) => ({
-          color: (theme.vars || theme).palette.alpha600.main,
-        })}
+        className={navbarLabelClassName}
       >
         {label}
       </Typography>
