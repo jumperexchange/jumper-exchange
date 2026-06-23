@@ -8,6 +8,10 @@ import { EarnFilterTab } from '../../app/ui/earn/types';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import {
+  EarnApyWindowToggle,
+  type ApyWindow,
+} from './components/EarnApyWindowToggle';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
@@ -24,12 +28,16 @@ import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
   setVariant: (variant: EarnCardVariant) => void;
+  apyWindow?: ApyWindow;
+  setApyWindow?: (apyWindow: ApyWindow) => void;
   isLoading?: boolean;
 }
 
 export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   variant,
   setVariant,
+  apyWindow,
+  setApyWindow,
   isLoading,
 }) => {
   const { t } = useTranslation();
@@ -45,6 +53,8 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   const EarnFilterBarContent = isForYouTab
     ? EarnFilterBarContentForYou
     : EarnFilterBarContentAllDesktop;
+
+  const hasApyWindow = apyWindow && setApyWindow;
 
   return (
     <EarnFilterBarContainer>
@@ -70,6 +80,9 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             }}
           >
             <EarnListMode variant={variant} setVariant={setVariant} />
+            {hasApyWindow && (
+              <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+            )}
             {!isForYouTab && <EarnFilterSort />}
           </Stack>
         </EarnFilterBarContent>

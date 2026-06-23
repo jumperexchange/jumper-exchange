@@ -983,6 +983,7 @@ export interface EarnOpportunityHistoryItem {
   /** Total value locked in native currency */
   tvlNative: string;
   apy: APYItem;
+  apy30d?: APYItem | null;
 }
 
 export interface VaultCapacity {

@@ -140,6 +140,12 @@ export default interface Resources {
         seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
+      apyWindow: {
+        label30d: '30d';
+        label7d: '7d';
+        tooltip30d: 'Average APY over the last 30 days';
+        tooltip7d: 'Average APY over the last 7 days';
+      };
       copy: {
         forYouBasedOnActivity: 'Handpicked from over {{totalMarkets}}+ markets based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';

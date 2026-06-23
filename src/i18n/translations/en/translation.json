@@ -562,6 +562,12 @@
       "apy": "APY",
       "tvl": "TVL"
     },
+    "apyWindow": {
+      "label7d": "7d",
+      "label30d": "30d",
+      "tooltip7d": "Average APY over the last 7 days",
+      "tooltip30d": "Average APY over the last 30 days"
+    },
     "filter": {
       "clear": "Clear",
       "selected": "{{count}} selected",
