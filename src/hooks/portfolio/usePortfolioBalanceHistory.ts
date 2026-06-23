@@ -37,7 +37,7 @@ export const usePortfolioBalanceHistoryQuery = (
         ...queryParams,
         chartPeriod: period,
       });
-      return result.data;
+      return result.data.data;
     },
     enabled: hasAddresses,
     refetchInterval: FIVE_MINUTES_MS,

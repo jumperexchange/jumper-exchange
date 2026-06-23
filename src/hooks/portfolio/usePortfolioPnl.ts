@@ -31,7 +31,14 @@ export const usePortfolioPnlQuery = (
 
   return useQuery({
     queryKey: ['portfolio-pnl', queryParams, period],
-    queryFn: () => getPortfolioPnl({ ...queryParams, chartPeriod: period }),
+    queryFn: async () => {
+      const result = await getPortfolioPnl({
+        ...queryParams,
+        chartPeriod: period,
+      });
+
+      return result.data.data;
+    },
     enabled: hasAddresses,
     refetchInterval: FIVE_MINUTES_MS,
   });
