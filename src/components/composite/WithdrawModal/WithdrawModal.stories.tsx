@@ -88,6 +88,7 @@ export const Default: Story = {
         canRepay: true,
         canBorrow: true,
       },
+      messages: [],
     },
   },
 };
@@ -178,6 +179,7 @@ export const WithToggleAndConnectButton: Story = {
         canRepay: true,
         canBorrow: true,
       },
+      messages: [],
     },
   },
 };

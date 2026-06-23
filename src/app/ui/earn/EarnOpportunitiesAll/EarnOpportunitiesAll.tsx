@@ -12,6 +12,7 @@ import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
 import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
+import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
@@ -46,6 +47,8 @@ const EarnOpportunitiesAllInner = () => {
     state.earnCardVariant,
     state.setEarnCardVariant,
   ]);
+
+  const { apyWindow, setApyWindow } = useApyWindow();
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { amount: 0, initial: true });
@@ -97,6 +100,8 @@ const EarnOpportunitiesAllInner = () => {
             isLoading={isAllDataLoading}
             variant={variant}
             setVariant={setVariant}
+            apyWindow={apyWindow}
+            setApyWindow={setApyWindow}
           />
           <EarnOpportunitiesCards
             items={data}

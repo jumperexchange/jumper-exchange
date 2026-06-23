@@ -88,6 +88,7 @@ export const Default: Story = {
           total: 5.5,
         },
       },
+      messages: [],
     },
   },
 };
@@ -178,6 +179,7 @@ export const WithToggleAndConnectButton: Story = {
           total: 5.5,
         },
       },
+      messages: [],
     },
   },
 };

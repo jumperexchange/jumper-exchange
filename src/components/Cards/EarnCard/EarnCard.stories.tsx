@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { useState } from 'react';
 import { EarnCard } from './EarnCard';
 import {
   commonArgs,
@@ -10,10 +9,7 @@ import {
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import {
-  ApyWindowOptions,
-  type ApyWindow,
-} from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { useApyWindowMock } from 'src/components/EarnFilterBar/components/useApyWindow.mock';
 
 const meta = {
   component: EarnCard,
@@ -194,9 +190,7 @@ export const OverviewWithBadge: Story = {
 
 export const OverviewWithApyWindowToggle: Story = {
   render: (args) => {
-    const [apyWindow, setApyWindow] = useState<ApyWindow>(
-      ApyWindowOptions.SEVEN_DAY,
-    );
+    const { apyWindow, setApyWindow } = useApyWindowMock();
     return (
       <EarnCard
         {...args}
