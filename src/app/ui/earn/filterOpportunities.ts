@@ -1,7 +1,9 @@
 import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash';
 import type { Nullable } from 'nuqs';
 
+import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 
 import type {
   EarnFilteringParams,
@@ -9,8 +11,8 @@ import type {
   OrderEnum,
   SortByEnum,
 } from './types';
-import { OrderOptions, RewardsAPYOptions, SortByOptions } from './types';
-import { sortAccessors } from './utils';
+import { OrderOptions, RewardsAPYOptions } from './types';
+import { makeSortAccessors } from './utils';
 
 const isInRange = (
   value: number | undefined,
@@ -32,6 +34,7 @@ const isInRange = (
 export function filterOpportunities(
   data: EarnOpportunityWithLatestAnalytics[],
   filter: EarnOpportunityFilterWithoutSortByAndOrder,
+  apyWindow?: ApyWindow,
 ): EarnOpportunityWithLatestAnalytics[] {
   return data.filter((item) => {
     const {
@@ -73,8 +76,9 @@ export function filterOpportunities(
       return false;
     }
 
-    // APY range filter
-    if (!isInRange(item.latest?.apy?.total, minAPY, maxAPY)) {
+    // APY range filter (uses selected window)
+    const apy = getDisplayApy(item.latest, apyWindow);
+    if (!isInRange(apy?.total, minAPY, maxAPY)) {
       return false;
     }
 
@@ -90,7 +94,7 @@ export function filterOpportunities(
     }
 
     // Rewards APY filter (exclusive min to filter out 0 rewards)
-    const rewardsApy = item.latest.apy.jumperReward;
+    const rewardsApy = apy?.jumperReward;
     if (
       minRewardsAPY !== undefined &&
       (rewardsApy === undefined || rewardsApy <= minRewardsAPY)
@@ -112,7 +116,9 @@ export function sortOpportunities(
   data: EarnOpportunityWithLatestAnalytics[],
   sortBy: SortByEnum,
   order: OrderEnum = OrderOptions.DESC,
+  apyWindow?: ApyWindow,
 ): EarnOpportunityWithLatestAnalytics[] {
+  const sortAccessors = makeSortAccessors(apyWindow);
   const accessor = sortAccessors[sortBy];
   if (!accessor) {
     return data;
@@ -127,6 +133,7 @@ export function sortOpportunities(
 
 export const extractFilteringParams = (
   data: EarnOpportunityWithLatestAnalytics[],
+  apyWindow?: ApyWindow,
 ): EarnFilteringParams => {
   let allChains = [...map(data, 'lpToken.chain'), ...map(data, 'asset.chain')];
   allChains = uniqBy(allChains, 'chainId').filter(Boolean);
@@ -140,8 +147,9 @@ export const extractFilteringParams = (
   let allTags = map(data, 'tags').flat();
   allTags = uniq(allTags).filter(Boolean);
 
-  // Allow for 0, only check null/undefined
-  const apyValues = map(data, 'latest.apy.total')
+  // Allow for 0, only check null/undefined (uses selected window)
+  const apyValues = data
+    .map((item) => getDisplayApy(item.latest, apyWindow)?.total)
     .filter((v): v is number => v !== null && v !== undefined)
     .map((v) => Number(v));
   const uniqueApyValues = uniq(apyValues).sort((a, b) => a - b);
@@ -162,10 +170,10 @@ export const extractFilteringParams = (
   ]);
   const allTVL: Record<number, number> = fromPairs(stepTVLPairs);
 
-  const withRewards = some(
-    data,
-    (item) => item.latest.apy.jumperReward && item.latest.apy.jumperReward > 0,
-  );
+  const withRewards = some(data, (item) => {
+    const apy = getDisplayApy(item.latest, apyWindow);
+    return apy?.jumperReward && apy.jumperReward > 0;
+  });
 
   const allRewardsOptions = withRewards ? [RewardsAPYOptions.WITH_REWARDS] : [];
 

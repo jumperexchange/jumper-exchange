@@ -27,6 +27,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   isLoading,
   isMissingPosition,
   href,
+  apyWindow,
 }) => {
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = !data || isLoading;
@@ -34,6 +35,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   const { overviewItems, chains } = useFormatDisplayEarnOpportunityData(
     data,
     'compact',
+    apyWindow ? { apyWindow } : undefined,
   );
   const { protocol, forYou, tags, lpToken, name } = data ?? {};
 

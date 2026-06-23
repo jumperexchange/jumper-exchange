@@ -108,6 +108,7 @@ const EarnOpportunitiesAllInner = () => {
             isLoading={isLoading}
             showPlaceholderCard={tab === EarnFilterTab.YOUR_POSITIONS}
             variant={variant}
+            apyWindow={apyWindow}
           />
           <EarnEmptyList />
           {tab === EarnFilterTab.FOR_YOU && isConnected && !!data.length && (

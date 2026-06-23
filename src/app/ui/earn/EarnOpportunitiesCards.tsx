@@ -8,17 +8,20 @@ import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backen
 import { AppPaths } from 'src/const/urls';
 import { AtLeastNWhenLoading } from '@/utils/earn/utils';
 import { useMemo } from 'react';
+import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
 
 export const EarnOpportunitiesCards = ({
   items,
   isLoading,
   variant,
   showPlaceholderCard,
+  apyWindow,
 }: {
   items: EarnOpportunityWithLatestAnalytics[];
   isLoading: boolean;
   variant: EarnCardVariant;
   showPlaceholderCard: boolean;
+  apyWindow?: ApyWindow;
 }) => {
   const isCompact = variant === 'compact';
   const gridItems = useMemo(
@@ -55,6 +58,7 @@ export const EarnOpportunitiesCards = ({
                 variant={variant}
                 isLoading={false}
                 data={item}
+                apyWindow={apyWindow}
                 primaryAction={
                   <DepositFlowButton
                     // TODO: Enable deposit flow button and properly set earnOpportunity

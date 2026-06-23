@@ -567,7 +567,8 @@
       "label30d": "30d",
       "tooltip7d": "Average APY over the last 7 days",
       "tooltip30d": "Average APY over the last 30 days",
-      "apyLabel": "APY ({{window}})"
+      "apyLabel": "APY ({{window}})",
+      "unknown": "Unknown"
     },
     "filter": {
       "clear": "Clear",

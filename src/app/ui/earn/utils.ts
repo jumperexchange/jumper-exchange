@@ -7,7 +7,9 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
+import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 import type {
   EarnOpportunityFilterWithoutSortByAndOrder,
   SortByEnum,
@@ -21,10 +23,13 @@ export type SortAccessors = Partial<
   >
 >;
 
-export const sortAccessors: SortAccessors = {
-  [SortByOptions.APY]: (item) => item.latest?.apy?.total ?? 0,
+export const makeSortAccessors = (apyWindow?: ApyWindow): SortAccessors => ({
+  [SortByOptions.APY]: (item) =>
+    getDisplayApy(item.latest, apyWindow)?.total ?? 0,
   [SortByOptions.TVL]: (item) => parseFloat(item.latest?.tvlUsd ?? '0'),
-};
+});
+
+export const sortAccessors: SortAccessors = makeSortAccessors();
 
 export const searchParamsParsers = {
   sortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(

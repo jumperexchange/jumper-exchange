@@ -146,6 +146,7 @@ export default interface Resources {
         label7d: '7d';
         tooltip30d: 'Average APY over the last 30 days';
         tooltip7d: 'Average APY over the last 7 days';
+        unknown: 'Unknown';
       };
       copy: {
         forYouBasedOnActivity: 'Handpicked from over {{totalMarkets}}+ markets based on your account activity';

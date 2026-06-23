@@ -9,6 +9,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { NullableFields } from 'src/types/internal';
@@ -109,6 +110,7 @@ export const EarnFilteringProvider = ({
   const { account } = useAccount();
   const address: Hex | undefined = useAccountAddress();
   const usedYourAddress = address !== undefined;
+  const { apyWindow } = useApyWindow();
 
   const {
     forYou: forYouParam,
@@ -216,12 +218,17 @@ export const EarnFilteringProvider = ({
       return sourceData;
     }
 
-    const filtered = filterOpportunities(sourceData, filter);
+    const filtered = filterOpportunities(sourceData, filter, apyWindow);
 
-    const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
+    const sorted = sortOpportunities(
+      filtered,
+      sortBy,
+      OrderOptions.DESC,
+      apyWindow,
+    );
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab]);
+  }, [sourceData, filter, sortBy, tab, apyWindow]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
@@ -268,8 +275,8 @@ export const EarnFilteringProvider = ({
       return EMPTY_FILTERING_PARAMS;
     }
 
-    return extractFilteringParams(unfilteredTabData);
-  }, [unfilteredTabData]);
+    return extractFilteringParams(unfilteredTabData, apyWindow);
+  }, [unfilteredTabData, apyWindow]);
 
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);

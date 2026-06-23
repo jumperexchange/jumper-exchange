@@ -3,12 +3,15 @@ import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadg
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { toCompactValue } from '@/utils/formatNumbers';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
+import { formatCapInDollar } from '@/utils/numbers/capInDollar';
 import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
 import type { ApyWindow } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { ApyWindowOptions as ApyWindowValue } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
 import type {
   APYItem,
@@ -38,7 +41,7 @@ interface EarnCardOverviewItem {
 
 interface ApyWindowOptions {
   apyWindow: ApyWindow;
-  onToggleApyWindow: () => void;
+  onToggleApyWindow?: () => void;
 }
 
 const buildApyItem = (
@@ -47,13 +50,31 @@ const buildApyItem = (
   t: TFunction,
   windowOptions?: ApyWindowOptions,
 ): EarnCardOverviewItem | null => {
+  const is30d = windowOptions?.apyWindow === ApyWindowValue.THIRTY_DAY;
+
+  // 30d selected but no apy30d data -> show explicit "Unknown"
+  if (is30d && apy === undefined) {
+    return {
+      key: 'apy',
+      dataTestId: 'apy-unknown',
+      label: t('earn.apyWindow.apyLabel', {
+        window: t('earn.apyWindow.label30d'),
+      }),
+      value: t('earn.apyWindow.unknown'),
+      tooltip: t('earn.apyWindow.tooltip30d'),
+      onClick: windowOptions?.onToggleApyWindow,
+    };
+  }
+
   if (!apy?.total || isZeroApprox(apy.total)) {
     return null;
   }
 
   const formatted = formatApy(apy.total);
   const label = windowOptions
-    ? t('earn.apyWindow.apyLabel', { window: t(`earn.apyWindow.label${windowOptions.apyWindow}`) })
+    ? t('earn.apyWindow.apyLabel', {
+        window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+      })
     : t('labels.apy');
   const tooltip = windowOptions
     ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
@@ -81,7 +102,9 @@ const buildTotalApyItem = (
 
   const formatted = formatApy(displayedApy);
   const label = windowOptions
-    ? t('earn.apyWindow.apyLabel', { window: t(`earn.apyWindow.label${windowOptions.apyWindow}`) })
+    ? t('earn.apyWindow.apyLabel', {
+        window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+      })
     : t('labels.apr');
   const tooltip = windowOptions
     ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
@@ -386,7 +409,6 @@ export const useFormatDisplayEarnOpportunityData = (
     const lockupDays = earnOpportunity?.lockupDays;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
-    const rewardsApy = earnOpportunity?.latest.apy.jumperReward;
     const { fees } = earnOpportunity ?? {};
 
     const chains = uniqBy(
@@ -394,7 +416,12 @@ export const useFormatDisplayEarnOpportunityData = (
       'chainId',
     );
 
-    const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
+    const apy = getDisplayApy(
+      earnOpportunity?.latest,
+      windowOptions?.apyWindow,
+    );
+    const tvlUsd = earnOpportunity?.latest?.tvlUsd;
+    const rewardsApy = apy?.jumperReward;
 
     const apyItem =
       !!apy?.customReward && apy.customReward > 0

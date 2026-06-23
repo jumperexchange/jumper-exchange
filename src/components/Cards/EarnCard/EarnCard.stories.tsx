@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EarnCard } from './EarnCard';
 import {
@@ -9,6 +10,10 @@ import {
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import {
+  ApyWindowOptions,
+  EarnApyWindowToggle,
+} from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
 import { useApyWindowMock } from 'src/components/EarnFilterBar/components/useApyWindow.mock';
 
 const meta = {
@@ -136,6 +141,79 @@ export const ListItemWithHref: Story = {
     ...commonArgs,
     variant: 'list-item',
     href: `${AppPaths.Earn}/${commonArgs.data.slug}`,
+  },
+};
+
+export const CompactWithApyWindowToggle: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock();
+    return (
+      <Stack spacing={2} sx={{ maxWidth: 400 }}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          {...args}
+          variant="compact"
+          apyWindow={apyWindow}
+          primaryAction={compactPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+  },
+};
+
+export const ListItemWithApyWindowToggle: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock();
+    return (
+      <Stack spacing={2}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          {...args}
+          variant="list-item"
+          apyWindow={apyWindow}
+          primaryAction={listItemPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+  },
+};
+
+const dataWithout30dApy = {
+  ...commonArgs.data,
+  latest: {
+    date: commonArgs.data.latest.date,
+    tvlUsd: commonArgs.data.latest.tvlUsd,
+    tvlNative: commonArgs.data.latest.tvlNative,
+    apy: commonArgs.data.latest.apy,
+  },
+};
+
+export const CompactWithApyWindowUnknown: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock(
+      ApyWindowOptions.THIRTY_DAY,
+    );
+    return (
+      <Stack spacing={2} sx={{ maxWidth: 400 }}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          {...args}
+          variant="compact"
+          apyWindow={apyWindow}
+          primaryAction={compactPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+    data: dataWithout30dApy,
   },
 };
 
