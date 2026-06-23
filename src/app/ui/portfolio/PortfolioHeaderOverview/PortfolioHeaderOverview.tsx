@@ -16,6 +16,8 @@ import { usePortfolioWelcomeScreen } from '@/hooks/usePortfolioWelcomeScreen';
 import { useMemo } from 'react';
 import { getPortfolioValueInDollarParts } from '@/utils/numbers/portfolioValueInDollar';
 import { usePortfolioSummary } from '@/providers/PortfolioProvider/PortfolioContext';
+import { AB_TEST_NAME } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
 import { PortfolioHeaderOverviewPnLSection } from './PortfolioHeaderOverviewPnLSection';
 import { PortfolioPnlChartDisclaimer } from './PortfolioPnlChartDisclaimer';
 
@@ -23,6 +25,10 @@ export const PortfolioHeaderOverview = () => {
   const { portfolioWelcomeScreenClosed } = usePortfolioWelcomeScreen();
   const { t } = useTranslation();
   const theme = useTheme();
+  const pnlChartFlag = useABTest({ feature: AB_TEST_NAME.PORTFOLIO_PNL_CHART });
+  const showPnlChart =
+    pnlChartFlag.isEnabled &&
+    (pnlChartFlag.value === true || pnlChartFlag.value === 'test');
 
   const summary = usePortfolioSummary();
 
@@ -54,7 +60,7 @@ export const PortfolioHeaderOverview = () => {
           >
             {t('portfolio.overviewCard.title')}
           </Typography>
-          <PortfolioPnlChartDisclaimer />
+          {showPnlChart && <PortfolioPnlChartDisclaimer />}
         </Stack>
         {portfolioWelcomeScreenClosed && <PortfolioRefreshBalance />}
       </PortfolioHeaderOverviewHeaderContainer>
@@ -86,7 +92,7 @@ export const PortfolioHeaderOverview = () => {
             {suffix}
           </>
         </PortfolioHeaderOverviewValue>
-        <PortfolioHeaderOverviewPnLSection />
+        {showPnlChart && <PortfolioHeaderOverviewPnLSection />}
       </PortfolioHeaderOverviewContentContainer>
     </PortfolioHeaderOverviewContainer>
   );
