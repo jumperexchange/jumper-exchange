@@ -61,7 +61,7 @@ const buildApyItem = (
         window: t('earn.apyWindow.label30d'),
       }),
       value: t('earn.apyWindow.unknown'),
-      tooltip: t('earn.apyWindow.tooltip30d'),
+      tooltip: t('earn.apyWindow.tooltip'),
       onClick: windowOptions?.onToggleApyWindow,
     };
   }
@@ -77,7 +77,7 @@ const buildApyItem = (
       })
     : t('labels.apy');
   const tooltip = windowOptions
-    ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
+    ? t('earn.apyWindow.tooltip')
     : t('tooltips.apy');
   return {
     key: 'apy',
@@ -107,7 +107,7 @@ const buildTotalApyItem = (
       })
     : t('labels.apr');
   const tooltip = windowOptions
-    ? t(`earn.apyWindow.tooltip${windowOptions.apyWindow}`)
+    ? t('earn.apyWindow.tooltip')
     : t('tooltips.apr');
   return {
     key: 'apr',

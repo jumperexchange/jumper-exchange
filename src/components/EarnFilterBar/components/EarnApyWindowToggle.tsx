@@ -27,12 +27,12 @@ export const EarnApyWindowToggle: React.FC<Props> = ({
         {
           value: ApyWindowOptions.SEVEN_DAY,
           label: t('earn.apyWindow.label7d'),
-          tooltip: t('earn.apyWindow.tooltip7d'),
+          tooltip: t('earn.apyWindow.toggleTooltip7d'),
         },
         {
           value: ApyWindowOptions.THIRTY_DAY,
           label: t('earn.apyWindow.label30d'),
-          tooltip: t('earn.apyWindow.tooltip30d'),
+          tooltip: t('earn.apyWindow.toggleTooltip30d'),
         },
       ]}
       value={value}

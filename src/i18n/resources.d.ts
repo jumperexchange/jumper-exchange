@@ -144,8 +144,9 @@ export default interface Resources {
         apyLabel: 'APY ({{window}})';
         label30d: '30d';
         label7d: '7d';
-        tooltip30d: 'Average APY over the last 30 days';
-        tooltip7d: 'Average APY over the last 7 days';
+        toggleTooltip30d: 'Use 30 days window APY';
+        toggleTooltip7d: 'Use 7 day window APY';
+        tooltip: 'Expected yearly return rate of the tokens invested, incl. temporary rewards.';
         unknown: 'Unknown';
       };
       copy: {

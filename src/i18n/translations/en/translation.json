@@ -565,8 +565,9 @@
     "apyWindow": {
       "label7d": "7d",
       "label30d": "30d",
-      "tooltip7d": "Average APY over the last 7 days",
-      "tooltip30d": "Average APY over the last 30 days",
+      "tooltip": "Expected yearly return rate of the tokens invested, incl. temporary rewards.",
+      "toggleTooltip7d": "Use 7 day window APY",
+      "toggleTooltip30d": "Use 30 days window APY",
       "apyLabel": "APY ({{window}})",
       "unknown": "Unknown"
     },
