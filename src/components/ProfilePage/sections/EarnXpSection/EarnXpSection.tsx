@@ -17,8 +17,10 @@ import { useMissionsInfinite } from 'src/hooks/useMissionsInfinite';
 import { ProfileContext } from 'src/providers/ProfileProvider';
 import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
 import { sectionTabsSx } from '../Section.style';
+import { AchievementCardSkeleton } from '../YourAchievementsSection/AchievementCardSkeleton';
 import { MissionXpCard } from './MissionXpCard';
 import {
+  ActivitySkeletonGrid,
   earnXpCardSx,
   HeaderDivider,
   HeaderGroup,
@@ -39,6 +41,10 @@ enum EarnXpTab {
 // Skeleton placeholders shown while the first page of missions loads; matches
 // the 3-up carousel layout.
 const SKELETON_COUNT = 3;
+
+// Activity skeletons match the 4-up carousel and the four ongoing activity
+// categories (swap / earn / bridge / chain).
+const ACTIVITY_SKELETON_COUNT = 4;
 
 export const EarnXpSection = () => {
   const { t } = useTranslation();
@@ -138,10 +144,11 @@ export const EarnXpSection = () => {
             </SectionCarousel>
           )
         ) : isOngoingLoading ? (
-          <BaseSurfaceSkeleton
-            variant="rounded"
-            sx={(theme) => ({ width: '100%', height: theme.spacing(36) })}
-          />
+          <ActivitySkeletonGrid>
+            {Array.from({ length: ACTIVITY_SKELETON_COUNT }).map((_, index) => (
+              <AchievementCardSkeleton key={index} />
+            ))}
+          </ActivitySkeletonGrid>
         ) : (
           <>
             <SectionCarousel maxSlidesPerView={4}>
