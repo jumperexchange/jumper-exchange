@@ -17,6 +17,8 @@ import { PortfolioTransactions } from './PortfolioTransactions/PortfolioTransact
 import { PortfolioTransactionPagination } from './PortfolioTransactions/PortfolioTransactionPagination';
 import { PortfolioViewBarTab } from '@/components/PortfolioFilterBar/types';
 import { useEffect } from 'react';
+import { AB_TEST_NAME } from '@/const/abtests';
+import { useABTest } from '@/hooks/useABTest';
 
 const PortfolioContentSectionInner = () => {
   const [tab, setTab] = useQueryState(
@@ -33,11 +35,23 @@ const PortfolioContentSectionInner = () => {
   } = useHoldingsFiltering();
   const { account } = useAccount();
   const { setIsActive } = useTransactionFiltering();
+  const transactionFlag = useABTest({
+    feature: AB_TEST_NAME.PORTFOLIO_TRANSACTIONS,
+  });
+  const areTransactionsEnabled =
+    transactionFlag.isEnabled &&
+    (transactionFlag.value === true || transactionFlag.value === 'test');
 
   const isDisconnected = !account.isConnected;
   const isLoading = balancesIsLoading || positionsIsLoading;
   const isEmpty = balancesIsEmpty && positionsIsEmpty;
   const isDisabled = isDisconnected || (isEmpty && !isLoading);
+
+  useEffect(() => {
+    if (tab === PortfolioViewBarTab.TRANSACTIONS && !areTransactionsEnabled) {
+      setTab(PortfolioViewBarTab.HOLDINGS);
+    }
+  }, [tab, areTransactionsEnabled, setTab]);
 
   useEffect(() => {
     setIsActive(tab === PortfolioViewBarTab.TRANSACTIONS);
@@ -48,6 +62,7 @@ const PortfolioContentSectionInner = () => {
       <SectionCard>
         <PortfolioFilterBar
           isDisabled={isDisabled}
+          areTransactionsEnabled={areTransactionsEnabled}
           value={tab}
           onChange={setTab}
         />
