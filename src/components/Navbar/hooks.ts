@@ -1,8 +1,11 @@
 'use client';
 
 import { useMemo } from 'react';
+import { getLevelBasedOnPoints } from 'src/components/ProfilePage/utils/getLevelBasedOnPoints';
+import { getLevelProgress } from 'src/components/ProfilePage/utils/getLevelProgress';
+import { usePerks } from 'src/hooks/perks/usePerks';
+import { useUnlockedPerks } from 'src/hooks/perks/useUnlockedPerks';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
-import { useWalletAddressImg } from 'src/hooks/useAddressImg';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useChains } from '@/hooks/useChains';
 import { useEnsName } from 'wagmi';
@@ -22,18 +25,18 @@ import {
 import { useABTest } from '@/hooks/useABTest';
 import { AB_TEST_NAME } from '@/const/abtests';
 
-export const useLevelDisplayData = () => {
+export const usePassDisplayData = () => {
   const activeAccount = useActiveAccountByChainType();
-  const imageUrl = useWalletAddressImg({
-    userAddress: activeAccount?.address,
-  });
-  const { level, isLoading } = useLoyaltyPass(activeAccount?.address);
+  const { points, isLoading } = useLoyaltyPass(activeAccount?.address);
+  const { perks, isLoading: arePerksLoading } = usePerks();
+  const { unlockedPerks } = useUnlockedPerks(perks, activeAccount?.address);
+  const levelData = getLevelBasedOnPoints(points);
 
   return {
-    isLoading,
-    imageAlt: activeAccount?.address,
-    imageUrl,
-    value: level,
+    progress: getLevelProgress(points, levelData),
+    unlockedPerksCount: unlockedPerks.length,
+    points,
+    isLoading: isLoading || arePerksLoading,
   };
 };
 

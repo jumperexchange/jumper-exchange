@@ -3,6 +3,8 @@ import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { ProgressRing } from '@/components/core/ProgressRing/ProgressRing';
+import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import type { ActivityRewardType } from 'src/hooks/achievements/useActivityRewards';
 import type { OngoingActivity } from 'src/hooks/achievements/useOngoingActivity';
 import { formatDateLocalized } from 'src/utils/formatDateLocalized';
@@ -15,7 +17,6 @@ import {
   TileImage,
   TileImagePlaceholder,
 } from '../Section.style';
-import { TierProgressRing } from './TierProgressRing';
 
 interface OngoingActivityCardProps {
   activity: OngoingActivity;
@@ -90,7 +91,14 @@ export const OngoingActivityCard: FC<OngoingActivityCardProps> = ({
             variant={BadgeVariant.Alpha}
             size={BadgeSize.MD}
           />
-          <TierProgressRing progress={activity.progress} label={ringLabel} />
+          <Tooltip title={ringLabel} arrow placement="top">
+            <ProgressRing
+              progress={activity.progress}
+              sx={(theme) => ({
+                color: (theme.vars || theme).palette.statusSuccessFg,
+              })}
+            />
+          </Tooltip>
         </TileFooterRow>
       </TileContent>
     </AchievementTile>
