@@ -58,12 +58,7 @@ export const XpStat = styled(Box)(({ theme }) => ({
   flexShrink: 0,
 }));
 
-// Placeholder while the Activity tab has no data source yet; matches the
-// mission card height so switching tabs doesn't jump the layout.
-export const ActivityPlaceholder = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  minHeight: theme.spacing(36),
+export const outstandingGoalsSx: SxProps<Theme> = {
   textAlign: 'center',
-}));
+  width: '100%',
+};
