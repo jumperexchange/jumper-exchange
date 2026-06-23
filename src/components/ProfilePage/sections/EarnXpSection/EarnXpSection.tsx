@@ -107,10 +107,11 @@ export const EarnXpSection = () => {
             <XpStat>
               <XPIcon />
               <Typography variant="bodySmall" color="textSecondary">
-                <Typography component="span" variant="bodySmallStrong">
-                  {t('profile_page.earnXp.xpAmount', { xp: earnedXP })}
-                </Typography>{' '}
-                {t('profile_page.earnXp.xpEarned')}
+                <Trans
+                  i18nKey="profile_page.earnXp.xpEarnedMessage"
+                  values={{ xp: earnedXP }}
+                  t={t}
+                />
               </Typography>
             </XpStat>
           )}

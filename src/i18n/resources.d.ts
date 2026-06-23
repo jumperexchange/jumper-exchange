@@ -1019,9 +1019,8 @@ export default interface Resources {
           missions: 'Missions';
         };
         title: 'Earn XP';
-        xpAmount: '{{xp}} XP';
         xpAvailable: '{{xp}} XP available';
-        xpEarned: 'earned so far this month';
+        xpEarnedMessage: '<strong>{{xp}} XP</strong> earned so far this month';
       };
       joined: 'Joined {{date}}';
       jumperPass: 'Jumper Pass';
@@ -1055,6 +1054,9 @@ export default interface Resources {
         previous: 'Previous';
       };
       shareProfile: 'Share profile';
+      tooltips: {
+        ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
+      };
       unlocked: 'Unlocked';
       unlockedPerks: {
         count_one: 'You have {{count}} unlocked perk';
