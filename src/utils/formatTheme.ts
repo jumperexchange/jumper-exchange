@@ -109,6 +109,8 @@ export function formatConfig(
     hasThemeModeSwitch: customization?.hasThemeModeSwitch ?? true,
     hasBlurredNavigation: customization?.hasBlurredNavigation ?? false,
     hasBackgroundGradient: customization?.hasBackgroundGradient ?? false,
+    allowFeatureCardBackground:
+      customization?.allowFeatureCardBackground ?? true,
     canvasBackground: resolveCanvasBackgroundConfig(
       customization?.canvasBackground,
       backgroundColor,
