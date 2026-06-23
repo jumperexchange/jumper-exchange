@@ -1,13 +1,10 @@
-import { Widgets } from '@/components/Widgets/Widgets';
-import { Widget } from '@/components/Widgets/Widget';
-import { MainWidgetContainer } from 'src/components/Containers/MainWidgetContainer';
+import Box from '@mui/material/Box';
+import { ExchangePageContent } from '@/app/ui/widget/ExchangePageContent';
 
 export default async function Page() {
-  const variant = 'default'; // exchange
   return (
-    <MainWidgetContainer>
-      <Widget activeTheme={variant} starterVariant={variant} />
-      <Widgets widgetVariant={variant} />
-    </MainWidgetContainer>
+    <Box sx={{ paddingBottom: { xs: 6, sm: 0 } }}>
+      <ExchangePageContent />
+    </Box>
   );
 }

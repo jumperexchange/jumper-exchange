@@ -8,6 +8,7 @@ import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeO
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
+import { useMainPaths } from '@/hooks/useMainPaths';
 import dynamic from 'next/dynamic';
 import { AlertBannerWrapper } from './AlertBannerWrapper';
 
@@ -31,10 +32,11 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
     useWelcomeScreen();
+  const { isMainPaths } = useMainPaths();
 
   useEffect(() => {
     const element = announcementBannersRef.current;
-    if (!element || !welcomeScreenClosed) {
+    if (!element || !welcomeScreenClosed || isMainPaths) {
       return;
     }
 
@@ -51,7 +53,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
       resizeObserver.disconnect();
       setAnnouncementBannerHeight(0);
     };
-  }, [welcomeScreenClosed]);
+  }, [welcomeScreenClosed, isMainPaths]);
 
   useEffect(() => {
     sdk.actions.ready();
@@ -77,13 +79,28 @@ const App = ({ children }: { children: React.ReactNode }) => {
           md: `calc(100dvh - ${HeaderHeight.MD}px)`,
         },
       }}
+      contentSx={
+        isMainPaths && welcomeScreenClosed
+          ? {
+              height: '100%',
+              minHeight: 0,
+              overflow: 'auto',
+            }
+          : isMainPaths && !welcomeScreenClosed
+            ? {
+                overflow: 'visible',
+              }
+            : undefined
+      }
       leftSideContent={
-        welcomeScreenClosed && (
+        welcomeScreenClosed &&
+        !isMainPaths && (
           <VerticalTabsWrapper marginTop={announcementBannerHeight} />
         )
       }
+      fullWidthGlowEffect={isMainPaths}
     >
-      {welcomeScreenClosed && (
+      {welcomeScreenClosed && !isMainPaths && (
         <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
