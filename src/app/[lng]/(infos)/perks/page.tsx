@@ -5,9 +5,6 @@ import { PerksPage } from 'src/components/PerksPage/PerksPage';
 import { PerksPageSkeleton } from 'src/components/PerksPage/PerksPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 
-// The perks hub paginates client-side, so fetch the full set up front.
-const PERKS_PAGE_SIZE = 100;
-
 export const metadata: Metadata = {
   title: 'Perks | Jumper',
   description:
@@ -18,10 +15,18 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  // Fetch the total count first, then request every perk in a single follow-up
+  // call so the hub never silently caps as more perks are added.
+  const { data: countResponse } = await getPerks({
+    page: 1,
+    pageSize: 1,
+    withCount: true,
+  });
+  const total = countResponse.meta.pagination.total;
+
   const { data: perksResponse } = await getPerks({
     page: 1,
-    pageSize: PERKS_PAGE_SIZE,
-    withCount: true,
+    pageSize: Math.max(total, 1),
   });
 
   return (
