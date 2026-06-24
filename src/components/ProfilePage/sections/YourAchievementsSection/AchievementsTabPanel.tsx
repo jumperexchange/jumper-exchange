@@ -10,6 +10,7 @@ import {
   AchievementsGrid,
   paginationSx,
 } from './YourAchievementsSection.styles';
+import { useMediaQuery } from '@mui/material';
 
 // 2 rows of 4 cards at the desktop content width.
 const PAGE_SIZE = 8;
@@ -46,6 +47,7 @@ export const AchievementsTabPanel = <T,>({
   skeleton = <AchievementCardSkeleton />,
 }: AchievementsTabPanelProps<T>) => {
   const [page, setPage] = useState(0);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   if (isLoading) {
     return (
@@ -79,7 +81,12 @@ export const AchievementsTabPanel = <T,>({
       </AchievementsGrid>
       {pageCount > 1 && (
         <Pagination
-          variant={PaginationVariant.AllPages}
+          variant={
+            isMobile
+              ? PaginationVariant.WindowedPages
+              : PaginationVariant.AllPages
+          }
+          maxVisiblePages={3}
           page={page}
           setPage={setPage}
           pagination={{
