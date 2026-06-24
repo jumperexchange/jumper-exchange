@@ -30,6 +30,7 @@ import WidgetSelectionImage from 'src/components/ImageGeneration/WidgetSelection
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { isNextInternalError } from 'src/utils/image-generation/helpers';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import {
   widgetSelectionSchema,
@@ -68,31 +69,32 @@ export async function GET(request: Request) {
     }) as CSSProperties;
 
     return new ImageResponse(
-      (
-        <div style={imageStyle}>
-          <img
-            alt="Widget Selection Example"
-            width={'100%'}
-            height={'100%'}
-            style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-selection-${params.theme}.png`}
-          />
-          <WidgetSelectionImage
-            height={WIDGET_IMAGE_WIDTH}
-            width={WIDGET_IMAGE_HEIGHT}
-            fromToken={fromTokenData}
-            toToken={toTokenData}
-            fromChain={fromChain}
-            toChain={toChain}
-            amount={params.amount}
-            theme={params.theme}
-            highlighted={params.highlighted as HighlightedAreas}
-          />
-        </div>
-      ),
+      <div style={imageStyle}>
+        <img
+          alt="Widget Selection Example"
+          width={'100%'}
+          height={'100%'}
+          style={imageStyle}
+          src={`${getSiteUrl()}/widget/widget-selection-${params.theme}.png`}
+        />
+        <WidgetSelectionImage
+          height={WIDGET_IMAGE_WIDTH}
+          width={WIDGET_IMAGE_HEIGHT}
+          fromToken={fromTokenData}
+          toToken={toTokenData}
+          fromChain={fromChain}
+          toChain={toChain}
+          amount={params.amount}
+          theme={params.theme}
+          highlighted={params.highlighted as HighlightedAreas}
+        />
+      </div>,
       options,
     );
   } catch (error) {
+    if (isNextInternalError(error)) {
+      throw error;
+    }
     console.error('Error generating widget selection image:', error);
     return new Response('Internal server error', { status: 500 });
   }

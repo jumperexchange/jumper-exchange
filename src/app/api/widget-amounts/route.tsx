@@ -25,6 +25,7 @@ import WidgetAmountsImage from 'src/components/ImageGeneration/WidgetAmountImage
 import { getSiteUrl } from 'src/const/urls';
 import { getChainsQuery } from 'src/hooks/useChains';
 import { fetchChainTokensForPage } from '@/app/lib/tokens/cachedTokensFetch';
+import { isNextInternalError } from 'src/utils/image-generation/helpers';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
 import {
@@ -84,6 +85,9 @@ export async function GET(request: Request) {
       options,
     );
   } catch (error) {
+    if (isNextInternalError(error)) {
+      throw error;
+    }
     console.error('Error generating widget amounts image:', error);
     return new Response('Internal server error', { status: 500 });
   }

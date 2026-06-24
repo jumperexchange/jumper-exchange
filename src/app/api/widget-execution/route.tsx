@@ -31,6 +31,7 @@ import WidgetExecutionImage from 'src/components/ImageGeneration/WidgetExecution
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { isNextInternalError } from 'src/utils/image-generation/helpers';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import {
   widgetExecutionSchema,
@@ -77,32 +78,33 @@ export async function GET(request: Request) {
     }) as CSSProperties;
 
     return new ImageResponse(
-      (
-        <div style={imageStyle}>
-          <img
-            alt="Widget Example"
-            width={'100%'}
-            height={'100%'}
-            style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-execution-${params.theme}.png`}
-          />
-          <WidgetExecutionImage
-            height={WIDGET_IMAGE_WIDTH}
-            isSwap={params.isSwap}
-            width={WIDGET_IMAGE_HEIGHT}
-            fromToken={fromTokenData}
-            toToken={toTokenData}
-            fromChain={fromChain}
-            theme={params.theme}
-            toChain={toChain}
-            amount={params.amount}
-            highlighted={params.highlighted as HighlightedAreas}
-          />
-        </div>
-      ),
+      <div style={imageStyle}>
+        <img
+          alt="Widget Example"
+          width={'100%'}
+          height={'100%'}
+          style={imageStyle}
+          src={`${getSiteUrl()}/widget/widget-execution-${params.theme}.png`}
+        />
+        <WidgetExecutionImage
+          height={WIDGET_IMAGE_WIDTH}
+          isSwap={params.isSwap}
+          width={WIDGET_IMAGE_HEIGHT}
+          fromToken={fromTokenData}
+          toToken={toTokenData}
+          fromChain={fromChain}
+          theme={params.theme}
+          toChain={toChain}
+          amount={params.amount}
+          highlighted={params.highlighted as HighlightedAreas}
+        />
+      </div>,
       options,
     );
   } catch (error) {
+    if (isNextInternalError(error)) {
+      throw error;
+    }
     console.error('Error generating widget execution image:', error);
     return new Response('Internal server error', { status: 500 });
   }

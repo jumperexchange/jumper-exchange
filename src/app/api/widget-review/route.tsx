@@ -29,6 +29,7 @@ import WidgetReviewImage from 'src/components/ImageGeneration/WidgetReviewImage'
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { isNextInternalError } from 'src/utils/image-generation/helpers';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import {
   widgetReviewSchema,
@@ -67,31 +68,32 @@ export async function GET(request: Request) {
     }) as CSSProperties;
 
     return new ImageResponse(
-      (
-        <div style={imageStyle}>
-          <img
-            alt="Widget Review Example"
-            width={'100%'}
-            height={'100%'}
-            style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-review-bridge-${params.theme}.png`}
-          />
-          <WidgetReviewImage
-            height={WIDGET_IMAGE_WIDTH}
-            width={WIDGET_IMAGE_HEIGHT}
-            fromToken={fromTokenData}
-            toToken={toTokenData}
-            fromChain={fromChain}
-            toChain={toChain}
-            amount={params.amount}
-            isSwap={params.isSwap}
-            theme={params.theme}
-          />
-        </div>
-      ),
+      <div style={imageStyle}>
+        <img
+          alt="Widget Review Example"
+          width={'100%'}
+          height={'100%'}
+          style={imageStyle}
+          src={`${getSiteUrl()}/widget/widget-review-bridge-${params.theme}.png`}
+        />
+        <WidgetReviewImage
+          height={WIDGET_IMAGE_WIDTH}
+          width={WIDGET_IMAGE_HEIGHT}
+          fromToken={fromTokenData}
+          toToken={toTokenData}
+          fromChain={fromChain}
+          toChain={toChain}
+          amount={params.amount}
+          isSwap={params.isSwap}
+          theme={params.theme}
+        />
+      </div>,
       options,
     );
   } catch (error) {
+    if (isNextInternalError(error)) {
+      throw error;
+    }
     console.error('Error generating widget review image:', error);
     return new Response('Internal server error', { status: 500 });
   }
