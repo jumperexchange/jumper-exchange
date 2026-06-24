@@ -1053,6 +1053,11 @@ export default interface Resources {
           xpAvailable: '{{xp}} XP available';
         };
         description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
+        noMissions: {
+          caption: 'Check back soon for new missions to earn XP and unlock more perks.';
+          cta: 'Open Mission Hub';
+          description: 'No missions available right now.';
+        };
         openHub: 'Open Mission Hub';
         tabs: {
           activity: 'Activity';

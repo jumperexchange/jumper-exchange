@@ -4,21 +4,25 @@ import Typography from '@mui/material/Typography';
 import { useContext, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionCard } from 'src/components/Cards/SectionCard/SectionCard';
-import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
+import { Button } from '@/components/core/buttons/Button/Button';
 import {
   HorizontalTabs,
   type HorizontalTabItem,
 } from 'src/components/HorizontalTabs/HorizontalTabs';
 import { HorizontalTabSize } from 'src/components/HorizontalTabs/HorizontalTabs.style';
 import { XPIcon } from 'src/components/illustrations/XPIcon';
+import { Link } from '@/components/Link/Link';
+import { AppPaths } from 'src/const/urls';
 import { useActivityRewards } from 'src/hooks/achievements/useActivityRewards';
 import { useOngoingActivity } from 'src/hooks/achievements/useOngoingActivity';
 import { useMissionsInfinite } from 'src/hooks/useMissionsInfinite';
 import { ProfileContext } from 'src/providers/ProfileProvider';
+import { NoDataPlaceholder } from '../../components/NoDataPlaceholder/NoDataPlaceholder';
 import { SectionCarousel } from '../../components/SectionCarousel/SectionCarousel';
 import { sectionTabsSx } from '../Section.style';
 import { AchievementCardSkeleton } from '../YourAchievementsSection/AchievementCardSkeleton';
 import { MissionXpCard } from './MissionXpCard';
+import { MissionXpCardSkeleton } from './MissionXpCardSkeleton';
 import {
   ActivitySkeletonGrid,
   earnXpCardSx,
@@ -26,6 +30,7 @@ import {
   HeaderGroup,
   HeaderRow,
   HeaderText,
+  MissionSkeletonGrid,
   outstandingGoalsSx,
   TabBarRow,
   TabsGroup,
@@ -92,6 +97,9 @@ export const EarnXpSection = () => {
               {t('profile_page.earnXp.description')}
             </Typography>
           </HeaderText>
+          <Button component={Link} href={AppPaths.Missions}>
+            {t('profile_page.earnXp.openHub')}
+          </Button>
         </HeaderRow>
         <HeaderDivider />
       </HeaderGroup>
@@ -121,24 +129,26 @@ export const EarnXpSection = () => {
         </TabBarRow>
 
         {activeTab === EarnXpTab.Missions ? (
-          (isLoading || missions.length > 0) && (
+          isLoading ? (
+            <MissionSkeletonGrid>
+              {Array.from({ length: SKELETON_COUNT }).map((_, index) => (
+                <MissionXpCardSkeleton key={index} />
+              ))}
+            </MissionSkeletonGrid>
+          ) : missions.length > 0 ? (
             <SectionCarousel maxSlidesPerView={3}>
-              {isLoading
-                ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
-                    <BaseSurfaceSkeleton
-                      key={index}
-                      variant="rounded"
-                      sx={(theme) => ({
-                        width: '100%',
-                        height: theme.spacing(35.5),
-                        borderRadius: `${theme.shape.radius12}px`,
-                      })}
-                    />
-                  ))
-                : missions.map((mission) => (
-                    <MissionXpCard key={mission.id} mission={mission} />
-                  ))}
+              {missions.map((mission) => (
+                <MissionXpCard key={mission.id} mission={mission} />
+              ))}
             </SectionCarousel>
+          ) : (
+            <NoDataPlaceholder
+              heroImage="/mission-empty-hero.png"
+              description={t('profile_page.earnXp.noMissions.description')}
+              caption={t('profile_page.earnXp.noMissions.caption')}
+              ctaText={t('profile_page.earnXp.noMissions.cta')}
+              ctaLink={AppPaths.Missions}
+            />
           )
         ) : isOngoingLoading ? (
           <ActivitySkeletonGrid>

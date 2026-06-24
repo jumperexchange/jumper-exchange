@@ -337,6 +337,11 @@
         "missions": "Missions",
         "activity": "Activity"
       },
+      "noMissions": {
+        "description": "No missions available right now.",
+        "caption": "Check back soon for new missions to earn XP and unlock more perks.",
+        "cta": "Open Mission Hub"
+      },
       "activity": {
         "types": {
           "swap_oor": "Swap_oor",

@@ -8,6 +8,10 @@ import { Link } from '@/components/Link/Link';
 import { PerkClaimModalProvider } from '@/components/ProfilePage/components/ClaimPerkModal/PerkClaimModalProvider';
 import { SectionCarousel } from '@/components/ProfilePage/components/SectionCarousel/SectionCarousel';
 import { AppPaths } from '@/const/urls';
+import {
+  isClaimedPerk,
+  useGetClaimedPerks,
+} from '@/hooks/perks/useGetClaimedPerks';
 import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import type { PerksDataAttributes } from '@/types/strapi';
@@ -28,14 +32,28 @@ interface UnlockedPerksSectionProps {
 
 export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
   const { t } = useTranslation();
-  const { isLoading: isWalletLoading } = useContext(ProfileContext);
-  const { unlockedPerks, isLoading } = useUnlockedPerks(perks);
+  const { walletAddress, isLoading: isWalletLoading } =
+    useContext(ProfileContext);
+  const { unlockedPerks, isLoading: isPerksLoading } = useUnlockedPerks(perks);
+  const { data: claimedPerks, isLoading: isClaimedLoading } =
+    useGetClaimedPerks(walletAddress);
 
-  if (isWalletLoading || isLoading) {
+  if (
+    isWalletLoading ||
+    isPerksLoading ||
+    (!!walletAddress && isClaimedLoading)
+  ) {
     return null;
   }
 
-  const isEmpty = unlockedPerks.length === 0;
+  // This section is for perks that can still be claimed, so drop any the wallet
+  // has already claimed (those live in the Perks Hub's Claimed tab).
+  const claimedIds = new Set((claimedPerks ?? []).map((claim) => claim.perkId));
+  const claimablePerks = unlockedPerks.filter(
+    (perk) => !isClaimedPerk(perk, claimedIds),
+  );
+
+  const isEmpty = claimablePerks.length === 0;
 
   return (
     <PerkClaimModalProvider>
@@ -57,7 +75,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
               <InfoDivider />
               <Typography variant="bodySmallParagraph" color="textSecondary">
                 {t('profile_page.unlockedPerks.count', {
-                  count: unlockedPerks.length,
+                  count: claimablePerks.length,
                 })}
               </Typography>
             </InfoBottom>
@@ -68,7 +86,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
           <UnlockedPerksEmpty />
         ) : (
           <SectionCarousel>
-            {unlockedPerks.map((perk) => (
+            {claimablePerks.map((perk) => (
               <PerkCard key={perk.id} perk={perk} status="unlocked" />
             ))}
           </SectionCarousel>
