@@ -26,10 +26,14 @@ import { useABTest } from '@/hooks/useABTest';
 import { AB_TEST_NAME } from '@/const/abtests';
 
 export const usePassDisplayData = () => {
-  const activeAccount = useActiveAccountByChainType();
-  const { points, isLoading } = useLoyaltyPass(activeAccount?.address);
+  // Use the primary connected account (same source as ProfileContext /
+  // JumperPassCard) so the navbar's perk count matches the Jumper Pass card.
+  // useActiveAccountByChainType can resolve to a different (e.g. non-EVM)
+  // account than the loyalty pass is keyed on, which reported 0 perks.
+  const { account } = useAccount();
+  const { points, isLoading } = useLoyaltyPass(account?.address);
   const { perks, isLoading: arePerksLoading } = usePerks();
-  const { unlockedPerks } = useUnlockedPerks(perks, activeAccount?.address);
+  const { unlockedPerks } = useUnlockedPerks(perks, account?.address);
   const levelData = getLevelBasedOnPoints(points);
 
   return {
