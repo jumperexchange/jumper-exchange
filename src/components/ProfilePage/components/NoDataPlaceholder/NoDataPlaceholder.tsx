@@ -15,7 +15,19 @@ import { Link } from 'src/components/Link/Link';
 import { AppPaths } from 'src/const/urls';
 import { getResolvedMode } from 'src/utils/image-generation/helpers';
 
-const DEFAULT_HERO = '/perks-empty-hero';
+const DEFAULT_HERO = '/perks-empty-hero.png';
+
+// Insert the theme suffix before the file extension so a themed illustration
+// can use any format, e.g. `/foo.png` -> `/foo-dark.png`.
+const toThemedHeroSrc = (
+  hero: string,
+  mode: ReturnType<typeof getResolvedMode>,
+) => {
+  const lastDot = hero.lastIndexOf('.');
+  return lastDot === -1
+    ? `${hero}-${mode}`
+    : `${hero.slice(0, lastDot)}-${mode}${hero.slice(lastDot)}`;
+};
 
 interface NoDataPlaceholderProps {
   description: string;
@@ -24,7 +36,8 @@ interface NoDataPlaceholderProps {
   ctaLink?: string;
   // Static, theme-agnostic illustration (full path).
   imageUrl?: string;
-  // Base name of a themed pair; resolves to `<heroImage>-light|dark.png`.
+  // Themed illustration including its extension; the theme suffix is inserted
+  // before the extension, e.g. `/foo.png` resolves to `/foo-light.png`.
   heroImage?: string;
 }
 
@@ -39,7 +52,7 @@ export const NoDataPlaceholder: FC<NoDataPlaceholderProps> = ({
   const { mode } = useColorScheme();
   const resolvedMode = getResolvedMode(mode);
   const imageSrc =
-    imageUrl ?? `${heroImage ?? DEFAULT_HERO}-${resolvedMode}.png`;
+    imageUrl ?? toThemedHeroSrc(heroImage ?? DEFAULT_HERO, resolvedMode);
 
   return (
     <NoDataPlaceholderCard>

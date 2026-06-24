@@ -316,7 +316,11 @@
       "description": "Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.",
       "openHub": "Open Perks Hub",
       "count_one": "You have {{count}} unlocked perk",
-      "count_other": "You have {{count}} unlocked perks"
+      "count_other": "You have {{count}} unlocked perks",
+      "empty": {
+        "title": "Out of Perks!",
+        "description": "Looks like there are no perks available right now. Check back later!"
+      }
     },
     "sectionCarousel": {
       "previous": "Previous",
@@ -389,6 +393,30 @@
     "levelWithValue": "Level {{level, number}}",
     "tooltips": {
       "ongoingAchievement": "This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month."
+    }
+  },
+  "perks_page": {
+    "tabs": {
+      "all": "All Perks",
+      "unlocked": "Unlocked",
+      "claimed": "Claimed"
+    },
+    "empty": {
+      "all": {
+        "description": "No perks available right now.",
+        "caption": "Check back soon for new perks from Jumper partners.",
+        "cta": "Explore missions"
+      },
+      "unlocked": {
+        "description": "You haven't unlocked any perks yet.",
+        "caption": "Earn XP by completing missions and using Jumper to level up your Pass and unlock perks.",
+        "cta": "Earn XP"
+      },
+      "claimed": {
+        "description": "You haven't claimed any perks yet.",
+        "caption": "Once you unlock a perk, claim it here to start enjoying your rewards.",
+        "cta": "Earn XP"
+      }
     }
   },
   "campaign": {

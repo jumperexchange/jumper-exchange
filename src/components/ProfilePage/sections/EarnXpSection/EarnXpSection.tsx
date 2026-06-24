@@ -85,10 +85,7 @@ export const EarnXpSection = () => {
       <HeaderGroup>
         <HeaderRow>
           <HeaderText>
-            <Typography
-              variant="urbanistTitleXSmall"
-              sx={{ color: 'accent1.main' }}
-            >
+            <Typography variant="titleXSmall" sx={{ color: 'accent1.main' }}>
               {t('profile_page.earnXp.title')}
             </Typography>
             <Typography variant="bodyMediumParagraph" color="textSecondary">

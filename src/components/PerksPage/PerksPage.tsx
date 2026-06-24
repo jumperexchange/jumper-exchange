@@ -1,0 +1,27 @@
+'use client';
+
+import { useAccount } from '@lifi/wallet-management';
+import { PageContainer } from '@/components/Containers/PageContainer';
+import { ProfileProvider } from '@/providers/ProfileProvider';
+import type { PerksDataAttributes } from '@/types/strapi';
+import { PerksSection } from './PerksSection';
+
+interface PerksPageProps {
+  perks: PerksDataAttributes[];
+}
+
+export const PerksPage = ({ perks }: PerksPageProps) => {
+  const { account } = useAccount();
+
+  return (
+    <ProfileProvider
+      walletAddress={account?.address || ''}
+      // @Note these flags are not correctly set in @lifi/wallet-management
+      isLoading={account?.isConnecting || account?.isReconnecting}
+    >
+      <PageContainer>
+        <PerksSection perks={perks} />
+      </PageContainer>
+    </ProfileProvider>
+  );
+};

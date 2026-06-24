@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { CarouselCard } from '@/components/Cards/CarouselCard/CarouselCard';
+import { usePerkClaimModal } from '@/components/ProfilePage/components/ClaimPerkModal/PerkClaimModalProvider';
 import { useFormatDisplayPerkData } from '@/hooks/perks/useFormatDisplayPerkData';
 import type { PerksDataAttributes } from '@/types/strapi';
 
@@ -19,8 +20,13 @@ interface PerkCardProps {
 
 export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
   const { t } = useTranslation();
+  const { openClaimModal } = usePerkClaimModal();
   const { title, description, imageUrl, perkItems } =
     useFormatDisplayPerkData(perk);
+
+  // Unlocked perks open the claim flow; claimed perks re-open it to view the
+  // "Perk claimed!" details. Locked perks stay inert.
+  const isActionable = status === 'unlocked' || status === 'claimed';
 
   const statusBadge: Record<
     PerkCardStatus,
@@ -45,7 +51,7 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
 
   const badge = statusBadge[status];
 
-  return (
+  const card = (
     <CarouselCard
       title={title}
       description={description}
@@ -72,5 +78,35 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
         </>
       }
     />
+  );
+
+  if (!isActionable) {
+    return card;
+  }
+
+  return (
+    <Box
+      role="button"
+      tabIndex={0}
+      onClick={() => openClaimModal(perk)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openClaimModal(perk);
+        }
+      }}
+      sx={(theme) => ({
+        display: 'block',
+        width: '100%',
+        cursor: 'pointer',
+        borderRadius: `${theme.shape.radius12}px`,
+        '&:focus-visible': {
+          outline: `2px solid ${(theme.vars || theme).palette.primary.main}`,
+          outlineOffset: 2,
+        },
+      })}
+    >
+      {card}
+    </Box>
   );
 };
