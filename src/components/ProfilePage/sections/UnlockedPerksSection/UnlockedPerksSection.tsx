@@ -11,7 +11,7 @@ import { AppPaths } from '@/const/urls';
 import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import type { PerksDataAttributes } from '@/types/strapi';
-import { PerkCard } from './PerkCard';
+import { PerkCard } from '@/components/composite/cards/PerkCard/PerkCard';
 import { UnlockedPerksEmpty } from './UnlockedPerksEmpty';
 import {
   InfoBottom,

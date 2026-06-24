@@ -14,7 +14,7 @@ import { PerkClaimModalProvider } from '@/components/ProfilePage/components/Clai
 import {
   PerkCard,
   type PerkCardStatus,
-} from '@/components/ProfilePage/sections/UnlockedPerksSection/PerkCard';
+} from '@/components/composite/cards/PerkCard/PerkCard';
 import { AppPaths } from '@/const/urls';
 import { useGetClaimedPerks } from '@/hooks/perks/useGetClaimedPerks';
 import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
