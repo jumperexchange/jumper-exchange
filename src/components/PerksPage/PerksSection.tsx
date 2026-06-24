@@ -17,7 +17,10 @@ import {
   type PerkCardStatus,
 } from '@/components/composite/cards/PerkCard/PerkCard';
 import { AppPaths } from '@/const/urls';
-import { useGetClaimedPerks } from '@/hooks/perks/useGetClaimedPerks';
+import {
+  isClaimedPerk,
+  useGetClaimedPerks,
+} from '@/hooks/perks/useGetClaimedPerks';
 import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { ProfileContext } from '@/providers/ProfileProvider';
@@ -34,11 +37,6 @@ enum PerksTab {
 interface PerksSectionProps {
   perks: PerksDataAttributes[];
 }
-
-// Matches a perk against the backend's claimed list. Claims reference perks by
-// their Strapi `documentId`, with a fallback to the numeric id for safety.
-const isClaimed = (perk: PerksDataAttributes, claimedIds: Set<string>) =>
-  claimedIds.has(perk.documentId) || claimedIds.has(String(perk.id));
 
 export const PerksSection = ({ perks }: PerksSectionProps) => {
   const { t } = useTranslation();
@@ -63,7 +61,7 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
   );
 
   const getStatus = (perk: PerksDataAttributes): PerkCardStatus => {
-    if (isClaimed(perk, claimedIds)) {
+    if (isClaimedPerk(perk, claimedIds)) {
       return 'claimed';
     }
     return perk.UnlockLevel <= currentLevel ? 'unlocked' : 'locked';
@@ -80,7 +78,7 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
   const items: Record<PerksTab, PerksDataAttributes[]> = {
     [PerksTab.All]: lockedLast(perks),
     [PerksTab.Unlocked]: unlockedPerks,
-    [PerksTab.Claimed]: perks.filter((perk) => isClaimed(perk, claimedIds)),
+    [PerksTab.Claimed]: perks.filter((perk) => isClaimedPerk(perk, claimedIds)),
   };
 
   const tabs: HorizontalTabItem[] = [
