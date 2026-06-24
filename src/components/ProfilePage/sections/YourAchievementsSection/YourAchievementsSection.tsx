@@ -46,10 +46,7 @@ export const YourAchievementsSection = () => {
   return (
     <SectionCard sx={yourAchievementsCardSx}>
       <SectionHeader>
-        <Typography
-          variant="urbanistTitleXSmall"
-          sx={{ color: 'accent1.main' }}
-        >
+        <Typography variant="titleXSmall" sx={{ color: 'accent1.main' }}>
           {t('profile_page.yourAchievements.title')}
         </Typography>
         <Typography variant="bodyMediumParagraph" color="textSecondary">

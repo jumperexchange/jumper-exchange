@@ -44,7 +44,7 @@ export const RewardsSection = ({
         <RewardsSectionContentContainer>
           <RewardsSectionHeaderContainer>
             <Typography
-              variant="urbanistTitleXSmall"
+              variant="titleXSmall"
               sx={{ color: 'accent1.main', flexShrink: 0 }}
             >
               {t('profile_page.availableRewards')}

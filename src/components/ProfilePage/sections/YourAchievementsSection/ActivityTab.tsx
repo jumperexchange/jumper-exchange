@@ -23,7 +23,7 @@ export const ActivityTab = ({
       items={activities}
       isLoading={isWalletLoading || isLoading}
       emptyState={{
-        heroImage: '/activity-empty-hero',
+        heroImage: '/activity-empty-hero.png',
         description: t('profile_page.yourAchievements.noActivity.description'),
         caption: t('profile_page.yourAchievements.noActivity.caption'),
         ctaText: t('profile_page.yourAchievements.noActivity.cta'),

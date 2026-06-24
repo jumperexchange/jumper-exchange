@@ -31,6 +31,11 @@ export const InfoTop = styled(Box)(({ theme }) => ({
   gap: theme.spacing(1),
 }));
 
+export const openHubButtonSx: SxProps<Theme> = (theme: Theme) => ({
+  marginTop: theme.spacing(1),
+  alignSelf: 'flex-start',
+});
+
 export const InfoBottom = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
