@@ -3,7 +3,7 @@
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { PageContainer } from '@/components/Containers/PageContainer';
 import { AchievementsGrid } from '@/components/ProfilePage/sections/YourAchievementsSection/YourAchievementsSection.styles';
-import { PerkCardSkeleton } from './PerkCardSkeleton';
+import { PerkCardSkeleton } from '@/components/composite/cards/PerkCard/PerkCardSkeleton';
 import { perksSectionCardSx } from './PerksPage.styles';
 
 // One row of placeholder cards while the page streams in.

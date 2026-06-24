@@ -22,7 +22,7 @@ import { useUnlockedPerks } from '@/hooks/perks/useUnlockedPerks';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { ProfileContext } from '@/providers/ProfileProvider';
 import type { PerksDataAttributes } from '@/types/strapi';
-import { PerkCardSkeleton } from './PerkCardSkeleton';
+import { PerkCardSkeleton } from '@/components/composite/cards/PerkCard/PerkCardSkeleton';
 import { perksSectionCardSx } from './PerksPage.styles';
 
 enum PerksTab {
