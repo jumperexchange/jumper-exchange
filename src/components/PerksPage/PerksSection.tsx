@@ -1,6 +1,7 @@
 'use client';
 
-import { useContext, useMemo, useState } from 'react';
+import { parseAsStringEnum, useQueryState } from 'nuqs';
+import { useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import {
@@ -43,7 +44,11 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
   const { t } = useTranslation();
   const { walletAddress, isLoading: isWalletLoading } =
     useContext(ProfileContext);
-  const [activeTab, setActiveTab] = useState<string>(PerksTab.All);
+  // Persist the selected tab in the URL so it survives refresh and sharing.
+  const [activeTab, setActiveTab] = useQueryState(
+    'tab',
+    parseAsStringEnum(Object.values(PerksTab)).withDefault(PerksTab.All),
+  );
 
   const { level, isLoading: isLevelLoading } = useLoyaltyPass(walletAddress);
   const { data: claimedPerks, isLoading: isClaimedLoading } =
@@ -84,7 +89,7 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
     { label: t('perks_page.tabs.claimed'), value: PerksTab.Claimed },
   ];
 
-  const tab = activeTab as PerksTab;
+  const tab = activeTab;
 
   // Loading state for the per-card skeletons: wait on the connected wallet and,
   // once we have an address, on the level + claimed lookups that drive badges.
@@ -98,7 +103,7 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
         <HorizontalTabs
           tabs={tabs}
           value={activeTab}
-          onChange={(_, value) => setActiveTab(value)}
+          onChange={(_, value) => setActiveTab(value as PerksTab)}
           size={HorizontalTabSize.MD}
           sx={sectionTabsSx}
           id="perks-tabs"
