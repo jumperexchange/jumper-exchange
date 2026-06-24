@@ -114,7 +114,7 @@ export const PerksSection = ({ perks }: PerksSectionProps) => {
           isLoading={isLoading}
           skeleton={<PerkCardSkeleton />}
           emptyState={{
-            heroImage: '/perks-empty-hero',
+            heroImage: '/perks-empty-hero.png',
             description: t(`perks_page.empty.${tab}.description`),
             caption: t(`perks_page.empty.${tab}.caption`),
             ctaText: t(`perks_page.empty.${tab}.cta`),

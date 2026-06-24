@@ -23,7 +23,7 @@ export const MissionsTab = ({
       items={completedMissions}
       isLoading={isWalletLoading || isLoading}
       emptyState={{
-        heroImage: '/mission-empty-hero',
+        heroImage: '/mission-empty-hero.png',
         description: t('profile_page.yourAchievements.noMissions.description'),
         caption: t('profile_page.yourAchievements.noMissions.caption'),
         ctaText: t('profile_page.yourAchievements.noMissions.cta'),
