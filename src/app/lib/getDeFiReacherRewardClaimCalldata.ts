@@ -1,30 +1,19 @@
-interface DeFiReacherClaimArgs {
-  index: string;
-  account: string;
-  amount: string;
-  merkleProof: string[];
-}
+import type { JumperBackend } from '@/types/jumper-backend';
+import { makeClient } from './client';
 
-export interface DeFiReacherClaimCalldata {
-  calldata: string;
-  contractAddress: string;
-  chainId: number;
-  functionName: string;
-  args: DeFiReacherClaimArgs;
-}
+type CalldataHttpResponse = Awaited<
+  ReturnType<JumperBackend<unknown>['v1']['userRewardsControllerGetCalldataV1']>
+>;
+export type DeFiReacherClaimCalldata = CalldataHttpResponse['data'];
+
 export const getDeFiReacherRewardClaimCalldata = async (
   userAddress: string,
   campaignId: string,
 ): Promise<DeFiReacherClaimCalldata> => {
-  const response = await fetch(
-    `/api/rewards/defireacher/${encodeURIComponent(
-      userAddress,
-    )}/${encodeURIComponent(campaignId)}/calldata`,
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch DeFi Reacher calldata');
-  }
-
-  return response.json();
+  const client = makeClient();
+  const res = await client.v1.userRewardsControllerGetCalldataV1(userAddress, {
+    provider: 'defi-reacher',
+    campaignId,
+  });
+  return res.data;
 };

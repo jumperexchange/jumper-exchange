@@ -806,12 +806,6 @@ class PerkStrapiApi extends StrapiApi {
   }
 }
 
-class MerklRewardsStrapiApi extends StrapiApi {
-  constructor() {
-    super({ contentType: 'merkl-rewards' });
-  }
-}
-
 class AnnouncementStrapiApi extends StrapiApi {
   constructor() {
     super({ contentType: 'announcements' });
@@ -862,7 +856,6 @@ export {
   StrapiApi,
   TagStrapiApi,
   PerkStrapiApi,
-  MerklRewardsStrapiApi,
   AnnouncementStrapiApi,
   WalletAccessControlStrapiApi,
 };

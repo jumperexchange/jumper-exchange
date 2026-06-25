@@ -1,65 +1,63 @@
-import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
-import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
+import { getUserRewards } from '@/app/lib/getUserRewards';
+import { FIVE_MINUTES_MS, ONE_HOUR_MS } from '@/const/time';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokens } from '@/hooks/useTokens';
-import type { RewardItem } from '@/types/rewards';
+import type {
+  DeFiReacherReward,
+  MerklReward,
+  RewardItem,
+} from '@/types/rewards';
 import {
   createWalletToken,
   type PortfolioBalance,
   type WalletToken,
 } from '@/types/tokens';
-import type { MerklRewardsData } from 'src/types/strapi';
-import { fromMerklRewardsData } from '@/utils/rewards/rewardFilterAdapters';
+import { useQuery } from '@tanstack/react-query';
 import { orderBy } from 'lodash';
 import { useMemo } from 'react';
 import type { Address } from 'viem';
+import { isAddress } from 'viem';
 
 export const CLAIMABLE_MIN_AMOUNT_USD = 0.1;
 
-export type RewardItemWithBalance = RewardItem & {
-  balance: PortfolioBalance<WalletToken>;
-};
-
 interface UseAvailableRewardsProps {
   userAddress?: string;
-  merklRewardsData?: MerklRewardsData[];
+  jumperCampaignId?: string;
 }
 
 export const useAvailableRewards = ({
   userAddress,
-  merklRewardsData,
+  jumperCampaignId,
 }: UseAvailableRewardsProps) => {
-  const filterCriteria = useMemo(
-    () => fromMerklRewardsData(merklRewardsData),
-    [merklRewardsData],
-  );
+  const isValidAddress = !!userAddress && isAddress(userAddress);
 
   const {
-    availableRewards: merklAvailableRewards,
-    isSuccess: isMerklSuccess,
-    isLoading: isMerklLoading,
-  } = useMerklRewards({ userAddress, claimableOnly: true, filterCriteria });
-
-  const {
-    data: deFiReacherAvailableRewards = [],
-    isSuccess: isDeFiReacherSuccess,
-    isLoading: isDeFiReacherLoading,
-  } = useDeFiReacherRewards({ userAddress, filterCriteria });
+    data: availableRewards,
+    isSuccess,
+    isLoading,
+  } = useQuery({
+    queryKey: ['MerklUserRewards', userAddress, jumperCampaignId],
+    queryFn: () => getUserRewards(userAddress!, jumperCampaignId),
+    enabled: isValidAddress,
+    refetchInterval: ONE_HOUR_MS,
+    staleTime: FIVE_MINUTES_MS,
+    gcTime: ONE_HOUR_MS,
+    select: (res) =>
+      (res?.rewards ?? []) as (MerklReward | DeFiReacherReward)[],
+  });
 
   const { getToken } = useTokens();
   const { toRawAmount } = useTokenAmountInput();
 
-  const rewards = useMemo((): RewardItemWithBalance[] => {
-    const combined: RewardItem[] = [
-      ...merklAvailableRewards.map((reward) => ({
-        type: 'merkl' as const,
-        reward,
-      })),
-      ...deFiReacherAvailableRewards.map((reward) => ({
-        type: 'defi-reacher' as const,
-        reward,
-      })),
-    ];
+  const rewards = useMemo(() => {
+    const combined: RewardItem[] = (availableRewards ?? []).map((reward) =>
+      reward.type === 'merkl'
+        ? { type: 'merkl' as const, reward: reward as MerklReward }
+        : {
+            type: 'defi-reacher' as const,
+            reward: reward as DeFiReacherReward,
+          },
+    );
 
     return orderBy(
       combined
@@ -75,7 +73,7 @@ export const useAvailableRewards = ({
           const balance: PortfolioBalance<WalletToken> = {
             token: createWalletToken({
               address: item.reward.address,
-              logoURI: item.reward.logoURI,
+              logoURI: item.reward.logoURI || token?.logoURI || '',
               name: item.reward.symbol,
               symbol: item.reward.symbol,
               decimals: item.reward.tokenDecimals,
@@ -92,16 +90,7 @@ export const useAvailableRewards = ({
       (item) => item.balance.amountUSD,
       'desc',
     );
-  }, [
-    merklAvailableRewards,
-    deFiReacherAvailableRewards,
-    getToken,
-    toRawAmount,
-  ]);
+  }, [availableRewards, getToken, toRawAmount]);
 
-  return {
-    rewards,
-    isLoading: isMerklLoading || isDeFiReacherLoading,
-    isSuccess: isMerklSuccess || isDeFiReacherSuccess,
-  };
+  return { rewards, isLoading, isSuccess };
 };

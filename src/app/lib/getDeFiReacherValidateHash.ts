@@ -1,19 +1,22 @@
+import type { JumperBackend } from '@/types/jumper-backend';
 import type { Hex } from 'viem';
+import { makeClient } from './client';
 
-export interface DeFiReacherValidateHashResponse {
-  success: boolean;
-  status: string;
-  campaignId?: string;
-  transactionHash?: string;
-  walletAddress?: string;
-}
+type ValidateHttpResponse = Awaited<
+  ReturnType<
+    JumperBackend<unknown>['v1']['userRewardsControllerValidateRewardV1']
+  >
+>;
+export type DeFiReacherValidateHashResponse = ValidateHttpResponse['data'];
 
 export const getDeFiReacherValidateHash = async (
+  address: string,
   txHash: Hex,
 ): Promise<DeFiReacherValidateHashResponse> => {
-  const response = await fetch(`/api/rewards/defireacher/validate/${txHash}`);
-  if (!response.ok) {
-    throw new Error('Failed to validate hash');
-  }
-  return response.json();
+  const client = makeClient();
+  const res = await client.v1.userRewardsControllerValidateRewardV1(address, {
+    provider: 'defi-reacher',
+    txHash,
+  });
+  return res.data;
 };
