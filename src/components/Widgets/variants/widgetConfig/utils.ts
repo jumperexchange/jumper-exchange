@@ -25,10 +25,10 @@ export const generateRouteLabel = (
         paddingLeft: theme.spacing(0.5),
         paddingRight: theme.spacing(0.5),
         background: isNeutral
-          ? (theme.vars || theme).palette.alpha300.main
+          ? `${(theme.vars || theme).palette.badgeAccent1MutedBg} !important`
           : `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
         color: isNeutral
-          ? (theme.vars || theme).palette.badgeAlphaFg
+          ? (theme.vars || theme).palette.badgeAccent1MutedFg
           : (theme.vars || theme).palette.white.main,
         ...theme.typography.bodyXSmallStrong,
         ...(isNeutral
