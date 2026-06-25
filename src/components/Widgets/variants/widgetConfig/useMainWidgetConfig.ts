@@ -107,15 +107,22 @@ export function useMainWidgetConfig(
       routeLabels: [
         generateRouteLabel(
           '1.5x points',
-          'hyperbloom',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg',
+          'hyperbloom',
         ),
         generateRouteLabel(
           '1.5x points',
-          'hyperflow',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg',
+          'hyperflow',
+        ),
+        generateRouteLabel(
+          'Verified',
+          deps.theme.muiTheme,
+          undefined,
+          '',
+          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
         ),
       ],
     };

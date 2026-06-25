@@ -1,12 +1,13 @@
 import type { Theme } from '@mui/material/styles';
-import type { RouteLabelRule } from '@lifi/widget';
+import type { Route, RouteLabelRule } from '@lifi/widget';
 import { ChainType } from '@lifi/widget';
 
 export const generateRouteLabel = (
   text: string,
-  allowExchange: string,
   theme: Theme,
   backgroundImage?: string,
+  allowExchange?: string,
+  match?: (route: Route) => boolean,
 ): RouteLabelRule => {
   return {
     label: {
@@ -35,7 +36,7 @@ export const generateRouteLabel = (
           borderRadius: '50%', // Makes the icon circular
           backgroundImage: backgroundImage
             ? `url(${backgroundImage})`
-            : 'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
+            : undefined,
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
@@ -48,9 +49,12 @@ export const generateRouteLabel = (
         },
       },
     },
-    exchanges: {
-      allow: [allowExchange],
-    },
+    match: match,
+    exchanges: allowExchange
+      ? {
+          allow: [allowExchange],
+        }
+      : undefined,
   };
 };
 
