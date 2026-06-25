@@ -132,7 +132,6 @@ export interface OrchestrationState {
     balancesByAddress: Record<string, SourceState>;
     positions: SourceState;
     prices: SourceState;
-    pnl: SourceState;
     pnlChart: SourceState;
   };
   /** Refresh all data sources */

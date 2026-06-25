@@ -97,7 +97,6 @@ const defaultOrchestrationState: OrchestrationState = {
     balancesByAddress: {},
     positions: defaultSourceState,
     prices: defaultSourceState,
-    pnl: defaultSourceState,
     pnlChart: defaultSourceState,
   },
   refresh: () => {},
