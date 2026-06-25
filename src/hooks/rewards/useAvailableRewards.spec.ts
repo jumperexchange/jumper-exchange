@@ -1,19 +1,13 @@
 // @vitest-environment jsdom
-import { useDeFiReacherRewards } from '@/hooks/rewards/useDeFiReacherRewards';
-import { useMerklRewards } from '@/hooks/rewards/useMerklRewards';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTokens } from '@/hooks/useTokens';
 import type { DeFiReacherReward, MerklReward } from '@/types/rewards';
 import { renderHook } from '@testing-library/react';
+import { useQuery } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useAvailableRewards } from './useAvailableRewards';
 
-vi.mock('@/hooks/rewards/useMerklRewards', () => ({
-  useMerklRewards: vi.fn(),
-}));
-vi.mock('@/hooks/rewards/useDeFiReacherRewards', () => ({
-  useDeFiReacherRewards: vi.fn(),
-}));
+vi.mock('@tanstack/react-query', () => ({ useQuery: vi.fn() }));
 vi.mock('@/hooks/useTokens', () => ({ useTokens: vi.fn() }));
 vi.mock('@/hooks/tokens/useTokenAmountInput', () => ({
   useTokenAmountInput: vi.fn(),
@@ -23,6 +17,7 @@ vi.mock('@/types/tokens', () => ({ createWalletToken: vi.fn() }));
 const makeMerklReward = (
   overrides: Partial<MerklReward> = {},
 ): MerklReward => ({
+  type: 'merkl',
   chainId: 1,
   address: '0x1111111111111111111111111111111111111111',
   symbol: 'TKN',
@@ -38,6 +33,7 @@ const makeMerklReward = (
 const makeDeFiReacherReward = (
   overrides: Partial<DeFiReacherReward> = {},
 ): DeFiReacherReward => ({
+  type: 'defi-reacher',
   chainId: 1,
   address: '0x2222222222222222222222222222222222222222',
   symbol: 'TKN2',
@@ -50,17 +46,20 @@ const makeDeFiReacherReward = (
 
 const mockGetToken = vi.fn();
 
-beforeEach(() => {
-  vi.mocked(useMerklRewards).mockReturnValue({
-    availableRewards: [],
+const mockUseQuery = (
+  rewards: (MerklReward | DeFiReacherReward)[],
+  overrides = {},
+) => {
+  vi.mocked(useQuery).mockReturnValue({
+    data: rewards,
     isSuccess: true,
     isLoading: false,
-  });
-  vi.mocked(useDeFiReacherRewards).mockReturnValue({
-    data: [],
-    isSuccess: true,
-    isLoading: false,
+    ...overrides,
   } as any);
+};
+
+beforeEach(() => {
+  mockUseQuery([]);
   vi.mocked(useTokens).mockReturnValue({ getToken: mockGetToken } as any);
   vi.mocked(useTokenAmountInput).mockReturnValue({
     toRawAmount: vi.fn().mockReturnValue(0n),
@@ -70,11 +69,7 @@ beforeEach(() => {
 
 describe('useAvailableRewards', () => {
   it('filters out rewards below the minimum USD threshold', () => {
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [makeMerklReward({ amountToClaim: 1 })],
-      isSuccess: true,
-      isLoading: false,
-    });
+    mockUseQuery([makeMerklReward({ amountToClaim: 1 })]);
     mockGetToken.mockReturnValue({ priceUSD: '0.05' });
 
     const { result } = renderHook(() => useAvailableRewards({}));
@@ -83,11 +78,7 @@ describe('useAvailableRewards', () => {
   });
 
   it('filters out rewards with no token price', () => {
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [makeMerklReward()],
-      isSuccess: true,
-      isLoading: false,
-    });
+    mockUseQuery([makeMerklReward()]);
     mockGetToken.mockReturnValue(undefined);
 
     const { result } = renderHook(() => useAvailableRewards({}));
@@ -101,16 +92,7 @@ describe('useAvailableRewards', () => {
       symbol: 'DFI',
       amountToClaim: 1,
     });
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [merklReward],
-      isSuccess: true,
-      isLoading: false,
-    });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [defiReward],
-      isSuccess: true,
-      isLoading: false,
-    } as any);
+    mockUseQuery([merklReward, defiReward]);
     mockGetToken.mockImplementation((_, address) =>
       address === merklReward.address ? { priceUSD: '1' } : { priceUSD: '10' },
     );
@@ -122,17 +104,8 @@ describe('useAvailableRewards', () => {
     expect(result.current.rewards[1].reward.symbol).toBe('MKL');
   });
 
-  it('returns DeFi Reacher rewards when Merkl fails', () => {
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [],
-      isSuccess: false,
-      isLoading: false,
-    });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })],
-      isSuccess: true,
-      isLoading: false,
-    } as any);
+  it('returns only DeFi Reacher rewards when Merkl rewards are absent', () => {
+    mockUseQuery([makeDeFiReacherReward({ symbol: 'DFI', amountToClaim: 1 })]);
     mockGetToken.mockReturnValue({ priceUSD: '1' });
 
     const { result } = renderHook(() => useAvailableRewards({}));
@@ -142,17 +115,8 @@ describe('useAvailableRewards', () => {
     expect(result.current.isSuccess).toBe(true);
   });
 
-  it('returns Merkl rewards when DeFi Reacher fails', () => {
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [makeMerklReward({ symbol: 'MKL', amountToClaim: 1 })],
-      isSuccess: true,
-      isLoading: false,
-    });
-    vi.mocked(useDeFiReacherRewards).mockReturnValue({
-      data: [],
-      isSuccess: false,
-      isLoading: false,
-    } as any);
+  it('returns only Merkl rewards when no DeFi Reacher rewards are present', () => {
+    mockUseQuery([makeMerklReward({ symbol: 'MKL', amountToClaim: 1 })]);
     mockGetToken.mockReturnValue({ priceUSD: '1' });
 
     const { result } = renderHook(() => useAvailableRewards({}));
@@ -163,11 +127,7 @@ describe('useAvailableRewards', () => {
   });
 
   it('computes balance.amountUSD as amountToClaim × priceUSD', () => {
-    vi.mocked(useMerklRewards).mockReturnValue({
-      availableRewards: [makeMerklReward({ amountToClaim: 3 })],
-      isSuccess: true,
-      isLoading: false,
-    });
+    mockUseQuery([makeMerklReward({ amountToClaim: 3 })]);
     mockGetToken.mockReturnValue({ priceUSD: '4' });
 
     const { result } = renderHook(() => useAvailableRewards({}));

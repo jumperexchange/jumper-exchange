@@ -883,6 +883,34 @@ export interface UserRewardsResponseDto {
   )[];
 }
 
+export interface RewardClaimArgsDto {
+  index: string;
+  account: string;
+  amount: string;
+  merkleProof: string[];
+}
+
+export interface RewardClaimDataDto {
+  calldata: string;
+  contractAddress: string;
+  chainId: number;
+  functionName: string;
+  args: RewardClaimArgsDto;
+}
+
+export interface ValidateRewardBodyDto {
+  provider: 'defi-reacher';
+  txHash: string;
+}
+
+export interface RewardValidationResultDto {
+  success: boolean;
+  status: string;
+  campaignId?: string;
+  transactionHash?: string;
+  walletAddress?: string;
+}
+
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -2378,6 +2406,50 @@ export class JumperBackend<
         path: `/v1/rewards/users/${address}`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @tags Rewards, Public
+     * @name UserRewardsController_getCalldata_v1
+     * @summary Get claim calldata for a reward
+     * @request GET:/v1/rewards/users/{address}/calldata
+     */
+    userRewardsControllerGetCalldataV1: (
+      address: string,
+      query: {
+        /** Reward provider */
+        provider: 'defi-reacher';
+        /** Campaign ID */
+        campaignId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<RewardClaimDataDto, any>({
+        path: `/v1/rewards/users/${address}/calldata`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @tags Rewards, Public
+     * @name UserRewardsController_validateReward_v1
+     * @summary Validate a reward claim transaction
+     * @request POST:/v1/rewards/users/{address}/validate
+     */
+    userRewardsControllerValidateRewardV1: (
+      address: string,
+      data: ValidateRewardBodyDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<RewardValidationResultDto, any>({
+        path: `/v1/rewards/users/${address}/validate`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
         format: 'json',
         ...params,
       }),
