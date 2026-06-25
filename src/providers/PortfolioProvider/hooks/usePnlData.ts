@@ -23,9 +23,21 @@ export const usePnlData = () => {
   );
 
   const { pnlValue, pnlPercentage } = useMemo(() => {
-    const numericPoints = pnlChart.filter(
-      (p): p is { date: string; value: number } => typeof p.value === 'number',
-    );
+    const numericPoints = pnlChart
+      .map((p) => ({
+        date: p.date,
+        value:
+          typeof p.value === 'number'
+            ? p.value
+            : typeof p.value === 'string'
+              ? Number(p.value)
+              : null,
+      }))
+      .filter(
+        (p): p is { date: string; value: number } =>
+          p.value !== null && Number.isFinite(p.value),
+      );
+
     if (numericPoints.length < 2) {
       return { pnlValue: null, pnlPercentage: null };
     }
