@@ -8,6 +8,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
+import envConfig from '@/config/env-config';
 
 function toolsConfig(allow?: string[], deny?: string[]) {
   if (!allow && !deny) {
@@ -120,9 +121,10 @@ export function useMainWidgetConfig(
         generateRouteLabel(
           'Verified',
           deps.theme.muiTheme,
-          undefined,
+          `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
           '',
           (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          'neutral',
         ),
       ],
     };
