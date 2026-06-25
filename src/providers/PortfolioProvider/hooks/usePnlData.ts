@@ -1,15 +1,13 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
-import { dropWhile } from 'lodash';
 import type { BalanceHistoryPeriod } from '@/hooks/portfolio/usePortfolioBalanceHistory';
 import { usePortfolioBalanceHistoryQuery } from '@/hooks/portfolio/usePortfolioBalanceHistory';
-import { usePortfolioPnlQuery } from '@/hooks/portfolio/usePortfolioPnl';
+import { dropWhile } from 'lodash';
+import { useCallback, useMemo, useState } from 'react';
 
 export const usePnlData = () => {
   const [period, setPeriod] = useState<BalanceHistoryPeriod>('month');
 
-  const pnlQuery = usePortfolioPnlQuery(period);
   const historyQuery = usePortfolioBalanceHistoryQuery(period);
 
   const pnlChart = useMemo(
@@ -24,26 +22,32 @@ export const usePnlData = () => {
     [historyQuery.data],
   );
 
+  const { pnlValue, pnlPercentage } = useMemo(() => {
+    const numericPoints = pnlChart.filter(
+      (p): p is { date: string; value: number } => typeof p.value === 'number',
+    );
+    if (numericPoints.length < 2) {
+      return { pnlValue: null, pnlPercentage: null };
+    }
+    const first = numericPoints[0].value;
+    const last = numericPoints[numericPoints.length - 1].value;
+    return {
+      pnlValue: last - first,
+      pnlPercentage: first === 0 ? null : ((last - first) / first) * 100,
+    };
+  }, [pnlChart]);
+
   const refetch = useCallback(() => {
-    pnlQuery.refetch();
     historyQuery.refetch();
-  }, [pnlQuery.refetch, historyQuery.refetch]);
+  }, [historyQuery.refetch]);
 
   return useMemo(
     () => ({
       period,
       setPeriod,
-      pnlValue: pnlQuery.data?.pnl ?? null,
-      pnlPercentage: pnlQuery.data?.pnlPercentage ?? null,
+      pnlValue,
+      pnlPercentage,
       pnlChart,
-      pnlState: {
-        isLoading: pnlQuery.isLoading,
-        isFetching: pnlQuery.isFetching,
-        isSuccess: pnlQuery.isSuccess,
-        isPlaceholderData: pnlQuery.isPlaceholderData,
-        updatedAt: pnlQuery.dataUpdatedAt || null,
-        error: (pnlQuery.error ?? null) as Error | null,
-      },
       pnlChartState: {
         isLoading: historyQuery.isLoading,
         isFetching: historyQuery.isFetching,
@@ -56,13 +60,8 @@ export const usePnlData = () => {
     }),
     [
       period,
-      pnlQuery.data,
-      pnlQuery.isLoading,
-      pnlQuery.isFetching,
-      pnlQuery.isSuccess,
-      pnlQuery.isPlaceholderData,
-      pnlQuery.dataUpdatedAt,
-      pnlQuery.error,
+      pnlValue,
+      pnlPercentage,
       historyQuery.isLoading,
       historyQuery.isFetching,
       historyQuery.isSuccess,

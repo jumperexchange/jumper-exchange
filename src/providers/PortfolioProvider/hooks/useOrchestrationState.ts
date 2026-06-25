@@ -91,27 +91,6 @@ export const useOrchestrationState = (
     ],
   );
 
-  const pnlSource: SourceState = useMemo(
-    () => ({
-      isEmpty: pnl.pnlValue === null,
-      isLoading: pnl.pnlState.isLoading,
-      isRefreshing: pnl.pnlState.isFetching && !pnl.pnlState.isLoading,
-      isStale: pnl.pnlState.isPlaceholderData,
-      isSuccess: pnl.pnlState.isSuccess,
-      updatedAt: pnl.pnlState.updatedAt,
-      error: pnl.pnlState.error,
-    }),
-    [
-      pnl.pnlValue,
-      pnl.pnlState.isLoading,
-      pnl.pnlState.isFetching,
-      pnl.pnlState.isPlaceholderData,
-      pnl.pnlState.isSuccess,
-      pnl.pnlState.updatedAt,
-      pnl.pnlState.error,
-    ],
-  );
-
   const pnlChartSource: SourceState = useMemo(
     () => ({
       isEmpty: pnl.pnlChart.length === 0,
@@ -203,7 +182,6 @@ export const useOrchestrationState = (
         balancesByAddress: balancesByAddressSource,
         positions: positionsSource,
         prices: pricesSource,
-        pnl: pnlSource,
         pnlChart: pnlChartSource,
       },
       refresh,
@@ -222,7 +200,6 @@ export const useOrchestrationState = (
       balancesByAddressSource,
       positionsSource,
       pricesSource,
-      pnlSource,
       pnlChartSource,
       refresh,
       refreshByAddress,

@@ -15,12 +15,12 @@ import { PortfolioPnlPeriodSelector } from './PortfolioPnlPeriodSelector';
 export const PortfolioHeaderOverviewPnLSection = () => {
   const { pnlValue, pnlPercentage, pnlChart } = usePortfolioPnl();
   const {
-    sources: { pnl: pnlSource, pnlChart: pnlChartSource },
+    sources: { pnlChart: pnlChartSource },
   } = usePortfolioState();
   const chartTheme = usePortfolioChartTheme();
 
-  const showPnlValue = !pnlSource.isEmpty || pnlSource.isLoading;
   const showPnlChart = !pnlChartSource.isEmpty || pnlChartSource.isLoading;
+  const showPnlValue = showPnlChart;
 
   if (!showPnlValue && !showPnlChart) {
     return null;
@@ -45,7 +45,7 @@ export const PortfolioHeaderOverviewPnLSection = () => {
       >
         {showPnlValue ? (
           <PortfolioPnlDisplay
-            isLoading={pnlSource.isLoading || pnlSource.isRefreshing}
+            isLoading={pnlChartSource.isLoading || pnlChartSource.isRefreshing}
             pnlValue={pnlValue}
             pnlPercentage={pnlPercentage}
           />
