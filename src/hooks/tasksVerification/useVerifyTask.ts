@@ -25,16 +25,11 @@ export async function verifyTaskQuery(props: VerifyTaskProps) {
     body: JSON.stringify(props),
   });
 
+  if (res.status !== 201) {
+    throw new Error(`Verification failed: ${res.status}`);
+  }
+
   const jsonResponse = await res.json();
-
-  if (!jsonResponse) {
-    throw new Error(jsonResponse.message);
-  }
-
-  // TODO: Needs to be improved
-  if (jsonResponse.status !== 201 && jsonResponse.statusCode !== 201) {
-    throw new Error(jsonResponse.message);
-  }
 
   return jsonResponse;
 }
