@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
+import type { SxProps, Theme } from '@mui/material';
 import { EntityStack } from '../EntityStack/EntityStack';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { EntityExplorerLink } from '@/components/composite/EntityChainStack/components/EntityExplorerLink';
@@ -32,6 +33,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
   isContentVisible = true,
   dataTestId,
   addressOverride,
+  entitiesSx,
   // Main stack props
   size,
   limit,
@@ -143,6 +145,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
       direction={direction}
       limit={limit}
       disableBorder={disableBorder}
+      avatarSx={entitiesSx}
     />
   );
 
