@@ -148,7 +148,7 @@ export const Leaderboard = ({ page: defaultPage }: { page: number }) => {
             page={currentPage - 1}
             setPage={handleSetPage}
             pagination={pagination}
-            maxVisiblePages={5}
+            maxVisiblePages={isMobile ? 2 : 5}
             sx={{ width: '100%' }}
           />
         )}
