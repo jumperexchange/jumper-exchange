@@ -51,6 +51,17 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [zapData?.market?.address, zapData?.market?.lpToken.symbol]);
 
+  const toToken = useMemo(() => {
+    const depositToken = zapData?.market?.depositToken;
+    if (!depositToken?.address) {
+      return undefined;
+    }
+    return {
+      tokenAddress: depositToken.address,
+      tokenSymbol: depositToken.symbol ?? '',
+    };
+  }, [zapData?.market?.depositToken]);
+
   const fromChain = useMemo(() => {
     if (!projectData?.chainId) {
       return undefined;
@@ -84,9 +95,10 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
         sourceToken: fromToken,
         sourceChain: fromChain,
         destinationChain: toChain,
+        destinationToken: toToken,
       },
     };
-  }, [ctx, fromToken, fromChain, toChain]);
+  }, [ctx, fromToken, fromChain, toChain, toToken]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance
