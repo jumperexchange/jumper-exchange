@@ -1036,16 +1036,16 @@ export interface ApyAnalyticsHistoryResponse {
   data: ApyAnalyticsHistory;
 }
 
-export interface EarnOpportunityHistoryPoint {
-  /** The timestamp of the data point */
+export interface HistoryPoint {
+  /** The timestamp of the data point, in milliseconds (Unix epoch ms). */
   t: number;
   /** The value of the data point. Null when data is unavailable. */
   v: number | string | null;
 }
 
-export interface EarnOpportunityHistory {
+export interface HistoryGraph {
   /** The data points */
-  points: EarnOpportunityHistoryPoint[];
+  points: HistoryPoint[];
 }
 
 export interface EarnOpportunityHistoryResponse {
@@ -1054,7 +1054,7 @@ export interface EarnOpportunityHistoryResponse {
   /** @example "Success" */
   message: string;
   meta: EmptyMeta;
-  data: EarnOpportunityHistory;
+  data: HistoryGraph;
 }
 
 export interface JumperFreeFormResponse {
@@ -1457,6 +1457,22 @@ export interface WalletPositions {
   )[];
 }
 
+export interface BalanceHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: HistoryGraph;
+}
+
+export interface PnlResponseDto {
+  /** The PnL value in USD */
+  pnl?: number;
+  /** The PnL percentage. When multiple addresses are provided, this field will be undefined */
+  pnlPercentage?: number;
+}
+
 export interface TransactionsPaginationMeta {
   next: string | null;
   pagesLength: number;
@@ -1515,6 +1531,15 @@ export interface TransactionsDtoResponse {
   message: string;
   meta: TransactionsPaginationMeta;
   data: TransactionsDto[];
+}
+
+export interface PnlResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PnlResponseDto;
 }
 
 export interface TaskVerificationDto {
@@ -2806,6 +2831,78 @@ export class JumperBackend<
     ) =>
       this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserBalanceHistoryV1
+     * @summary Get balance history for a set of addresses
+     * @request GET:/v1/portfolio/balance/history
+     */
+    portfolioControllerGetUserBalanceHistoryV1: (
+      query: {
+        /** EVM addresses to get balance history for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses to get balance history for */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses to get balance history for, e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses to get balance history for, e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses to get balance history for */
+        tvm?: string[];
+        /**
+         * Chart Range
+         * @example "day"
+         */
+        chartPeriod: 'day' | 'week' | 'month' | '3months' | 'year' | 'all';
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BalanceHistoryResponse, any>({
+        path: `/v1/portfolio/balance/history`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserPnlV1
+     * @summary Get PnL for a set of addresses
+     * @request GET:/v1/portfolio/balance/pnl
+     */
+    portfolioControllerGetUserPnlV1: (
+      query: {
+        /** EVM addresses to get Pnl for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses to get Pnl for */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses to get Pnl for, e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses to get Pnl for, e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses to get Pnl for */
+        tvm?: string[];
+        /**
+         * Chart Range
+         * @example "day"
+         */
+        chartPeriod: 'day' | 'week' | 'month' | '3months' | 'year' | 'all';
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PnlResponse, any>({
+        path: `/v1/portfolio/balance/pnl`,
         method: 'GET',
         query: query,
         format: 'json',
