@@ -10,9 +10,15 @@ import { WalletProvider } from '../src/providers/WalletProvider/WalletProvider';
 import { SettingsStoreProvider } from '../src/stores/settings';
 import initTranslations from '../src/app/i18n';
 import { fallbackLng, namespaces } from '../src/i18n';
+import { STRAPI_PARTNER_THEMES } from '../src/const/strapiContentKeys';
+import { useStrapi } from '../src/hooks/useStrapi';
+import type { PartnerThemesData } from '../src/types/strapi';
 import { useColorScheme } from '@mui/material/styles';
-
-const mockThemes = [];
+import { PartnerThemeBridge } from './PartnerThemeBridge';
+import {
+  isNoPartnerThemeUid,
+  NO_PARTNER_THEME_UID,
+} from './partnerThemeConstants.ts';
 
 const ThemeBridge = ({
   children,
@@ -30,9 +36,75 @@ const ThemeBridge = ({
   return <>{children}</>;
 };
 
+interface StorybookProvidersProps {
+  Story: Parameters<Decorator>[0];
+  context: Parameters<Decorator>[1];
+  i18n: I18nInstance;
+}
+
+const StorybookProviders = ({
+  Story,
+  context,
+  i18n,
+}: StorybookProvidersProps) => {
+  const activeLocale = (context.globals.locale as string) || fallbackLng;
+  const partnerThemeUid =
+    (context.globals.partnerTheme as string) || NO_PARTNER_THEME_UID;
+  const standardColorMode =
+    context.globals.theme === 'dark' ? 'dark' : ('light' as const);
+
+  const { data: partnerThemes = [], isLoading: partnerThemesLoading } =
+    useStrapi<PartnerThemesData>({
+      contentType: STRAPI_PARTNER_THEMES,
+      queryKey: ['partner-themes', 'storybook'],
+    });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('lang', activeLocale);
+  }, [activeLocale]);
+
+  if (partnerThemesLoading) {
+    return <div>Loading partner themes…</div>;
+  }
+
+  const overrideMetaTheme = isNoPartnerThemeUid(partnerThemeUid)
+    ? undefined
+    : partnerThemeUid;
+
+  return (
+    <NuqsAdapter>
+      <I18nextProvider key={activeLocale} i18n={i18n}>
+        <DefaultThemeProvider
+          key={`${partnerThemeUid}-${activeLocale}`}
+          themes={partnerThemes}
+          overrideMetaTheme={overrideMetaTheme}
+        >
+          <WalletProvider>
+            <MUIThemeProvider>
+              <SettingsStoreProvider>
+                <PartnerThemeBridge
+                  partnerThemeUid={partnerThemeUid}
+                  standardColorMode={standardColorMode}
+                  partnerThemes={partnerThemes}
+                />
+                {isNoPartnerThemeUid(partnerThemeUid) ? (
+                  <ThemeBridge theme={standardColorMode}>
+                    <Story {...context} />
+                  </ThemeBridge>
+                ) : (
+                  <Story {...context} />
+                )}
+              </SettingsStoreProvider>
+            </MUIThemeProvider>
+          </WalletProvider>
+        </DefaultThemeProvider>
+      </I18nextProvider>
+    </NuqsAdapter>
+  );
+};
+
 export const withProviders: Decorator = (Story, context) => {
   const [i18n, setI18n] = useState<I18nInstance | null>(null);
-
   const activeLocale = (context.globals.locale as string) || fallbackLng;
 
   useEffect(() => {
@@ -47,33 +119,11 @@ export const withProviders: Decorator = (Story, context) => {
     };
   }, [activeLocale]);
 
-  useEffect(() => {
-    if (i18n) {
-      document.documentElement.setAttribute('lang', activeLocale);
-    }
-  }, [activeLocale, i18n]);
-
   if (!i18n) return <div>Loading...</div>;
 
-  const activeTheme = context.globals.theme === 'dark' ? 'dark' : 'light';
-
   return (
-    <NuqsAdapter>
-      <ReactQueryProvider>
-        <I18nextProvider key={activeLocale} i18n={i18n}>
-          <DefaultThemeProvider themes={mockThemes} activeTheme={activeTheme}>
-            <WalletProvider>
-              <MUIThemeProvider>
-                <SettingsStoreProvider>
-                  <ThemeBridge theme={activeTheme}>
-                    <Story {...context} />
-                  </ThemeBridge>
-                </SettingsStoreProvider>
-              </MUIThemeProvider>
-            </WalletProvider>
-          </DefaultThemeProvider>
-        </I18nextProvider>
-      </ReactQueryProvider>
-    </NuqsAdapter>
+    <ReactQueryProvider>
+      <StorybookProviders Story={Story} context={context} i18n={i18n} />
+    </ReactQueryProvider>
   );
 };

@@ -11,22 +11,27 @@ import type { ThemeProps } from 'src/types/theme';
 import { getDefaultWidgetThemeV2 } from 'src/config/widgetConfig';
 import { deepmerge } from '@mui/utils';
 
-export function DefaultThemeProvider({ children, themes }: ThemeProviderProps) {
+export function DefaultThemeProvider({
+  children,
+  themes,
+  overrideMetaTheme,
+}: ThemeProviderProps) {
   const metaTheme = useMetaTag('partner-theme');
+  const activeRoutePartnerUid = overrideMetaTheme ?? metaTheme;
 
   const partnerThemeConfig = useMemo(() => {
-    if (!metaTheme) {
+    if (!activeRoutePartnerUid) {
       return getPartnerTheme(themes, 'default');
     }
 
-    const matched = getPartnerTheme(themes, metaTheme);
+    const matched = getPartnerTheme(themes, activeRoutePartnerUid);
     if (matched) {
       return matched;
     }
 
     // Meta uid not in Strapi — treat as no route partner theme; fall back to default.
     return getPartnerTheme(themes, 'default');
-  }, [metaTheme, themes]);
+  }, [activeRoutePartnerUid, themes]);
 
   const themeStore = useMemo((): ThemeProps => {
     // Get formatted partner theme data
