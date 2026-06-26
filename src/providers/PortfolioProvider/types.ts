@@ -6,6 +6,7 @@ import type {
 import type { App, Chain, Protocol } from '@/types/jumper-backend';
 import type { Token as LifiToken } from '@lifi/sdk';
 import type { DefiPosition } from '@/utils/positions/type-guards';
+import type { BalanceHistoryPeriod } from '@/hooks/portfolio/usePortfolioBalanceHistory';
 
 /**
  * Position with all token arrays converted to PositionBalance format.
@@ -80,6 +81,19 @@ export interface PositionsMetadata {
   valueRange: { min: number; max: number };
 }
 
+export type PnlChartPoint = {
+  date: string;
+  value: number | string | null;
+};
+
+export interface PnlState {
+  period: BalanceHistoryPeriod;
+  setPeriod: (period: BalanceHistoryPeriod) => void;
+  pnlValue: number | null;
+  pnlPercentage: number | null;
+  pnlChart: PnlChartPoint[];
+}
+
 /**
  * Loading/freshness state for a single data source.
  */
@@ -118,6 +132,7 @@ export interface OrchestrationState {
     balancesByAddress: Record<string, SourceState>;
     positions: SourceState;
     prices: SourceState;
+    pnlChart: SourceState;
   };
   /** Refresh all data sources */
   refresh: () => void;

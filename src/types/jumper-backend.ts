@@ -843,6 +843,74 @@ export interface LeaderboardItemResponse {
   data: LeaderboardEntity;
 }
 
+export interface MerklUserRewardDto {
+  chainId: number;
+  /** Token contract address */
+  address: string;
+  symbol: string;
+  logoURI: string;
+  amountToClaim: number;
+  tokenDecimals: number;
+  type: 'merkl';
+  amountAccumulated: number;
+  /** Raw amount for the claiming contract (no decimals applied) */
+  accumulatedAmountForContractBN: string;
+  proof: string[];
+  claimingAddress: string;
+}
+
+export interface DeFiReacherUserRewardDto {
+  chainId: number;
+  /** Token contract address */
+  address: string;
+  symbol: string;
+  logoURI: string;
+  amountToClaim: number;
+  tokenDecimals: number;
+  type: 'defi-reacher';
+  campaignId: string;
+  contractAddress: string;
+}
+
+export interface UserRewardsResponseDto {
+  rewards: (
+    | ({
+        type: 'merkl';
+      } & MerklUserRewardDto)
+    | ({
+        type: 'defi-reacher';
+      } & DeFiReacherUserRewardDto)
+  )[];
+}
+
+export interface RewardClaimArgsDto {
+  index: string;
+  account: string;
+  amount: string;
+  merkleProof: string[];
+}
+
+export interface RewardClaimDataDto {
+  calldata: string;
+  contractAddress: string;
+  chainId: number;
+  functionName: string;
+  args: RewardClaimArgsDto;
+}
+
+export interface ValidateRewardBodyDto {
+  provider: 'defi-reacher';
+  txHash: string;
+}
+
+export interface RewardValidationResultDto {
+  success: boolean;
+  status: string;
+  campaignId?: string;
+  transactionHash?: string;
+  walletAddress?: string;
+}
+
 export interface Chain {
   chainId: number;
   chainKey: string;
@@ -912,7 +980,7 @@ export interface EarnOpportunityWithLatestAnalytics {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupDays?: number | null;
+  lockupDays?: number;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -968,16 +1036,16 @@ export interface ApyAnalyticsHistoryResponse {
   data: ApyAnalyticsHistory;
 }
 
-export interface EarnOpportunityHistoryPoint {
-  /** The timestamp of the data point */
+export interface HistoryPoint {
+  /** The timestamp of the data point, in milliseconds (Unix epoch ms). */
   t: number;
   /** The value of the data point. Null when data is unavailable. */
   v: number | string | null;
 }
 
-export interface EarnOpportunityHistory {
+export interface HistoryGraph {
   /** The data points */
-  points: EarnOpportunityHistoryPoint[];
+  points: HistoryPoint[];
 }
 
 export interface EarnOpportunityHistoryResponse {
@@ -986,7 +1054,7 @@ export interface EarnOpportunityHistoryResponse {
   /** @example "Success" */
   message: string;
   meta: EmptyMeta;
-  data: EarnOpportunityHistory;
+  data: HistoryGraph;
 }
 
 export interface JumperFreeFormResponse {
@@ -1389,6 +1457,22 @@ export interface WalletPositions {
   )[];
 }
 
+export interface BalanceHistoryResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: HistoryGraph;
+}
+
+export interface PnlResponseDto {
+  /** The PnL value in USD */
+  pnl?: number;
+  /** The PnL percentage. When multiple addresses are provided, this field will be undefined */
+  pnlPercentage?: number;
+}
+
 export interface TransactionsPaginationMeta {
   next: string | null;
   pagesLength: number;
@@ -1447,6 +1531,15 @@ export interface TransactionsDtoResponse {
   message: string;
   meta: TransactionsPaginationMeta;
   data: TransactionsDto[];
+}
+
+export interface PnlResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: PnlResponseDto;
 }
 
 export interface TaskVerificationDto {
@@ -1570,7 +1663,7 @@ export interface EarnOpportunityWithScore {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupDays?: number | null;
+  lockupDays?: number;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
@@ -1711,6 +1804,38 @@ export interface PerkClaimItemResponse {
   message: string;
   meta: EmptyMeta;
   data: PerkClaimResponseDto;
+}
+
+export interface ActivePerkDto {
+  /**
+   * Strapi document id of the perk
+   * @example "abc123documentId"
+   */
+  id: string;
+  /**
+   * Perk display name
+   * @example "Airalo"
+   */
+  name: string;
+  /**
+   * Jumper Pass level at which this perk unlocks
+   * @example 3
+   */
+  unlockLevel: number;
+  /**
+   * URL-friendly perk slug
+   * @example "airalo-esim"
+   */
+  slug: string;
+}
+
+export interface ActivePerkListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: EmptyMeta;
+  data: ActivePerkDto[];
 }
 
 export interface PerkClaimListResponse {
@@ -2289,6 +2414,74 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Rewards, Public
+     * @name UserRewardsControllerGetUserRewardsV1
+     * @summary Get claimable rewards for a wallet address
+     * @request GET:/v1/rewards/users/{address}
+     */
+    userRewardsControllerGetUserRewardsV1: (
+      address: string,
+      query?: {
+        /** Strapi campaign documentId — when provided, uses that campaign's merkl_rewards as the filter instead of the global config */
+        jumperCampaignId?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<UserRewardsResponseDto, any>({
+        path: `/v1/rewards/users/${address}`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @tags Rewards, Public
+     * @name UserRewardsController_getCalldata_v1
+     * @summary Get claim calldata for a reward
+     * @request GET:/v1/rewards/users/{address}/calldata
+     */
+    userRewardsControllerGetCalldataV1: (
+      address: string,
+      query: {
+        /** Reward provider */
+        provider: 'defi-reacher';
+        /** Campaign ID */
+        campaignId: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<RewardClaimDataDto, any>({
+        path: `/v1/rewards/users/${address}/calldata`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @tags Rewards, Public
+     * @name UserRewardsController_validateReward_v1
+     * @summary Validate a reward claim transaction
+     * @request POST:/v1/rewards/users/{address}/validate
+     */
+    userRewardsControllerValidateRewardV1: (
+      address: string,
+      data: ValidateRewardBodyDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<RewardValidationResultDto, any>({
+        path: `/v1/rewards/users/${address}/validate`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Earn, Public
      * @name EarnControllerGetTopsV1
      * @summary Get tops for an address
@@ -2638,6 +2831,78 @@ export class JumperBackend<
     ) =>
       this.request<WalletPositions, any>({
         path: `/v1/portfolio/positions`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserBalanceHistoryV1
+     * @summary Get balance history for a set of addresses
+     * @request GET:/v1/portfolio/balance/history
+     */
+    portfolioControllerGetUserBalanceHistoryV1: (
+      query: {
+        /** EVM addresses to get balance history for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses to get balance history for */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses to get balance history for, e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses to get balance history for, e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses to get balance history for */
+        tvm?: string[];
+        /**
+         * Chart Range
+         * @example "day"
+         */
+        chartPeriod: 'day' | 'week' | 'month' | '3months' | 'year' | 'all';
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<BalanceHistoryResponse, any>({
+        path: `/v1/portfolio/balance/history`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Portfolio, Public
+     * @name PortfolioControllerGetUserPnlV1
+     * @summary Get PnL for a set of addresses
+     * @request GET:/v1/portfolio/balance/pnl
+     */
+    portfolioControllerGetUserPnlV1: (
+      query: {
+        /** EVM addresses to get Pnl for */
+        evm?: string[];
+        /** Solana Virtual Machine (SVM) addresses to get Pnl for */
+        svm?: string[];
+        /** Move Virtual Machine (MVM) addresses to get Pnl for, e.g. Sui */
+        mvm?: string[];
+        /** Unspent transaction output (UTXO) addresses to get Pnl for, e.g. Bitcoin */
+        utxo?: string[];
+        /** Tron Virtual Machine (TVM) addresses to get Pnl for */
+        tvm?: string[];
+        /**
+         * Chart Range
+         * @example "day"
+         */
+        chartPeriod: 'day' | 'week' | 'month' | '3months' | 'year' | 'all';
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<PnlResponse, any>({
+        path: `/v1/portfolio/balance/pnl`,
         method: 'GET',
         query: query,
         format: 'json',

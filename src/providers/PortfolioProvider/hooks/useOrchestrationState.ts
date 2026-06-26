@@ -3,10 +3,12 @@ import type { OrchestrationState, SourceState } from '../types';
 import { usePriceLookup } from './usePriceLookup';
 import type { useProcessBalances } from './useProcessBalances';
 import type { useProcessedPositions } from './useProcessPositions';
+import type { usePnlData } from './usePnlData';
 
 export const useOrchestrationState = (
   balances: ReturnType<typeof useProcessBalances>,
   positions: ReturnType<typeof useProcessedPositions>,
+  pnl: ReturnType<typeof usePnlData>,
 ): OrchestrationState => {
   const pricesData = usePriceLookup();
 
@@ -89,6 +91,28 @@ export const useOrchestrationState = (
     ],
   );
 
+  const pnlChartSource: SourceState = useMemo(
+    () => ({
+      isEmpty: pnl.pnlChart.length === 0,
+      isLoading: pnl.pnlChartState.isLoading,
+      isRefreshing:
+        pnl.pnlChartState.isFetching && !pnl.pnlChartState.isLoading,
+      isStale: pnl.pnlChartState.isPlaceholderData,
+      isSuccess: pnl.pnlChartState.isSuccess,
+      updatedAt: pnl.pnlChartState.updatedAt,
+      error: pnl.pnlChartState.error,
+    }),
+    [
+      pnl.pnlChart.length,
+      pnl.pnlChartState.isLoading,
+      pnl.pnlChartState.isFetching,
+      pnl.pnlChartState.isPlaceholderData,
+      pnl.pnlChartState.isSuccess,
+      pnl.pnlChartState.updatedAt,
+      pnl.pnlChartState.error,
+    ],
+  );
+
   const isEmpty = balances.isEmpty && positions.isEmpty;
 
   const isInitialLoading =
@@ -124,7 +148,8 @@ export const useOrchestrationState = (
   const refresh = useCallback(() => {
     balances.refetch();
     positions.refetch();
-  }, [balances.refetch, positions.refetch]);
+    pnl.refetch();
+  }, [balances.refetch, positions.refetch, pnl.refetch]);
 
   const refreshByAddress = useCallback(
     (address: string) => {
@@ -157,6 +182,7 @@ export const useOrchestrationState = (
         balancesByAddress: balancesByAddressSource,
         positions: positionsSource,
         prices: pricesSource,
+        pnlChart: pnlChartSource,
       },
       refresh,
       refreshByAddress,
@@ -174,6 +200,7 @@ export const useOrchestrationState = (
       balancesByAddressSource,
       positionsSource,
       pricesSource,
+      pnlChartSource,
       refresh,
       refreshByAddress,
       refreshForTokens,

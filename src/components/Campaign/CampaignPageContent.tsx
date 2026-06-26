@@ -15,13 +15,11 @@ export const CampaignPageContent = ({
   campaign,
   quests,
 }: CampaignPageContentProps) => {
-  const merklRewards = campaign.merkl_rewards;
-
   return (
     <PageContainer>
       <CampaignHero campaign={campaign} />
 
-      <RewardsSection merklRewards={merklRewards} />
+      <RewardsSection jumperCampaignId={campaign.documentId} />
 
       {!!quests.length && (
         <MissionsSection>
