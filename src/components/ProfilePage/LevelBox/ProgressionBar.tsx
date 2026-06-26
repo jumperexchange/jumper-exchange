@@ -1,6 +1,7 @@
 import type { LevelData } from '@/types/loyaltyPass';
 import { Box } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
+import { getLevelProgress } from '../utils/getLevelProgress';
 import { LevelIndicator } from './LevelIndicator';
 import { LevelIndicatorsSkeleton } from './LevelIndicatorsSkeleton';
 import {
@@ -30,15 +31,7 @@ export const ProgressionBar = ({
   chartBg,
   chartCol,
 }: ProgressionBarProps) => {
-  const calcWidth =
-    levelData && ongoingValue
-      ? Math.max(
-          ((ongoingValue - levelData.minPoints) /
-            (levelData.maxPoints - levelData.minPoints)) *
-            100,
-          0,
-        )
-      : 0;
+  const calcWidth = getLevelProgress(ongoingValue, levelData) * 100;
 
   if (loading || !levelData) {
     return (

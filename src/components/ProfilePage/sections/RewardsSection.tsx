@@ -44,7 +44,10 @@ export const RewardsSection = ({
       <RewardsSectionContainer>
         <RewardsSectionContentContainer>
           <RewardsSectionHeaderContainer>
-            <Typography variant="titleXSmall" sx={{ flexShrink: 0 }}>
+            <Typography
+              variant="titleXSmall"
+              sx={{ color: 'accent1.main', flexShrink: 0 }}
+            >
               {t('profile_page.availableRewards')}
             </Typography>
             {isMobile && (

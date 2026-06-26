@@ -3117,6 +3117,25 @@ export class JumperBackend<
     /**
      * No description
      *
+     * @tags Wallets, Public
+     * @name WalletControllerFindWalletOngoingRewardsByAddressV1
+     * @summary Get wallet rewards by wallet address
+     * @request GET:/v1/wallets/{address}/ongoing-rewards
+     */
+    walletControllerFindWalletOngoingRewardsByAddressV1: (
+      address: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<OngoingRewardsListResponse, any>({
+        path: `/v1/wallets/${address}/ongoing-rewards`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Feature Flags, Public
      * @name FeatureFlagControllerGetAllV1
      * @summary Get all active feature flags evaluated for a user

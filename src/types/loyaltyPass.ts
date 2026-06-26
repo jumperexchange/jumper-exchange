@@ -120,8 +120,8 @@ export interface RewardGroup {
 
 export interface ParticipantChain {
   avatarUrl: string;
-  label: string;
-  id: number;
+  label?: string;
+  id?: number;
 }
 
 export interface TaskVerification {

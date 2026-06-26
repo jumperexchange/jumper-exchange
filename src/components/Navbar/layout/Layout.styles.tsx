@@ -27,7 +27,7 @@ export const MainLinksContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: 1,
   alignItems: 'center',
-  gap: theme.spacing(1),
+  gap: 0,
 }));
 
 export const SecondaryLinksContainer = styled('div')(({ theme }) => ({

@@ -3,6 +3,7 @@ import type {
   AvatarStackDirection,
 } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { TypographyProps } from '@mui/material/Typography';
+import type { SxProps, Theme } from '@mui/material';
 import type { DisplayableEntity } from '../EntityAvatar/types';
 
 export type { DisplayableEntity };
@@ -61,4 +62,5 @@ export interface EntityStackWithBadgeProps {
   spacing?: EntityStackSpacing;
   // Content configuration
   content?: EntityStackContent;
+  entitiesSx?: SxProps<Theme>;
 }

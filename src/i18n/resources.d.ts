@@ -649,6 +649,9 @@ export default interface Resources {
         theme: 'Theme';
       };
       pass: 'Pass';
+      passXp: '{{xp}} XP';
+      perksUnlocked_one: '{{count}} Perk unlocked';
+      perksUnlocked_other: '{{count}} Perks unlocked';
       seeAllWallets: 'See all wallets';
       statsCards: {
         bridges: 'Bridges';
@@ -667,6 +670,7 @@ export default interface Resources {
         system: 'System';
         systemModeDisabled: 'System mode is disabled for this theme';
       };
+      wallet: 'Wallet';
       walletMenu: {
         chains: 'Chains';
         connectAnotherWallet: 'Connect another wallet';
@@ -778,6 +782,30 @@ export default interface Resources {
         body: 'Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.';
         cta: 'View Jumper Pass';
         title: 'You reached Level {{newLevel}}!';
+      };
+    };
+    perks_page: {
+      empty: {
+        all: {
+          caption: 'Check back soon for new perks from Jumper partners.';
+          cta: 'Explore missions';
+          description: 'No perks available right now.';
+        };
+        claimed: {
+          caption: 'Once you unlock a perk, claim it here to start enjoying your rewards.';
+          cta: 'Earn XP';
+          description: "You haven't claimed any perks yet.";
+        };
+        unlocked: {
+          caption: 'Earn XP by completing missions and using Jumper to level up your Pass and unlock perks.';
+          cta: 'Earn XP';
+          description: "You haven't unlocked any perks yet.";
+        };
+      };
+      tabs: {
+        all: 'All Perks';
+        claimed: 'Claimed';
+        unlocked: 'Unlocked';
       };
     };
     portfolio: {
@@ -994,27 +1022,71 @@ export default interface Resources {
       };
     };
     profile_page: {
-      achievements: 'Achievements';
       availableRewards: 'Available Rewards';
+      beginJourney: 'Begin your Jumper journey';
       campaigns: 'Campaigns';
+      claimed: 'Claimed';
       copyAddress: 'Copy wallet address';
+      earnXp: {
+        activity: {
+          nextTier: {
+            bridge_oor: 'Bridge {{count}} USD more for {{xp}} XP';
+            chain_oor_one: 'Explore {{count}} more chain for {{xp}} XP';
+            chain_oor_other: 'Explore {{count}} more chains for {{xp}} XP';
+            earn_oor: 'Deposit {{count}} USD more for {{xp}} XP';
+            swap_oor: 'Swap {{count}} USD more for {{xp}} XP';
+          };
+          outstanding_one: 'You have <bold>{{count}} outstanding</bold> activity goal to complete this month';
+          outstanding_other: 'You have <bold>{{count}} outstanding</bold> activity goals to complete this month';
+          progress: {
+            bridge_oor: 'You have bridged {{count}} USD';
+            chain_oor_one: 'You have explored {{count}} chain';
+            chain_oor_other: 'You have explored {{count}} chains';
+            earn_oor: 'You have deposited {{count}} USD';
+            swap_oor: 'You have swapped {{count}} USD';
+          };
+          topTier: 'You have reached the top tier for this month!';
+          types: {
+            bridge_oor: 'Bridge_oor';
+            chain_oor: 'Chain_oor';
+            earn_oor: 'Earn_oor';
+            swap_oor: 'Swap_oor';
+          };
+          xpAvailable: '{{xp}} XP available';
+        };
+        description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
+        noMissions: {
+          caption: 'Check back soon for new missions to earn XP and unlock more perks.';
+          cta: 'Open Mission Hub';
+          description: 'No missions available right now.';
+        };
+        openHub: 'Open Mission Hub';
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Earn XP';
+        xpAvailable: '{{xp}} XP available';
+        xpEarnedMessage: '<strong>{{xp}} XP</strong> earned so far this month';
+      };
+      joined: 'Joined {{date}}';
+      jumperPass: 'Jumper Pass';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
       levelWithValue: 'Level {{level, number}}';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       mobileTitle: 'Only available on Desktop';
-      noData: {
-        caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
-        cta: 'Start swapping';
-        description: "No {{entity}} yet? Let's change that!";
-      };
-      ongoing: 'Ongoing';
       open: 'Open {{tool}}';
-      perks: 'Perks';
+      passStats: {
+        lastMonth: 'last month';
+        perks_one: '{{count}} perk';
+        perks_other: '{{count}} perks';
+        unlocked: 'unlocked';
+      };
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
+      progressTo: 'Your progress to';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
-      rewards: 'Rewards Earned';
       rewardsClaim: {
         action: {
           claim: 'Claim';
@@ -1023,12 +1095,47 @@ export default interface Resources {
         };
         error: 'An unknown error occurred. Please try again.';
       };
+      sectionCarousel: {
+        goToPage: 'Go to page {{page}}';
+        next: 'Next';
+        previous: 'Previous';
+      };
       shareProfile: 'Share profile';
       tooltips: {
         ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
-        unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
+      unlockedPerks: {
+        count_one: 'You have {{count}} unlocked perk';
+        count_other: 'You have {{count}} unlocked perks';
+        description: 'Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.';
+        empty: {
+          description: 'Looks like there are no perks available right now. Check back later!';
+          title: 'Out of Perks!';
+        };
+        openHub: 'Open Perks Hub';
+        title: 'Unlocked Perks';
+      };
+      viewLeaderboard: 'View leaderboard';
+      yourAchievements: {
+        description: 'Explore all your <bold>completed</bold> missions and XP earned through using Jumper.';
+        noActivity: {
+          caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
+          cta: 'Start swapping';
+          description: "You have no recorded activity yet. Let's change that!";
+        };
+        noMissions: {
+          caption: 'Start collecting XP by completing missions. The more XP you earn, the more Perks you unlock!';
+          cta: 'View all missions';
+          description: "You have not completed any missions yet. Let's change that!";
+        };
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Your achievements';
+        xpEarned: '{{xp}} XP earned';
+      };
     };
     promo: {
       new: 'New';
