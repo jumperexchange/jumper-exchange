@@ -6,7 +6,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { differenceInCalendarDays, isPast, parseISO } from 'date-fns';
+import { differenceInCalendarDays, isPast } from 'date-fns';
 import type { ColumnDef } from '@/components/composite/DataTable/DataTable.types';
 import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
@@ -14,19 +14,29 @@ import { createExtendedToken, createTokenBalance } from '@/types/tokens';
 import { EntityAvatar } from '@/components/composite/EntityAvatar/EntityAvatar';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { OrderRowMenu } from './OrderRowMenu';
-import type { LimitOrder, LimitOrderToken, OrderStatus } from './types';
-import { ACTIONS_COL_WIDTH, CHAIN_COL_WIDTH, NUMERIC_SX } from './constants';
-import { OrderCell } from './OrderCell';
+import {
+  ACTIONS_COL_WIDTH,
+  CHAIN_AVATAR_SIZE,
+  CHAIN_COL_WIDTH,
+  NUMERIC_SX,
+} from './constants';
+import { OrderCell, OrderCellSkeleton } from './OrderCell';
+import {
+  getOrderFilledPercent,
+  getOrderLimitPrice,
+  getOrderMarketPrice,
+} from './utils';
+import type { Order, TokenDto } from '@/types/jumper-limit-order';
+import type { CoinKey } from '@lifi/sdk';
+import { BaseSurface1Skeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
-export function useOrderColumns(
-  showMarketColumn: boolean,
-): ColumnDef<LimitOrder>[] {
+export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
   const { t } = useTranslation();
   const { toDisplayAmount, toDisplayAmountUSD } = useTokenFormatters();
 
   const formatExpiry = (
-    status: OrderStatus,
-    expiresAt?: string,
+    status: Order['status'],
+    expiresAt?: number,
   ): { label: string; color: string } | null => {
     if (status === 'cancelled') {
       return {
@@ -47,7 +57,7 @@ export function useOrderColumns(
     if (!expiresAt) {
       return null;
     }
-    const expiryDate = parseISO(expiresAt);
+    const expiryDate = new Date(expiresAt * 1000);
     if (isPast(expiryDate)) {
       return EXPIRED;
     }
@@ -59,18 +69,24 @@ export function useOrderColumns(
   };
 
   function renderTokenCell(
-    token: LimitOrderToken,
+    token: TokenDto,
     amount: string,
     chainId: number,
   ): ReactNode {
     const balance = createTokenBalance(
       createExtendedToken(
-        { ...token, name: token.symbol, chainId },
+        {
+          ...token,
+          name: token.symbol,
+          coinKey: (token.coinKey as CoinKey) ?? undefined,
+          logoURI: token.logoURI ?? '',
+          chainId,
+        },
         token.priceUSD ?? '0',
       ),
       amount,
     );
-    const tokenAmount = toDisplayAmount(balance);
+    const tokenAmount = toDisplayAmount(balance, '');
     const tokenAmountSymbol = toDisplayAmount(balance, balance.token.symbol);
     const tokenAmountUsd = token.priceUSD
       ? toDisplayAmountUSD(balance)
@@ -103,6 +119,12 @@ export function useOrderColumns(
           size={AvatarSize.LG}
         />
       ),
+      renderSkeleton: () => (
+        <BaseSurface1Skeleton
+          variant="circular"
+          sx={{ width: CHAIN_AVATAR_SIZE, height: CHAIN_AVATAR_SIZE }}
+        />
+      ),
     },
     {
       id: 'pair',
@@ -130,6 +152,7 @@ export function useOrderColumns(
           </Typography>
         </Stack>
       ),
+      renderSkeleton: () => <OrderCellSkeleton width="72px" />,
     },
     {
       id: 'sell',
@@ -137,7 +160,8 @@ export function useOrderColumns(
       align: 'right',
       cellSx: { borderBottom: 'none' },
       renderCell: (order) =>
-        renderTokenCell(order.fromToken, order.sellAmount, order.chainId),
+        renderTokenCell(order.fromToken, order.fromAmount, order.chainId),
+      renderSkeleton: () => <OrderCellSkeleton width="72%" align="right" />,
     },
     {
       id: 'buy',
@@ -145,21 +169,29 @@ export function useOrderColumns(
       align: 'right',
       cellSx: { borderBottom: 'none' },
       renderCell: (order) =>
-        renderTokenCell(order.toToken, order.buyAmount, order.chainId),
+        renderTokenCell(order.toToken, order.toAmount, order.chainId),
+      renderSkeleton: () => <OrderCellSkeleton width="72%" align="right" />,
     },
     {
       id: 'limit',
       header: t('limitOrders.table.columns.limit'),
       align: 'right',
       cellSx: { borderBottom: 'none' },
-      renderCell: (order) => (
-        <OrderCell align="right" strong>
-          {t('format.decimal', {
-            value: Number(order.limitPrice),
-            maximumFractionDigits: 6,
-          })}
-        </OrderCell>
-      ),
+      renderCell: (order) => {
+        const limitPrice = getOrderLimitPrice(order);
+        if (limitPrice == null) {
+          return null;
+        }
+        return (
+          <OrderCell align="right" strong>
+            {t('format.decimal', {
+              value: limitPrice,
+              maximumFractionDigits: 6,
+            })}
+          </OrderCell>
+        );
+      },
+      renderSkeleton: () => <OrderCellSkeleton width="56%" align="right" />,
     },
     {
       id: 'market',
@@ -167,28 +199,37 @@ export function useOrderColumns(
       align: 'right',
       hidden: !showMarketColumn,
       cellSx: { borderBottom: 'none' },
-      renderCell: (order) =>
-        order.marketPrice ? (
+      renderCell: (order) => {
+        const marketPrice = getOrderMarketPrice(order);
+        if (marketPrice == null) {
+          return null;
+        }
+        return (
           <OrderCell align="right" muted>
             {t('format.decimal', {
-              value: Number(order.marketPrice),
+              value: marketPrice,
               maximumFractionDigits: 6,
             })}
           </OrderCell>
-        ) : null,
+        );
+      },
+      renderSkeleton: () => <OrderCellSkeleton width="56%" align="right" />,
     },
     {
       id: 'filled',
       header: t('limitOrders.table.columns.filled'),
       cellSx: { borderBottom: 'none' },
-      renderCell: (order) => <OrderCell>{order.filledPercent}%</OrderCell>,
+      renderCell: (order) => (
+        <OrderCell>{getOrderFilledPercent(order)}%</OrderCell>
+      ),
+      renderSkeleton: () => <OrderCellSkeleton width={40} />,
     },
     {
       id: 'expires',
       header: t('limitOrders.table.columns.expires'),
       cellSx: { borderBottom: 'none' },
       renderCell: (order) => {
-        const expiry = formatExpiry(order.status, order.expiresAt);
+        const expiry = formatExpiry(order.status, order.validUntil);
         return expiry ? (
           <Typography
             variant="bodySmall"
@@ -198,6 +239,7 @@ export function useOrderColumns(
           </Typography>
         ) : null;
       },
+      renderSkeleton: () => <OrderCellSkeleton width={72} />,
     },
     {
       id: 'actions',
@@ -215,6 +257,21 @@ export function useOrderColumns(
           }}
         >
           <OrderRowMenu order={order} />
+        </Box>
+      ),
+      renderSkeleton: () => (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+          <BaseSurface1Skeleton
+            variant="circular"
+            sx={{ width: 24, height: 24 }}
+          />
         </Box>
       ),
     },

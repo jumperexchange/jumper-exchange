@@ -30,49 +30,64 @@ export interface AllowDenyPreferDto {
 }
 
 export interface OrderRouteOptionsDto {
-  /** Protocol filtering options */
-  protocols?: AllowDenyPreferDto;
+  /** Exchange/protocol filtering options */
+  exchanges?: AllowDenyPreferDto;
 }
 
 export interface OrderRoutesDto {
   /**
+   * Source chain ID
+   * @example 1
+   */
+  fromChainId: number;
+  /**
    * User wallet address
    * @example "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
    */
-  fromAddress: string;
+  fromAddress?: string;
   /** From token address */
   fromTokenAddress: string;
-  /** To token address */
-  toTokenAddress: string;
   /**
    * From token amount (in wei)
    * @example "1000000000"
    */
   fromAmount: string;
   /**
+   * Destination chain ID
+   * @example 1
+   */
+  toChainId: number;
+  /** Receiver address (if different from user) */
+  toAddress?: string;
+  /** To token address */
+  toTokenAddress: string;
+  /**
    * To token amount (desired output amount)
    * @example "1500000000"
    */
   toAmount: string;
-  /** Receiver address (if different from user) */
-  toAddress?: string;
   /**
-   * Number of milliseconds the order is valid for
-   * @example 30000
+   * Unix timestamp (in seconds) until which the order should be valid
+   * @example 1780000000
    */
-  validFor?: number;
+  validUntil: number;
   /**
    * Allow partial fills
    * @default true
    */
   partiallyFillable?: boolean;
-  /** Route options for protocol selection */
+  /** Route options for exchange selection */
   options?: OrderRouteOptionsDto;
   /**
-   * Chain ID
-   * @example 1
+   * Integrator identifier
+   * @example "jumper.exchange"
    */
-  chainId: number;
+  integrator?: string;
+  /**
+   * Referrer identifier
+   * @example "jmp"
+   */
+  referrer?: string;
 }
 
 export interface TokenDto {
@@ -87,33 +102,155 @@ export interface TokenDto {
    */
   chainId: number;
   /**
-   * Token decimals
+   * Token ticker symbol
+   * @example "USDC"
+   */
+  symbol: string;
+  /**
+   * Number of decimals
    * @example 6
    */
   decimals: number;
   /**
-   * Token symbol
-   * @example "USDC"
-   */
-  symbol?: string;
-  /**
-   * Token name
+   * Full token name
    * @example "USD Coin"
    */
-  name?: string;
+  name: string;
   /**
-   * Token price in USD
+   * LI.FI CoinKey identifier
+   * @example "USDC"
+   */
+  coinKey?:
+    | 'ETH'
+    | 'MATIC'
+    | 'POL'
+    | 'BNB'
+    | 'DAI'
+    | 'FTM'
+    | 'AVAX'
+    | 'ONE'
+    | 'FSN'
+    | 'MOVR'
+    | 'CELO'
+    | 'FUSE'
+    | 'TLOS'
+    | 'CRO'
+    | 'RBTC'
+    | 'VLX'
+    | 'GLMR'
+    | 'METIS'
+    | 'EVM'
+    | 'MNT'
+    | 'SEI'
+    | 'G'
+    | 'IMX'
+    | 'KAIA'
+    | 'OKB'
+    | 'WLD'
+    | 'LSK'
+    | 'BERA'
+    | 'S'
+    | 'APE'
+    | 'GHO'
+    | 'WGHO'
+    | 'XTZ'
+    | 'HYPE'
+    | 'XDC'
+    | 'VIC'
+    | 'FLR'
+    | 'VAN'
+    | 'RON'
+    | 'PLUME'
+    | 'NIBI'
+    | 'SOPH'
+    | 'XPL'
+    | 'FLOW'
+    | 'MON'
+    | 'GUSDT'
+    | 'SOL'
+    | 'wSOL'
+    | 'SUI'
+    | 'BTC'
+    | 'BCH'
+    | 'LTC'
+    | 'DOGE'
+    | 'TRX'
+    | 'WTRX'
+    | 'XAUt'
+    | 'HEMI'
+    | 'USDT'
+    | 'USDC'
+    | 'BUSD'
+    | 'USDCe'
+    | 'USDCn'
+    | 'USDe'
+    | 'USDB'
+    | 'FRAX'
+    | 'axlUSDC'
+    | 'FDUSD'
+    | 'HONEY'
+    | 'BYUSD'
+    | 'APEUSD'
+    | 'FEUSD'
+    | 'USDT0'
+    | 'USDF'
+    | 'USDm'
+    | 'WBTC'
+    | 'WETH'
+    | 'SUSHI'
+    | 'DODO'
+    | 'MCB'
+    | 'CELR'
+    | 'IF'
+    | 'RUNE'
+    | 'WMNT'
+    | 'frxETH'
+    | 'wfrxETH'
+    | 'WSEI'
+    | 'WG'
+    | 'WIMX'
+    | 'WPOL'
+    | 'WKAIA'
+    | 'WOKB'
+    | 'WBNB'
+    | 'WCRO'
+    | 'WBERA'
+    | 'wS'
+    | 'WAPE'
+    | 'WXTZ'
+    | 'WHYPE'
+    | 'WXDC'
+    | 'WVIC'
+    | 'WFLR'
+    | 'WVAN'
+    | 'WRON'
+    | 'WPLUME'
+    | 'WNIBI'
+    | 'WSOPH'
+    | 'WFRAX'
+    | 'WXPL'
+    | 'WFLOW'
+    | 'WMON'
+    | 'pBTC'
+    | null;
+  /**
+   * Token logo URL
+   * @example "https://assets.coingecko.com/coins/images/6319/thumb/usdc.png"
+   */
+  logoURI?: string | null;
+  /**
+   * Token price in USD as a string
    * @example "1.00"
    */
-  priceUSD?: string;
+  priceUSD: string;
 }
 
-export interface OrderActionDto {
+export interface ActionDto {
   /**
    * Chain ID
    * @example 1
    */
-  chainId: number;
+  fromChainId: number;
   /** Source token */
   fromToken: TokenDto;
   /**
@@ -121,11 +258,13 @@ export interface OrderActionDto {
    * @example "1000000000000000000"
    */
   fromAmount: string;
-  /**
-   * Sender address
-   * @example "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
-   */
+  /** Sender address */
   fromAddress?: string;
+  /**
+   * Chain ID
+   * @example 1
+   */
+  toChainId: number;
   /** Destination token */
   toToken: TokenDto;
   /**
@@ -133,20 +272,15 @@ export interface OrderActionDto {
    * @example "1500000000"
    */
   toAmount: string;
+  /** Recipient address */
+  toAddress: string;
   /**
-   * Recipient address (if different from sender)
-   * @example "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+   * Unix timestamp (in seconds) until which the order is valid
+   * @example 1780000000
    */
-  toAddress?: string;
-  /**
-   * Quote validity duration in seconds
-   * @example 300
-   */
-  validFor: number;
+  validUntil: number;
   /** Whether partial fills are allowed */
   partiallyFillable: boolean;
-  /** EIP-712 typed data sent along with the action (usually permits) */
-  typedData?: object[];
 }
 
 export interface FeeCostDto {
@@ -214,8 +348,8 @@ export interface GasCostDto {
 }
 
 export interface OrderEstimateDto {
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
+  /** Tool providing the estimate */
+  tool: '1inch' | 'cowswap';
   /**
    * Amount to sell (in wei)
    * @example "1000000000000000000"
@@ -232,11 +366,6 @@ export interface OrderEstimateDto {
    */
   toAmount: string;
   /**
-   * Minimum output amount (in wei)
-   * @example "1485000000"
-   */
-  toAmountMin?: string;
-  /**
    * Expected output amount in USD
    * @example "1500.00"
    */
@@ -246,6 +375,12 @@ export interface OrderEstimateDto {
    * @example "0x1111111254EEB25477B68fb85Ed929f73A960582"
    */
   approvalAddress?: string;
+  /** Whether the approval needs to be reset to 0 first (legacy ERC-20) */
+  approvalReset?: boolean;
+  /** Skip token approval (e.g. for Hyperliquid) */
+  skipApproval?: boolean;
+  /** Skip permit usage for some HyperEVM transactions */
+  skipPermit?: boolean;
   /** Fee costs breakdown */
   feeCosts?: FeeCostDto[];
   /** Gas costs breakdown */
@@ -260,67 +395,6 @@ export interface OrderEstimateDto {
    * @example "Order price is close to market price"
    */
   executionLikelihoodReason?: string;
-}
-
-export interface QuoteResponseDto {
-  /**
-   * Unique quote identifier
-   * @example "quote-123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
-  /** Order action details */
-  action: OrderActionDto;
-  /** Order estimate details */
-  estimate: OrderEstimateDto;
-}
-
-export interface OrderRouteDto {
-  /** Order quote with pricing details */
-  quote: QuoteResponseDto;
-  /** Protocol for this route */
-  protocol: '1inch' | 'cowswap';
-}
-
-export interface FilteredProtocolDto {
-  /** Protocol that was filtered out */
-  protocol: '1inch' | 'cowswap';
-  /** Reason for filtering */
-  reason: string;
-}
-
-export interface OrderRouteErrorDto {
-  /** Error code */
-  code: string;
-  /** Protocol that failed */
-  protocol: '1inch' | 'cowswap';
-  /** Error message */
-  message: string;
-}
-
-export interface UnavailableRoutesDto {
-  /** Protocols filtered out based on user preferences */
-  filteredOut: FilteredProtocolDto[];
-  /** Protocols that failed to provide quotes */
-  failed: OrderRouteErrorDto[];
-}
-
-export interface OrderRoutesResponseDto {
-  /** Available routes for this order */
-  routes: OrderRouteDto[];
-  /** Unavailable routes with reasons */
-  unavailableRoutes: UnavailableRoutesDto;
-}
-
-export interface StepTransactionRequestDto {
-  /**
-   * Unique quote identifier
-   * @example "quote-123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
-  /** Order action details */
-  action: OrderActionDto;
-  /** Order estimate details */
-  estimate: OrderEstimateDto;
 }
 
 export interface TransactionRequestDto {
@@ -343,87 +417,188 @@ export interface TransactionRequestDto {
   gasPrice?: string;
 }
 
-export interface StepTransactionResponseDto {
-  /**
-   * Unique quote identifier
-   * @example "quote-123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
+export interface StepToolDetailsDto {
+  /** Tool identifier key */
+  key: string;
+  /** Human-readable tool name */
+  name: string;
+  /** Tool logo URI */
+  logoURI: string;
+}
+
+export interface OrderStepDto {
+  /** Internal quote cache identifier */
+  id?: string;
   /** Order action details */
-  action: OrderActionDto;
-  /** Order estimate details */
-  estimate: OrderEstimateDto;
-  /** EIP-712 typed data to sign (for signature-based orders) */
-  typedData?: object[];
+  action: ActionDto;
+  /** Execution estimate (LiFi Estimate type) */
+  estimate?: OrderEstimateDto;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
   /** Transaction request to execute (for on-chain orders) */
   transactionRequest?: TransactionRequestDto;
+  /** EIP-712 typed data to sign (for signature-based orders) */
+  typedData?: object[];
+  /** Tool details (bridge/DEX metadata) */
+  toolDetails: StepToolDetailsDto;
+  /** Integrator identifier */
+  integrator?: string;
+  /** Referrer identifier */
+  referrer?: string;
+}
+
+export interface OrderRouteDto {
+  /** Unique route identifier */
+  id: string;
+  /** Source chain ID */
+  fromChainId: number;
+  /** From amount in USD */
+  fromAmountUSD: string;
+  /** From amount in wei */
+  fromAmount: string;
+  /** Source token */
+  fromToken: TokenDto;
+  /** Sender address */
+  fromAddress?: string;
+  /** Destination chain ID */
+  toChainId: number;
+  /** To amount in USD */
+  toAmountUSD: string;
+  /** To amount in wei */
+  toAmount: string;
+  /** Minimum to amount in wei */
+  toAmountMin: string;
+  /** Destination token */
+  toToken: TokenDto;
+  /** Recipient address */
+  toAddress?: string;
+  /** Aggregated gas cost in USD */
+  gasCostUSD?: string;
+  /** Whether the route requires a chain switch */
+  containsSwitchChain?: boolean;
+  /** Route tags */
+  tags?: ('RECOMMENDED' | 'FASTEST' | 'CHEAPEST' | 'SAFEST')[];
+  /** Ordered list of steps to execute */
+  steps: OrderStepDto[];
+}
+
+export interface FilteredProtocolDto {
+  /** Protocol that was filtered out */
+  tool: '1inch' | 'cowswap';
+  /** Reason for filtering */
+  reason: string;
+}
+
+export interface FailedRouteDto {
+  /** Protocol that failed */
+  tool: '1inch' | 'cowswap';
+  /** Error message */
+  message: string;
+  /** Error code */
+  code: string;
+}
+
+export interface UnavailableRoutesDto {
+  /** Tools filtered out based on user preferences */
+  filteredOut: FilteredProtocolDto[];
+  /** Tools that failed to provide quotes */
+  failed: FailedRouteDto[];
+}
+
+export interface OrderRoutesResponseDto {
+  /** Available routes for this order */
+  routes: OrderRouteDto[];
+  /** Unavailable routes with reasons */
+  unavailableRoutes: UnavailableRoutesDto;
+}
+
+export interface StepTransactionRequestDto {
+  /** Internal quote cache identifier */
+  id?: string;
+  /** Order action details */
+  action: ActionDto;
+  /** Execution estimate (LiFi Estimate type) */
+  estimate?: OrderEstimateDto;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
+  /** Transaction request to execute (for on-chain orders) */
+  transactionRequest?: TransactionRequestDto;
+  /** EIP-712 typed data to sign (for signature-based orders) */
+  typedData?: object[];
+  /** Tool details (bridge/DEX metadata) */
+  toolDetails: StepToolDetailsDto;
+  /** Integrator identifier */
+  integrator?: string;
+  /** Referrer identifier */
+  referrer?: string;
+}
+
+export interface StepTransactionResponseDto {
+  /** Internal quote cache identifier */
+  id?: string;
+  /** Order action details */
+  action: ActionDto;
+  /** Execution estimate (LiFi Estimate type) */
+  estimate?: OrderEstimateDto;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
+  /** Transaction request to execute (for on-chain orders) */
+  transactionRequest?: TransactionRequestDto;
+  /** EIP-712 typed data to sign (for signature-based orders) */
+  typedData?: object[];
+  /** Tool details (bridge/DEX metadata) */
+  toolDetails: StepToolDetailsDto;
+  /** Integrator identifier */
+  integrator?: string;
+  /** Referrer identifier */
+  referrer?: string;
 }
 
 export interface RelayRequestDto {
-  /**
-   * Unique quote identifier
-   * @example "quote-123e4567-e89b-12d3-a456-426614174000"
-   */
-  id: string;
+  /** Internal quote cache identifier */
+  id?: string;
   /** Order action details */
-  action: OrderActionDto;
-  /** Order estimate details */
-  estimate: OrderEstimateDto;
-  /** EIP-712 typed data to sign (for signature-based orders) */
+  action: ActionDto;
+  /** Execution estimate (LiFi Estimate type) */
+  estimate?: OrderEstimateDto;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
+  /** Transaction request to execute (for on-chain orders) */
+  transactionRequest?: TransactionRequestDto;
+  /** Signed EIP-712 typed data (required for relay) */
   typedData?: object[];
+  /** Tool details (bridge/DEX metadata) */
+  toolDetails: StepToolDetailsDto;
+  /** Integrator identifier */
+  integrator?: string;
+  /** Referrer identifier */
+  referrer?: string;
+}
+
+export interface RelayResponseDataDto {
+  /** Unique identifier for tracking the relayed task */
+  taskId: string;
+  /** Explorer link to the transaction */
+  txLink?: string;
 }
 
 export interface RelayResponseDto {
-  /**
-   * Indicates if the submission was successful
-   * @example true
-   */
-  success: boolean;
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
-  /** Unique identifier for the task at hand */
-  taskId: string;
+  /** Response status */
+  status: 'ok' | 'error';
+  /** Response data */
+  data: RelayResponseDataDto;
 }
 
-export interface RelayerStatusRequestDto {
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
-  /** Unique identifier for the task at hand */
-  taskId: string;
-  /**
-   * Chain ID
-   * @example 1
-   */
-  chainId: number;
-}
-
-export interface TransactionResponseDto {
-  /** Transaction hash */
-  txHash: string;
-  /** Transaction request to execute (for on-chain orders) */
-  request: TransactionRequestDto;
-}
-
-export interface StatusRequestDto {
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
-  /**
-   * Chain ID
-   * @example 1
-   */
-  chainId: number;
-  /** Unique identifier for the order */
-  orderId?: object;
-  /** Transaction response from on-chain executed transaction */
-  transactionResponse?: TransactionResponseDto;
+export interface RelayerStatusResponseDto {
+  /** Response status discriminant */
+  status: 'ok' | 'error';
+  /** Relay status data, or error details when status is "error" */
+  data: any;
 }
 
 export interface StatusResponseDto {
-  /**
-   * Indicates if the submission was successful
-   * @example true
-   */
-  success: boolean;
+  /** Order execution status */
+  status: 'NOT_FOUND' | 'INVALID' | 'PENDING' | 'DONE' | 'FAILED';
   /** Unique identifier for the order */
   orderId?: object;
 }
@@ -434,43 +609,124 @@ export interface CancelStepTransactionRequestDto {
    * @example 1
    */
   chainId: number;
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
   /** Unique identifier for the order */
   orderId: string;
 }
 
+export interface CancelEstimateDto {
+  /** Fee costs breakdown */
+  feeCosts?: FeeCostDto[];
+  /** Gas costs breakdown */
+  gasCosts?: GasCostDto[];
+}
+
 export interface CancelStepTransactionResponseDto {
-  /**
-   * Chain ID
-   * @example 1
-   */
-  chainId: number;
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
-  /** EIP-712 typed data to sign (for signature-based orders) */
-  typedData?: object[];
-  /** Transaction request to execute (for on-chain orders) */
+  /** Cost estimate for the cancellation */
+  estimate?: CancelEstimateDto;
+  /** Transaction request to execute (for on-chain cancellation) */
   transactionRequest?: TransactionRequestDto;
+  /** EIP-712 typed data to sign (for off-chain cancellation) */
+  typedData?: object[];
 }
 
 export interface CancelRelayRequestDto {
+  /** Cost estimate for the cancellation */
+  estimate?: CancelEstimateDto;
+  /** Transaction request to execute (for on-chain cancellation) */
+  transactionRequest?: TransactionRequestDto;
+  /** Signed EIP-712 typed data (required for relay) */
+  typedData?: object[];
   /**
    * Chain ID
    * @example 1
    */
   chainId: number;
-  /** Protocol providing the estimate */
-  protocol: '1inch' | 'cowswap';
-  /** EIP-712 typed data to sign (for signature-based orders) */
-  typedData?: object[];
-  /** Transaction request to execute (for on-chain orders) */
-  transactionRequest?: TransactionRequestDto;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
 }
 
 export interface TokensResponseDto {
   /** Mapping of chain IDs to their supported tokens */
   tokens: object;
+}
+
+export interface Order {
+  /**
+   * Protocol-specific order ID
+   * @example "0x1234..."
+   */
+  orderId: string;
+  /**
+   * Protocol name
+   * @example "cowswap"
+   */
+  tool: string;
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /**
+   * Maker wallet address
+   * @example "0xabc..."
+   */
+  fromAddress: string;
+  fromToken: TokenDto;
+  /**
+   * Sell amount
+   * @example "1000000"
+   */
+  fromAmount: string;
+  /**
+   * Amount filled so far (sell token)
+   * @example "0"
+   */
+  filledFromAmount: string;
+  /**
+   * Recipient address
+   * @example "0xabc..."
+   */
+  toAddress?: string | null;
+  toToken: TokenDto;
+  /**
+   * Desired buy amount
+   * @example "1000000"
+   */
+  toAmount: string;
+  /**
+   * Amount filled so far (buy token)
+   * @example "0"
+   */
+  filledToAmount: string;
+  /**
+   * Order creation Unix timestamp
+   * @example 1700000000
+   */
+  createdAt: number;
+  /**
+   * Order expiry Unix timestamp
+   * @example 1700086400
+   */
+  validUntil: number;
+  /**
+   * Fill Unix timestamp
+   * @example 1700043200
+   */
+  filledAt?: number | null;
+  /** Current order status */
+  status:
+    | 'pending'
+    | 'active'
+    | 'temporarily_invalid'
+    | 'partially_filled'
+    | 'filled'
+    | 'cancelled'
+    | 'expired'
+    | 'failed';
+  /** Fill type */
+  orderType: 'fill_or_kill' | 'partial_fill';
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -756,21 +1012,21 @@ export class JumperLimitOrder<
         ...params,
       }),
   };
-  orders = {
+  limitOrder = {
     /**
      * @description Returns all available routes with quotes from different protocols to help users make informed decisions
      *
      * @tags orders
      * @name OrdersControllerGetRoutes
      * @summary Get available routes for order execution
-     * @request POST:/orders/routes
+     * @request POST:/limit-order/advanced/routes
      */
     ordersControllerGetRoutes: (
       data: OrderRoutesDto,
       params: RequestParams = {},
     ) =>
       this.request<OrderRoutesResponseDto, void>({
-        path: `/orders/routes`,
+        path: `/limit-order/advanced/routes`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -779,19 +1035,19 @@ export class JumperLimitOrder<
       }),
 
     /**
-     * @description Creates the execution data for a new limit order
+     * @description Returns the transactionRequest/typedData needed to sign and execute a step
      *
      * @tags orders
      * @name OrdersControllerStepTransaction
-     * @summary Create a new limit order
-     * @request POST:/orders/create
+     * @summary Get execution details for a step
+     * @request POST:/limit-order/advanced/stepTransaction
      */
     ordersControllerStepTransaction: (
       data: StepTransactionRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<StepTransactionResponseDto, void>({
-        path: `/orders/create`,
+        path: `/limit-order/advanced/stepTransaction`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -804,15 +1060,15 @@ export class JumperLimitOrder<
      *
      * @tags orders
      * @name OrdersControllerRelay
-     * @summary Relay an order that is not a direct transaction
-     * @request POST:/orders/relay
+     * @summary Relay a signed order
+     * @request POST:/limit-order/advanced/relay
      */
     ordersControllerRelay: (
       data: RelayRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<RelayResponseDto, void>({
-        path: `/orders/relay`,
+        path: `/limit-order/advanced/relay`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -821,61 +1077,79 @@ export class JumperLimitOrder<
       }),
 
     /**
-     * @description Retrieves the status of a signed order from the protocol orderbook
+     * @description Retrieves the current status of a task submitted via /advanced/relay
      *
      * @tags orders
      * @name OrdersControllerRelayerStatus
-     * @summary Gets the status of a relayed order
-     * @request POST:/orders/relayerStatus
+     * @summary Get the status of a relayed order
+     * @request GET:/limit-order/relayer/status
      */
     ordersControllerRelayerStatus: (
-      data: RelayerStatusRequestDto,
+      query: {
+        /** Unique identifier for the task to check */
+        taskId: string;
+        /** Tool/bridge identifier */
+        bridge?: string;
+        /** Source chain ID */
+        fromChain?: number;
+        /** Destination chain ID */
+        toChain?: number;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<RelayResponseDto, void>({
-        path: `/orders/relayerStatus`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
+      this.request<RelayerStatusResponseDto, void>({
+        path: `/limit-order/relayer/status`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
 
     /**
-     * @description Retrieves the status of a signed order from the protocol orderbook
+     * @description Retrieves the status of an order by task ID or transaction hash
      *
      * @tags orders
      * @name OrdersControllerOrderStatus
      * @summary Get order status
-     * @request POST:/orders/status
+     * @request GET:/limit-order/status
      */
     ordersControllerOrderStatus: (
-      data: StatusRequestDto,
+      query: {
+        /** Tool/bridge identifier (e.g. "1inch", "cowswap") */
+        bridge: string;
+        /** Source chain ID */
+        fromChain?: number;
+        /** Destination chain ID */
+        toChain?: number;
+        /** Task ID from relay step (provide taskId or txHash) */
+        taskId?: string;
+        /** On-chain transaction hash (provide taskId or txHash) */
+        txHash?: string;
+      },
       params: RequestParams = {},
     ) =>
       this.request<StatusResponseDto, void>({
-        path: `/orders/status`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
+        path: `/limit-order/status`,
+        method: 'GET',
+        query: query,
         format: 'json',
         ...params,
       }),
 
     /**
-     * @description Creates the execution data for canceling a limit order step transaction
+     * @description Returns the transaction data needed to cancel a limit order
      *
      * @tags orders
-     * @name OrdersControllerCancelOrderStepTransaction
-     * @summary Cancel a limit order step transaction
-     * @request POST:/orders/cancel/stepTransaction
+     * @name OrdersControllerCancelCalldata
+     * @summary Get cancellation calldata for an order
+     * @request POST:/limit-order/cancel/calldata
      */
-    ordersControllerCancelOrderStepTransaction: (
+    ordersControllerCancelCalldata: (
       data: CancelStepTransactionRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<CancelStepTransactionResponseDto, void>({
-        path: `/orders/cancel/stepTransaction`,
+        path: `/limit-order/cancel/calldata`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -884,19 +1158,19 @@ export class JumperLimitOrder<
       }),
 
     /**
-     * @description Relays the cancellation of a limit order
+     * @description Relays a signed cancellation to the protocol orderbook
      *
      * @tags orders
      * @name OrdersControllerCancelOrderRelay
-     * @summary Relays a limit order cancellation
-     * @request POST:/orders/cancel/relay
+     * @summary Relay a signed order cancellation
+     * @request POST:/limit-order/cancel/relay
      */
     ordersControllerCancelOrderRelay: (
       data: CancelRelayRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<RelayResponseDto, void>({
-        path: `/orders/cancel/relay`,
+        path: `/limit-order/cancel/relay`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -905,12 +1179,12 @@ export class JumperLimitOrder<
       }),
 
     /**
-     * @description Retrieves all supported chains for limit orders, optionally filtered by chain type
+     * @description Retrieves all supported chains, optionally filtered by chain type
      *
      * @tags orders
      * @name OrdersControllerGetChains
      * @summary Get supported chains for limit orders
-     * @request GET:/orders/chains
+     * @request GET:/limit-order/chains
      */
     ordersControllerGetChains: (
       query?: {
@@ -920,26 +1194,26 @@ export class JumperLimitOrder<
       params: RequestParams = {},
     ) =>
       this.request<void, any>({
-        path: `/orders/chains`,
+        path: `/limit-order/chains`,
         method: 'GET',
         query: query,
         ...params,
       }),
 
     /**
-     * @description Retrieves all supported tokens for limit orders, optionally filtered by chain
+     * @description Retrieves all supported tokens, optionally filtered by chain
      *
      * @tags orders
      * @name OrdersControllerGetTokens
      * @summary Get supported tokens for limit orders
-     * @request GET:/orders/tokens
+     * @request GET:/limit-order/tokens
      */
     ordersControllerGetTokens: (
       query?: {
-        /** Filter By Chain type */
+        /** Filter by chain type */
         chainTypes?: ('EVM' | 'SVM')[];
         /**
-         * Filter by Chain Id
+         * Filter by chain ID
          * @example [1,10,137]
          */
         chains?: number[];
@@ -959,7 +1233,7 @@ export class JumperLimitOrder<
       params: RequestParams = {},
     ) =>
       this.request<TokensResponseDto[], any>({
-        path: `/orders/tokens`,
+        path: `/limit-order/tokens`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -967,18 +1241,18 @@ export class JumperLimitOrder<
       }),
 
     /**
-     * @description Retrieves all orders for a specific user address and protocol
+     * @description Retrieves all orders for a specific user address
      *
      * @tags orders
      * @name OrdersControllerGetOrdersByUser
      * @summary Get orders by user address
-     * @request GET:/orders/by-user/{address}
+     * @request GET:/limit-order/{address}
      */
     ordersControllerGetOrdersByUser: (
       address: string,
       query?: {
-        /** Filter by protocol */
-        protocols?: ('1inch' | 'cowswap')[];
+        /** Filter by tool/protocol */
+        tools?: ('1inch' | 'cowswap')[];
         /**
          * Filter by chain IDs
          * @example [1,10,137]
@@ -1010,30 +1284,32 @@ export class JumperLimitOrder<
       },
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
-        path: `/orders/by-user/${address}`,
+      this.request<Order[], any>({
+        path: `/limit-order/${address}`,
         method: 'GET',
         query: query,
+        format: 'json',
         ...params,
       }),
 
     /**
-     * @description Retrieves an order by its id for a specific protocol and chain
+     * @description Retrieves an order by its ID for a specific tool and chain
      *
      * @tags orders
      * @name OrdersControllerGetOrder
-     * @summary Get order by id
-     * @request GET:/orders/by-id/{protocol}/{chainId}/{orderId}
+     * @summary Get order by ID
+     * @request GET:/limit-order/{tool}/{chainId}/{orderId}
      */
     ordersControllerGetOrder: (
-      protocol: '1inch' | 'cowswap',
+      tool: '1inch' | 'cowswap',
       chainId: string,
       orderId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, void>({
-        path: `/orders/by-id/${protocol}/${chainId}/${orderId}`,
+      this.request<Order, void>({
+        path: `/limit-order/${tool}/${chainId}/${orderId}`,
         method: 'GET',
+        format: 'json',
         ...params,
       }),
   };
