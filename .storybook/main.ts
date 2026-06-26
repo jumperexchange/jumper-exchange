@@ -11,6 +11,7 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     '@storybook/addon-vitest',
     'storybook-addon-pseudo-states',
+    './.storybook/partnerThemeToolbarAddon.tsx',
   ],
   framework: {
     name: '@storybook/nextjs-vite',

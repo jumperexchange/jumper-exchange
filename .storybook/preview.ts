@@ -2,7 +2,6 @@ import type { Preview } from '@storybook/nextjs-vite';
 import { sb } from 'storybook/test';
 import i18nConfig from '../i18n-config';
 import { NO_PARTNER_THEME_UID } from './partnerThemeConstants.ts';
-import { partnerThemeToolbarItems } from './partnerThemeToolbar.ts';
 import { withProviders } from './withProviders';
 
 sb.mock(import('@lifi/wallet-management'), { spy: true });
@@ -29,16 +28,6 @@ const preview: Preview = {
             right: '🌚',
           },
         ],
-        dynamicTitle: true,
-      },
-    },
-    partnerTheme: {
-      name: 'Partner theme',
-      description: 'Partner theme (matches app theme menu)',
-      defaultValue: NO_PARTNER_THEME_UID,
-      toolbar: {
-        icon: 'paintbrush',
-        items: partnerThemeToolbarItems,
         dynamicTitle: true,
       },
     },
