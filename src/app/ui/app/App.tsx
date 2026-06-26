@@ -72,25 +72,34 @@ const App = ({ children }: { children: React.ReactNode }) => {
         enableAddressable: true,
       }}
       overlayClassName="welcome-screen-container"
-      containerSx={{
-        height: {
-          xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
-          sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
-          md: `calc(100dvh - ${HeaderHeight.MD}px)`,
-        },
-      }}
+      containerSx={
+        isMainPaths && welcomeScreenClosed
+          ? {
+              height: { xs: `calc(100dvh - ${HeaderHeight.XS}px)` },
+              minHeight: {
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
+            }
+          : {
+              height: {
+                xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
+              overflow: 'hidden',
+            }
+      }
       contentSx={
         isMainPaths && welcomeScreenClosed
           ? {
-              height: '100%',
-              minHeight: 0,
-              overflow: 'auto',
+              height: { xs: '100%', sm: 'auto' },
+              minHeight: {
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
             }
-          : isMainPaths && !welcomeScreenClosed
-            ? {
-                overflow: 'visible',
-              }
-            : undefined
+          : undefined
       }
       leftSideContent={
         welcomeScreenClosed &&

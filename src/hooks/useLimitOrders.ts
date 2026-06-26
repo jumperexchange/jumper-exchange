@@ -2,7 +2,7 @@
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { makeLimitOrderClient } from '@/app/lib/limitOrderClient';
-import type { LimitOrder } from '@/components/LimitOrders/types';
+import type { LimitOrder } from '@/components/LimitOrders/OrdersSection/types';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 
 export const useLimitOrders = () => {

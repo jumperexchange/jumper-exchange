@@ -13,21 +13,14 @@ export interface WidgetWrapperProps extends BoxProps {
   welcomeScreenClosed?: boolean;
   autoHeight?: boolean;
   contributionDisplayed?: boolean;
-  useLayoutWelcomeScreenMargins?: boolean;
 }
 
 export const WidgetWrapper = styled(Box, {
   shouldForwardProp: (prop) =>
     prop !== 'welcomeScreenClosed' &&
     prop !== 'autoHeight' &&
-    prop !== 'contributionDisplayed' &&
-    prop !== 'useLayoutWelcomeScreenMargins',
-})<WidgetWrapperProps>(({
-  theme,
-  autoHeight,
-  contributionDisplayed,
-  useLayoutWelcomeScreenMargins,
-}) => {
+    prop !== 'contributionDisplayed',
+})<WidgetWrapperProps>(({ theme, autoHeight, contributionDisplayed }) => {
   const widgetHeight: 'auto' | number = autoHeight
     ? 'auto'
     : DEFAULT_WIDGET_HEIGHT;
@@ -109,14 +102,6 @@ export const WidgetWrapper = styled(Box, {
         style: {
           '& > div:not(.alert)': {
             cursor: 'pointer',
-          },
-        },
-      },
-      {
-        props: ({ welcomeScreenClosed, useLayoutWelcomeScreenMargins }) =>
-          !welcomeScreenClosed && !useLayoutWelcomeScreenMargins,
-        style: {
-          '& > div:not(.alert)': {
             marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
             '&:hover': {
               marginTop: 0,
@@ -137,8 +122,7 @@ export const WidgetWrapper = styled(Box, {
         },
       },
       {
-        props: ({ welcomeScreenClosed, useLayoutWelcomeScreenMargins }) =>
-          !welcomeScreenClosed && !useLayoutWelcomeScreenMargins,
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '& > div:not(.alert)': {
             marginTop: DEFAULT_WIDGET_TOP_OFFSET_VARS.xs,
@@ -149,8 +133,7 @@ export const WidgetWrapper = styled(Box, {
         },
       },
       {
-        props: ({ welcomeScreenClosed, useLayoutWelcomeScreenMargins }) =>
-          !welcomeScreenClosed && !useLayoutWelcomeScreenMargins,
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '& > div:not(.alert)': {
             [theme.breakpoints.up('sm' as Breakpoint)]: {
@@ -162,8 +145,7 @@ export const WidgetWrapper = styled(Box, {
         },
       },
       {
-        props: ({ welcomeScreenClosed, useLayoutWelcomeScreenMargins }) =>
-          !welcomeScreenClosed && !useLayoutWelcomeScreenMargins,
+        props: ({ welcomeScreenClosed }) => !welcomeScreenClosed,
         style: {
           '& > div:not(.alert)': {
             [theme.breakpoints.up('sm' as Breakpoint)]: {

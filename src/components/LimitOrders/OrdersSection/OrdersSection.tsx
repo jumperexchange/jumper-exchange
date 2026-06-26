@@ -1,12 +1,9 @@
 'use client';
 
-import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import { useTranslation } from 'react-i18next';
 import { ActionableSection } from '@/components/composite/ActionableSection/ActionableSection';
-import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
-import { Size, Variant } from '@/components/core/buttons/types';
 import { OrdersTable } from './OrdersTable';
-import { sampleOrders } from './OrdersTable.stories';
+import { sampleOrders } from './fixtures';
 import type { ReactNode } from 'react';
 
 interface OrdersSectionProps {
@@ -18,8 +15,9 @@ export const OrdersSection = ({
   isSidePanelExpanded,
   action,
 }: OrdersSectionProps) => {
+  const { t } = useTranslation();
   return (
-    <ActionableSection title="Orders" action={action} sx={{ flexShrink: 0 }}>
+    <ActionableSection title={t('limitOrders.orders')} action={action} sx={{ flexShrink: 0 }}>
       <OrdersTable
         orders={sampleOrders}
         showMarketColumn={isSidePanelExpanded}

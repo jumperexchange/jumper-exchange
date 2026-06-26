@@ -1296,5 +1296,32 @@
   },
   "alerts": {
     "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."
+  },
+  "limitOrders": {
+    "orders": "Orders",
+    "marketPrice": "Market Price",
+    "table": {
+      "columns": {
+        "chain": "Chain",
+        "pair": "Pair",
+        "sell": "Sell",
+        "buy": "Buy",
+        "limit": "Limit",
+        "market": "Market",
+        "filled": "Filled",
+        "expires": "Expires"
+      },
+      "status": {
+        "cancelled": "Cancelled",
+        "expired": "Expired",
+        "days_one": "{{count}} day",
+        "days_other": "{{count}} days"
+      },
+      "actions": {
+        "rowActions": "Row actions",
+        "expandPanels": "Expand panels",
+        "collapsePanels": "Collapse panels"
+      }
+    }
   }
 }

@@ -11,6 +11,7 @@ export interface LimitOrderToken {
   symbol: string;
   decimals: number;
   logoURI?: string;
+  priceUSD?: string;
 }
 
 export interface LimitOrder {

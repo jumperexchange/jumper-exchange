@@ -1,32 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { OrdersTable } from './OrdersTable';
 import type { LimitOrder } from './types';
-
-const queryClient = new QueryClient({
-  defaultOptions: { queries: { retry: false } },
-});
-
-const meta = {
-  title: 'LimitOrders/OrdersTable',
-  component: OrdersTable,
-  parameters: { layout: 'padded' },
-  decorators: [
-    (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <Story />
-      </QueryClientProvider>
-    ),
-  ],
-} satisfies Meta<typeof OrdersTable>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
 
 const USDC: LimitOrder['fromToken'] = {
   address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
   symbol: 'USDC',
   decimals: 6,
+  priceUSD: '1.00',
   logoURI:
     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
 };
@@ -35,6 +13,7 @@ const UNI: LimitOrder['fromToken'] = {
   address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
   symbol: 'UNI',
   decimals: 18,
+  priceUSD: '3.31',
   logoURI:
     'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png',
 };
@@ -43,42 +22,49 @@ const WBTC: LimitOrder['fromToken'] = {
   address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
   symbol: 'WBTC',
   decimals: 8,
+  priceUSD: '63820',
 };
 
 const wstETH: LimitOrder['fromToken'] = {
   address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
   symbol: 'wstETH',
   decimals: 18,
+  priceUSD: '2165',
 };
 
 const ARB: LimitOrder['fromToken'] = {
   address: '0x912ce59144191c1204e64559fe8253a0e49e6548',
   symbol: 'ARB',
   decimals: 18,
+  priceUSD: '0.0851',
 };
 
 const OP: LimitOrder['fromToken'] = {
   address: '0x4200000000000000000000000000000000000042',
   symbol: 'OP',
   decimals: 18,
+  priceUSD: '1.07',
 };
 
 const DAI: LimitOrder['fromToken'] = {
   address: '0x6b175474e89094c44da98b954eedeac495271d0f',
   symbol: 'DAI',
   decimals: 18,
+  priceUSD: '1.00',
 };
 
 const LINK: LimitOrder['fromToken'] = {
   address: '0x514910771af9ca656af840dff83e8264ecf986ca',
   symbol: 'LINK',
   decimals: 18,
+  priceUSD: '8.04',
 };
 
 const ETH: LimitOrder['fromToken'] = {
   address: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   symbol: 'ETH',
   decimals: 18,
+  priceUSD: '1442',
 };
 
 const in4Days = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString();
@@ -246,23 +232,3 @@ export const sampleOrders: LimitOrder[] = [
     createdAt: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
   },
 ];
-
-export const Default: Story = {
-  args: {
-    orders: sampleOrders,
-    onCancelOrder: (order) => alert(`Cancel order ${order.id}`),
-  },
-};
-
-export const ActiveOnly: Story = {
-  args: {
-    orders: sampleOrders.filter((o) => o.status === 'active'),
-    onCancelOrder: (order) => alert(`Cancel order ${order.id}`),
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    orders: [],
-  },
-};
