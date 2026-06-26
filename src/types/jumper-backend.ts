@@ -1684,7 +1684,7 @@ export interface EarnOpportunityWithScore {
   lpToken: Token;
   slug: string;
   featured: boolean;
-  lockupDays?: number | null;
+  lockupDays?: number;
   /** The cap in dollar */
   capInDollar?: string;
   /** @deprecated */
