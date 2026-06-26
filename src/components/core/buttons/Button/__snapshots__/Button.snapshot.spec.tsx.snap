@@ -3,12 +3,12 @@
 exports[`Button snapshot > adornments > matches snapshot with both adornments 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1t9i606-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-9io1ib-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon css-yqfw0v-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-1tw6ztc-MuiButton-startIcon"
     >
       <svg
         aria-hidden="true"
@@ -80,12 +80,12 @@ exports[`Button snapshot > adornments > matches snapshot with endAdornment 1`] =
 exports[`Button snapshot > adornments > matches snapshot with startAdornment 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-1t9i606-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary css-9io1ib-MuiButtonBase-root-MuiButton-root"
     tabindex="0"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon css-yqfw0v-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-1tw6ztc-MuiButton-startIcon"
     >
       <svg
         aria-hidden="true"
@@ -208,14 +208,14 @@ exports[`Button snapshot > states > matches snapshot when fullWidth 1`] = `
 exports[`Button snapshot > states > matches snapshot when loading 1`] = `
 <div>
   <button
-    class="MuiButtonBase-root Mui-disabled MuiButton-root MuiButton-loading MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart css-1t9i606-MuiButtonBase-root-MuiButton-root"
+    class="MuiButtonBase-root Mui-disabled MuiButton-root MuiButton-loading MuiButton-text MuiButton-sizeLarge MuiButton-colorPrimary MuiButton-loadingPositionStart css-9io1ib-MuiButtonBase-root-MuiButton-root"
     disabled=""
     id="_r_t_"
     tabindex="-1"
     type="button"
   >
     <span
-      class="MuiButton-icon MuiButton-startIcon css-11vne0n-MuiButton-startIcon"
+      class="MuiButton-icon MuiButton-startIcon css-1yzporb-MuiButton-startIcon"
     >
       <span
         class="css-1hr99lv-MuiButton-loadingIconPlaceholder"
