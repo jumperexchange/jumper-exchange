@@ -28,7 +28,11 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
 
   return (
     <>
-      <IconButton variant={Variant.AlphaDark} size={Size.SM} onClick={handleOpen}>
+      <IconButton
+        variant={Variant.AlphaDark}
+        size={Size.SM}
+        onClick={handleOpen}
+      >
         <MoreHorizIcon />
       </IconButton>
 

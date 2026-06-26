@@ -35,7 +35,11 @@ export const ExchangePageContent = () => {
       variant={Variant.AlphaDark}
       onClick={toggleSidePanelExpanded}
       aria-expanded={isSidePanelExpanded}
-      aria-label={isSidePanelExpanded ? t('limitOrders.table.actions.collapsePanels') : t('limitOrders.table.actions.expandPanels')}
+      aria-label={
+        isSidePanelExpanded
+          ? t('limitOrders.table.actions.collapsePanels')
+          : t('limitOrders.table.actions.expandPanels')
+      }
       data-testid="orders-section-expand"
       sx={{ height: 32, width: 32 }}
     >

@@ -186,7 +186,12 @@ export const WidgetStage = ({
     <Box
       data-expanded={hasSidePanel && isSidePanelExpanded ? '' : undefined}
       sx={mergeSx(
-        getStageSx(hasSidePanel, isSidePanelExpanded, hasAnnouncement, isWelcomeScreenOpen),
+        getStageSx(
+          hasSidePanel,
+          isSidePanelExpanded,
+          hasAnnouncement,
+          isWelcomeScreenOpen,
+        ),
         welcomeOpenStageSx,
         sx,
       )}
