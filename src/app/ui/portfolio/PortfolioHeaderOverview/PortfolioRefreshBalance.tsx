@@ -7,7 +7,7 @@ import type { FC } from 'react';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { LightIconButton } from './PortfolioPage.styles';
+import { LightIconButton } from './PortfolioHeaderOverview.styles';
 import Box from '@mui/material/Box';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
 

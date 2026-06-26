@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import type {
   ApyAnalyticsHistory,
-  EarnOpportunityHistory,
+  HistoryGraph,
 } from 'src/types/jumper-backend';
 import type {
   ChartDataPoint,
@@ -28,7 +28,7 @@ const useDefaultDateFormat = (range: AnalyticsRangeFieldEnum) => {
 };
 
 export const useSimpleAnalyticsChartConfig = (
-  rawData: EarnOpportunityHistory | undefined,
+  rawData: HistoryGraph | undefined,
   range: AnalyticsRangeFieldEnum,
 ): LineChartProps => {
   const data = useMemo(() => {

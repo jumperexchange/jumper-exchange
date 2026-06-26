@@ -715,7 +715,8 @@
     },
     "overviewCard": {
       "title": "Portfolio",
-      "refreshTooltip": "Click here to restart the indexing of your assets."
+      "refreshTooltip": "Click here to restart the indexing of your assets.",
+      "pnlChartDisclaimer": "Some DeFi and perp positions may not yet appear in the chart. New integrations are continuously being added."
     },
     "emptyList": {
       "title": "No results",
