@@ -13,6 +13,10 @@ export async function getQuestsBySlugs<T = QuestData>(
   slugs: string[],
   { withCampaign = false }: GetQuestsBySlugsOptions = {},
 ) {
+  if (slugs.length === 0) {
+    return { data: { data: [] } };
+  }
+
   const urlParams = new QuestStrapiApi()
     .filterBySlugs(slugs)
     .addPaginationParams({

@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, type ReactNode, useState } from 'react';
+import { Fragment, type ReactNode, useEffect, useState } from 'react';
 import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
@@ -48,6 +48,10 @@ export const AchievementsTabPanel = <T,>({
 }: AchievementsTabPanelProps<T>) => {
   const [page, setPage] = useState(0);
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+
+  useEffect(() => {
+    setPage(0);
+  }, [items]);
 
   if (isLoading) {
     return (
