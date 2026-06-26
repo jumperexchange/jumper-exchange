@@ -3,6 +3,7 @@
 import { Tab as MuiTab, Tabs, alpha, styled } from '@mui/material';
 
 export const VerticalTabsContainer = styled(Tabs)(({ theme }) => ({
+  width: 'fit-content',
   display: 'none',
   borderRadius: theme.shape.tabBarRadius,
   padding: 0,
