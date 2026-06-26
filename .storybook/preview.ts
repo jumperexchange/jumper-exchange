@@ -44,14 +44,18 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    partnerTheme: {
+      name: 'Partner theme',
+      description: 'Partner theme preview',
+      defaultValue: NO_PARTNER_THEME_UID,
+    },
+  },
+  initialGlobals: {
+    theme: 'light',
+    partnerTheme: NO_PARTNER_THEME_UID,
+    locale: 'en',
   },
   parameters: {
-    globals: {
-      theme: 'light',
-      partnerTheme: NO_PARTNER_THEME_UID,
-      locale: 'en',
-    },
-
     options: {
       storySort: {
         order: ['Preview', '*'],
