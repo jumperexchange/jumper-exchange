@@ -19,6 +19,7 @@ const STAGE_SHADOW_INSET_PX = 12;
 const getGridTemplateColumns = (
   hasSidePanel: boolean,
   isSidePanelExpanded: boolean,
+  isWelcomeScreenOpen: boolean,
 ) => {
   const widgetOnly = `auto ${WIDGET_COL_WIDTH}px`;
   const withSideTablet = `${WIDGET_COL_WIDTH}px ${WIDGET_COL_WIDTH}px`;
@@ -26,7 +27,7 @@ const getGridTemplateColumns = (
   const expandedTablet = `${WIDGET_COL_WIDTH}px minmax(0, 1fr)`;
   const expandedDesktop = `auto ${WIDGET_COL_WIDTH}px minmax(0, 1fr)`;
 
-  if (!hasSidePanel) {
+  if (!hasSidePanel || isWelcomeScreenOpen) {
     return { xs: 'minmax(0, 1fr)', lg: widgetOnly };
   }
 
@@ -58,6 +59,7 @@ const getStageSx = (
   hasSidePanel: boolean,
   isSidePanelExpanded: boolean,
   hasAnnouncement: boolean,
+  isWelcomeScreenOpen: boolean,
 ): SxProps<Theme> => ({
   display: 'grid',
   columnGap: `${GRID_GAP_PX}px`,
@@ -68,13 +70,19 @@ const getStageSx = (
   overflow: 'visible',
   width: {
     xs: '100%',
-    md: hasSidePanel && isSidePanelExpanded ? '100%' : 'fit-content',
-    lg: !hasSidePanel ? 'fit-content' : undefined,
+    md:
+      hasSidePanel && isSidePanelExpanded && !isWelcomeScreenOpen
+        ? '100%'
+        : 'fit-content',
+    lg: !hasSidePanel || isWelcomeScreenOpen ? 'fit-content' : undefined,
   },
   maxWidth: '100%',
   marginX: {
-    md: hasSidePanel && isSidePanelExpanded ? undefined : 'auto',
-    lg: !hasSidePanel ? 'auto' : undefined,
+    md:
+      hasSidePanel && isSidePanelExpanded && !isWelcomeScreenOpen
+        ? undefined
+        : 'auto',
+    lg: !hasSidePanel || isWelcomeScreenOpen ? 'auto' : undefined,
   },
   px: { md: `${STAGE_SHADOW_INSET_PX}px` },
   alignItems: 'start',
@@ -83,6 +91,7 @@ const getStageSx = (
   gridTemplateColumns: getGridTemplateColumns(
     hasSidePanel,
     isSidePanelExpanded,
+    isWelcomeScreenOpen,
   ),
   gridTemplateRows: {
     xs: hasSidePanel
@@ -177,7 +186,7 @@ export const WidgetStage = ({
     <Box
       data-expanded={hasSidePanel && isSidePanelExpanded ? '' : undefined}
       sx={mergeSx(
-        getStageSx(hasSidePanel, isSidePanelExpanded, hasAnnouncement),
+        getStageSx(hasSidePanel, isSidePanelExpanded, hasAnnouncement, isWelcomeScreenOpen),
         welcomeOpenStageSx,
         sx,
       )}
@@ -225,7 +234,7 @@ export const WidgetStage = ({
         sx={{
           gridColumn: { lg: '1' },
           gridRow: { md: contentRow },
-          display: { xs: 'none', lg: 'block' },
+          display: { xs: 'none', lg: isWelcomeScreenOpen ? 'none' : 'block' },
           minHeight: 0,
           ...stickyColumnSx,
         }}
@@ -233,28 +242,31 @@ export const WidgetStage = ({
         <VerticalTabs />
       </Box>
       <Box
-        sx={{
-          gridArea: { xs: 'form' },
-          gridColumn: { md: hasSidePanel ? '1' : '2', lg: '2' },
-          gridRow: { md: contentRow },
-          minWidth: 0,
-          minHeight: 0,
-        }}
+        sx={mergeSx(
+          {
+            gridArea: { xs: 'form' },
+            gridColumn: { md: hasSidePanel ? '1' : '2', lg: '2' },
+            gridRow: { md: contentRow },
+            minWidth: 0,
+            minHeight: 0,
+          },
+          getWidgetWidthSx(),
+          stickyColumnSx,
+        )}
       >
-        <Box sx={mergeSx(getWidgetWidthSx(), stickyColumnSx)}>
-          {formContent}
-        </Box>
+        {formContent}
       </Box>
       {hasSidePanel && (
         <Box
           sx={{
+            display: isWelcomeScreenOpen ? 'none' : undefined,
             gridArea: { xs: 'sidePanel' },
             gridColumn: { md: '2', lg: '3' },
             gridRow: { md: contentRow },
             minWidth: 0,
             alignSelf: 'start',
             width: '100%',
-            maxWidth: { sm: WIDGET_WIDTH, lg: 'none' },
+            maxWidth: { sm: WIDGET_WIDTH, md: 'none' },
             justifySelf: { xs: 'stretch', sm: 'center', md: 'stretch' },
           }}
         >

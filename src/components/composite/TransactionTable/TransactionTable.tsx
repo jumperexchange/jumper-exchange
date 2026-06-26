@@ -1,16 +1,13 @@
 import type { FC } from 'react';
+import { DataTable } from '@/components/composite/DataTable/DataTable';
+import type { ColumnDef } from '@/components/composite/DataTable/DataTable.types';
 import { TransactionCard } from './components/TransactionCard';
 import { TRANSACTION_SUMMARY_ROW_CONFIG } from './constants';
+import { TransactionSummaryColumnHeader } from './components/TransactionSummaryColumn';
 import type {
   PortfolioTransaction,
   TransactionSummaryRowConfig,
 } from './types';
-import { TransactionSummaryColumnHeader } from './components/TransactionSummaryColumn';
-import {
-  StyledTableContainer,
-  StyledTableHeader,
-  StyledValueCell,
-} from './TransactionTable.styles';
 
 interface TransactionTableProps {
   transactions: PortfolioTransaction[];
@@ -24,27 +21,32 @@ export const TransactionTable: FC<TransactionTableProps> = ({
   config = TRANSACTION_SUMMARY_ROW_CONFIG,
   showHeader = false,
   onTransactionClick,
-}) => (
-  <StyledTableContainer>
-    {showHeader && (
-      <StyledTableHeader>
-        {config.columns.map((slot) => (
-          <StyledValueCell key={slot.id} sx={slot.sx}>
-            <TransactionSummaryColumnHeader
-              columnId={slot.id}
-              config={config}
-            />
-          </StyledValueCell>
-        ))}
-      </StyledTableHeader>
-    )}
-    {transactions.map((tx) => (
-      <TransactionCard
-        key={tx.txHash}
-        transaction={tx}
-        config={config}
-        onClick={onTransactionClick}
-      />
-    ))}
-  </StyledTableContainer>
-);
+}) => {
+  const headerColumns = config.columns.map<ColumnDef<PortfolioTransaction>>(
+    (slot) => ({
+      id: slot.id,
+      header: (
+        <TransactionSummaryColumnHeader columnId={slot.id} config={config} />
+      ),
+      cellSx: slot.sx,
+    }),
+  );
+
+  return (
+    <DataTable
+      rows={transactions}
+      columns={headerColumns}
+      getRowKey={(tx) => tx.txHash}
+      hasMobileView
+      showHeader={showHeader}
+      renderRow={(tx) => (
+        <TransactionCard
+          key={tx.txHash}
+          transaction={tx}
+          config={config}
+          onClick={onTransactionClick}
+        />
+      )}
+    />
+  );
+};
