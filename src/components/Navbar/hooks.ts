@@ -71,6 +71,7 @@ export const useWalletDisplayData = () => {
 
   return {
     badgeSrc: isSuccess ? activeChain?.logoURI : undefined,
+    activeChain: isSuccess ? activeChain : undefined,
     avatarSrc: walletConnectorIcon,
     label: addressLabel ?? walletDigest(activeAccount?.address),
     isDisconnected: !activeAccount?.address,
@@ -115,6 +116,15 @@ export const useMainLinks = () => {
       },
     ];
 
+    if (isEarnEnabled) {
+      _links.push({
+        value: AppPaths.Earn,
+        label: t('navbar.links.earn'),
+        subLinks: [AppPaths.Earn],
+        testId: 'navbar-earn-button',
+      });
+    }
+
     if (isPortfolioEnabled) {
       _links.push({
         value: AppPaths.Portfolio,
@@ -130,15 +140,6 @@ export const useMainLinks = () => {
       subLinks: [AppPaths.Missions, AppPaths.Campaign, AppPaths.Zap],
       testId: 'navbar-missions-button',
     });
-
-    if (isEarnEnabled) {
-      _links.push({
-        value: AppPaths.Earn,
-        label: t('navbar.links.earn'),
-        subLinks: [AppPaths.Earn],
-        testId: 'navbar-earn-button',
-      });
-    }
 
     return _links;
   }, [t, isEarnEnabled, isPortfolioEnabled, tradeABTest]);

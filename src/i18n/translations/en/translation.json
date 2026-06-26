@@ -35,6 +35,7 @@
     "passXp": "{{xp}} XP",
     "perksUnlocked_one": "{{count}} Perk unlocked",
     "perksUnlocked_other": "{{count}} Perks unlocked",
+    "wallet": "Wallet",
     "wallets": "Wallets",
     "seeAllWallets": "See all wallets",
     "navbarMenu": {

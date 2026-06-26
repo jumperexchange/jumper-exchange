@@ -670,6 +670,7 @@ export default interface Resources {
         system: 'System';
         systemModeDisabled: 'System mode is disabled for this theme';
       };
+      wallet: 'Wallet';
       walletMenu: {
         chains: 'Chains';
         connectAnotherWallet: 'Connect another wallet';
