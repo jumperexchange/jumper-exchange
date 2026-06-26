@@ -95,10 +95,8 @@ export function useOrderColumns(
       width: CHAIN_COL_WIDTH,
       headerCellSx: {
         zIndex: 3,
-        borderRight: '1px solid',
-        borderRightColor: 'divider',
       },
-      cellSx: { borderRight: '1px solid', borderRightColor: 'divider' },
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) => (
         <EntityAvatar
           entity={{ chainId: order.chainId, chainKey: String(order.chainId) }}
@@ -109,6 +107,7 @@ export function useOrderColumns(
     {
       id: 'pair',
       header: t('limitOrders.table.columns.pair'),
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) => (
         <Stack
           direction="row"
@@ -136,6 +135,7 @@ export function useOrderColumns(
       id: 'sell',
       header: t('limitOrders.table.columns.sell'),
       align: 'right',
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) =>
         renderTokenCell(order.fromToken, order.sellAmount, order.chainId),
     },
@@ -143,6 +143,7 @@ export function useOrderColumns(
       id: 'buy',
       header: t('limitOrders.table.columns.buy'),
       align: 'right',
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) =>
         renderTokenCell(order.toToken, order.buyAmount, order.chainId),
     },
@@ -150,6 +151,7 @@ export function useOrderColumns(
       id: 'limit',
       header: t('limitOrders.table.columns.limit'),
       align: 'right',
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) => (
         <OrderCell align="right" strong>
           {t('format.decimal', {
@@ -164,6 +166,7 @@ export function useOrderColumns(
       header: t('limitOrders.table.columns.market'),
       align: 'right',
       hidden: !showMarketColumn,
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) =>
         order.marketPrice ? (
           <OrderCell align="right" muted>
@@ -177,11 +180,13 @@ export function useOrderColumns(
     {
       id: 'filled',
       header: t('limitOrders.table.columns.filled'),
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) => <OrderCell>{order.filledPercent}%</OrderCell>,
     },
     {
       id: 'expires',
       header: t('limitOrders.table.columns.expires'),
+      cellSx: { borderBottom: 'none' },
       renderCell: (order) => {
         const expiry = formatExpiry(order.status, order.expiresAt);
         return expiry ? (
@@ -199,7 +204,7 @@ export function useOrderColumns(
       headerAriaLabel: t('limitOrders.table.actions.rowActions'),
       width: ACTIONS_COL_WIDTH,
       headerCellSx: { px: 1, pr: 1 },
-      cellSx: { px: 1, pr: 1 },
+      cellSx: { px: 1, pr: 1, borderBottom: 'none' },
       renderCell: (order) => (
         <Box
           sx={{
