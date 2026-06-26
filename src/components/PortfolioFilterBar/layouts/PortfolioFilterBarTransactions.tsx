@@ -36,7 +36,7 @@ function useRefreshTooltip(
   }
   if (rateLimit.forceRefreshRemaining === 0) {
     const resetAt = rateLimit.resetAt
-      ? formatDistanceToNow(new Date(rateLimit.resetAt), { addSuffix: true })
+      ? formatDistanceToNow(rateLimit.resetAt, { addSuffix: true })
       : '—';
     return t('portfolio.filter.refreshTooltipExhausted', { resetAt });
   }
