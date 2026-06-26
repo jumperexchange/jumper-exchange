@@ -24,7 +24,7 @@ import { imageFrameStyles } from 'src/components/ImageGeneration/style';
 import WidgetAmountsImage from 'src/components/ImageGeneration/WidgetAmountImage';
 import { getSiteUrl } from 'src/const/urls';
 import { getChainsQuery } from 'src/hooks/useChains';
-import { getChainTokensQuery } from 'src/hooks/useTokens';
+import { fetchChainTokensForPage } from '@/app/lib/tokens/cachedTokensFetch';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import { sortChainsBySpecificName } from 'src/utils/image-generation/sortChains';
 import {
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     const { chains } = await getChainsQuery();
     const sortedChains = sortChainsBySpecificName(chains, params.chainName);
     const chainId = sortedChains[0]?.id;
-    const chainTokens = chainId ? await getChainTokensQuery(chainId) : [];
+    const chainTokens = chainId ? await fetchChainTokensForPage(chainId) : [];
     const sortedTokensByChainId = chainTokens.slice(0, 4);
 
     const options = await imageResponseOptions({
