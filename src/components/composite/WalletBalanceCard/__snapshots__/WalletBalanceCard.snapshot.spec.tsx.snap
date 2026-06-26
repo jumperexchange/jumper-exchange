@@ -41,7 +41,9 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
+                      aria-hidden="true"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1lvnuk-MuiBadge-badge"
+                      style="--Badge-translate: 50%, -50%; --Badge-inset: 14% 14% auto auto; --Badge-origin: 100% 0%;"
                     />
                   </span>
                   <button
@@ -274,7 +276,9 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
+                      aria-hidden="true"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1lvnuk-MuiBadge-badge"
+                      style="--Badge-translate: 50%, -50%; --Badge-inset: 14% 14% auto auto; --Badge-origin: 100% 0%;"
                     />
                   </span>
                   <button
