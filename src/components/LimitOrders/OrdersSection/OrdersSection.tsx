@@ -17,7 +17,11 @@ export const OrdersSection = ({
 }: OrdersSectionProps) => {
   const { t } = useTranslation();
   return (
-    <ActionableSection title={t('limitOrders.orders')} action={action} sx={{ flexShrink: 0 }}>
+    <ActionableSection
+      title={t('limitOrders.orders')}
+      action={action}
+      sx={{ flexShrink: 0 }}
+    >
       <OrdersTable
         orders={sampleOrders}
         showMarketColumn={isSidePanelExpanded}

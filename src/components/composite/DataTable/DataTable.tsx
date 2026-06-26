@@ -9,7 +9,11 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { BaseSurfaceSkeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
-import type { ColumnDef, DataTableProps, MobileSection } from './DataTable.types';
+import type {
+  ColumnDef,
+  DataTableProps,
+  MobileSection,
+} from './DataTable.types';
 import {
   DataTableContainer,
   DataTableDesktopRow,
@@ -62,7 +66,9 @@ function FlexRowMobile<T>({
           <DataTableMobilePairRow>
             {section.columnIds.map((id) => {
               const col = colMap[id] as ColumnDef<T> | undefined;
-              if (!col || col.hidden) return null;
+              if (!col || col.hidden) {
+                return null;
+              }
               return (
                 <DataTableValueCell key={id} sx={col.cellSx}>
                   {col.renderCell?.(row)}
@@ -220,13 +226,15 @@ export function DataTable<T>({
                     <TableRow
                       key={key}
                       sx={[
-                        { '&:last-child td, &:last-child th': { borderBottom: 0 } },
+                        {
+                          '&:last-child td, &:last-child th': {
+                            borderBottom: 0,
+                          },
+                        },
                         Boolean(onRowClick) && { cursor: 'pointer' },
                       ]}
                       onClick={onRowClick ? () => onRowClick(row) : undefined}
-                      data-testid={
-                        testId ? `${testId}-row-${key}` : undefined
-                      }
+                      data-testid={testId ? `${testId}-row-${key}` : undefined}
                     >
                       {visibleColumns.map((col) => (
                         <TableCell
