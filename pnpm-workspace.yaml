@@ -2,6 +2,7 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@lifi/*'
   - '@bigmi/*'
+  - '@jumperexchange/shared-ui@0.13.9'
 allowBuilds:
   '@swc/core': true
   esbuild: true
