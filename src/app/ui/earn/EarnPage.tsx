@@ -5,6 +5,7 @@ import { DepositFlowModal } from 'src/components/composite/DepositFlow/DepositFl
 import { GoBack } from 'src/components/composite/GoBack/GoBack';
 import { EarnDetailsAnalytics } from 'src/components/EarnDetails/EarnDetailsAnalytics';
 import { EarnDetailsIntro } from 'src/components/EarnDetails/EarnDetailsIntro';
+import { EarnDetailsMessages } from '@/components/EarnDetails/EarnDetailsMessages/EarnDetailsMessages';
 import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/EarnDetailsRisks';
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
@@ -30,13 +31,14 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
     return <EarnPageSkeleton />;
   }
 
-  const { tags, protocol } = opportunity;
+  const { tags, protocol, messages } = opportunity;
 
   return (
     <>
       <EarnDetailsSection>
         <GoBack path={AppPaths.Earn} dataTestId="earn-back-button" />
         <EarnDetailsIntro data={opportunity} isLoading={false} />
+        <EarnDetailsMessages messages={messages} />
         <EarnDetailsAnalytics slug={slug} />
         <EarnDetailsRisks protocol={protocol} tags={tags} />
       </EarnDetailsSection>
