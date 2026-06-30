@@ -1,17 +1,62 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
-import { OrdersSection } from '@/components/LimitOrders/OrdersSection/OrdersSection';
-import { MarketPriceSection } from '@/components/LimitOrders/MarketPriceSection/MarketPriceSection';
-import { useWidgetSidePanelStore } from '@/stores/widgetSidePanel/WidgetSidePanelStore';
-import { MainWidgetPageContent } from './MainWidgetPageContent';
-import { WidgetSidePanel } from './WidgetSidePanel';
+import type { ChainId } from '@lifi/sdk';
 import CloseFullscreenIcon from '@mui/icons-material/CloseFullscreen';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import { useMediaQuery } from '@mui/material';
+import type React from 'react';
+import { useEffect, useState } from 'react';
+import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
+import type { Address } from 'viem';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Size, Variant } from '@/components/core/buttons/types';
+import { MarketPriceSection } from '@/components/LimitOrders/MarketPriceSection/MarketPriceSection';
+import { OrdersSection } from '@/components/LimitOrders/OrdersSection/OrdersSection';
+import { useChains } from '@/hooks/useChains';
+import { useTokens } from '@/hooks/useTokens';
+import { datafeed } from '@/lib/tradingview/datafeed';
+import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainTokenSelectionStore';
+import { useWidgetSidePanelStore } from '@/stores/widgetSidePanel/WidgetSidePanelStore';
+import { createBaseToken } from '@/types/tokens';
+import { MainWidgetPageContent } from './MainWidgetPageContent';
+import { WidgetSidePanel } from './WidgetSidePanel';
 import { useTranslation } from 'react-i18next';
+
+const MarketPriceSectionConnected = ({
+  action,
+}: {
+  action: React.ReactNode;
+}) => {
+  const { sourceChainToken } = useChainTokenSelectionStore();
+  const { getToken } = useTokens();
+  const { getChainById } = useChains();
+
+  const { chainId, tokenAddress } = sourceChainToken;
+  const rawFromToken =
+    chainId && tokenAddress
+      ? getToken(chainId as ChainId, tokenAddress as Address)
+      : undefined;
+  const fromToken = rawFromToken
+    ? { ...rawFromToken, type: 'base' as const }
+    : undefined;
+  const chain = chainId ? getChainById(chainId as ChainId) : undefined;
+  const nativeToken = chain?.nativeToken
+    ? createBaseToken(chain.nativeToken)
+    : undefined;
+
+  if (!fromToken || !nativeToken) {
+    return null;
+  }
+
+  return (
+    <MarketPriceSection
+      tokens={[fromToken, nativeToken]}
+      chain={chain}
+      datafeed={datafeed}
+      action={action}
+    />
+  );
+};
 
 export const AdvancedPageContent = () => {
   const { t } = useTranslation();
@@ -65,7 +110,8 @@ export const AdvancedPageContent = () => {
       sidePanelContent={
         isLimitTabActive ? (
           <WidgetSidePanel>
-            <MarketPriceSection action={expandButton} />
+          {/* TODO: replace placeholder tokens with tokens from the limit-order widget state */}
+            <MarketPriceSectionConnected action={expandButton} />
             <OrdersSection
               isSidePanelExpanded={isSidePanelExpanded}
               action={expandButton}
