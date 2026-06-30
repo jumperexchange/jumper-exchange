@@ -6,7 +6,7 @@ import React from 'react';
 import { describe, expect, it } from 'vitest';
 import type {
   ApyAnalyticsHistory,
-  EarnOpportunityHistory,
+  HistoryGraph,
 } from 'src/types/jumper-backend';
 import {
   useApyAnalyticsChartConfig,
@@ -34,7 +34,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const start = Date.UTC(2026, 5, 4);
 const day = (index: number) => start + index * DAY_MS;
 
-const simpleHistory = (values: (number | null)[]): EarnOpportunityHistory => ({
+const simpleHistory = (values: (number | null)[]): HistoryGraph => ({
   points: values.map((v, index) => ({ t: day(index), v })),
 });
 
@@ -48,7 +48,7 @@ const apyHistory = (totals: (number | null)[]): ApyAnalyticsHistory => ({
   })),
 });
 
-const renderSimple = (rawData: EarnOpportunityHistory) =>
+const renderSimple = (rawData: HistoryGraph) =>
   renderHook(
     () => useSimpleAnalyticsChartConfig(rawData, AnalyticsRangeFieldEnum.WEEK),
     { wrapper },
