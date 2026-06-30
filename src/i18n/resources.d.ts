@@ -441,6 +441,8 @@ export default interface Resources {
       chains_one: 'Chain';
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
+      lockupPeriodValue_one: '{{count, number}} day';
+      lockupPeriodValue_other: '{{count, number}} days';
       overview: 'Overview';
       promoCode: 'Promo code';
       protocol: 'Protocol';

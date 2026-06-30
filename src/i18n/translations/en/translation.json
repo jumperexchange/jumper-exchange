@@ -507,6 +507,8 @@
     "apr": "APR",
     "rewardsApy": "Rewards APY",
     "lockupPeriod": "Lockup Period",
+    "lockupPeriodValue_one": "{{count, number}} day",
+    "lockupPeriodValue_other": "{{count, number}} days",
     "tvl": "TVL",
     "assets_one": "Asset",
     "assets_other_one": "Asset",
