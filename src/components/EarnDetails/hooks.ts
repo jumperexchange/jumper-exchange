@@ -1,5 +1,5 @@
 import { APY_FORMAT_CONFIG } from '@/utils/numbers/apy';
-import { dropWhile, negate } from 'lodash';
+import { dropRightWhile, dropWhile, negate } from 'lodash';
 import { useTheme } from '@mui/material/styles';
 import { useMemo } from 'react';
 import type {
@@ -15,6 +15,16 @@ import { AnalyticsRangeFieldEnum } from './types';
 
 const dropUntil = <T>(data: T[], predicate: (item: T) => boolean): T[] =>
   dropWhile(data, negate(predicate));
+
+const dropTrailing = <T>(data: T[], predicate: (item: T) => boolean): T[] =>
+  dropRightWhile(data, negate(predicate));
+
+// Days without data at either edge would stretch the x-axis past the drawn
+// series (a trailing gap reads as a drop to zero), so trim them off.
+export const trimNullEdges = <T>(
+  data: T[],
+  predicate: (item: T) => boolean,
+): T[] => dropTrailing(dropUntil(data, predicate), predicate);
 
 const hasDefinedValue = (
   item: ChartDataPoint<string | number | null>,
@@ -37,7 +47,7 @@ export const useSimpleAnalyticsChartConfig = (
         date: new Date(point.t).toISOString(),
         value: point.v,
       })) ?? [];
-    return dropUntil(mapped, hasDefinedValue);
+    return trimNullEdges(mapped, hasDefinedValue);
   }, [rawData]);
 
   const dateFormat = useDefaultDateFormat(range);
@@ -62,7 +72,7 @@ export const useApyAnalyticsChartConfig = (
         ...point,
         date: new Date(point.t).toISOString(),
       })) ?? [];
-    return dropUntil(mapped, (item) => item.total != null);
+    return trimNullEdges(mapped, (item) => item.total != null);
   }, [rawData]);
 
   const theme = useRewardChartTheme();
