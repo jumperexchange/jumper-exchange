@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
+import type { ReactNode } from 'react';
 
 interface WidgetSidePanelProps {
   children: ReactNode;
@@ -13,6 +13,7 @@ export const WidgetSidePanel = ({ children }: WidgetSidePanelProps) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 3,
+        zIndex: 1,
       }}
     >
       {children}

@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import type { ReactNode } from 'react';
 import Box from '@mui/material/Box';
-import { useTheme } from '@mui/material/styles';
 import type { SxProps, Theme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+import type { ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { WIDGET_WIDTH } from 'src/config/widgetConfig';
 import { VerticalTabs } from '@/components/Menus/VerticalMenu/VerticalTabs';
 import { useHeaderHeight } from '@/hooks/useHeaderHeight';
-import { WIDGET_WIDTH } from 'src/config/widgetConfig';
 import { mergeSx } from '@/utils/theme/mergeSx';
 import { getWidgetStickyTop } from './widgetStickyLayout';
 
@@ -254,6 +254,7 @@ export const WidgetStage = ({
             gridRow: { md: contentRow },
             minWidth: 0,
             minHeight: 0,
+            zIndex: 10,
           },
           getWidgetWidthSx(),
           stickyColumnSx,
