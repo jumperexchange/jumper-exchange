@@ -12,10 +12,6 @@ export const PortfolioTransactionPagination = () => {
     isLoading,
   } = useTransactionFiltering();
 
-  if (isLoading) {
-    return null;
-  }
-
   if (!hasNextPage && !hasPreviousPage) {
     return null;
   }

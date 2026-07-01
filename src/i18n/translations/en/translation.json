@@ -814,8 +814,6 @@
       "protocol": "Protocol",
       "type": "Type",
       "asset": "Asset",
-      "assetIn": "Asset In",
-      "assetOut": "Asset Out",
       "value": "Value",
       "clearAll": "Clear all",
       "filterSort": "Filters & Sort",

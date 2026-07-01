@@ -24,7 +24,7 @@ import { useAccountGroupsByChainType } from '@/hooks/accounts/useAccountGroupsBy
 import {
   ALL_TRANSACTION_TYPES,
   buildApiAssets,
-  buildBaseAssets,
+  buildTokenRegistryData,
   extractNftTokenOptions,
   extractSeenAssets,
   extractSeenChainIds,
@@ -33,6 +33,7 @@ import {
   prioritizeChains,
 } from './utils';
 import type { TransactionAssetOption } from './utils';
+import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import {
   getTransactionFilterMaxDate,
   TRANSACTION_FILTER_MIN_DATE,
@@ -44,8 +45,7 @@ import { useTokens } from '@/hooks/useTokens';
 export interface TransactionFilterUI {
   wallet?: string;
   chains?: string[];
-  assetsIn?: string[];
-  assetsOut?: string[];
+  assets?: string[];
   types?: TransactionsDto['action'][];
   minDate?: string | null;
   maxDate?: string | null;
@@ -57,8 +57,8 @@ export type TransactionOrder = 'asc' | 'desc';
 export interface TransactionFilterMetadata {
   allTypes: TransactionsDto['action'][];
   allChains: ExtendedChain[];
-  allAssetsIn: TransactionAssetOption[];
-  allAssetsOut: TransactionAssetOption[];
+  allAssets: TransactionAssetOption[];
+  tokenSymbolsByChain: Map<number, Set<string>>;
   allWallets: string[];
   allDateRange: {
     min: Date;
@@ -86,8 +86,7 @@ interface TransactionFilteringContextType {
 const transactionSearchParamsParsers = {
   txWallet: parseAsString,
   txChains: parseAsArrayOf(parseAsString),
-  txAssetsIn: parseAsArrayOf(parseAsString),
-  txAssetsOut: parseAsArrayOf(parseAsString),
+  txAssets: parseAsArrayOf(parseAsString),
   txTypes: parseAsArrayOf(parseAsString),
   txMinDate: parseAsString,
   txMaxDate: parseAsString,
@@ -104,8 +103,8 @@ const transactionSearchParamsParsers = {
 const defaultMetadata: TransactionFilterMetadata = {
   allTypes: [],
   allChains: [],
-  allAssetsIn: [],
-  allAssetsOut: [],
+  allAssets: [],
+  tokenSymbolsByChain: new Map(),
   allWallets: [],
   allDateRange: {
     min: TRANSACTION_FILTER_MIN_DATE,
@@ -161,11 +160,8 @@ export const TransactionFilteringProvider = ({
     if (searchParams.txChains?.length) {
       f.chains = searchParams.txChains;
     }
-    if (searchParams.txAssetsIn?.length) {
-      f.assetsIn = searchParams.txAssetsIn;
-    }
-    if (searchParams.txAssetsOut?.length) {
-      f.assetsOut = searchParams.txAssetsOut;
+    if (searchParams.txAssets?.length) {
+      f.assets = searchParams.txAssets;
     }
     if (searchParams.txTypes?.length) {
       f.types = searchParams.txTypes as TransactionsDto['action'][];
@@ -193,14 +189,10 @@ export const TransactionFilteringProvider = ({
           patch.chains !== undefined
             ? (patch.chains ?? null)
             : searchParams.txChains,
-        txAssetsIn:
-          patch.assetsIn !== undefined
-            ? (patch.assetsIn ?? null)
-            : searchParams.txAssetsIn,
-        txAssetsOut:
-          patch.assetsOut !== undefined
-            ? (patch.assetsOut ?? null)
-            : searchParams.txAssetsOut,
+        txAssets:
+          patch.assets !== undefined
+            ? (patch.assets ?? null)
+            : searchParams.txAssets,
         txTypes:
           patch.types !== undefined
             ? (patch.types ?? null)
@@ -229,8 +221,7 @@ export const TransactionFilteringProvider = ({
     setSearchParams({
       txWallet: null,
       txChains: null,
-      txAssetsIn: null,
-      txAssetsOut: null,
+      txAssets: null,
       txTypes: null,
       txMinDate: null,
       txMaxDate: null,
@@ -297,7 +288,6 @@ export const TransactionFilteringProvider = ({
         clearFilters={clearFilters}
         setSortBy={setSortBy}
         setIsActive={setIsActive}
-        chainKeyToId={chainKeyToId}
         tokens={tokens}
         onRawTransactionsUpdate={handleRawTransactionsUpdate}
       >
@@ -316,7 +306,6 @@ interface TransactionFilteringInnerProps extends PropsWithChildren {
   clearFilters: () => void;
   setSortBy: (sortBy: TransactionSortBy) => void;
   setIsActive: (active: boolean) => void;
-  chainKeyToId: Map<string, number>;
   tokens: ReturnType<typeof useTokens>['tokens'];
   onRawTransactionsUpdate: (
     txs: TransactionsDto[],
@@ -334,7 +323,6 @@ const TransactionFilteringInner = ({
   clearFilters,
   setSortBy,
   setIsActive,
-  chainKeyToId,
   tokens,
   onRawTransactionsUpdate,
 }: TransactionFilteringInnerProps) => {
@@ -347,9 +335,7 @@ const TransactionFilteringInner = ({
     isLoading,
   } = useTransactions();
 
-  const hasAssetFilter = !!(
-    filter.assetsIn?.length || filter.assetsOut?.length
-  );
+  const hasAssetFilter = !!filter.assets?.length;
 
   useEffect(() => {
     onRawTransactionsUpdate(rawTransactions, hasAssetFilter);
@@ -359,6 +345,13 @@ const TransactionFilteringInner = ({
     () => extractSeenAssets(rawTransactions),
     [rawTransactions],
   );
+
+  const seenAll = useMemo(() => {
+    const merged = new Set<string>();
+    seenFrom.forEach((s) => merged.add(s));
+    seenTo.forEach((s) => merged.add(s));
+    return merged;
+  }, [seenFrom, seenTo]);
 
   const seenChainIds = useMemo(
     () => extractSeenChainIds(rawTransactions),
@@ -372,8 +365,11 @@ const TransactionFilteringInner = ({
     [chains, seenChainIds],
   );
 
-  const baseAssets = useMemo(
-    () => (tokens ? buildBaseAssets(tokens) : []),
+  const { baseAssets, symbolsByChain: tokenSymbolsByChain } = useMemo(
+    () =>
+      tokens
+        ? buildTokenRegistryData(tokens)
+        : { baseAssets: [], symbolsByChain: new Map<number, Set<string>>() },
     [tokens],
   );
 
@@ -385,56 +381,34 @@ const TransactionFilteringInner = ({
     [rawTransactions],
   );
 
-  const selectedChainIds = useMemo((): Set<number> | null => {
-    if (!filter.chains?.length) {
-      return null;
+  const portfolioCache = usePortfolioCacheStore();
+  const walletSymbols = useMemo(() => {
+    if (!filter.wallet) {
+      return new Set<string>();
     }
-    return new Set(
-      filter.chains
-        .map((k) => chainKeyToId.get(k))
-        .filter((id): id is number => id !== undefined),
-    );
-  }, [filter.chains, chainKeyToId]);
+    const balances = portfolioCache.balances.get(filter.wallet) ?? [];
+    return new Set(balances.map((b) => b.token.symbol.toLowerCase()));
+  }, [filter.wallet, portfolioCache.balances]);
 
-  const filteredBaseAssets = useMemo(
+  const allAssets = useMemo(
     () =>
-      selectedChainIds
-        ? baseAssets.filter((t) => selectedChainIds.has(t.chainId))
-        : baseAssets,
-    [baseAssets, selectedChainIds],
-  );
-
-  const filteredNfts = useMemo(
-    () =>
-      selectedChainIds
-        ? nftOptions.filter((n) => selectedChainIds.has(n.chainId))
-        : nftOptions,
-    [nftOptions, selectedChainIds],
-  );
-
-  const allAssetsIn = useMemo(
-    () => prioritizeAssets([...filteredBaseAssets, ...filteredNfts], seenFrom),
-    [filteredBaseAssets, filteredNfts, seenFrom],
-  );
-
-  const allAssetsOut = useMemo(
-    () => prioritizeAssets([...filteredBaseAssets, ...filteredNfts], seenTo),
-    [filteredBaseAssets, filteredNfts, seenTo],
+      prioritizeAssets([...baseAssets, ...nftOptions], seenAll, walletSymbols),
+    [baseAssets, nftOptions, seenAll, walletSymbols],
   );
 
   const metadata = useMemo(
     (): TransactionFilterMetadata => ({
       allTypes: ALL_TRANSACTION_TYPES,
       allChains,
-      allAssetsIn,
-      allAssetsOut,
+      allAssets,
+      tokenSymbolsByChain,
       allWallets: connectedWallets,
       allDateRange: {
         min: TRANSACTION_FILTER_MIN_DATE,
         max: getTransactionFilterMaxDate(),
       },
     }),
-    [allChains, allAssetsIn, allAssetsOut, connectedWallets],
+    [allChains, allAssets, tokenSymbolsByChain, connectedWallets],
   );
 
   const transactions = useMemo(
