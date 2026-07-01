@@ -10,11 +10,9 @@ import {
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
-import {
-  ApyWindowOptions,
-  EarnApyWindowToggle,
-} from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
-import { useApyWindowMock } from 'src/components/EarnFilterBar/components/useApyWindow.mock';
+import { ApyWindowOptions } from '@/utils/earn/apyWindow';
+import { EarnApyWindowToggle } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { useApyWindowMock } from '@/components/EarnFilterBar/components/useApyWindow.mock';
 
 const meta = {
   component: EarnCard,

@@ -1,5 +1,5 @@
-import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import type { ApyWindow } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
+import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 
 export type EarnCardVariant = 'compact' | 'list-item' | 'overview';
 

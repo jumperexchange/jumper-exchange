@@ -1,6 +1,5 @@
-import { useCallback } from 'react';
 import { parseAsStringEnum, useQueryState } from 'nuqs';
-import { ApyWindowOptions, type ApyWindow } from './EarnApyWindowToggle';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 
 export const apyWindowParser = parseAsStringEnum<ApyWindow>(
   Object.values(ApyWindowOptions) as ApyWindow[],
@@ -9,13 +8,13 @@ export const apyWindowParser = parseAsStringEnum<ApyWindow>(
 export function useApyWindow() {
   const [apyWindow, setApyWindow] = useQueryState('apyWindow', apyWindowParser);
 
-  const toggleApyWindow = useCallback(() => {
+  const toggleApyWindow = () => {
     setApyWindow((prev) =>
       prev === ApyWindowOptions.SEVEN_DAY
         ? ApyWindowOptions.THIRTY_DAY
         : ApyWindowOptions.SEVEN_DAY,
     );
-  }, [setApyWindow]);
+  };
 
   return { apyWindow, setApyWindow, toggleApyWindow } as const;
 }

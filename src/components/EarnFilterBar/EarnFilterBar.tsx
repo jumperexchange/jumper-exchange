@@ -8,10 +8,8 @@ import { EarnFilterTab } from '../../app/ui/earn/types';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import {
-  EarnApyWindowToggle,
-  type ApyWindow,
-} from './components/EarnApyWindowToggle';
+import { EarnApyWindowToggle } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';

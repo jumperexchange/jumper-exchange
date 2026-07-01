@@ -1,5 +1,4 @@
-import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
-import { ApyWindowOptions } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import type {
   APYItem,
   EarnOpportunityHistoryItem,

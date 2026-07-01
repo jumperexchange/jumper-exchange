@@ -7,7 +7,7 @@ import { GridContainer } from 'src/components/Containers/GridContainer';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import { AtLeastNWhenLoading } from '@/utils/earn/utils';
 import { useMemo } from 'react';
-import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 import { buildEarnHref } from '@/app/ui/earn/utils';
 
 export const EarnOpportunitiesCards = ({

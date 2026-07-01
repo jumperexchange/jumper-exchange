@@ -7,7 +7,7 @@ import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
-import { useApyWindow } from 'src/components/EarnFilterBar/components/useApyWindow';
+import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
 import { buildEarnHref } from '@/app/ui/earn/utils';
 
 interface EarnTopOpportunities {}

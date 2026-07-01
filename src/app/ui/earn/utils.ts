@@ -7,10 +7,7 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
-import {
-  ApyWindowOptions,
-  type ApyWindow,
-} from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import { AppPaths } from '@/const/urls';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { getDisplayApy } from '@/utils/earn/getDisplayApy';

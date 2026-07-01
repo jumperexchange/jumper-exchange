@@ -1,12 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { TabSelect } from '../../core/TabSelect/TabSelect';
+import { TabSelect } from '@/components/core/TabSelect/TabSelect';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 
-export const ApyWindowOptions = {
-  SEVEN_DAY: '7d',
-  THIRTY_DAY: '30d',
-} as const;
-
-export type ApyWindow = '7d' | '30d';
+export { ApyWindowOptions, type ApyWindow };
 
 type Props = {
   value: ApyWindow;

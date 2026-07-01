@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import {
-  ApyWindowOptions,
-  EarnApyWindowToggle,
-} from './EarnApyWindowToggle';
-import type { ApyWindow } from './EarnApyWindowToggle';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
+import { EarnApyWindowToggle } from './EarnApyWindowToggle';
 
 const meta = {
   component: EarnApyWindowToggle,

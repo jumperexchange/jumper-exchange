@@ -9,10 +9,10 @@ import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import type { ApyWindow } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
-import { ApyWindowOptions as ApyWindowValue } from 'src/components/EarnFilterBar/components/EarnApyWindowToggle';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
+import { ApyWindowOptions as ApyWindowValue } from '@/utils/earn/apyWindow';
 import type {
   APYItem,
   Chain,
@@ -20,12 +20,12 @@ import type {
   Protocol,
   Token,
   VaultFees,
-} from 'src/types/jumper-backend';
-import { capitalizeString } from 'src/utils/capitalizeString';
+} from '@/types/jumper-backend';
+import { capitalizeString } from '@/utils/capitalizeString';
 import { formatLockupInDay } from '@/utils/formatLockupInDay';
-import { formatApy } from 'src/utils/numbers/apy';
-import { formatTvl } from 'src/utils/numbers/tvl';
-import { isZeroApprox } from 'src/utils/numbers/utils';
+import { formatApy } from '@/utils/numbers/apy';
+import { formatTvl } from '@/utils/numbers/tvl';
+import { isZeroApprox } from '@/utils/numbers/utils';
 import type { VaultCapacityDisplay } from './useVaultCapacity';
 import { useVaultCapacity } from './useVaultCapacity';
 
@@ -454,6 +454,7 @@ export const useFormatDisplayEarnOpportunityData = (
     t,
     getChainById,
     capacityDisplay,
-    windowOptions,
+    windowOptions?.apyWindow,
+    windowOptions?.onToggleApyWindow,
   ]);
 };

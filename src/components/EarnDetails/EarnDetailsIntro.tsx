@@ -16,7 +16,7 @@ import { EarnDetailsActions } from './EarnDetailsActions';
 import { formatDistance } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useZapEarnOpportunitySlugStorage } from '@/providers/hooks';
-import { useApyWindow } from 'src/components/EarnFilterBar/components/useApyWindow';
+import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
 
 interface EarnDetailsIntroProps {
   data: EarnOpportunityWithLatestAnalytics;
