@@ -1,9 +1,12 @@
 import type { Preview } from '@storybook/nextjs-vite';
 import { sb } from 'storybook/test';
 import i18nConfig from '../i18n-config';
+import { NO_PARTNER_THEME_UID } from './partnerThemeConstants.ts';
 import { withProviders } from './withProviders';
 
 sb.mock(import('@lifi/wallet-management'), { spy: true });
+
+sb.mock(import('../src/hooks/useFeatureFlags.ts'));
 
 const preview: Preview = {
   globalTypes: {
@@ -41,13 +44,18 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    partnerTheme: {
+      name: 'Partner theme',
+      description: 'Partner theme preview',
+      defaultValue: NO_PARTNER_THEME_UID,
+    },
+  },
+  initialGlobals: {
+    theme: 'light',
+    partnerTheme: NO_PARTNER_THEME_UID,
+    locale: 'en',
   },
   parameters: {
-    globals: {
-      theme: 'light',
-      locale: 'en',
-    },
-
     options: {
       storySort: {
         order: ['Preview', '*'],
@@ -64,9 +72,6 @@ const preview: Preview = {
     layout: 'fullscreen',
 
     a11y: {
-      // 'todo' - show a11y violations in the test UI only
-      // 'error' - fail CI on a11y violations
-      // 'off' - skip a11y checks entirely
       test: 'todo',
     },
     nextjs: {

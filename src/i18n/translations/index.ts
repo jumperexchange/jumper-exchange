@@ -78,19 +78,19 @@
 //   language: zhLanguage,
 // };
 
-import bn from './bn/language.json' with { type: 'json' };
-import en from './en/language.json' with { type: 'json' };
-import es from './es/language.json' with { type: 'json' };
-import fr from './fr/language.json' with { type: 'json' };
-import id from './id/language.json' with { type: 'json' };
-import it from './it/language.json' with { type: 'json' };
-import ja from './ja/language.json' with { type: 'json' };
-import ko from './ko/language.json' with { type: 'json' };
-import pt from './pt/language.json' with { type: 'json' };
-import th from './th/language.json' with { type: 'json' };
-import tr from './tr/language.json' with { type: 'json' };
-import uk from './uk/language.json' with { type: 'json' };
-import vi from './vi/language.json' with { type: 'json' };
-import zh from './zh/language.json' with { type: 'json' };
+import bn from './bn/language.json';
+import en from './en/language.json';
+import es from './es/language.json';
+import fr from './fr/language.json';
+import id from './id/language.json';
+import it from './it/language.json';
+import ja from './ja/language.json';
+import ko from './ko/language.json';
+import pt from './pt/language.json';
+import th from './th/language.json';
+import tr from './tr/language.json';
+import uk from './uk/language.json';
+import vi from './vi/language.json';
+import zh from './zh/language.json';
 
 export { bn, en, es, fr, id, it, ja, ko, pt, th, tr, uk, vi, zh };
