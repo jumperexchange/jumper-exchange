@@ -51,7 +51,7 @@ export interface TransactionFilterUI {
   maxDate?: string | null;
 }
 
-export type TransactionSortBy = 'date' | 'chain' | 'action' | 'asset';
+export type TransactionSortBy = 'date' | 'chain' | 'action';
 export type TransactionOrder = 'asc' | 'desc';
 
 export interface TransactionFilterMetadata {
@@ -95,7 +95,6 @@ const transactionSearchParamsParsers = {
     'date',
     'chain',
     'action',
-    'asset',
   ]).withDefault('date'),
   txOrder: parseAsStringEnum<TransactionOrder>(['asc', 'desc']).withDefault(
     'desc',

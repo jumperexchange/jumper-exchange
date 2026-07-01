@@ -204,7 +204,6 @@ const TX_SORT_ITERATEES: Record<
   date: (tx) => tx.time,
   chain: (tx) => tx.chainId,
   action: (tx) => tx.action,
-  asset: (tx) => tx.amountUsd ?? 0,
 };
 
 export const filterSortTransactions = (

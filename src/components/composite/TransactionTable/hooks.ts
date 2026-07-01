@@ -84,21 +84,29 @@ export const useTransactionSummaryContent = (
   const fromNfts = transaction.fromBalances.filter(hasNftDto).map(toNftBalance);
   const toNfts = transaction.toBalances.filter(hasNftDto).map(toNftBalance);
 
-  // Sends have no incoming balances — show what was sent instead of $0.
-  const amountBalances = toBalances.length ? toBalances : fromBalances;
-  const derivedAmountUsd = sumBy(amountBalances, 'amountUsd');
-  const effectiveAmountUsd =
-    amountBalances.length === 0 && transaction.amountUsd != null
-      ? transaction.amountUsd
-      : derivedAmountUsd;
-  const amountTitle = toDisplayAmountUSD(effectiveAmountUsd);
-  const amountHint = amountBalances
-    .map((b) => toDisplayAmount(b.amount, b.token.symbol))
-    .join('\n');
+  const fromAmountTitle = fromBalances.length
+    ? toDisplayAmountUSD(sumBy(fromBalances, 'amountUsd'))
+    : '-';
+  const fromAmountHint = fromBalances.length
+    ? fromBalances
+        .map((b) => toDisplayAmount(b.amount, b.token.symbol))
+        .join('\n')
+    : undefined;
+
+  const toAmountTitle = toBalances.length
+    ? toDisplayAmountUSD(sumBy(toBalances, 'amountUsd'))
+    : '-';
+  const toAmountHint = toBalances.length
+    ? toBalances
+        .map((b) => toDisplayAmount(b.amount, b.token.symbol))
+        .join('\n')
+    : undefined;
 
   return {
-    amountTitle,
-    amountHint: amountHint || undefined,
+    fromAmountTitle,
+    fromAmountHint,
+    toAmountTitle,
+    toAmountHint,
     actionTitle: formatTransactionAction(transaction.action),
     feeTitle:
       transaction.fee?.amountUsd != null

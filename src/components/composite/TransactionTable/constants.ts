@@ -1,10 +1,6 @@
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { TransactionSummaryRowConfig } from './types';
 
-// Fits a two-token XL overlay stack so the column width stays constant
-// regardless of how many tokens (or none) a transaction has.
-const COMPACT_ASSETS_COLUMN_WIDTH = 72;
-
 export const NFT_TOKEN_URL =
   'https://static.debank.com/image/eth_nft/local_url/2a035fec5441cb85b98db0a8ebb46c62/191e91adff47463d2f9b37e6b255e2bb.svg';
 
@@ -19,7 +15,6 @@ export const TRANSACTION_SUMMARY_ROW_CONFIG: TransactionSummaryRowConfig = {
   badgeSpacing: -0.8,
   showColumnHeader: true,
   columns: [
-    { id: 'amount' },
     { id: 'assetsIn' },
     { id: 'assetsOut' },
     { id: 'action' },
@@ -27,7 +22,7 @@ export const TRANSACTION_SUMMARY_ROW_CONFIG: TransactionSummaryRowConfig = {
     { id: 'date', sx: { textAlign: 'right' } },
   ],
   sections: [
-    { columns: [{ id: 'amount' }, { id: 'action' }] },
+    { columns: [{ id: 'action' }] },
     { columns: [{ id: 'assetsIn' }, { id: 'assetsOut' }] },
     { columns: [{ id: 'fee' }, { id: 'date' }] },
   ],
@@ -38,26 +33,13 @@ export const TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG: TransactionSummaryRowConfig
     ...TRANSACTION_SUMMARY_ROW_CONFIG,
     showColumnHeader: false,
     columns: [
-      {
-        id: 'assetsIn',
-        sx: { flex: '0 0 auto', minWidth: COMPACT_ASSETS_COLUMN_WIDTH },
-      },
-      { id: 'amount', sx: (theme) => ({ marginLeft: theme.spacing(1.5) }) },
+      { id: 'assetsIn' },
       { id: 'action' },
       { id: 'date', sx: { textAlign: 'right' } },
     ],
     sections: [
       { columns: [{ id: 'action' }] },
-      {
-        columns: [
-          {
-            id: 'assetsIn',
-            sx: { flex: '0 0 auto', minWidth: COMPACT_ASSETS_COLUMN_WIDTH },
-          },
-          { id: 'amount' },
-        ],
-        sx: { gap: 1.5 },
-      },
+      { columns: [{ id: 'assetsIn' }] },
       {
         columns: [
           {
