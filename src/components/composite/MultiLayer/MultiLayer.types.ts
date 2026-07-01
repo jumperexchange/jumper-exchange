@@ -20,6 +20,7 @@ export interface RendererSlotProps {
   listSx?: SxProps<Theme>;
   listSpacing?: number;
   itemSx?: SxProps<Theme>;
+  onBack?: () => void;
 }
 
 /**
@@ -80,6 +81,11 @@ export type MultiSelectLeafCategory<TValue extends string | number> =
     options?: CategoryOption<TValue>[];
     searchable?: boolean;
     searchPlaceholder?: string;
+    /**
+     * When set, renders a dedicated "All" toggle button above the list.
+     * Selecting it clears individual selections; selecting any individual item removes it.
+     */
+    allOption?: CategoryOption<TValue>;
   };
 
 /**
@@ -154,6 +160,10 @@ export interface LeafCategoryRenderProps<TValue> {
  */
 export interface CategoryWithSubcategories extends BaseCategoryConfig {
   subcategories?: CategoryConfig[];
+  /** Show a back button in the leaf header when a subcategory is active */
+  showBackButton?: boolean;
+  /** Header label shown above the subcategory list */
+  subcategoryHeader?: string;
 }
 
 export type LeafCategoryAny =

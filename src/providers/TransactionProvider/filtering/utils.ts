@@ -1,4 +1,4 @@
-import { flatMap, map, orderBy } from 'lodash';
+import { map, orderBy } from 'lodash';
 import type { ExtendedChain, TokensResponse } from '@lifi/sdk';
 import type { TransactionsDto } from '@/types/jumper-backend';
 import type { BaseToken } from '@/types/tokens';
@@ -48,8 +48,7 @@ export const extractSeenChainIds = (
 export const prioritizeChains = (
   chains: ExtendedChain[],
   seen: Set<number>,
-): ExtendedChain[] =>
-  orderBy(chains, [(c) => (seen.has(c.id) ? 0 : 1), (c) => c.name]);
+): ExtendedChain[] => orderBy(chains, [(c) => c.name.toLowerCase()]);
 
 export const extractSeenAssets = (
   transactions: TransactionsDto[],
@@ -109,13 +108,18 @@ export const extractNftTokenOptions = (
   return result;
 };
 
-// Single pass over the token registry — builds both structures without
+// Single pass over the token registry — builds all structures without
 // creating an intermediate flattened array.
 export const buildTokenRegistryData = (
   tokens: TokensResponse['tokens'],
-): { baseAssets: BaseToken[]; symbolsByChain: Map<number, Set<string>> } => {
+): {
+  baseAssets: BaseToken[];
+  symbolsByChain: Map<number, Set<string>>;
+  tokensByChain: Map<number, BaseToken[]>;
+} => {
   const bySymbol = new Map<string, BaseToken>();
   const byChain = new Map<number, Set<string>>();
+  const tokensByChain = new Map<number, BaseToken[]>();
 
   for (const chainTokens of Object.values(tokens)) {
     for (const token of chainTokens) {
@@ -134,19 +138,30 @@ export const buildTokenRegistryData = (
       if (!VALID_NAME_RE.test(token.name ?? '')) {
         continue;
       }
+
+      const baseToken = createBaseToken({ ...token, name: token.name.trim() });
+
       if (
         !bySymbol.has(symbolLower) ||
         (!bySymbol.get(symbolLower)!.logoURI && token.logoURI)
       ) {
-        bySymbol.set(
-          symbolLower,
-          createBaseToken({ ...token, name: token.name.trim() }),
-        );
+        bySymbol.set(symbolLower, baseToken);
       }
+
+      let chainArr = tokensByChain.get(token.chainId);
+      if (!chainArr) {
+        chainArr = [];
+        tokensByChain.set(token.chainId, chainArr);
+      }
+      chainArr.push(baseToken);
     }
   }
 
-  return { baseAssets: Array.from(bySymbol.values()), symbolsByChain: byChain };
+  return {
+    baseAssets: Array.from(bySymbol.values()),
+    symbolsByChain: byChain,
+    tokensByChain,
+  };
 };
 
 const assetKey = (a: TransactionAssetOption): string =>
@@ -165,59 +180,7 @@ export const prioritizeAssets = (
 
 export const buildApiAssets = (
   filter: TransactionFilterUI,
-  tokenRegistry: TokensResponse['tokens'],
-  rawTransactions: TransactionsDto[],
-  chainKeyToId: Map<string, number>,
-): string[] | undefined => {
-  const selectedAssets = filter.assets ?? [];
-  if (!selectedAssets.length) {
-    return undefined;
-  }
-
-  const selectedChainIds: Set<number> | null = filter.chains?.length
-    ? new Set(
-        filter.chains
-          .map((k) => chainKeyToId.get(k))
-          .filter((id): id is number => id !== undefined),
-      )
-    : null;
-
-  const selectedAssetsSet = new Set(selectedAssets);
-  const result = new Set<string>();
-
-  for (const chainTokens of Object.values(tokenRegistry)) {
-    for (const token of chainTokens) {
-      if (!token.symbol || !selectedAssetsSet.has(token.symbol)) {
-        continue;
-      }
-      if (selectedChainIds && !selectedChainIds.has(token.chainId)) {
-        continue;
-      }
-      result.add(`${token.chainId}:${token.address.toLowerCase()}`);
-    }
-  }
-
-  for (const tx of rawTransactions) {
-    for (const balances of [tx.fromBalances, tx.toBalances]) {
-      for (const b of balances) {
-        if (!b.token || !('tokenId' in b.token)) {
-          continue;
-        }
-        const nft = b.token;
-        const normalizedAddress = nft.address.toLowerCase();
-        if (!selectedAssetsSet.has(normalizedAddress)) {
-          continue;
-        }
-        if (selectedChainIds && !selectedChainIds.has(nft.chainId)) {
-          continue;
-        }
-        result.add(`${nft.chainId}:${normalizedAddress}`);
-      }
-    }
-  }
-
-  return result.size ? [...result] : undefined;
-};
+): string[] | undefined => (filter.assets?.length ? filter.assets : undefined);
 
 const TX_SORT_ITERATEES: Record<
   TransactionSortBy,

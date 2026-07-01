@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type PropsWithChildren,
@@ -16,6 +15,7 @@ import {
   useQueryStates,
 } from 'nuqs';
 import type { ExtendedChain } from '@lifi/sdk';
+import type { BaseToken } from '@/types/tokens';
 import { useAccount } from '@lifi/wallet-management';
 import { TransactionProvider } from '../TransactionProvider';
 import { useTransactions } from '../TransactionContext';
@@ -58,7 +58,7 @@ export interface TransactionFilterMetadata {
   allTypes: TransactionsDto['action'][];
   allChains: ExtendedChain[];
   allAssets: TransactionAssetOption[];
-  tokenSymbolsByChain: Map<number, Set<string>>;
+  tokensByChain: Map<number, BaseToken[]>;
   allWallets: string[];
   allDateRange: {
     min: Date;
@@ -104,7 +104,7 @@ const defaultMetadata: TransactionFilterMetadata = {
   allTypes: [],
   allChains: [],
   allAssets: [],
-  tokenSymbolsByChain: new Map(),
+  tokensByChain: new Map(),
   allWallets: [],
   allDateRange: {
     min: TRANSACTION_FILTER_MIN_DATE,
@@ -186,8 +186,10 @@ export const TransactionFilteringProvider = ({
             ? (patch.wallet ?? null)
             : searchParams.txWallet,
         txChains:
-          patch.chains !== undefined
-            ? (patch.chains ?? null)
+          'chains' in patch
+            ? patch.chains?.length
+              ? patch.chains
+              : null
             : searchParams.txChains,
         txAssets:
           patch.assets !== undefined
@@ -228,45 +230,16 @@ export const TransactionFilteringProvider = ({
     });
   }, [setSearchParams]);
 
-  const { chains } = useChains();
   const { tokens } = useTokens();
 
-  const chainKeyToId = useMemo(
-    () => new Map<string, number>(chains.map((c) => [c.key as string, c.id])),
-    [chains],
-  );
-
-  // Cache of raw transactions used for NFT address resolution.
-  // Only updated when no asset filter is active to ensure all asset options remain resolvable.
-  const [cachedRawTransactions, setCachedRawTransactions] = useState<
-    TransactionsDto[]
-  >([]);
-
-  const assets = useMemo(
-    () =>
-      tokens
-        ? buildApiAssets(filter, tokens, cachedRawTransactions, chainKeyToId)
-        : undefined,
-    [filter, tokens, cachedRawTransactions, chainKeyToId],
-  );
-
-  const handleRawTransactionsUpdate = useCallback(
-    (txs: TransactionsDto[], hasAssetFilter: boolean) => {
-      if (!hasAssetFilter) {
-        setCachedRawTransactions(txs);
-      }
-    },
-    [],
-  );
+  const assets = useMemo(() => buildApiAssets(filter), [filter]);
 
   const chainIds = useMemo(
     () =>
       filter.chains?.length
-        ? filter.chains
-            .map((k) => chainKeyToId.get(k))
-            .filter((id): id is number => id !== undefined)
+        ? filter.chains.map(Number).filter(Boolean)
         : undefined,
-    [filter.chains, chainKeyToId],
+    [filter.chains],
   );
 
   return (
@@ -289,7 +262,6 @@ export const TransactionFilteringProvider = ({
         setSortBy={setSortBy}
         setIsActive={setIsActive}
         tokens={tokens}
-        onRawTransactionsUpdate={handleRawTransactionsUpdate}
       >
         {children}
       </TransactionFilteringInner>
@@ -307,10 +279,6 @@ interface TransactionFilteringInnerProps extends PropsWithChildren {
   setSortBy: (sortBy: TransactionSortBy) => void;
   setIsActive: (active: boolean) => void;
   tokens: ReturnType<typeof useTokens>['tokens'];
-  onRawTransactionsUpdate: (
-    txs: TransactionsDto[],
-    hasAssetFilter: boolean,
-  ) => void;
 }
 
 const TransactionFilteringInner = ({
@@ -324,7 +292,6 @@ const TransactionFilteringInner = ({
   setSortBy,
   setIsActive,
   tokens,
-  onRawTransactionsUpdate,
 }: TransactionFilteringInnerProps) => {
   const {
     transactions: rawTransactions,
@@ -334,12 +301,6 @@ const TransactionFilteringInner = ({
     goToPreviousPage,
     isLoading,
   } = useTransactions();
-
-  const hasAssetFilter = !!filter.assets?.length;
-
-  useEffect(() => {
-    onRawTransactionsUpdate(rawTransactions, hasAssetFilter);
-  }, [rawTransactions, hasAssetFilter, onRawTransactionsUpdate]);
 
   const { from: seenFrom, to: seenTo } = useMemo(
     () => extractSeenAssets(rawTransactions),
@@ -365,11 +326,15 @@ const TransactionFilteringInner = ({
     [chains, seenChainIds],
   );
 
-  const { baseAssets, symbolsByChain: tokenSymbolsByChain } = useMemo(
+  const { baseAssets, tokensByChain } = useMemo(
     () =>
       tokens
         ? buildTokenRegistryData(tokens)
-        : { baseAssets: [], symbolsByChain: new Map<number, Set<string>>() },
+        : {
+            baseAssets: [],
+            symbolsByChain: new Map<number, Set<string>>(),
+            tokensByChain: new Map<number, BaseToken[]>(),
+          },
     [tokens],
   );
 
@@ -401,14 +366,14 @@ const TransactionFilteringInner = ({
       allTypes: ALL_TRANSACTION_TYPES,
       allChains,
       allAssets,
-      tokenSymbolsByChain,
+      tokensByChain,
       allWallets: connectedWallets,
       allDateRange: {
         min: TRANSACTION_FILTER_MIN_DATE,
         max: getTransactionFilterMaxDate(),
       },
     }),
-    [allChains, allAssets, tokenSymbolsByChain, connectedWallets],
+    [allChains, allAssets, tokensByChain, connectedWallets],
   );
 
   const transactions = useMemo(

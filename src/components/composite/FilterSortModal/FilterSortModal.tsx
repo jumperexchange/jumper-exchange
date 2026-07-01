@@ -1,8 +1,12 @@
 import type { FC } from 'react';
-import { useEffect, useImperativeHandle, useState } from 'react';
+import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
-import { isLeafCategory } from '../MultiLayer/MultiLayer.types';
+import {
+  hasSubcategories,
+  isLeafCategory,
+} from '../MultiLayer/MultiLayer.types';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
 import { MultiLayerDrawerDivider } from '../MultiLayer/MultiLayer.styles';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
@@ -23,7 +27,9 @@ import {
   leafCategorySlotProps,
   sectionCardSx,
   selectBadgeSx,
+  subcategoryHeaderSx,
 } from './constants';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 interface FilterSortModalProps extends Omit<MultiLayerProps, 'title'> {
   triggerButtonLabel?: string;
@@ -56,12 +62,28 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
     [open, close],
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedSubIndex, setSelectedSubIndex] = useState<number | null>(null);
 
   const selectedCategory = categories[selectedIndex] ?? null;
 
   useEffect(() => {
     setSelectedIndex(0);
+    setSelectedSubIndex(null);
   }, [categories.length]);
+
+  const effectiveLeaf = useMemo(() => {
+    if (!selectedCategory) {
+      return null;
+    }
+    if (isLeafCategory(selectedCategory)) {
+      return selectedCategory;
+    }
+    if (hasSubcategories(selectedCategory) && selectedSubIndex !== null) {
+      const sub = selectedCategory.subcategories?.[selectedSubIndex];
+      return sub && isLeafCategory(sub) ? sub : null;
+    }
+    return null;
+  }, [selectedCategory, selectedSubIndex]);
 
   const handleClose = () => {
     onClose?.();
@@ -137,14 +159,12 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
           >
             <Stack
               direction="column"
-              sx={[
+              sx={mergeSx(
                 {
                   gap: 1,
                 },
-                ...(Array.isArray(categoryListSx)
-                  ? categoryListSx
-                  : [categoryListSx]),
-              ]}
+                categoryListSx,
+              )}
             >
               {categories.map((category, index) => (
                 <CategoryListItem
@@ -152,6 +172,7 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
                   category={category}
                   onClick={() => {
                     setSelectedIndex(index);
+                    setSelectedSubIndex(null);
                   }}
                   sx={(theme) =>
                     categoryListItemSx(theme, selectedIndex === index)
@@ -161,11 +182,40 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
             </Stack>
 
             <Stack direction="column" sx={leafCategoryContainerSx}>
-              {selectedCategory && isLeafCategory(selectedCategory) ? (
+              {effectiveLeaf ? (
                 <LeafCategoryRenderer
-                  category={selectedCategory}
-                  slotProps={leafCategorySlotProps}
+                  category={effectiveLeaf}
+                  slotProps={{
+                    ...leafCategorySlotProps,
+                    ...(selectedSubIndex !== null &&
+                    hasSubcategories(selectedCategory) &&
+                    selectedCategory.showBackButton
+                      ? { onBack: () => setSelectedSubIndex(null) }
+                      : undefined),
+                  }}
                 />
+              ) : selectedCategory && hasSubcategories(selectedCategory) ? (
+                <Stack
+                  direction="column"
+                  sx={mergeSx(categoryListSx, { gap: 1, width: '100%' })}
+                >
+                  {selectedCategory.subcategoryHeader &&
+                    selectedCategory.subcategories && (
+                      <Typography variant="bodyMedium" sx={subcategoryHeaderSx}>
+                        {selectedCategory.subcategoryHeader}
+                      </Typography>
+                    )}
+                  {selectedCategory.subcategories?.map((sub, i) => (
+                    <CategoryListItem
+                      key={sub.id}
+                      category={sub}
+                      onClick={() => setSelectedSubIndex(i)}
+                      sx={(theme) =>
+                        categoryListItemSx(theme, selectedSubIndex === i)
+                      }
+                    />
+                  ))}
+                </Stack>
               ) : null}
             </Stack>
           </Stack>

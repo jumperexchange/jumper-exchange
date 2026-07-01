@@ -7,7 +7,11 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import IconButton from '@mui/material/IconButton';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { Button } from '@/components/core/buttons/Button/Button';
+import { Size, Variant } from '@/components/core/buttons/types';
 import type {
   RendererSlotProps,
   MultiSelectLeafCategory,
@@ -39,14 +43,18 @@ export const MultiSelectView = <TValue extends string | number>({
   const [searchValue, setSearchValue] = useState('');
 
   const value = category.value || [];
-  const options = category.options || [];
   const isSearchable = !!category.searchable;
+  const { allOption } = category;
 
   const clearButtonSize = slotProps?.clearButtonSize ?? 'medium';
   const searchSize = slotProps?.searchSize ?? 'medium';
   const listSpacing = slotProps?.listSpacing ?? 2;
+  const onBack = slotProps?.onBack;
+
+  const isAllSelected = !!(allOption && value.includes(allOption.value));
 
   const filteredOptions = useMemo(() => {
+    const options = category.options ?? [];
     if (!searchValue) {
       return options;
     }
@@ -54,7 +62,7 @@ export const MultiSelectView = <TValue extends string | number>({
     return options.filter((option) =>
       option.label.toLowerCase().includes(lowerSearch),
     );
-  }, [options, searchValue]);
+  }, [category.options, searchValue]);
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -65,17 +73,26 @@ export const MultiSelectView = <TValue extends string | number>({
     setSearchValue('');
   };
 
+  const handleToggleAll = () => {
+    if (!category.onChange || !allOption) {
+      return;
+    }
+    category.onChange(isAllSelected ? [] : [allOption.value]);
+  };
+
   const handleToggle = (optionValue: TValue) => {
     if (!category.onChange) {
       return;
     }
-
-    const isSelected = value.includes(optionValue);
-    const newValue = isSelected
-      ? value.filter((v) => v !== optionValue)
-      : [...value, optionValue];
-
-    category.onChange(newValue);
+    const withoutAll = allOption
+      ? value.filter((v) => v !== allOption.value)
+      : value;
+    const isSelected = withoutAll.includes(optionValue);
+    category.onChange(
+      isSelected
+        ? withoutAll.filter((v) => v !== optionValue)
+        : [...withoutAll, optionValue],
+    );
   };
 
   const handleClear = () => {
@@ -107,7 +124,12 @@ export const MultiSelectView = <TValue extends string | number>({
       }}
     >
       <StyledMultiSelectFiltersContainer sx={{ padding: 0, marginBottom: 0 }}>
-        <Typography variant="bodyMediumStrong">
+        {onBack && (
+          <IconButton size="small" onClick={onBack} sx={{ mr: 0.5, p: 0.5 }}>
+            <ArrowBackIcon fontSize="small" />
+          </IconButton>
+        )}
+        <Typography variant="bodyMediumStrong" sx={{ flex: 1 }}>
           {t('earn.filter.selected', { count: value.length })}
         </Typography>
         <StyledMultiSelectFiltersClearButton
@@ -119,6 +141,21 @@ export const MultiSelectView = <TValue extends string | number>({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
+
+      {allOption && (
+        <Box>
+          <Button
+            size={Size.SM}
+            variant={isAllSelected ? Variant.Primary : Variant.AlphaDark}
+            startAdornment={allOption.startAdornment}
+            endAdornment={isAllSelected ? <CheckIcon /> : undefined}
+            onClick={handleToggleAll}
+          >
+            {allOption.label}
+          </Button>
+        </Box>
+      )}
+
       {isSearchable && (
         <StyledMultiSelectFiltersContainer
           size={searchSize}
