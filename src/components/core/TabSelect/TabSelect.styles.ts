@@ -1,8 +1,11 @@
 import { styled } from '@mui/material/styles';
-import Tabs, { TabsProps } from '@mui/material/Tabs';
-import Tab, { TabProps } from '@mui/material/Tab';
+import type { TabsProps } from '@mui/material/Tabs';
+import Tabs from '@mui/material/Tabs';
+import type { TabProps } from '@mui/material/Tab';
+import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import Badge, { BadgeProps } from '@mui/material/Badge';
+import type { BadgeProps } from '@mui/material/Badge';
+import Badge from '@mui/material/Badge';
 
 interface StyledTabsProps extends TabsProps {
   showBorder?: boolean;
@@ -37,22 +40,10 @@ const getTabSize = (size?: 'small' | 'medium' | 'large') => {
   }
 };
 
-const getPillRadius = (size?: 'small' | 'medium' | 'large') => {
-  switch (size) {
-    case 'small':
-      return 16;
-    case 'large':
-      return 24;
-    case 'medium':
-    default:
-      return 20;
-  }
-};
-
 export const StyledTabs = styled(Tabs, {
   shouldForwardProp: (prop) => prop !== 'showBorder' && prop !== 'size',
 })<StyledTabsProps>(({ theme, showBorder, size }) => {
-  const pillRadius = getPillRadius(size);
+  const pillRadius = theme.shape.buttonBorderRadius;
 
   return {
     minHeight: size === 'small' ? 32 : size === 'large' ? 48 : 40,
@@ -99,12 +90,12 @@ export const StyledTab = styled(Tab, {
   ...getTabSize(size),
   minWidth: 'auto',
   '&:first-of-type': {
-    borderTopLeftRadius: getPillRadius(size) - 3,
-    borderBottomLeftRadius: getPillRadius(size) - 3,
+    borderTopLeftRadius: theme.shape.buttonBorderRadius - 3,
+    borderBottomLeftRadius: theme.shape.buttonBorderRadius - 3,
   },
   '&:last-of-type': {
-    borderTopRightRadius: getPillRadius(size) - 3,
-    borderBottomRightRadius: getPillRadius(size) - 3,
+    borderTopRightRadius: theme.shape.buttonBorderRadius - 3,
+    borderBottomRightRadius: theme.shape.buttonBorderRadius - 3,
   },
   '&.Mui-selected': {
     color: (theme.vars || theme).palette.text.primary,
