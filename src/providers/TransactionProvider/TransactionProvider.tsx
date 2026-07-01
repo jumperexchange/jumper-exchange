@@ -61,12 +61,14 @@ export const TransactionProvider = ({
     currentPageIndex < (data?.pages.length ?? 0) - 1 || !!infiniteHasNextPage;
   const hasPreviousPage = currentPageIndex > 0;
 
-  const goToNextPage = useCallback(() => {
+  const goToNextPage = useCallback(async () => {
     if (currentPageIndex < (data?.pages.length ?? 0) - 1) {
       setCurrentPageIndex((i) => i + 1);
     } else if (infiniteHasNextPage) {
-      fetchNextPage();
-      setCurrentPageIndex((i) => i + 1);
+      const result = await fetchNextPage();
+      if (result.status === 'success') {
+        setCurrentPageIndex((i) => i + 1);
+      }
     }
   }, [
     currentPageIndex,
