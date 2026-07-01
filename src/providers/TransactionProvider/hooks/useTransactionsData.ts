@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useCallback } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import { makeClient } from '@/app/lib/client';
@@ -13,7 +13,7 @@ export interface RateLimitInfo {
   resetAt: Date | null;
 }
 
-interface TransactionsQueryResult {
+interface TransactionsPageResult {
   transactions: TransactionsDtoResponse;
   rateLimit: RateLimitInfo;
 }
@@ -22,7 +22,6 @@ interface UseTransactionsDataProps {
   walletAddress?: string | null;
   minDate?: string | null;
   maxDate?: string | null;
-  cursor?: string | null;
   chainIds?: number[];
   types?: TransactionsDto['action'][];
   assets?: string[];
@@ -56,7 +55,6 @@ export const useTransactionsData = ({
   walletAddress,
   minDate,
   maxDate,
-  cursor,
   chainIds,
   types,
   assets,
@@ -82,25 +80,41 @@ export const useTransactionsData = ({
 
   const hasAddress = !!walletAddress && Object.keys(addressParams).length > 0;
 
+  const queryClient = useQueryClient();
   const forceRefreshRef = useRef(false);
 
+  const queryKey = useMemo(
+    () =>
+      [
+        'portfolio-transactions',
+        walletAddress,
+        minDate,
+        maxDate,
+        chainIds,
+        types,
+        assets,
+      ] as const,
+    [walletAddress, minDate, maxDate, chainIds, types, assets],
+  );
+
   const {
-    data: queryData,
+    data,
     isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     error,
     refetch,
-  } = useQuery<TransactionsQueryResult>({
-    queryKey: [
-      'portfolio-transactions',
-      walletAddress,
-      minDate,
-      maxDate,
-      cursor,
-      chainIds,
-      types,
-      assets,
-    ],
-    queryFn: async () => {
+  } = useInfiniteQuery<
+    TransactionsPageResult,
+    Error,
+    { pages: TransactionsPageResult[] },
+    readonly unknown[],
+    string | undefined
+  >({
+    queryKey,
+    initialPageParam: undefined,
+    queryFn: async ({ pageParam }) => {
       const shouldForceRefresh = forceRefreshRef.current;
       forceRefreshRef.current = false;
       const client = makeClient();
@@ -108,7 +122,7 @@ export const useTransactionsData = ({
         ...addressParams,
         minDate: minDate ?? undefined,
         maxDate: maxDate ?? undefined,
-        next: cursor ?? undefined,
+        next: pageParam,
         chains: chainIds?.length ? chainIds : undefined,
         types: types?.length ? types : undefined,
         assets: assets?.length ? assets : undefined,
@@ -120,18 +134,23 @@ export const useTransactionsData = ({
         rateLimit: parseRateLimit(res.headers),
       };
     },
+    getNextPageParam: (lastPage) =>
+      lastPage.transactions.meta?.next ?? undefined,
     enabled: hasAddress && enabled,
   });
 
   const triggerForceRefresh = useCallback(() => {
     forceRefreshRef.current = true;
-    refetch();
-  }, [refetch]);
+    queryClient.resetQueries({ queryKey });
+  }, [queryClient, queryKey]);
 
   return {
-    data: queryData?.transactions,
-    rateLimit: queryData?.rateLimit ?? null,
+    data,
+    rateLimit: data?.pages.at(-1)?.rateLimit ?? null,
     isLoading,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
     error,
     refetch,
     triggerForceRefresh,

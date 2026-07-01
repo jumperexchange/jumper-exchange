@@ -36,6 +36,7 @@ export default interface Resources {
       filter: {
         author: 'Author';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         level: 'Level';
@@ -984,12 +985,13 @@ export default interface Resources {
         assetOut: 'Asset Out';
         chain: 'Chain';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         protocol: 'Protocol';
         refresh: 'Refresh';
         refreshTooltipAvailable: 'Refresh transactions ({{remaining}} left)';
-        refreshTooltipExhausted: 'Rate limit reached. Try again after {{resetAt}}';
+        refreshTooltipExhausted: 'Rate limit reached. Try again {{resetAt}}';
         refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
         type: 'Type';

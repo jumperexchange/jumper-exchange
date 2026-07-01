@@ -50,7 +50,7 @@ export const AbTests = {
     enabled: true,
   },
   [AB_TEST_NAME.PORTFOLIO_TRANSACTIONS]: {
-    name: 'portfolio-transaction',
+    name: 'portfolio-transactions',
     enabled: true,
   },
 } as const;

@@ -31,80 +31,81 @@ export const TransactionProvider = ({
   assets,
   enabled,
 }: TransactionProviderProps) => {
-  const [page, setPageState] = useState(0);
-  const [cursors, setCursors] = useState<Map<number, string>>(new Map());
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
 
   useEffect(() => {
-    setPageState(0);
-    setCursors(new Map());
+    setCurrentPageIndex(0);
   }, [walletAddress, minDate, maxDate, chainIds, types, assets]);
 
-  const cursor = page === 0 ? undefined : (cursors.get(page) ?? null);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage: infiniteHasNextPage,
+    fetchNextPage,
+    error,
+    refetch,
+    triggerForceRefresh: triggerForceRefreshBase,
+    rateLimit,
+  } = useTransactionsData({
+    walletAddress,
+    minDate,
+    maxDate,
+    chainIds,
+    types,
+    assets,
+    enabled,
+  });
 
-  const { data, isLoading, error, refetch, triggerForceRefresh, rateLimit } =
-    useTransactionsData({
-      walletAddress,
-      minDate,
-      maxDate,
-      cursor,
-      chainIds,
-      types,
-      assets,
-      enabled,
-    });
-
-  useEffect(() => {
-    if (data?.meta?.next) {
-      setCursors((prev) => {
-        if (prev.get(page + 1) === data.meta.next) {
-          return prev;
-        }
-        const next = new Map(prev);
-        next.set(page + 1, data.meta.next!);
-        return next;
-      });
-    }
-  }, [data?.meta?.next, page]);
-
-  const hasNextPage = !!data?.meta?.next;
-  const hasPreviousPage = page > 0;
+  const hasNextPage =
+    currentPageIndex < (data?.pages.length ?? 0) - 1 || !!infiniteHasNextPage;
+  const hasPreviousPage = currentPageIndex > 0;
 
   const goToNextPage = useCallback(() => {
-    if (!data?.meta?.next) {
-      return;
+    if (currentPageIndex < (data?.pages.length ?? 0) - 1) {
+      setCurrentPageIndex((i) => i + 1);
+    } else if (infiniteHasNextPage) {
+      fetchNextPage();
+      setCurrentPageIndex((i) => i + 1);
     }
-    setPageState((currentPage) => currentPage + 1);
-  }, [data?.meta?.next]);
+  }, [
+    currentPageIndex,
+    data?.pages.length,
+    infiniteHasNextPage,
+    fetchNextPage,
+  ]);
 
   const goToPreviousPage = useCallback(() => {
-    setPageState((currentPage) => {
-      if (currentPage <= 0) {
-        return currentPage;
-      }
-      return currentPage - 1;
-    });
+    setCurrentPageIndex((i) => Math.max(0, i - 1));
   }, []);
+
+  const triggerForceRefresh = useCallback(() => {
+    setCurrentPageIndex(0);
+    triggerForceRefreshBase();
+  }, [triggerForceRefreshBase]);
 
   const value = useMemo(
     () => ({
-      transactions: data?.data ?? [],
+      transactions: data?.pages[currentPageIndex]?.transactions.data ?? [],
       hasNextPage,
       hasPreviousPage,
       goToNextPage,
       goToPreviousPage,
-      isLoading,
+      isLoading: isLoading || isFetchingNextPage,
       error: error as Error | null,
       refetch,
       triggerForceRefresh,
       rateLimit,
     }),
     [
-      data?.data,
+      data?.pages,
+      currentPageIndex,
       hasNextPage,
       hasPreviousPage,
       goToNextPage,
       goToPreviousPage,
       isLoading,
+      isFetchingNextPage,
       error,
       refetch,
       triggerForceRefresh,

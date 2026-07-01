@@ -3,8 +3,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { type SxProps, type Theme } from '@mui/material/styles';
-import Link from 'next/link';
-import type { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -21,8 +19,6 @@ export interface CursorPaginationProps {
   disabled?: boolean;
   id?: number | string;
   sx?: SxProps<Theme>;
-  onPrev?: () => void;
-  onNextTrack?: () => void;
   previousLabel?: string;
   nextLabel?: string;
 }
@@ -35,8 +31,6 @@ export const CursorPagination = ({
   disabled = false,
   id,
   sx,
-  onPrev,
-  onNextTrack,
   previousLabel,
   nextLabel,
 }: CursorPaginationProps) => {
@@ -44,60 +38,51 @@ export const CursorPagination = ({
   const previousLabelText = previousLabel ?? t('pagination.previous');
   const nextLabelText = nextLabel ?? t('pagination.next');
 
+  const scrollToId = () => {
+    if (id !== undefined) {
+      document
+        .getElementById(String(id))
+        ?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handlePrevious = () => {
     if (disabled || !hasPrevious) {
       return;
     }
-    onPrev?.();
     onPrevious();
+    scrollToId();
   };
 
   const handleNext = () => {
     if (disabled || !hasNext) {
       return;
     }
-    onNextTrack?.();
     onNext();
+    scrollToId();
   };
 
   return (
     <PaginationContainer as="nav" aria-label="Pagination" sx={sx}>
-      <SmoothScrollWrapper id={id}>
-        <PaginationNavButton
-          onClick={handlePrevious}
-          disableRipple={false}
-          disabled={disabled || !hasPrevious}
-          aria-label={previousLabelText}
-          startIcon={<ArrowBackIcon sx={paginationArrowIconSx} />}
-          sx={{ marginRight: 'auto' }}
-        >
-          {previousLabelText}
-        </PaginationNavButton>
-      </SmoothScrollWrapper>
-      <SmoothScrollWrapper id={id}>
-        <PaginationNavButton
-          onClick={handleNext}
-          disabled={disabled || !hasNext}
-          aria-label={nextLabelText}
-          endIcon={<ArrowForwardIcon sx={paginationArrowIconSx} />}
-          sx={{ marginLeft: 'auto' }}
-        >
-          {nextLabelText}
-        </PaginationNavButton>
-      </SmoothScrollWrapper>
+      <PaginationNavButton
+        onClick={handlePrevious}
+        disableRipple={false}
+        disabled={disabled || !hasPrevious}
+        aria-label={previousLabelText}
+        startIcon={<ArrowBackIcon sx={paginationArrowIconSx} />}
+        sx={{ marginRight: 'auto' }}
+      >
+        {previousLabelText}
+      </PaginationNavButton>
+      <PaginationNavButton
+        onClick={handleNext}
+        disabled={disabled || !hasNext}
+        aria-label={nextLabelText}
+        endIcon={<ArrowForwardIcon sx={paginationArrowIconSx} />}
+        sx={{ marginLeft: 'auto' }}
+      >
+        {nextLabelText}
+      </PaginationNavButton>
     </PaginationContainer>
   );
-};
-
-interface SmoothScrollWrapperProps {
-  id?: number | string;
-}
-
-const SmoothScrollWrapper: React.FC<
-  PropsWithChildren<SmoothScrollWrapperProps>
-> = ({ children, id }) => {
-  if (!id) {
-    return children;
-  }
-  return <Link href={`#${id}`}>{children}</Link>;
 };

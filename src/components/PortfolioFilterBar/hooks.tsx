@@ -3,7 +3,10 @@
 import { useHoldingsFiltering } from '../../providers/PortfolioProvider/filtering/HoldingsFilteringContext';
 import type { TransactionSortBy } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
 import { useTransactionFiltering } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
-import { isNftTokenOption } from '@/providers/TransactionProvider/filtering/utils';
+import {
+  ALL_TRANSACTION_TYPES,
+  isNftTokenOption,
+} from '@/providers/TransactionProvider/filtering/utils';
 import type { TransactionsDto } from '@/types/jumper-backend';
 import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import { Avatar } from '@mui/material';
@@ -296,24 +299,6 @@ export const useHoldingsFilterCategories = () => {
 
 type TransactionType = TransactionsDto['action'];
 
-const ALL_TRANSACTION_TYPES: TransactionType[] = [
-  'approve',
-  'bid',
-  'burn',
-  'claim',
-  'delegate',
-  'deploy',
-  'deposit',
-  'execute',
-  'mint',
-  'receive',
-  'revoke',
-  'revoke_delegation',
-  'send',
-  'trade',
-  'withdraw',
-];
-
 interface TransactionPendingFilterValues {
   wallet: string;
   chains: string[];
@@ -595,6 +580,7 @@ export const useTransactionFilterCategories = () => {
         dateRangeMin,
         dateRangeMax,
         pendingValues.date,
+        t('portfolio.filter.dateRange'),
       ),
       value: pendingValues.date,
       onChange: (v) => setPendingValue('date', v),

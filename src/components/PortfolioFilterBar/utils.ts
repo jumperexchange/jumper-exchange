@@ -11,6 +11,7 @@ export const datesBadge = (
   rangeMin: Date,
   rangeMax: Date,
   pendingValue: (Date | null)[],
+  rangeLabel: string,
 ): string | undefined => {
   if (
     differenceInDays(usedMin, rangeMin) === 0 &&
@@ -25,7 +26,7 @@ export const datesBadge = (
     return;
   }
 
-  return '1 range';
+  return rangeLabel;
 };
 
 export const valueBadge = (
