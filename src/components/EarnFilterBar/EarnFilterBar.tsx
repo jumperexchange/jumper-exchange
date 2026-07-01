@@ -58,14 +58,28 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
     <EarnFilterBarContainer>
       <EarnFilterBarHeaderContainer>
         {isTablet ? <EarnFilterViewTablet /> : <EarnFilterViewDesktop />}
-        {!isTablet && updatedAt && (
-          <Badge
-            variant={BadgeVariant.Secondary}
-            size={BadgeSize.SM}
-            label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
-          />
-        )}
-        {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
+        <Stack
+          direction="row"
+          sx={{
+            gap: 1,
+            alignItems: 'center',
+            flexShrink: 0,
+          }}
+        >
+          {!isTablet && updatedAt && (
+            <Badge
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.SM}
+              label={t('badge.updated', {
+                time: formatDistanceToNow(updatedAt),
+              })}
+            />
+          )}
+          {hasApyWindow && (
+            <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+          )}
+          {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
+        </Stack>
       </EarnFilterBarHeaderContainer>
       {!isTablet && (
         <EarnFilterBarContent>
@@ -78,9 +92,6 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             }}
           >
             <EarnListMode variant={variant} setVariant={setVariant} />
-            {hasApyWindow && (
-              <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
-            )}
             {!isForYouTab && <EarnFilterSort />}
           </Stack>
         </EarnFilterBarContent>
