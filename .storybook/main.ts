@@ -12,6 +12,10 @@ const srcDir = path.resolve(storybookDir, '../src');
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  previewHead(head) {
+    const env = getStorybookPublicEnv();
+    return `${head}<script>window._env_ = { ...${JSON.stringify(env)}, ...(window._env_ ?? {}) };</script>`;
+  },
   addons: [
     '@chromatic-com/storybook',
     '@storybook/addon-docs',
