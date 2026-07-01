@@ -302,8 +302,7 @@ type TransactionType = TransactionsDto['action'];
 interface TransactionPendingFilterValues {
   wallet: string;
   chains: string[];
-  assetsIn: string[];
-  assetsOut: string[];
+  assets: string[];
   types: TransactionType[];
   date: DateRangeValue;
   sortBy: string;
@@ -356,60 +355,9 @@ export const useTransactionFilterCategories = () => {
     [metadata.allChains],
   );
 
-  // We don't call sortSelectOptions as we apply prioritized sorting in the provider
-  const assetInOptions = useMemo(
-    () =>
-      metadata.allAssetsIn.map((item) =>
-        isNftTokenOption(item)
-          ? {
-              value: item.address,
-              label: truncateAddress(item.address),
-              startAdornment: (
-                <EntityStack
-                  entities={[
-                    {
-                      chainId: item.chainId,
-                      chainKey: item.chainId.toString(),
-                    },
-                  ]}
-                />
-              ),
-            }
-          : {
-              value: item.symbol,
-              label: item.name,
-              startAdornment: <EntityStack entities={[item]} />,
-            },
-      ),
-    [metadata.allAssetsIn],
-  );
-
-  // We don't call sortSelectOptions as we apply prioritized sorting in the provider
-  const assetOutOptions = useMemo(
-    () =>
-      metadata.allAssetsOut.map((item) =>
-        isNftTokenOption(item)
-          ? {
-              value: item.address,
-              label: truncateAddress(item.address),
-              startAdornment: (
-                <EntityStack
-                  entities={[
-                    {
-                      chainId: item.chainId,
-                      chainKey: item.chainId.toString(),
-                    },
-                  ]}
-                />
-              ),
-            }
-          : {
-              value: item.symbol,
-              label: item.name,
-              startAdornment: <EntityStack entities={[item]} />,
-            },
-      ),
-    [metadata.allAssetsOut],
+  const chainKeyToId = useMemo(
+    () => new Map(metadata.allChains.map((c) => [c.key as string, c.id])),
+    [metadata.allChains],
   );
 
   const typeOptions = useMemo(
@@ -439,8 +387,7 @@ export const useTransactionFilterCategories = () => {
     (): TransactionPendingFilterValues => ({
       wallet: filter.wallet ?? '',
       chains: filter.chains ?? [],
-      assetsIn: filter.assetsIn ?? [],
-      assetsOut: filter.assetsOut ?? [],
+      assets: filter.assets ?? [],
       types: (filter.types ?? []) as TransactionType[],
       date: [dateMin, dateMax],
       sortBy,
@@ -448,8 +395,7 @@ export const useTransactionFilterCategories = () => {
     [
       filter.wallet,
       filter.chains,
-      filter.assetsIn,
-      filter.assetsOut,
+      filter.assets,
       filter.types,
       dateMin,
       dateMax,
@@ -469,8 +415,7 @@ export const useTransactionFilterCategories = () => {
       updateFilter({
         wallet: values.wallet ? values.wallet : undefined,
         chains: values.chains.length ? values.chains : undefined,
-        assetsIn: values.assetsIn.length ? values.assetsIn : undefined,
-        assetsOut: values.assetsOut.length ? values.assetsOut : undefined,
+        assets: values.assets.length ? values.assets : undefined,
         types: values.types.length ? values.types : undefined,
         minDate: values.date[0]?.toISOString(),
         maxDate: values.date[1]?.toISOString(),
@@ -485,14 +430,59 @@ export const useTransactionFilterCategories = () => {
     [pendingValues, appliedValues],
   );
 
+  // Narrow asset list by pending chain selection so the two-step chain→token
+  // flow responds before the filter is applied.
+  const assetOptions = useMemo(() => {
+    let assets = metadata.allAssets;
+    if (pendingValues.chains.length > 0) {
+      const allowedSymbols = new Set<string>();
+      for (const key of pendingValues.chains) {
+        const chainId = chainKeyToId.get(key);
+        if (chainId !== undefined) {
+          metadata.tokenSymbolsByChain
+            .get(chainId)
+            ?.forEach((s) => allowedSymbols.add(s));
+        }
+      }
+      assets = assets.filter((a) =>
+        isNftTokenOption(a)
+          ? pendingValues.chains.some((k) => chainKeyToId.get(k) === a.chainId)
+          : allowedSymbols.has(a.symbol.toLowerCase()),
+      );
+    }
+    return assets.map((item) =>
+      isNftTokenOption(item)
+        ? {
+            value: item.address,
+            label: truncateAddress(item.address),
+            startAdornment: (
+              <EntityStack
+                entities={[
+                  { chainId: item.chainId, chainKey: item.chainId.toString() },
+                ]}
+              />
+            ),
+          }
+        : {
+            value: item.symbol,
+            label: item.name,
+            startAdornment: <EntityStack entities={[item]} />,
+          },
+    );
+  }, [
+    metadata.allAssets,
+    metadata.tokenSymbolsByChain,
+    pendingValues.chains,
+    chainKeyToId,
+  ]);
+
   const hasDateFilterApplied =
     !isSameDay(dateMin, dateRangeMin) || !isSameDay(dateMax, dateRangeMax);
 
   const filtersCount =
     (walletOptions.length > 1 && filter.wallet ? 1 : 0) +
     (filter.chains?.length ?? 0) +
-    (filter.assetsIn?.length ?? 0) +
-    (filter.assetsOut?.length ?? 0) +
+    (filter.assets?.length ?? 0) +
     (filter.types?.length ?? 0) +
     (hasDateFilterApplied ? 1 : 0);
   const hasFilterApplied = filtersCount > 0;
@@ -531,34 +521,19 @@ export const useTransactionFilterCategories = () => {
           testId: 'portfolio-filter-transaction-chain-select',
         })
       : null,
-    assetInOptions.length > 1
+    assetOptions.length > 1
       ? createMultiSelectCategory({
-          id: 'assetsIn',
-          label: t('portfolio.filter.assetIn'),
-          badgeLabel: countBadge(pendingValues.assetsIn.length),
-          value: pendingValues.assetsIn,
-          onChange: (v) => setPendingValue('assetsIn', v),
-          options: assetInOptions,
+          id: 'assets',
+          label: t('portfolio.filter.asset'),
+          badgeLabel: countBadge(pendingValues.assets.length),
+          value: pendingValues.assets,
+          onChange: (v) => setPendingValue('assets', v),
+          options: assetOptions,
           searchable: true,
           searchPlaceholder: t('portfolio.filter.search', {
             filterBy: t('portfolio.filter.asset').toLowerCase(),
           }),
-          testId: 'portfolio-filter-transaction-asset-in-select',
-        })
-      : null,
-    assetOutOptions.length > 1
-      ? createMultiSelectCategory({
-          id: 'assetsOut',
-          label: t('portfolio.filter.assetOut'),
-          badgeLabel: countBadge(pendingValues.assetsOut.length),
-          value: pendingValues.assetsOut,
-          onChange: (v) => setPendingValue('assetsOut', v),
-          options: assetOutOptions,
-          searchable: true,
-          searchPlaceholder: t('portfolio.filter.search', {
-            filterBy: t('portfolio.filter.asset').toLowerCase(),
-          }),
-          testId: 'portfolio-filter-transaction-asset-out-select',
+          testId: 'portfolio-filter-transaction-asset-select',
         })
       : null,
     createMultiSelectCategory({
