@@ -23,9 +23,9 @@ import { useABTest } from '@/hooks/useABTest';
 const PortfolioContentSectionInner = () => {
   const [tab, setTab] = useQueryState(
     'tab',
-    parseAsStringEnum<PortfolioViewBarTab>(
-      Object.values(PortfolioViewBarTab),
-    ).withDefault(PortfolioViewBarTab.HOLDINGS),
+    parseAsStringEnum<PortfolioViewBarTab>(Object.values(PortfolioViewBarTab))
+      .withDefault(PortfolioViewBarTab.HOLDINGS)
+      .withOptions({ history: 'replace' }),
   );
   const {
     balancesIsLoading,
@@ -38,7 +38,9 @@ const PortfolioContentSectionInner = () => {
   const transactionFlag = useABTest({
     feature: AB_TEST_NAME.PORTFOLIO_TRANSACTIONS,
   });
+  const areTransactionsLoading = transactionFlag.isLoading;
   const areTransactionsEnabled =
+    !areTransactionsLoading &&
     transactionFlag.isEnabled &&
     (transactionFlag.value === true || transactionFlag.value === 'test');
 
@@ -47,15 +49,22 @@ const PortfolioContentSectionInner = () => {
   const isEmpty = balancesIsEmpty && positionsIsEmpty;
   const isDisabled = isDisconnected || (isEmpty && !isLoading);
 
-  useEffect(() => {
-    if (tab === PortfolioViewBarTab.TRANSACTIONS && !areTransactionsEnabled) {
-      setTab(PortfolioViewBarTab.HOLDINGS);
-    }
-  }, [tab, areTransactionsEnabled, setTab]);
+  const effectiveTab =
+    !areTransactionsLoading &&
+    tab === PortfolioViewBarTab.TRANSACTIONS &&
+    !areTransactionsEnabled
+      ? PortfolioViewBarTab.HOLDINGS
+      : tab;
 
   useEffect(() => {
-    setIsActive(tab === PortfolioViewBarTab.TRANSACTIONS);
-  }, [tab, setIsActive]);
+    if (effectiveTab !== tab) {
+      setTab(effectiveTab);
+    }
+  }, [effectiveTab, tab, setTab]);
+
+  useEffect(() => {
+    setIsActive(effectiveTab === PortfolioViewBarTab.TRANSACTIONS);
+  }, [effectiveTab, setIsActive]);
 
   return (
     <>
@@ -63,13 +72,15 @@ const PortfolioContentSectionInner = () => {
         <PortfolioFilterBar
           isDisabled={isDisabled}
           areTransactionsEnabled={areTransactionsEnabled}
-          value={tab}
+          value={effectiveTab}
           onChange={setTab}
         />
-        {tab === PortfolioViewBarTab.HOLDINGS && <PortfolioHoldings />}
-        {tab === PortfolioViewBarTab.TRANSACTIONS && <PortfolioTransactions />}
+        {effectiveTab === PortfolioViewBarTab.HOLDINGS && <PortfolioHoldings />}
+        {effectiveTab === PortfolioViewBarTab.TRANSACTIONS && (
+          <PortfolioTransactions />
+        )}
       </SectionCard>
-      {tab === PortfolioViewBarTab.TRANSACTIONS && (
+      {effectiveTab === PortfolioViewBarTab.TRANSACTIONS && (
         <PortfolioTransactionPagination />
       )}
     </>

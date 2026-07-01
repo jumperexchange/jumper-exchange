@@ -136,7 +136,8 @@
       "clearAll": "Clear all",
       "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "dateRange": "1 range"
     },
     "sorting": {
       "sortBy": "Sort by",
@@ -822,8 +823,9 @@
       "search": "Search {{filterBy}}...",
       "refresh": "Refresh",
       "refreshTooltipAvailable": "Refresh transactions ({{remaining}} left)",
-      "refreshTooltipExhausted": "Rate limit reached. Try again after {{resetAt}}",
-      "refreshTooltipUnknown": "Refresh transactions"
+      "refreshTooltipExhausted": "Rate limit reached. Try again {{resetAt}}",
+      "refreshTooltipUnknown": "Refresh transactions",
+      "dateRange": "1 range"
     },
     "sorting": {
       "sortBy": "Sort by",
