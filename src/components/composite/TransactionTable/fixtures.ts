@@ -71,7 +71,6 @@ const wethBase = createToken(
 );
 
 export const mockTradeTransaction: PortfolioTransaction = {
-  amountUsd: 1250.42,
   fromBalances: [createBalance(ethEthereum, 0.42, 1250.42)],
   toBalances: [createBalance(usdcEthereum, 1250.42, 1250.42)],
   action: 'trade',
@@ -82,7 +81,6 @@ export const mockTradeTransaction: PortfolioTransaction = {
 };
 
 export const mockSendTransaction: PortfolioTransaction = {
-  amountUsd: null,
   fromBalances: [createBalance(usdcArbitrum, 500, 500)],
   toBalances: [],
   action: 'send',
@@ -93,7 +91,6 @@ export const mockSendTransaction: PortfolioTransaction = {
 };
 
 export const mockReceiveTransaction: PortfolioTransaction = {
-  amountUsd: 101.45,
   fromBalances: [],
   toBalances: [createBalance(usdcEthereum, 101.45, 101.45)],
   action: 'receive',
@@ -104,7 +101,6 @@ export const mockReceiveTransaction: PortfolioTransaction = {
 };
 
 export const mockMultiTokenTradeTransaction: PortfolioTransaction = {
-  amountUsd: 2847.91,
   fromBalances: [
     createBalance(wethBase, 0.65, 1965.31),
     createBalance(usdcArbitrum, 882.6, 882.6),

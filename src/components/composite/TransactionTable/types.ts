@@ -31,7 +31,6 @@ export type TransactionBalance = BalanceDto;
 export type PortfolioTransaction = TransactionsDto;
 
 export type TransactionSummaryColumnId =
-  | 'amount'
   | 'assetsIn'
   | 'assetsOut'
   | 'action'
@@ -66,8 +65,10 @@ export interface TransactionSummaryRowConfig extends TransactionSummaryTokenConf
 }
 
 export interface TransactionSummaryContent {
-  amountTitle: string;
-  amountHint?: string;
+  fromAmountTitle: string;
+  fromAmountHint?: string;
+  toAmountTitle: string;
+  toAmountHint?: string;
   actionTitle: string;
   feeTitle: string;
   feeHint?: string;

@@ -426,7 +426,6 @@ export const useTransactionFilterCategories = () => {
       { value: 'date', label: t('portfolio.sorting.date') },
       { value: 'chain', label: t('portfolio.sorting.chain') },
       { value: 'action', label: t('portfolio.sorting.action') },
-      { value: 'asset', label: t('portfolio.sorting.asset') },
     ],
     [t],
   );

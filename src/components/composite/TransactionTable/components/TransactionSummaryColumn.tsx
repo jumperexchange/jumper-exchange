@@ -36,6 +36,8 @@ interface TransactionAssetStackProps {
   tokens: Token[];
   nfts: NftBalance[];
   config: TransactionSummaryRowConfig;
+  amountTitle?: string;
+  amountHint?: string;
 }
 
 interface ColumnDefinition {
@@ -73,6 +75,8 @@ const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   tokens,
   nfts,
   config,
+  amountTitle = '',
+  amountHint = '',
 }) => {
   const { t } = useTranslation();
 
@@ -88,23 +92,57 @@ const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   return (
     <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
       {tokens.length > 0 && (
-        <EntityStackWithBadge
-          entities={tokens}
-          badgeEntities={tokenChains}
-          placement={
-            tokenChains.length > 1
-              ? EntityStackBadgePlacement.Inline
-              : EntityStackBadgePlacement.Overlay
-          }
-          size={config.tokenSize}
-          limit={4}
-          badgeSize={
-            tokenChains.length > 1 ? config.inlineBadgeSize : config.badgeSize
-          }
-          isContentVisible={false}
-          spacing={{ badge: config.badgeSpacing }}
-        />
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ alignItems: 'center', minWidth: 0 }}
+        >
+          <Box sx={{ flexShrink: 0 }}>
+            <EntityStackWithBadge
+              entities={tokens}
+              badgeEntities={tokenChains}
+              placement={
+                tokenChains.length > 1
+                  ? EntityStackBadgePlacement.Inline
+                  : EntityStackBadgePlacement.Overlay
+              }
+              size={config.tokenSize}
+              limit={4}
+              badgeSize={
+                tokenChains.length > 1
+                  ? config.inlineBadgeSize
+                  : config.badgeSize
+              }
+              isContentVisible={false}
+              spacing={{ badge: config.badgeSpacing }}
+            />
+          </Box>
+          <TitleWithHint
+            title={amountTitle}
+            hint={amountHint}
+            titleVariant={config.titleVariant}
+            hintVariant={config.descriptionVariant}
+            gap={config.valueGap}
+            sx={{
+              minWidth: 0,
+              overflow: 'hidden',
+              '& .MuiTypography-root:first-child': {
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              },
+              '& .MuiTypography-root:nth-child(2)': {
+                whiteSpace: 'pre-wrap',
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 3,
+              },
+            }}
+          />
+        </Stack>
       )}
+
       {nfts.length > 0 && (
         <Tooltip
           title={
@@ -177,20 +215,6 @@ export const COLUMN_DEFINITIONS: Record<
   TransactionSummaryColumnId,
   ColumnDefinition
 > = {
-  amount: {
-    label: 'portfolio.transactionSummary.columns.amount',
-    render: (content, config) => (
-      <TitleWithHint
-        title={content.amountTitle}
-        titleVariant={config.titleVariant}
-        hint={content.amountHint}
-        hintVariant={config.descriptionVariant}
-        gap={config.valueGap}
-        sx={{ '& > :nth-child(2)': { whiteSpace: 'pre-wrap' } }}
-      />
-    ),
-    renderSkeleton: () => <FieldSkeleton />,
-  },
   action: {
     label: 'portfolio.transactionSummary.columns.action',
     render: (content, config) => (
@@ -210,6 +234,8 @@ export const COLUMN_DEFINITIONS: Record<
         tokens={content.fromTokens}
         nfts={content.fromNfts}
         config={config}
+        amountTitle={content.fromAmountTitle}
+        amountHint={content.fromAmountHint}
       />
     ),
     renderSkeleton: (config) => (
@@ -223,6 +249,8 @@ export const COLUMN_DEFINITIONS: Record<
         tokens={content.toTokens}
         nfts={content.toNfts}
         config={config}
+        amountTitle={content.toAmountTitle}
+        amountHint={content.toAmountHint}
       />
     ),
     renderSkeleton: (config) => (

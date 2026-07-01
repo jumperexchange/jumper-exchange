@@ -1493,7 +1493,7 @@ export interface PnlResponseDto {
 }
 
 export interface TransactionsPaginationMeta {
-  next: string | null;
+  next?: string | null;
   pagesLength: number;
 }
 
@@ -1507,8 +1507,6 @@ export interface BalanceDto {
 }
 
 export interface TransactionsDto {
-  /** Total transaction value in USD */
-  amountUsd: number | null;
   /** Tokens sent in this transaction */
   fromBalances: BalanceDto[];
   /** Tokens received in this transaction */
