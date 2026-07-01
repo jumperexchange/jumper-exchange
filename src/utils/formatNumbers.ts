@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import type { TFunction } from 'i18next';
 
 export const decimalFormatter = (
   lng: string | undefined,
@@ -123,6 +123,8 @@ export const formatValueWithConfig = (
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
 
+export const NBSP = '\u00a0'; // non-breaking space
+
 export const DUST_AMOUNT_THRESHOLD = 0.0001;
 export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
 
@@ -136,19 +138,20 @@ export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
 export const formatTokenAmountWithDust = (
   amount: string,
   symbol: string,
+  t?: TFunction,
 ): string => {
   const numeric = parseFloat(amount);
   const label = symbol || '---';
   if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-    const translated = i18next.t('format.dustAmount', {
+    const translated = t?.('format.dustAmount', {
       value: DUST_AMOUNT_THRESHOLD,
       symbol: label,
     });
     return !translated || translated.startsWith('format.dustAmount')
-      ? `${DUST_AMOUNT_LABEL} ${label}`
+      ? `${DUST_AMOUNT_LABEL}${NBSP}${label}`
       : translated;
   }
-  return `${amount} ${label}`;
+  return `${amount}${NBSP}${label}`;
 };
 
 export const formatUSD = currencyFormatter('en-US', {
@@ -169,11 +172,14 @@ export const DUST_USD_LABEL = '<$0.01';
  * The collapsed label is locale-aware via `format.dustUsd`; falls back to
  * the en-US literal when i18next hasn't been initialised yet (e.g. tests).
  */
-export const formatUSDWithDust = (amountUSD: number | string): string => {
+export const formatUSDWithDust = (
+  amountUSD: number | string,
+  t?: TFunction,
+): string => {
   const numeric =
     typeof amountUSD === 'number' ? amountUSD : parseFloat(amountUSD as string);
   if (Number.isFinite(numeric) && numeric > 0 && numeric < DUST_USD_THRESHOLD) {
-    const translated = i18next.t('format.dustUsd', {
+    const translated = t?.('format.dustUsd', {
       value: DUST_USD_THRESHOLD,
     });
     return !translated || translated.startsWith('format.dustUsd')

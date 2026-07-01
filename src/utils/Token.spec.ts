@@ -2,6 +2,7 @@ import type { StaticToken, Token, TokenExtended } from '@lifi/sdk';
 import { CoinKey, type TokenTag } from '@lifi/widget';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Token as JumperToken } from '@/types/jumper-backend';
+import { NBSP } from './formatNumbers';
 import { ExtendedToken, SimpleToken } from './Token';
 
 const STATIC_TOKEN_FIXTURE: StaticToken = {
@@ -97,7 +98,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatAmount('1000000000000000000');
 
-      expect(result).toBe('1 xDAI');
+      expect(result).toBe(`1${NBSP}xDAI`);
     });
 
     it('should format amount with number input', () => {
@@ -105,7 +106,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatAmount(2500000);
 
-      expect(result).toBe('2.5 xDAI');
+      expect(result).toBe(`2.5${NBSP}xDAI`);
     });
 
     it('should format amount with bigint input', () => {
@@ -113,7 +114,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatAmount(10000000000000000000n);
 
-      expect(result).toBe('10 xDAI');
+      expect(result).toBe(`10${NBSP}xDAI`);
     });
 
     it('should collapse small fractional amount below threshold to <0.0001', () => {
@@ -122,7 +123,7 @@ describe('SimpleToken', () => {
       // 14353125728879 wei with 18 decimals = 0.000014... — below dust threshold
       const result = token.formatAmount('14353125728879');
 
-      expect(result).toBe('<0.0001 xDAI');
+      expect(result).toBe(`<0.0001${NBSP}xDAI`);
     });
 
     it('should collapse dust amount to <0.0001', () => {
@@ -131,7 +132,7 @@ describe('SimpleToken', () => {
       // 1 wei with 18 decimals = 0.000000000000000001 — well below threshold
       const result = token.formatAmount('1');
 
-      expect(result).toBe('<0.0001 xDAI');
+      expect(result).toBe(`<0.0001${NBSP}xDAI`);
     });
 
     it('should not collapse amount exactly at threshold', () => {
@@ -140,7 +141,7 @@ describe('SimpleToken', () => {
       // 1e14 wei with 18 decimals = 0.0001 — exactly at boundary, should render unchanged
       const result = token.formatAmount('100000000000000');
 
-      expect(result).toBe('0.0001 xDAI');
+      expect(result).toBe(`0.0001${NBSP}xDAI`);
     });
 
     it('should handle token with no symbol', () => {
@@ -151,7 +152,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatAmount('1000000000000000000');
 
-      expect(result).toBe('1 ---');
+      expect(result).toBe(`1${NBSP}---`);
     });
 
     it('should collapse dust amount to <0.0001 with no symbol fallback', () => {
@@ -162,7 +163,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatAmount('1');
 
-      expect(result).toBe('<0.0001 ---');
+      expect(result).toBe(`<0.0001${NBSP}---`);
     });
   });
 
@@ -172,7 +173,7 @@ describe('SimpleToken', () => {
 
       const result = token.formatZeroAmount();
 
-      expect(result).toBe('0 xDAI');
+      expect(result).toBe(`0${NBSP}xDAI`);
     });
   });
 
@@ -346,7 +347,7 @@ describe('ExtendedToken', () => {
 
       const result = token.formatAmountFromUSD('1.0');
 
-      expect(result).toBe('1.231527093596059 xDAI');
+      expect(result).toBe(`1.231527093596059${NBSP}xDAI`);
     });
 
     it('should format token amount from USD with number input', () => {
@@ -354,7 +355,7 @@ describe('ExtendedToken', () => {
 
       const result = token.formatAmountFromUSD(2.5);
 
-      expect(result).toBe('3.0788177339901477 xDAI');
+      expect(result).toBe(`3.0788177339901477${NBSP}xDAI`);
     });
 
     it('should format token amount from USD with bigint input', () => {
@@ -362,7 +363,7 @@ describe('ExtendedToken', () => {
 
       const result = token.formatAmountFromUSD(10n);
 
-      expect(result).toBe('12.31527093596059 xDAI');
+      expect(result).toBe(`12.31527093596059${NBSP}xDAI`);
     });
 
     it('should format token amount from USD with high price token', () => {
@@ -370,7 +371,7 @@ describe('ExtendedToken', () => {
 
       const result = token.formatAmountFromUSD('1.0');
 
-      expect(result).toBe('1.0002787076563142 xDAI');
+      expect(result).toBe(`1.0002787076563142${NBSP}xDAI`);
     });
 
     it('should format large USD amount to token amount', () => {
@@ -378,7 +379,7 @@ describe('ExtendedToken', () => {
 
       const result = token.formatAmountFromUSD(1000n);
 
-      expect(result).toBe('1231.527093596059 xDAI');
+      expect(result).toBe(`1231.527093596059${NBSP}xDAI`);
     });
 
     it('should collapse dust token amount from tiny USD input to <0.0001', () => {
@@ -387,7 +388,7 @@ describe('ExtendedToken', () => {
       // 0.00001 USD / 0.812 = ~0.0000123 xDAI — below threshold
       const result = token.formatAmountFromUSD('0.00001');
 
-      expect(result).toBe('<0.0001 xDAI');
+      expect(result).toBe(`<0.0001${NBSP}xDAI`);
     });
   });
 });

@@ -646,7 +646,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       <p
                                         class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
-                                        format.decimal USDC
+                                        format.decimal USDC
                                       </p>
                                     </div>
                                   </div>
@@ -736,7 +736,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       <p
                                         class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
-                                        format.decimal USDC
+                                        format.decimal USDC
                                       </p>
                                     </div>
                                   </div>

@@ -11,6 +11,7 @@ import {
   formatTokenPrice,
   priceToTokenAmount,
 } from '@lifi/widget';
+import type { TFunction } from 'i18next';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';
 import {
@@ -59,16 +60,17 @@ export class SimpleToken {
     }
   }
 
-  protected formatTokenWithSymbol(amount: string) {
-    return formatTokenAmountWithDust(amount, this.symbol);
+  protected formatTokenWithSymbol(amount: string, t?: TFunction) {
+    return formatTokenAmountWithDust(amount, this.symbol, t);
   }
 
-  formatAmount(amount: string | number | bigint) {
+  formatAmount(amount: string | number | bigint, t?: TFunction) {
     if (typeof amount == 'number' && !Number.isInteger(amount)) {
       console.error(`Token formatAmount: number ${amount} is not an integer`);
     }
     return this.formatTokenWithSymbol(
       formatTokenAmount(BigInt(amount), this.decimals),
+      t,
     );
   }
 
@@ -114,7 +116,10 @@ export class ExtendedToken extends SimpleToken {
     return formatUSD(this.priceUSD);
   }
 
-  formatAmountUSD(amountToken: string | number | bigint): string {
+  formatAmountUSD(
+    amountToken: string | number | bigint,
+    t?: TFunction,
+  ): string {
     if (typeof amountToken == 'number' && !Number.isInteger(amountToken)) {
       console.error(
         `Token formatAmountUSD: number ${amountToken} is not an integer`,
@@ -127,13 +132,13 @@ export class ExtendedToken extends SimpleToken {
           this.priceUSD,
         )
       : 0;
-    return formatUSDWithDust(amount);
+    return formatUSDWithDust(amount, t);
   }
 
-  formatAmountFromUSD(amountUSD: string | number | bigint) {
+  formatAmountFromUSD(amountUSD: string | number | bigint, t?: TFunction) {
     const amount = this.priceUSD
       ? priceToTokenAmount(amountUSD.toString(), this.priceUSD)
       : '0';
-    return this.formatTokenWithSymbol(amount);
+    return this.formatTokenWithSymbol(amount, t);
   }
 }
