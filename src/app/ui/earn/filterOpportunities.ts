@@ -1,7 +1,7 @@
 import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash';
 import type { Nullable } from 'nuqs';
 
-import type { ApyWindow } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
 import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 
@@ -94,7 +94,10 @@ export function filterOpportunities(
     }
 
     // Rewards APY filter (exclusive min to filter out 0 rewards)
-    const rewardsApy = apy?.jumperReward;
+    // Read from the window-independent 7d field — jumperReward is a protocol
+    // incentive unrelated to the APY window. Using the selected-window apy would
+    // silently drop reward-bearing vaults when apy30d is absent.
+    const rewardsApy = item.latest?.apy?.jumperReward;
     if (
       minRewardsAPY !== undefined &&
       (rewardsApy === undefined || rewardsApy <= minRewardsAPY)
@@ -170,9 +173,10 @@ export const extractFilteringParams = (
   ]);
   const allTVL: Record<number, number> = fromPairs(stepTVLPairs);
 
+  // jumperReward is window-independent — always check the 7d field so the
+  // "With Rewards" filter option is not hidden when vaults lack apy30d data.
   const withRewards = some(data, (item) => {
-    const apy = getDisplayApy(item.latest, apyWindow);
-    return apy?.jumperReward && apy.jumperReward > 0;
+    return item.latest?.apy?.jumperReward && item.latest.apy.jumperReward > 0;
   });
 
   const allRewardsOptions = withRewards ? [RewardsAPYOptions.WITH_REWARDS] : [];
