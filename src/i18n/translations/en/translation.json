@@ -819,6 +819,8 @@
       "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
       "search": "Search {{filterBy}}...",
+      "allTokens": "All tokens",
+      "selectChain": "Select chain",
       "refresh": "Refresh",
       "refreshTooltipAvailable": "Refresh transactions ({{remaining}} left)",
       "refreshTooltipExhausted": "Rate limit reached. Try again {{resetAt}}",
