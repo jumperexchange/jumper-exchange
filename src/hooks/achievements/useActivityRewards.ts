@@ -1,9 +1,11 @@
 import { compareDesc } from 'date-fns';
-import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
-import type { PDA } from 'src/types/loyaltyPass';
+import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
+import type { PDA } from '@/types/loyaltyPass';
 
 // The monthly on-chain activity reward categories emitted by jumper-backend
-// (REWARD_TYPES in get-rewards-level.ts), in display order.
+// (REWARD_TYPES in get-rewards-level.ts), in display order. This exact set of
+// 4 also drives the Earn XP "ongoing activity" tiers (see useOngoingActivity)
+// — do not add to it without also updating that tier data.
 export const ACTIVITY_REWARD_TYPES = [
   'swap_oor',
   'earn_oor',
@@ -20,8 +22,9 @@ interface UseActivityRewardsResult {
 
 // The wallet's settled on-chain activity achievements from the loyalty pass,
 // newest first. The running month is excluded — it lives in the Earn XP
-// section (see useOngoingActivity) until it settles. Mission completions are
-// tracked separately via task verifications (see useCompletedMissions).
+// section (see useOngoingActivity) until it settles. Past credentials (e.g.
+// one-off mission/campaign rewards) are tracked separately (see
+// useCompletedCredentials).
 export const useActivityRewards = (
   walletAddress?: string,
 ): UseActivityRewardsResult => {
