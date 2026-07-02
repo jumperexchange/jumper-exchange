@@ -2,9 +2,9 @@
 
 import { useTranslation } from 'react-i18next';
 import { AppPaths } from 'src/const/urls';
-import { useCompletedMissions } from 'src/hooks/quests/useCompletedMissions';
+import { useCompletedCredentials } from '@/hooks/achievements/useCompletedCredentials';
 import { AchievementsTabPanel } from './AchievementsTabPanel';
-import { CompletedMissionCard } from './CompletedMissionCard';
+import { ActivityCard } from './ActivityCard';
 
 interface MissionsTabProps {
   walletAddress?: string;
@@ -16,11 +16,11 @@ export const MissionsTab = ({
   isWalletLoading,
 }: MissionsTabProps) => {
   const { t } = useTranslation();
-  const { completedMissions, isLoading } = useCompletedMissions(walletAddress);
+  const { credentials, isLoading } = useCompletedCredentials(walletAddress);
 
   return (
     <AchievementsTabPanel
-      items={completedMissions}
+      items={credentials}
       isLoading={isWalletLoading || isLoading}
       emptyState={{
         heroImage: '/mission-empty-hero.png',
@@ -29,11 +29,8 @@ export const MissionsTab = ({
         ctaText: t('profile_page.yourAchievements.noMissions.cta'),
         ctaLink: AppPaths.Missions,
       }}
-      renderItem={(mission) => (
-        <CompletedMissionCard
-          key={mission.quest.documentId}
-          mission={mission}
-        />
+      renderItem={(credential) => (
+        <ActivityCard key={credential.id} pda={credential} />
       )}
     />
   );
