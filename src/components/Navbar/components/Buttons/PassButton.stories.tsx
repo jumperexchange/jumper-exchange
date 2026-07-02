@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { mocked, sb } from 'storybook/test';
+import { mocked } from 'storybook/test';
 import { ChainType } from '@lifi/sdk';
 import type { Account } from '@lifi/widget-provider';
 import { useAccount } from '@lifi/wallet-management';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
-import { usePerks } from 'src/hooks/perks/usePerks';
+import { usePerks } from '@/hooks/perks/usePerks';
 import { PassButton } from './PassButton';
-
-sb.mock(import('@/hooks/useLoyaltyPass'), { spy: true });
-sb.mock(import('src/hooks/perks/usePerks'), { spy: true });
 
 const mockAccount: Account = {
   address: '0x1234567890123456789012345678901234567890',
