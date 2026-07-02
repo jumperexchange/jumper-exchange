@@ -14,7 +14,7 @@ export const PassButton = () => {
   const { t } = useTranslation();
   const isDesktop = useMediaQuery((theme) => theme.breakpoints.up('md'));
   const pathname = usePathnameWithoutLocale();
-  const { progress, unlockedPerksCount, points, isLoading } =
+  const { progress, unlockedPerksCount, points, level, isLoading } =
     usePassDisplayData();
 
   return (
@@ -31,7 +31,7 @@ export const PassButton = () => {
           </PassProgressChip>
         </Tooltip>
       }
-      label={t('navbar.pass')}
+      label={level ? t('navbar.passWithLevel', { level }) : t('navbar.pass')}
       caption={t('navbar.perksUnlocked', { count: unlockedPerksCount })}
       href={AppPaths.Profile}
       id="wallet-digest-button-xp"

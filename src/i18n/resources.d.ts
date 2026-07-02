@@ -651,6 +651,7 @@ export default interface Resources {
         theme: 'Theme';
       };
       pass: 'Pass';
+      passWithLevel: 'Pass - lvl {{level, number}}';
       passXp: '{{xp}} XP';
       perksUnlocked_one: '{{count}} Perk unlocked';
       perksUnlocked_other: '{{count}} Perks unlocked';
