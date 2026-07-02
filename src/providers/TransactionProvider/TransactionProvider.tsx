@@ -44,7 +44,7 @@ export const TransactionProvider = ({
     hasNextPage: infiniteHasNextPage,
     fetchNextPage,
     error,
-    refetch,
+    refetch: refetchAllPages,
     triggerForceRefresh: triggerForceRefreshBase,
     rateLimit,
   } = useTransactionsData({
@@ -57,12 +57,19 @@ export const TransactionProvider = ({
     enabled,
   });
 
+  const pageCount = data?.pages.length ?? 0;
+  const currentPage = data?.pages[currentPageIndex];
+
+  // Once an error is present, don't offer to load further pages until it
+  // clears (retry/refetch) — this avoids hammering an already-erroring or
+  // rate-limited endpoint. Pages already cached for earlier indices remain
+  // reachable via goToPreviousPage regardless of the error.
   const hasNextPage =
-    currentPageIndex < (data?.pages.length ?? 0) - 1 || !!infiniteHasNextPage;
+    !error && (currentPageIndex < pageCount - 1 || !!infiniteHasNextPage);
   const hasPreviousPage = currentPageIndex > 0;
 
   const goToNextPage = useCallback(async () => {
-    if (currentPageIndex < (data?.pages.length ?? 0) - 1) {
+    if (currentPageIndex < pageCount - 1) {
       setCurrentPageIndex((i) => i + 1);
     } else if (infiniteHasNextPage) {
       const result = await fetchNextPage();
@@ -70,16 +77,23 @@ export const TransactionProvider = ({
         setCurrentPageIndex((i) => i + 1);
       }
     }
-  }, [
-    currentPageIndex,
-    data?.pages.length,
-    infiniteHasNextPage,
-    fetchNextPage,
-  ]);
+  }, [currentPageIndex, pageCount, infiniteHasNextPage, fetchNextPage]);
 
   const goToPreviousPage = useCallback(() => {
     setCurrentPageIndex((i) => Math.max(0, i - 1));
   }, []);
+
+  // refetch() re-fetches every cached page sequentially, which would
+  // multiply requests against an already-erroring/rate-limited endpoint.
+  // Only the initial load (no pages yet) needs it; once pages exist,
+  // fetchNextPage() retries with a single request for the next page.
+  const retry = useCallback(() => {
+    if (pageCount > 0) {
+      fetchNextPage();
+    } else {
+      refetchAllPages();
+    }
+  }, [pageCount, fetchNextPage, refetchAllPages]);
 
   const triggerForceRefresh = useCallback(() => {
     setCurrentPageIndex(0);
@@ -88,20 +102,23 @@ export const TransactionProvider = ({
 
   const value = useMemo(
     () => ({
-      transactions: data?.pages[currentPageIndex]?.transactions.data ?? [],
+      // react-query keeps the last successful data on a failed fetch, so
+      // currentPage can still hold stale (previously valid) transactions
+      // while `error` is set. Don't render them — an active error means
+      // the list is out of date until it's retried successfully.
+      transactions: error ? [] : (currentPage?.transactions.data ?? []),
       hasNextPage,
       hasPreviousPage,
       goToNextPage,
       goToPreviousPage,
       isLoading: isLoading || isFetchingNextPage,
       error: error as Error | null,
-      refetch,
+      refetch: retry,
       triggerForceRefresh,
       rateLimit,
     }),
     [
-      data?.pages,
-      currentPageIndex,
+      currentPage,
       hasNextPage,
       hasPreviousPage,
       goToNextPage,
@@ -109,7 +126,7 @@ export const TransactionProvider = ({
       isLoading,
       isFetchingNextPage,
       error,
-      refetch,
+      retry,
       triggerForceRefresh,
       rateLimit,
     ],

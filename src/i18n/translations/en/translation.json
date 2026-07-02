@@ -724,7 +724,17 @@
     "emptyList": {
       "title": "No results",
       "description": "Unfortunately there are no results for your search, try clearing your filters.",
-      "clearFilters": "Clear filters"
+      "clearFilters": "Clear filters",
+      "error": {
+        "title": "Something went wrong",
+        "description": "We couldn't load your transactions. Please try again.",
+        "retry": "Try again"
+      },
+      "rateLimited": {
+        "title": "Too many requests",
+        "description": "You've hit the rate limit. Please wait a moment and try again.",
+        "retry": "Try again"
+      }
     },
     "emptyPage": {
       "title": "No results on this page",

@@ -971,6 +971,16 @@ export default interface Resources {
       emptyList: {
         clearFilters: 'Clear filters';
         description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        error: {
+          description: "We couldn't load your transactions. Please try again.";
+          retry: 'Try again';
+          title: 'Something went wrong';
+        };
+        rateLimited: {
+          description: "You've hit the rate limit. Please wait a moment and try again.";
+          retry: 'Try again';
+          title: 'Too many requests';
+        };
         title: 'No results';
       };
       emptyPage: {

@@ -135,7 +135,11 @@ const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   const nftAmount = nfts.reduce((sum, nft) => sum + nft.amount, 0);
 
   return (
-    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+    <Stack
+      direction="column"
+      spacing={1}
+      sx={{ alignItems: 'flex-start', justifyContent: 'center' }}
+    >
       {tokens.length > 0 && (
         <Stack
           direction="row"

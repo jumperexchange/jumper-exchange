@@ -79,6 +79,8 @@ interface TransactionFilteringContextType {
   goToNextPage: () => void;
   goToPreviousPage: () => void;
   isLoading: boolean;
+  error: Error | null;
+  refetch: () => void;
   metadata: TransactionFilterMetadata;
   setIsActive: (active: boolean) => void;
 }
@@ -126,6 +128,8 @@ export const TransactionFilteringContext =
     goToNextPage: () => {},
     goToPreviousPage: () => {},
     isLoading: false,
+    error: null,
+    refetch: () => {},
     metadata: defaultMetadata,
     setIsActive: () => {},
   });
@@ -300,6 +304,8 @@ const TransactionFilteringInner = ({
     goToNextPage,
     goToPreviousPage,
     isLoading,
+    error,
+    refetch,
   } = useTransactions();
 
   const { from: seenFrom, to: seenTo } = useMemo(
@@ -395,6 +401,8 @@ const TransactionFilteringInner = ({
       goToNextPage,
       goToPreviousPage,
       isLoading,
+      error,
+      refetch,
       metadata,
       setIsActive,
     }),
@@ -411,6 +419,8 @@ const TransactionFilteringInner = ({
       goToNextPage,
       goToPreviousPage,
       isLoading,
+      error,
+      refetch,
       metadata,
       setIsActive,
     ],
