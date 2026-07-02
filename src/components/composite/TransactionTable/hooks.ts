@@ -56,13 +56,13 @@ export const useTransactionSummaryContent = (
   const { t } = useTranslation();
 
   const toDisplayAmount = (amount: number, symbol: string): string => {
-    if (amount > 0 && amount < 0.01) {
-      return `< 0.01 ${symbol}`;
+    if (amount >= 0 && amount < 0.0001) {
+      return `< 0.0001 ${symbol}`;
     }
     const formatted = t('format.decimal', {
       value: Number(amount),
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
     });
     if (!symbol) {
       return formatted;
@@ -71,7 +71,7 @@ export const useTransactionSummaryContent = (
   };
 
   const toDisplayAmountUSD = (amountUsd: number): string => {
-    if (amountUsd > 0 && amountUsd < 0.01) {
+    if (amountUsd >= 0 && amountUsd < 0.01) {
       return '< $0.01';
     }
     return t(compact ? 'format.currencyCompact' : 'format.currency', {
@@ -87,26 +87,22 @@ export const useTransactionSummaryContent = (
   const fromAmountTitle = fromBalances.length
     ? toDisplayAmountUSD(sumBy(fromBalances, 'amountUsd'))
     : '-';
-  const fromAmountHint = fromBalances.length
-    ? fromBalances
-        .map((b) => toDisplayAmount(b.amount, b.token.symbol))
-        .join('\n')
-    : undefined;
+  const fromAmountHints = fromBalances.map((b) =>
+    toDisplayAmount(b.amount, b.token.symbol),
+  );
 
   const toAmountTitle = toBalances.length
     ? toDisplayAmountUSD(sumBy(toBalances, 'amountUsd'))
     : '-';
-  const toAmountHint = toBalances.length
-    ? toBalances
-        .map((b) => toDisplayAmount(b.amount, b.token.symbol))
-        .join('\n')
-    : undefined;
+  const toAmountHints = toBalances.map((b) =>
+    toDisplayAmount(b.amount, b.token.symbol),
+  );
 
   return {
     fromAmountTitle,
-    fromAmountHint,
+    fromAmountHints,
     toAmountTitle,
-    toAmountHint,
+    toAmountHints,
     actionTitle: formatTransactionAction(transaction.action),
     feeTitle:
       transaction.fee?.amountUsd != null
@@ -120,6 +116,10 @@ export const useTransactionSummaryContent = (
         : undefined,
     dateTitle: formatTransactionDateTitle(transaction.time),
     dateHint: formatTransactionDateHint(transaction.time),
+    txHash: transaction.txHash,
+    chainId: transaction.chainId,
+    protocolName: transaction.protocol.name ?? undefined,
+    protocolIcon: transaction.protocol.icon ?? undefined,
     fromTokens: fromBalances.map((b) => toBaseToken(b.token)),
     toTokens: toBalances.map((b) => toBaseToken(b.token)),
     fromNfts,

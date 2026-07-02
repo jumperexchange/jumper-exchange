@@ -35,7 +35,8 @@ export type TransactionSummaryColumnId =
   | 'assetsOut'
   | 'action'
   | 'fee'
-  | 'date';
+  | 'date'
+  | 'txHash';
 
 export interface TransactionSummaryColumnSlot {
   id: TransactionSummaryColumnId;
@@ -66,14 +67,18 @@ export interface TransactionSummaryRowConfig extends TransactionSummaryTokenConf
 
 export interface TransactionSummaryContent {
   fromAmountTitle: string;
-  fromAmountHint?: string;
+  fromAmountHints: string[];
   toAmountTitle: string;
-  toAmountHint?: string;
+  toAmountHints: string[];
   actionTitle: string;
   feeTitle: string;
   feeHint?: string;
   dateTitle: string;
   dateHint: string;
+  txHash: string;
+  chainId: number;
+  protocolName?: string;
+  protocolIcon?: string;
   fromTokens: Token[];
   toTokens: Token[];
   fromNfts: NftBalance[];
