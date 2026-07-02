@@ -12,6 +12,7 @@ export type BalanceHistoryPeriod = BalanceHistoryQuery['chartPeriod'];
 
 export const usePortfolioBalanceHistoryQuery = (
   period: BalanceHistoryPeriod,
+  enabled: boolean = true,
 ): UseQueryResult<HistoryGraph, unknown> => {
   const { accounts } = useAccount();
   const accountGroups = useAccountGroupsByChainType(accounts);
@@ -39,7 +40,7 @@ export const usePortfolioBalanceHistoryQuery = (
       });
       return result.data.data;
     },
-    enabled: hasAddresses,
+    enabled: enabled && hasAddresses,
     refetchInterval: FIVE_MINUTES_MS,
   });
 };

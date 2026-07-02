@@ -2,13 +2,17 @@
 
 import type { BalanceHistoryPeriod } from '@/hooks/portfolio/usePortfolioBalanceHistory';
 import { usePortfolioBalanceHistoryQuery } from '@/hooks/portfolio/usePortfolioBalanceHistory';
+import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
 import { dropWhile } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
+import { isCurrentPageUsingPositionData } from '../utils';
 
 export const usePnlData = () => {
   const [period, setPeriod] = useState<BalanceHistoryPeriod>('month');
+  const pathname = usePathnameWithoutLocale();
+  const isEnabled = isCurrentPageUsingPositionData(pathname);
 
-  const historyQuery = usePortfolioBalanceHistoryQuery(period);
+  const historyQuery = usePortfolioBalanceHistoryQuery(period, isEnabled);
 
   const pnlChart = useMemo(
     () =>
