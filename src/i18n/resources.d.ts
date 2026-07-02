@@ -1025,6 +1025,7 @@ export default interface Resources {
           assetOut: 'Asset out';
           date: 'Date';
           fee: 'Fee';
+          txHash: 'Tx hash';
         };
         nftAmount: 'Amount: {{amount}}';
         nftCount_one: '{{count}} NFT';

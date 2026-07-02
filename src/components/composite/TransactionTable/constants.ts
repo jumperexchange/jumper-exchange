@@ -15,16 +15,17 @@ export const TRANSACTION_SUMMARY_ROW_CONFIG: TransactionSummaryRowConfig = {
   badgeSpacing: -0.8,
   showColumnHeader: true,
   columns: [
-    { id: 'assetsIn' },
-    { id: 'assetsOut' },
+    { id: 'date' },
     { id: 'action' },
+    { id: 'assetsIn', sx: { flex: 1.5 } },
+    { id: 'assetsOut', sx: { flex: 1.5 } },
     { id: 'fee' },
-    { id: 'date', sx: { textAlign: 'right' } },
+    { id: 'txHash', sx: { textAlign: 'right', alignItems: 'flex-end' } },
   ],
   sections: [
-    { columns: [{ id: 'action' }] },
+    { columns: [{ id: 'date' }, { id: 'action' }] },
     { columns: [{ id: 'assetsIn' }, { id: 'assetsOut' }] },
-    { columns: [{ id: 'fee' }, { id: 'date' }] },
+    { columns: [{ id: 'fee' }, { id: 'txHash' }] },
   ],
 } as const;
 
@@ -32,14 +33,8 @@ export const TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG: TransactionSummaryRowConfig
   {
     ...TRANSACTION_SUMMARY_ROW_CONFIG,
     showColumnHeader: false,
-    columns: [
-      { id: 'assetsIn' },
-      { id: 'action' },
-      { id: 'date', sx: { textAlign: 'right' } },
-    ],
+    columns: [{ id: 'date' }, { id: 'action' }, { id: 'assetsIn' }],
     sections: [
-      { columns: [{ id: 'action' }] },
-      { columns: [{ id: 'assetsIn' }] },
       {
         columns: [
           {
@@ -52,7 +47,9 @@ export const TRANSACTION_SUMMARY_COMPACT_ROW_CONFIG: TransactionSummaryRowConfig
               },
             },
           },
+          { id: 'action' },
         ],
       },
+      { columns: [{ id: 'assetsIn' }] },
     ],
   };

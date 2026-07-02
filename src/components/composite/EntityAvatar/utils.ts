@@ -145,6 +145,22 @@ export const getEntityAddress = (
 };
 
 /**
+ * Get the chain ID a token entity lives on (as opposed to getEntityChainId,
+ * which resolves the chain ID for entities that *are* a chain).
+ */
+export const getEntityTokenChainId = (
+  entity: DisplayableEntity,
+): string | undefined => {
+  if (isTokensType(entity)) {
+    return getTokenChainId(entity)?.toString();
+  }
+  if (isBackendToken(entity)) {
+    return entity.chain.chainId.toString();
+  }
+  return undefined;
+};
+
+/**
  * Get display name from any displayable entity type.
  */
 export const getEntityName = (entity: DisplayableEntity): string => {

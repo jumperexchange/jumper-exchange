@@ -70,6 +70,16 @@ const wethBase = createToken(
   'WETH',
 );
 
+const uniswapProtocol = {
+  name: 'Uniswap V3',
+  icon: 'https://static.debank.com/image/project/logo_url/uniswap3/173f61651376c00448deb3979bf4a5c8.png',
+};
+
+const aerodromeProtocol = {
+  name: 'Aerodrome',
+  icon: 'https://static.debank.com/image/project/logo_url/aerodrome/6cccf24f9f1f24a4c5b5c15e26aca87f.png',
+};
+
 export const mockTradeTransaction: PortfolioTransaction = {
   fromBalances: [createBalance(ethEthereum, 0.42, 1250.42)],
   toBalances: [createBalance(usdcEthereum, 1250.42, 1250.42)],
@@ -78,6 +88,7 @@ export const mockTradeTransaction: PortfolioTransaction = {
   time: '2025-06-10T14:32:00.000Z',
   txHash: '0xabc123def4567890abc123def4567890abc123def4567890abc123def4567890',
   chainId: 1,
+  protocol: uniswapProtocol,
 };
 
 export const mockSendTransaction: PortfolioTransaction = {
@@ -88,6 +99,7 @@ export const mockSendTransaction: PortfolioTransaction = {
   time: '2025-06-08T09:15:00.000Z',
   txHash: '0xdef456abc7890123def456abc7890123def456abc7890123def456abc7890123',
   chainId: 42161,
+  protocol: {},
 };
 
 export const mockReceiveTransaction: PortfolioTransaction = {
@@ -98,6 +110,7 @@ export const mockReceiveTransaction: PortfolioTransaction = {
   time: '2025-06-05T18:45:00.000Z',
   txHash: '0x789012def456abc3789012def456abc3789012def456abc3789012def456abc3',
   chainId: 1,
+  protocol: {},
 };
 
 export const mockMultiTokenTradeTransaction: PortfolioTransaction = {
@@ -114,6 +127,7 @@ export const mockMultiTokenTradeTransaction: PortfolioTransaction = {
   time: '2025-06-01T11:20:00.000Z',
   txHash: '0x456789abc012def3456789abc012def3456789abc012def3456789abc012def3',
   chainId: 8453,
+  protocol: aerodromeProtocol,
 };
 
 export const mockTransactions = [

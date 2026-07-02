@@ -1506,6 +1506,13 @@ export interface BalanceDto {
   amountUsd?: number | null;
 }
 
+export interface ProtocolDto {
+  /** Protocol name */
+  name?: string | null;
+  /** Protocol icon Url */
+  icon?: string | null;
+}
+
 export interface TransactionsDto {
   /** Tokens sent in this transaction */
   fromBalances: BalanceDto[];
@@ -1539,6 +1546,8 @@ export interface TransactionsDto {
   txHash: string;
   /** Chain ID where the transaction occurred */
   chainId: number;
+  /** Protocol information for this transaction */
+  protocol: ProtocolDto;
 }
 
 export interface TransactionsDtoResponse {

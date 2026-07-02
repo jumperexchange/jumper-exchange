@@ -867,7 +867,8 @@
         "assetIn": "Asset in",
         "assetOut": "Asset out",
         "fee": "Fee",
-        "date": "Date"
+        "date": "Date",
+        "txHash": "Tx hash"
       },
       "nftCount_one": "{{count}} NFT",
       "nftCount_other": "{{count}} NFTs",
