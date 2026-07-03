@@ -8,6 +8,8 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { differenceInCalendarDays, isPast } from 'date-fns';
 import type { ColumnDef } from '@/components/composite/DataTable/DataTable.types';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeVariant } from '@/components/Badge/Badge.styles';
 import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { createExtendedToken, createTokenBalance } from '@/types/tokens';
@@ -16,9 +18,9 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { OrderRowMenu } from './OrderRowMenu';
 import {
   ACTIONS_COL_WIDTH,
+  AMOUNT_COL_MAX_WIDTH,
   CHAIN_AVATAR_SIZE,
   CHAIN_COL_WIDTH,
-  NUMERIC_SX,
 } from './constants';
 import { OrderCell, OrderCellSkeleton } from './OrderCell';
 import {
@@ -30,18 +32,18 @@ import type { Order, TokenDto } from '@/types/jumper-limit-order';
 import type { CoinKey } from '@lifi/sdk';
 import { BaseSurface1Skeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 
-export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
+export function useOrderColumns(isExpanded: boolean): ColumnDef<Order>[] {
   const { t } = useTranslation();
   const { toDisplayAmount, toDisplayAmountUSD } = useTokenFormatters();
 
   const formatExpiry = (
     status: Order['status'],
     expiresAt?: number,
-  ): { label: string; color: string } | null => {
+  ): { label: string; variant: BadgeVariant } | null => {
     if (status === 'cancelled') {
       return {
         label: t('limitOrders.table.status.cancelled'),
-        color: 'error.main',
+        variant: BadgeVariant.Error,
       };
     }
     if (status === 'filled') {
@@ -49,7 +51,7 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
     }
     const EXPIRED = {
       label: t('limitOrders.table.status.expired'),
-      color: 'text.disabled',
+      variant: BadgeVariant.Disabled,
     };
     if (status === 'expired') {
       return EXPIRED;
@@ -64,7 +66,7 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
     const days = differenceInCalendarDays(expiryDate, new Date());
     return {
       label: t('limitOrders.table.status.days', { count: days }),
-      color: 'text.secondary',
+      variant: BadgeVariant.Secondary,
     };
   };
 
@@ -86,7 +88,7 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       ),
       amount,
     );
-    const tokenAmount = toDisplayAmount(balance, '');
+    const tokenAmount = toDisplayAmount(balance, '', { compact: !isExpanded });
     const tokenAmountSymbol = toDisplayAmount(balance, balance.token.symbol);
     const tokenAmountUsd = token.priceUSD
       ? toDisplayAmountUSD(balance)
@@ -158,7 +160,11 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       id: 'sell',
       header: t('limitOrders.table.columns.sell'),
       align: 'right',
-      cellSx: { borderBottom: 'none' },
+      cellSx: {
+        borderBottom: 'none',
+        maxWidth: AMOUNT_COL_MAX_WIDTH,
+        overflow: 'hidden',
+      },
       renderCell: (order) =>
         renderTokenCell(order.fromToken, order.fromAmount, order.chainId),
       renderSkeleton: () => <OrderCellSkeleton width="72%" align="right" />,
@@ -167,7 +173,11 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       id: 'buy',
       header: t('limitOrders.table.columns.buy'),
       align: 'right',
-      cellSx: { borderBottom: 'none' },
+      cellSx: {
+        borderBottom: 'none',
+        maxWidth: AMOUNT_COL_MAX_WIDTH,
+        overflow: 'hidden',
+      },
       renderCell: (order) =>
         renderTokenCell(order.toToken, order.toAmount, order.chainId),
       renderSkeleton: () => <OrderCellSkeleton width="72%" align="right" />,
@@ -176,7 +186,11 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       id: 'limit',
       header: t('limitOrders.table.columns.limit'),
       align: 'right',
-      cellSx: { borderBottom: 'none' },
+      cellSx: {
+        borderBottom: 'none',
+        maxWidth: AMOUNT_COL_MAX_WIDTH,
+        overflow: 'hidden',
+      },
       renderCell: (order) => {
         const limitPrice = getOrderLimitPrice(order);
         if (limitPrice == null) {
@@ -184,9 +198,9 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
         }
         return (
           <OrderCell align="right" strong>
-            {t('format.decimal', {
+            {t(`format.${isExpanded ? 'decimal' : 'decimalCompact'}`, {
               value: limitPrice,
-              maximumFractionDigits: 6,
+              maximumFractionDigits: 2,
             })}
           </OrderCell>
         );
@@ -197,8 +211,12 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       id: 'market',
       header: t('limitOrders.table.columns.market'),
       align: 'right',
-      hidden: !showMarketColumn,
-      cellSx: { borderBottom: 'none' },
+      hidden: !isExpanded,
+      cellSx: {
+        borderBottom: 'none',
+        maxWidth: AMOUNT_COL_MAX_WIDTH,
+        overflow: 'hidden',
+      },
       renderCell: (order) => {
         const marketPrice = getOrderMarketPrice(order);
         if (marketPrice == null) {
@@ -206,9 +224,9 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
         }
         return (
           <OrderCell align="right" muted>
-            {t('format.decimal', {
+            {t(`format.${isExpanded ? 'decimal' : 'decimalCompact'}`, {
               value: marketPrice,
-              maximumFractionDigits: 6,
+              maximumFractionDigits: 2,
             })}
           </OrderCell>
         );
@@ -231,12 +249,7 @@ export function useOrderColumns(showMarketColumn: boolean): ColumnDef<Order>[] {
       renderCell: (order) => {
         const expiry = formatExpiry(order.status, order.validUntil);
         return expiry ? (
-          <Typography
-            variant="bodySmall"
-            sx={{ color: expiry.color, ...NUMERIC_SX }}
-          >
-            {expiry.label}
-          </Typography>
+          <Badge label={expiry.label} variant={expiry.variant} />
         ) : null;
       },
       renderSkeleton: () => <OrderCellSkeleton width={72} />,

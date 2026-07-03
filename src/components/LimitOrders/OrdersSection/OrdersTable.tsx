@@ -7,17 +7,17 @@ import { type Order } from '@/types/jumper-limit-order';
 interface OrdersTableProps {
   orders: Order[];
   isLoading?: boolean;
-  showMarketColumn?: boolean;
+  isExpanded?: boolean;
   stickyHeader?: boolean;
 }
 
 export const OrdersTable = ({
   orders,
   isLoading = false,
-  showMarketColumn = false,
+  isExpanded = false,
   stickyHeader = false,
 }: OrdersTableProps) => {
-  const columns = useOrderColumns(showMarketColumn);
+  const columns = useOrderColumns(isExpanded);
   return (
     <DataTable
       rows={orders}

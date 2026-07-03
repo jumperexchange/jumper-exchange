@@ -21,6 +21,7 @@ export const OrderCell = ({
       alignItems: 'center',
       justifyContent: align === 'right' ? 'flex-end' : 'flex-start',
       width: '100%',
+      minWidth: 0,
     }}
   >
     <Typography
@@ -28,6 +29,10 @@ export const OrderCell = ({
       sx={{
         ...NUMERIC_SX,
         ...(muted && { color: 'text.disabled' }),
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        minWidth: 0,
       }}
     >
       {children}
