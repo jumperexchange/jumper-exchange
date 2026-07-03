@@ -1493,7 +1493,7 @@ export interface PnlResponseDto {
 }
 
 export interface TransactionsPaginationMeta {
-  next: string | null;
+  next?: string | null;
   pagesLength: number;
 }
 
@@ -1506,9 +1506,14 @@ export interface BalanceDto {
   amountUsd?: number | null;
 }
 
+export interface ProtocolDto {
+  /** Protocol name */
+  name?: string | null;
+  /** Protocol icon Url */
+  icon?: string | null;
+}
+
 export interface TransactionsDto {
-  /** Total transaction value in USD */
-  amountUsd: number | null;
   /** Tokens sent in this transaction */
   fromBalances: BalanceDto[];
   /** Tokens received in this transaction */
@@ -1541,6 +1546,8 @@ export interface TransactionsDto {
   txHash: string;
   /** Chain ID where the transaction occurred */
   chainId: number;
+  /** Protocol information for this transaction */
+  protocol: ProtocolDto;
 }
 
 export interface TransactionsDtoResponse {

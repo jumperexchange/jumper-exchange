@@ -137,7 +137,8 @@
       "clearAll": "Clear all",
       "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "dateRange": "1 range"
     },
     "sorting": {
       "sortBy": "Sort by",
@@ -724,6 +725,22 @@
     "emptyList": {
       "title": "No results",
       "description": "Unfortunately there are no results for your search, try clearing your filters.",
+      "clearFilters": "Clear filters",
+      "error": {
+        "title": "Something went wrong",
+        "description": "We couldn't load your transactions. Please try again.",
+        "retry": "Try again"
+      },
+      "rateLimited": {
+        "title": "Too many requests",
+        "description": "You've hit the rate limit. Please wait a moment and try again.",
+        "retry": "Try again"
+      }
+    },
+    "emptyPage": {
+      "title": "No results on this page",
+      "description": "There are no results on this page. Go back to the previous page or clear your filters.",
+      "goToPreviousPage": "Previous page",
       "clearFilters": "Clear filters"
     },
     "assetOverviewCard": {
@@ -812,14 +829,40 @@
       "clearAll": "Clear all",
       "filterSort": "Filters & Sort",
       "filterAndSort": "Filter and sort",
-      "search": "Search {{filterBy}}..."
+      "search": "Search {{filterBy}}...",
+      "chains": "Chains",
+      "assets": "Assets",
+      "refresh": "Refresh",
+      "refreshTooltipAvailable": "Refresh transactions ({{remaining}} left)",
+      "refreshTooltipExhausted": "Rate limit reached. Try again {{resetAt}}",
+      "refreshTooltipUnknown": "Refresh transactions",
+      "dateRange": "1 range"
     },
     "sorting": {
       "sortBy": "Sort by",
       "sort": "Sort",
       "totalValue": "Total Value",
       "chain": "Chain",
-      "asset": "Asset"
+      "asset": "Asset",
+      "date": "Date",
+      "action": "Action"
+    },
+    "transactionTypes": {
+      "approve": "Approve",
+      "bid": "Bid",
+      "burn": "Burn",
+      "claim": "Claim",
+      "delegate": "Delegate",
+      "deploy": "Deploy",
+      "deposit": "Deposit",
+      "execute": "Execute",
+      "mint": "Mint",
+      "receive": "Receive",
+      "revoke": "Revoke",
+      "revoke_delegation": "Revoke Delegation",
+      "send": "Send",
+      "trade": "Trade",
+      "withdraw": "Withdraw"
     },
     "views": {
       "viewBy": "View by",
@@ -835,7 +878,8 @@
         "assetIn": "Asset in",
         "assetOut": "Asset out",
         "fee": "Fee",
-        "date": "Date"
+        "date": "Date",
+        "txHash": "Tx hash"
       },
       "nftCount_one": "{{count}} NFT",
       "nftCount_other": "{{count}} NFTs",
@@ -1239,6 +1283,10 @@
       "body_other": "Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check them out in your Jumper Pass.",
       "cta": "View Jumper Pass"
     }
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
   },
   "alerts": {
     "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."

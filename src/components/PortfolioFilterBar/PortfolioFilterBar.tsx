@@ -7,6 +7,7 @@ import {
   PortfolioFilterBarHeaderContainer,
 } from './PortfolioFilterBar.styles';
 import { PortfolioFilterBarHoldings } from './layouts/PortfolioFilterBarHoldings';
+import { PortfolioFilterBarTransactions } from './layouts/PortfolioFilterBarTransactions';
 import { PortfolioFilterBarEmpty } from './layouts/PortfolioFilterBarEmpty';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { AnimatePresence } from 'motion/react';
@@ -17,11 +18,13 @@ export interface PortfolioFilterBarProps {
   value: PortfolioViewBarTab;
   onChange: (value: PortfolioViewBarTab) => void;
   isDisabled: boolean;
+  areTransactionsEnabled: boolean;
 }
 
 export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
   value,
   isDisabled,
+  areTransactionsEnabled,
   onChange,
 }) => {
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
@@ -35,6 +38,7 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
       <PortfolioFilterBarHeaderContainer>
         <PortfolioFilterView
           isDisabled={isDisabled}
+          areTransactionsEnabled={areTransactionsEnabled}
           value={value}
           onChange={onChange}
         />
@@ -44,6 +48,8 @@ export const PortfolioFilterBar: FC<PortfolioFilterBarProps> = ({
             <PortfolioFilterBarEmpty key="empty" />
           ) : value === PortfolioViewBarTab.HOLDINGS ? (
             <PortfolioFilterBarHoldings key="holdings" />
+          ) : value === PortfolioViewBarTab.TRANSACTIONS ? (
+            <PortfolioFilterBarTransactions key="transactions" />
           ) : null}
         </AnimatePresence>
       </PortfolioFilterBarHeaderContainer>

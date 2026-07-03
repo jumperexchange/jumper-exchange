@@ -31,12 +31,12 @@ export type TransactionBalance = BalanceDto;
 export type PortfolioTransaction = TransactionsDto;
 
 export type TransactionSummaryColumnId =
-  | 'amount'
   | 'assetsIn'
   | 'assetsOut'
   | 'action'
   | 'fee'
-  | 'date';
+  | 'date'
+  | 'txHash';
 
 export interface TransactionSummaryColumnSlot {
   id: TransactionSummaryColumnId;
@@ -66,13 +66,19 @@ export interface TransactionSummaryRowConfig extends TransactionSummaryTokenConf
 }
 
 export interface TransactionSummaryContent {
-  amountTitle: string;
-  amountHint?: string;
+  fromAmountTitle: string;
+  fromAmountHints: string[];
+  toAmountTitle: string;
+  toAmountHints: string[];
   actionTitle: string;
   feeTitle: string;
   feeHint?: string;
   dateTitle: string;
   dateHint: string;
+  txHash: string;
+  chainId: number;
+  protocolName?: string;
+  protocolIcon?: string;
   fromTokens: Token[];
   toTokens: Token[];
   fromNfts: NftBalance[];

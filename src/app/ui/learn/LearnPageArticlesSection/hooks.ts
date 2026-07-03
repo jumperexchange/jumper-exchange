@@ -386,6 +386,7 @@ export const useBlogArticlesFilteringCategories = () => {
             dateRangeMin,
             dateRangeMax,
             pendingValues.dates,
+            t('blog.filter.dateRange'),
           ),
           value: pendingValues.dates,
           onChange: (v) => setPendingValue('dates', v),

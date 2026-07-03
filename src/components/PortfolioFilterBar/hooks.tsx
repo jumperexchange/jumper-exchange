@@ -1,6 +1,15 @@
 'use client';
 
 import { useHoldingsFiltering } from '../../providers/PortfolioProvider/filtering/HoldingsFilteringContext';
+import type { TransactionSortBy } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
+import { useTransactionFiltering } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
+import {
+  ALL_TRANSACTION_TYPES,
+  isNftTokenOption,
+  type NftTokenOption,
+} from '@/providers/TransactionProvider/filtering/utils';
+import type { TransactionsDto } from '@/types/jumper-backend';
+import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import { Avatar } from '@mui/material';
 import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
 import type { NullableFields } from '@/types/internal';
@@ -15,15 +24,25 @@ import { useTranslation } from 'react-i18next';
 import { useChains } from '@/hooks/useChains';
 import { sortSelectOptions } from '@/utils/sortSelectOptions';
 import { EntityStack } from '../composite/EntityStack/EntityStack';
+
 import { usePendingFilters } from '../composite/MultiLayer/hooks';
 import type { HoldingsPendingFilterValues } from './types';
 import {
+  createCustomCategory,
+  createDateRangeCategory,
   createMultiSelectCategory,
   createSliderCategory,
   createSingleSelectCategory,
 } from '../composite/MultiLayer/utils';
-import { countBadge, valueBadge } from './utils';
+import type {
+  CategoryOption,
+  DateRangeValue,
+} from '../composite/MultiLayer/MultiLayer.types';
+import { countBadge, datesBadge, valueBadge } from './utils';
+import { TransactionAssetsFilterPanel } from './components/TransactionAssetsFilterPanel';
 import { buildHoldingsFilterPatchFromPending } from '../../providers/PortfolioProvider/filtering/utils';
+import { walletDigest } from '@/utils/walletDigest';
+import { isSameDay } from 'date-fns';
 
 export const useHoldingsFilterCategories = () => {
   const { t } = useTranslation();
@@ -271,6 +290,268 @@ export const useHoldingsFilterCategories = () => {
           testId: 'portfolio-filter-sort-select',
         })
       : null,
+  ].filter((category) => !!category);
+
+  return {
+    isLoading,
+    hasFilterApplied,
+    categories,
+    filtersCount,
+    applyFilters,
+    clearAll,
+    resetPending,
+    hasPendingChanges,
+  };
+};
+
+type TransactionType = TransactionsDto['action'];
+
+interface TransactionPendingFilterValues {
+  wallet: string;
+  chains: string[];
+  assets: string[];
+  types: TransactionType[];
+  date: DateRangeValue;
+  sortBy: string;
+}
+
+export const useTransactionFilterCategories = () => {
+  const { t } = useTranslation();
+  const { accounts } = useAccount();
+  const {
+    filter,
+    updateFilter,
+    clearFilters,
+    isLoading,
+    sortBy,
+    setSortBy,
+    metadata,
+  } = useTransactionFiltering();
+
+  const walletOptions = useMemo(
+    () =>
+      sortSelectOptions(
+        metadata.allWallets.map((walletAddress) => {
+          const account = accounts.find((a) => a.address === walletAddress);
+          const connectorIcon = account?.connector
+            ? getConnectorIcon(account.connector)
+            : undefined;
+          return {
+            value: walletAddress,
+            label: account?.connector?.name || walletDigest(walletAddress),
+            startAdornment: connectorIcon ? (
+              <Avatar
+                src={connectorIcon}
+                alt={account?.connector?.name || ''}
+                sx={{ width: 24, height: 24 }}
+              />
+            ) : undefined,
+          };
+        }),
+      ),
+    [metadata.allWallets, accounts],
+  );
+
+  const typeOptions = useMemo(
+    () =>
+      ALL_TRANSACTION_TYPES.map((type) => ({
+        value: type,
+        label: t(`portfolio.transactionTypes.${type}`),
+      })),
+    [t],
+  );
+
+  const chainOptions = useMemo(
+    () =>
+      metadata.allChains.map((chain) => ({
+        value: String(chain.id),
+        label: chain.name,
+        startAdornment: <EntityStack entities={[chain]} />,
+      })),
+    [metadata.allChains],
+  );
+
+  const tokenOptionsByChain = useMemo(() => {
+    const optionsByChain = new Map<string, CategoryOption<string>[]>();
+    for (const chain of metadata.allChains) {
+      const chainTokens = metadata.tokensByChain.get(chain.id) ?? [];
+      const nfts = metadata.allAssets.filter(
+        (a): a is NftTokenOption =>
+          isNftTokenOption(a) && a.chainId === chain.id,
+      );
+      const options = [
+        ...nfts.map((nft) => ({
+          value: `${nft.chainId}:${nft.address}`,
+          label: truncateAddress(nft.address),
+          startAdornment: (
+            <EntityStack
+              entities={[{ chainId: chain.id, chainKey: String(chain.key) }]}
+            />
+          ),
+        })),
+        ...chainTokens.map((token) => ({
+          value: `${chain.id}:${token.address.toLowerCase()}`,
+          label: token.name,
+          startAdornment: <EntityStack entities={[token]} />,
+        })),
+      ];
+      if (options.length) {
+        optionsByChain.set(String(chain.id), options);
+      }
+    }
+    return optionsByChain;
+  }, [metadata.allChains, metadata.tokensByChain, metadata.allAssets]);
+
+  const sortByOptions = useMemo(
+    () => [
+      { value: 'date', label: t('portfolio.sorting.date') },
+      { value: 'chain', label: t('portfolio.sorting.chain') },
+      { value: 'action', label: t('portfolio.sorting.action') },
+    ],
+    [t],
+  );
+
+  const dateRangeMin = metadata.allDateRange.min;
+  const dateRangeMax = metadata.allDateRange.max;
+  const dateMin = filter.minDate ? new Date(filter.minDate) : dateRangeMin;
+  const dateMax = filter.maxDate ? new Date(filter.maxDate) : dateRangeMax;
+
+  const appliedValues = useMemo(
+    (): TransactionPendingFilterValues => ({
+      wallet: filter.wallet ?? '',
+      chains: filter.chains ?? [],
+      assets: filter.assets ?? [],
+      types: (filter.types ?? []) as TransactionType[],
+      date: [dateMin, dateMax],
+      sortBy,
+    }),
+    [
+      filter.wallet,
+      filter.chains,
+      filter.assets,
+      filter.types,
+      dateMin,
+      dateMax,
+      sortBy,
+    ],
+  );
+
+  const {
+    pendingValues,
+    setPendingValue,
+    applyFilters,
+    clearAll,
+    resetPending,
+  } = usePendingFilters<TransactionPendingFilterValues>({
+    initialValues: appliedValues,
+    onApply: (values) => {
+      updateFilter({
+        wallet: values.wallet ? values.wallet : undefined,
+        chains: values.chains.length ? values.chains : undefined,
+        assets: values.assets.length ? values.assets : undefined,
+        types: values.types.length ? values.types : undefined,
+        minDate: values.date[0]?.toISOString(),
+        maxDate: values.date[1]?.toISOString(),
+      });
+      setSortBy(values.sortBy as TransactionSortBy);
+    },
+    onClear: clearFilters,
+  });
+
+  const hasPendingChanges = useMemo(
+    () => !isEqual(pendingValues, appliedValues),
+    [pendingValues, appliedValues],
+  );
+
+  const hasDateFilterApplied =
+    !isSameDay(dateMin, dateRangeMin) || !isSameDay(dateMax, dateRangeMax);
+
+  const filtersCount =
+    (walletOptions.length > 1 && filter.wallet ? 1 : 0) +
+    (filter.chains?.length ?? 0) +
+    (filter.assets?.length ?? 0) +
+    (filter.types?.length ?? 0) +
+    (hasDateFilterApplied ? 1 : 0);
+  const hasFilterApplied = filtersCount > 0;
+
+  const usedMin = pendingValues.date[0] ?? dateMin;
+  const usedMax = pendingValues.date[1] ?? dateMax;
+
+  const categories = [
+    walletOptions.length > 1
+      ? createSingleSelectCategory({
+          id: 'wallet',
+          label: t('portfolio.filter.wallet'),
+          badgeLabel: countBadge(1),
+          value: pendingValues.wallet,
+          onChange: (v) => {
+            if (v) {
+              setPendingValue('wallet', v);
+            }
+          },
+          options: walletOptions,
+          testId: 'portfolio-filter-transaction-wallet-select',
+        })
+      : null,
+    chainOptions.length > 0
+      ? createCustomCategory<unknown>({
+          id: 'assets',
+          label: t('portfolio.filter.assets'),
+          badgeLabel: countBadge(
+            pendingValues.chains.length + pendingValues.assets.length,
+          ),
+          testId: 'portfolio-filter-transaction-assets',
+          render: ({ slotProps }) => (
+            <TransactionAssetsFilterPanel
+              chains={pendingValues.chains}
+              assets={pendingValues.assets}
+              chainOptions={chainOptions}
+              tokenOptionsByChain={tokenOptionsByChain}
+              onChainsChange={(v) => setPendingValue('chains', v)}
+              onAssetsChange={(v) => setPendingValue('assets', v)}
+              slotProps={slotProps}
+            />
+          ),
+        })
+      : null,
+    createMultiSelectCategory({
+      id: 'types',
+      label: t('portfolio.filter.type'),
+      badgeLabel: countBadge(pendingValues.types.length),
+      value: pendingValues.types,
+      onChange: (v) => setPendingValue('types', v as TransactionType[]),
+      options: typeOptions,
+      testId: 'portfolio-filter-transaction-type-select',
+    }),
+    createDateRangeCategory({
+      id: 'date',
+      label: t('portfolio.sorting.date'),
+      badgeLabel: datesBadge(
+        usedMin,
+        usedMax,
+        dateRangeMin,
+        dateRangeMax,
+        pendingValues.date,
+        t('portfolio.filter.dateRange'),
+      ),
+      value: pendingValues.date,
+      onChange: (v) => setPendingValue('date', v),
+      min: dateRangeMin,
+      max: dateRangeMax,
+      testId: 'portfolio-filter-transaction-date-select',
+    }),
+    createSingleSelectCategory({
+      id: 'sortBy',
+      label: t('portfolio.sorting.sortBy'),
+      value: pendingValues.sortBy,
+      onChange: (v) => {
+        if (v) {
+          setPendingValue('sortBy', v);
+        }
+      },
+      options: sortByOptions,
+      testId: 'portfolio-filter-transaction-sort-select',
+    }),
   ].filter((category) => !!category);
 
   return {

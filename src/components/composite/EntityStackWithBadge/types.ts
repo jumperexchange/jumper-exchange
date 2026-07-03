@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type {
   AvatarSize,
   AvatarStackDirection,
@@ -24,11 +25,21 @@ export interface EntityStackSpacing {
   infoContainerGap?: number;
 }
 
+export interface EntityStackHintItem {
+  key: string;
+  label: string;
+  hoverContent?: ReactNode;
+}
+
 export interface EntityStackContent {
   /** Main title text */
   title?: string;
   /** Hint text (if not provided, derived from badge entity names) */
   hint?: string;
+  /** Explicit hint items (one per row/segment), each with its own optional hover reveal. Takes precedence over `hint`. */
+  hintItems?: EntityStackHintItem[];
+  /** Layout direction when there's more than one hint item */
+  hintItemsDirection?: 'row' | 'column';
   /** Typography variant for title */
   titleVariant?: TypographyProps['variant'];
   /** Typography variant for hint/description */
@@ -63,4 +74,6 @@ export interface EntityStackWithBadgeProps {
   // Content configuration
   content?: EntityStackContent;
   entitiesSx?: SxProps<Theme>;
+  contentSx?: SxProps<Theme>;
+  containerSx?: SxProps<Theme>;
 }
