@@ -43,17 +43,20 @@ function isQuest(quest: Quest | QuestData): quest is Quest {
 export function useFormatDisplayQuestData(
   quest: Quest,
   useBannerImage?: boolean,
+  preferExtraWideImage?: boolean,
   baseNavPath?: string,
 ): DisplayQuestData;
 export function useFormatDisplayQuestData(
   quest: QuestData,
   useBannerImage?: boolean,
+  preferExtraWideImage?: boolean,
   baseNavPath?: string,
 ): DisplayQuestData;
 
 export function useFormatDisplayQuestData(
   quest: Quest | QuestData,
   useBannerImage: boolean = true,
+  preferExtraWideImage: boolean = false,
   baseNavPath: string = AppPaths.Missions,
 ) {
   const rewardGroups = useFormatDisplayRewardsData(
@@ -88,7 +91,11 @@ export function useFormatDisplayQuestData(
 
     let imageUrl: string | undefined;
 
-    if (useBannerImage) {
+    if (preferExtraWideImage) {
+      imageUrl = resolveStrapiMediaUrl(
+        quest.ExtraWideImage?.url || quest.Image?.url,
+      );
+    } else if (useBannerImage) {
       imageUrl = isQuest(quest)
         ? resolveStrapiMediaUrl(quest.BannerImage?.[0]?.url)
         : resolveStrapiMediaUrl(quest.BannerImage?.url);

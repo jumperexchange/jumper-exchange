@@ -44,7 +44,12 @@ export const ZapDetails: FC<ZapDetailsProps> = ({ market }) => {
     return market.tasks_verification;
   }, [market]);
 
-  const zapDisplayData = useFormatDisplayQuestData(market, true, AppPaths.Zap);
+  const zapDisplayData = useFormatDisplayQuestData(
+    market,
+    true,
+    false,
+    AppPaths.Zap,
+  );
   const participants = useMemo(
     () => zapDisplayData.participants,
     [zapDisplayData.participants],

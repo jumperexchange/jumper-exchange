@@ -108,6 +108,7 @@ export type QuestAttributes = {
   CustomInformation?: QuestDetails; // JSON object that can change and where type is not enforced inside Strapi yet.
   Image: StrapiMediaData;
   BannerImage: BannerImageData[];
+  ExtraWideImage?: StrapiMediaData;
   quests_platform: QuestsPlatformData;
   tasks_verification: TaskVerification[];
 };
