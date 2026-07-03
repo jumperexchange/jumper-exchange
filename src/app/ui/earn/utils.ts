@@ -25,8 +25,11 @@ export type SortAccessors = Partial<
 >;
 
 export const makeSortAccessors = (apyWindow?: ApyWindow): SortAccessors => ({
+  // Unknown APY (apy30d absent) sinks to -Infinity so it always lands after
+  // every real value under the current hardcoded DESC order. If an ASC mode is
+  // ever added, revisit this sentinel.
   [SortByOptions.APY]: (item) =>
-    getDisplayApy(item.latest, apyWindow)?.total ?? 0,
+    getDisplayApy(item.latest, apyWindow)?.total ?? Number.NEGATIVE_INFINITY,
   [SortByOptions.TVL]: (item) => parseFloat(item.latest?.tvlUsd ?? '0'),
 });
 
