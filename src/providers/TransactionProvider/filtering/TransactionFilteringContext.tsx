@@ -31,6 +31,7 @@ import {
   filterSortTransactions,
   prioritizeAssets,
   prioritizeChains,
+  sanitizeTransactionFilterXor,
 } from './utils';
 import type { TransactionAssetOption } from './utils';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
@@ -176,7 +177,7 @@ export const TransactionFilteringProvider = ({
     if (searchParams.txMaxDate) {
       f.maxDate = searchParams.txMaxDate;
     }
-    return f;
+    return sanitizeTransactionFilterXor(f);
   }, [searchParams, connectedWallets, account.address]);
 
   const sortBy = searchParams.txSortBy;

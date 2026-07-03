@@ -990,9 +990,10 @@ export default interface Resources {
         title: 'No results on this page';
       };
       filter: {
-        allTokens: 'All tokens';
         asset: 'Asset';
+        assets: 'Assets';
         chain: 'Chain';
+        chains: 'Chains';
         clearAll: 'Clear all';
         dateRange: '1 range';
         filterAndSort: 'Filter and sort';
@@ -1003,7 +1004,6 @@ export default interface Resources {
         refreshTooltipExhausted: 'Rate limit reached. Try again {{resetAt}}';
         refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
-        selectChain: 'Select chain';
         type: 'Type';
         value: 'Value';
         wallet: 'Wallet';

@@ -153,6 +153,7 @@ export interface LeafCategoryRenderProps<TValue> {
   value?: TValue;
   onChange: (value: TValue) => void;
   category: LeafCategory<TValue>;
+  slotProps?: RendererSlotProps;
 }
 
 /**
@@ -160,10 +161,6 @@ export interface LeafCategoryRenderProps<TValue> {
  */
 export interface CategoryWithSubcategories extends BaseCategoryConfig {
   subcategories?: CategoryConfig[];
-  /** Show a back button in the leaf header when a subcategory is active */
-  showBackButton?: boolean;
-  /** Header label shown above the subcategory list */
-  subcategoryHeader?: string;
 }
 
 export type LeafCategoryAny =

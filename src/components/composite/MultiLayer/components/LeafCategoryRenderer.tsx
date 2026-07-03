@@ -43,6 +43,7 @@ export const LeafCategoryRenderer = <TValue,>({
               value: category.value,
               onChange: category.onChange || (() => {}),
               category,
+              slotProps,
             })}
           </>
         );
