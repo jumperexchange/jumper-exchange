@@ -7,10 +7,10 @@ import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { OrderMenuItemContainer } from './OrdersSection.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
-import type { LimitOrder } from './types';
+import { type Order } from '@/types/jumper-limit-order';
 
 interface OrderRowMenuProps {
-  order: LimitOrder;
+  order: Order;
 }
 
 export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
@@ -69,7 +69,7 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
           <Typography
             variant="bodySmallStrong"
             component="a"
-            href={`https://explorer.cow.fi/orders/${order.id}`}
+            href={`https://explorer.cow.fi/orders/${order.orderId}`}
             target="_blank"
             rel="noopener noreferrer"
             sx={{ textDecoration: 'none', color: 'inherit' }}

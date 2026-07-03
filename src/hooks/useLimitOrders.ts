@@ -2,7 +2,6 @@
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { makeLimitOrderClient } from '@/app/lib/limitOrderClient';
-import type { LimitOrder } from '@/components/LimitOrders/OrdersSection/types';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 
 export const useLimitOrders = () => {
@@ -11,10 +10,15 @@ export const useLimitOrders = () => {
 
   return useQuery({
     queryKey: [getQueryKey('limit-orders'), address],
-    queryFn: async (): Promise<LimitOrder[]> => {
+    queryFn: async () => {
+      if (!address) {
+        return [];
+      }
+
       const client = makeLimitOrderClient();
-      const res = await client.orders.ordersControllerGetOrdersByUser(address!);
-      return (res.data as unknown as LimitOrder[]) ?? [];
+      const res =
+        await client.limitOrder.ordersControllerGetOrdersByUser(address);
+      return res.data ?? [];
     },
     enabled: !!address,
   });

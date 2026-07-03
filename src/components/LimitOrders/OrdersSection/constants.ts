@@ -4,3 +4,5 @@ export const ACTIONS_COL_WIDTH = 48;
 export const NUMERIC_SX = {
   fontVariantNumeric: 'tabular-nums',
 } as const;
+
+export const CHAIN_AVATAR_SIZE = 32;

@@ -40,3 +40,10 @@ export const Empty: Story = {
     orders: [],
   },
 };
+
+export const Loading: Story = {
+  args: {
+    orders: [],
+    isLoading: true,
+  },
+};

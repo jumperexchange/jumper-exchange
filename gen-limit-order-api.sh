@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-LIMIT_ORDER_SWAGGER_URL="${NEXT_PUBLIC_LIMIT_ORDER_BACKEND_URL:-http://localhost:8080}/swagger/json"
+LIMIT_ORDER_SWAGGER_URL="${NEXT_PUBLIC_LIMIT_ORDER_BACKEND_URL:-http://localhost:8080}/openapi/json"
 
 # curl to /tmp/limit-order-swagger.json
 curl -s "$LIMIT_ORDER_SWAGGER_URL" > /tmp/limit-order-swagger.json

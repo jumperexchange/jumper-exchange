@@ -3,8 +3,8 @@
 import { useTranslation } from 'react-i18next';
 import { ActionableSection } from '@/components/composite/ActionableSection/ActionableSection';
 import { OrdersTable } from './OrdersTable';
-import { sampleOrders } from './fixtures';
 import type { ReactNode } from 'react';
+import { useLimitOrders } from '@/hooks/useLimitOrders';
 
 interface OrdersSectionProps {
   isSidePanelExpanded: boolean;
@@ -16,6 +16,7 @@ export const OrdersSection = ({
   action,
 }: OrdersSectionProps) => {
   const { t } = useTranslation();
+  const { data, isLoading } = useLimitOrders();
   return (
     <ActionableSection
       title={t('limitOrders.orders')}
@@ -23,7 +24,8 @@ export const OrdersSection = ({
       sx={{ flexShrink: 0 }}
     >
       <OrdersTable
-        orders={sampleOrders}
+        orders={data ?? []}
+        isLoading={isLoading}
         showMarketColumn={isSidePanelExpanded}
         stickyHeader
       />
