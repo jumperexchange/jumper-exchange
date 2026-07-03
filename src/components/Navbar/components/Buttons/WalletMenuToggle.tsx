@@ -65,6 +65,13 @@ export const WalletMenuToggle = () => {
     return t('navbar.wallet');
   }, [numberOfWallets, t]);
 
+  const caption = useMemo(() => {
+    if (numberOfWallets > 1) {
+      return undefined;
+    }
+    return walletLabel;
+  }, [numberOfWallets, walletLabel]);
+
   const handleWalletMenuClick = () => {
     setWalletMenuState(!_openWalletMenu);
     if (!_openWalletMenu) {
@@ -84,7 +91,7 @@ export const WalletMenuToggle = () => {
     <LabelButton
       icon={icon}
       label={label}
-      caption={walletLabel}
+      caption={caption}
       isLabelVisible={isDesktop}
       onClick={handleWalletMenuClick}
       id="wallet-digest-button"
