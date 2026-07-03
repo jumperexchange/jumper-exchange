@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPerks } from 'src/app/lib/getPerks';
-import { PAGE_SIZE } from 'src/const/perks';
+import { getAllPerks } from '@/app/lib/getPerks';
 
 /**
  * Client-side fetch of the perks list — the same query the profile page runs
@@ -10,14 +9,7 @@ import { PAGE_SIZE } from 'src/const/perks';
 export const usePerks = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['perks'],
-    queryFn: async () => {
-      const { data } = await getPerks({
-        page: 1,
-        pageSize: PAGE_SIZE,
-        withCount: true,
-      });
-      return data.data;
-    },
+    queryFn: () => getAllPerks(),
     // Matches the server-side revalidate window of getPerks.
     staleTime: 1000 * 60 * 5,
   });

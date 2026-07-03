@@ -6,10 +6,9 @@ import {
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { getPerks } from 'src/app/lib/getPerks';
-import { ProfilePage } from 'src/components/ProfilePage/ProfilePage';
-import { ProfilePageSkeleton } from 'src/components/ProfilePage/ProfilePageSkeleton';
-import { PAGE_SIZE } from 'src/const/perks';
+import { getAllPerks } from '@/app/lib/getPerks';
+import { ProfilePage } from '@/components/ProfilePage/ProfilePage';
+import { ProfilePageSkeleton } from '@/components/ProfilePage/ProfilePageSkeleton';
 
 export const metadata: Metadata = {
   title: pageMetadataFields.profile.title,
@@ -27,13 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const { data: perksResponse } = await getPerks({
-    page: 1,
-    pageSize: PAGE_SIZE,
-    withCount: true,
-  });
-
-  const perks = perksResponse.data;
+  const perks = await getAllPerks();
 
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>

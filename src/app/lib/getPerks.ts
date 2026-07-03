@@ -37,3 +37,24 @@ export async function getPerks(
 
   return { data };
 }
+
+/**
+ * Fetch every perk: read the total count, then request them all in one follow-up
+ * call. Used wherever a complete perk list is required (profile page, perks hub,
+ * navbar) so unlocked-perk counts never silently cap as more perks are added.
+ */
+export async function getAllPerks(): Promise<PerksDataAttributes[]> {
+  const { data: countResponse } = await getPerks({
+    page: 1,
+    pageSize: 1,
+    withCount: true,
+  });
+  const total = countResponse.meta.pagination.total;
+
+  const { data: perksResponse } = await getPerks({
+    page: 1,
+    pageSize: Math.max(total, 1),
+  });
+
+  return perksResponse.data;
+}
