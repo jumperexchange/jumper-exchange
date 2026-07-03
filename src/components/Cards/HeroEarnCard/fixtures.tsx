@@ -55,6 +55,12 @@ export const commonArgs = {
         intrinsic: 0,
         total: 0.07150000000000001,
       },
+      apy30d: {
+        base: 0.062,
+        reward: 0.018,
+        intrinsic: 0,
+        total: 0.08,
+      },
     },
     interactionFlags: {
       canDeposit: true,

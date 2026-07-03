@@ -42,6 +42,7 @@ export const EarnTopOpportunities = () => {
                 href={buildEarnHref(item, apyWindow)}
                 isLoading={isLoading}
                 data={item}
+                apyWindow={apyWindow}
                 copy={ithCopy(index)}
                 isMain={isMain}
                 primaryAction={
