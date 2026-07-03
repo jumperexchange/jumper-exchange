@@ -8,7 +8,7 @@ import { JumperBackend } from '@/types/jumper-backend';
 const OPTIONAL_V1_SUFFIX = /\/v1\/?$/;
 
 function makeUdfClient() {
-  const baseUrl = (process.env.NEXT_PUBLIC_JUMPER_API ?? '').replace(
+  const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL ?? '').replace(
     OPTIONAL_V1_SUFFIX,
     '',
   );

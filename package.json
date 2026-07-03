@@ -8,7 +8,6 @@
     "node": ">=24.0.0"
   },
   "dependencies": {
-    "@jumperexchange/shared-ui": "^0.13.9",
     "@abstract-foundation/agw-client": "^1.12.3",
     "@abstract-foundation/agw-react": "^1.13.0",
     "@base-org/account": "^2.5.6",
@@ -24,6 +23,7 @@
     "@fingerprintjs/fingerprintjs": "^5.2.0",
     "@formatjs/intl-localematcher": "^0.8.10",
     "@intercom/messenger-js-sdk": "^0.0.19",
+    "@jumperexchange/shared-ui": "^0.15.0",
     "@lifi/explorer": "^0.6.3",
     "@lifi/sdk": "^4.1.0",
     "@lifi/sdk-provider-bitcoin": "^4.0.2",

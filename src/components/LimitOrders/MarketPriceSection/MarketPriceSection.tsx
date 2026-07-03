@@ -17,6 +17,8 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { BaseToken } from '@/types/tokens';
 import { composeTokenKey } from '@/utils/tokenKey';
 import { CHANGE_WINDOWS, usePriceData } from './usePriceData';
+import { Size } from '@/components/core/buttons/types';
+import type { Theme } from '@mui/material/styles';
 
 function formatPrice(price: number): string {
   return price.toLocaleString(undefined, {
@@ -161,13 +163,16 @@ export const MarketPriceSection = ({
                       variant="bodyXSmall"
                       sx={{
                         fontWeight: 600,
-                        color: positive ? 'success.main' : 'error.main',
+                        color: (theme) =>
+                          positive
+                            ? (theme.vars || theme).palette.mint[500]
+                            : (theme.vars || theme).palette.scarlet[500],
                       }}
                     >
                       {positive ? '↑' : '↓'}
                       {Math.abs(entry.change).toFixed(2)}%
                     </Typography>
-                    <Typography variant="bodyXSmall" color="text.secondary">
+                    <Typography variant="bodyXSmall" color="textSecondary">
                       {label}
                     </Typography>
                   </Stack>
@@ -186,7 +191,26 @@ export const MarketPriceSection = ({
               borderRadius: 1,
             }}
           >
-            <CandlestickChart symbol={activeSymbol} datafeed={datafeed} />
+            <CandlestickChart
+              symbol={activeSymbol}
+              datafeed={datafeed}
+              timeframeButton={{
+                size: Size.XS,
+                sx: {
+                  paddingX: 1.5,
+                  paddingY: 0.5,
+                },
+              }}
+              timeframeSx={{
+                padding: 0,
+                marginTop: 1.5,
+                marginBottom: 1.5,
+                '& > .MuiStack-root': {
+                  gap: 0.5,
+                },
+              }}
+              chartSx={{ marginInline: (theme: Theme) => theme.spacing(-3) }}
+            />
           </Box>
         </ActionableSection>
       </motion.div>

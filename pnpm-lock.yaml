@@ -59,8 +59,8 @@ importers:
         specifier: ^0.0.19
         version: 0.0.19
       '@jumperexchange/shared-ui':
-        specifier: ^0.13.9
-        version: 0.13.9(8e490330129ffb0f00e4f13e827eb532)
+        specifier: ^0.15.0
+        version: 0.15.0(8e490330129ffb0f00e4f13e827eb532)
       '@lifi/explorer':
         specifier: ^0.6.3
         version: 0.6.3(54f9725ddef6fe4f2b037067090b6df5)
@@ -1421,8 +1421,8 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@jumperexchange/shared-ui@0.13.9':
-    resolution: {integrity: sha512-aapyPXNAB9x9w2bDQPddpaAoCENGfuZNRnt3LA/cNkpZEIJgizlfIBRnk+Kff2JmR6D8L8VYoALB55AMH3+Vcg==, tarball: https://npm.pkg.github.com/download/@jumperexchange/shared-ui/0.13.9/82350cea8f741909429e537c3e08bc3b449bfbf3}
+  '@jumperexchange/shared-ui@0.15.0':
+    resolution: {integrity: sha512-kflf2vSlvyYegZ1m7IdR+9UZ+BN3MRIyfvSMzwhp46TLRWZ9rGeUVAJdNit852QTjdAFMklQxjL88TKPjqbhCw==, tarball: https://npm.pkg.github.com/download/@jumperexchange/shared-ui/0.15.0/1da20395f9cd46d3a8cc61dda2d5c9b400d633b7}
     peerDependencies:
       '@emotion/cache': '>=11'
       '@emotion/react': '>=11'
@@ -12529,7 +12529,7 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@jumperexchange/shared-ui@0.13.9(8e490330129ffb0f00e4f13e827eb532)':
+  '@jumperexchange/shared-ui@0.15.0(8e490330129ffb0f00e4f13e827eb532)':
     dependencies:
       '@emotion/cache': 11.14.0
       '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.7)
@@ -19160,7 +19160,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.62.0
       debug: 4.4.3
       minimatch: 10.2.5
-      semver: 7.8.1
+      semver: 7.8.5
       tinyglobby: 0.2.17
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
