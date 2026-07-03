@@ -25,7 +25,10 @@ interface MissionXpCardProps {
 
 export const MissionXpCard: FC<MissionXpCardProps> = ({ mission }) => {
   const { t } = useTranslation();
-  const missionDisplayData = useFormatDisplayQuestData(mission, false);
+  const missionDisplayData = useFormatDisplayQuestData(mission, {
+    useBannerImage: false,
+    preferExtraWideImage: true,
+  });
   const { isDisabled } = useMissionTimeStatus(
     mission.StartDate,
     mission.EndDate,

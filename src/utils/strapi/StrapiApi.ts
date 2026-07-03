@@ -235,6 +235,7 @@ class QuestParams {
     'quests_platform',
     'quests_platform.Logo',
     'BannerImage',
+    'ExtraWideImage',
     'tasks_verification',
     'tasks_verification.TaskWidgetInformation',
     'tasks_verification.TaskWidgetInformation.sourceChain',
