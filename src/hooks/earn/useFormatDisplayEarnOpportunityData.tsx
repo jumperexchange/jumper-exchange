@@ -102,7 +102,7 @@ const buildTotalApyItem = (
 
   const formatted = formatApy(displayedApy);
   const label = windowOptions
-    ? t('earn.apyWindow.apyLabel', {
+    ? t('earn.apyWindow.aprLabel', {
         window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
       })
     : t('labels.apr');

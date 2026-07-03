@@ -569,6 +569,7 @@
       "toggleTooltip7d": "Use 7 day window APY",
       "toggleTooltip30d": "Use 30 days window APY",
       "apyLabel": "APY ({{window}})",
+      "aprLabel": "APR ({{window}})",
       "unknown": "Unknown"
     },
     "filter": {

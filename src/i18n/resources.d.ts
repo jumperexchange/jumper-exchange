@@ -141,6 +141,7 @@ export default interface Resources {
         viewAllMarkets: 'View all markets';
       };
       apyWindow: {
+        aprLabel: 'APR ({{window}})';
         apyLabel: 'APY ({{window}})';
         label30d: '30d';
         label7d: '7d';
