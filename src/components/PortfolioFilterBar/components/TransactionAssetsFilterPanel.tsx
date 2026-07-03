@@ -113,7 +113,10 @@ export const TransactionAssetsFilterPanel = ({
         ]}
         sx={{
           minHeight: 'fit-content',
-          '.MuiTab-root, .MuiTabs-indicator': { width: '50%', maxWidth: '50%' },
+          '.MuiTab-root.MuiButtonBase-root, .MuiTabs-indicator': {
+            width: '50%',
+            maxWidth: '50%',
+          },
         }}
       />
       {activeTab === 'chains' ? (
