@@ -66,11 +66,6 @@ export const leafCategorySlotProps = {
   }),
 };
 
-export const subcategoryHeaderSx = {
-  pb: 0.5,
-  color: 'text.secondary',
-};
-
 export const clearButtonSx = {
   minWidth: 'fit-content',
 };

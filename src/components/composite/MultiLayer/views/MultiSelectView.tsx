@@ -123,8 +123,6 @@ export const MultiSelectView = <TValue extends string | number>({
         gap: 2,
       }}
     >
-      {category.notice}
-
       <StyledMultiSelectFiltersContainer sx={{ padding: 0, marginBottom: 0 }}>
         {onBack && (
           <IconButton size="small" onClick={onBack} sx={{ mr: 0.5, p: 0.5 }}>

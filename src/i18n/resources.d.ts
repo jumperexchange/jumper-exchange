@@ -992,10 +992,8 @@ export default interface Resources {
       filter: {
         asset: 'Asset';
         assets: 'Assets';
-        assetsReplaceChainsNotice: "Chain and asset filters can't be combined. Selecting assets replaces your chain selection.";
         chain: 'Chain';
         chains: 'Chains';
-        chainsReplaceAssetsNotice: "Chain and asset filters can't be combined. Selecting chains replaces your asset selection.";
         clearAll: 'Clear all';
         dateRange: '1 range';
         filterAndSort: 'Filter and sort';
@@ -1006,7 +1004,6 @@ export default interface Resources {
         refreshTooltipExhausted: 'Rate limit reached. Try again {{resetAt}}';
         refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
-        selectChainForAssets: 'Choose a chain, then select its assets';
         type: 'Type';
         value: 'Value';
         wallet: 'Wallet';

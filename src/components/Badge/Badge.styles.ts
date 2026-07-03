@@ -1,5 +1,7 @@
-import Box, { BoxProps } from '@mui/material/Box';
-import Skeleton, { SkeletonProps } from '@mui/material/Skeleton';
+import type { BoxProps } from '@mui/material/Box';
+import Box from '@mui/material/Box';
+import type { SkeletonProps } from '@mui/material/Skeleton';
+import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -16,6 +18,7 @@ export enum BadgeVariant {
 }
 
 export enum BadgeSize {
+  XS = 'xs',
   SM = 'sm',
   MD = 'md',
   LG = 'lg',
@@ -40,6 +43,21 @@ export const StyledBadge = styled(Box, {
     pointerEvents: 'inherit',
     cursor: onClick ? 'pointer' : 'default',
     variants: [
+      {
+        props: ({ size }) => size === BadgeSize.XS,
+        style: {
+          height: 16,
+          minWidth: 16,
+          padding: theme.spacing(0.5),
+          '& > p': {
+            fontSize: theme.typography.bodyXXSmallStrong.fontSize,
+            lineHeight: theme.typography.bodyXXSmallStrong.lineHeight,
+          },
+          '& > svg': {
+            fontSize: 10,
+          },
+        },
+      },
       {
         props: ({ size }) => size === BadgeSize.SM,
         style: {

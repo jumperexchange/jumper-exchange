@@ -35,8 +35,6 @@ export interface BaseCategoryConfig {
   icon?: ReactNode;
   /** Optional badge to display (e.g., count of applied filters) */
   badgeLabel?: string;
-  /** Optional informational notice rendered inside the leaf panel (e.g., filter constraints) */
-  notice?: ReactNode;
   /** Optional test id */
   testId?: string;
   /** Optional link to navigate to when the category is clicked */
@@ -155,6 +153,7 @@ export interface LeafCategoryRenderProps<TValue> {
   value?: TValue;
   onChange: (value: TValue) => void;
   category: LeafCategory<TValue>;
+  slotProps?: RendererSlotProps;
 }
 
 /**
@@ -162,12 +161,6 @@ export interface LeafCategoryRenderProps<TValue> {
  */
 export interface CategoryWithSubcategories extends BaseCategoryConfig {
   subcategories?: CategoryConfig[];
-  /** Show a back button in the leaf header when a subcategory is active */
-  showBackButton?: boolean;
-  /** Header label shown above the subcategory list */
-  subcategoryHeader?: string;
-  /** Placeholder for the subcategory list search input */
-  subcategorySearchPlaceholder?: string;
 }
 
 export type LeafCategoryAny =

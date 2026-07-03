@@ -1,15 +1,9 @@
 import type { FC } from 'react';
-import { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { useEffect, useImperativeHandle, useState } from 'react';
 import type { MultiLayerProps } from '../MultiLayer/MultiLayer.types';
-import {
-  hasSubcategories,
-  isLeafCategory,
-} from '../MultiLayer/MultiLayer.types';
+import { isLeafCategory } from '../MultiLayer/MultiLayer.types';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
-import { SingleSelectView } from '../MultiLayer/views/SingleSelectView';
-import { createSingleSelectCategory } from '../MultiLayer/utils';
 import { MultiLayerDrawerDivider } from '../MultiLayer/MultiLayer.styles';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
@@ -29,7 +23,6 @@ import {
   leafCategorySlotProps,
   sectionCardSx,
   selectBadgeSx,
-  subcategoryHeaderSx,
 } from './constants';
 import { mergeSx } from '@/utils/theme/mergeSx';
 
@@ -64,28 +57,17 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
     [open, close],
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedSubIndex, setSelectedSubIndex] = useState<number | null>(null);
 
   const selectedCategory = categories[selectedIndex] ?? null;
 
   useEffect(() => {
     setSelectedIndex(0);
-    setSelectedSubIndex(null);
   }, [categories.length]);
 
-  const effectiveLeaf = useMemo(() => {
-    if (!selectedCategory) {
-      return null;
-    }
-    if (isLeafCategory(selectedCategory)) {
-      return selectedCategory;
-    }
-    if (hasSubcategories(selectedCategory) && selectedSubIndex !== null) {
-      const sub = selectedCategory.subcategories?.[selectedSubIndex];
-      return sub && isLeafCategory(sub) ? sub : null;
-    }
-    return null;
-  }, [selectedCategory, selectedSubIndex]);
+  const effectiveLeaf =
+    selectedCategory && isLeafCategory(selectedCategory)
+      ? selectedCategory
+      : null;
 
   const handleClose = () => {
     onClose?.();
@@ -172,10 +154,7 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
                 <CategoryListItem
                   key={category.id}
                   category={category}
-                  onClick={() => {
-                    setSelectedIndex(index);
-                    setSelectedSubIndex(null);
-                  }}
+                  onClick={() => setSelectedIndex(index)}
                   sx={(theme) =>
                     categoryListItemSx(theme, selectedIndex === index)
                   }
@@ -187,55 +166,8 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
               {effectiveLeaf ? (
                 <LeafCategoryRenderer
                   category={effectiveLeaf}
-                  slotProps={{
-                    ...leafCategorySlotProps,
-                    ...(selectedSubIndex !== null &&
-                    hasSubcategories(selectedCategory) &&
-                    selectedCategory.showBackButton
-                      ? { onBack: () => setSelectedSubIndex(null) }
-                      : undefined),
-                  }}
+                  slotProps={leafCategorySlotProps}
                 />
-              ) : selectedCategory && hasSubcategories(selectedCategory) ? (
-                <Stack
-                  direction="column"
-                  sx={mergeSx(categoryListSx, { gap: 1, width: '100%' })}
-                >
-                  {selectedCategory.notice}
-                  {selectedCategory.subcategoryHeader &&
-                    selectedCategory.subcategories && (
-                      <Typography variant="bodyMedium" sx={subcategoryHeaderSx}>
-                        {selectedCategory.subcategoryHeader}
-                      </Typography>
-                    )}
-                  <SingleSelectView
-                    category={createSingleSelectCategory({
-                      id: `${selectedCategory.id}-subcategory-select`,
-                      label: selectedCategory.label,
-                      searchable: true,
-                      searchPlaceholder:
-                        selectedCategory.subcategorySearchPlaceholder,
-                      options: selectedCategory.subcategories?.map((sub) => ({
-                        value: sub.id,
-                        label: sub.label,
-                        startAdornment: sub.icon,
-                        endAdornment: sub.badgeLabel ? (
-                          <SelectBadge label={sub.badgeLabel} sx={{ mr: 0 }} />
-                        ) : undefined,
-                      })),
-                      onChange: (id) => {
-                        const index =
-                          selectedCategory.subcategories?.findIndex(
-                            (sub) => sub.id === id,
-                          ) ?? -1;
-                        if (index >= 0) {
-                          setSelectedSubIndex(index);
-                        }
-                      },
-                    })}
-                    slotProps={leafCategorySlotProps}
-                  />
-                </Stack>
               ) : null}
             </Stack>
           </Stack>
