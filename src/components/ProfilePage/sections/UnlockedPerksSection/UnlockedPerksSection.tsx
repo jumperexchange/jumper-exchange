@@ -25,6 +25,7 @@ import {
   openHubButtonSx,
   unlockedPerksCardSx,
 } from './UnlockedPerksSection.styles';
+import { sortBy } from 'lodash';
 
 interface UnlockedPerksSectionProps {
   perks: PerksDataAttributes[];
@@ -50,12 +51,9 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
 
   // Show every unlocked perk so the count here matches the Jumper Pass stat.
   // Still-claimable perks come first; already-claimed ones follow, rendered
-  // dimmed with a "Claimed" badge (same card as the Perks Hub). Array.sort is
-  // stable, so the incoming order is preserved within each group.
-  const orderedPerks = [...unlockedPerks].sort(
-    (a, b) =>
-      Number(isClaimedPerk(a, claimedIds)) -
-      Number(isClaimedPerk(b, claimedIds)),
+  // dimmed with a "Claimed" badge (same card as the Perks Hub).
+  const orderedPerks = sortBy(unlockedPerks, (perk) =>
+    Number(isClaimedPerk(perk, claimedIds)),
   );
 
   const isEmpty = unlockedPerks.length === 0;
