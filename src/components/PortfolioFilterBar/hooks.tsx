@@ -34,7 +34,15 @@ import {
   createSingleSelectCategory,
 } from '../composite/MultiLayer/utils';
 import type { DateRangeValue } from '../composite/MultiLayer/MultiLayer.types';
-import { countBadge, datesBadge, valueBadge } from './utils';
+import {
+  countBadge,
+  datesBadge,
+  mergeChainTokenSelection,
+  selectExclusiveFilter,
+  valueBadge,
+} from './utils';
+import { BaseAlert } from '../Alerts/BaseAlert/BaseAlert';
+import { BaseAlertVariant } from '../Alerts/BaseAlert/BaseAlert.styles';
 import { buildHoldingsFilterPatchFromPending } from '../../providers/PortfolioProvider/filtering/utils';
 import { walletDigest } from '@/utils/walletDigest';
 import { isSameDay } from 'date-fns';
@@ -303,6 +311,7 @@ type TransactionType = TransactionsDto['action'];
 
 interface TransactionPendingFilterValues {
   wallet: string;
+  chains: string[];
   assets: string[];
   types: TransactionType[];
   date: DateRangeValue;
@@ -355,6 +364,16 @@ export const useTransactionFilterCategories = () => {
     [t],
   );
 
+  const chainOptions = useMemo(
+    () =>
+      metadata.allChains.map((chain) => ({
+        value: String(chain.id),
+        label: chain.name,
+        startAdornment: <EntityStack entities={[chain]} />,
+      })),
+    [metadata.allChains],
+  );
+
   const sortByOptions = useMemo(
     () => [
       { value: 'date', label: t('portfolio.sorting.date') },
@@ -372,10 +391,8 @@ export const useTransactionFilterCategories = () => {
   const appliedValues = useMemo(
     (): TransactionPendingFilterValues => ({
       wallet: filter.wallet ?? '',
-      assets: [
-        ...(filter.chains ?? []).map((k) => `all:${k}`),
-        ...(filter.assets ?? []),
-      ],
+      chains: filter.chains ?? [],
+      assets: filter.assets ?? [],
       types: (filter.types ?? []) as TransactionType[],
       date: [dateMin, dateMax],
       sortBy,
@@ -400,19 +417,10 @@ export const useTransactionFilterCategories = () => {
   } = usePendingFilters<TransactionPendingFilterValues>({
     initialValues: appliedValues,
     onApply: (values) => {
-      const chains: string[] = [];
-      const assets: string[] = [];
-      for (const v of values.assets) {
-        if (v.startsWith('all:')) {
-          chains.push(v.slice(4));
-        } else {
-          assets.push(v);
-        }
-      }
       updateFilter({
         wallet: values.wallet ? values.wallet : undefined,
-        chains: chains.length ? chains : undefined,
-        assets: assets.length ? assets : undefined,
+        chains: values.chains.length ? values.chains : undefined,
+        assets: values.assets.length ? values.assets : undefined,
         types: values.types.length ? values.types : undefined,
         minDate: values.date[0]?.toISOString(),
         maxDate: values.date[1]?.toISOString(),
@@ -441,6 +449,21 @@ export const useTransactionFilterCategories = () => {
   const usedMin = pendingValues.date[0] ?? dateMin;
   const usedMax = pendingValues.date[1] ?? dateMax;
 
+  const chainsNotice =
+    pendingValues.assets.length > 0 ? (
+      <BaseAlert
+        variant={BaseAlertVariant.Warning}
+        description={t('portfolio.filter.chainsReplaceAssetsNotice')}
+      />
+    ) : undefined;
+  const assetsNotice =
+    pendingValues.chains.length > 0 ? (
+      <BaseAlert
+        variant={BaseAlertVariant.Warning}
+        description={t('portfolio.filter.assetsReplaceChainsNotice')}
+      />
+    ) : undefined;
+
   const categories = [
     walletOptions.length > 1
       ? createSingleSelectCategory({
@@ -457,13 +480,37 @@ export const useTransactionFilterCategories = () => {
           testId: 'portfolio-filter-transaction-wallet-select',
         })
       : null,
+    chainOptions.length > 0
+      ? createMultiSelectCategory({
+          id: 'chains',
+          label: t('portfolio.filter.chains'),
+          badgeLabel: countBadge(pendingValues.chains.length),
+          notice: chainsNotice,
+          value: pendingValues.chains,
+          onChange: (v) => {
+            const next = selectExclusiveFilter(v, pendingValues.assets);
+            setPendingValue('chains', next.selected);
+            setPendingValue('assets', next.sibling);
+          },
+          options: chainOptions,
+          searchable: true,
+          searchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.chains').toLowerCase(),
+          }),
+          testId: 'portfolio-filter-transaction-chain-select',
+        })
+      : null,
     metadata.allChains.length > 0
       ? {
           id: 'assets',
-          label: t('portfolio.filter.asset'),
+          label: t('portfolio.filter.assets'),
           badgeLabel: countBadge(pendingValues.assets.length),
+          notice: assetsNotice,
           showBackButton: true,
-          subcategoryHeader: t('portfolio.filter.selectChain'),
+          subcategoryHeader: t('portfolio.filter.selectChainForAssets'),
+          subcategorySearchPlaceholder: t('portfolio.filter.search', {
+            filterBy: t('portfolio.filter.chains').toLowerCase(),
+          }),
           subcategories: metadata.allChains
             .map((chain) => {
               const chainTokens = metadata.tokensByChain.get(chain.id) ?? [];
@@ -471,7 +518,6 @@ export const useTransactionFilterCategories = () => {
                 (a): a is NftTokenOption =>
                   isNftTokenOption(a) && a.chainId === chain.id,
               );
-              const allSentinel = `all:${chain.id}`;
               const prefix = `${chain.id}:`;
               const tokenOptions = [
                 ...nfts.map((nft) => ({
@@ -494,25 +540,28 @@ export const useTransactionFilterCategories = () => {
               if (!tokenOptions.length) {
                 return null;
               }
-              const chainSelected = pendingValues.assets.filter(
-                (a) => a === allSentinel || a.startsWith(prefix),
+              const chainSelected = pendingValues.assets.filter((a) =>
+                a.startsWith(prefix),
               );
               return createMultiSelectCategory({
                 id: `assets-chain-${chain.id}`,
                 label: chain.name,
                 icon: <EntityStack entities={[chain]} />,
                 badgeLabel: countBadge(chainSelected.length),
+                notice: assetsNotice,
                 value: chainSelected,
                 onChange: (newChainAssets) => {
-                  const others = pendingValues.assets.filter(
-                    (a) => a !== allSentinel && !a.startsWith(prefix),
+                  const merged = mergeChainTokenSelection(
+                    pendingValues.assets,
+                    prefix,
+                    newChainAssets,
                   );
-                  setPendingValue('assets', [...others, ...newChainAssets]);
-                },
-                allOption: {
-                  value: allSentinel,
-                  label: t('portfolio.filter.allTokens'),
-                  startAdornment: <EntityStack entities={[chain]} />,
+                  const next = selectExclusiveFilter(
+                    merged,
+                    pendingValues.chains,
+                  );
+                  setPendingValue('assets', next.selected);
+                  setPendingValue('chains', next.sibling);
                 },
                 options: tokenOptions,
                 searchable: true,

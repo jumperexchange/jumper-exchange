@@ -8,6 +8,8 @@ import {
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { LeafCategoryRenderer } from '../MultiLayer/components/LeafCategoryRenderer';
+import { SingleSelectView } from '../MultiLayer/views/SingleSelectView';
+import { createSingleSelectCategory } from '../MultiLayer/utils';
 import { MultiLayerDrawerDivider } from '../MultiLayer/MultiLayer.styles';
 import { CategoryListItem } from '../MultiLayer/components/CategoryListItem';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
@@ -199,22 +201,40 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
                   direction="column"
                   sx={mergeSx(categoryListSx, { gap: 1, width: '100%' })}
                 >
+                  {selectedCategory.notice}
                   {selectedCategory.subcategoryHeader &&
                     selectedCategory.subcategories && (
                       <Typography variant="bodyMedium" sx={subcategoryHeaderSx}>
                         {selectedCategory.subcategoryHeader}
                       </Typography>
                     )}
-                  {selectedCategory.subcategories?.map((sub, i) => (
-                    <CategoryListItem
-                      key={sub.id}
-                      category={sub}
-                      onClick={() => setSelectedSubIndex(i)}
-                      sx={(theme) =>
-                        categoryListItemSx(theme, selectedSubIndex === i)
-                      }
-                    />
-                  ))}
+                  <SingleSelectView
+                    category={createSingleSelectCategory({
+                      id: `${selectedCategory.id}-subcategory-select`,
+                      label: selectedCategory.label,
+                      searchable: true,
+                      searchPlaceholder:
+                        selectedCategory.subcategorySearchPlaceholder,
+                      options: selectedCategory.subcategories?.map((sub) => ({
+                        value: sub.id,
+                        label: sub.label,
+                        startAdornment: sub.icon,
+                        endAdornment: sub.badgeLabel ? (
+                          <SelectBadge label={sub.badgeLabel} sx={{ mr: 0 }} />
+                        ) : undefined,
+                      })),
+                      onChange: (id) => {
+                        const index =
+                          selectedCategory.subcategories?.findIndex(
+                            (sub) => sub.id === id,
+                          ) ?? -1;
+                        if (index >= 0) {
+                          setSelectedSubIndex(index);
+                        }
+                      },
+                    })}
+                    slotProps={leafCategorySlotProps}
+                  />
                 </Stack>
               ) : null}
             </Stack>

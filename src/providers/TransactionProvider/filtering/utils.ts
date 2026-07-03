@@ -182,6 +182,19 @@ export const buildApiAssets = (
   filter: TransactionFilterUI,
 ): string[] | undefined => (filter.assets?.length ? filter.assets : undefined);
 
+// The transactions endpoint serves either `chains` or `assets`, never both.
+// URL params are hand-editable, so enforce the XOR here; assets win as the
+// more specific intent.
+export const sanitizeTransactionFilterXor = (
+  filter: TransactionFilterUI,
+): TransactionFilterUI => {
+  if (filter.assets?.length && filter.chains?.length) {
+    const { chains, ...rest } = filter;
+    return rest;
+  }
+  return filter;
+};
+
 const TX_SORT_ITERATEES: Record<
   TransactionSortBy,
   (tx: TransactionsDto) => string | number
