@@ -496,7 +496,7 @@ export const useTransactionFilterCategories = () => {
     chainOptions.length > 0
       ? createCustomCategory<unknown>({
           id: 'assets',
-          label: t('portfolio.filter.assets'),
+          label: t('portfolio.filter.chainAndAsset'),
           badgeLabel: countBadge(
             pendingValues.chains.length + pendingValues.assets.length,
           ),

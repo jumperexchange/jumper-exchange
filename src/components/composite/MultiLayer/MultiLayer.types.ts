@@ -21,6 +21,10 @@ export interface RendererSlotProps {
   listSpacing?: number;
   itemSx?: SxProps<Theme>;
   onBack?: () => void;
+  /** Optional content rendered above the search/list, e.g. a selection summary + clear action */
+  header?: ReactNode;
+  /** Optional content rendered between the header row and the search input */
+  tabs?: ReactNode;
 }
 
 /**
