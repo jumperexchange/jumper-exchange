@@ -304,7 +304,7 @@ export default interface Resources {
         earnUpTo: 'Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>';
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
-        useYourSpare: 'Deposit your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+        useYourSpare: 'Earn up to <apy/> APY on <protocol/> with your idle tokens';
       };
       views: {
         all: 'All';
