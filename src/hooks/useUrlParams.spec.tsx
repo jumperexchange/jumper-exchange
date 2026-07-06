@@ -96,4 +96,35 @@ describe('useUrlParams', () => {
 
     expect(result.current.denyBridges).toEqual(['relay', 'across']);
   });
+
+  it('updates when the widget syncs the URL via history.replaceState', () => {
+    const { result } = renderHook(() => useUrlParams());
+
+    expect(result.current.sourceChainToken).toEqual({
+      chainId: undefined,
+      token: undefined,
+    });
+
+    act(() => {
+      window.history.replaceState({}, '', '/?fromChain=1&fromToken=0xfrom');
+    });
+
+    expect(result.current.sourceChainToken).toEqual({
+      chainId: 1,
+      token: '0xfrom',
+    });
+  });
+
+  it('updates when the widget syncs the URL via history.pushState', () => {
+    const { result } = renderHook(() => useUrlParams());
+
+    act(() => {
+      window.history.pushState({}, '', '/?toChain=100&toToken=0xto');
+    });
+
+    expect(result.current.destinationChainToken).toEqual({
+      chainId: 100,
+      token: '0xto',
+    });
+  });
 });

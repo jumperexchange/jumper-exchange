@@ -34,4 +34,5 @@ export interface DataTableProps<T> {
   renderRow?: (row: T, index: number) => ReactNode;
   renderSkeletonRow?: (index: number) => ReactNode;
   testId?: string;
+  sx?: SxProps<Theme>;
 }

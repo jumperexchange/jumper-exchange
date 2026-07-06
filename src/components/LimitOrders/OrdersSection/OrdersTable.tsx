@@ -27,6 +27,7 @@ export const OrdersTable = ({
       hasMobileView={false}
       showHeader
       stickyHeader={stickyHeader}
+      sx={{ marginInline: (theme) => theme.spacing(-1.5) }}
     />
   );
 };
