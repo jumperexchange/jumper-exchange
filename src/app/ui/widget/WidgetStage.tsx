@@ -22,8 +22,11 @@ const getGridTemplateColumns = (
   isWelcomeScreenOpen: boolean,
 ) => {
   const widgetOnly = `auto ${WIDGET_COL_WIDTH}px`;
-  const withSideTablet = `${WIDGET_COL_WIDTH}px ${WIDGET_COL_WIDTH}px`;
-  const withSideDesktop = `auto ${WIDGET_COL_WIDTH}px ${SIDE_COL_WIDTH_DESKTOP}px`;
+  // minmax(0, ...) lets these columns shrink below their ideal width instead
+  // of overflowing when the collapsed side panel doesn't have its full width
+  // available (e.g. narrower "lg" viewports).
+  const withSideTablet = `minmax(0, ${WIDGET_COL_WIDTH}px) minmax(0, ${WIDGET_COL_WIDTH}px)`;
+  const withSideDesktop = `auto minmax(0, ${WIDGET_COL_WIDTH}px) minmax(0, ${SIDE_COL_WIDTH_DESKTOP}px)`;
   const expandedTablet = `${WIDGET_COL_WIDTH}px minmax(0, 1fr)`;
   const expandedDesktop = `auto ${WIDGET_COL_WIDTH}px minmax(0, 1fr)`;
 
