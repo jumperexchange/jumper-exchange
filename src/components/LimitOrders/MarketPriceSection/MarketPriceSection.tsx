@@ -260,6 +260,7 @@ export const MarketPriceSection = ({
               }}
             >
               <CandlestickChart
+                dimOnLoading
                 symbol={activeSymbol}
                 datafeed={datafeed}
                 timeframeButton={{

@@ -23,7 +23,7 @@
     "@fingerprintjs/fingerprintjs": "^5.2.0",
     "@formatjs/intl-localematcher": "^0.8.10",
     "@intercom/messenger-js-sdk": "^0.0.19",
-    "@jumperexchange/shared-ui": "^0.15.0",
+    "@jumperexchange/shared-ui": "^0.16.0",
     "@lifi/explorer": "^0.6.3",
     "@lifi/sdk": "^4.1.0",
     "@lifi/sdk-provider-bitcoin": "^4.0.2",
