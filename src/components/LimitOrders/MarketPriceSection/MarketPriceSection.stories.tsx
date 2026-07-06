@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import type { BaseToken } from '@/types/tokens';
 import { datafeed } from '@/lib/tradingview/datafeed';
-import { composeTokenKey } from '@/utils/tokenKey';
 import { MarketPriceSection } from './MarketPriceSection';
 
 const ETH: BaseToken = {
@@ -11,7 +10,8 @@ const ETH: BaseToken = {
   decimals: 18,
   type: 'base',
   chainId: 1,
-  logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
+  logoURI:
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',
 };
 
 const USDC: BaseToken = {
@@ -21,7 +21,8 @@ const USDC: BaseToken = {
   decimals: 6,
   type: 'base',
   chainId: 1,
-  logoURI: 'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
+  logoURI:
+    'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
 };
 
 const meta = {
@@ -36,10 +37,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     tokens: [ETH, USDC],
-    symbols: [
-      composeTokenKey(ETH.chainId, ETH.address),
-      composeTokenKey(USDC.chainId, USDC.address),
-    ],
     datafeed,
   },
 };

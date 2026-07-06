@@ -1,7 +1,7 @@
 'use client';
 
-import type { ICandlestickDatafeed } from '@jumperexchange/shared-ui';
-import { CandlestickChart } from '@jumperexchange/shared-ui';
+import type { ICandlestickDatafeed } from '@jumperexchange/shared-ui/components';
+import { CandlestickChart } from '@jumperexchange/shared-ui/components';
 import type { ExtendedChain } from '@lifi/sdk';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
