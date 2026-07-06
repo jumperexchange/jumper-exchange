@@ -1,3 +1,4 @@
+import { isPast } from 'date-fns';
 import type { Order, TokenDto } from '@/types/jumper-limit-order';
 import { formatTokenAmount } from '@lifi/widget';
 
@@ -51,6 +52,17 @@ export const getOrderMarketPrice = (order: Order): number | null => {
   const value = Number(priceUSD);
   return Number.isFinite(value) && value > 0 ? value : null;
 };
+
+/**
+ * Whether an order has effectively expired, even if the backend hasn't
+ * updated `status` to `'expired'` yet.
+ */
+export const isOrderExpired = (order: Order): boolean =>
+  order.status === 'expired' ||
+  (order.status !== 'cancelled' &&
+    order.status !== 'filled' &&
+    !!order.validUntil &&
+    isPast(new Date(order.validUntil * 1000)));
 
 export const getOrderFilledPercent = (order: Order): number => {
   const total = BigInt(order.fromAmount);

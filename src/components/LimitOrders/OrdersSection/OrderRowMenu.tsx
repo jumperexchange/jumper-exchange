@@ -3,19 +3,29 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
 import { OrderMenuItemContainer } from './OrdersSection.styles';
 import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
 import { Variant, Size } from '@/components/core/buttons/types';
+import { useCancelOrderFlowStore } from '@/stores/limitOrderFlow/CancelOrderFlowStore';
+import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
+import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
 import { type Order } from '@/types/jumper-limit-order';
+import { isOrderExpired } from './utils';
+import { ORDERS_COMPLETED_STATUS, ORDERS_ONGOING_STATUS } from './constants';
 
 interface OrderRowMenuProps {
   order: Order;
 }
 
 export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
+  const openCancelModal = useCancelOrderFlowStore((state) => state.openModal);
+  const openModifyModal = useModifyOrderFlowStore((state) => state.openModal);
+  const openRepeatModal = useRepeatOrderFlowStore((state) => state.openModal);
 
   const handleOpen = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -24,7 +34,25 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
 
   const handleClose = () => setAnchorEl(null);
 
-  const isCancellable = order.status === 'active' || order.status === 'pending';
+  const expired = isOrderExpired(order);
+  const isEditable = ORDERS_ONGOING_STATUS.includes(order.status) && !expired;
+  const isRepeatable =
+    ORDERS_COMPLETED_STATUS.includes(order.status) || expired;
+
+  const handleModifyClick = () => {
+    handleClose();
+    openModifyModal(order);
+  };
+
+  const handleCancelClick = () => {
+    handleClose();
+    openCancelModal(order);
+  };
+
+  const handleRepeatClick = () => {
+    handleClose();
+    openRepeatModal(order);
+  };
 
   return (
     <>
@@ -74,16 +102,27 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
             rel="noopener noreferrer"
             sx={{ textDecoration: 'none', color: 'inherit' }}
           >
-            View on explorer
+            {t('limitOrders.table.actions.viewOnExplorer')}
           </Typography>
         </OrderMenuItemContainer>
-        <OrderMenuItemContainer onClick={handleClose}>
-          <Typography variant="bodySmallStrong">Modify limit</Typography>
-        </OrderMenuItemContainer>
-        {isCancellable && (
-          <OrderMenuItemContainer onClick={handleClose}>
+        {isEditable && (
+          <OrderMenuItemContainer onClick={handleModifyClick}>
+            <Typography variant="bodySmallStrong">
+              {t('limitOrders.table.actions.modifyLimit')}
+            </Typography>
+          </OrderMenuItemContainer>
+        )}
+        {isEditable && (
+          <OrderMenuItemContainer onClick={handleCancelClick}>
             <Typography variant="bodySmallStrong" color="error">
-              Cancel order
+              {t('limitOrders.table.actions.cancelOrder')}
+            </Typography>
+          </OrderMenuItemContainer>
+        )}
+        {isRepeatable && (
+          <OrderMenuItemContainer onClick={handleRepeatClick}>
+            <Typography variant="bodySmallStrong">
+              {t('limitOrders.table.actions.repeatOrder')}
             </Typography>
           </OrderMenuItemContainer>
         )}

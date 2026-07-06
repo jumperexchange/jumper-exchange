@@ -458,14 +458,42 @@ export default interface Resources {
       updatedLabel: 'Updated: {{date}}';
     };
     limitOrders: {
+      cancelModal: {
+        cancelOrder: 'Cancel order';
+        close: 'Close';
+        description: "This stops the order from filling and marks it cancelled. Any portion already filled stays settled. This can't be undone.";
+        done: 'Done';
+        error: 'Something went wrong cancelling this order. Please try again.';
+        errorTitle: 'Cancellation failed';
+        keepOrder: 'Keep order';
+        successDescription: 'This order will no longer fill.';
+        successTitle: 'Order cancelled';
+        title: 'Cancel limit order';
+        tryAgain: 'Try again';
+        viewOnExplorer: 'View on explorer';
+      };
       marketPrice: 'Market Price';
       marketPriceEmptyState: 'Select a token to see its market price';
+      modifyModal: {
+        placeholderDescription: "Editing an active order isn't available yet. Cancel it and place a new one instead.";
+        placeholderTitle: 'Coming soon';
+        title: 'Modify limit order';
+      };
       orders: 'Orders';
+      repeatModal: {
+        placeholderDescription: "Repeating an order isn't available yet. Placing a new order manually works the same way.";
+        placeholderTitle: 'Coming soon';
+        title: 'Repeat order';
+      };
       table: {
         actions: {
+          cancelOrder: 'Cancel order';
           collapsePanels: 'Collapse panels';
           expandPanels: 'Expand panels';
+          modifyLimit: 'Modify limit';
+          repeatOrder: 'Repeat order';
           rowActions: 'Row actions';
+          viewOnExplorer: 'View on explorer';
         };
         columns: {
           buy: 'Buy';
@@ -482,6 +510,7 @@ export default interface Resources {
           days_one: '{{count}} day';
           days_other: '{{count}} days';
           expired: 'Expired';
+          filled: 'Filled';
         };
       };
     };

@@ -6,7 +6,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import { differenceInCalendarDays, isPast } from 'date-fns';
+import { differenceInCalendarDays } from 'date-fns';
 import type { ColumnDef } from '@/components/composite/DataTable/DataTable.types';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeVariant } from '@/components/Badge/Badge.styles';
@@ -27,6 +27,7 @@ import {
   getOrderFilledPercent,
   getOrderLimitPrice,
   getOrderMarketPrice,
+  isOrderExpired,
 } from './utils';
 import type { Order, TokenDto } from '@/types/jumper-limit-order';
 import type { CoinKey } from '@lifi/sdk';
@@ -37,33 +38,33 @@ export function useOrderColumns(isExpanded: boolean): ColumnDef<Order>[] {
   const { toDisplayAmount, toDisplayAmountUSD } = useTokenFormatters();
 
   const formatExpiry = (
-    status: Order['status'],
-    expiresAt?: number,
+    order: Order,
   ): { label: string; variant: BadgeVariant } | null => {
-    if (status === 'cancelled') {
+    if (order.status === 'cancelled') {
       return {
         label: t('limitOrders.table.status.cancelled'),
         variant: BadgeVariant.Error,
       };
     }
-    if (status === 'filled') {
+    if (order.status === 'filled') {
+      return {
+        label: t('limitOrders.table.status.filled'),
+        variant: BadgeVariant.Success,
+      };
+    }
+    if (isOrderExpired(order)) {
+      return {
+        label: t('limitOrders.table.status.expired'),
+        variant: BadgeVariant.Disabled,
+      };
+    }
+    if (!order.validUntil) {
       return null;
     }
-    const EXPIRED = {
-      label: t('limitOrders.table.status.expired'),
-      variant: BadgeVariant.Disabled,
-    };
-    if (status === 'expired') {
-      return EXPIRED;
-    }
-    if (!expiresAt) {
-      return null;
-    }
-    const expiryDate = new Date(expiresAt * 1000);
-    if (isPast(expiryDate)) {
-      return EXPIRED;
-    }
-    const days = differenceInCalendarDays(expiryDate, new Date());
+    const days = differenceInCalendarDays(
+      new Date(order.validUntil * 1000),
+      new Date(),
+    );
     return {
       label: t('limitOrders.table.status.days', { count: days }),
       variant: BadgeVariant.Secondary,
@@ -247,7 +248,7 @@ export function useOrderColumns(isExpanded: boolean): ColumnDef<Order>[] {
       header: t('limitOrders.table.columns.expires'),
       cellSx: { borderBottom: 'none' },
       renderCell: (order) => {
-        const expiry = formatExpiry(order.status, order.validUntil);
+        const expiry = formatExpiry(order);
         return expiry ? (
           <Badge label={expiry.label} variant={expiry.variant} />
         ) : null;

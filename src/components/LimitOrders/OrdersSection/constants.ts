@@ -8,3 +8,6 @@ export const NUMERIC_SX = {
 export const CHAIN_AVATAR_SIZE = 32;
 
 export const AMOUNT_COL_MAX_WIDTH = 120;
+
+export const ORDERS_ONGOING_STATUS = ['active', 'pending'];
+export const ORDERS_COMPLETED_STATUS = ['filled', 'cancelled', 'expired'];
