@@ -993,7 +993,11 @@ export default interface Resources {
       filter: {
         asset: 'Asset';
         assets: 'Assets';
+        byAsset: 'By asset';
+        byChain: 'By chain';
+        byChainOrAssetDisclaimer: 'Filter by whole chains, or by specific assets - not both. Switching replaces your selection';
         chain: 'Chain';
+        chainAndAsset: 'Chain & asset';
         chains: 'Chains';
         clearAll: 'Clear all';
         dateRange: '1 range';

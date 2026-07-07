@@ -115,7 +115,7 @@ export const SingleSelectView = <TValue extends string | number>({
     </MenuList>
   );
 
-  if (!isSearchable) {
+  if (!isSearchable && !slotProps?.header && !slotProps?.tabs) {
     return list;
   }
 
@@ -127,6 +127,8 @@ export const SingleSelectView = <TValue extends string | number>({
         gap: 2,
       }}
     >
+      {slotProps?.header}
+      {slotProps?.tabs}
       <StyledMultiSelectFiltersContainer
         size={searchSize}
         sx={mergeSx({ marginBottom: 0 }, slotProps?.searchSx)}

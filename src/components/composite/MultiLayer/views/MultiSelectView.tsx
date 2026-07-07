@@ -129,9 +129,20 @@ export const MultiSelectView = <TValue extends string | number>({
             <ArrowBackIcon fontSize="small" />
           </IconButton>
         )}
-        <Typography variant="bodyMediumStrong" sx={{ flex: 1 }}>
-          {t('earn.filter.selected', { count: value.length })}
-        </Typography>
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            minWidth: 0,
+          }}
+        >
+          <Typography variant="bodyMediumStrong" noWrap sx={{ minWidth: 0 }}>
+            {t('earn.filter.selected', { count: value.length })}
+          </Typography>
+          {slotProps?.header}
+        </Box>
         <StyledMultiSelectFiltersClearButton
           disabled={!isValueSelected}
           size={clearButtonSize}
@@ -141,6 +152,8 @@ export const MultiSelectView = <TValue extends string | number>({
           {t('earn.filter.clear')}
         </StyledMultiSelectFiltersClearButton>
       </StyledMultiSelectFiltersContainer>
+
+      {slotProps?.tabs}
 
       {allOption && (
         <Box>
