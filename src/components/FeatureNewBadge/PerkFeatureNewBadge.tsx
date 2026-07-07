@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BadgeSize } from '@/components/Badge/Badge.styles';
-import { useFeatureBadge } from '@/hooks/useFeatureBadge';
+import { useFeatureBadgeDisplay } from '@/hooks/featureBadge/useFeatureBadgeDisplay';
 import type { FeatureBadgeData } from '@/types/strapi';
 import { FeatureNewBadge } from './FeatureNewBadge';
 
@@ -20,7 +20,7 @@ export const PerkFeatureNewBadge: FC<PerkFeatureNewBadgeProps> = ({
   firstPublishedAt,
 }) => {
   const { t } = useTranslation();
-  const { isVisible, label, variant, size } = useFeatureBadge({
+  const { isVisible, label, variant, size } = useFeatureBadgeDisplay({
     expiryMode: featureBadge.ExpiryMode,
     showBadge: featureBadge.ShowBadge,
     badgeExpiresAt: featureBadge.BadgeExpiresAt,

@@ -14,7 +14,7 @@ export interface FeatureBadgeConfig {
   defaultLabel?: string;
 }
 
-export interface FeatureBadgeResult {
+export interface FeatureBadgeDisplayResult {
   isVisible: boolean;
   label: string;
   variant: BadgeVariant;
@@ -38,9 +38,9 @@ function resolveSize(value: string | null | undefined): BadgeSize {
   return BadgeSize.SM;
 }
 
-export const useFeatureBadge = (
+export const useFeatureBadgeDisplay = (
   config: FeatureBadgeConfig,
-): FeatureBadgeResult => {
+): FeatureBadgeDisplayResult => {
   const {
     expiryMode,
     showBadge,
