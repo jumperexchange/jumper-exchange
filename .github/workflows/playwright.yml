@@ -170,6 +170,67 @@ jobs:
           path: playwright-report
           retention-days: 2
 
+  # Publishes each report to its own path on the gh-pages branch (keep_files accumulates
+  # across PRs/runs); the playwright-cleanup-reports.yml cron prunes + compacts it.
+  publish-report:
+    # Same-repo only: fork PRs get a read-only GITHUB_TOKEN (push would fail) and we must
+    # not host untrusted fork HTML on our public Pages domain.
+    if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    needs: [merge-reports]
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: gh-pages-publish
+      cancel-in-progress: false
+    outputs:
+      report_url: ${{ steps.report-url.outputs.url }}
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      - name: Download HTML report
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+      # Public Pages: strip the trace viewer UI and trace .zip attachments so secrets can't
+      # leak (see JUM-1235); keep only .png/.webm attachments.
+      - name: Strip trace data before publishing
+        run: |
+          echo "Report size before: $(du -sh playwright-report | cut -f1)"
+          rm -rf playwright-report/trace
+          if [ -d playwright-report/data ]; then
+            find playwright-report/data -type f ! -name '*.png' ! -name '*.webm' -delete
+            find playwright-report/data -type d -empty -delete
+          fi
+          echo "Report size after: $(du -sh playwright-report | cut -f1)"
+      - name: Determine report path
+        id: report-url
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_FULL: ${{ github.repository }}
+        run: |
+          DATE=$(date -u +%Y%m%d)
+          REPO_NAME="${REPO_FULL#*/}"
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            REPORT_PATH="pr-${PR_NUMBER}/${DATE}-${RUN_ID}-${RUN_ATTEMPT}"
+          else
+            REPORT_PATH="run-${DATE}-${RUN_ID}-${RUN_ATTEMPT}"
+          fi
+          echo "path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+          echo "url=https://${REPO_OWNER}.github.io/${REPO_NAME}/${REPORT_PATH}/" >> "$GITHUB_OUTPUT"
+      - name: Deploy report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@4f9cc6602d3f66b9c108549d475ec49e8ef4d45e # v4.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./playwright-report
+          destination_dir: ${{ steps.report-url.outputs.path }}
+          keep_files: true
+
   # Closes the shared run once after all shards report; always() also rescues runs orphaned by cancellation.
   complete-qase-run:
     needs: [create-qase-run, test]
@@ -193,7 +254,10 @@ jobs:
             --header 'accept: application/json'
 
   post-comment:
-    needs: [create-qase-run, merge-reports]
+    # !cancelled() lets this run even when publish-report is skipped (fork PR), so the
+    # summary still posts. Qase reporting still runs (create-qase-run/complete-qase-run);
+    # only its PR-comment link was dropped in favour of the Pages report link.
+    needs: [merge-reports, publish-report]
     if: ${{ !cancelled() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
@@ -202,7 +266,7 @@ jobs:
           message: |
             ${{ needs.merge-reports.outputs.summary }}
 
-            ${{ needs.create-qase-run.outputs.public_link != '' && needs.create-qase-run.outputs.public_link != null && format('📋 [View Detailed Qase Report]({0})', needs.create-qase-run.outputs.public_link) || '' }}
+            ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0})', needs.publish-report.outputs.report_url) || '' }}
 
   notify-slack-on-failure:
     needs: [create-qase-run, test, merge-reports]
