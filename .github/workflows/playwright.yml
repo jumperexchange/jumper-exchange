@@ -168,7 +168,7 @@ jobs:
         with:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
-          retention-days: 2
+          retention-days: 4
 
   # Publishes each report to its own path on the gh-pages branch (keep_files accumulates
   # across PRs/runs); the playwright-cleanup-reports.yml cron prunes + compacts it.
@@ -267,6 +267,8 @@ jobs:
             ${{ needs.merge-reports.outputs.summary }}
 
             ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0})', needs.publish-report.outputs.report_url) || '' }}
+
+            📥 [Download full report with traces](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) — unzip, then `npx playwright show-report <dir>`.
 
   notify-slack-on-failure:
     needs: [create-qase-run, test, merge-reports]
