@@ -6,6 +6,7 @@ import { addDays, format, startOfToday } from 'date-fns';
 
 interface GetStrapiBaseUrlProps {
   contentType:
+    | 'feature-badges'
     | 'feature-cards'
     | 'blog-articles'
     | 'faq-items'
@@ -397,6 +398,7 @@ type PerkField =
   | 'NextStepsDescription'
   | 'HasCustomPromoCodes'
   | 'Featured'
+  | 'FirstPublishedAt'
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt';
@@ -415,6 +417,7 @@ class PerkParams {
     'NextStepsDescription',
     'HasCustomPromoCodes',
     'Featured',
+    'FirstPublishedAt',
     'createdAt',
     'updatedAt',
   ];
@@ -423,6 +426,7 @@ class PerkParams {
     'Image',
     'PerkItems',
     'ClaimableStepsProps',
+    'FeatureBadge',
   ];
 
   constructor(private apiUrl: URL) {
@@ -873,10 +877,36 @@ class WalletAccessControlStrapiApi extends StrapiApi {
   }
 }
 
+class FeatureBadgeStrapiApi extends StrapiApi {
+  private static readonly fields = [
+    'FeatureKey',
+    'BadgeLabel',
+    'ShowBadge',
+    'ExpiryMode',
+    'BadgeExpiresAt',
+    'DurationDays',
+    'BadgeVariant',
+    'BadgeSize',
+  ];
+
+  constructor() {
+    super({ contentType: 'feature-badges' });
+    FeatureBadgeStrapiApi.fields.forEach((field, i) => {
+      this.apiUrl.searchParams.set(`fields[${i}]`, field);
+    });
+  }
+
+  filterByKey(featureKey: string): this {
+    this.apiUrl.searchParams.set('filters[FeatureKey][$eq]', featureKey);
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
   CampaignStrapiApi,
+  FeatureBadgeStrapiApi,
   FeatureCardStrapiApi,
   PartnerThemeStrapiApi,
   QuestStrapiApi,

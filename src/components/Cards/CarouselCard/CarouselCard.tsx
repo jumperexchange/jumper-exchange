@@ -9,6 +9,7 @@ import {
   CarouselCardImage,
   CarouselCardImagePlaceholder,
   CarouselCardMedia,
+  CarouselCardMediaBadge,
   CarouselCardMediaOverlay,
 } from './CarouselCard.styles';
 
@@ -26,6 +27,8 @@ interface CarouselCardProps {
   dimmed?: boolean;
   /** Overlay anchored to the bottom-left of the media, e.g. a chain avatar. */
   mediaOverlay?: ReactNode;
+  /** Badge anchored to the top-right of the media image. */
+  mediaBadge?: ReactNode;
 }
 
 const dimmedImageSx = { filter: 'brightness(0.65)' } as const;
@@ -46,6 +49,7 @@ export const CarouselCard: FC<CarouselCardProps> = ({
   titleLines = 1,
   dimmed = false,
   mediaOverlay,
+  mediaBadge,
 }) => (
   <CarouselCardContainer>
     <CarouselCardMedia>
@@ -58,6 +62,9 @@ export const CarouselCard: FC<CarouselCardProps> = ({
       ) : (
         <CarouselCardImagePlaceholder sx={dimmed ? dimmedImageSx : undefined} />
       )}
+      {mediaBadge ? (
+        <CarouselCardMediaBadge>{mediaBadge}</CarouselCardMediaBadge>
+      ) : null}
       {mediaOverlay ? (
         <CarouselCardMediaOverlay>{mediaOverlay}</CarouselCardMediaOverlay>
       ) : null}

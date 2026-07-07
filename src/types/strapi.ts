@@ -499,6 +499,19 @@ export enum TaskType {
   Zap = 'Zap',
 }
 
+export interface FeatureBadgeData {
+  id: number;
+  documentId: string;
+  FeatureKey: string;
+  ExpiryMode: 'fixed_date' | 'rolling_window';
+  BadgeLabel?: string | null;
+  ShowBadge?: boolean | null;
+  BadgeExpiresAt?: string | null;
+  DurationDays?: number | null;
+  BadgeVariant?: string | null;
+  BadgeSize?: string | null;
+}
+
 export interface PerksData {
   data: PerksDataAttributes[];
 }
@@ -526,6 +539,8 @@ export interface PerksDataAttributes {
   HowToUseDescription?: BlocksContent;
   NextStepsDescription?: BlocksContent;
   HasCustomPromoCodes?: boolean;
+  FirstPublishedAt?: string | null;
+  FeatureBadge?: FeatureBadgeData | null;
   createdAt: string;
   publishedAt?: string;
   updatedAt: string;

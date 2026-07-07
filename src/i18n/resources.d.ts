@@ -15,6 +15,7 @@ export default interface Resources {
       extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping.';
     };
     badge: {
+      recentlyAdded: 'Recently added';
       updated: 'Updated {{time}} ago';
     };
     blog: {
