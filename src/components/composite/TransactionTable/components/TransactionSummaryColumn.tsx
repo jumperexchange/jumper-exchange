@@ -11,7 +11,11 @@ import { Tooltip } from '@/components/core/Tooltip/Tooltip';
 import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 import { EntityStackWithBadgeSkeleton } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadgeSkeleton';
-import { EntityStackBadgePlacement } from '@/components/composite/EntityStackWithBadge/types';
+import {
+  EntityStackBadgePlacement,
+  type EntityStackHintItem,
+} from '@/components/composite/EntityStackWithBadge/types';
+import { EntityExplorerLink } from '@/components/composite/EntityChainStack/components/EntityExplorerLink';
 import type { Token } from '@/types/tokens';
 import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import type {
@@ -26,6 +30,9 @@ import {
   StyledRowSection,
 } from '../TransactionTable.styles';
 import { NFT_TOKEN_URL } from '../constants';
+import { AvatarItem } from '@/components/core/AvatarStack/AvatarItem';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { TitleWithHintContainer } from '../../TitleWithHint/TitleWithHint.styles';
 
 interface TransactionSummaryColumnHeaderProps {
   columnId: TransactionSummaryColumnId;
@@ -36,6 +43,8 @@ interface TransactionAssetStackProps {
   tokens: Token[];
   nfts: NftBalance[];
   config: TransactionSummaryRowConfig;
+  amountTitle?: string;
+  amountHints: string[];
 }
 
 interface ColumnDefinition {
@@ -50,7 +59,7 @@ export const TransactionSummaryColumnHeader: FC<
 > = ({ columnId, config }) => {
   const { t } = useTranslation();
   return (
-    <StyledRowSection>
+    <StyledRowSection sx={{ width: '100%' }}>
       <Typography
         variant={config.descriptionVariant}
         color="textSecondary"
@@ -69,16 +78,56 @@ const toChainEntities = (chainIds: number[]) =>
     chainKey: chainId.toString(),
   }));
 
+const MAX_ASSET_HINT_ITEMS = 4;
+
+const toHintItems = (
+  tokens: Token[],
+  amountHints: string[],
+  hintVariant: TransactionSummaryRowConfig['descriptionVariant'],
+) => {
+  const visibleCount =
+    tokens.length > MAX_ASSET_HINT_ITEMS
+      ? MAX_ASSET_HINT_ITEMS - 1
+      : tokens.length;
+
+  const items: EntityStackHintItem[] = tokens
+    .slice(0, visibleCount)
+    .map((token, i) => ({
+      key: `${token.address}-${token.chainId}`,
+      label: amountHints[i] ?? '',
+      hoverContent: (
+        <EntityExplorerLink
+          address={token.address}
+          chainId={token.chainId.toString()}
+          hintVariant={hintVariant}
+        />
+      ),
+    }));
+
+  if (tokens.length > visibleCount) {
+    items.push({
+      key: 'more',
+      label: `+${tokens.length - visibleCount}`,
+    });
+  }
+
+  return items;
+};
+
 const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   tokens,
   nfts,
   config,
+  amountTitle = '',
+  amountHints,
 }) => {
   const { t } = useTranslation();
 
   if (!tokens.length && !nfts.length) {
     const { width, height } = getAvatarSize(config.tokenSize);
-    return <Box sx={{ width, height, display: 'flex' }}>-</Box>;
+    return (
+      <Box sx={{ width, height, display: 'flex', alignItems: 'center' }}>-</Box>
+    );
   }
 
   const tokenChains = toChainEntities(tokens.map((t) => t.chainId));
@@ -86,25 +135,53 @@ const TransactionAssetStack: FC<TransactionAssetStackProps> = ({
   const nftAmount = nfts.reduce((sum, nft) => sum + nft.amount, 0);
 
   return (
-    <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center' }}>
+    <Stack
+      direction="column"
+      spacing={1}
+      sx={{ alignItems: 'flex-start', justifyContent: 'center' }}
+    >
       {tokens.length > 0 && (
-        <EntityStackWithBadge
-          entities={tokens}
-          badgeEntities={tokenChains}
-          placement={
-            tokenChains.length > 1
-              ? EntityStackBadgePlacement.Inline
-              : EntityStackBadgePlacement.Overlay
-          }
-          size={config.tokenSize}
-          limit={4}
-          badgeSize={
-            tokenChains.length > 1 ? config.inlineBadgeSize : config.badgeSize
-          }
-          isContentVisible={false}
-          spacing={{ badge: config.badgeSpacing }}
-        />
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{ alignItems: 'center', minWidth: 0 }}
+        >
+          <EntityStackWithBadge
+            entities={tokens}
+            badgeEntities={tokenChains}
+            placement={
+              tokenChains.length > 1
+                ? EntityStackBadgePlacement.Inline
+                : EntityStackBadgePlacement.Overlay
+            }
+            size={config.tokenSize}
+            limit={MAX_ASSET_HINT_ITEMS}
+            badgeSize={
+              tokenChains.length > 1 ? config.inlineBadgeSize : config.badgeSize
+            }
+            spacing={{ badge: config.badgeSpacing }}
+            content={{
+              titleVariant: config.titleVariant,
+              hintVariant: config.descriptionVariant,
+              title: amountTitle,
+              hintItems: toHintItems(
+                tokens,
+                amountHints,
+                config.descriptionVariant,
+              ),
+              hintItemsDirection: 'column',
+            }}
+            contentSx={{ flex: 1, minWidth: 0 }}
+            containerSx={{
+              flexWrap: 'wrap',
+              minWidth: 0,
+              flexDirection: { xs: 'column', sm: 'row' },
+              alignItems: { xs: 'flex-start', sm: 'center' },
+            }}
+          />
+        </Stack>
       )}
+
       {nfts.length > 0 && (
         <Tooltip
           title={
@@ -177,29 +254,35 @@ export const COLUMN_DEFINITIONS: Record<
   TransactionSummaryColumnId,
   ColumnDefinition
 > = {
-  amount: {
-    label: 'portfolio.transactionSummary.columns.amount',
-    render: (content, config) => (
-      <TitleWithHint
-        title={content.amountTitle}
-        titleVariant={config.titleVariant}
-        hint={content.amountHint}
-        hintVariant={config.descriptionVariant}
-        gap={config.valueGap}
-        sx={{ '& > :nth-child(2)': { whiteSpace: 'pre-wrap' } }}
-      />
-    ),
-    renderSkeleton: () => <FieldSkeleton />,
-  },
   action: {
     label: 'portfolio.transactionSummary.columns.action',
     render: (content, config) => (
-      <TitleWithHint
-        title={content.actionTitle}
-        titleVariant={config.titleVariant}
-        titleDataTestId="transaction-action"
-        gap={config.valueGap}
-      />
+      <TitleWithHintContainer gap={config.valueGap}>
+        <TitleWithHint
+          title={content.actionTitle}
+          titleVariant={config.titleVariant}
+          titleDataTestId="transaction-action"
+        />
+        {content.protocolName && (
+          <Stack spacing={0.5} direction="row" sx={{ alignItems: 'center' }}>
+            <AvatarItem
+              size={AvatarSize.XS}
+              avatar={{
+                src: content.protocolIcon,
+                alt: content.protocolName,
+                id: content.protocolName,
+              }}
+            />
+            <Typography
+              variant={config.descriptionVariant}
+              color="textSecondary"
+              data-testid="transaction-protocol"
+            >
+              {content.protocolName}
+            </Typography>
+          </Stack>
+        )}
+      </TitleWithHintContainer>
     ),
     renderSkeleton: () => <FieldSkeleton width="40%" />,
   },
@@ -210,6 +293,8 @@ export const COLUMN_DEFINITIONS: Record<
         tokens={content.fromTokens}
         nfts={content.fromNfts}
         config={config}
+        amountTitle={content.fromAmountTitle}
+        amountHints={content.fromAmountHints}
       />
     ),
     renderSkeleton: (config) => (
@@ -223,6 +308,8 @@ export const COLUMN_DEFINITIONS: Record<
         tokens={content.toTokens}
         nfts={content.toNfts}
         config={config}
+        amountTitle={content.toAmountTitle}
+        amountHints={content.toAmountHints}
       />
     ),
     renderSkeleton: (config) => (
@@ -255,6 +342,20 @@ export const COLUMN_DEFINITIONS: Record<
         titleDataTestId="transaction-date"
         hintDataTestId="transaction-time"
         gap={config.valueGap}
+      />
+    ),
+    renderSkeleton: () => <FieldSkeleton />,
+  },
+  txHash: {
+    label: 'portfolio.transactionSummary.columns.txHash',
+    render: (content, config) => (
+      <EntityExplorerLink
+        address={content.txHash}
+        chainId={content.chainId.toString()}
+        hintVariant={config.titleVariant}
+        hintColor={'textPrimary'}
+        prefix="tx"
+        showIcon={false}
       />
     ),
     renderSkeleton: () => <FieldSkeleton />,

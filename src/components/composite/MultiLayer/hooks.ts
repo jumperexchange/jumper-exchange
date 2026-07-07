@@ -59,9 +59,13 @@ export const usePendingFilters = <T extends PendingFilterState>({
     onApply(values);
   }, [pendingValues, onApply]);
 
+  // Resetting to initialValues covers pending-only selections (applied state
+  // is already clean, so no initialValues sync will fire); when filters were
+  // applied, onClear updates them and the sync effect finishes the job.
   const clearAll = useCallback(() => {
     onClear?.();
-  }, [onClear]);
+    setPendingValues(initialValues);
+  }, [onClear, initialValues]);
 
   const hasPendingFiltersApplied = useMemo(() => {
     if (isFilterApplied) {

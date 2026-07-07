@@ -25,6 +25,7 @@ import {
   openHubButtonSx,
   unlockedPerksCardSx,
 } from './UnlockedPerksSection.styles';
+import { sortBy } from 'lodash';
 
 interface UnlockedPerksSectionProps {
   perks: PerksDataAttributes[];
@@ -46,14 +47,16 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
     return null;
   }
 
-  // This section is for perks that can still be claimed, so drop any the wallet
-  // has already claimed (those live in the Perks Hub's Claimed tab).
   const claimedIds = new Set((claimedPerks ?? []).map((claim) => claim.perkId));
-  const claimablePerks = unlockedPerks.filter(
-    (perk) => !isClaimedPerk(perk, claimedIds),
+
+  // Show every unlocked perk so the count here matches the Jumper Pass stat.
+  // Still-claimable perks come first; already-claimed ones follow, rendered
+  // dimmed with a "Claimed" badge (same card as the Perks Hub).
+  const orderedPerks = sortBy(unlockedPerks, (perk) =>
+    Number(isClaimedPerk(perk, claimedIds)),
   );
 
-  const isEmpty = claimablePerks.length === 0;
+  const isEmpty = unlockedPerks.length === 0;
 
   return (
     <PerkClaimModalProvider>
@@ -75,7 +78,7 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
               <InfoDivider />
               <Typography variant="bodySmallParagraph" color="textSecondary">
                 {t('profile_page.unlockedPerks.count', {
-                  count: claimablePerks.length,
+                  count: unlockedPerks.length,
                 })}
               </Typography>
             </InfoBottom>
@@ -86,8 +89,14 @@ export const UnlockedPerksSection = ({ perks }: UnlockedPerksSectionProps) => {
           <UnlockedPerksEmpty />
         ) : (
           <SectionCarousel>
-            {claimablePerks.map((perk) => (
-              <PerkCard key={perk.id} perk={perk} status="unlocked" />
+            {orderedPerks.map((perk) => (
+              <PerkCard
+                key={perk.id}
+                perk={perk}
+                status={
+                  isClaimedPerk(perk, claimedIds) ? 'claimed' : 'unlocked'
+                }
+              />
             ))}
           </SectionCarousel>
         )}

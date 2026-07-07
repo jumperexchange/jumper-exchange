@@ -367,6 +367,7 @@ export interface QuestData {
   Information: string | null;
   CustomInformation: any;
   BannerImage?: StrapiMediaData;
+  ExtraWideImage?: StrapiMediaData;
   ClaimingId: string | null;
   Subtitle: string | null;
   tasks_verification?: TaskVerification[];

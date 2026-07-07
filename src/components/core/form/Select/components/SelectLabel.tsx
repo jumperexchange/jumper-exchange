@@ -25,7 +25,7 @@ export const SelectorLabel = ({
   return (
     <StyledLabelContainer size={size}>
       {resolvedStartAdornment}
-      <Typography variant={labelVariant || 'bodySmallStrong'}>
+      <Typography variant={labelVariant || 'bodySmallStrong'} noWrap>
         {label}
       </Typography>
       {endAdornment}

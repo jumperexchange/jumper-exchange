@@ -55,14 +55,11 @@ export const useTransactionSummaryContent = (
 ) => {
   const { t } = useTranslation();
 
-  const toDisplayAmount = (amount: number, symbol: string): string => {
-    if (amount > 0 && amount < 0.01) {
-      return `< 0.01 ${symbol}`;
-    }
+  const formatDecimal = (amount: number, symbol: string): string => {
     const formatted = t('format.decimal', {
       value: Number(amount),
-      minimumFractionDigits: 3,
-      maximumFractionDigits: 3,
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
     });
     if (!symbol) {
       return formatted;
@@ -70,13 +67,23 @@ export const useTransactionSummaryContent = (
     return `${formatted} ${symbol}`;
   };
 
-  const toDisplayAmountUSD = (amountUsd: number): string => {
-    if (amountUsd > 0 && amountUsd < 0.01) {
-      return '< $0.01';
+  const toDisplayAmount = (amount: number, symbol: string): string => {
+    if (amount >= 0 && amount < 0.0001) {
+      return `< 0.0001 ${symbol}`;
     }
-    return t(compact ? 'format.currencyCompact' : 'format.currency', {
+    return formatDecimal(amount, symbol);
+  };
+
+  const formatAmountUSD = (amountUsd: number): string =>
+    t(compact ? 'format.currencyCompact' : 'format.currency', {
       value: amountUsd,
     });
+
+  const toDisplayAmountUSD = (amountUsd: number): string => {
+    if (amountUsd >= 0 && amountUsd < 0.01) {
+      return '< $0.01';
+    }
+    return formatAmountUSD(amountUsd);
   };
 
   const toBalances = transaction.toBalances.filter(hasTokenDto);
@@ -84,34 +91,54 @@ export const useTransactionSummaryContent = (
   const fromNfts = transaction.fromBalances.filter(hasNftDto).map(toNftBalance);
   const toNfts = transaction.toBalances.filter(hasNftDto).map(toNftBalance);
 
-  // Sends have no incoming balances — show what was sent instead of $0.
-  const amountBalances = toBalances.length ? toBalances : fromBalances;
-  const derivedAmountUsd = sumBy(amountBalances, 'amountUsd');
-  const effectiveAmountUsd =
-    amountBalances.length === 0 && transaction.amountUsd != null
-      ? transaction.amountUsd
-      : derivedAmountUsd;
-  const amountTitle = toDisplayAmountUSD(effectiveAmountUsd);
-  const amountHint = amountBalances
-    .map((b) => toDisplayAmount(b.amount, b.token.symbol))
-    .join('\n');
+  const isApprove = transaction.action === 'approve';
+
+  const fromAmountTitle = isApprove
+    ? formatAmountUSD(0)
+    : fromBalances.length
+      ? toDisplayAmountUSD(sumBy(fromBalances, 'amountUsd'))
+      : '-';
+  const fromAmountHints = isApprove
+    ? fromBalances.map((b) => formatDecimal(0, b.token.symbol))
+    : fromBalances.map((b) => toDisplayAmount(b.amount, b.token.symbol));
+
+  const toAmountTitle = isApprove
+    ? formatAmountUSD(0)
+    : toBalances.length
+      ? toDisplayAmountUSD(sumBy(toBalances, 'amountUsd'))
+      : '-';
+  const toAmountHints = isApprove
+    ? toBalances.map((b) => formatDecimal(0, b.token.symbol))
+    : toBalances.map((b) => toDisplayAmount(b.amount, b.token.symbol));
 
   return {
-    amountTitle,
-    amountHint: amountHint || undefined,
+    fromAmountTitle,
+    fromAmountHints,
+    toAmountTitle,
+    toAmountHints,
     actionTitle: formatTransactionAction(transaction.action),
-    feeTitle:
-      transaction.fee?.amountUsd != null
+    feeTitle: isApprove
+      ? formatAmountUSD(0)
+      : transaction.fee?.amountUsd != null
         ? toDisplayAmountUSD(transaction.fee?.amountUsd ?? 0)
         : '-',
     feeHint:
       transaction.fee !== null &&
       transaction.fee.token != null &&
       isTokenDto(transaction.fee.token)
-        ? toDisplayAmount(transaction.fee.amount, transaction.fee.token.symbol)
+        ? isApprove
+          ? formatDecimal(0, transaction.fee.token.symbol)
+          : toDisplayAmount(
+              transaction.fee.amount,
+              transaction.fee.token.symbol,
+            )
         : undefined,
     dateTitle: formatTransactionDateTitle(transaction.time),
     dateHint: formatTransactionDateHint(transaction.time),
+    txHash: transaction.txHash,
+    chainId: transaction.chainId,
+    protocolName: transaction.protocol.name ?? undefined,
+    protocolIcon: transaction.protocol.icon ?? undefined,
     fromTokens: fromBalances.map((b) => toBaseToken(b.token)),
     toTokens: toBalances.map((b) => toBaseToken(b.token)),
     fromNfts,

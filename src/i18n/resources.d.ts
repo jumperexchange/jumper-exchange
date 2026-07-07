@@ -36,6 +36,7 @@ export default interface Resources {
       filter: {
         author: 'Author';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         level: 'Level';
@@ -342,7 +343,7 @@ export default interface Resources {
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
-      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
+      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
       dustUsd: '<{{value, currencyExt(currency: USD)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
@@ -787,6 +788,10 @@ export default interface Resources {
         title: 'You reached Level {{newLevel}}!';
       };
     };
+    pagination: {
+      next: 'Next';
+      previous: 'Previous';
+    };
     perks_page: {
       empty: {
         all: {
@@ -967,15 +972,38 @@ export default interface Resources {
       emptyList: {
         clearFilters: 'Clear filters';
         description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        error: {
+          description: "We couldn't load your transactions. Please try again.";
+          retry: 'Try again';
+          title: 'Something went wrong';
+        };
+        rateLimited: {
+          description: "You've hit the rate limit. Please wait a moment and try again.";
+          retry: 'Try again';
+          title: 'Too many requests';
+        };
         title: 'No results';
+      };
+      emptyPage: {
+        clearFilters: 'Clear filters';
+        description: 'There are no results on this page. Go back to the previous page or clear your filters.';
+        goToPreviousPage: 'Previous page';
+        title: 'No results on this page';
       };
       filter: {
         asset: 'Asset';
+        assets: 'Assets';
         chain: 'Chain';
+        chains: 'Chains';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         protocol: 'Protocol';
+        refresh: 'Refresh';
+        refreshTooltipAvailable: 'Refresh transactions ({{remaining}} left)';
+        refreshTooltipExhausted: 'Rate limit reached. Try again {{resetAt}}';
+        refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
         type: 'Type';
         value: 'Value';
@@ -992,8 +1020,10 @@ export default interface Resources {
         title: 'Portfolio';
       };
       sorting: {
+        action: 'Action';
         asset: 'Asset';
         chain: 'Chain';
+        date: 'Date';
         sort: 'Sort';
         sortBy: 'Sort by';
         totalValue: 'Total Value';
@@ -1006,10 +1036,28 @@ export default interface Resources {
           assetOut: 'Asset out';
           date: 'Date';
           fee: 'Fee';
+          txHash: 'Tx hash';
         };
         nftAmount: 'Amount: {{amount}}';
         nftCount_one: '{{count}} NFT';
         nftCount_other: '{{count}} NFTs';
+      };
+      transactionTypes: {
+        approve: 'Approve';
+        bid: 'Bid';
+        burn: 'Burn';
+        claim: 'Claim';
+        delegate: 'Delegate';
+        deploy: 'Deploy';
+        deposit: 'Deposit';
+        execute: 'Execute';
+        mint: 'Mint';
+        receive: 'Receive';
+        revoke: 'Revoke';
+        revoke_delegation: 'Revoke Delegation';
+        send: 'Send';
+        trade: 'Trade';
+        withdraw: 'Withdraw';
       };
       views: {
         holdings: 'Holdings';

@@ -5,3 +5,6 @@ export class RetryStoppedError extends Error {
     this.name = RetryStoppedError.errorName;
   }
 }
+
+export const isRateLimitError = (error: Error) =>
+  (error as unknown as { status?: number }).status === 429;

@@ -48,6 +48,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'cdn.zerion.io',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'raw.githubusercontent.com',
         port: '',
         pathname: '/**',

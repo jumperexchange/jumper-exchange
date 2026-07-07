@@ -8,6 +8,7 @@ export enum PortfolioViewBarTab {
 
 export interface PortfolioFilterViewBaseProps {
   isDisabled: boolean;
+  areTransactionsEnabled: boolean;
   value: PortfolioViewBarTab;
   onChange: (value: PortfolioViewBarTab) => void;
 }
