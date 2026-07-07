@@ -1,4 +1,5 @@
 import { siteName } from '@/app/lib/metadata';
+import { INDEXED_SWAP_CHAINS } from '@/const/indexedPages';
 import { getSiteUrl } from '@/const/urls';
 import { getChainsQuery } from '@/hooks/useChains';
 import { getChainByName } from '@/utils/tokenAndChain';
@@ -43,6 +44,9 @@ export async function generateMetadata({
     alternates: {
       canonical: `${getSiteUrl()}/swap/${segments}`,
     },
+    ...(!INDEXED_SWAP_CHAINS.has(segments) && {
+      robots: { index: false, follow: true },
+    }),
   };
 }
 

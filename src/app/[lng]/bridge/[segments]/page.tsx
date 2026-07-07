@@ -1,5 +1,6 @@
 import { siteName } from '@/app/lib/metadata';
 import BridgePage from '@/app/ui/bridge/BridgePage';
+import { INDEXED_BRIDGE_SEGMENTS } from '@/const/indexedPages';
 import { getSiteUrl } from '@/const/urls';
 import { resolveBridgeRoute } from '@/utils/bridge/resolveBridgeRoute';
 import { slugToDisplayLabel } from '@/utils/validation-schemas';
@@ -44,6 +45,9 @@ export async function generateMetadata({
     alternates: {
       canonical: `${getSiteUrl()}/bridge/${segments}`,
     },
+    ...(!INDEXED_BRIDGE_SEGMENTS.has(segments) && {
+      robots: { index: false, follow: true },
+    }),
   };
 }
 

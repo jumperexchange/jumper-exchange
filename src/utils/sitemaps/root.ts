@@ -1,3 +1,4 @@
+import i18nConfig from 'i18n-config';
 import { AppPaths } from '@/const/urls';
 import type { SitemapPage } from '@/types/sitemap';
 import { buildUrl, toSitemapDate } from '@/utils/sitemap';
@@ -8,6 +9,7 @@ const pages: SitemapPage[] = [
   { path: AppPaths.Learn, priority: 0.9 },
   { path: AppPaths.Earn, priority: 0.8 },
   { path: AppPaths.Portfolio, priority: 0.8 },
+  { path: AppPaths.Missions, priority: 0.8 },
   { path: AppPaths.Profile, priority: 0.8 },
   { path: AppPaths.Gas, priority: 0.7 },
   { path: AppPaths.PrivacyPolicy, priority: 0.6 },
@@ -17,10 +19,28 @@ const pages: SitemapPage[] = [
 
 export const getRootSitemapEntries = (
   lastModified = toSitemapDate(Date.now()),
-): SitemapXmlEntry[] =>
-  pages.map(({ path, priority }) => ({
-    loc: buildUrl(path),
-    lastModified,
-    changeFrequency: 'weekly',
-    priority,
-  }));
+): SitemapXmlEntry[] => {
+  const entries: SitemapXmlEntry[] = [];
+
+  for (const { path, priority } of pages) {
+    // Canonical (no locale prefix)
+    entries.push({
+      loc: buildUrl(path),
+      lastModified,
+      changeFrequency: 'weekly',
+      priority,
+    });
+
+    // Locale variants
+    for (const locale of i18nConfig.locales) {
+      entries.push({
+        loc: buildUrl(locale, path),
+        lastModified,
+        changeFrequency: 'weekly',
+        priority,
+      });
+    }
+  }
+
+  return entries;
+};
