@@ -31,8 +31,8 @@ export const getRootSitemapEntries = (
       priority,
     });
 
-    // Locale variants
-    for (const locale of i18nConfig.locales) {
+    // Locale variants (skip default locale — it serves the unprefixed canonical URL)
+    for (const locale of i18nConfig.locales.filter((l) => l !== i18nConfig.defaultLocale)) {
       entries.push({
         loc: buildUrl(locale, path),
         lastModified,
