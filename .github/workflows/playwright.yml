@@ -100,8 +100,10 @@ jobs:
       - name: Install Playwright Browsers
         run: |
           pnpm exec playwright install --with-deps chromium
-      - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
+      - name: Install xvfb and xclip
+        # xclip owns the CLIPBOARD selection under xvfb; the wallet seed is pasted
+        # (not typed) into MetaMask so it never lands in a Playwright trace.
+        run: sudo apt-get update && sudo apt-get install -y xvfb xclip
       - name: Run Playwright tests
         env:
           QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
