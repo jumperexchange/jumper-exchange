@@ -54,7 +54,7 @@ jobs:
           for dir in run-*; do
             [ -d "$dir" ] || continue
             age=$(age_days_from_name "${dir#run-}") || { echo "skip (undated): $dir"; continue; }
-            if [ "$age" -gt "$RETENTION_DAYS" ]; then echo "delete $dir ($age d)"; rm -rf "$dir" && deleted=$((deleted+1)); fi
+            if [ "$age" -ge "$RETENTION_DAYS" ]; then echo "delete $dir ($age d)"; rm -rf "$dir" && deleted=$((deleted+1)); fi
           done
           # PR reports: pr-<n>/<YYYYMMDD>-<run>-<attempt>
           for prdir in pr-*; do
@@ -62,7 +62,7 @@ jobs:
             for sub in "$prdir"/*; do
               [ -d "$sub" ] || continue
               age=$(age_days_from_name "$(basename "$sub")") || { echo "skip (undated): $sub"; continue; }
-              if [ "$age" -gt "$RETENTION_DAYS" ]; then echo "delete $sub ($age d)"; rm -rf "$sub" && deleted=$((deleted+1)); fi
+              if [ "$age" -ge "$RETENTION_DAYS" ]; then echo "delete $sub ($age d)"; rm -rf "$sub" && deleted=$((deleted+1)); fi
             done
             # drop the PR container once all its runs are pruned
             rmdir "$prdir" 2>/dev/null || true
