@@ -173,10 +173,11 @@ jobs:
         run: echo "name=html-report--attempt-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
       # The full report carries un-stripped traces (network bodies, DOM snapshots, console
       # logs), and artifact download on a public repo is open to any logged-in GitHub
-      # account — so encrypt at rest and share the key out-of-band. Plaintext is allowed
-      # ONLY for fork PRs (no secrets there, and no wallet secrets in their traces either);
-      # a same-repo run missing the key is a misconfiguration and fails loudly rather than
-      # silently uploading un-stripped traces unencrypted.
+      # account — so encrypt at rest and share the key out-of-band. AES-256 zip (not 7z,
+      # not ZipCrypto): strong crypto that macOS Archive Utility decrypts by double-click.
+      # Plaintext is allowed ONLY for fork PRs (no secrets there, and no wallet secrets in
+      # their traces either); a same-repo run missing the key is a misconfiguration and
+      # fails loudly rather than silently uploading un-stripped traces unencrypted.
       - name: Package and encrypt HTML report
         id: package
         env:
@@ -185,12 +186,9 @@ jobs:
         run: |
           mkdir report-artifact
           if [ -n "$REPORT_KEY" ]; then
-            tar -czf playwright-report.tar.gz playwright-report
-            openssl enc -aes-256-cbc -pbkdf2 -salt \
-              -in playwright-report.tar.gz \
-              -out report-artifact/playwright-report.tar.gz.enc \
-              -pass env:REPORT_KEY
-            rm playwright-report.tar.gz
+            # runner images ship 7-Zip as 7zz (official) or 7z (p7zip) depending on generation
+            SEVENZIP=$(command -v 7zz || command -v 7z)
+            "$SEVENZIP" a -tzip -mem=AES256 -p"$REPORT_KEY" report-artifact/playwright-report.zip playwright-report
             echo "encrypted=true" >> "$GITHUB_OUTPUT"
           elif [ "$IS_FORK_PR" = "true" ]; then
             echo "Fork PR (no secrets); uploading report unencrypted."
@@ -240,9 +238,9 @@ jobs:
         with:
           name: ${{ needs.merge-reports.outputs.html_report_name }}
           path: report-artifact
-      # Decrypt/unpack into ./playwright-report. All intermediates (report-artifact/, the
-      # tarball) stay OUTSIDE playwright-report/ — peaceiris publishes that dir verbatim,
-      # so anything decrypted into it would end up on the public Pages site.
+      # Decrypt/unpack into ./playwright-report. All intermediates (report-artifact/) stay
+      # OUTSIDE playwright-report/ — peaceiris publishes that dir verbatim, so anything
+      # decrypted into it would end up on the public Pages site.
       - name: Unpack HTML report
         env:
           REPORT_KEY: ${{ secrets.PLAYWRIGHT_REPORT_ENCRYPTION_KEY }}
@@ -250,12 +248,8 @@ jobs:
         run: |
           set -euo pipefail
           if [ "$REPORT_ENCRYPTED" = "true" ]; then
-            openssl enc -d -aes-256-cbc -pbkdf2 \
-              -in report-artifact/playwright-report.tar.gz.enc \
-              -out playwright-report.tar.gz \
-              -pass env:REPORT_KEY
-            tar -xzf playwright-report.tar.gz
-            rm playwright-report.tar.gz
+            SEVENZIP=$(command -v 7zz || command -v 7z)
+            "$SEVENZIP" x -p"$REPORT_KEY" report-artifact/playwright-report.zip
           else
             mv report-artifact/playwright-report playwright-report
           fi

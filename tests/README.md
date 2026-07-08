@@ -111,17 +111,21 @@ path (`pr-<n>/<date>-<run>-<attempt>/`), so re-runs and parallel PRs never
 overwrite each other. The PR gets a sticky comment linking that report. Traces
 are stripped from the published page (public site — see JUM-1235), so for
 failure debugging use the full report artifact (`html-report`, kept 4 days)
-from the run's **Actions** page. It is encrypted at rest — artifact download
-on a public repo is open to any logged-in GitHub account, and the full traces
-carry network bodies and DOM snapshots. To open it:
+from the run's **Actions** page. It is encrypted at rest (AES-256 zip) —
+artifact download on a public repo is open to any logged-in GitHub account,
+and the full traces carry network bodies and DOM snapshots. To open it:
+
+1. Download and unzip the artifact — inside is `playwright-report.zip`.
+2. Double-click it (macOS Archive Utility handles AES zips) and paste the
+   passphrase: `PLAYWRIGHT_REPORT_ENCRYPTION_KEY`, from 1Password
+   (Developers vault).
+3. `npx playwright show-report playwright-report`
+
+Or from the terminal:
 
 ```sh
-# passphrase: PLAYWRIGHT_REPORT_ENCRYPTION_KEY, from 1Password (Developers vault)
 unzip html-report--attempt-1.zip
-openssl enc -d -aes-256-cbc -pbkdf2 \
-  -in playwright-report.tar.gz.enc -out playwright-report.tar.gz \
-  -pass pass:'<passphrase>'
-tar -xzf playwright-report.tar.gz
+7zz x -p'<passphrase>' playwright-report.zip   # 7zz: brew install sevenzip (plain unzip can't do AES)
 npx playwright show-report playwright-report
 ```
 
