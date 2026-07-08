@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-export type StarterVariantType = 'buy' | 'private' | WidgetMode;
+export type StarterVariantType = 'advanced' | 'buy' | 'private' | WidgetMode;
 
 export interface MenuListItem {
   label: string;

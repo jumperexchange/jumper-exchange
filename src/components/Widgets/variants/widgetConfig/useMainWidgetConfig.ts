@@ -40,7 +40,7 @@ export function useMainWidgetConfig(
 
   const allowedChainsByVariant = useMemo(
     () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
-    [context.starterVariant, context.partnerName],
+    [context.partnerName],
   );
 
   return useMemo(() => {
@@ -54,18 +54,28 @@ export function useMainWidgetConfig(
     }
 
     const config: Partial<WidgetConfig> = {
-      keyPrefix: `jumper-${context.starterVariant}`,
-      // Variant configuration
-      variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
+      keyPrefix: context.navigationTabs
+        ? `jumper-${context.navigationTabs[0] ?? 'default'}`
+        : `jumper-${context.starterVariant}`,
+      variant: context.navigationTabs
+        ? 'wide'
+        : context.starterVariant === 'refuel'
+          ? 'compact'
+          : 'wide',
       buildUrl: true,
       useRelayerRoutes: true,
-      mode:
-        context.starterVariant === 'buy' ||
-        context.starterVariant === 'private' ||
-        isMemecoins
-          ? 'default'
-          : context.starterVariant,
-      modeOptions: {},
+      ...(context.navigationTabs
+        ? { _navigationTabs: context.navigationTabs }
+        : {
+            mode:
+              context.starterVariant === 'buy' ||
+              context.starterVariant === 'private' ||
+              context.starterVariant === 'advanced' ||
+              isMemecoins
+                ? 'default'
+                : (context.starterVariant as import('@lifi/widget').WidgetMode),
+            modeOptions: {},
+          }),
 
       // UI configuration
       hiddenUI: {
@@ -123,7 +133,12 @@ export function useMainWidgetConfig(
           deps.theme.muiTheme,
           `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
           '',
-          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          (route) =>
+            (route.tags ?? [])?.some(
+              (tag) =>
+                tag.includes('SIMULATED_BY_EVM') ||
+                tag.includes('SIMULATED_BY_COMPOSER'),
+            ),
           'neutral',
         ),
       ],
@@ -167,6 +182,7 @@ export function useMainWidgetConfig(
     context.integrator,
     context.starterVariant,
     context.partnerName,
+    context.navigationTabs,
     context.allowChains,
     context.allowFromChains,
     context.allowToChains,

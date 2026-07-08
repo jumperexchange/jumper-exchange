@@ -2,14 +2,11 @@ import { Widgets } from '@/components/Widgets/Widgets';
 import { Widget } from '@/components/Widgets/Widget';
 import { MainWidgetContainer } from 'src/components/Containers/MainWidgetContainer';
 
-const Page = async () => {
-  const variant = 'refuel';
+export default async function Page() {
   return (
     <MainWidgetContainer>
-      <Widget starterVariant={variant} />
+      <Widget starterVariant="advanced" />
       <Widgets />
     </MainWidgetContainer>
   );
-};
-
-export default Page;
+}

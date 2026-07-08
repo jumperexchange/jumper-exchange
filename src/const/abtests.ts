@@ -6,6 +6,7 @@ export enum AB_TEST_NAME {
   DUST_CONVERSION = 'dust-conversion',
   REQUEST_REDEEM_FLOW = 'request-redeem-flow',
   PRIVATE_SWAPS = 'private-swaps',
+  LIMIT_ORDERS = 'limit-orders',
   THEME_PARTNER_DEFAULT = 'theme-partner-default',
   PORTFOLIO_PNL_CHART = 'portfolio-pnl-chart',
   PORTFOLIO_TRANSACTIONS = 'portfolio-transactions',
@@ -40,6 +41,10 @@ export const AbTests = {
   },
   [AB_TEST_NAME.PRIVATE_SWAPS]: {
     name: 'private-swaps',
+    enabled: true,
+  },
+  [AB_TEST_NAME.LIMIT_ORDERS]: {
+    name: 'limit-orders',
     enabled: true,
   },
   [AB_TEST_NAME.THEME_PARTNER_DEFAULT]: {

@@ -80,6 +80,12 @@ export enum TrackingAction {
   OnRouteExecutionCompletedPrivate = 'action_on_route_exec_completed_private',
   OnRouteExecutionFailedPrivate = 'action_on_route_exec_failed_private',
 
+  // Limit orders
+  OnAvailableRoutesLimit = 'action_available_routes_limit',
+  OnRouteExecutionStartedLimit = 'action_on_route_exec_started_limit',
+  OnRouteExecutionCompletedLimit = 'action_on_route_exec_completed_limit',
+  OnRouteExecutionFailedLimit = 'action_on_route_exec_failed_limit',
+
   // Dust conversion
   OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
   OnRouteExecutionCompletedDust = 'action_on_route_exec_completed_dust',
@@ -188,6 +194,9 @@ export enum TrackingEventDataAction {
   ExecutionStartPrivate = 'execution_start_private',
   ExecutionCompletedPrivate = 'execution_completed_private',
   ExecutionFailedPrivate = 'execution_failed_private',
+  ExecutionStartLimit = 'execution_start_limit',
+  ExecutionCompletedLimit = 'execution_completed_limit',
+  ExecutionFailedLimit = 'execution_failed_limit',
   ExecutionStartDust = 'execution_start_dust',
   ExecutionCompletedDust = 'execution_completed_dust',
   ExecutionFailedDust = 'execution_failed_dust',

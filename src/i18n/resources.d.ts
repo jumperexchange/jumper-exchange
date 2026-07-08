@@ -627,6 +627,7 @@ export default interface Resources {
         github: 'GitHub';
       };
       links: {
+        advanced: 'Advanced';
         back: 'Back';
         buy: 'Buy';
         dashboard: 'Dashboard';
@@ -636,6 +637,7 @@ export default interface Resources {
         portfolio: 'Portfolio';
         private: 'Private Swap';
         refuel: 'Gas';
+        simple: 'Simple';
         trade: 'Trade';
       };
       navbarMenu: {
