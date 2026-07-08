@@ -457,6 +457,33 @@ export default interface Resources {
       title: 'Leaderboard';
       updatedLabel: 'Updated: {{date}}';
     };
+    limitOrders: {
+      marketPrice: 'Market Price';
+      orders: 'Orders';
+      table: {
+        actions: {
+          collapsePanels: 'Collapse panels';
+          expandPanels: 'Expand panels';
+          rowActions: 'Row actions';
+        };
+        columns: {
+          buy: 'Buy';
+          chain: 'Chain';
+          expires: 'Expires';
+          filled: 'Filled';
+          limit: 'Limit';
+          market: 'Market';
+          pair: 'Pair';
+          sell: 'Sell';
+        };
+        status: {
+          cancelled: 'Cancelled';
+          days_one: '{{count}} day';
+          days_other: '{{count}} days';
+          expired: 'Expired';
+        };
+      };
+    };
     links: {
       discover: 'Discover {{name}}';
     };
