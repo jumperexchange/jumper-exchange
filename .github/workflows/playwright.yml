@@ -137,6 +137,8 @@ jobs:
     timeout-minutes: 3
     outputs:
       summary: ${{ steps.summary.outputs.summary }}
+      html_report_name: ${{ steps.report-name.outputs.name }}
+      report_encrypted: ${{ steps.package.outputs.encrypted }}
 
     runs-on: ubuntu-latest
     steps:
@@ -163,19 +165,51 @@ jobs:
         with:
           report-file: ./report.json
           create-comment: false
+      # Job outputs (unlike github.run_attempt) survive a "re-run failed jobs" retry: if this
+      # job already succeeded it won't re-run, so publish-report must download by the name it
+      # actually uploaded under, not by recomputing the (now-incremented) run attempt itself.
+      - name: Set report artifact name
+        id: report-name
+        run: echo "name=html-report--attempt-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
+      # The full report carries un-stripped traces (network bodies, DOM snapshots, console
+      # logs), and artifact download on a public repo is open to any logged-in GitHub
+      # account — so encrypt at rest and share the key out-of-band. Falls back to plaintext
+      # when the key is absent (fork PRs get no secrets, and no wallet secrets either).
+      - name: Package and encrypt HTML report
+        id: package
+        env:
+          REPORT_KEY: ${{ secrets.PLAYWRIGHT_REPORT_ENCRYPTION_KEY }}
+        run: |
+          mkdir report-artifact
+          if [ -n "$REPORT_KEY" ]; then
+            tar -czf playwright-report.tar.gz playwright-report
+            openssl enc -aes-256-cbc -pbkdf2 -salt \
+              -in playwright-report.tar.gz \
+              -out report-artifact/playwright-report.tar.gz.enc \
+              -pass env:REPORT_KEY
+            rm playwright-report.tar.gz
+            echo "encrypted=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "PLAYWRIGHT_REPORT_ENCRYPTION_KEY not available; uploading report unencrypted."
+            cp -r playwright-report report-artifact/playwright-report
+            echo "encrypted=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Upload HTML report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: html-report--attempt-${{ github.run_attempt }}
-          path: playwright-report
+          name: ${{ steps.report-name.outputs.name }}
+          path: report-artifact
           retention-days: 4
 
   # Publishes each report to its own path on the gh-pages branch (keep_files accumulates
   # across PRs/runs); the playwright-cleanup-reports.yml cron prunes + compacts it.
   publish-report:
+    # Requires merge-reports to have actually succeeded (not just "not cancelled") — otherwise
+    # a merge-reports failure (e.g. blob-download flake) still lets this job start, find no
+    # artifact to download, and fail a second time on top of the real failure.
     # Same-repo only: fork PRs get a read-only GITHUB_TOKEN (push would fail) and we must
     # not host untrusted fork HTML on our public Pages domain.
-    if: ${{ !cancelled() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    if: ${{ needs.merge-reports.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [merge-reports]
     timeout-minutes: 5
     runs-on: ubuntu-latest
@@ -195,10 +229,32 @@ jobs:
       - name: Download HTML report
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          name: html-report--attempt-${{ github.run_attempt }}
-          path: playwright-report
+          name: ${{ needs.merge-reports.outputs.html_report_name }}
+          path: report-artifact
+      # Decrypt/unpack into ./playwright-report. All intermediates (report-artifact/, the
+      # tarball) stay OUTSIDE playwright-report/ — peaceiris publishes that dir verbatim,
+      # so anything decrypted into it would end up on the public Pages site.
+      - name: Unpack HTML report
+        env:
+          REPORT_KEY: ${{ secrets.PLAYWRIGHT_REPORT_ENCRYPTION_KEY }}
+          REPORT_ENCRYPTED: ${{ needs.merge-reports.outputs.report_encrypted }}
+        run: |
+          set -euo pipefail
+          if [ "$REPORT_ENCRYPTED" = "true" ]; then
+            openssl enc -d -aes-256-cbc -pbkdf2 \
+              -in report-artifact/playwright-report.tar.gz.enc \
+              -out playwright-report.tar.gz \
+              -pass env:REPORT_KEY
+            tar -xzf playwright-report.tar.gz
+            rm playwright-report.tar.gz
+          else
+            mv report-artifact/playwright-report playwright-report
+          fi
+          rm -rf report-artifact
       # Public Pages: strip the trace viewer UI and trace .zip attachments so secrets can't
-      # leak (see JUM-1235); keep only .png/.webm attachments.
+      # leak (see JUM-1235); keep only .png/.webm files under data/. This does NOT cover
+      # small attachments Playwright embeds inline in index.html (stdout, error-context, any
+      # testInfo.attach with a `body`) — don't add attachments with raw text bodies to specs.
       - name: Strip trace data before publishing
         run: |
           echo "Report size before: $(du -sh playwright-report | cut -f1)"
@@ -270,12 +326,12 @@ jobs:
           message: |
             ${{ needs.merge-reports.outputs.summary }}
 
-            ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0})', needs.publish-report.outputs.report_url) || '' }}
+            ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0}) (kept 4 days)', needs.publish-report.outputs.report_url) || '' }}
 
-            📥 [Download full report with traces](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) — unzip, then `npx playwright show-report <dir>`.
+            📥 [Download full report with traces](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) — encrypted; see [tests/README.md](https://github.com/${{ github.repository }}/blob/develop/tests/README.md#ci-reports) for how to decrypt and open it.
 
   notify-slack-on-failure:
-    needs: [create-qase-run, test, merge-reports]
+    needs: [test, merge-reports]
     if: ${{ failure() && github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
@@ -283,7 +339,6 @@ jobs:
         id: build-payload
         env:
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
-          QASE_LINK: ${{ needs.create-qase-run.outputs.public_link }}
           PR_URL: ${{ github.event.pull_request.html_url }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -300,7 +355,6 @@ jobs:
             --arg pr_number "$PR_NUMBER" \
             --arg pr_title "$PR_TITLE" \
             --arg workflow_url "$WORKFLOW_URL" \
-            --arg qase_link "$QASE_LINK" \
             '[
               {
                 "type": "header",
@@ -329,14 +383,7 @@ jobs:
                     "text": "*Workflow Run:*\n<\($workflow_url)|View Run>"
                   }
                 ]
-              }
-            ] + (if $qase_link != "" and $qase_link != "null" then [{
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": "*Qase Report:* <\($qase_link)|View Detailed Report>"
-              }
-            }] else [] end) + [
+              },
               {
                 "type": "section",
                 "text": {

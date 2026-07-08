@@ -110,10 +110,23 @@ Each CI run publishes its HTML report to GitHub Pages under a per-PR, per-run
 path (`pr-<n>/<date>-<run>-<attempt>/`), so re-runs and parallel PRs never
 overwrite each other. The PR gets a sticky comment linking that report. Traces
 are stripped from the published page (public site — see JUM-1235), so for
-failure debugging download the full report artifact (`html-report`, kept 4
-days) from the run's **Actions** page, unzip, and open it with
-`npx playwright show-report <dir>`. A daily cron prunes report dirs older than
-`RETENTION_DAYS` and squashes the `gh-pages` history.
+failure debugging use the full report artifact (`html-report`, kept 4 days)
+from the run's **Actions** page. It is encrypted at rest — artifact download
+on a public repo is open to any logged-in GitHub account, and the full traces
+carry network bodies and DOM snapshots. To open it:
+
+```sh
+# passphrase: PLAYWRIGHT_REPORT_ENCRYPTION_KEY, from 1Password (Developers vault)
+unzip html-report--attempt-1.zip
+openssl enc -d -aes-256-cbc -pbkdf2 \
+  -in playwright-report.tar.gz.enc -out playwright-report.tar.gz \
+  -pass pass:'<passphrase>'
+tar -xzf playwright-report.tar.gz
+npx playwright show-report playwright-report
+```
+
+A daily cron prunes report dirs older than `RETENTION_DAYS` and squashes the
+`gh-pages` history.
 
 ## Layout
 
