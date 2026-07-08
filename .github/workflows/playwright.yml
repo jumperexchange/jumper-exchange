@@ -173,12 +173,15 @@ jobs:
         run: echo "name=html-report--attempt-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
       # The full report carries un-stripped traces (network bodies, DOM snapshots, console
       # logs), and artifact download on a public repo is open to any logged-in GitHub
-      # account — so encrypt at rest and share the key out-of-band. Falls back to plaintext
-      # when the key is absent (fork PRs get no secrets, and no wallet secrets either).
+      # account — so encrypt at rest and share the key out-of-band. Plaintext is allowed
+      # ONLY for fork PRs (no secrets there, and no wallet secrets in their traces either);
+      # a same-repo run missing the key is a misconfiguration and fails loudly rather than
+      # silently uploading un-stripped traces unencrypted.
       - name: Package and encrypt HTML report
         id: package
         env:
           REPORT_KEY: ${{ secrets.PLAYWRIGHT_REPORT_ENCRYPTION_KEY }}
+          IS_FORK_PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository }}
         run: |
           mkdir report-artifact
           if [ -n "$REPORT_KEY" ]; then
@@ -189,10 +192,13 @@ jobs:
               -pass env:REPORT_KEY
             rm playwright-report.tar.gz
             echo "encrypted=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "PLAYWRIGHT_REPORT_ENCRYPTION_KEY not available; uploading report unencrypted."
+          elif [ "$IS_FORK_PR" = "true" ]; then
+            echo "Fork PR (no secrets); uploading report unencrypted."
             cp -r playwright-report report-artifact/playwright-report
             echo "encrypted=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "::error::PLAYWRIGHT_REPORT_ENCRYPTION_KEY is not set for a same-repo run; refusing to upload the un-stripped report unencrypted."
+            exit 1
           fi
       - name: Upload HTML report
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -326,9 +332,9 @@ jobs:
           message: |
             ${{ needs.merge-reports.outputs.summary }}
 
-            ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0}) (kept 4 days)', needs.publish-report.outputs.report_url) || '' }}
+            ${{ needs.publish-report.result == 'success' && needs.publish-report.outputs.report_url != '' && format('📊 [View Playwright Report]({0}) (kept 7 days)', needs.publish-report.outputs.report_url) || '' }}
 
-            📥 [Download full report with traces](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) — encrypted; see [tests/README.md](https://github.com/${{ github.repository }}/blob/develop/tests/README.md#ci-reports) for how to decrypt and open it.
+            📥 [Download full report with traces](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) (kept 4 days) — ${{ needs.merge-reports.outputs.report_encrypted == 'true' && 'encrypted; see [tests/README.md](https://github.com/jumperexchange/jumper-exchange/blob/develop/tests/README.md#ci-reports) for how to decrypt and open it.' || 'unzip, then `npx playwright show-report <dir>`.' }}
 
   notify-slack-on-failure:
     needs: [test, merge-reports]
