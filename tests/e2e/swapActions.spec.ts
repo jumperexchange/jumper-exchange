@@ -6,6 +6,7 @@ import { buildUrlParams } from './data/urlParams';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 [
   { name: 'Mobile', size: { height: 812, width: 375 } },
   { name: 'Desktop', size: { height: 1080, width: 1920 } },
@@ -18,8 +19,8 @@ import { SettingsPage } from './pages/SettingsPage';
 
     test.beforeEach(async ({ page }) => {
       const landingPage = new LandingPage(page);
+      await seedWelcomeScreenClosed(page);
       await landingPage.goto();
-      await landingPage.closeWelcomeScreen();
     });
     // jscpd:ignore-end
 
@@ -34,8 +35,9 @@ import { SettingsPage } from './pages/SettingsPage';
           await settings.deselectAll();
           await settings.goBack();
 
-          const urlParams = buildUrlParams(chainData.ETHtoETHswap.ETHtoETH);
-          await page.goto(`/${urlParams}`);
+          const pair = chainData.ETHtoETHswap.ETHtoETH;
+          await page.goto(`/${buildUrlParams(pair)}`);
+          await landingPage.expectSwapPairResolved(pair);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
             checkRelayRoute: true,
@@ -50,14 +52,18 @@ import { SettingsPage } from './pages/SettingsPage';
         const landingPage = new LandingPage(page);
 
         await test.step(`Check ${chainData.ARBtoARB.ETHtoUSDT.tokenSymbol} to ${chainData.ARBtoARB.ETHtoUSDT.toTokenSymbol} swap pair`, async () => {
-          await page.goto(`/${buildUrlParams(chainData.ARBtoARB.ETHtoUSDT)}`);
+          const pair = chainData.ARBtoARB.ETHtoUSDT;
+          await page.goto(`/${buildUrlParams(pair)}`);
+          await landingPage.expectSwapPairResolved(pair);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
           });
         });
 
         await test.step(`Check ${chainData.ARBtoARB.USDCtoWBTC.tokenSymbol} to ${chainData.ARBtoARB.USDCtoWBTC.toTokenSymbol} swap pair`, async () => {
-          await page.goto(`/${buildUrlParams(chainData.ARBtoARB.USDCtoWBTC)}`);
+          const pair = chainData.ARBtoARB.USDCtoWBTC;
+          await page.goto(`/${buildUrlParams(pair)}`);
+          await landingPage.expectSwapPairResolved(pair);
           await landingPage.expectRoutesVisibility({
             bestReturnShouldBeVisible: true,
           });
