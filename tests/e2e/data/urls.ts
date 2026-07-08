@@ -49,10 +49,10 @@ export const JUMPER_BUTTONS = {
   PASS: 'Pass',
 } as const;
 
-// Widget tab names that render in EVERY feature-flag bucket (JUM-1241 tabbed
-// navigation): Simple always shows Swap & Bridge + Gas (Private is flag-gated),
-// Advanced always shows Swap + Bridge (Limit is flag-gated). Anchor tests on
-// these so runs stay deterministic across buckets.
+// Widget tab names that render in EVERY feature-flag bucket: Simple always
+// shows Swap & Bridge + Gas (Private is flag-gated), Advanced always shows
+// Swap + Bridge (Limit is flag-gated). Anchor tests on these so runs stay
+// deterministic across buckets.
 export const WIDGET_TABS = {
   ADVANCED_BRIDGE: 'Bridge',
   SIMPLE_SWAP_AND_BRIDGE: 'Swap & Bridge',

@@ -136,10 +136,10 @@ export class LandingPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  // The vertical menu is static since JUM-1241 (0 = Simple, 1 = Advanced); the
-  // destination is asserted via a widget tab unique to it, so the check cannot
-  // false-pass against the outgoing page mid-navigation (role=tab name
-  // matching is exact — "Bridge" does not match "Swap & Bridge").
+  // Vertical menu tabs: 0 = Simple, 1 = Advanced. The destination is asserted
+  // via a widget tab unique to it, so the check cannot match the outgoing page
+  // mid-navigation (role=tab name matching is exact — "Bridge" does not match
+  // "Swap & Bridge").
   async navigateAndExpectWidgetTab(
     tabKey: number,
     widgetTab: string,

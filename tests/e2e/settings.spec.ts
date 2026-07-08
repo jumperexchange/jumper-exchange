@@ -28,11 +28,9 @@ for (const { name, size } of [
         'Should verify all settings menu functionality',
       ),
       async ({ page }) => {
-        // JUM-1116: qase 8 Desktop stalls in CI — a load-sensitive freeze that roves
-        // between heavy steps (bridges checkbox in one run, the slippage Custom row in
-        // the next; 120s click timeouts). Mobile passes, local Desktop passes 6/6, and
-        // the 4.2.0 drill-down migration itself is CI-validated — the stall predates
-        // the old "slippage step" reason. Re-enable with JUM-1116 (runner headroom / spec split).
+        // The Desktop variant stalls under CI load — the freeze roves between
+        // heavy steps (120s click/render timeouts); Mobile and local Desktop
+        // runs are unaffected.
         test.fixme(
           name === 'Desktop',
           'JUM-1116: settings Desktop CI shard stall (step-roving click freeze)',
