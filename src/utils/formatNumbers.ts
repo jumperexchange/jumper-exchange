@@ -1,3 +1,5 @@
+import type { TFunction } from 'i18next';
+
 export const decimalFormatter = (
   lng: string | undefined,
   options: Intl.NumberFormatOptions,
@@ -121,6 +123,37 @@ export const formatValueWithConfig = (
   return new Intl.NumberFormat('en-US', formatOptions).format(numValue);
 };
 
+export const NBSP = '\u00a0'; // non-breaking space
+
+export const DUST_AMOUNT_THRESHOLD = 0.0001;
+export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
+
+/**
+ * Combines a formatted decimal `amount` string with a token `symbol`,
+ * collapsing non-zero values below the dust threshold to `<0.0001 SYMBOL`
+ * so positions don't render as long decimals like `0.000000000000000001 eETH`.
+ * The collapsed label is locale-aware via `format.dustAmount`; falls back to
+ * the en-US literal when i18next hasn't been initialised yet (e.g. tests).
+ */
+export const formatTokenAmountWithDust = (
+  amount: string,
+  symbol: string,
+  t?: TFunction,
+): string => {
+  const numeric = parseFloat(amount);
+  const label = symbol || '---';
+  if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
+    const translated = t?.('format.dustAmount', {
+      value: DUST_AMOUNT_THRESHOLD,
+      symbol: label,
+    });
+    return !translated || translated.startsWith('format.dustAmount')
+      ? `${DUST_AMOUNT_LABEL}${NBSP}${label}`
+      : translated;
+  }
+  return `${amount}${NBSP}${label}`;
+};
+
 export const formatUSD = currencyFormatter('en-US', {
   notation: 'compact',
   currency: 'USD',
@@ -128,3 +161,30 @@ export const formatUSD = currencyFormatter('en-US', {
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 });
+
+export const DUST_USD_THRESHOLD = 0.01;
+export const DUST_USD_LABEL = '<$0.01';
+
+/**
+ * Wraps `formatUSD` and collapses any positive USD value below $0.01 to
+ * `<$0.01`. Mirrors `formatTokenAmountWithDust` on the dollar axis, scoped
+ * to position UIs where sub-cent values are noise.
+ * The collapsed label is locale-aware via `format.dustUsd`; falls back to
+ * the en-US literal when i18next hasn't been initialised yet (e.g. tests).
+ */
+export const formatUSDWithDust = (
+  amountUSD: number | string,
+  t?: TFunction,
+): string => {
+  const numeric =
+    typeof amountUSD === 'number' ? amountUSD : parseFloat(amountUSD as string);
+  if (Number.isFinite(numeric) && numeric > 0 && numeric < DUST_USD_THRESHOLD) {
+    const translated = t?.('format.dustUsd', {
+      value: DUST_USD_THRESHOLD,
+    });
+    return !translated || translated.startsWith('format.dustUsd')
+      ? DUST_USD_LABEL
+      : translated;
+  }
+  return formatUSD(amountUSD ?? 0);
+};

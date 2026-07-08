@@ -1,5 +1,5 @@
 import { Widget } from '@/components/Widgets/Widget';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -15,7 +15,6 @@ interface BridgePageProps {
   destinationChain: ExtendedChain;
   destinationToken: Token;
   chains: ExtendedChain[];
-  tokens: TokensResponse['tokens'];
 }
 
 const BridgePage = ({
@@ -24,7 +23,6 @@ const BridgePage = ({
   destinationChain,
   destinationToken,
   chains,
-  tokens,
 }: BridgePageProps) => {
   return (
     <Container>
@@ -91,7 +89,6 @@ const BridgePage = ({
           destinationChain={destinationChain}
           destinationToken={destinationToken}
           chains={chains}
-          tokens={tokens}
         />
       </Stack>
     </Container>

@@ -1,7 +1,14 @@
 import type { IconButtonProps } from '@mui/material';
-import { alpha, Box, IconButton } from '@mui/material';
-import { darken, lighten, styled } from '@mui/material/styles';
+import { alpha, Box, Button, IconButton } from '@mui/material';
+import { darken, lighten, styled, type Theme } from '@mui/material/styles';
 import { getSurfaceBorder } from '@/theme/utils/getSurfaceBorder';
+
+export const paginationArrowIconSx = (theme: Theme) => ({
+  color: darken(theme.palette.white.main, 0.2),
+  ...theme.applyStyles('light', {
+    color: lighten(theme.palette.black.main, 0.6),
+  }),
+});
 
 export const PaginationContainer = styled(Box)(({ theme }) => ({
   bottom: 0,
@@ -80,6 +87,31 @@ export const PaginationButton = styled(IconButton)(({ theme }) => ({
   color: (theme.vars || theme).palette.grey[500],
   width: 40,
   height: 40,
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.white.main, 0.12),
+    ...theme.applyStyles('light', {
+      backgroundColor: (theme.vars || theme).palette.alphaDark100.main,
+    }),
+  },
+  '&.Mui-disabled': {
+    opacity: 0.3,
+  },
+}));
+
+export const PaginationNavButton = styled(Button)(({ theme }) => ({
+  color: darken(theme.palette.white.main, 0.2),
+  minWidth: 'auto',
+  height: 40,
+  padding: theme.spacing(1, 1.5),
+  gap: theme.spacing(0.5),
+  textTransform: 'none',
+  typography: 'bodySmallStrong',
+  ...theme.applyStyles('light', {
+    color: lighten(theme.palette.black.main, 0.6),
+  }),
+  '& .MuiButton-startIcon, & .MuiButton-endIcon': {
+    margin: 0,
+  },
   '&:hover': {
     backgroundColor: alpha(theme.palette.white.main, 0.12),
     ...theme.applyStyles('light', {

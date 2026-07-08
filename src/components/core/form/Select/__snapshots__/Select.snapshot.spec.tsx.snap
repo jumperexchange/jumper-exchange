@@ -22,7 +22,7 @@ exports[`Select snapshot > matches snapshot 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               Type
             </p>
@@ -75,7 +75,7 @@ exports[`Select snapshot > matches snapshot with filter 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               Chain
             </p>
@@ -128,7 +128,7 @@ exports[`Select snapshot > matches snapshot with icons 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               Chain
             </p>
@@ -181,7 +181,7 @@ exports[`Select snapshot > matches snapshot with selected value 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               Chain
             </p>
@@ -243,7 +243,7 @@ exports[`Select snapshot > matches snapshot with single select 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               Popularity
             </p>
@@ -296,7 +296,7 @@ exports[`Select snapshot > matches snapshot with slider select 1`] = `
             class="MuiBox-root css-19agypr"
           >
             <p
-              class="MuiTypography-root MuiTypography-bodySmallStrong css-7dozsb-MuiTypography-root"
+              class="MuiTypography-root MuiTypography-bodySmallStrong MuiTypography-noWrap css-k6tjn1-MuiTypography-root"
             >
               APY
             </p>

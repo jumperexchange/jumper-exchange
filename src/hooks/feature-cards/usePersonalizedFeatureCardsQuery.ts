@@ -1,10 +1,7 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
 import { useAccount } from '@lifi/wallet-management';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 
 export interface UsePersonalizedFeatureCardsProps {
@@ -29,9 +26,7 @@ export const usePersonalizedFeatureCardsQuery =
           throw new Error('Account address must be set');
         }
 
-        const response = await fetch(
-          getFeatureCardsEndpoint(account?.address),
-        );
+        const response = await fetch(getFeatureCardsEndpoint(account?.address));
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -52,23 +47,19 @@ export const usePersonalizedFeatureCardsQuery =
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
     apiUrl.searchParams.set('filters[PersonalizedFeatureCard]', 'true');
-    fcCardData?.map((id: number) =>
-      apiUrl.searchParams.set('filters[id][]', id.toString()),
-    );
+
+    fcCardData?.forEach((documentId: string, i: number) => {
+      apiUrl.searchParams.append(`filters[documentId][$in][${i}]`, documentId);
+    });
 
     config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
       apiUrl.searchParams.set('status', 'draft');
-    const apiAccesToken = getStrapiApiAccessToken();
 
     const { data, isSuccess } = useQuery({
       queryKey: ['personalizedFeatureCardsOnAddress', account?.address],
 
       queryFn: async () => {
-        const response = await fetch(decodeURIComponent(apiUrl.href), {
-          headers: {
-            Authorization: `Bearer ${apiAccesToken}`,
-          },
-        });
+        const response = await fetch(decodeURIComponent(apiUrl.href));
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');

@@ -11,6 +11,7 @@ import {
   THEME_MODE_STORAGE_KEY,
 } from './constants';
 import CssBaseline from '@mui/material/CssBaseline';
+import { MUIThemePartnerSync } from './MUIThemePartnerSync';
 
 /**
  * App's theme provider component.
@@ -41,6 +42,7 @@ export function MUIThemeProvider({ children }: PropsWithChildren) {
       disableTransitionOnChange
     >
       <CssBaseline enableColorScheme />
+      <MUIThemePartnerSync />
       {children}
     </ThemeProvider>
   );

@@ -32,6 +32,7 @@ import {
 import { useState } from 'react';
 import { formatSliderValue } from '@/components/core/form/Select/utils';
 import { CategoryConfig, DateRangeValue } from '../MultiLayer/MultiLayer.types';
+import { datesBadge } from '@/utils/filters/datesBadge';
 
 const meta: Meta<typeof FilterSortModal> = {
   title: 'components/composite/FilterSortModal',
@@ -228,22 +229,6 @@ interface BlogArticlesFilterState {
   sortBy: LearnSortByEnum;
 }
 
-const getDatesBadge = (
-  usedMin: Date | null,
-  usedMax: Date | null,
-  rangeMin: Date,
-  rangeMax: Date,
-  pendingValue: DateRangeValue,
-): string | undefined => {
-  if (usedMin === rangeMin && usedMax === rangeMax) return;
-
-  const [start, end] = pendingValue;
-
-  if (!start && !end) return;
-
-  return `1 range`;
-};
-
 const BlogArticlesFiltersTemplate = () => {
   const [appliedFilters, setAppliedFilters] = useState<BlogArticlesFilterState>(
     {
@@ -301,12 +286,13 @@ const BlogArticlesFiltersTemplate = () => {
     pendingValues.levels.length > 0
       ? pendingValues.levels.length.toString()
       : undefined;
-  const datesBadge = getDatesBadge(
-    appliedFilters.dates[0],
-    appliedFilters.dates[1],
+  const datesBadgeLabel = datesBadge(
+    appliedFilters.dates[0] ?? blogArticlesDateRange.min,
+    appliedFilters.dates[1] ?? blogArticlesDateRange.max,
     blogArticlesDateRange.min,
     blogArticlesDateRange.max,
     pendingValues.dates,
+    '1 range',
   );
 
   const categories: CategoryConfig[] = [
@@ -335,7 +321,7 @@ const BlogArticlesFiltersTemplate = () => {
     createDateRangeCategory({
       id: 'publish-date',
       label: 'Publish date',
-      badgeLabel: datesBadge,
+      badgeLabel: datesBadgeLabel,
       value: pendingValues.dates,
       onChange: (value) => setPendingValue('dates', value),
       min: blogArticlesDateRange.min,

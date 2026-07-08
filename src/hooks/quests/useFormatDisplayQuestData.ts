@@ -6,7 +6,7 @@ import type {
   RewardGroup,
 } from 'src/types/loyaltyPass';
 import { capitalizeString } from 'src/utils/capitalizeString';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { useFormatDisplayRewardsData } from './useFormatDisplayRewardsData';
 import type { QuestData } from 'src/types/strapi';
 import type { Chain } from 'src/types/questDetails';
@@ -36,33 +36,40 @@ interface DisplayQuestData {
   };
 }
 
+interface UseFormatDisplayQuestDataOptions {
+  useBannerImage?: boolean;
+  preferExtraWideImage?: boolean;
+  baseNavPath?: string;
+}
+
 function isQuest(quest: Quest | QuestData): quest is Quest {
   return 'BannerImage' in quest;
 }
 
 export function useFormatDisplayQuestData(
   quest: Quest,
-  useBannerImage?: boolean,
-  baseNavPath?: string,
+  options?: UseFormatDisplayQuestDataOptions,
 ): DisplayQuestData;
 export function useFormatDisplayQuestData(
   quest: QuestData,
-  useBannerImage?: boolean,
-  baseNavPath?: string,
+  options?: UseFormatDisplayQuestDataOptions,
 ): DisplayQuestData;
 
 export function useFormatDisplayQuestData(
   quest: Quest | QuestData,
-  useBannerImage: boolean = true,
-  baseNavPath: string = AppPaths.Missions,
+  {
+    useBannerImage = true,
+    preferExtraWideImage = false,
+    baseNavPath = AppPaths.Missions,
+  }: UseFormatDisplayQuestDataOptions = {},
 ) {
   const rewardGroups = useFormatDisplayRewardsData(
+    quest.Slug,
     quest.CustomInformation,
     quest.Points ?? undefined,
   );
 
   return useMemo(() => {
-    const baseStrapiUrl = getStrapiBaseUrl();
     const {
       id,
       Title,
@@ -88,16 +95,20 @@ export function useFormatDisplayQuestData(
 
     let imageUrl: string | undefined;
 
-    if (useBannerImage) {
+    // preferExtraWideImage takes priority over useBannerImage. Use it for slots
+    // that need a ~3:1 ratio (e.g. Profile page tiles) where BannerImage (2:1)
+    // and Image (~1.54:1) would both be cropped incorrectly by object-fit:cover.
+    // Falls back to Image if ExtraWideImage is not set on the quest.
+    if (preferExtraWideImage) {
+      imageUrl = resolveStrapiMediaUrl(
+        quest.ExtraWideImage?.url || quest.Image?.url,
+      );
+    } else if (useBannerImage) {
       imageUrl = isQuest(quest)
-        ? quest.BannerImage?.[0]?.url
-          ? `${baseStrapiUrl}${quest.BannerImage[0].url}`
-          : undefined
-        : quest.BannerImage?.url
-          ? `${baseStrapiUrl}${quest.BannerImage?.url}`
-          : undefined;
+        ? resolveStrapiMediaUrl(quest.BannerImage?.[0]?.url)
+        : resolveStrapiMediaUrl(quest.BannerImage?.url);
     } else {
-      imageUrl = quest.Image ? `${baseStrapiUrl}${quest.Image.url}` : undefined;
+      imageUrl = resolveStrapiMediaUrl(quest.Image?.url);
     }
 
     return {

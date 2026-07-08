@@ -235,6 +235,7 @@ class QuestParams {
     'quests_platform',
     'quests_platform.Logo',
     'BannerImage',
+    'ExtraWideImage',
     'tasks_verification',
     'tasks_verification.TaskWidgetInformation',
     'tasks_verification.TaskWidgetInformation.sourceChain',
@@ -394,6 +395,7 @@ type PerkField =
   | 'ClaimableSteps'
   | 'HowToUseDescription'
   | 'NextStepsDescription'
+  | 'HasCustomPromoCodes'
   | 'Featured'
   | 'createdAt'
   | 'updatedAt'
@@ -411,6 +413,7 @@ class PerkParams {
     'ClaimableSteps',
     'HowToUseDescription',
     'NextStepsDescription',
+    'HasCustomPromoCodes',
     'Featured',
     'createdAt',
     'updatedAt',
@@ -585,6 +588,29 @@ class QuestStrapiApi extends StrapiApi {
 
   filterBy(key: string, value: string): this {
     this.apiUrl.searchParams.set(`filters[${key}][$eq]`, value);
+    return this;
+  }
+
+  filterBySlugs(slugs: string[]): this {
+    slugs.forEach((slug, index) => {
+      this.apiUrl.searchParams.set(`filters[Slug][$in][${index}]`, slug);
+    });
+    return this;
+  }
+
+  // Excludes missions manually flagged as ended before their EndDate. hasEnded
+  // is null on older entries and a plain $ne would drop those too, so the
+  // exclusion is a null-safe $or. Claims filters[$and][0] — don't combine with
+  // filterByTag, which uses the same slot.
+  filterByNotEnded(): this {
+    this.apiUrl.searchParams.set(
+      'filters[$and][0][$or][0][hasEnded][$eq]',
+      'false',
+    );
+    this.apiUrl.searchParams.set(
+      'filters[$and][0][$or][1][hasEnded][$null]',
+      'true',
+    );
     return this;
   }
 
@@ -804,12 +830,6 @@ class PerkStrapiApi extends StrapiApi {
   }
 }
 
-class MerklRewardsStrapiApi extends StrapiApi {
-  constructor() {
-    super({ contentType: 'merkl-rewards' });
-  }
-}
-
 class AnnouncementStrapiApi extends StrapiApi {
   constructor() {
     super({ contentType: 'announcements' });
@@ -860,7 +880,6 @@ export {
   StrapiApi,
   TagStrapiApi,
   PerkStrapiApi,
-  MerklRewardsStrapiApi,
   AnnouncementStrapiApi,
   WalletAccessControlStrapiApi,
 };

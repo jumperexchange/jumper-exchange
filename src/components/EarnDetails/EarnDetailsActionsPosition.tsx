@@ -7,8 +7,8 @@ import type { Address } from 'viem';
 import { useToken } from '@/hooks/useToken';
 import type { Token } from '@/types/jumper-backend';
 
-import { formatUSD } from '../../utils/formatNumbers';
-import { SimpleToken } from '../../utils/Token';
+import { formatUSD, formatUSDWithDust } from '@/utils/formatNumbers';
+import { SimpleToken } from '@/utils/Token';
 import { SelectCard } from '../Cards/SelectCard/SelectCard';
 import { SelectCardMode } from '../Cards/SelectCard/SelectCard.styles';
 import { AvatarSize } from '../core/AvatarStack/AvatarStack.types';
@@ -62,11 +62,11 @@ export const EarnDetailsActionsPosition: FC<
       let formattedAmountUSD: string;
 
       if (amount) {
-        formattedAmount = extendedToken.formatAmount(amount);
-        formattedAmountUSD = extendedToken.formatAmountUSD(amount);
+        formattedAmount = extendedToken.formatAmount(amount, t);
+        formattedAmountUSD = extendedToken.formatAmountUSD(amount, t);
       } else if (amountUSD) {
-        formattedAmount = extendedToken.formatAmountFromUSD(amountUSD);
-        formattedAmountUSD = formatUSD(amountUSD);
+        formattedAmount = extendedToken.formatAmountFromUSD(amountUSD, t);
+        formattedAmountUSD = formatUSDWithDust(amountUSD, t);
       } else {
         formattedAmount = extendedToken.formatZeroAmount();
         formattedAmountUSD = extendedToken.formatZeroUSD();
@@ -80,12 +80,12 @@ export const EarnDetailsActionsPosition: FC<
     } else {
       const simpleToken = new SimpleToken(token);
       return {
-        formattedAmount: simpleToken.formatAmount(amount || 0),
+        formattedAmount: simpleToken.formatAmount(amount || 0, t),
         formattedAmountUSD: simpleToken.formatZeroUSD(),
         hasAmount: false,
       };
     }
-  }, [token, extendedToken, amount, amountUSD]);
+  }, [token, extendedToken, amount, amountUSD, t]);
 
   return (
     <Tooltip

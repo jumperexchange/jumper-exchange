@@ -15,14 +15,3 @@ export const AtLeastNWhenLoading = <T>(
   const result = [...d, ...filler].slice(0, maxN);
   return result;
 };
-
-export const formatLockupDuration = (lockupMonths: number) => {
-  const duration = lockupMonths.toLocaleString();
-
-  if (lockupMonths === 0) {
-    return 'None';
-  } else if (lockupMonths <= 1) {
-    return `${duration} month`;
-  }
-  return `${duration} months`;
-};

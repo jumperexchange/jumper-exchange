@@ -11,9 +11,14 @@ import {
   formatTokenPrice,
   priceToTokenAmount,
 } from '@lifi/widget';
+import type { TFunction } from 'i18next';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';
-import { formatUSD } from './formatNumbers';
+import {
+  formatTokenAmountWithDust,
+  formatUSD,
+  formatUSDWithDust,
+} from './formatNumbers';
 
 const isJumperToken = (
   token: StaticToken | JumperToken,
@@ -46,25 +51,26 @@ export class SimpleToken {
 
     if (isJumperToken(token)) {
       this.chainId = token.chain.chainId;
-      this.logoURI = token.logo;
+      this.logoURI = token.logo ?? undefined;
     } else {
       this.chainId = token.chainId;
-      this.logoURI = token.logoURI;
+      this.logoURI = token.logoURI ?? undefined;
       this.coinKey = token.coinKey;
       this.tags = token.tags;
     }
   }
 
-  protected formatTokenWithSymbol(amount: string) {
-    return `${amount} ${this.symbol || '---'}`;
+  protected formatTokenWithSymbol(amount: string, t?: TFunction) {
+    return formatTokenAmountWithDust(amount, this.symbol, t);
   }
 
-  formatAmount(amount: string | number | bigint) {
+  formatAmount(amount: string | number | bigint, t?: TFunction) {
     if (typeof amount == 'number' && !Number.isInteger(amount)) {
       console.error(`Token formatAmount: number ${amount} is not an integer`);
     }
     return this.formatTokenWithSymbol(
       formatTokenAmount(BigInt(amount), this.decimals),
+      t,
     );
   }
 
@@ -110,7 +116,10 @@ export class ExtendedToken extends SimpleToken {
     return formatUSD(this.priceUSD);
   }
 
-  formatAmountUSD(amountToken: string | number | bigint): string {
+  formatAmountUSD(
+    amountToken: string | number | bigint,
+    t?: TFunction,
+  ): string {
     if (typeof amountToken == 'number' && !Number.isInteger(amountToken)) {
       console.error(
         `Token formatAmountUSD: number ${amountToken} is not an integer`,
@@ -123,13 +132,13 @@ export class ExtendedToken extends SimpleToken {
           this.priceUSD,
         )
       : 0;
-    return formatUSD(amount);
+    return formatUSDWithDust(amount, t);
   }
 
-  formatAmountFromUSD(amountUSD: string | number | bigint) {
+  formatAmountFromUSD(amountUSD: string | number | bigint, t?: TFunction) {
     const amount = this.priceUSD
       ? priceToTokenAmount(amountUSD.toString(), this.priceUSD)
       : '0';
-    return this.formatTokenWithSymbol(amount);
+    return this.formatTokenWithSymbol(amount, t);
   }
 }

@@ -1,7 +1,7 @@
 import { ChainType } from '@lifi/sdk';
 import type { WidgetConfig } from '@lifi/widget';
 import { useMemo } from 'react';
-import { publicRPCList } from 'src/const/rpcList';
+import { getCustomRPCs, publicRPCList } from 'src/const/rpcList';
 import type { LanguageKey } from 'src/types/i18n';
 import { TaskType } from 'src/types/strapi';
 import getApiUrl from 'src/utils/getApiUrl';
@@ -68,7 +68,7 @@ export function useSharedRPCConfig(
           isPrivateVariant: params.isPrivateVariant,
         }),
         rpcUrls: {
-          ...JSON.parse(envConfig.NEXT_PUBLIC_CUSTOM_RPCS ?? '{}'),
+          ...getCustomRPCs(),
           ...publicRPCList,
         },
         routeOptions: {
@@ -146,7 +146,7 @@ export function useLanguageConfig(
 ): Partial<WidgetConfig> {
   return useMemo(() => {
     if (!isMissionContext(context)) {
-      const languageResourcesEN: EnglishLanguageResource = {
+      const additionalLanguageResources: EnglishLanguageResource = {
         warning: {
           message: {
             lowAddressActivity:
@@ -155,7 +155,7 @@ export function useLanguageConfig(
         },
       };
 
-      languageResourcesEN.header = {
+      additionalLanguageResources.header = {
         exchange:
           context.starterVariant === 'private'
             ? deps.translation.t('widget.private.title')
@@ -164,13 +164,29 @@ export function useLanguageConfig(
               : deps.translation.t('widget.exchange.title'),
       };
 
+      if (context.starterVariant === 'private') {
+        additionalLanguageResources.info = {
+          title: {
+            routeNotFound: deps.translation.t(
+              'modal.privateSwap.noRouteMinAmountTitle',
+            ),
+          },
+          message: {
+            routeNotFound: deps.translation.t(
+              'modal.privateSwap.noRouteMinAmountSubtitle',
+            ),
+          },
+        };
+      }
+
       return {
         languages: {
           default: deps.translation.i18n.language as LanguageKey,
           allow: deps.translation.i18n.languages as LanguageKey[],
         },
         languageResources: {
-          en: languageResourcesEN,
+          en: additionalLanguageResources,
+          [deps.translation.i18n.language]: additionalLanguageResources,
         },
       };
     }

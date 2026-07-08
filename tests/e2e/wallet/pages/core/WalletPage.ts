@@ -8,6 +8,8 @@ import type { BrowserContext, Page } from '@playwright/test';
 
 export type WalletSelectors = Record<string, unknown>;
 
+class PopupNotFoundError extends Error {}
+
 export default abstract class WalletPage<
   TSelectors extends WalletSelectors = WalletSelectors,
 > extends BasePage<TSelectors> {
@@ -85,16 +87,28 @@ export default abstract class WalletPage<
    */
   async confirmInPopup(
     context: BrowserContext,
-    urlMatchers?: string[],
-  ): Promise<void> {
-    const popupPage = await this.getPopupPage(
-      context,
-      urlMatchers ?? this.getPopupUrlMatchers(),
-    );
-    await popupPage.waitForLoadState('domcontentloaded');
-    await popupPage.bringToFront().catch(() => {});
-    const popupWallet = this.createExtensionPageInstance(popupPage);
-    await popupWallet.confirmTransaction();
+    options: {
+      optional?: boolean;
+      timeoutMs?: number;
+      urlMatchers?: string[];
+    } = {},
+  ): Promise<boolean> {
+    const { optional = false, timeoutMs, urlMatchers } = options;
+    try {
+      const popupPage = await this.getPopupPage(
+        context,
+        urlMatchers ?? this.getPopupUrlMatchers(),
+        timeoutMs,
+      );
+      const popupWallet = this.createExtensionPageInstance(popupPage);
+      await popupWallet.confirmTransaction();
+      return true;
+    } catch (error) {
+      if (optional && error instanceof PopupNotFoundError) {
+        return false;
+      }
+      throw error;
+    }
   }
 
   /**
@@ -239,17 +253,25 @@ export default abstract class WalletPage<
   async getPopupPage(
     context: BrowserContext,
     urlMatchers: string[] = this.getPopupUrlMatchers(),
+    timeoutMs?: number,
   ): Promise<Page> {
     const { retries, retrySleepMs, waitPageMs } = this.getPopupTiming();
 
     const matches = (url: string) =>
       url !== 'about:blank' && urlMatchers.some((m) => url.includes(m));
 
+    // 0) Already-open fast path: a matching popup may have opened before we
+    // started listening; grab it instead of burning the full timeout.
+    const existing = await this.findAndFocusMatchingPage(context, urlMatchers);
+    if (existing && matches(existing.url())) {
+      return await this.preparePopupPage(existing);
+    }
+
     // 1) First try: wait for a page that matches
     try {
       const p = await context.waitForEvent('page', {
         predicate: (page) => matches(page.url()),
-        timeout: waitPageMs,
+        timeout: timeoutMs ?? waitPageMs,
       });
       return await this.preparePopupPage(p);
     } catch {
@@ -267,7 +289,7 @@ export default abstract class WalletPage<
         .catch(() => {});
     }
 
-    throw new Error(
+    throw new PopupNotFoundError(
       `Could not detect wallet popup. Matchers: [${urlMatchers.join(', ')}]`,
     );
   }

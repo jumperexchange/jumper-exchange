@@ -26,6 +26,7 @@ export const commonArgs = {
       "Development Value - This value is used in our e2e tests workflows!!!\n\nLenders earn yield from interest paid by borrowers. Borrowers deposit collateral assets into Morpho's credit markets and borrow loans against their collateral. For detail on this vault’s curator and risk parameters, see [link](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base).\n\nDescription from vault manager:\n\nThe Moonwell Flagship USDC Morpho vault curated by B.Protocol and Block Analitica is intended to optimize risk-adjusted interest earned from blue-chip collateral markets.\n\n[See more](https://app.morpho.org/vault?vault=0xc1256Ae5FF1cf2719D4937adb3bbCCab2E00A2Ca&network=base)",
     tags: ['Staking', 'Earn'],
     rewards: [],
+    messages: [],
     lpToken: {
       name: 'Moonwell Flagship USDC',
       symbol: 'mwUSDC',
@@ -38,7 +39,7 @@ export const commonArgs = {
       },
     },
     slug: 'moonwell-flagship-usdc-on-base',
-    lockupMonths: 2,
+    lockupDays: 60,
     capInDollar: '1000000000000000000',
     featured: true,
     forYou: true,

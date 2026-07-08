@@ -1,4 +1,11 @@
 import type { Balance, PricedToken } from '@/types/tokens';
+import {
+  DUST_AMOUNT_THRESHOLD,
+  DUST_USD_THRESHOLD,
+  NBSP,
+  formatTokenAmountWithDust,
+  formatUSDWithDust,
+} from '@/utils/formatNumbers';
 import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +45,9 @@ export const useTokenFormatters = () => {
       options: FormatAmountUSDOptions = {},
     ): string => {
       const value = Number(toAmountUSD(balance));
+      if (value > 0 && value < DUST_USD_THRESHOLD) {
+        return formatUSDWithDust(value, t);
+      }
       if (options.compact) {
         return t('format.currencyCompact', { value });
       }
@@ -59,6 +69,10 @@ export const useTokenFormatters = () => {
       options?: FormatAmountOptions,
     ): string => {
       const amount = toAmount(balance);
+      const numeric = parseFloat(amount);
+      if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
+        return formatTokenAmountWithDust(amount, symbol ?? '', t);
+      }
       const formatted = t('format.decimal', {
         value: Number(amount),
         minimumFractionDigits: options?.minimumFractionDigits,
@@ -67,7 +81,7 @@ export const useTokenFormatters = () => {
       if (!symbol) {
         return formatted;
       }
-      return `${formatted} ${symbol}`;
+      return `${formatted}${NBSP}${symbol}`;
     },
     [t, toAmount],
   );

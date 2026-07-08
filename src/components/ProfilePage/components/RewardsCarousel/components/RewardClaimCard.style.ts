@@ -47,6 +47,7 @@ export const RewardCardActionsContainer = styled(Box)(({ theme }) => ({
   alignContent: 'center',
   flexDirection: 'row',
   gap: theme.spacing(1),
+  flexShrink: 0,
 }));
 
 export const ExplorerLinkButton = styled(IconButton)<IconButtonProps>(

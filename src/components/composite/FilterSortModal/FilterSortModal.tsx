@@ -24,6 +24,7 @@ import {
   sectionCardSx,
   selectBadgeSx,
 } from './constants';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 interface FilterSortModalProps extends Omit<MultiLayerProps, 'title'> {
   triggerButtonLabel?: string;
@@ -62,6 +63,11 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
   useEffect(() => {
     setSelectedIndex(0);
   }, [categories.length]);
+
+  const effectiveLeaf =
+    selectedCategory && isLeafCategory(selectedCategory)
+      ? selectedCategory
+      : null;
 
   const handleClose = () => {
     onClose?.();
@@ -137,22 +143,18 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
           >
             <Stack
               direction="column"
-              sx={[
+              sx={mergeSx(
                 {
                   gap: 1,
                 },
-                ...(Array.isArray(categoryListSx)
-                  ? categoryListSx
-                  : [categoryListSx]),
-              ]}
+                categoryListSx,
+              )}
             >
               {categories.map((category, index) => (
                 <CategoryListItem
                   key={category.id}
                   category={category}
-                  onClick={() => {
-                    setSelectedIndex(index);
-                  }}
+                  onClick={() => setSelectedIndex(index)}
                   sx={(theme) =>
                     categoryListItemSx(theme, selectedIndex === index)
                   }
@@ -161,9 +163,9 @@ export const FilterSortModal: FC<FilterSortModalProps> = ({
             </Stack>
 
             <Stack direction="column" sx={leafCategoryContainerSx}>
-              {selectedCategory && isLeafCategory(selectedCategory) ? (
+              {effectiveLeaf ? (
                 <LeafCategoryRenderer
-                  category={selectedCategory}
+                  category={effectiveLeaf}
                   slotProps={leafCategorySlotProps}
                 />
               ) : null}

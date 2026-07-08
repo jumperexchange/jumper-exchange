@@ -2,8 +2,6 @@ import { useAccount } from '@lifi/wallet-management';
 import type { FormState } from '@lifi/widget';
 import {
   ChainType,
-  DisabledUI,
-  HiddenUI,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
@@ -53,6 +51,17 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
     };
   }, [zapData?.market?.address, zapData?.market?.lpToken.symbol]);
 
+  const toToken = useMemo(() => {
+    const depositToken = zapData?.market?.depositToken;
+    if (!depositToken?.address) {
+      return undefined;
+    }
+    return {
+      tokenAddress: depositToken.address,
+      tokenSymbol: depositToken.symbol ?? '',
+    };
+  }, [zapData?.market?.depositToken]);
+
   const fromChain = useMemo(() => {
     if (!projectData?.chainId) {
       return undefined;
@@ -80,15 +89,16 @@ export const ZapWithdrawWidget: FC<ZapWithdrawWidgetProps> = ({
       subTaskType: 'withdraw' as const,
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_EARN,
       keyPrefix: 'zap.backend',
-      disabledUI: [DisabledUI.FromToken],
-      hiddenUI: [HiddenUI.FromToken],
+      disabledUI: { fromToken: true },
+      hiddenUI: { fromToken: true },
       formData: {
         sourceToken: fromToken,
         sourceChain: fromChain,
         destinationChain: toChain,
+        destinationToken: toToken,
       },
     };
-  }, [ctx, fromToken, fromChain, toChain]);
+  }, [ctx, fromToken, fromChain, toChain, toToken]);
 
   const widgetEvents = useWidgetEvents();
   // Custom effect to refetch the balance

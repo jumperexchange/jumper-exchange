@@ -4,47 +4,30 @@ import {
   WidgetEvent,
   type RouteExecutionUpdate,
 } from '@lifi/widget';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useCallRequest } from 'src/hooks/useCallRequest';
-import {
-  isSpindlFetchResponse,
-  type SpindlFetchData,
-  type SpindlFetchParams,
-} from 'src/types/spindl';
-import { callRequest } from 'src/utils/callRequest';
-import { getLocale } from 'src/utils/getLocale';
-import { getSpindlConfig } from './spindlConfig';
+import { useCallback, useEffect } from 'react';
+import { useCallRequest } from '@/hooks/useCallRequest';
+import { isSpindlFetchResponse, type SpindlFetchParams } from '@/types/spindl';
+import { getLocale } from '@/utils/getLocale';
+import { fetchSpindlCards } from './fetchSpindlCards';
 import { useSpindlProcessData } from './useSpindlProcessData';
-
-const FETCH_SPINDL_PATH = '/render/jumper';
 
 export const useSpindlCards = () => {
   const { account } = useAccount();
   const widgetEvents = useWidgetEvents();
   const processSpindlData = useSpindlProcessData();
-  const spindlConfig = getSpindlConfig();
   const { fetchData } = useCallRequest();
 
   const fetchSpindlData = useCallback(
     async ({ country, chainId, tokenAddress, address }: SpindlFetchParams) => {
       const locale = getLocale().split('-');
-      const queryParams: Record<string, string | undefined> = {
-        placement_id: 'notify_message',
-        limit: '3',
-        address,
+      const queryParams: SpindlFetchParams = {
         country: country || locale[1],
-        chain_id: chainId?.toString(),
-        token_address: tokenAddress,
+        chainId,
+        tokenAddress,
+        address,
       };
 
-      const queryFn = async () =>
-        callRequest<SpindlFetchData>({
-          method: 'GET',
-          path: FETCH_SPINDL_PATH,
-          apiUrl: spindlConfig.apiUrl,
-          headers: spindlConfig.headers,
-          queryParams,
-        });
+      const queryFn = () => fetchSpindlCards(queryParams);
 
       try {
         const response = await fetchData(queryFn, queryParams);
@@ -57,7 +40,7 @@ export const useSpindlCards = () => {
         console.error('Error fetching Spindl data:', error);
       }
     },
-    [fetchData, processSpindlData, spindlConfig.apiUrl, spindlConfig.headers],
+    [fetchData, processSpindlData],
   );
 
   useEffect(() => {

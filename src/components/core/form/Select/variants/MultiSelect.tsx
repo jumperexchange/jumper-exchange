@@ -22,6 +22,8 @@ export const MultiSelect = <T extends string[]>({
   options,
   filterBy,
   label,
+  labelStartAdornment,
+  labelEndAdornment,
   labelIcon,
   debounceMs,
   ...rest
@@ -76,7 +78,11 @@ export const MultiSelect = <T extends string[]>({
       onChange={handleChange}
       selectorContent={
         <>
-          <SelectorLabel label={label} icon={labelIcon} />
+          <SelectorLabel
+            label={label}
+            startAdornment={labelStartAdornment ?? labelIcon}
+            endAdornment={labelEndAdornment}
+          />
           {isValueSelected && <SelectBadge label={value.length.toString()} />}
         </>
       }

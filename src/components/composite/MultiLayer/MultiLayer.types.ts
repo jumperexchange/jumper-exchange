@@ -20,6 +20,11 @@ export interface RendererSlotProps {
   listSx?: SxProps<Theme>;
   listSpacing?: number;
   itemSx?: SxProps<Theme>;
+  onBack?: () => void;
+  /** Optional content rendered above the search/list, e.g. a selection summary + clear action */
+  header?: ReactNode;
+  /** Optional content rendered between the header row and the search input */
+  tabs?: ReactNode;
 }
 
 /**
@@ -48,6 +53,9 @@ export interface BaseCategoryConfig {
 export interface CategoryOption<T> {
   value: T;
   label: string;
+  startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
+  /** @deprecated Use `startAdornment` instead. */
   icon?: ReactNode;
   disabled?: boolean;
   sx?: SxProps<Theme>;
@@ -77,6 +85,11 @@ export type MultiSelectLeafCategory<TValue extends string | number> =
     options?: CategoryOption<TValue>[];
     searchable?: boolean;
     searchPlaceholder?: string;
+    /**
+     * When set, renders a dedicated "All" toggle button above the list.
+     * Selecting it clears individual selections; selecting any individual item removes it.
+     */
+    allOption?: CategoryOption<TValue>;
   };
 
 /**
@@ -144,6 +157,7 @@ export interface LeafCategoryRenderProps<TValue> {
   value?: TValue;
   onChange: (value: TValue) => void;
   category: LeafCategory<TValue>;
+  slotProps?: RendererSlotProps;
 }
 
 /**

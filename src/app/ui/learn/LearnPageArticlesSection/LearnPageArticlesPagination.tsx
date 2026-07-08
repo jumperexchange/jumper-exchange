@@ -10,8 +10,10 @@ import {
 import { useCallback } from 'react';
 import { useLearnFiltering } from '../../../../providers/LearnProvider/filtering/LearnFilteringContext';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useMediaQuery } from '@mui/material';
 
 export const LearnPageArticlesPagination = () => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { page, pagination, setPage, tab, tabs } = useLearnFiltering();
   const { trackEvent } = useUserTracking();
   const trackPagination = useCallback(
@@ -54,7 +56,7 @@ export const LearnPageArticlesPagination = () => {
   return pagination.pageCount > 1 ? (
     <Pagination
       variant={PaginationVariant.WindowedPages}
-      maxVisiblePages={3}
+      maxVisiblePages={isMobile ? 1 : 3}
       page={page}
       setPage={setPage}
       pagination={pagination}

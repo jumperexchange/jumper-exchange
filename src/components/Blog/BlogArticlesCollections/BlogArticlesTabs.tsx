@@ -1,7 +1,7 @@
 'use client';
 
 import type { Breakpoint } from '@mui/material';
-import { Box, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback, useState } from 'react';
 
 import {
@@ -45,6 +45,7 @@ export function BlogArticlesTabs({
   const { trackEvent } = useUserTracking();
   const [pageTab, setPageTab] = useState(pagination.page);
   const chunkedPages = chunkArray(data, pagination.pageSize);
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const trackPagination = useCallback(
     (label: string, page: number) => {
@@ -120,7 +121,8 @@ export function BlogArticlesTabs({
       </Box>
       {pagination.pageCount > 1 && (
         <Pagination
-          variant={PaginationVariant.AllPages}
+          variant={PaginationVariant.WindowedPages}
+          maxVisiblePages={isMobile ? 1 : 3}
           id={tag?.Title}
           page={pageTab}
           setPage={setPage}

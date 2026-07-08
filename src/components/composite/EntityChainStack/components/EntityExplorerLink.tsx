@@ -11,14 +11,24 @@ interface EntityExplorerLinkProps {
   address: string;
   chainId: string;
   hintVariant?: TypographyProps['variant'];
+  hintColor?: TypographyProps['color'];
+  prefix?: string;
+  showIcon?: boolean;
 }
 
 export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
   address,
   chainId,
   hintVariant = 'bodyXSmall',
+  hintColor = 'text.secondary',
+  prefix = 'address',
+  showIcon = true,
 }) => {
-  const explorerUrl = useBlockchainExplorerURL(Number(chainId), address);
+  const explorerUrl = useBlockchainExplorerURL(
+    Number(chainId),
+    address,
+    prefix,
+  );
   if (!explorerUrl) {
     return null;
   }
@@ -37,17 +47,26 @@ export const EntityExplorerLink: FC<EntityExplorerLinkProps> = ({
         alignItems: 'center',
         cursor: 'pointer',
         textDecoration: 'none',
+        maxWidth: '100%',
+        overflow: 'hidden',
       }}
     >
       <Typography
         variant={hintVariant}
         sx={{
-          color: 'text.secondary',
+          color: hintColor,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         }}
       >
         {truncateAddress(address, 5, 3)}
       </Typography>
-      <OpenInNewRoundedIcon sx={{ width: 12, height: 12, color: 'iconHint' }} />
+      {showIcon && (
+        <OpenInNewRoundedIcon
+          sx={{ width: 12, height: 12, color: 'iconHint', flexShrink: 0 }}
+        />
+      )}
     </Stack>
   );
 };

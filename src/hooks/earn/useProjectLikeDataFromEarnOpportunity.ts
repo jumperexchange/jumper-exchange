@@ -18,7 +18,7 @@ export const useProjectLikeDataFromEarnOpportunity = (
           decimals: earnOpportunity.asset.decimals,
           chainId: earnOpportunity.asset.chain.chainId,
           coinKey: earnOpportunity.asset.symbol.toLowerCase(),
-          logoURI: earnOpportunity.asset.logo,
+          logoURI: earnOpportunity.asset.logo ?? undefined,
         },
         lpToken: {
           symbol: earnOpportunity.lpToken.symbol,

@@ -11,8 +11,8 @@ export interface Notification {
   title: string;
   body: string;
   category: NotificationCategory;
-  ctaLabel: string;
-  ctaUrl: string;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
   createdAt: string;
   updatedAt: string;
   expiresAt: string | null;
@@ -25,8 +25,10 @@ export interface Notification {
 }
 
 export interface NotificationSummary {
+  /** Live (non-expired) notification count, computed server-side. */
   count: number;
-  latestCreatedAt: string | null;
+  /** Expired subset of the count, exposed for future client-side use. */
+  expiredCount: number;
 }
 
 export interface NotificationStoreData {

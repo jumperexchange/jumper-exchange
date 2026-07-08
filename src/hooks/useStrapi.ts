@@ -7,10 +7,7 @@ import {
 import type { StrapiMeta, StrapiResponseData } from '@/types/strapi';
 import type { Account } from '@lifi/widget-provider';
 import { useQuery } from '@tanstack/react-query';
-import {
-  getStrapiApiAccessToken,
-  getStrapiBaseUrl,
-} from 'src/utils/strapi/strapiHelper';
+import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';
 
 export interface UseStrapiProps<T> {
@@ -49,6 +46,13 @@ interface ContentTypeProps {
   pagination?: PaginationProps;
   filterFeaturedFaq?: boolean;
   queryKey?: (string | number | undefined)[];
+  /** Override the Strapi publication status filter. When omitted the default
+   *  env-based rule applies: 'draft' on non-production, nothing on production. */
+  status?: 'draft' | 'published';
+  /** When true, skips the PersonalizedFeatureCard exclusion filter (feature-cards only). */
+  includePersonalized?: boolean;
+  /** When true, skips the campaignStart/campaignEnd date-window filters (feature-cards only). */
+  ignoreCampaignDates?: boolean;
 }
 
 export function getStrapiUrl(contentType: string): URL {
@@ -68,6 +72,9 @@ export const useStrapi = <T>({
   pagination,
   filterFeaturedFaq,
   queryKey,
+  status,
+  includePersonalized,
+  ignoreCampaignDates,
 }: ContentTypeProps): UseStrapiProps<T> => {
   // account needed to filter personalized feature cards
 
@@ -152,16 +159,22 @@ export const useStrapi = <T>({
     apiUrl.searchParams.set('populate[0]', 'BackgroundImageLight');
     apiUrl.searchParams.set('populate[1]', 'BackgroundImageDark');
     apiUrl.searchParams.set('populate[2]', 'featureCardsExclusions');
-    apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
-    //filter url
-    const currentDate = new Date(Date.now()).toISOString().split('T')[0];
-    apiUrl.searchParams.set(
-      'filters[$or][0][campaignStart][$lte]',
-      currentDate,
-    );
-    apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
-    apiUrl.searchParams.set('filters[$or][0][campaignEnd][$gte]', currentDate);
-    apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
+    if (!includePersonalized) {
+      apiUrl.searchParams.set('filters[PersonalizedFeatureCard][$nei]', 'true');
+    }
+    if (!ignoreCampaignDates) {
+      const currentDate = new Date(Date.now()).toISOString().split('T')[0];
+      apiUrl.searchParams.set(
+        'filters[$or][0][campaignStart][$lte]',
+        currentDate,
+      );
+      apiUrl.searchParams.set('filters[$or][1][campaignStart][$null]', 'true');
+      apiUrl.searchParams.set(
+        'filters[$or][0][campaignEnd][$gte]',
+        currentDate,
+      );
+      apiUrl.searchParams.set('filters[$or][1][campaignEnd][$null]', 'true');
+    }
   }
 
   // partner-themes -->
@@ -178,23 +191,27 @@ export const useStrapi = <T>({
       apiUrl.searchParams.set('filters[uid][$eq]', filterUid);
     }
   }
-  // show drafts ONLY on development env
-  config.NEXT_PUBLIC_ENVIRONMENT !== 'production' &&
-    apiUrl.searchParams.set('status', 'draft');
-  config.NEXT_PUBLIC_ENVIRONMENT === 'development' &&
+  // Explicit `status` prop wins; otherwise show drafts on non-production envs.
+  const defaultStatus =
+    config.NEXT_PUBLIC_ENVIRONMENT !== 'production' ? 'draft' : undefined;
+  const effectiveStatus = status ?? defaultStatus;
+  if (effectiveStatus) {
+    apiUrl.searchParams.set('status', effectiveStatus);
+  }
+  if (config.NEXT_PUBLIC_ENVIRONMENT === 'development') {
     apiUrl.searchParams.set('pagination[pageSize]', '50');
-
-  // use local strapi on develop || prod strapi
-  const apiAccesToken = getStrapiApiAccessToken();
+  }
 
   const { data, isSuccess, isLoading, isRefetching, isFetching } = useQuery({
-    queryKey: [queryKey, filterPersonalFeatureCards?.account?.isConnected],
+    queryKey: [
+      queryKey,
+      filterPersonalFeatureCards?.account?.isConnected,
+      effectiveStatus,
+      includePersonalized ?? false,
+      ignoreCampaignDates ?? false,
+    ],
     queryFn: async () => {
-      const response = await fetch(decodeURIComponent(apiUrl.href), {
-        headers: {
-          Authorization: `Bearer ${apiAccesToken}`,
-        },
-      });
+      const response = await fetch(decodeURIComponent(apiUrl.href));
       const result = await response.json();
       return result;
     },

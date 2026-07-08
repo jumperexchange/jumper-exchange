@@ -3,36 +3,16 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { getOpportunitiesFiltered } from '@/app/lib/getOpportunitiesFiltered';
-import { EarnPage, EarnPageSkeleton } from '@/app/ui/earn';
+import { EarnPageContent } from '@/app/ui/earn/EarnPageContent';
+import { EarnPageSkeleton } from '@/app/ui/earn/EarnPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 import { Suspense } from 'react';
-import envConfig from '@/config/env-config';
 
 type Params = Promise<{ slug: string }>;
 
 export const dynamicParams = true;
 export const revalidate = 300;
-
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
-    return [];
-  }
-  const res = await getOpportunitiesFiltered({});
-  const rows = res.data?.data ?? [];
-  const slugs = [
-    ...new Set(
-      rows
-        .map(({ slug }) => slug)
-        .filter(
-          (slug): slug is string => typeof slug === 'string' && slug.length > 0,
-        ),
-    ),
-  ];
-  return slugs.map((slug) => ({ slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -63,13 +43,9 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
 
-  if (!slug) {
-    return notFound();
-  }
-
   return (
     <Suspense fallback={<EarnPageSkeleton />}>
-      <EarnPage slug={slug} />
+      <EarnPageContent slug={slug} />
     </Suspense>
   );
 }

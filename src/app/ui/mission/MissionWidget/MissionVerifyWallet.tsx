@@ -227,7 +227,9 @@ export const MissionVerifyWallet: FC<MissionVerifyWalletProps> = ({
               height: '100%',
             }}
           >
-            <MissionWidgetContainer sx={{ justifyContent: 'space-between' }}>
+            <MissionWidgetContainer
+              sx={{ justifyContent: 'space-between', width: '100%' }}
+            >
               {renderContent()}
 
               <StatusBottomSheet

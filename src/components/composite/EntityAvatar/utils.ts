@@ -1,14 +1,14 @@
-import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { ExtendedChain } from '@lifi/sdk';
-import type { CountEntity, DisplayableEntity } from './types';
-import type { Token } from '@/types/tokens';
-import { isExtendedToken, isPositionToken } from '@/types/tokens';
+import type { AvatarData } from '@/components/core/AvatarStack/AvatarStack.types';
 import type {
-  Chain,
   App,
-  Protocol,
   Token as BackendToken,
+  Chain,
+  Protocol,
 } from '@/types/jumper-backend';
+import type { Token } from '@/types/tokens';
+import { isPositionToken } from '@/types/tokens';
+import type { CountEntity, DisplayableEntity } from './types';
 
 export const isCountType = (e: DisplayableEntity): e is CountEntity =>
   'count' in e && typeof e.count === 'number';
@@ -140,6 +140,22 @@ export const getEntityAddress = (
   }
   if (isBackendToken(entity)) {
     return entity.address;
+  }
+  return undefined;
+};
+
+/**
+ * Get the chain ID a token entity lives on (as opposed to getEntityChainId,
+ * which resolves the chain ID for entities that *are* a chain).
+ */
+export const getEntityTokenChainId = (
+  entity: DisplayableEntity,
+): string | undefined => {
+  if (isTokensType(entity)) {
+    return getTokenChainId(entity)?.toString();
+  }
+  if (isBackendToken(entity)) {
+    return entity.chain.chainId.toString();
   }
   return undefined;
 };

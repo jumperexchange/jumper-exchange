@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { ParagraphLink } from '../RichBlocks.style';
 import { isExternalUrl } from 'src/utils/urls/isExternalUrl';
 
@@ -9,14 +9,16 @@ interface LinkRendererProps {
   };
 }
 
-export const LinkRenderer: FC<LinkRendererProps> = ({ content }) => {
-  const isExternal = isExternalUrl(content.url);
-  const externalProps = isExternal
+export const getParagraphLinkProps = (url: string) => ({
+  href: url,
+  ...(isExternalUrl(url)
     ? { target: '_blank' as const, rel: 'noopener noreferrer' }
-    : {};
+    : {}),
+});
 
+export const LinkRenderer: FC<LinkRendererProps> = ({ content }) => {
   return (
-    <ParagraphLink href={content.url} {...externalProps}>
+    <ParagraphLink {...getParagraphLinkProps(content.url)}>
       {content.children[0].text}
     </ParagraphLink>
   );

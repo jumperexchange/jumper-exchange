@@ -1,17 +1,17 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
-import { Suspense } from 'react';
-import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { getQuestsWithNoCampaignAttached } from 'src/app/lib/getQuestsWithNoCampaignAttached';
+import { fetchQuestBySlugForPage } from 'src/app/lib/missions/cachedMissionsFetch';
 import { siteName } from 'src/app/lib/metadata';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
-import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
+import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
 import { questSlugSchema } from 'src/utils/validation-schemas';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
+import { MissionPageContent } from 'src/app/ui/mission/MissionPageContent';
 import { MissionPageSkeleton } from 'src/app/ui/mission/MissionPageSkeleton';
-import { MissionPage } from 'src/app/ui/mission/MissionPage';
 import { UPCOMING_DAYS_AHEAD } from 'src/const/quests';
 import envConfig from '@/config/env-config';
+import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
@@ -67,21 +67,20 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    // Validate slug
     const slugResult = questSlugSchema.safeParse(slug);
 
     if (!slugResult.success) {
       throw new Error('Invalid mission slug');
     }
 
-    const mission = await getQuestBySlug(slugResult.data);
+    const mission = await fetchQuestBySlugForPage(slugResult.data);
 
-    if (!mission || !mission.data) {
+    if (!mission) {
       throw new Error('Mission not found');
     }
 
-    const missionData = mission.data;
-    const baseUrl = getStrapiBaseUrl();
+    const missionData = mission;
+    const imageUrl = resolveStrapiMediaUrl(missionData.Image?.url);
 
     const pageUrl = `${getSiteUrl()}${AppPaths.Missions}/${slug}`;
 
@@ -90,14 +89,16 @@ export async function generateMetadata({
       description: `${sliceStrToXChar(missionData.Information || 'Mission description', 60)}`,
       siteName: siteName,
       url: pageUrl,
-      images: [
-        {
-          url: `${baseUrl}${missionData.Image?.url}`,
-          width: 900,
-          height: 450,
-          alt: 'banner image',
-        },
-      ],
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: 900,
+              height: 450,
+              alt: 'banner image',
+            },
+          ]
+        : undefined,
       type: 'article',
     };
 
@@ -120,7 +121,7 @@ export async function generateMetadata({
 }
 
 export const dynamicParams = true;
-export const revalidate = 3600;
+export const revalidate = 300;
 
 export default async function Page({ params }: { params: Params }) {
   const { slug } = await params;
@@ -131,7 +132,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <Suspense fallback={<MissionPageSkeleton />}>
-      <MissionPage slug={slug} />
+      <MissionPageContent slug={slug} />
     </Suspense>
   );
 }

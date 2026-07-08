@@ -13,6 +13,7 @@ export function proxy(request: NextRequest) {
   const response = i18nRouter(request, {
     ...i18nConfig,
     localeDetector: lookupI18nLocaleDetector,
+    serverSetCookie: 'if-empty',
   });
 
   const storedLocale = request.cookies.get(cookieName)?.value;
@@ -21,12 +22,17 @@ export function proxy(request: NextRequest) {
       path: '/',
       maxAge: 0,
       sameSite: 'lax',
+      secure: true,
     });
   }
 
-  // Set a cookie with the pathname that was used on the first page load
-  const pathname = request.nextUrl.pathname;
-  response.cookies.set('pathname', pathname, { path: '/', sameSite: 'strict' });
+  // Set once on first page load; re-setting on every request causes cf-cache-status: BYPASS
+  if (!request.cookies.get('pathname')?.value) {
+    response.cookies.set('pathname', request.nextUrl.pathname, {
+      path: '/',
+      sameSite: 'strict',
+    });
+  }
 
   return response;
 }

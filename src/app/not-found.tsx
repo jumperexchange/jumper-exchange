@@ -14,6 +14,7 @@ import { ReactQueryProvider } from 'src/providers/ReactQueryProvider';
 import { SettingsStoreProvider } from 'src/stores/settings/SettingsStore';
 import { ServerNavbar } from 'src/components/Navbar/ServerNavbar';
 import { getPartnerThemes } from './lib/getPartnerThemes';
+import { getThemeBootstrapInlineScript } from '@/providers/ThemeProvider/getThemeBootstrapInlineScript';
 
 export default async function NotFound() {
   const { resources } = await initTranslations(fallbackLng, namespaces);
@@ -26,6 +27,13 @@ export default async function NotFound() {
       className={fonts.map((f) => f.variable).join(' ')}
     >
       <head>
+        <script
+          id="theme-bootstrap"
+          data-cfasync="false"
+          dangerouslySetInnerHTML={{
+            __html: getThemeBootstrapInlineScript(),
+          }}
+        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <Script

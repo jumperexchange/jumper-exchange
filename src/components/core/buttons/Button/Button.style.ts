@@ -27,6 +27,9 @@ export const StyledButton = styled(MuiButton, {
   ),
   textTransform: 'none',
   letterSpacing: 0,
+  '& svg': {
+    alignSelf: 'center',
+  },
   '& .MuiButton-loadingIndicator': {
     display: 'flex',
     justifyContent: 'center',
