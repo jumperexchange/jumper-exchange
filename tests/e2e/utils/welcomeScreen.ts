@@ -1,8 +1,9 @@
-import type { Page } from '@playwright/test';
+import {
+  SETTINGS_PERSIST_KEY,
+  SETTINGS_PERSIST_VERSION,
+} from '../../../src/stores/settings/persistConfig';
 
-// Mirrors the zustand persist config in src/stores/settings/createSettingsStore.tsx.
-const SETTINGS_STORE_KEY = 'jumper-store';
-const SETTINGS_STORE_VERSION = 4;
+import type { Page } from '@playwright/test';
 
 /**
  * Seeds the persisted settings store so the welcome overlay never mounts.
@@ -25,6 +26,6 @@ export async function seedWelcomeScreenClosed(page: Page): Promise<void> {
         }),
       );
     },
-    { key: SETTINGS_STORE_KEY, version: SETTINGS_STORE_VERSION },
+    { key: SETTINGS_PERSIST_KEY, version: SETTINGS_PERSIST_VERSION },
   );
 }

@@ -4,6 +4,10 @@ import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { defaultSettings } from '@/config/config';
+import {
+  SETTINGS_PERSIST_KEY,
+  SETTINGS_PERSIST_VERSION,
+} from '@/stores/settings/persistConfig';
 import type { SettingsProps, SettingsState } from '@/types/settings';
 import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
 
@@ -71,8 +75,8 @@ export const createSettingsStore = (props: Partial<SettingsProps>) =>
         },
       }),
       {
-        name: 'jumper-store',
-        version: 4,
+        name: SETTINGS_PERSIST_KEY,
+        version: SETTINGS_PERSIST_VERSION,
         migrate: (persistedState: any, version: number) => {
           if (version === 0) {
             const newStore = { ...persistedState };
