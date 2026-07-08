@@ -176,9 +176,9 @@ export class SettingsPage {
       .locator('xpath=.//*[contains(text(), "/")]');
   }
 
-  // Widget 4.2.0 drill-down option rows are ListItemButton divs with
-  // role="button"; the accessible name starts with the row title (secondary
-  // description text is appended for some rows).
+  // Drill-down option rows are ListItemButton divs with role="button"; the
+  // accessible name starts with the row title (secondary description text is
+  // appended for some rows).
   private listOption(title: string): Locator {
     return this.page.getByRole('button', {
       name: new RegExp(`^${escapeForRegex(title)}`),
