@@ -8,6 +8,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
+import envConfig from '@/config/env-config';
 
 function toolsConfig(allow?: string[], deny?: string[]) {
   if (!allow && !deny) {
@@ -107,15 +108,23 @@ export function useMainWidgetConfig(
       routeLabels: [
         generateRouteLabel(
           '1.5x points',
-          'hyperbloom',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg',
+          'hyperbloom',
         ),
         generateRouteLabel(
           '1.5x points',
-          'hyperflow',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg',
+          'hyperflow',
+        ),
+        generateRouteLabel(
+          'Verified',
+          deps.theme.muiTheme,
+          `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
+          '',
+          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          'neutral',
         ),
       ],
     };
