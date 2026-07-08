@@ -21,7 +21,9 @@ interface MissionCardProps {
 }
 
 export const MissionCard: FC<MissionCardProps> = ({ mission }) => {
-  const missionDisplayData = useFormatDisplayQuestData(mission, false);
+  const missionDisplayData = useFormatDisplayQuestData(mission, {
+    useBannerImage: false,
+  });
   const { status, isDisabled } = useMissionTimeStatus(
     mission.StartDate,
     mission.EndDate,

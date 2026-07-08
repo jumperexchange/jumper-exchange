@@ -2,14 +2,13 @@
 import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import type { EarnOpportunityExtended } from 'src/stores/withdrawFlow/WithdrawFlowStore';
-import { useWithdrawFlowStore } from 'src/stores/withdrawFlow/WithdrawFlowStore';
+import type { EarnOpportunityExtended } from '@/stores/withdrawFlow/WithdrawFlowStore';
+import { useWithdrawFlowStore } from '@/stores/withdrawFlow/WithdrawFlowStore';
 import { WithdrawButton } from '../WithdrawButton/WithdrawButton';
 import type { WithdrawButtonProps } from '../WithdrawButton/WithdrawButton.types';
 import { WithdrawModal } from '../WithdrawModal/WithdrawModal';
 import { useEarnOpportunityBySlug } from '@/hooks/earn/useEarnOpportunityBySlug';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
-import { TrackingAction, TrackingEventDataAction } from '@/const/trackingKeys';
 import { useEarnTracking } from '@/hooks/userTracking/useEarnTracking';
 import { useIsEarnUIFeatureDisabled } from '@/hooks/earn/useDisabledEarnUIFeatures';
 import type { EarnInteractionFlags } from '@/types/jumper-backend';
@@ -25,27 +24,7 @@ export const WithdrawFlowModal = () => {
   }
 
   return (
-    <WidgetTrackingProvider
-      trackingActionKeys={{
-        destinationChainAndTokenSelection:
-          TrackingAction.OnDestinationChainAndTokenSelectionEarnWithdraw,
-        availableRoutes: TrackingAction.OnAvailableRoutesEarnWithdraw,
-        routeExecutionStarted:
-          TrackingAction.OnRouteExecutionStartedEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingAction.OnRouteExecutionCompletedEarnWithdraw,
-        routeExecutionFailed: TrackingAction.OnRouteExecutionFailedEarnWithdraw,
-        changeSettings: TrackingAction.OnChangeSettingsEarnWithdraw,
-      }}
-      trackingDataActionKeys={{
-        routeExecutionStarted:
-          TrackingEventDataAction.ExecutionStartEarnWithdraw,
-        routeExecutionCompleted:
-          TrackingEventDataAction.ExecutionCompletedEarnWithdraw,
-        routeExecutionFailed:
-          TrackingEventDataAction.ExecutionFailedEarnWithdraw,
-      }}
-    >
+    <WidgetTrackingProvider variant="earnWithdraw">
       <WithdrawModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -100,7 +79,7 @@ export const WithdrawFlowOnDemandButton: FC<
   Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
     earnOpportunityInteractionFlags?: EarnInteractionFlags;
-    protocolUrl?: string;
+    protocolUrl?: string | null;
     protocolName?: string;
   }
 > = ({

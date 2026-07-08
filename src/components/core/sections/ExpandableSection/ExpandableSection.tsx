@@ -11,7 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { mergeSx } from '@/utils/theme/mergeSx';
 
-interface ExpandableSectionProps<T> {
+export interface ExpandableSectionProps<T> {
   header: React.ReactNode;
   items: T[];
   renderItem: (item: T) => React.ReactNode;

@@ -24,14 +24,22 @@ export class ColdLcpBenchmark {
     expect(summary.n).toBe(iterations);
     expect(summary.p50).toBeGreaterThan(0);
 
-    if (this.config.p95BudgetMs == null) {
+    const isEarnRoute = label.startsWith('earn');
+    const isMissionRoute = label.startsWith('mission');
+    const budgetMs = isEarnRoute
+      ? this.config.earnP95BudgetMs
+      : isMissionRoute
+        ? this.config.missionsP95BudgetMs
+        : this.config.p95BudgetMs;
+
+    if (budgetMs == null) {
       return;
     }
 
     expect(
       summary.p95,
-      `${label} LCP p95 should be <= ${this.config.p95BudgetMs} ms`,
-    ).toBeLessThanOrEqual(this.config.p95BudgetMs);
+      `${label} LCP p95 should be <= ${budgetMs} ms`,
+    ).toBeLessThanOrEqual(budgetMs);
   }
 
   logTransitionMetrics(metrics: TransitionMetrics): void {

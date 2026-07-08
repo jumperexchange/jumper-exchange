@@ -36,27 +36,35 @@ interface DisplayQuestData {
   };
 }
 
+interface UseFormatDisplayQuestDataOptions {
+  useBannerImage?: boolean;
+  preferExtraWideImage?: boolean;
+  baseNavPath?: string;
+}
+
 function isQuest(quest: Quest | QuestData): quest is Quest {
   return 'BannerImage' in quest;
 }
 
 export function useFormatDisplayQuestData(
   quest: Quest,
-  useBannerImage?: boolean,
-  baseNavPath?: string,
+  options?: UseFormatDisplayQuestDataOptions,
 ): DisplayQuestData;
 export function useFormatDisplayQuestData(
   quest: QuestData,
-  useBannerImage?: boolean,
-  baseNavPath?: string,
+  options?: UseFormatDisplayQuestDataOptions,
 ): DisplayQuestData;
 
 export function useFormatDisplayQuestData(
   quest: Quest | QuestData,
-  useBannerImage: boolean = true,
-  baseNavPath: string = AppPaths.Missions,
+  {
+    useBannerImage = true,
+    preferExtraWideImage = false,
+    baseNavPath = AppPaths.Missions,
+  }: UseFormatDisplayQuestDataOptions = {},
 ) {
   const rewardGroups = useFormatDisplayRewardsData(
+    quest.Slug,
     quest.CustomInformation,
     quest.Points ?? undefined,
   );
@@ -87,7 +95,15 @@ export function useFormatDisplayQuestData(
 
     let imageUrl: string | undefined;
 
-    if (useBannerImage) {
+    // preferExtraWideImage takes priority over useBannerImage. Use it for slots
+    // that need a ~3:1 ratio (e.g. Profile page tiles) where BannerImage (2:1)
+    // and Image (~1.54:1) would both be cropped incorrectly by object-fit:cover.
+    // Falls back to Image if ExtraWideImage is not set on the quest.
+    if (preferExtraWideImage) {
+      imageUrl = resolveStrapiMediaUrl(
+        quest.ExtraWideImage?.url || quest.Image?.url,
+      );
+    } else if (useBannerImage) {
       imageUrl = isQuest(quest)
         ? resolveStrapiMediaUrl(quest.BannerImage?.[0]?.url)
         : resolveStrapiMediaUrl(quest.BannerImage?.url);

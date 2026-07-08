@@ -54,7 +54,7 @@ export const StyledAccordionSummary = styled(AccordionSummary, {
     minWidth: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    color: (theme.vars || theme).palette.buttonActiveAction,
+    color: (theme.vars || theme).palette.buttonAlphaDarkAction,
   },
 }));
 

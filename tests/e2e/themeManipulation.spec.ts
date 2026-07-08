@@ -92,9 +92,14 @@ test.describe('Switch theme — partner themes', () => {
           backgroundElement.evaluate((el, prevBgColor) => {
             const bgColorChanged =
               getComputedStyle(el).backgroundColor !== prevBgColor;
+            // Partner themes render the bg as a <canvas>/<video>
+            // (CanvasBackground/AnimatedBackgroundImage), not just color/<img>.
             const imgElement = el.querySelector('img');
-            const hasBgImage = imgElement !== null && !!imgElement.src;
-            return bgColorChanged || hasBgImage;
+            const hasBackground =
+              (imgElement !== null && !!imgElement.src) ||
+              el.querySelector('video') !== null ||
+              el.querySelector('canvas') !== null;
+            return bgColorChanged || hasBackground;
           }, initialBgColor),
         )
         .toBe(true);

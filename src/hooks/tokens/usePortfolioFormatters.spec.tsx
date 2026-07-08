@@ -1,6 +1,7 @@
 import type { PortfolioBalance, PricedToken } from '@/types/tokens';
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { NBSP } from '@/utils/formatNumbers';
 import { usePortfolioFormatters } from './usePortfolioFormatters';
 
 const buildBalance = (
@@ -30,7 +31,7 @@ describe('usePortfolioFormatters', () => {
       const balances = [buildBalance(1n, 0)];
 
       expect(result.current.toDisplayAggregatedAmount(balances)).toBe(
-        '<0.0001 ETH',
+        `<0.0001${NBSP}ETH`,
       );
     });
 
@@ -40,7 +41,7 @@ describe('usePortfolioFormatters', () => {
       const balances = [buildBalance(100000000000000n, 0)];
 
       expect(result.current.toDisplayAggregatedAmount(balances)).toBe(
-        'format.decimal ETH',
+        `format.decimal${NBSP}ETH`,
       );
     });
 
@@ -50,7 +51,7 @@ describe('usePortfolioFormatters', () => {
       const balances = [buildBalance(1000000000000000000n, 2000)];
 
       expect(result.current.toDisplayAggregatedAmount(balances)).toBe(
-        'format.decimal ETH',
+        `format.decimal${NBSP}ETH`,
       );
     });
 
@@ -60,7 +61,7 @@ describe('usePortfolioFormatters', () => {
       const balances = [buildBalance(1n, 0), buildBalance(2n, 0)];
 
       expect(result.current.toDisplayAggregatedAmount(balances)).toBe(
-        '<0.0001 ETH',
+        `<0.0001${NBSP}ETH`,
       );
     });
 
@@ -69,7 +70,7 @@ describe('usePortfolioFormatters', () => {
       const balances = [buildBalance(0n, 0)];
 
       expect(result.current.toDisplayAggregatedAmount(balances)).toBe(
-        'format.decimal ETH',
+        `format.decimal${NBSP}ETH`,
       );
     });
   });

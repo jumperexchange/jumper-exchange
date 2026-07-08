@@ -2,6 +2,7 @@ import type { PricedToken, PortfolioBalance } from '@/types/tokens';
 import {
   DUST_AMOUNT_THRESHOLD,
   DUST_USD_THRESHOLD,
+  NBSP,
   formatTokenAmountWithDust,
   formatUSDWithDust,
 } from '@/utils/formatNumbers';
@@ -54,7 +55,7 @@ export const usePortfolioFormatters = () => {
     ): string => {
       const totalAmountUSD = toAggregatedAmountUSD(balances);
       if (totalAmountUSD > 0 && totalAmountUSD < DUST_USD_THRESHOLD) {
-        return formatUSDWithDust(totalAmountUSD);
+        return formatUSDWithDust(totalAmountUSD, t);
       }
       const formatKey = options?.compact
         ? 'format.currencyCompact'
@@ -70,10 +71,10 @@ export const usePortfolioFormatters = () => {
       const numeric = Number(amount);
       const symbol = balances[0].token.symbol;
       if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-        return formatTokenAmountWithDust(amount, symbol);
+        return formatTokenAmountWithDust(amount, symbol, t);
       }
       const formatted = t('format.decimal', { value: numeric });
-      return `${formatted} ${symbol}`;
+      return `${formatted}${NBSP}${symbol}`;
     },
     [t, toAggregatedAmount],
   );

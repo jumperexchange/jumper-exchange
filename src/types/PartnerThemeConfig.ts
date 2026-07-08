@@ -11,6 +11,7 @@ export interface PartnerThemeConfig {
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;
+  backgroundImageMime: string | null;
   backgroundImagePosition: string;
   footerImageUrl: URL | null;
   logo:
@@ -37,6 +38,8 @@ export interface PartnerThemeConfig {
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;
+  canvasBackground: { id: string; options: Record<string, unknown> } | null;
   allowedBridges: string[];
   allowedExchanges: string[];
+  allowFeatureCardBackground: boolean;
 }

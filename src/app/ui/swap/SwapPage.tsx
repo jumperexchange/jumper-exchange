@@ -1,5 +1,5 @@
 import { Widget } from '@/components/Widgets/Widget';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import type { ExtendedChain } from '@lifi/sdk';
 import { Container, Stack, Typography } from '@mui/material';
 import SwapExplanationSection from './SwapExplanation';
 import StepsExplainerSection from './SwapStepsExplainer';
@@ -9,17 +9,9 @@ interface SwapPageProps {
   sourceChain: ExtendedChain;
   destinationChain: ExtendedChain;
   chainName: string;
-  tokens: TokensResponse['tokens'];
-  sourceToken?: Token;
-  destinationToken?: Token;
 }
 
-const SwapPage = ({
-  sourceChain,
-  chainName,
-  destinationToken,
-  sourceToken,
-}: SwapPageProps) => {
+const SwapPage = ({ sourceChain, chainName }: SwapPageProps) => {
   return (
     <Container>
       <Stack
@@ -50,9 +42,7 @@ const SwapPage = ({
         <StepsExplainerSection
           sourceChain={sourceChain}
           chainName={chainName}
-          sourceToken={sourceToken}
           destinationChain={sourceChain}
-          destinationToken={destinationToken}
         />
 
         <Stack

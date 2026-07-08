@@ -1,6 +1,7 @@
 'use client';
 import { JUMPER_URL } from '@/const/urls';
-import type { ExtendedChain, Token } from '@lifi/sdk';
+import { useTokens } from '@/hooks/useTokens';
+import type { ExtendedChain } from '@lifi/sdk';
 import { Link as MuiLink, Typography, useColorScheme } from '@mui/material';
 import Link from 'next/link';
 import { Fragment } from 'react';
@@ -13,20 +14,20 @@ import { getResolvedMode } from 'src/utils/image-generation/helpers';
 interface SwapStepsExplainerProps {
   sourceChain: ExtendedChain;
   destinationChain: ExtendedChain;
-  sourceToken?: Token;
-  destinationToken?: Token;
   chainName: string;
 }
 
 const SwapStepsExplainerSection = ({
   sourceChain,
   destinationChain,
-  sourceToken,
-  destinationToken,
   chainName,
 }: SwapStepsExplainerProps) => {
   const { mode } = useColorScheme();
   const resolvedMode = getResolvedMode(mode);
+  const { tokens } = useTokens();
+  const chainTokens = tokens?.[sourceChain.id] ?? [];
+  const sourceToken = chainTokens[0];
+  const destinationToken = chainTokens[1];
   const steps = [
     {
       title: 'Step 1: Prepare Your Wallet',

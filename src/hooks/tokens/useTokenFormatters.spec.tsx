@@ -1,6 +1,7 @@
 import type { Balance, PricedToken } from '@/types/tokens';
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { NBSP } from '@/utils/formatNumbers';
 import { useTokenFormatters } from './useTokenFormatters';
 
 const buildBalance = (
@@ -29,7 +30,7 @@ describe('useTokenFormatters', () => {
 
       expect(
         result.current.toDisplayAmount(balance, balance.token.symbol),
-      ).toBe('<0.0001 ETH');
+      ).toBe(`<0.0001${NBSP}ETH`);
     });
 
     it('does not collapse amount exactly at the threshold boundary', () => {
@@ -41,7 +42,7 @@ describe('useTokenFormatters', () => {
       // (mocked t returns the key as-is in tests).
       expect(
         result.current.toDisplayAmount(balance, balance.token.symbol),
-      ).toBe('format.decimal ETH');
+      ).toBe(`format.decimal${NBSP}ETH`);
     });
 
     it('returns localized key + symbol for normal amounts', () => {
@@ -51,7 +52,7 @@ describe('useTokenFormatters', () => {
 
       expect(
         result.current.toDisplayAmount(balance, balance.token.symbol),
-      ).toBe('format.decimal ETH');
+      ).toBe(`format.decimal${NBSP}ETH`);
     });
 
     it('does not collapse zero amount', () => {
@@ -60,14 +61,14 @@ describe('useTokenFormatters', () => {
 
       expect(
         result.current.toDisplayAmount(balance, balance.token.symbol),
-      ).toBe('format.decimal ETH');
+      ).toBe(`format.decimal${NBSP}ETH`);
     });
 
     it('falls back to --- symbol when symbol is missing on dust path', () => {
       const { result } = renderHook(() => useTokenFormatters());
       const balance = buildBalance(1n, { symbol: '' });
 
-      expect(result.current.toDisplayAmount(balance)).toBe('<0.0001 ---');
+      expect(result.current.toDisplayAmount(balance)).toBe(`<0.0001${NBSP}---`);
     });
 
     it('returns localized key without symbol when no symbol is provided on normal path', () => {

@@ -38,6 +38,12 @@ export const CHAINS = {
 
 export type ChainName = (typeof CHAINS)[keyof typeof CHAINS];
 
+// Deeplink chain id → LiFi display name (the widget token card's subheader).
+export const CHAIN_NAMES_BY_ID: Record<string, string> = {
+  '1': 'Ethereum',
+  '42161': 'Arbitrum',
+};
+
 export const JUMPER_BUTTONS = {
   CONNECT: 'Connect',
   PASS: 'Pass',

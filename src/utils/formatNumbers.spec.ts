@@ -1,37 +1,67 @@
+import { createInstance } from 'i18next';
 import { describe, expect, it } from 'vitest';
 import {
+  NBSP,
+  currencyFormatter,
+  decimalFormatter,
   formatTokenAmountWithDust,
   formatUSDWithDust,
   formatValueWithConfig,
 } from './formatNumbers';
 import { APY_FORMAT_CONFIG } from './numbers/apy';
 
+async function buildFrT() {
+  const i18n = createInstance();
+  await i18n.init({
+    lng: 'fr',
+    resources: {
+      fr: {
+        translation: {
+          format: {
+            dustAmount: `<{{value, decimalExt(maximumFractionDigits: 4)}}${NBSP}{{symbol}}`,
+            dustUsd: '<{{value, currencyExt(currency: USD)}}',
+          },
+        },
+      },
+    },
+    defaultNS: 'translation',
+    ns: ['translation'],
+  });
+  i18n.services.formatter?.addCached('decimalExt', decimalFormatter);
+  i18n.services.formatter?.addCached('currencyExt', currencyFormatter);
+  return i18n.t.bind(i18n);
+}
+
 describe('formatTokenAmountWithDust', () => {
   it('should collapse dust amount to <0.0001 SYMBOL', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', 'eETH')).toBe(
-      '<0.0001 eETH',
+      `<0.0001${NBSP}eETH`,
     );
   });
 
   it('should not collapse amount exactly at boundary', () => {
-    expect(formatTokenAmountWithDust('0.0001', 'eETH')).toBe('0.0001 eETH');
+    expect(formatTokenAmountWithDust('0.0001', 'eETH')).toBe(
+      `0.0001${NBSP}eETH`,
+    );
   });
 
   it('should not collapse zero', () => {
-    expect(formatTokenAmountWithDust('0', 'eETH')).toBe('0 eETH');
+    expect(formatTokenAmountWithDust('0', 'eETH')).toBe(`0${NBSP}eETH`);
   });
 
   it('should not collapse normal amount', () => {
-    expect(formatTokenAmountWithDust('12.345', 'eETH')).toBe('12.345 eETH');
+    expect(formatTokenAmountWithDust('12.345', 'eETH')).toBe(
+      `12.345${NBSP}eETH`,
+    );
   });
 
   it('should use --- fallback for missing symbol on normal amount', () => {
-    expect(formatTokenAmountWithDust('1', '')).toBe('1 ---');
+    expect(formatTokenAmountWithDust('1', '')).toBe(`1${NBSP}---`);
   });
 
   it('should use --- fallback for missing symbol on dust amount', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', '')).toBe(
-      '<0.0001 ---',
+      `<0.0001${NBSP}---`,
     );
   });
 });
@@ -59,6 +89,36 @@ describe('formatUSDWithDust', () => {
 
   it('should treat empty string as zero', () => {
     expect(formatUSDWithDust('')).toBe('$0.00');
+  });
+});
+
+describe('formatTokenAmountWithDust with fr locale', () => {
+  it('renders dust amount with fr decimal separator when t is provided', async () => {
+    const t = await buildFrT();
+    const result = formatTokenAmountWithDust(
+      '0.000000000000000001',
+      'WAVAX',
+      t,
+    );
+    expect(result).toBe(`<0,0001${NBSP}WAVAX`);
+  });
+
+  it('falls back to en-US literal when t is omitted', () => {
+    expect(formatTokenAmountWithDust('0.000000000000000001', 'WAVAX')).toBe(
+      `<0.0001${NBSP}WAVAX`,
+    );
+  });
+});
+
+describe('formatUSDWithDust with fr locale', () => {
+  it('renders dust USD with fr locale formatting when t is provided', async () => {
+    const t = await buildFrT();
+    const result = formatUSDWithDust(0.001, t);
+    expect(result).toBe(`<0,01${NBSP}$US`);
+  });
+
+  it('falls back to en-US literal when t is omitted', () => {
+    expect(formatUSDWithDust(0.001)).toBe('<$0.01');
   });
 });
 

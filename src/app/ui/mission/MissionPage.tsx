@@ -13,9 +13,9 @@ interface MissionPageProps {
 }
 
 export const MissionPage: FC<MissionPageProps> = ({ slug }) => {
-  const { data, isLoading } = useQuestBySlug(slug);
+  const { data, isPending } = useQuestBySlug(slug);
 
-  if (isLoading || !data) {
+  if (isPending || !data) {
     return <MissionPageSkeleton />;
   }
 

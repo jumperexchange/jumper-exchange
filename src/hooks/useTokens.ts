@@ -1,43 +1,11 @@
-import type { ChainId, TokensResponse } from '@lifi/sdk';
-import { ChainType, getTokens } from '@lifi/sdk';
+import type { ChainId } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
-import { sdkClient } from '@/utils/instrumentation/lifiSdkConfig';
-import assign from 'lodash/assign';
 import { useCallback } from 'react';
 import type { Address } from 'viem';
 
 import { ExtendedToken } from '../utils/Token';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
-import { createBatchFetcher } from '@/utils/batches/fetcher';
-
-const TOKEN_CHAIN_TYPES: ChainType[] = Object.values(ChainType);
-
-const tokensBatchesByChainType: Record<string, ChainType[]> =
-  Object.fromEntries(
-    TOKEN_CHAIN_TYPES.map((chainType) => [chainType, [chainType]]),
-  );
-
-export const getTokensQuery = async (
-  signal?: AbortSignal,
-): Promise<TokensResponse['tokens']> => {
-  const { results } = createBatchFetcher<ChainType, TokensResponse>(
-    tokensBatchesByChainType,
-    async (_batchKey, chainTypes) => {
-      const data = await getTokens(sdkClient, { chainTypes: [...chainTypes] });
-      return [data];
-    },
-    {},
-    { concurrency: 4 },
-    signal,
-  );
-
-  const resultsList = await results;
-
-  return assign(
-    {} as TokensResponse['tokens'],
-    ...resultsList.map((r) => r.tokens),
-  );
-};
+import { getTokensQuery } from '@/app/lib/tokens/tokenQueries';
 
 export const useTokens = () => {
   const { data, isLoading, isSuccess, isError, error, dataUpdatedAt } =

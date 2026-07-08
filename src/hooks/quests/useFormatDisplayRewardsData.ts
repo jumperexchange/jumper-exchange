@@ -1,43 +1,35 @@
-import { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
-import { useMissionsMaxAPY } from '../useMissionsMaxAPY';
 import { useMemo } from 'react';
+import type { CustomInformation, RewardGroup } from 'src/types/loyaltyPass';
+import type { RewardsInterface } from 'src/types/questDetails';
 import { toCompactValue, toFixedFractionDigits } from 'src/utils/formatNumbers';
-import { RewardsInterface } from 'src/types/questDetails';
+import { useMissionApy } from '@/hooks/mission/useMissionApy';
+import { formatApy } from '@/utils/numbers/apy';
 
 export const useFormatDisplayRewardsData = (
+  slug: string,
   customInformation?: CustomInformation,
   pointsFallback?: number,
 ) => {
-  const {
-    tokenRewards,
-    rewardType,
-    rewardRange,
-    rewardsIds,
-    chains,
-    genericRewards,
-  } = useMemo(() => {
-    return {
-      tokenRewards: customInformation?.['tokenRewards'],
-      rewardType: customInformation?.['rewardType'],
-      rewardRange: customInformation?.['rewardRange'],
-      rewardsIds: customInformation?.['rewardsIds'],
-      chains: customInformation?.['chains'],
-      genericRewards: customInformation?.['genericRewards'] ?? [],
-    };
-  }, [customInformation]);
+  const { tokenRewards, rewardType, rewardRange, chains, genericRewards } =
+    useMemo(() => {
+      return {
+        tokenRewards: customInformation?.['tokenRewards'],
+        rewardType: customInformation?.['rewardType'],
+        rewardRange: customInformation?.['rewardRange'],
+        chains: customInformation?.['chains'],
+        genericRewards: customInformation?.['genericRewards'] ?? [],
+      };
+    }, [customInformation]);
 
-  const chainIds = (chains ?? [])
-    .map((chain) => chain.chainId)
-    .filter((chainId) => chainId !== undefined);
-
-  const { apy: apyValue } = useMissionsMaxAPY(rewardsIds, chainIds);
+  const { data } = useMissionApy(slug);
+  const apyValue = data?.total;
 
   const apyRewards = useMemo(() => {
     if (apyValue) {
       return [
         {
-          value: `${toFixedFractionDigits(apyValue, 0, 2)}%`,
-          label: 'APY',
+          value: formatApy(apyValue),
+          label: 'APR',
         },
       ];
     }

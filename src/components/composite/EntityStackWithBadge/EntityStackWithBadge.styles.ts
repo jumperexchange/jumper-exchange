@@ -63,7 +63,7 @@ export const BadgeStackWrapper = styled(Box, {
     {
       props: ({ badgeSize }) => badgeSize === AvatarSize['3XS'],
       style: {
-        right: -2,
+        right: -3,
       },
     },
     {

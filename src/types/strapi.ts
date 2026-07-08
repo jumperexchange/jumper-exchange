@@ -288,6 +288,11 @@ export interface Customization {
   hasBlurredNavigation?: boolean;
   hasThemeModeSwitch?: boolean;
   themeModeIcon?: string;
+  canvasBackground?: {
+    id: string;
+    options?: Record<string, unknown>;
+  };
+  allowFeatureCardBackground?: boolean;
 }
 
 type WidgetConfigProps = Omit<WidgetConfig, 'integrator'> &
@@ -332,6 +337,9 @@ interface TaskVerification {
   name: string;
   task: any; // Custom field type
   description: string;
+  uuid: string;
+  hasTask: boolean;
+  isRequired?: boolean;
   CTALink: string;
   CTAText: string;
   TaskType?: TaskType;
@@ -359,6 +367,7 @@ export interface QuestData {
   Information: string | null;
   CustomInformation: any;
   BannerImage?: StrapiMediaData;
+  ExtraWideImage?: StrapiMediaData;
   ClaimingId: string | null;
   Subtitle: string | null;
   tasks_verification?: TaskVerification[];

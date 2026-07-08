@@ -1,13 +1,16 @@
 import type { Theme } from '@mui/material/styles';
-import type { RouteLabelRule } from '@lifi/widget';
+import type { Route, RouteLabelRule } from '@lifi/widget';
 import { ChainType } from '@lifi/widget';
 
 export const generateRouteLabel = (
   text: string,
-  allowExchange: string,
   theme: Theme,
   backgroundImage?: string,
+  allowExchange?: string,
+  match?: (route: Route) => boolean,
+  variant: 'gradient' | 'neutral' = 'gradient',
 ): RouteLabelRule => {
+  const isNeutral = variant === 'neutral';
   return {
     label: {
       text: text,
@@ -21,25 +24,46 @@ export const generateRouteLabel = (
         gap: theme.spacing(0.5),
         paddingLeft: theme.spacing(0.5),
         paddingRight: theme.spacing(0.5),
-        background: `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
-        color: (theme.vars || theme).palette.white.main,
+        background: isNeutral
+          ? `${(theme.vars || theme).palette.badgeAccent1MutedBg} !important`
+          : `linear-gradient(90deg, ${(theme.vars || theme).palette.orchid[600]} 0%, ${(theme.vars || theme).palette.lavenderDark[300]} 100%)`,
+        color: isNeutral
+          ? (theme.vars || theme).palette.badgeAccent1MutedFg
+          : (theme.vars || theme).palette.white.main,
         ...theme.typography.bodyXSmallStrong,
-        ...theme.applyStyles('light', {
-          // @Note we might adjust to use the theme config
-          background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
-        }),
+        ...(isNeutral
+          ? {}
+          : theme.applyStyles('light', {
+              // @Note we might adjust to use the theme config
+              background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
+            })),
         '&::before': {
           content: '""',
           width: '16px',
           height: '16px',
           borderRadius: '50%', // Makes the icon circular
-          backgroundImage: backgroundImage
-            ? `url(${backgroundImage})`
-            : 'url(https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg)',
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
           flexShrink: 0,
+          ...(isNeutral && backgroundImage
+            ? {
+                // Recolor the icon to match the label text color (white in dark mode)
+                backgroundColor: 'currentColor',
+                maskImage: `url(${backgroundImage})`,
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                WebkitMaskImage: `url(${backgroundImage})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+              }
+            : {
+                backgroundImage: backgroundImage
+                  ? `url(${backgroundImage})`
+                  : undefined,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }),
         },
         '&>p': {
           alignContent: 'flex-end',
@@ -48,9 +72,12 @@ export const generateRouteLabel = (
         },
       },
     },
-    exchanges: {
-      allow: [allowExchange],
-    },
+    match: match,
+    exchanges: allowExchange
+      ? {
+          allow: [allowExchange],
+        }
+      : undefined,
   };
 };
 

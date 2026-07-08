@@ -41,7 +41,9 @@ exports[`WalletBalanceCard snapshot > with error renders alert 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
+                      aria-hidden="true"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1lvnuk-MuiBadge-badge"
+                      style="--Badge-translate: 50%, -50%; --Badge-inset: 14% 14% auto auto; --Badge-origin: 100% 0%;"
                     />
                   </span>
                   <button
@@ -274,7 +276,9 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                       />
                     </div>
                     <span
-                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-anghu-MuiBadge-badge"
+                      aria-hidden="true"
+                      class="MuiBadge-badge MuiBadge-standard MuiBadge-invisible MuiBadge-anchorOriginTopRight MuiBadge-anchorOriginTopRightCircular MuiBadge-overlapCircular css-1lvnuk-MuiBadge-badge"
+                      style="--Badge-translate: 50%, -50%; --Badge-inset: 14% 14% auto auto; --Badge-origin: 100% 0%;"
                     />
                   </span>
                   <button
@@ -450,7 +454,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                               class="MuiStack-root css-1whz3z4-MuiStack-root"
                             >
                               <div
-                                class="MuiBox-root css-1hq6w3b"
+                                class="MuiBox-root css-zdkuk9"
                               >
                                 <div
                                   class="MuiBox-root css-wioyy2"
@@ -560,7 +564,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-1hq6w3b"
+                                      class="MuiBox-root css-zdkuk9"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
@@ -642,7 +646,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       <p
                                         class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
-                                        format.decimal USDC
+                                        format.decimal USDC
                                       </p>
                                     </div>
                                   </div>
@@ -650,7 +654,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                     class="MuiStack-root css-2mffmj-MuiStack-root"
                                   >
                                     <div
-                                      class="MuiBox-root css-1hq6w3b"
+                                      class="MuiBox-root css-zdkuk9"
                                     >
                                       <div
                                         class="MuiBox-root css-wioyy2"
@@ -732,7 +736,7 @@ exports[`WalletBalanceCard snapshot > without error renders normally 1`] = `
                                       <p
                                         class="MuiTypography-root MuiTypography-bodyXXSmall css-avxtwr-MuiTypography-root"
                                       >
-                                        format.decimal USDC
+                                        format.decimal USDC
                                       </p>
                                     </div>
                                   </div>

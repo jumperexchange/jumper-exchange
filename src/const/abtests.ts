@@ -5,6 +5,10 @@ export enum AB_TEST_NAME {
   A_B_TEST_FEE_CONTRIBUTION_DISPLAY = 'a-b-test-fee-contribution-display',
   DUST_CONVERSION = 'dust-conversion',
   REQUEST_REDEEM_FLOW = 'request-redeem-flow',
+  PRIVATE_SWAPS = 'private-swaps',
+  THEME_PARTNER_DEFAULT = 'theme-partner-default',
+  PORTFOLIO_PNL_CHART = 'portfolio-pnl-chart',
+  PORTFOLIO_TRANSACTIONS = 'portfolio-transactions',
 }
 
 // Single source of truth for all A/B tests
@@ -33,7 +37,22 @@ export const AbTests = {
     name: 'request-redeem-flow',
     enabled: true,
   },
-  // Add more tests here as needed
+  [AB_TEST_NAME.PRIVATE_SWAPS]: {
+    name: 'private-swaps',
+    enabled: true,
+  },
+  [AB_TEST_NAME.THEME_PARTNER_DEFAULT]: {
+    name: 'theme-partner-default',
+    enabled: true,
+  },
+  [AB_TEST_NAME.PORTFOLIO_PNL_CHART]: {
+    name: 'portfolio-pnl-chart',
+    enabled: true,
+  },
+  [AB_TEST_NAME.PORTFOLIO_TRANSACTIONS]: {
+    name: 'portfolio-transactions',
+    enabled: true,
+  },
 } as const;
 
 // Global switch for all tests

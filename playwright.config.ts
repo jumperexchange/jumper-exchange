@@ -74,9 +74,15 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'pnpm run dev',
+        // Serve a prod build under CI/E2E_PROD_BUILD — the Turbopack dev server
+        // intermittently boot-hangs on CI runners (300s webServer timeout).
+        command:
+          process.env.E2E_PROD_BUILD || process.env.CI
+            ? 'pnpm run build && pnpm run start'
+            : 'pnpm run dev',
         url: 'http://localhost:3000',
-        timeout: 300 * 1000,
+        timeout:
+          (process.env.E2E_PROD_BUILD || process.env.CI ? 900 : 300) * 1000,
         reuseExistingServer: !process.env.CI,
       },
 
