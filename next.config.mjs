@@ -20,14 +20,18 @@ const nextConfig = {
     '@opentelemetry/host-metrics',
     'ioredis',
   ],
-  cacheHandlers: process.env.NODE_ENV === 'production'
-    ? { default: require.resolve('./cache-handler.cjs') }
-    : undefined,
+  // Only wire the Redis-backed handlers when Redis is actually configured;
+  // otherwise leave these undefined so Next falls back to its own built-in
+  // in-memory cache (dev / test / prod builds without REDIS_HOST).
+  cacheHandlers:
+    process.env.NODE_ENV === 'production' && process.env.REDIS_HOST
+      ? { default: require.resolve('./cache-handler.cjs') }
+      : undefined,
   // Classic incremental cache (ISR/prerender route output) shared via Redis.
   // Distinct from `cacheHandlers` above, which only backs the `"use cache"`
   // directive and does NOT store ISR route output.
   cacheHandler:
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'production' && process.env.REDIS_HOST
       ? require.resolve('./cache-handler-incremental.cjs')
       : undefined,
   // expireTime: 86400, // one day in seconds

@@ -18,12 +18,15 @@ const key = (k) => withPrefix(`route:${k}`);
 const tagKey = (t) => withPrefix(`route-tag:${t}`);
 
 // Buffer (rscData/body/image buffer) and Map (segmentData) are not JSON-safe.
-function replacer(_k, value) {
-  if (Buffer.isBuffer(value)) {
-    return { __t: 'Buffer', d: value.toString('base64') };
+// Buffer.prototype.toJSON() runs before this replacer sees the value, so we
+// read the pre-toJSON value off the holder (`this[k]`) to detect Buffers.
+function replacer(k, value) {
+  const raw = this[k];
+  if (Buffer.isBuffer(raw)) {
+    return { __t: 'Buffer', d: raw.toString('base64') };
   }
-  if (value instanceof Map) {
-    return { __t: 'Map', d: Array.from(value.entries()) };
+  if (raw instanceof Map) {
+    return { __t: 'Map', d: Array.from(raw.entries()) };
   }
   return value;
 }

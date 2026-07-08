@@ -10,9 +10,17 @@ const { promisify } = require('util');
 
 const prefix = process.env.REDIS_PREFIX ?? 'jumper:cache:';
 
+// next.config.mjs only wires the cacheHandler(s) that require this module
+// when REDIS_HOST is set, so it's safe to assume Redis is configured here.
 const client = new Redis({
   host: process.env.REDIS_HOST,
-  port: Number(process.env.REDIS_PORT ?? 6379),
+  port: (() => {
+    const port = parseInt(process.env.REDIS_PORT || '6379', 10);
+    if (isNaN(port) || port < 1 || port > 65535) {
+      throw new Error(`Invalid REDIS_PORT: ${process.env.REDIS_PORT}`);
+    }
+    return port;
+  })(),
   password: process.env.REDIS_PASSWORD || undefined,
   lazyConnect: false,
   maxRetriesPerRequest: 1,
