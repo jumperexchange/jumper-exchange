@@ -4,13 +4,14 @@ import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 
 test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     const landingPage = new LandingPage(page);
+    await seedWelcomeScreenClosed(page);
     await landingPage.goto();
     await page.waitForLoadState('load');
-    await landingPage.closeWelcomeScreen();
   });
 
   test(

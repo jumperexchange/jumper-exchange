@@ -5,6 +5,7 @@ import { realWalletTest as test } from './fixtures/realWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 
 test.describe('Connect/disconnect MetaMask with Jumper and open /profile', () => {
   // JUM-1116: flaky in CI (6/15) — the real-MetaMask connect + post-connect Perks tab
@@ -14,6 +15,7 @@ test.describe('Connect/disconnect MetaMask with Jumper and open /profile', () =>
     qase(36, 'Connect MetaMask wallet to Jumper'),
     async ({ wallet }) => {
       const page = await wallet.getContext().newPage();
+      await seedWelcomeScreenClosed(page);
       await page.goto('/');
       await page.waitForLoadState('domcontentloaded');
 
@@ -22,7 +24,6 @@ test.describe('Connect/disconnect MetaMask with Jumper and open /profile', () =>
       const profilePage = new ProfilePage(page);
 
       await test.step('Connect MetaMask wallet to Jumper', async () => {
-        await landingPage.closeWelcomeScreen();
         await connectWalletPage.clickConnect();
         await connectWalletPage.expectSelectWalletDialogVisible();
         await connectWalletPage.selectWalletOption(WALLET_OPTIONS.METAMASK);
