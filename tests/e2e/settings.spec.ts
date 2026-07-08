@@ -4,6 +4,7 @@ import { SETTINGS_MENU } from './data/settingsMenu';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 for (const { name, size } of [
   { name: 'Mobile', size: { height: 812, width: 375 } },
   { name: 'Desktop', size: { height: 1080, width: 1920 } },
@@ -16,8 +17,8 @@ for (const { name, size } of [
 
     test.beforeEach(async ({ page }) => {
       const landingPage = new LandingPage(page);
+      await seedWelcomeScreenClosed(page);
       await landingPage.goto();
-      await landingPage.closeWelcomeScreen();
     });
     // jscpd:ignore-end
 
@@ -27,12 +28,14 @@ for (const { name, size } of [
         'Should verify all settings menu functionality',
       ),
       async ({ page }) => {
-        // JUM-1116: the Desktop variant (qase 8) hard-fails 12/12 in CI at the slippage step — a
-        // load-sensitive renderer stall on the 2-vCPU runner (proven not-CPU / not dev-vs-prod).
-        // Mobile (qase 7) is unaffected. Re-enable when the runner gains headroom or the step is hardened.
+        // JUM-1116: qase 8 Desktop stalls in CI — a load-sensitive freeze that roves
+        // between heavy steps (bridges checkbox in one run, the slippage Custom row in
+        // the next; 120s click timeouts). Mobile passes, local Desktop passes 6/6, and
+        // the 4.2.0 drill-down migration itself is CI-validated — the stall predates
+        // the old "slippage step" reason. Re-enable with JUM-1116 (runner headroom / spec split).
         test.fixme(
           name === 'Desktop',
-          'JUM-1116: settings Desktop slippage step load-flakes in CI',
+          'JUM-1116: settings Desktop CI shard stall (step-roving click freeze)',
         );
         const settings = new SettingsPage(page);
 
@@ -42,17 +45,20 @@ for (const { name, size } of [
 
         await test.step('Verify route priority options', async () => {
           await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.LABEL);
-          await settings.expectItem(SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN, {
-            enabled: true,
-          });
-          await settings.expectItem(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST, {
-            visible: true,
-          });
+          await settings.expectListOptionSelected(
+            SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN,
+          );
+          await settings.expectListOptionVisible(
+            SETTINGS_MENU.ROUTE_PRIORITY.FASTEST,
+          );
 
-          await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST);
-          await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.LABEL);
-          // Collapsing the submenu renders the chosen value as a summary <p>,
-          // not a Tab button (cf. the slippage step below).
+          await settings.clickListOption(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST);
+          await settings.expectListOptionSelected(
+            SETTINGS_MENU.ROUTE_PRIORITY.FASTEST,
+          );
+          // Selecting does not navigate back; the main panel shows the chosen
+          // value as the card's summary <p>.
+          await settings.goBack();
           await settings.expectSetting(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST, {
             visible: true,
           });
@@ -78,16 +84,19 @@ for (const { name, size } of [
 
         await test.step('Verify slippage settings', async () => {
           await settings.clickItem(SETTINGS_MENU.SLIPPAGE.LABEL);
-          await settings.expectItem(SETTINGS_MENU.SLIPPAGE.AUTO, {
-            visible: true,
-          });
+          await settings.expectListOptionSelected(SETTINGS_MENU.SLIPPAGE.AUTO);
+          for (const preset of SETTINGS_MENU.SLIPPAGE.PRESETS) {
+            await settings.expectListOptionVisible(preset);
+          }
 
+          // The custom input only renders after selecting the Custom row.
+          await settings.clickListOption(SETTINGS_MENU.SLIPPAGE.CUSTOM);
           const slippageValue = '0.05';
           await settings.fillSlippage(slippageValue);
           await settings.expectSlippageWarning(
             SETTINGS_MENU.SLIPPAGE.WARNING_MESSAGE,
           );
-          await settings.clickItem(SETTINGS_MENU.SLIPPAGE.LABEL);
+          await settings.goBack();
           await settings.expectSetting(`${slippageValue}%`, { visible: true });
           await settings.expectWarningBadgeVisible();
         });
