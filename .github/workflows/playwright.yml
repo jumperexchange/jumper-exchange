@@ -213,9 +213,12 @@ jobs:
     # Requires merge-reports to have actually succeeded (not just "not cancelled") — otherwise
     # a merge-reports failure (e.g. blob-download flake) still lets this job start, find no
     # artifact to download, and fail a second time on top of the real failure.
+    # !cancelled() is load-bearing: without a status-check function in the expression GitHub
+    # implicitly ANDs in success(), which is false whenever any upstream job (i.e. a test
+    # shard) failed — and failed runs are exactly when the report matters most.
     # Same-repo only: fork PRs get a read-only GITHUB_TOKEN (push would fail) and we must
     # not host untrusted fork HTML on our public Pages domain.
-    if: ${{ needs.merge-reports.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    if: ${{ !cancelled() && needs.merge-reports.result == 'success' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
     needs: [merge-reports]
     timeout-minutes: 5
     runs-on: ubuntu-latest
