@@ -6,13 +6,14 @@ import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { MainMenuPage } from './pages/MainMenuPage';
 import { ScanPage } from './pages/ScanPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 const NAV_TIMEOUT_MS = 30_000;
 
 test.describe('Main Menu flows', () => {
   test.beforeEach(async ({ page }) => {
     const landingPage = new LandingPage(page);
+    await seedWelcomeScreenClosed(page);
     await landingPage.goto();
-    await landingPage.closeWelcomeScreen();
     await new MainMenuPage(page).open();
   });
 

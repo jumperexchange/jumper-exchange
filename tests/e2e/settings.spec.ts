@@ -4,6 +4,7 @@ import { SETTINGS_MENU } from './data/settingsMenu';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 for (const { name, size } of [
   { name: 'Mobile', size: { height: 812, width: 375 } },
   { name: 'Desktop', size: { height: 1080, width: 1920 } },
@@ -16,8 +17,8 @@ for (const { name, size } of [
 
     test.beforeEach(async ({ page }) => {
       const landingPage = new LandingPage(page);
+      await seedWelcomeScreenClosed(page);
       await landingPage.goto();
-      await landingPage.closeWelcomeScreen();
     });
     // jscpd:ignore-end
 
