@@ -22,7 +22,9 @@ export const SETTINGS_MENU = {
   },
   SLIPPAGE: {
     AUTO: 'Auto',
+    CUSTOM: 'Custom',
     LABEL: 'Max. slippage',
+    PRESETS: ['0.5%', '1%'],
     WARNING_MESSAGE:
       'Low slippage tolerance may cause transaction delays or failures.',
   },
