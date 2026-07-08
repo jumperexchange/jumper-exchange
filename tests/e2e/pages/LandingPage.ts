@@ -108,20 +108,20 @@ export class LandingPage {
    * Deeplinked token addresses resolve into tokens only after the widget's
    * token list loads — until then the route query is gated off entirely, so
    * under CI load routes can lose the race against a fixed timeout. Waits for
-   * the chain-name subheader (renders only once chain AND token resolve);
-   * asserting the token symbol would break across environments (develop
-   * serves 'USDT' where prod serves 'USDT0' for the same Arbitrum token).
+   * the chain badge on the token buttons (renders only once chain AND token
+   * resolve); asserting the token symbol would break across environments
+   * (develop serves 'USDT' where prod serves 'USDT0' for the same token).
    */
   async expectSwapPairResolved(pair: WidgetUrlParams): Promise<void> {
     await expect(
-      this.tokenCard('From').getByText(this.chainNameOf(pair.fromChain), {
-        exact: true,
-      }),
+      this.page
+        .getByTestId('widget-from-token-button')
+        .getByAltText(this.chainNameOf(pair.fromChain)),
     ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
     await expect(
-      this.tokenCard('To').getByText(this.chainNameOf(pair.toChain), {
-        exact: true,
-      }),
+      this.page
+        .getByTestId('widget-to-token-button')
+        .getByAltText(this.chainNameOf(pair.toChain)),
     ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
   }
 
@@ -169,12 +169,5 @@ export class LandingPage {
         timeout: 10_000,
       })
       .toBeGreaterThan(0);
-  }
-
-  // TODO(app): JUM-924 — widget token select buttons lack testids; anchored on the card title text.
-  private tokenCard(title: 'From' | 'To'): Locator {
-    return this.page
-      .locator('button')
-      .filter({ has: this.page.getByText(title, { exact: true }) });
   }
 }
