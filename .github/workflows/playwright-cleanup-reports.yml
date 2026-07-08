@@ -21,12 +21,18 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      # gh-pages may not exist yet (fresh repo, deleted branch); don't hard-fail the
+      # scheduled run when there's nothing to clean up.
+      - name: Checkout gh-pages
+        id: checkout
+        continue-on-error: true
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
           ref: gh-pages
           fetch-depth: 0
       - name: Delete directories older than retention window
         id: prune
+        if: steps.checkout.outcome == 'success'
         shell: bash
         run: |
           set -uo pipefail
@@ -64,6 +70,7 @@ jobs:
           echo "deleted=$deleted" >> "$GITHUB_OUTPUT"
           echo "Deleted $deleted report directories."
       - name: Compact gh-pages history (single orphan commit)
+        if: steps.checkout.outcome == 'success'
         shell: bash
         run: |
           set -euo pipefail
