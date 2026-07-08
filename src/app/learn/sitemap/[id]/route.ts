@@ -3,9 +3,8 @@ import {
   getLearnSitemapEntriesForChunk,
 } from '@/utils/sitemaps/learn';
 import { createSitemapXmlResponse } from '@/utils/sitemaps/xml';
-
-export const dynamic = 'force-static';
-export const revalidate = 86400;
+import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
+import { cacheLife } from 'next/cache';
 
 const parseChunkIndex = (id: string): number | null => {
   if (!id.endsWith('.xml')) {
@@ -19,6 +18,14 @@ const parseChunkIndex = (id: string): number | null => {
 
   return Number(chunkId);
 };
+
+async function getLearnSitemapChunkEntries(
+  chunkIndex: number,
+): Promise<SitemapXmlEntry[]> {
+  'use cache';
+  cacheLife({ revalidate: 86400 });
+  return getLearnSitemapEntriesForChunk(chunkIndex);
+}
 
 export async function generateStaticParams() {
   const ids = await getLearnSitemapChunkIds();
@@ -36,6 +43,6 @@ export async function GET(
     return new Response('Not Found', { status: 404 });
   }
 
-  const entries = await getLearnSitemapEntriesForChunk(chunkIndex);
+  const entries = await getLearnSitemapChunkEntries(chunkIndex);
   return createSitemapXmlResponse(entries);
 }

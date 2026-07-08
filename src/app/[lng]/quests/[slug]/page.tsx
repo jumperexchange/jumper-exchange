@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { AppPaths, getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
+import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
@@ -34,8 +35,16 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: Params }) {
+async function QuestRedirect({ params }: { params: Params }) {
   const { slug } = await params;
-
   redirect(`${AppPaths.Missions}/${slug}`, RedirectType.replace);
+  return null;
+}
+
+export default function Page({ params }: { params: Params }) {
+  return (
+    <Suspense>
+      <QuestRedirect params={params} />
+    </Suspense>
+  );
 }

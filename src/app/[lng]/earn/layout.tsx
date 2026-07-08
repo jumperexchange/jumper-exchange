@@ -9,8 +9,6 @@ import { PageContainer } from 'src/components/Containers/PageContainer';
 import { Layout } from 'src/Layout';
 import { FetchInterceptorProvider } from 'src/providers/FetchInterceptorProvider';
 
-export const fetchCache = 'default-cache';
-
 export default function EarnLayout({ children }: PropsWithChildren) {
   if (!isEarnFeatureEnabled()) {
     return notFound();

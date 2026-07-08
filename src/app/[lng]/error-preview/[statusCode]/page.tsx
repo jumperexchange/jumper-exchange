@@ -1,6 +1,7 @@
 import { HttpError } from '@/types/http-error';
 import { notFound, redirect } from 'next/navigation';
 import { isProduction } from '@/utils/isProduction';
+import { connection } from 'next/server';
 
 type Params = Promise<{ statusCode: string }>;
 
@@ -11,6 +12,7 @@ interface ErrorPreviewPageProps {
 export default async function ErrorPreviewPage({
   params,
 }: ErrorPreviewPageProps) {
+  await connection();
   if (isProduction) {
     return redirect('/');
   }

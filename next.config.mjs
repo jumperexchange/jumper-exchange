@@ -18,9 +18,9 @@ const nextConfig = {
   ],
   // expireTime: 86400, // one day in seconds
   expireTime: 900, // 15 minutes in seconds
+  cacheComponents: true,
   experimental: {
     serverSourceMaps: false,
-    useCache: true,
     optimizePackageImports: [],
   },
   webpack: (config) => {

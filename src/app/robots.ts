@@ -3,11 +3,11 @@ import { buildUrl } from '@/utils/sitemap';
 import { isProduction } from '@/utils/isProduction';
 import { getLearnSitemapChunkIds } from '@/utils/sitemaps/learn';
 import type { MetadataRoute } from 'next';
-
-export const dynamic = 'force-static';
-export const revalidate = 86400;
+import { cacheLife } from 'next/cache';
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
+  'use cache';
+  cacheLife({ revalidate: 86400 });
   // Bridge uses a sitemap index; learn/swap remain listed directly until indexed similarly.
   const learnSitemaps = (await getLearnSitemapChunkIds()).map((id) =>
     buildUrl('learn', 'sitemap', `${id}.xml`),

@@ -1,7 +1,7 @@
-import { getCampaigns } from '@/app/lib/getCampaigns';
+import { getCampaignsForPage } from '@/app/lib/campaign/cachedCampaignFetch';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
+import { getCampaignBySlugForPage } from '@/app/lib/campaign/cachedCampaignFetch';
 import { siteName } from 'src/app/lib/metadata';
 import { CampaignPage } from '@/components/Campaign/CampaignPage';
 import { CampaignPageSkeleton } from 'src/components/Campaign/CampaignPageSkeleton';
@@ -10,7 +10,7 @@ import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 
 // Add generateStaticParams function
 export async function generateStaticParams() {
-  const { data } = await getCampaigns();
+  const { data } = await getCampaignsForPage();
 
   if (!data) {
     return [];
@@ -21,10 +21,6 @@ export async function generateStaticParams() {
   }));
 }
 
-export const dynamicParams = true;
-export const dynamic = 'force-static';
-export const revalidate = 300;
-
 export async function generateMetadata({
   params,
 }: {
@@ -33,7 +29,7 @@ export async function generateMetadata({
   const { slug } = await params;
 
   try {
-    const campaign = await getCampaignBySlug(slug);
+    const campaign = await getCampaignBySlugForPage(slug);
 
     if (!campaign || !campaign.data || campaign.data.length === 0) {
       throw new Error(`Campaign for ${slug} not found`);
@@ -68,12 +64,15 @@ export async function generateMetadata({
 
 type Params = Promise<{ slug: string }>;
 
-export default async function Page({ params }: { params: Params }) {
+async function CampaignPageLoader({ params }: { params: Params }) {
   const { slug } = await params;
+  return <CampaignPage slug={slug} />;
+}
 
+export default function Page({ params }: { params: Params }) {
   return (
     <Suspense fallback={<CampaignPageSkeleton />}>
-      <CampaignPage slug={slug} />
+      <CampaignPageLoader params={params} />
     </Suspense>
   );
 }

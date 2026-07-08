@@ -5,6 +5,8 @@ import { resolveBridgeRoute } from '@/utils/bridge/resolveBridgeRoute';
 import { slugToDisplayLabel } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { WidgetPageSkeleton } from '@/app/ui/shared/WidgetPageSkeleton';
+import { Suspense } from 'react';
 
 type Params = Promise<{ segments: string }>;
 
@@ -47,27 +49,12 @@ export async function generateMetadata({
   };
 }
 
-// Bridge pages are SEO landing pages with effectively static content, so they
-// only need to refresh once a month. Trigger an earlier refresh manually with
-// on-demand revalidation (revalidatePath/revalidateTag) when content changes.
-export const revalidate = 2592000; // 30 days
-export const dynamicParams = true;
-export const dynamic = 'force-static';
-
-// Prerender nothing at build time (the full pair matrix added ~15 min to the
-// build); generate each URL on first request and cache it (ISR).
-export function generateStaticParams() {
-  return [];
-}
-
-export default async function Page({ params }: { params: Params }) {
+async function BridgePageLoader({ params }: { params: Params }) {
   const { segments } = await params;
   const route = await resolveBridgeRoute(segments);
-
   if (!route) {
     return notFound();
   }
-
   return (
     <BridgePage
       sourceChain={route.sourceChain}
@@ -76,5 +63,13 @@ export default async function Page({ params }: { params: Params }) {
       destinationToken={route.destinationToken}
       chains={route.chains}
     />
+  );
+}
+
+export default function Page({ params }: { params: Params }) {
+  return (
+    <Suspense fallback={<WidgetPageSkeleton />}>
+      <BridgePageLoader params={params} />
+    </Suspense>
   );
 }

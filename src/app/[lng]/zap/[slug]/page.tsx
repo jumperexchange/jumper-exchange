@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getQuestBySlug } from 'src/app/lib/getQuestBySlug';
 import { siteName } from 'src/app/lib/metadata';
 import ZapPage from 'src/app/ui/zap/ZapPage';
+import { ZapPageSkeleton } from '@/app/ui/zap/ZapPageSkeleton';
+import { Suspense } from 'react';
 import { getSiteUrl } from 'src/const/urls';
 import { sliceStrToXChar } from 'src/utils/splitStringToXChar';
 import { resolveStrapiMediaUrl } from 'src/utils/strapi/strapiHelper';
@@ -59,14 +61,19 @@ export async function generateMetadata({
   }
 }
 
-export default async function Page({ params }: { params: Params }) {
+async function ZapPageLoader({ params }: { params: Params }) {
   const { slug } = await params;
-
   const { data } = await getQuestBySlug(slug);
-
   if (!data) {
     return notFound();
   }
-
   return <ZapPage market={data} />;
+}
+
+export default function Page({ params }: { params: Params }) {
+  return (
+    <Suspense fallback={<ZapPageSkeleton />}>
+      <ZapPageLoader params={params} />
+    </Suspense>
+  );
 }

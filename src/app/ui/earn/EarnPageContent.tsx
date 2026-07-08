@@ -6,6 +6,7 @@ import { EarnPage } from '@/app/ui/earn/EarnPage';
 import { earnOpportunityBySlugQueryKey } from '@/app/lib/earn/earnQueries';
 import { earnRelatedMarketsQueryKey } from '@/app/lib/earn/earnQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { cacheLife } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { makeQueryClient } from '@/app/lib/makeQueryClient';
 
@@ -14,6 +15,8 @@ interface EarnPageContentProps {
 }
 
 export const EarnPageContent = async ({ slug }: EarnPageContentProps) => {
+  'use cache';
+  cacheLife({ revalidate: 300 });
   const queryClient = makeQueryClient();
 
   const [opportunity] = await Promise.all([

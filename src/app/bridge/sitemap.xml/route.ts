@@ -5,16 +5,20 @@ import {
   createSitemapIndexXmlResponse,
   createSitemapServiceUnavailableResponse,
 } from '@/utils/sitemaps/xml';
+import { cacheLife } from 'next/cache';
 
-export const dynamic = 'force-static';
-export const revalidate = 86400;
+async function getBridgeSitemapIndexData() {
+  'use cache';
+  cacheLife({ revalidate: 86400 });
+  const ids = await getBridgeSitemapChunkIds();
+  const lastModified = toSitemapDate(Date.now());
+  const locs = ids.map((id) => buildUrl('bridge', 'sitemap', `${id}.xml`));
+  return { locs, lastModified };
+}
 
 export async function GET() {
   try {
-    const ids = await getBridgeSitemapChunkIds();
-    const lastModified = toSitemapDate(Date.now());
-    const locs = ids.map((id) => buildUrl('bridge', 'sitemap', `${id}.xml`));
-
+    const { locs, lastModified } = await getBridgeSitemapIndexData();
     return createSitemapIndexXmlResponse(locs, lastModified);
   } catch (error) {
     captureException(error);

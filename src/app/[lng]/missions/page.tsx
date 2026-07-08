@@ -4,8 +4,6 @@ import { MissionsPage } from 'src/app/ui/missions/MissionsPage';
 import { MissionsPageSkeleton } from 'src/app/ui/missions/MissionsPageSkeleton';
 import { getSiteUrl, AppPaths } from 'src/const/urls';
 
-export const revalidate = 300;
-
 export const metadata: Metadata = {
   title: 'Jumper Missions',
   description: `Discover, interact, and grow in DeFi with Jumper's missions and ecosystem campaigns.`,

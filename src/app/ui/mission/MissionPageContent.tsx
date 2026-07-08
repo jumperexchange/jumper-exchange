@@ -2,6 +2,7 @@ import { fetchQuestBySlugForPage } from '@/app/lib/missions/cachedMissionsFetch'
 import { MissionPage } from '@/app/ui/mission/MissionPage';
 import { questBySlugQueryKey } from '@/app/lib/missions/missionQueries';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { cacheLife } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { makeQueryClient } from '@/app/lib/makeQueryClient';
 
@@ -10,6 +11,8 @@ interface MissionPageContentProps {
 }
 
 export const MissionPageContent = async ({ slug }: MissionPageContentProps) => {
+  'use cache';
+  cacheLife({ revalidate: 300 });
   const queryClient = makeQueryClient();
 
   const quest = await queryClient

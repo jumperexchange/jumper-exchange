@@ -4,9 +4,6 @@ import type { PropsWithChildren } from 'react';
 import { Layout } from 'src/Layout';
 import App from '../../ui/app/App';
 
-export const fetchCache = 'default-cache';
-export const revalidate = 300; // 5 minutes
-
 export const metadata: Metadata = {
   other: {
     'partner-theme': 'default',
