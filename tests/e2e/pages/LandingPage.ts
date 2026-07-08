@@ -136,20 +136,17 @@ export class LandingPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  async navigateAndExpectTab(
-    tabKey: number | string,
-    expected: RegExp | string,
+  // The vertical menu is static since JUM-1241 (0 = Simple, 1 = Advanced); the
+  // destination is asserted via a widget tab unique to it, so the check cannot
+  // false-pass against the outgoing page mid-navigation (role=tab name
+  // matching is exact — "Bridge" does not match "Swap & Bridge").
+  async navigateAndExpectWidgetTab(
+    tabKey: number,
+    widgetTab: string,
   ): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await this.page.getByTestId(`tab-key-${tabKey}`).click();
-    // The RegExp form targets the AB-tested Exchange label; scope it to the
-    // navbar button so it can't collide with the widget header, which renders
-    // the same "Swap & Bridge" text page-wide.
-    const label =
-      typeof expected === 'string'
-        ? this.page.getByText(expected, { exact: true })
-        : this.page.getByTestId('navbar-exchange-button').getByText(expected);
-    await expect(label).toBeVisible();
+    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
   }
 
   private chainNameOf(chainId: string): string {

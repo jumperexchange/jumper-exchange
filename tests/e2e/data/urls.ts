@@ -49,14 +49,11 @@ export const JUMPER_BUTTONS = {
   PASS: 'Pass',
 } as const;
 
-// AB-tested by `a-b-test-trade-display` (JUM-797 → JUM-838 ships "Swap & Bridge" to 100%).
-// Bucket is server-resolved per wallet address; tests must accept any variant.
-export const TAB_LABELS = {
-  EXCHANGE: 'Exchange',
-  SWAP_AND_BRIDGE: 'Swap & Bridge',
-  TRADE: 'Trade',
+// Widget tab names that render in EVERY feature-flag bucket (JUM-1241 tabbed
+// navigation): Simple always shows Swap & Bridge + Gas (Private is flag-gated),
+// Advanced always shows Swap + Bridge (Limit is flag-gated). Anchor tests on
+// these so runs stay deterministic across buckets.
+export const WIDGET_TABS = {
+  ADVANCED_BRIDGE: 'Bridge',
+  SIMPLE_SWAP_AND_BRIDGE: 'Swap & Bridge',
 } as const;
-
-export const EXCHANGE_TAB_LABEL_PATTERN = new RegExp(
-  `^(${Object.values(TAB_LABELS).join('|')})$`,
-);
