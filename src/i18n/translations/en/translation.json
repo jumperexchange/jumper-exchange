@@ -15,7 +15,9 @@
       "refuel": "Gas",
       "private": "Private Swap",
       "buy": "Buy",
-      "back": "Back"
+      "back": "Back",
+      "simple": "Simple",
+      "advanced": "Advanced"
     },
     "statsCards": {
       "dexs": "DEXs",

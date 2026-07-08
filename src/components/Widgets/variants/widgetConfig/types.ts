@@ -1,4 +1,8 @@
-import type { WidgetConfig, WidgetProvider } from '@lifi/widget';
+import type {
+  NavigationTabKey,
+  WidgetConfig,
+  WidgetProvider,
+} from '@lifi/widget';
 import type { StarterVariantType } from 'src/types/internal';
 import type {
   TaskWidgetInformationChainData,
@@ -63,6 +67,7 @@ export interface CommonWidgetContext {
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
   partnerName: string;
+  navigationTabs?: NavigationTabKey[];
   bridgeConditions?: {
     isAGWToNonABSChain?: boolean;
     isBridgeFromHypeToArbNativeUSDC?: boolean;

@@ -11,14 +11,16 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import envConfig from '@/config/env-config';
-import { TabsMap } from '@/const/tabsMap';
+import { AB_TEST_NAME } from '@/const/abtests';
 import { AppPaths } from '@/const/urls';
+import { useABTest } from '@/hooks/useABTest';
 import { useThemeStore } from '@/stores/theme';
 import { useFormParameters } from './hooks';
 import { Widget as BaseWidget } from './variants/base/Widget';
 import type { MainWidgetContext } from './variants/widgetConfig/types';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
+import type { NavigationTabKey } from '@lifi/widget';
 
 const PrivateSwapModal = dynamic(() =>
   import('./PrivateSwapModal/PrivateSwapModal').then(
@@ -38,6 +40,7 @@ export function Widget({
   activeTheme,
   autoHeight,
   isLoading,
+  disableTabNavigation = false,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
@@ -65,8 +68,40 @@ export function Widget({
     (state) => state.contributionDisplayed,
   );
 
+  const privateSwapsFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.PRIVATE_SWAPS,
+    address: account?.address ?? '',
+  });
+
+  const limitOrdersFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.LIMIT_ORDERS,
+    address: account?.address ?? '',
+  });
+
+  const navigationTabs = useMemo((): NavigationTabKey[] | undefined => {
+    if (disableTabNavigation) {
+      return undefined;
+    }
+    if (starterVariant === 'advanced') {
+      return limitOrdersFeatureFlag.isEnabled
+        ? ['swap-advanced', 'bridge-advanced', 'limit']
+        : ['swap-advanced', 'bridge-advanced'];
+    }
+    if (starterVariant === 'default') {
+      return privateSwapsFeatureFlag.isEnabled
+        ? ['default', 'private', 'refuel']
+        : ['default', 'refuel'];
+    }
+    return undefined;
+  }, [
+    disableTabNavigation,
+    starterVariant,
+    privateSwapsFeatureFlag.isEnabled,
+    limitOrdersFeatureFlag.isEnabled,
+  ]);
+
   useEffect(() => {
-    const routes = [AppPaths.Main, AppPaths.Gas, AppPaths.Private].filter(
+    const routes = [AppPaths.Main, AppPaths.Advanced].filter(
       (route) => route !== pathname,
     );
 
@@ -94,8 +129,6 @@ export function Widget({
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
       return configTheme.integrator;
@@ -103,17 +136,9 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
-    // all the traffic from mobile (including "/gas")
-    // if (!isDesktop) {
-    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
-    // }
-    // all the trafic from web on "/gas"
-    if (isGasVariant) {
-      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
-    }
 
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme.integrator, widgetIntegrator]) as string;
 
   const formParametersCtx = useFormParameters({
     fromChain,
@@ -128,6 +153,7 @@ export function Widget({
       integrator: integratorStringByType,
       starterVariant,
       partnerName,
+      navigationTabs,
       formData: formParametersCtx,
       allowFromChains: allowFromChains,
       allowToChains,
@@ -138,6 +164,7 @@ export function Widget({
     [
       starterVariant,
       partnerName,
+      navigationTabs,
       formParametersCtx,
       allowFromChains,
       allowToChains,

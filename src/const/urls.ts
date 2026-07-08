@@ -36,6 +36,7 @@ export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 export const JUMPER_PRIVATE_PATH = '/private';
+export const JUMPER_ADVANCED_PATH = '/advanced';
 
 export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
 export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
@@ -54,6 +55,7 @@ export function getSiteUrl() {
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
+  Advanced = JUMPER_ADVANCED_PATH,
   Gas = JUMPER_GAS_PATH,
   Buy = JUMPER_BUY_PATH,
   Learn = JUMPER_LEARN_PATH,

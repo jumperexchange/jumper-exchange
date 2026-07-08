@@ -29,7 +29,7 @@ const Page = () => {
         starterVariant={variant}
         isLoading={privateSwapsFeatureFlag.isLoading}
       />
-      <Widgets widgetVariant={variant} />
+      <Widgets />
     </MainWidgetContainer>
   );
 };

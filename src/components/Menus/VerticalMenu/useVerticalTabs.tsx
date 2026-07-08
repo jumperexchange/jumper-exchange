@@ -1,42 +1,28 @@
 import { useAccount } from '@lifi/wallet-management';
-import EvStationOutlinedIcon from '@mui/icons-material/EvStationOutlined';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { AB_TEST_NAME } from '@/const/abtests';
+import { CandlestickChartIcon } from '@/components/illustrations/CandlestickChartIcon';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useABTest } from '@/hooks/useABTest';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const { t } = useTranslation();
-
   const { account } = useAccount();
 
-  const privateSwapsFeatureFlag = useABTest({
-    feature: AB_TEST_NAME.PRIVATE_SWAPS,
-    address: account?.address ?? '',
-  });
-
-  const tradeABTest = useABTest({
-    feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
-    address: account?.address ?? '',
-  });
-
-  const handleClickTab = (tab: string) => () => {
-    router.push(`/${tab}`);
+  const handleClickTab = (path: string, label: string) => () => {
+    router.push(`/${path}`);
     trackEvent({
       category: TrackingCategory.Navigation,
       action: TrackingAction.SwitchTab,
-      label: `switch_tab_to_${tab}`,
-      data: { [TrackingEventParameter.Tab]: tab },
+      label: `switch_tab_to_${label}`,
+      data: { [TrackingEventParameter.Tab]: label },
       disableTrackingTool: [],
       enableAddressable: true,
     });
@@ -44,33 +30,23 @@ export const useVerticalTabs = () => {
 
   const tabs = [
     {
-      tab: '',
-      label:
-        tradeABTest.isEnabled && tradeABTest.value === 'test'
-          ? t('navbar.links.trade')
-          : t('navbar.links.exchange'),
+      path: '',
+      label: 'simple',
+      displayLabel: t('navbar.links.simple'),
       icon: SwapHorizIcon,
     },
     {
-      tab: 'gas/',
-      label: t('navbar.links.refuel'),
-      icon: EvStationOutlinedIcon,
+      path: 'advanced/',
+      label: 'advanced',
+      displayLabel: t('navbar.links.advanced'),
+      icon: CandlestickChartIcon,
     },
-    ...(privateSwapsFeatureFlag.isEnabled
-      ? [
-          {
-            tab: 'private/',
-            label: t('navbar.links.private'),
-            icon: VisibilityOffIcon,
-          },
-        ]
-      : []),
   ];
 
-  const output = tabs.map(({ tab, label, icon: Icon }, index) => ({
-    onClick: handleClickTab(tab),
+  return tabs.map(({ path, label, displayLabel, icon: Icon }, index) => ({
+    onClick: handleClickTab(path, label),
     value: index,
-    tooltip: label,
+    tooltip: displayLabel,
     icon: (
       <Icon
         sx={(theme) => ({
@@ -81,6 +57,4 @@ export const useVerticalTabs = () => {
       />
     ),
   }));
-
-  return output;
 };

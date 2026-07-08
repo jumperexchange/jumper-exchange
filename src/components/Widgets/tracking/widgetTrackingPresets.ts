@@ -4,6 +4,7 @@ import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/typ
 export type WidgetTrackingVariant =
   | 'main'
   | 'private'
+  | 'limit'
   | 'mission'
   | 'zap'
   | 'earnDeposit'
@@ -71,6 +72,17 @@ const VARIANT_ACTIONS: Record<WidgetTrackingVariant, VariantActions> = {
       dataStarted: TrackingEventDataAction.ExecutionStartPrivate,
       dataCompleted: TrackingEventDataAction.ExecutionCompletedPrivate,
       dataFailed: TrackingEventDataAction.ExecutionFailedPrivate,
+    },
+  },
+  limit: {
+    availableRoutes: TrackingAction.OnAvailableRoutesLimit,
+    execution: {
+      started: TrackingAction.OnRouteExecutionStartedLimit,
+      completed: TrackingAction.OnRouteExecutionCompletedLimit,
+      failed: TrackingAction.OnRouteExecutionFailedLimit,
+      dataStarted: TrackingEventDataAction.ExecutionStartLimit,
+      dataCompleted: TrackingEventDataAction.ExecutionCompletedLimit,
+      dataFailed: TrackingEventDataAction.ExecutionFailedLimit,
     },
   },
   mission: {
