@@ -1,12 +1,10 @@
-import { Widgets } from '@/components/Widgets/Widgets';
-import { Widget } from '@/components/Widgets/Widget';
-import { MainWidgetContainer } from 'src/components/Containers/MainWidgetContainer';
+import Box from '@mui/material/Box';
+import { AdvancedPageContent } from '@/app/ui/widget/AdvancedPageContent';
 
 export default async function Page() {
   return (
-    <MainWidgetContainer>
-      <Widget starterVariant="advanced" />
-      <Widgets />
-    </MainWidgetContainer>
+    <Box sx={{ paddingBottom: { xs: 6, sm: 0 } }}>
+      <AdvancedPageContent />
+    </Box>
   );
 }

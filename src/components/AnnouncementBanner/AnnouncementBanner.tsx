@@ -11,6 +11,7 @@ import {
   AnnouncementBannerContainer,
   AnnouncementBannerContainerList,
   AnnouncementBannerContentContainer,
+  type AnnouncementBannerAlign,
 } from './AnnouncementBanner.style';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { openInNewTab } from 'src/utils/openInNewTab';
@@ -20,10 +21,12 @@ import { parseNumber } from 'src/utils/numbers/utils';
 
 interface AnnouncementBannerProps {
   maxAnnouncements?: number;
+  align?: AnnouncementBannerAlign;
 }
 
 export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
   maxAnnouncements = 1,
+  align = 'center',
 }) => {
   const widgetCache = useWidgetCacheStore((state) => state);
   const router = useRouter();
@@ -88,7 +91,7 @@ export const AnnouncementBanner: FC<AnnouncementBannerProps> = ({
 
   return (
     <AnimatePresence mode="popLayout">
-      <AnnouncementBannerContainerList>
+      <AnnouncementBannerContainerList align={align}>
         {displayedAnnouncements.map((announcement) => (
           <motion.div
             initial={{ opacity: 0, y: '100%' }}
