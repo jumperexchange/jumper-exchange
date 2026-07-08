@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data/urls';
+import { WALLET_OPTIONS, WIDGET_TABS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';
@@ -19,9 +19,14 @@ test.describe('Landing page and navigation', () => {
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       await page.waitForLoadState('domcontentloaded');
-      await landingPage.navigateAndExpectTab(1, 'Gas');
-      // Exchange tab label is AB-tested (`a-b-test-trade-display`); accept any variant.
-      await landingPage.navigateAndExpectTab(0, EXCHANGE_TAB_LABEL_PATTERN);
+      await landingPage.navigateAndExpectWidgetTab(
+        1,
+        WIDGET_TABS.ADVANCED_BRIDGE,
+      );
+      await landingPage.navigateAndExpectWidgetTab(
+        0,
+        WIDGET_TABS.SIMPLE_SWAP_AND_BRIDGE,
+      );
     },
   );
 
