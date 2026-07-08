@@ -4929,6 +4929,7 @@ packages:
   '@tronweb3/tronwallet-adapter-tomowallet@1.0.2':
     resolution: {integrity: sha512-fnc/St6RpESW7DA8Xw+sEAPw6fFI1yC1aJHIbdFjDpnefVwh9doWAzgDiJVZ5I/lcjOsfx5g326JRgvfS2P0gw==}
     engines: {node: '>=16', pnpm: '>=7'}
+    deprecated: 'Deprecated: This adapter is no longer maintained because Tomo Wallet is currently unavailable. Please migrate to another supported wallet adapter.'
 
   '@tronweb3/tronwallet-adapter-tronlink-evm@1.1.1':
     resolution: {integrity: sha512-yo7U+rVAmXl1jLMMVcG8aK1ilfHfh9y+MUpCKEWUJq+K/ngyfmRToJ3PHSEksIDuIXzzrRzk6G6bIDXLSkkqLQ==}
@@ -9841,6 +9842,7 @@ packages:
   tsconfck@3.1.6:
     resolution: {integrity: sha512-ks6Vjr/jEw0P1gmOVwutM3B7fWxoWBL2KRDb1JfqGVawBmO5UsvmWOQFGHBPl5yxYz4eERr19E6L7NMv+Fej4w==}
     engines: {node: ^18 || >=20}
+    deprecated: unmaintained
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0

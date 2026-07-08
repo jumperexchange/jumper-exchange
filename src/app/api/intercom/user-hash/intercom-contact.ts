@@ -14,33 +14,15 @@ export async function findContactByExternalId(
 
     return { id: contact.id };
   } catch (error) {
-    if (error instanceof IntercomError && error.statusCode === 404) {
-      return null;
+    // A 404 simply means there is no legacy contact to migrate. Any other
+    // Intercom failure (expired/invalid token, rate limit, outage) must not
+    // bubble up: migration is best-effort, and a lookup failure should never
+    // break minting a fresh anonymous session for the caller.
+    if (!(error instanceof IntercomError && error.statusCode === 404)) {
+      console.error('Intercom contact lookup failed:', error);
     }
 
-    throw error;
-  }
-}
-
-export async function updateContactWalletAddress(
-  contactId: string,
-  walletAddress: string,
-  accessToken: string,
-): Promise<boolean> {
-  const client = createIntercomClient(accessToken);
-
-  try {
-    await client.contacts.update({
-      contact_id: contactId,
-      custom_attributes: {
-        wallet_address: walletAddress,
-      },
-    });
-
-    return true;
-  } catch (error) {
-    console.error('Intercom wallet_address update failed:', error);
-    return false;
+    return null;
   }
 }
 

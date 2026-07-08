@@ -16,7 +16,17 @@ type RequestBody = {
   wallet_address?: string;
 };
 
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const generateV2UserId = (): string => crypto.randomUUID();
+
+/**
+ * The v2 user id is a server-minted UUID. Only trust a cookie value that still
+ * looks like one — an attacker-chosen or corrupted cookie must not be signed
+ * into a valid Intercom identity; we mint a fresh session instead.
+ */
+const isValidV2UserId = (value: string): boolean => UUID_REGEX.test(value);
 
 const signIntercomUserToken = (
   userId: string,
@@ -67,9 +77,10 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
+    const trimmedWallet = walletAddress?.trim();
     const validatedWallet =
-      walletAddress && isValidAddress(walletAddress)
-        ? walletAddress
+      trimmedWallet && isValidAddress(trimmedWallet)
+        ? trimmedWallet
         : undefined;
 
     const intercomAccessToken = envConfig.INTERCOM_API_TOKEN;
@@ -77,7 +88,7 @@ export const POST = async (request: NextRequest) => {
       INTERCOM_USER_ID_V2_COOKIE,
     )?.value;
 
-    if (userIdV2FromCookie) {
+    if (userIdV2FromCookie && isValidV2UserId(userIdV2FromCookie)) {
       const userHash = signIntercomUserToken(
         userIdV2FromCookie,
         secret,
