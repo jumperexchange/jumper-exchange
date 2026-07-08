@@ -19,10 +19,15 @@ import type {
 } from '@/components/composite/MultiLayer/MultiLayer.types';
 import { SelectBadge } from '@/components/core/form/Select/components/SelectBadge';
 import {
+  StyledMultiSelectFiltersClearButton,
+  StyledMultiSelectFiltersContainer,
+} from '@/components/core/form/Select/Select.styles';
+import {
   countBadge,
   mergeChainTokenSelection,
   selectExclusiveFilter,
 } from '../utils';
+import { Typography } from '@mui/material';
 
 type FilterTab = 'chains' | 'assets';
 
@@ -74,8 +79,8 @@ export const TransactionAssetsFilterPanel = ({
       };
     });
 
-  return (
-    <Stack direction="column" sx={{ width: '100%', gap: 2 }}>
+  const tabsRow = (
+    <Stack direction="column" sx={{ width: '100%', gap: 1 }}>
       <HorizontalTabs
         size={HorizontalTabSize.SM}
         value={activeTab}
@@ -84,7 +89,7 @@ export const TransactionAssetsFilterPanel = ({
         tabs={[
           {
             value: 'chains',
-            label: t('portfolio.filter.chains'),
+            label: t('portfolio.filter.byChain'),
             'data-testid': 'portfolio-filter-transaction-assets-tab-chains',
             ...(chains.length > 0 && {
               endAdornment: (
@@ -98,7 +103,7 @@ export const TransactionAssetsFilterPanel = ({
           },
           {
             value: 'assets',
-            label: t('portfolio.filter.assets'),
+            label: t('portfolio.filter.byAsset'),
             'data-testid': 'portfolio-filter-transaction-assets-tab-assets',
             ...(assets.length > 0 && {
               endAdornment: (
@@ -119,6 +124,14 @@ export const TransactionAssetsFilterPanel = ({
           },
         }}
       />
+      <Typography variant="bodyXSmall" color="textSecondary">
+        {t('portfolio.filter.byChainOrAssetDisclaimer')}
+      </Typography>
+    </Stack>
+  );
+
+  return (
+    <Stack direction="column" sx={{ width: '100%', gap: 2 }}>
       {activeTab === 'chains' ? (
         <MultiSelectView
           category={createMultiSelectCategory({
@@ -137,7 +150,7 @@ export const TransactionAssetsFilterPanel = ({
             }),
             testId: 'portfolio-filter-transaction-chain-select',
           })}
-          slotProps={slotProps}
+          slotProps={{ ...slotProps, tabs: tabsRow }}
         />
       ) : selectedChainId === null ? (
         <SingleSelectView
@@ -156,7 +169,25 @@ export const TransactionAssetsFilterPanel = ({
             },
             testId: 'portfolio-filter-transaction-asset-chain-select',
           })}
-          slotProps={slotProps}
+          slotProps={{
+            ...slotProps,
+            tabs: tabsRow,
+            header: (
+              <StyledMultiSelectFiltersContainer sx={{ padding: 0, margin: 0 }}>
+                <Typography variant="bodyMediumStrong" sx={{ flex: 1 }}>
+                  {t('earn.filter.selected', { count: assets.length })}
+                </Typography>
+                <StyledMultiSelectFiltersClearButton
+                  disabled={assets.length === 0}
+                  data-testid="portfolio-filter-transaction-asset-chain-clear-button"
+                  onClick={() => onAssetsChange([])}
+                  size={slotProps?.clearButtonSize ?? 'medium'}
+                >
+                  {t('earn.filter.clear')}
+                </StyledMultiSelectFiltersClearButton>
+              </StyledMultiSelectFiltersContainer>
+            ),
+          }}
         />
       ) : (
         <MultiSelectView
@@ -181,7 +212,18 @@ export const TransactionAssetsFilterPanel = ({
             }),
             testId: 'portfolio-filter-transaction-asset-select',
           })}
-          slotProps={{ ...slotProps, onBack: () => setSelectedChainId(null) }}
+          slotProps={{
+            ...slotProps,
+            onBack: () => setSelectedChainId(null),
+            tabs: tabsRow,
+            header: (
+              <Badge
+                size={BadgeSize.XS}
+                variant={BadgeVariant.Alpha}
+                label={selectedChainLabel}
+              />
+            ),
+          }}
         />
       )}
     </Stack>

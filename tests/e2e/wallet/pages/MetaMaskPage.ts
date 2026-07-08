@@ -4,6 +4,7 @@ import { EXTENSION_NAME } from '../constants/extensionConstants';
 import { LONG_TIMEOUT } from '../constants/timeoutConstants';
 import { launchBrowserWithExtension } from '../core/browser/BrowserManager';
 import { metamaskLocators as selectors } from '../locators/metaMask';
+import { clearOsClipboard, writeOsClipboard } from '../utils/clipboard';
 import WalletPage from './core/WalletPage';
 
 import type { BrowserContext, Page } from '@playwright/test';
@@ -191,45 +192,26 @@ export default class MetaMaskPage extends WalletPage {
   }
 
   /**
-   * Processes and fills the seed phrase by:
-   * 1. Parsing the seed phrase and verifying the valid word count.
-   * 2. Selecting the appropriate dropdown option based on the seed phrase length.
-   * 3. Filling each recovery word input field with the corresponding word.
+   * Validates the word count, then enters the phrase with a single paste (see
+   * pasteSecret) — MetaMask distributes a pasted phrase across the SRP inputs.
    *
    * @param {string} seedPhrase - The provided seed phrase.
-   * @returns {Promise<void>}
-   * @throws {Error} Throws an error if the seed phrase does not contain a valid number of words.
+   * @throws {Error} If the phrase does not contain a valid number of words.
    */
   async fillSeedPhrase(seedPhrase: string): Promise<void> {
-    // Split the input string using a regex to handle spaces, commas, and other common delimiters,
-    // then filter out any empty entries.
     const words = seedPhrase.split(/[\s,]+/).filter((w) => w.trim());
 
-    // Define valid seed phrase lengths.
     const valid = [12, 15, 18, 21, 24];
-
-    // Validate the number of words in the seed phrase.
     if (!valid.includes(words.length)) {
       throw new Error(
         `Seed phrase must be one of [${valid.join(', ')}], got ${words.length}`,
       );
     }
 
-    // Fill each recovery word input field with the corresponding word from the seed phrase.
-    for (let i = 0; i < words.length; i++) {
-      if (i === 0) {
-        await this.play.fillSecret(
-          this.selectors.seedPhrase.inputField,
-          words[i],
-        );
-      } else {
-        await this.play.fillSecret(
-          this.selectors.seedPhrase.wordInputPrefix + i,
-          words[i],
-        );
-      }
-      await this.play.pressSpace();
-    }
+    await this.pasteSecret(
+      this.selectors.seedPhrase.inputField,
+      words.join(' '),
+    );
   }
 
   /**
@@ -291,8 +273,8 @@ export default class MetaMaskPage extends WalletPage {
    * @returns {Promise<void>}
    */
   async setupPassword(password: string): Promise<void> {
-    await this.play.fillSecret(this.selectors.password.newInput, password);
-    await this.play.fillSecret(this.selectors.password.confirmInput, password);
+    await this.pasteSecret(this.selectors.password.newInput, password);
+    await this.pasteSecret(this.selectors.password.confirmInput, password);
     await this.play.click(this.selectors.password.termsCheckbox);
     await this.play.click(this.selectors.password.importButton);
   }
@@ -375,6 +357,24 @@ export default class MetaMaskPage extends WalletPage {
         0,
         LONG_TIMEOUT,
       );
+    }
+  }
+
+  /**
+   * Enters a wallet secret by pasting it from the OS clipboard rather than
+   * typing it. A typed `fill()`/`type()` records the value verbatim in
+   * Playwright's trace, which is uploaded to Qase on a public URL; a pasted
+   * value travels OS clipboard -> browser and never passes through a traced
+   * call, so the trace only captures the Ctrl/Cmd+V keypress. The clipboard is
+   * cleared afterwards so the secret does not linger.
+   */
+  private async pasteSecret(selector: string, value: string): Promise<void> {
+    writeOsClipboard(value);
+    try {
+      await this.play.click(selector);
+      await this.page.keyboard.press('ControlOrMeta+V');
+    } finally {
+      clearOsClipboard();
     }
   }
 }
