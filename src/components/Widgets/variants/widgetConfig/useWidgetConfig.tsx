@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
 import type {
+  LimitOrdersWidgetContext,
   MainWidgetContext,
   MissionWidgetContext,
   WidgetType,
@@ -19,6 +20,7 @@ import {
   useSharedRPCConfig,
 } from './useSharedConfigs';
 import { useWidgetDependencies } from './useWidgetDependencies';
+import { useLimitOrdersWidgetConfig } from './useLimitOrdersWidgetConfig';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
 
 /**
@@ -30,7 +32,9 @@ export function useWidgetConfig<T extends WidgetType>(
     ? MainWidgetContext
     : T extends 'mission'
       ? MissionWidgetContext
-      : ZapWidgetContext,
+      : T extends 'zap'
+        ? ZapWidgetContext
+        : LimitOrdersWidgetContext,
 ): { config: WidgetConfig; isReady: boolean } {
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
@@ -55,6 +59,7 @@ export function useWidgetConfig<T extends WidgetType>(
   const language = useLanguageConfig(
     {
       useMainWidget: type === 'main',
+      useLimitOrdersWidget: type === 'limit',
       useSwapBridgeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
       ...context,
     },
@@ -70,8 +75,11 @@ export function useWidgetConfig<T extends WidgetType>(
     deps,
   );
   const zapWidgetConfig = useZapWidgetConfig(context as ZapWidgetContext, deps);
+  const limitOrdersWidgetConfig = useLimitOrdersWidgetConfig(
+    context as LimitOrdersWidgetContext,
+    deps,
+  );
 
-  // Widget-specific configuration
   const widgetSpecific = useMemo(() => {
     switch (type) {
       case 'main':
@@ -79,12 +87,19 @@ export function useWidgetConfig<T extends WidgetType>(
       case 'mission':
         return missionWidgetConfig;
       case 'zap':
-        // For zap widgets, we use both mission and zap configurations
         return merge({}, missionWidgetConfig, zapWidgetConfig);
+      case 'limit':
+        return limitOrdersWidgetConfig;
       default:
         throw new Error(`Unknown widget type: ${type}`);
     }
-  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig, type]);
+  }, [
+    mainWidgetConfig,
+    missionWidgetConfig,
+    zapWidgetConfig,
+    limitOrdersWidgetConfig,
+    type,
+  ]);
 
   // Merge all configurations
   const config = useMemo(() => {
