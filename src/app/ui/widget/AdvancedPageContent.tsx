@@ -13,7 +13,6 @@ import { MainWidgetPageContent } from './MainWidgetPageContent';
 import { WidgetSidePanel } from './WidgetSidePanel';
 import { useTranslation } from 'react-i18next';
 
-
 export const AdvancedPageContent = () => {
   const { t } = useTranslation();
   const widgetEvents = useWidgetEvents();
@@ -64,15 +63,17 @@ export const AdvancedPageContent = () => {
       variant="advanced"
       isSidePanelExpanded={isSidePanelExpanded}
       sidePanelContent={
-        isLimitTabActive ? (<WidgetSidePanel>
-          <MarketPriceSection action={expandButton} />
-          <OrdersSection
-            isSidePanelExpanded={isSidePanelExpanded}
-            action={expandButton}
-          />
-        </WidgetSidePanel>
+        isLimitTabActive ? (
+          <WidgetSidePanel>
+            <MarketPriceSection action={expandButton} />
+            <OrdersSection
+              isSidePanelExpanded={isSidePanelExpanded}
+              action={expandButton}
+            />
+          </WidgetSidePanel>
         ) : undefined
-    }
+      }
+      sx={isLimitTabActive ? { mb: 6 } : undefined}
     />
   );
 };
