@@ -142,6 +142,7 @@ export function useLanguageConfig(
     useMainWidget: boolean;
     useLimitOrdersWidget: boolean;
     useSwapBridgeTitle: boolean;
+    usePrivateWidget: boolean;
   },
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
@@ -156,16 +157,10 @@ export function useLanguageConfig(
         },
       };
 
-      const starterVariant =
-        'starterVariant' in context ? context.starterVariant : undefined;
-
       additionalLanguageResources.header = {
-        exchange:
-          starterVariant === 'private'
-            ? deps.translation.t('widget.private.title')
-            : context.useSwapBridgeTitle
-              ? deps.translation.t('widget.swapBridge.title')
-              : deps.translation.t('widget.exchange.title'),
+        exchange: context.useSwapBridgeTitle
+          ? deps.translation.t('widget.swapBridge.title')
+          : deps.translation.t('widget.exchange.title'),
         ...(context.useLimitOrdersWidget &&
         'overrideHeader' in context &&
         context.overrideHeader
@@ -173,7 +168,7 @@ export function useLanguageConfig(
           : {}),
       };
 
-      if (starterVariant === 'private') {
+      if (context.usePrivateWidget) {
         additionalLanguageResources.info = {
           title: {
             routeNotFound: deps.translation.t(

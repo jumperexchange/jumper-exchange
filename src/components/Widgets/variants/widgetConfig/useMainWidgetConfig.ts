@@ -1,4 +1,4 @@
-import type { WidgetConfig, WidgetMode } from '@lifi/widget';
+import type { WidgetConfig } from '@lifi/widget';
 import { ChainId } from '@lifi/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
@@ -53,27 +53,17 @@ export function useMainWidgetConfig(
       _tokens.allow = newAllowList;
     }
 
+    const { key, uiVariant, mode, navigationTabs } = context.resolvedVariant;
+
     const config: Partial<WidgetConfig> = {
-      keyPrefix: context.navigationTabs
-        ? `jumper-${context.navigationTabs[0] ?? 'default'}`
-        : `jumper-${context.starterVariant}`,
-      variant: context.navigationTabs
-        ? 'wide'
-        : context.starterVariant === 'refuel'
-          ? 'compact'
-          : 'wide',
+      keyPrefix: `jumper-${navigationTabs?.[0] ?? key}`,
+      variant: navigationTabs ? 'wide' : uiVariant,
       buildUrl: true,
       useRelayerRoutes: true,
-      ...(context.navigationTabs
-        ? { _navigationTabs: context.navigationTabs }
+      ...(navigationTabs
+        ? { _navigationTabs: navigationTabs }
         : {
-            mode:
-              context.starterVariant === 'buy' ||
-              context.starterVariant === 'private' ||
-              context.starterVariant === 'advanced' ||
-              isMemecoins
-                ? 'default'
-                : (context.starterVariant as WidgetMode),
+            mode: isMemecoins ? 'default' : mode,
             modeOptions: {},
           }),
 
@@ -146,8 +136,7 @@ export function useMainWidgetConfig(
 
     if (
       context.bridgeConditions?.isAGWToNonABSChain ||
-      context.bridgeConditions?.isPrivateSwapSelected ||
-      context.starterVariant === 'private'
+      context.bridgeConditions?.isPrivateSwapSelected
     ) {
       config.requiredUI = { ...config.requiredUI, toAddress: true };
     }
@@ -181,8 +170,8 @@ export function useMainWidgetConfig(
   }, [
     context.integrator,
     context.starterVariant,
+    context.resolvedVariant,
     context.partnerName,
-    context.navigationTabs,
     context.allowChains,
     context.allowFromChains,
     context.allowToChains,
