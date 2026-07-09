@@ -20,7 +20,6 @@ import { Size } from '@/components/core/buttons/types';
 import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
 import { datafeed } from '@/lib/tradingview/datafeed';
-import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainTokenSelectionStore';
 import type { BaseToken } from '@/types/tokens';
 import { createBaseToken } from '@/types/tokens';
 import { composeTokenKey } from '@/utils/tokenKey';
@@ -54,8 +53,6 @@ export const MarketPriceSection = ({
   const { t } = useTranslation();
   const [activeKey, setActiveKey] = useState<string | undefined>(undefined);
 
-  const { sourceChainToken, destinationChainToken } =
-    useChainTokenSelectionStore();
   const urlParams = useUrlParams();
   const { getToken } = useTokens();
   const { getChainById } = useChains();
@@ -63,11 +60,10 @@ export const MarketPriceSection = ({
   const resolveSelectedToken = useCallback(
     (
       urlSelection: ChainTokenSelection,
-      storeSelection: ChainTokenSelection,
       getToken: ReturnType<typeof useTokens>['getToken'],
     ): BaseToken | undefined => {
-      const chainId = urlSelection.chainId ?? storeSelection.chainId;
-      const tokenAddress = urlSelection.token ?? storeSelection.token;
+      const chainId = urlSelection.chainId;
+      const tokenAddress = urlSelection.token;
       if (!chainId || !tokenAddress) {
         return undefined;
       }
@@ -77,20 +73,9 @@ export const MarketPriceSection = ({
     [],
   );
 
-  const fromToken = resolveSelectedToken(
-    urlParams.sourceChainToken,
-    {
-      chainId: sourceChainToken.chainId,
-      token: sourceChainToken.tokenAddress,
-    },
-    getToken,
-  );
+  const fromToken = resolveSelectedToken(urlParams.sourceChainToken, getToken);
   const toToken = resolveSelectedToken(
     urlParams.destinationChainToken,
-    {
-      chainId: destinationChainToken.chainId,
-      token: destinationChainToken.tokenAddress,
-    },
     getToken,
   );
 
