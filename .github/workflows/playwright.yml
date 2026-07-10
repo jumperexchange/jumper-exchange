@@ -402,7 +402,9 @@ jobs:
 
   notify-slack-on-failure:
     needs: [test, merge-reports]
-    if: ${{ failure() && github.event_name == 'pull_request' }}
+    # Same-repo PRs only — forks don't receive the Slack webhook secret, so on a
+    # fork PR this job can only fail on top of the real failure.
+    if: ${{ failure() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-latest
     steps:
       - name: Build Slack payload
