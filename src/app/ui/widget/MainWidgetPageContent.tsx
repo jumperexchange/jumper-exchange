@@ -7,6 +7,7 @@ import { Widgets } from '@/components/Widgets/Widgets';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import type { StarterVariantType } from '@/types/internal';
 import { WidgetStage } from './WidgetStage';
+import type { SxProps, Theme } from '@mui/material/styles';
 
 interface MainWidgetPageContentProps {
   variant: StarterVariantType;
@@ -14,6 +15,7 @@ interface MainWidgetPageContentProps {
   isLoading?: boolean;
   sidePanelContent?: ReactNode;
   isSidePanelExpanded?: boolean;
+  sx?: SxProps<Theme>;
 }
 
 export const MainWidgetPageContent = ({
@@ -22,6 +24,7 @@ export const MainWidgetPageContent = ({
   isLoading,
   sidePanelContent,
   isSidePanelExpanded = false,
+  sx,
 }: MainWidgetPageContentProps) => {
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
   const isWelcomeScreenClosed = welcomeScreenClosed || !enabled;
@@ -46,6 +49,7 @@ export const MainWidgetPageContent = ({
         </>
       }
       sidePanelContent={sidePanelContent}
+      sx={sx}
     />
   );
 };
