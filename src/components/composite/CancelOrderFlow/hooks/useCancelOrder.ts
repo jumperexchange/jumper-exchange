@@ -94,6 +94,8 @@ export const useCancelOrder = () => {
             ],
           })
           .catch(() => {
+            setIsAwaitingOnchainTx(false);
+            setOnchainChainId(undefined);
             throw new CancelOrderError(
               'Failed to send the cancellation transaction',
               CancelOrderErrorType.TransactionFailed,
