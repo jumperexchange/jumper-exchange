@@ -1,14 +1,12 @@
 import type { Order, TokenDto } from '@/types/jumper-limit-order';
 
+import { addDays, subDays, getUnixTime } from 'date-fns';
 const MAKER_ADDRESS = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
 
-const toUnixSeconds = (date: Date): number => Math.floor(date.getTime() / 1000);
-
 const daysFromNow = (days: number): number =>
-  toUnixSeconds(new Date(Date.now() + days * 24 * 60 * 60 * 1000));
-
+  getUnixTime(addDays(new Date(), days));
 const daysAgo = (days: number): number =>
-  toUnixSeconds(new Date(Date.now() - days * 24 * 60 * 60 * 1000));
+  getUnixTime(subDays(new Date(), days));
 
 const createToken = (
   chainId: number,
