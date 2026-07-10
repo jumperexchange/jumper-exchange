@@ -20,7 +20,7 @@ export function useLimitOrdersWidgetConfig(
         privateSwaps: false,
       }),
       partnerName: 'default',
-      integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_LIMIT || undefined,
+      integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ADVANCED || undefined,
       ...context,
     },
     deps,

@@ -138,9 +138,12 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
+    if (starterVariant === 'advanced') {
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ADVANCED;
+    }
 
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [configTheme.integrator, widgetIntegrator]) as string;
+  }, [configTheme.integrator, widgetIntegrator, starterVariant]) as string;
 
   const formParametersCtx = useFormParameters({
     fromChain,
