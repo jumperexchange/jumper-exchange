@@ -1315,14 +1315,43 @@
       "status": {
         "cancelled": "Cancelled",
         "expired": "Expired",
+        "filled": "Filled",
         "days_one": "{{count}} day",
         "days_other": "{{count}} days"
       },
       "actions": {
         "rowActions": "Row actions",
         "expandPanels": "Expand panels",
-        "collapsePanels": "Collapse panels"
+        "collapsePanels": "Collapse panels",
+        "viewOnExplorer": "View on explorer",
+        "modifyLimit": "Modify limit",
+        "cancelOrder": "Cancel order",
+        "repeatOrder": "Repeat order"
       }
+    },
+    "cancelModal": {
+      "title": "Cancel limit order",
+      "description": "This stops the order from filling and marks it cancelled. Any portion already filled stays settled. This can't be undone.",
+      "keepOrder": "Keep order",
+      "cancelOrder": "Cancel order",
+      "error": "Something went wrong cancelling this order. Please try again.",
+      "successTitle": "Order cancelled",
+      "successDescription": "This order will no longer fill.",
+      "done": "Done",
+      "viewOnExplorer": "View on explorer",
+      "errorTitle": "Cancellation failed",
+      "tryAgain": "Try again",
+      "close": "Close"
+    },
+    "modifyModal": {
+      "title": "Modify limit order",
+      "placeholderTitle": "Coming soon",
+      "placeholderDescription": "Editing an active order isn't available yet. Cancel it and place a new one instead."
+    },
+    "repeatModal": {
+      "title": "Repeat order",
+      "placeholderTitle": "Coming soon",
+      "placeholderDescription": "Repeating an order isn't available yet. Placing a new order manually works the same way."
     }
   }
 }
