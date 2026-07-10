@@ -18,6 +18,7 @@ export interface FormatAmountUSDOptions {
 
 export interface FormatAmountOptions {
   decimals?: number;
+  compact?: boolean;
   maximumFractionDigits?: number;
   minimumFractionDigits?: number;
 }
@@ -73,11 +74,14 @@ export const useTokenFormatters = () => {
       if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
         return formatTokenAmountWithDust(amount, symbol ?? '', t);
       }
-      const formatted = t('format.decimal', {
-        value: Number(amount),
-        minimumFractionDigits: options?.minimumFractionDigits,
-        maximumFractionDigits: options?.maximumFractionDigits ?? 3,
-      });
+      const formatted = t(
+        `format.${options?.compact ? 'decimalCompact' : 'decimal'}`,
+        {
+          value: Number(amount),
+          minimumFractionDigits: options?.minimumFractionDigits,
+          maximumFractionDigits: options?.maximumFractionDigits ?? 3,
+        },
+      );
       if (!symbol) {
         return formatted;
       }
