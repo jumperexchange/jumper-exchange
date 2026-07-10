@@ -1,4 +1,4 @@
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig, WidgetMode } from '@lifi/widget';
 import { ChainId } from '@lifi/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
@@ -73,7 +73,7 @@ export function useMainWidgetConfig(
               context.starterVariant === 'advanced' ||
               isMemecoins
                 ? 'default'
-                : (context.starterVariant as import('@lifi/widget').WidgetMode),
+                : (context.starterVariant as WidgetMode),
             modeOptions: {},
           }),
 

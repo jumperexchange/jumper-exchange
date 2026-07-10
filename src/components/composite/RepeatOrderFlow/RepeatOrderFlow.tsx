@@ -1,49 +1,78 @@
 'use client';
 
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/Badge/Badge';
-import { BadgeVariant } from '@/components/Badge/Badge.styles';
-import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
+import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
+import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
+import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
+import { useTheme } from '@mui/material';
 
-/**
- * Stand-in for the real repeat-order widget, which doesn't exist yet.
- * Swap this out once the limit-order widget supports pre-filling from a
- * cancelled/expired order.
- */
 export const RepeatOrderFlowModal = () => {
   const { t } = useTranslation();
+  const { toAmount } = useTokenAmountInput();
+  const theme = useTheme();
   const { isModalOpen, selectedOrder, closeModal } = useRepeatOrderFlowStore(
     (state) => state,
   );
 
-  if (!selectedOrder) {
+  const context = useMemo((): LimitOrdersWidgetContext | null => {
+    if (!selectedOrder) {
+      return null;
+    }
+    return {
+      overrideHeader: t('limitOrders.repeatModal.title'),
+      theme: {
+        container: {
+          maxHeight: 'calc(100vh - 6rem)',
+          minWidth: 'min(100vw, 360px)',
+          maxWidth: 400,
+          borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
+          [theme.breakpoints.up('sm')]: {
+            maxHeight: 'calc(100vh - 6rem)',
+            minWidth: 400,
+          },
+        },
+      },
+      formData: {
+        sourceChain: {
+          chainId: selectedOrder.fromToken.chainId.toString(),
+          chainKey: '',
+        },
+        sourceToken: {
+          tokenAddress: selectedOrder.fromToken.address,
+          tokenSymbol: selectedOrder.fromToken.symbol,
+        },
+        destinationChain: {
+          chainId: selectedOrder.toToken.chainId.toString(),
+          chainKey: '',
+        },
+        destinationToken: {
+          tokenAddress: selectedOrder.toToken.address,
+          tokenSymbol: selectedOrder.toToken.symbol,
+        },
+        fromAmount: toAmount(
+          BigInt(selectedOrder.fromAmount),
+          selectedOrder.fromToken.decimals,
+        ),
+      },
+    };
+  }, [selectedOrder, toAmount, t, theme]);
+
+  useEffect(() => {
+    return () => {
+      closeModal();
+    };
+  }, [closeModal]);
+
+  if (!context || !selectedOrder) {
     return null;
   }
 
   return (
     <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
-      <SectionCard sx={{ width: 'min(90vw, 400px)' }}>
-        <Stack sx={{ gap: 3 }}>
-          <Badge
-            startIcon={<AccessTimeIcon />}
-            label={t('limitOrders.repeatModal.placeholderTitle')}
-            variant={BadgeVariant.Secondary}
-          />
-          <Stack sx={{ gap: 0.5 }}>
-            <Typography variant="bodyLargeStrong">
-              {t('limitOrders.repeatModal.title')}
-            </Typography>
-            <Typography variant="bodySmall" color="textSecondary">
-              {t('limitOrders.repeatModal.placeholderDescription')}
-            </Typography>
-          </Stack>
-        </Stack>
-      </SectionCard>
+      <BaseWidget type="limit" ctx={context} />
     </ModalContainer>
   );
 };

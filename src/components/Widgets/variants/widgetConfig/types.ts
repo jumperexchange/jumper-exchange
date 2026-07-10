@@ -21,7 +21,7 @@ export type EnglishLanguageResource = NonNullable<
 >['en'];
 
 // Widget types
-export type WidgetType = 'main' | 'mission' | 'zap';
+export type WidgetType = 'main' | 'mission' | 'zap' | 'limit';
 
 // Hook dependencies interface
 export interface HookDependencies {
@@ -94,11 +94,16 @@ export interface ZapWidgetContext extends MissionWidgetContext {
   zapPoolName?: string;
 }
 
+export interface LimitOrdersWidgetContext extends CommonWidgetContext {
+  overrideHeader?: string;
+}
+
 // Union type for all contexts
 export type WidgetContext =
   | MainWidgetContext
   | MissionWidgetContext
-  | ZapWidgetContext;
+  | ZapWidgetContext
+  | LimitOrdersWidgetContext;
 
 export const isMissionContext = (
   context: WidgetContext,

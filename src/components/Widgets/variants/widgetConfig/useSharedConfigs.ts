@@ -140,6 +140,7 @@ export function useSharedFormConfig(
 export function useLanguageConfig(
   context: WidgetContext & {
     useMainWidget: boolean;
+    useLimitOrdersWidget: boolean;
     useSwapBridgeTitle: boolean;
   },
   deps: HookDependencies,
@@ -155,16 +156,24 @@ export function useLanguageConfig(
         },
       };
 
+      const starterVariant =
+        'starterVariant' in context ? context.starterVariant : undefined;
+
       additionalLanguageResources.header = {
         exchange:
-          context.starterVariant === 'private'
+          starterVariant === 'private'
             ? deps.translation.t('widget.private.title')
             : context.useSwapBridgeTitle
               ? deps.translation.t('widget.swapBridge.title')
               : deps.translation.t('widget.exchange.title'),
+        ...(context.useLimitOrdersWidget &&
+        'overrideHeader' in context &&
+        context.overrideHeader
+          ? { limit: context.overrideHeader }
+          : {}),
       };
 
-      if (context.starterVariant === 'private') {
+      if (starterVariant === 'private') {
         additionalLanguageResources.info = {
           title: {
             routeNotFound: deps.translation.t(
