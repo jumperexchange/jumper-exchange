@@ -22,4 +22,5 @@ export interface WelcomeOverlayLayoutProps {
   contentSx?: SxProps<Theme>;
   leftSideContent?: ReactNode;
   fullWidthGlowEffect?: boolean;
+  lockViewport?: boolean;
 }

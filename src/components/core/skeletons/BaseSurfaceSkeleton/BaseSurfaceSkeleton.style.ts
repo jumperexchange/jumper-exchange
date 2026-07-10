@@ -5,3 +5,8 @@ export const BaseSurfaceSkeleton = styled(Skeleton)(({ theme }) => ({
   transform: 'none',
   backgroundColor: (theme.vars || theme).palette.surface2.main,
 }));
+
+export const BaseSurface1Skeleton = styled(Skeleton)(({ theme }) => ({
+  transform: 'none',
+  backgroundColor: (theme.vars || theme).palette.surface1.main,
+}));

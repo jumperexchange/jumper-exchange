@@ -3,6 +3,7 @@ import { usePathnameWithoutLocale } from './routing/usePathnameWithoutLocale';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
+  isExchange: boolean;
 }
 
 export const useMainPaths = (): useMainPathsProps => {
@@ -14,9 +15,11 @@ export const useMainPaths = (): useMainPathsProps => {
   const isGas = matchesPath(AppPaths.Gas);
   const isBuy = matchesPath(AppPaths.Buy);
   const isPrivate = matchesPath(AppPaths.Private);
+  const isAdvanced = matchesPath(AppPaths.Advanced);
   const isExchange = pathname === AppPaths.Main;
 
   return {
-    isMainPaths: isGas || isBuy || isPrivate || isExchange,
+    isMainPaths: isGas || isBuy || isPrivate || isExchange || isAdvanced,
+    isExchange,
   };
 };

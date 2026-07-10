@@ -8,6 +8,7 @@ import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeO
 import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
+import { useMainPaths } from '@/hooks/useMainPaths';
 import dynamic from 'next/dynamic';
 import { AlertBannerWrapper } from './AlertBannerWrapper';
 
@@ -31,10 +32,11 @@ const App = ({ children }: { children: React.ReactNode }) => {
 
   const { welcomeScreenClosed, setWelcomeScreenClosed, enabled } =
     useWelcomeScreen();
+  const { isMainPaths } = useMainPaths();
 
   useEffect(() => {
     const element = announcementBannersRef.current;
-    if (!element || !welcomeScreenClosed) {
+    if (!element || !welcomeScreenClosed || isMainPaths) {
       return;
     }
 
@@ -51,7 +53,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
       resizeObserver.disconnect();
       setAnnouncementBannerHeight(0);
     };
-  }, [welcomeScreenClosed]);
+  }, [welcomeScreenClosed, isMainPaths]);
 
   useEffect(() => {
     sdk.actions.ready();
@@ -70,20 +72,44 @@ const App = ({ children }: { children: React.ReactNode }) => {
         enableAddressable: true,
       }}
       overlayClassName="welcome-screen-container"
-      containerSx={{
-        height: {
-          xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
-          sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
-          md: `calc(100dvh - ${HeaderHeight.MD}px)`,
-        },
-      }}
+      containerSx={
+        isMainPaths && welcomeScreenClosed
+          ? {
+              height: { xs: `calc(100dvh - ${HeaderHeight.XS}px)` },
+              minHeight: {
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
+            }
+          : {
+              height: {
+                xs: `calc(100dvh - ${HeaderHeight.XS}px)`,
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
+              overflow: 'hidden',
+            }
+      }
+      contentSx={
+        isMainPaths && welcomeScreenClosed
+          ? {
+              height: { xs: '100%', sm: 'auto' },
+              minHeight: {
+                sm: `calc(100dvh - ${HeaderHeight.SM}px)`,
+                md: `calc(100dvh - ${HeaderHeight.MD}px)`,
+              },
+            }
+          : undefined
+      }
       leftSideContent={
-        welcomeScreenClosed && (
+        welcomeScreenClosed &&
+        !isMainPaths && (
           <VerticalTabsWrapper marginTop={announcementBannerHeight} />
         )
       }
+      fullWidthGlowEffect={isMainPaths}
     >
-      {welcomeScreenClosed && (
+      {welcomeScreenClosed && !isMainPaths && (
         <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
