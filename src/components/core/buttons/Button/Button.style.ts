@@ -164,6 +164,19 @@ export const StyledButton = styled(MuiButton, {
       },
     },
     {
+      props: { buttonVariant: ButtonVariant.Error },
+      style: {
+        color: (theme.vars || theme).palette.statusErrorFg,
+        backgroundColor: (theme.vars || theme).palette.statusErrorBg,
+        '&:hover, &:focus-visible': {
+          backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.statusErrorBg} ${(1 - theme.palette.action.hoverOpacity) * 100}%, black 10%)`,
+        },
+        '&:active, &:focus-visible:active': {
+          backgroundColor: `color-mix(in srgb, ${(theme.vars || theme).palette.statusErrorBg} ${(1 - theme.palette.action.activatedOpacity) * 100}%, black 10%)`,
+        },
+      },
+    },
+    {
       props: { buttonSize: ButtonSize.XS },
       style: {
         padding: theme.spacing(0.5),
