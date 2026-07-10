@@ -26,6 +26,7 @@ import {
   TABLE_CELL_SX,
   TABLE_HEADER_CELL_SX,
 } from './DataTable.styles';
+import { mergeSx } from '@/utils/theme/mergeSx';
 
 const DEFAULT_ROW_HEIGHT = 56;
 const DEFAULT_SKELETON_COUNT = 4;
@@ -136,6 +137,7 @@ export function DataTable<T>({
   renderRow,
   renderSkeletonRow,
   testId,
+  sx,
 }: DataTableProps<T>): ReactNode {
   const visibleColumns = columns.filter((c) => !c.hidden);
 
@@ -150,7 +152,7 @@ export function DataTable<T>({
       : {};
 
     return (
-      <Box sx={{ overflowX: 'auto', overflowY: 'visible' }}>
+      <Box sx={mergeSx(sx, { overflowX: 'auto', overflowY: 'visible' })}>
         <Table
           sx={{
             width: 'max-content',

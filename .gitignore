@@ -28,6 +28,9 @@ yarn-error.log*
 /.pnp
 .pnp.js
 
+# Never commit auth (GitHub Packages PAT, etc.); copy from .npmrc.example locally.
+.npmrc
+
 # testing
 /coverage
 .cache-synpress/**

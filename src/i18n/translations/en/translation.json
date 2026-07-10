@@ -1300,6 +1300,7 @@
   "limitOrders": {
     "orders": "Orders",
     "marketPrice": "Market Price",
+    "marketPriceEmptyState": "Select a token to see its market price",
     "table": {
       "columns": {
         "chain": "Chain",
