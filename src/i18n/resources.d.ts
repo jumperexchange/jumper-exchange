@@ -459,6 +459,7 @@ export default interface Resources {
     };
     limitOrders: {
       marketPrice: 'Market Price';
+      marketPriceEmptyState: 'Select a token to see its market price';
       orders: 'Orders';
       table: {
         actions: {
