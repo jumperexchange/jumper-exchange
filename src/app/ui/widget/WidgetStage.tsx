@@ -3,6 +3,7 @@
 import Box from '@mui/material/Box';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { WIDGET_WIDTH } from 'src/config/widgetConfig';
@@ -21,7 +22,7 @@ const getGridTemplateColumns = (
   isSidePanelExpanded: boolean,
   isWelcomeScreenOpen: boolean,
 ) => {
-  const widgetOnly = `auto ${WIDGET_COL_WIDTH}px`;
+  const widgetOnly = 'auto auto';
   // minmax(0, ...) lets these columns shrink below their ideal width instead
   // of overflowing when the collapsed side panel doesn't have its full width
   // available (e.g. narrower "lg" viewports).
@@ -123,9 +124,9 @@ const getStickyColumnSx = (stickyTop: string): SxProps<Theme> => ({
   alignSelf: 'start',
 });
 
-const getWidgetWidthSx = (): SxProps<Theme> => ({
+const getWidgetWidthSx = (constrained = true): SxProps<Theme> => ({
   width: '100%',
-  maxWidth: { sm: WIDGET_WIDTH },
+  ...(constrained && { maxWidth: { sm: WIDGET_WIDTH } }),
   justifySelf: { sm: 'center' },
 });
 
@@ -139,10 +140,14 @@ export const WidgetStage = ({
 }: WidgetStageProps) => {
   const theme = useTheme();
   const headerHeightPx = useHeaderHeight();
-  const bannerStickyTop = getWidgetStickyTop(headerHeightPx, theme);
-  const bannerRef = useRef<HTMLDivElement>(null);
+  const isHeaderHidden = useScrollTrigger();
   const hasAnnouncement = Boolean(announcementContent);
   const hasSidePanel = Boolean(sidePanelContent);
+  const bannerStickyTop = getWidgetStickyTop(
+    isHeaderHidden ? 0 : headerHeightPx,
+    theme,
+  );
+  const bannerRef = useRef<HTMLDivElement>(null);
   const contentRow = hasAnnouncement ? 2 : 1;
   const [bannerHeightPx, setBannerHeightPx] = useState(0);
 
@@ -259,7 +264,7 @@ export const WidgetStage = ({
             minHeight: 0,
             zIndex: 10,
           },
-          getWidgetWidthSx(),
+          getWidgetWidthSx(hasSidePanel),
           stickyColumnSx,
         )}
       >
@@ -267,17 +272,19 @@ export const WidgetStage = ({
       </Box>
       {hasSidePanel && (
         <Box
-          sx={{
-            display: isWelcomeScreenOpen ? 'none' : undefined,
-            gridArea: { xs: 'sidePanel' },
-            gridColumn: { md: '2', lg: '3' },
-            gridRow: { md: contentRow },
-            minWidth: 0,
-            alignSelf: 'start',
-            width: '100%',
-            maxWidth: { sm: WIDGET_WIDTH, md: 'none' },
-            justifySelf: { xs: 'stretch', sm: 'center', md: 'stretch' },
-          }}
+          sx={mergeSx(
+            {
+              display: isWelcomeScreenOpen ? 'none' : undefined,
+              gridArea: { xs: 'sidePanel' },
+              gridColumn: { md: '2', lg: '3' },
+              gridRow: { md: contentRow },
+              minWidth: 0,
+              width: '100%',
+              maxWidth: { sm: WIDGET_WIDTH, md: 'none' },
+              justifySelf: { xs: 'stretch', sm: 'center', md: 'stretch' },
+            },
+            stickyColumnSx,
+          )}
         >
           {sidePanelContent}
         </Box>
