@@ -6,6 +6,7 @@ permissions:
   checks: write
   pull-requests: write
   contents: write
+  packages: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -95,6 +96,10 @@ jobs:
           cache: "pnpm"
       - name: Install pnpm
         run: npm install -g pnpm
+      - name: Authenticate to GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: pnpm install
       - name: Install Playwright Browsers
@@ -148,6 +153,10 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
+      - name: Authenticate to GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: pnpm install
       - name: Download blob reports from GitHub Actions Articfacts
