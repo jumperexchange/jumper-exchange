@@ -39,12 +39,15 @@ export function useWidgetConfig<T extends WidgetType>(
 ): { config: WidgetConfig; isReady: boolean } {
   const activeNavigationTab = useActiveNavigationTab();
   const isPrivateTabActive = activeNavigationTab === 'private';
+  const isLimitTabActive = activeNavigationTab === 'limit';
 
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
-  const sharedRPC = useSharedRPCConfig(
-    'starterVariant' in context ? { isPrivateVariant: isPrivateTabActive } : {},
-  );
+  const sharedRPC = useSharedRPCConfig({
+    isPrivateVariant: isPrivateTabActive,
+    isLimitVariant: isLimitTabActive,
+  });
+
   const sharedForm = useSharedFormConfig(context.formData);
   const { account } = useAccount();
   const priceImpactABTest = useABTest({

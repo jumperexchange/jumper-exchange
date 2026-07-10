@@ -54,6 +54,7 @@ export function useSharedBaseConfig(
 
 interface ShareRpcConfigParams {
   isPrivateVariant?: boolean;
+  isLimitVariant?: boolean;
 }
 /**
  * Shared RPC configuration that's common across all widget types
@@ -66,6 +67,7 @@ export function useSharedRPCConfig(
       sdkConfig: {
         apiUrl: getApiUrl({
           isPrivateVariant: params.isPrivateVariant,
+          isLimitVariant: params.isLimitVariant,
         }),
         rpcUrls: {
           ...getCustomRPCs(),
@@ -77,7 +79,7 @@ export function useSharedRPCConfig(
         },
       },
     }),
-    [params.isPrivateVariant],
+    [params.isPrivateVariant, params.isLimitVariant],
   );
 }
 
