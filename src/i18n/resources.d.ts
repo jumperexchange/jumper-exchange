@@ -475,6 +475,11 @@ export default interface Resources {
       marketPrice: 'Market Price';
       marketPriceEmptyState: 'Select a token to see its market price';
       modifyModal: {
+        cancelStep: {
+          confirm: 'Cancel & continue';
+          description: 'To modify this order, the current one will be cancelled first. You can then place a new order with updated parameters.';
+          title: 'Cancel & modify order';
+        };
         placeholderDescription: "Editing an active order isn't available yet. Cancel it and place a new one instead.";
         placeholderTitle: 'Coming soon';
         title: 'Modify limit order';

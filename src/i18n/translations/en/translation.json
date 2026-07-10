@@ -1346,7 +1346,12 @@
     "modifyModal": {
       "title": "Modify limit order",
       "placeholderTitle": "Coming soon",
-      "placeholderDescription": "Editing an active order isn't available yet. Cancel it and place a new one instead."
+      "placeholderDescription": "Editing an active order isn't available yet. Cancel it and place a new one instead.",
+      "cancelStep": {
+        "title": "Cancel & modify order",
+        "description": "To modify this order, the current one will be cancelled first. You can then place a new order with updated parameters.",
+        "confirm": "Cancel & continue"
+      }
     },
     "repeatModal": {
       "title": "Repeat order",
