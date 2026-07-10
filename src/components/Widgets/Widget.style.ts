@@ -3,16 +3,11 @@
 import type { BoxProps, Breakpoint } from '@mui/material';
 import { Box, styled } from '@mui/material';
 import { HeaderHeight } from 'src/const/headerHeight';
-import { DEFAULT_WELCOME_SCREEN_HEIGHTS } from '../WelcomeScreen/WelcomeScreen.style';
-
-const DEFAULT_WIDGET_HEIGHT = 686;
-// used on welcome-screen to prepare hover-animation
-const DEFAULT_WIDGET_TOP_HOVER_OFFSET = 24;
-// Widget top offset - centers widget within welcome screen height
-const DEFAULT_WIDGET_TOP_OFFSET_VARS = {
-  xs: `${DEFAULT_WELCOME_SCREEN_HEIGHTS.xs} - ${DEFAULT_WIDGET_HEIGHT}px / 2`, // ≈ 1/2 widget height
-  md: `${DEFAULT_WELCOME_SCREEN_HEIGHTS.md} - ${DEFAULT_WIDGET_HEIGHT}px / 2.75`, // ≈ 1/3 widget height
-};
+import {
+  DEFAULT_WIDGET_HEIGHT,
+  DEFAULT_WIDGET_TOP_HOVER_OFFSET,
+  DEFAULT_WIDGET_TOP_OFFSET_VARS,
+} from './widgetWelcomeScreenMargins';
 
 export interface WidgetWrapperProps extends BoxProps {
   welcomeScreenClosed?: boolean;
@@ -26,7 +21,6 @@ export const WidgetWrapper = styled(Box, {
     prop !== 'autoHeight' &&
     prop !== 'contributionDisplayed',
 })<WidgetWrapperProps>(({ theme, autoHeight, contributionDisplayed }) => {
-  // autoHeight is used to adapt widget-height automatically instead of default 686px
   const widgetHeight: 'auto' | number = autoHeight
     ? 'auto'
     : DEFAULT_WIDGET_HEIGHT;
@@ -108,20 +102,16 @@ export const WidgetWrapper = styled(Box, {
         style: {
           '& > div:not(.alert)': {
             cursor: 'pointer',
-            // add margin-top to widget-wrapper when welcome-screen is closed
             marginTop: DEFAULT_WIDGET_TOP_HOVER_OFFSET,
             '&:hover': {
-              // add margin-top to widget-wrapper when welcome-screen is closed
               marginTop: 0,
             },
-            // positioning of widget on mobile-screens from 700px height
             [`@media screen and (min-height: 700px)`]: {
               marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.xs} - ${HeaderHeight.XS}px )`,
               '&:hover': {
                 marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.xs} - ${HeaderHeight.XS}px - ${DEFAULT_WIDGET_TOP_HOVER_OFFSET}px )`,
               },
             },
-            // positioning of widget on mobile-screens from 900px height
             [`@media screen and (min-height: 900px)`]: {
               marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - ${HeaderHeight.MD}px)`,
               '&:hover': {
@@ -148,7 +138,6 @@ export const WidgetWrapper = styled(Box, {
           '& > div:not(.alert)': {
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               [`@media screen and (min-height: 700px)`]: {
-                // (mid viewheight - ≈ 2/3 of widget height - navbar height )
                 marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - 40px )`,
               },
             },
@@ -161,7 +150,6 @@ export const WidgetWrapper = styled(Box, {
           '& > div:not(.alert)': {
             [theme.breakpoints.up('sm' as Breakpoint)]: {
               [`@media screen and (min-height: 900px)`]: {
-                // (mid viewheight - ≈ 2/3 of widget height - ( navbar height + additional spacing) )
                 marginTop: `calc( ${DEFAULT_WIDGET_TOP_OFFSET_VARS.md} - ${HeaderHeight.MD}px )`,
               },
             },

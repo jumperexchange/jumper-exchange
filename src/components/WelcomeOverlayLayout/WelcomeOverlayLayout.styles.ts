@@ -12,22 +12,41 @@ const GLOW_EFFECT_TOP_OFFSET_POSITION = '5%';
 interface GlowContainerProps {
   overlayOpen: boolean;
   fullWidthGlowEffect: boolean;
+  lockViewport?: boolean;
 }
 
 export const GlowContainer = styled(Box, {
   shouldForwardProp: (prop) =>
-    prop !== 'overlayOpen' && prop !== 'fullWidthGlowEffect',
-})<GlowContainerProps>(({ theme, overlayOpen, fullWidthGlowEffect }) => {
+    prop !== 'overlayOpen' &&
+    prop !== 'fullWidthGlowEffect' &&
+    prop !== 'lockViewport',
+})<GlowContainerProps>(({
+  theme,
+  overlayOpen,
+  fullWidthGlowEffect,
+  lockViewport = false,
+}) => {
   return {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
+    ...(lockViewport &&
+      !overlayOpen && {
+        flex: 1,
+        height: '100%',
+        minHeight: 0,
+        overflow: 'hidden',
+      }),
     transitionProperty: 'max-height',
     transitionDuration: '.3s',
     transitionTimingFunction: 'ease-in-out',
     [theme.breakpoints.up('sm')]: {
       width: fullWidthGlowEffect ? '100%' : 'auto',
     },
+    ...(fullWidthGlowEffect && {
+      paddingLeft: theme.spacing(3),
+      paddingRight: theme.spacing(3),
+    }),
     [theme.breakpoints.up('lg')]: {
       margin: fullWidthGlowEffect ? 0 : theme.spacing(0, 4),
     },
@@ -71,6 +90,13 @@ export const GlowContainer = styled(Box, {
             minHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
             maxHeight: DEFAULT_WELCOME_SCREEN_HEIGHTS.md,
           },
+        },
+      },
+      {
+        props: ({ overlayOpen, fullWidthGlowEffect }) =>
+          overlayOpen && fullWidthGlowEffect,
+        style: {
+          overflow: 'visible',
         },
       },
       {

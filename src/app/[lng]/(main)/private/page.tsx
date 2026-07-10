@@ -1,15 +1,13 @@
 'use client';
+
 import { notFound } from 'next/navigation';
-import { MainWidgetContainer } from 'src/components/Containers/MainWidgetContainer';
-import { Widget } from '@/components/Widgets/Widget';
-import { Widgets } from '@/components/Widgets/Widgets';
+import Box from '@mui/material/Box';
+import { MainWidgetPageContent } from '@/app/ui/widget/MainWidgetPageContent';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
 import { useAccount } from '@lifi/wallet-management';
 
 const Page = () => {
-  const variant = 'private';
-
   const { account } = useAccount();
   const privateSwapsFeatureFlag = useABTest({
     feature: AB_TEST_NAME.PRIVATE_SWAPS,
@@ -24,13 +22,12 @@ const Page = () => {
   }
 
   return (
-    <MainWidgetContainer>
-      <Widget
-        starterVariant={variant}
+    <Box sx={{ paddingBottom: { xs: 6, sm: 0 } }}>
+      <MainWidgetPageContent
+        variant="private"
         isLoading={privateSwapsFeatureFlag.isLoading}
       />
-      <Widgets />
-    </MainWidgetContainer>
+    </Box>
   );
 };
 
