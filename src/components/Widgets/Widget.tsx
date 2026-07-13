@@ -81,16 +81,22 @@ export function Widget({
     address: account?.address ?? '',
   });
 
+  const widgetAdvancedFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.WIDGET_ADVANCED,
+  });
+
   const resolvedVariant = useMemo(
     () =>
       resolveWidgetVariant(starterVariant, {
         limitOrders: limitOrdersFeatureFlag.isEnabled,
         privateSwaps: privateSwapsFeatureFlag.isEnabled,
+        widgetAdvanced: widgetAdvancedFeatureFlag.isEnabled,
       }),
     [
       starterVariant,
       limitOrdersFeatureFlag.isEnabled,
       privateSwapsFeatureFlag.isEnabled,
+      widgetAdvancedFeatureFlag.isEnabled,
     ],
   );
 

@@ -18,6 +18,7 @@ export function useLimitOrdersWidgetConfig(
       resolvedVariant: resolveWidgetVariant('limit', {
         limitOrders: false,
         privateSwaps: false,
+        widgetAdvanced: false,
       }),
       partnerName: 'default',
       integrator: envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ADVANCED || undefined,
