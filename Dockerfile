@@ -12,9 +12,19 @@ RUN corepack enable && corepack install -g pnpm@$PNPM_VERSION
 
 WORKDIR /app
 
+# .npmrc carries the @jumperexchange -> GitHub Packages scope mapping. The auth
+# token is injected via a BuildKit secret (id=github_token) so it is never baked
+# into an image layer. CI passes it through docker/build-push-action `secrets`.
+COPY package.json pnpm-lock.yaml .npmrc ./
+RUN --mount=type=secret,id=github_token \
+    if [ -s /run/secrets/github_token ]; then \
+      echo "//npm.pkg.github.com/:_authToken=$(cat /run/secrets/github_token)" >> ~/.npmrc; \
+    fi && \
+    pnpm install --frozen-lockfile && \
+    rm -f ~/.npmrc
+
 COPY . .
-RUN rm .env*
-RUN pnpm install --frozen-lockfile
+RUN rm -f .env*
 ARG ENV_FILE=.env
 #NOTE: Make sure to put the following en variable after setting up corepack
 ENV NODE_ENV=production

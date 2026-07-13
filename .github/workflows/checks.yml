@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   pull-requests: write
+  packages: read
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -27,6 +28,11 @@ jobs:
         with:
           node-version: 24
           cache: "pnpm"
+      - &npm-auth
+        name: Authenticate to GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> ~/.npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - &install-dependencies
         name: Install dependencies
         run: pnpm install
@@ -73,6 +79,7 @@ jobs:
       - *checkout
       - *pnpm-setup
       - *node-setup
+      - *npm-auth
       - *install-dependencies
       - name: Run unit tests
         run: pnpm test:unit
@@ -83,6 +90,7 @@ jobs:
       - *checkout
       - *pnpm-setup
       - *node-setup
+      - *npm-auth
       - *install-dependencies
       - name: Run unit component tests
         run: pnpm test:unit-components
@@ -93,6 +101,7 @@ jobs:
       - *checkout
       - *pnpm-setup
       - *node-setup
+      - *npm-auth
       - *install-dependencies
       - name: Run tests
         id: test
@@ -110,6 +119,7 @@ jobs:
       - *checkout
       - *pnpm-setup
       - *node-setup
+      - *npm-auth
       - *install-dependencies
       - name: Detect duplicated code under tests/e2e
         run: pnpm dupcheck:tests
