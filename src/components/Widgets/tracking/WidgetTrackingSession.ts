@@ -1,4 +1,4 @@
-import type { ChainTokenSelected } from '@lifi/widget';
+import type { ChainTokenSelected, NavigationTabKey } from '@lifi/widget';
 import type { MutableRefObject } from 'react';
 import type { TrackTransactionDataProps } from '@/types/userTracking';
 
@@ -14,8 +14,10 @@ export interface WidgetTrackingUrlParams {
 export interface WidgetTrackingSession {
   readonly sourceChainToken: ChainTokenSelected | null;
   readonly destinationChainToken: ChainTokenSelected | null;
+  readonly activeTab: NavigationTabKey | null;
 
   onSourceTokenSelected(sourceToken: ChainTokenSelected): void;
+  onTabChanged(tab: NavigationTabKey): void;
   onDestinationTokenSelected(destinationToken: ChainTokenSelected): void;
   setDestinationTokenForTracking(destinationToken: ChainTokenSelected): void;
 
@@ -39,6 +41,7 @@ export const createWidgetTrackingSession = (
 ): WidgetTrackingSession => {
   let sourceChainToken: ChainTokenSelected | null = null;
   let destinationChainToken: ChainTokenSelected | null = null;
+  let activeTab: NavigationTabKey | null = null;
   let isRoutesForCurrentSourceTokenTracked = false;
   let isRoutesForCurrentDestinationTokenTracked = false;
   let isRoutesForCurrentFromAmountTracked = false;
@@ -55,6 +58,14 @@ export const createWidgetTrackingSession = (
     },
     get destinationChainToken() {
       return destinationChainToken;
+    },
+
+    get activeTab() {
+      return activeTab;
+    },
+
+    onTabChanged(tab: NavigationTabKey) {
+      activeTab = tab;
     },
 
     onSourceTokenSelected(sourceToken: ChainTokenSelected) {

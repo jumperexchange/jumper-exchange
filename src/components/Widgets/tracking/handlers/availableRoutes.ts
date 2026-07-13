@@ -66,7 +66,12 @@ export const createAvailableRoutesHandler = (
       {},
     );
 
+    const tradeType = ctx.session.activeTab;
+
     trackWidgetEvent(ctx.tracking, config, 'routes_available', {
+      ...(tradeType !== null && {
+        [TrackingEventParameter.TradeType]: tradeType,
+      }),
       [TrackingEventParameter.FromToken]: fromToken || '',
       [TrackingEventParameter.FromChainId]: fromChainId || '',
       [TrackingEventParameter.ToToken]: toToken || '',

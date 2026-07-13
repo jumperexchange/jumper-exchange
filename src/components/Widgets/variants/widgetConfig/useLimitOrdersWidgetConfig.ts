@@ -31,7 +31,7 @@ export function useLimitOrdersWidgetConfig(
       ...mainConfig,
       variant: 'compact',
       mode: 'limit',
-      buildUrl: true,
+      buildUrl: false,
       useRelayerRoutes: true,
       hiddenUI: {
         ...mainConfig.hiddenUI,
