@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { WidgetHeader } from '../RichBlocks.style';
 import { Widget } from 'src/components/Widgets/Widget';
 import { WalletButtons } from 'src/components/Navbar/components/Buttons/WalletButtons';
@@ -65,6 +65,7 @@ export const WidgetRenderer: FC<WidgetRendererProps> = ({ text }) => {
         toToken={toToken}
         allowChains={allowChainsArray}
         widgetIntegrator={config.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
+        disableTabNavigation
       />
     </>
   );

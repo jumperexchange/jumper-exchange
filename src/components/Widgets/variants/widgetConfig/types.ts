@@ -1,6 +1,7 @@
 import type {
   NavigationTabKey,
   WidgetConfig,
+  WidgetMode,
   WidgetProvider,
 } from '@lifi/widget';
 import type { StarterVariantType } from 'src/types/internal';
@@ -19,6 +20,18 @@ import type { Theme as MuiTheme } from '@mui/material/styles';
 export type EnglishLanguageResource = NonNullable<
   WidgetConfig['languageResources']
 >['en'];
+
+export interface WidgetVariantDescriptor {
+  key: string;
+  uiVariant: 'compact' | 'wide';
+  mode: WidgetMode;
+  navigationTabs?: NavigationTabKey[];
+}
+
+export interface WidgetFeatureFlags {
+  limitOrders: boolean;
+  privateSwaps: boolean;
+}
 
 // Widget types
 export type WidgetType = 'main' | 'mission' | 'zap' | 'limit';
@@ -66,8 +79,8 @@ export interface CommonWidgetContext {
 // Widget-specific context interfaces
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
+  resolvedVariant: WidgetVariantDescriptor;
   partnerName: string;
-  navigationTabs?: NavigationTabKey[];
   bridgeConditions?: {
     isAGWToNonABSChain?: boolean;
     isBridgeFromHypeToArbNativeUSDC?: boolean;
