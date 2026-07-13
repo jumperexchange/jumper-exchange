@@ -7,6 +7,8 @@ import type { WidgetTrackingVariant } from '@/components/Widgets/tracking/widget
 import { ChainAlert } from '@/components/Alerts';
 import { TabsMap } from '@/const/tabsMap';
 import { useActiveTabStore } from '@/stores/activeTab';
+import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
+import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { WidgetEvents } from './WidgetEvents';
 
@@ -14,6 +16,8 @@ export function Widgets() {
   const { setActiveTab } = useActiveTabStore();
   const pathname = usePathname();
   const activeNavigationTab = useActiveNavigationTab();
+  const isRepeatModalOpen = useRepeatOrderFlowStore((s) => s.isModalOpen);
+  const isModifyModalOpen = useModifyOrderFlowStore((s) => s.isModalOpen);
 
   useLayoutEffect(() => {
     const isAdvanced = TabsMap.Advanced.destination.some((dest) =>
@@ -25,15 +29,18 @@ export function Widgets() {
   const trackingVariant: WidgetTrackingVariant =
     activeNavigationTab === 'private'
       ? 'private'
-      : activeNavigationTab === 'limit'
-        ? 'limit'
+      : pathname.includes('advanced')
+        ? 'advanced'
         : 'main';
 
   return (
     <>
       <ChainAlert />
       <PartnerThemeFooterImage />
-      <WidgetTrackingProvider variant={trackingVariant}>
+      <WidgetTrackingProvider
+        variant={trackingVariant}
+        enabled={!isRepeatModalOpen && !isModifyModalOpen}
+      >
         <WidgetEvents />
       </WidgetTrackingProvider>
     </>

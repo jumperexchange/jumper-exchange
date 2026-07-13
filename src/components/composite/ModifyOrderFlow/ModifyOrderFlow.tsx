@@ -7,6 +7,7 @@ import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { useCancelOrder } from '@/components/composite/CancelOrderFlow/hooks/useCancelOrder';
@@ -123,7 +124,19 @@ export const ModifyOrderFlowModal = () => {
   if (step === 'place' && context) {
     return (
       <ModalContainer isOpen={isModalOpen} onClose={handleClose}>
-        <BaseWidget type="limit" ctx={context} />
+        <WidgetTrackingProvider
+          variant="limit"
+          initialSourceToken={{
+            chainId: selectedOrder.fromToken.chainId,
+            tokenAddress: selectedOrder.fromToken.address,
+          }}
+          initialDestinationToken={{
+            chainId: selectedOrder.toToken.chainId,
+            tokenAddress: selectedOrder.toToken.address,
+          }}
+        >
+          <BaseWidget type="limit" ctx={context} />
+        </WidgetTrackingProvider>
       </ModalContainer>
     );
   }
