@@ -1,8 +1,7 @@
 'use client';
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { WidgetEvent, useWidgetEvents } from '@lifi/widget';
-import { useEffect } from 'react';
+import { useActiveNavigationTab } from '@/hooks/useActiveNavigationTab';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import type { WidgetTrackingVariant } from '@/components/Widgets/tracking/widgetTrackingPresets';
 import { ChainAlert } from '@/components/Alerts';
@@ -14,9 +13,7 @@ import { WidgetEvents } from './WidgetEvents';
 export function Widgets() {
   const { setActiveTab } = useActiveTabStore();
   const pathname = usePathname();
-  const widgetEvents = useWidgetEvents();
-  const [trackingVariant, setTrackingVariant] =
-    useState<WidgetTrackingVariant>('main');
+  const activeNavigationTab = useActiveNavigationTab();
 
   useLayoutEffect(() => {
     const isAdvanced = TabsMap.Advanced.destination.some((dest) =>
@@ -25,22 +22,12 @@ export function Widgets() {
     setActiveTab(isAdvanced ? TabsMap.Advanced.index : TabsMap.Simple.index);
   }, [pathname, setActiveTab]);
 
-  useEffect(() => {
-    const handler = ({ tab }: { tab: string }) => {
-      if (tab === 'private') {
-        setTrackingVariant('private');
-      } else if (tab === 'limit') {
-        setTrackingVariant('limit');
-      } else {
-        setTrackingVariant('main');
-      }
-    };
-
-    widgetEvents.on(WidgetEvent.NavigationTabChanged, handler);
-    return () => {
-      widgetEvents.off(WidgetEvent.NavigationTabChanged, handler);
-    };
-  }, [widgetEvents]);
+  const trackingVariant: WidgetTrackingVariant =
+    activeNavigationTab === 'private'
+      ? 'private'
+      : activeNavigationTab === 'limit'
+        ? 'limit'
+        : 'main';
 
   return (
     <>

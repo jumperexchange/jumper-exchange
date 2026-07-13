@@ -2,6 +2,7 @@ import { useAccount } from '@lifi/wallet-management';
 import { ChainType, type WidgetConfig } from '@lifi/widget';
 import merge from 'lodash/merge';
 import { useMemo } from 'react';
+import { useActiveNavigationTab } from '@/hooks/useActiveNavigationTab';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
 import type {
@@ -36,13 +37,17 @@ export function useWidgetConfig<T extends WidgetType>(
         ? ZapWidgetContext
         : LimitOrdersWidgetContext,
 ): { config: WidgetConfig; isReady: boolean } {
+  const activeNavigationTab = useActiveNavigationTab();
+  const isPrivateTabActive = activeNavigationTab === 'private';
+  const isLimitTabActive = activeNavigationTab === 'limit';
+
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
-  const sharedRPC = useSharedRPCConfig(
-    'starterVariant' in context
-      ? { isPrivateVariant: context.starterVariant === 'private' }
-      : {},
-  );
+  const sharedRPC = useSharedRPCConfig({
+    isPrivateVariant: isPrivateTabActive,
+    isLimitVariant: isLimitTabActive,
+  });
+
   const sharedForm = useSharedFormConfig(context.formData);
   const { account } = useAccount();
   const priceImpactABTest = useABTest({
@@ -61,6 +66,7 @@ export function useWidgetConfig<T extends WidgetType>(
       useMainWidget: type === 'main',
       useLimitOrdersWidget: type === 'limit',
       useSwapBridgeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
+      usePrivateWidget: isPrivateTabActive,
       ...context,
     },
     deps,
