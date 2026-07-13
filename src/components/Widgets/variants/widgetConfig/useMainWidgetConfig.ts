@@ -1,4 +1,4 @@
-import type { WidgetConfig } from '@lifi/widget';
+import type { NavigationTabKey, WidgetConfig } from '@lifi/widget';
 import { ChainId } from '@lifi/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
@@ -31,6 +31,7 @@ function toolsConfig(allow?: string[], deny?: string[]) {
 export function useMainWidgetConfig(
   context: MainWidgetContext,
   deps: HookDependencies,
+  activeNavigationTab?: NavigationTabKey | null,
 ): Partial<WidgetConfig> {
   const { tokens: memeListTokens } = useMemelist({
     enabled: context.partnerName === ThemesMap.Memecoins,
@@ -60,8 +61,14 @@ export function useMainWidgetConfig(
       navigationTabs,
     } = context.resolvedVariant ?? {};
 
+    const activeTabKey = navigationTabs?.includes(
+      activeNavigationTab as NavigationTabKey,
+    )
+      ? activeNavigationTab
+      : navigationTabs?.[0];
+
     const config: Partial<WidgetConfig> = {
-      keyPrefix: `jumper-${navigationTabs?.[0] ?? key}`,
+      keyPrefix: `jumper-${activeTabKey ?? key}`,
       variant: navigationTabs ? 'wide' : uiVariant,
       buildUrl: true,
       useRelayerRoutes: true,
@@ -188,5 +195,6 @@ export function useMainWidgetConfig(
     allowedChainsByVariant,
     denyBridges,
     denyExchanges,
+    activeNavigationTab,
   ]);
 }
