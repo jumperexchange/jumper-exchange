@@ -133,6 +133,7 @@ export const MissionTask: FC<MissionTaskProps> = ({
       statusBadge={
         shouldVerify && (
           <Badge
+            data-testid="mission-verify-button"
             label={t(
               isSuccess || isVerified
                 ? 'missions.tasks.status.verified'

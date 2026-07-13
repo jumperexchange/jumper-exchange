@@ -35,6 +35,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
   isLoading = false,
   isContentVisible = true,
   dataTestId,
+  hintDataTestId = 'entity-stack-hint',
   addressOverride,
   entitiesSx,
   // Main stack props
@@ -223,7 +224,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
             hintItems={hintItems}
             hintItemsDirection={content.hintItemsDirection}
             titleDataTestId="entity-stack-title"
-            hintDataTestId="entity-stack-hint"
+            hintDataTestId={hintDataTestId}
             sx={contentSx}
           >
             {!isOverlay ? badgeStack : null}
@@ -237,7 +238,7 @@ export const EntityStackWithBadge: FC<EntityStackWithBadgeProps> = ({
             hint={hintItems[0]?.label}
             hintOnHover={hintItems[0]?.hoverContent}
             titleDataTestId="entity-stack-title"
-            hintDataTestId="entity-stack-hint"
+            hintDataTestId={hintDataTestId}
             sx={contentSx}
           >
             {!isOverlay ? badgeStack : null}

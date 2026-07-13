@@ -4,6 +4,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-1c6mbxq"
+    data-testid="earn-card"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -133,7 +134,7 @@ exports[`HeroEarnCard snapshot > hero card matches snapshot 1`] = `
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -151,6 +152,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
 <div>
   <div
     class="MuiBox-root css-1c6mbxq"
+    data-testid="earn-card"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -280,7 +282,7 @@ exports[`HeroEarnCard snapshot > hero card with EARN_UP_TO copy matches snapshot
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -298,6 +300,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
 <div>
   <div
     class="MuiBox-root css-1c6mbxq"
+    data-testid="earn-card"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -427,7 +430,7 @@ exports[`HeroEarnCard snapshot > hero card with MAKE_THE_JUMP copy matches snaps
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -445,6 +448,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
 <div>
   <div
     class="MuiBox-root css-1c6mbxq"
+    data-testid="earn-card"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -574,7 +578,7 @@ exports[`HeroEarnCard snapshot > hero card with MAXIMIZE_YOUR_REVENUE copy match
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -596,6 +600,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
   >
     <div
       class="MuiBox-root css-1w2ajjw"
+      data-testid="earn-card"
     >
       <div
         class="MuiStack-root css-imab1l-MuiStack-root"
@@ -725,7 +730,7 @@ exports[`HeroEarnCard snapshot > hero card with link matches snapshot 1`] = `
               >
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                  data-testid="entity-stack-hint"
+                  data-testid="earn-card-chain-name"
                   style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
@@ -787,6 +792,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
 <div>
   <div
     class="MuiBox-root css-1c6mbxq"
+    data-testid="earn-card"
   >
     <div
       class="MuiStack-root css-imab1l-MuiStack-root"
@@ -916,7 +922,7 @@ exports[`HeroEarnCard snapshot > hero card with single asset matches snapshot 1`
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base

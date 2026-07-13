@@ -17,6 +17,7 @@ export interface WelcomeOverlayLayoutProps {
   slideDirection?: SlideProps['direction'];
   slideTimeout?: number;
   overlayClassName?: string;
+  overlayDataTestId?: string;
   overlayZIndex?: number;
   containerSx?: SxProps<Theme>;
   contentSx?: SxProps<Theme>;

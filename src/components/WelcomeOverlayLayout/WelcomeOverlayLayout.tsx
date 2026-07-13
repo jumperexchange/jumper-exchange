@@ -17,6 +17,7 @@ export const WelcomeOverlayLayout = ({
   slideDirection = 'up',
   slideTimeout = 400,
   overlayClassName,
+  overlayDataTestId,
   overlayZIndex = 999,
   containerSx,
   contentSx = {},
@@ -59,6 +60,7 @@ export const WelcomeOverlayLayout = ({
         unmountOnExit
       >
         <Box
+          data-testid={overlayDataTestId}
           style={{
             zIndex: overlayZIndex,
             position: 'absolute',

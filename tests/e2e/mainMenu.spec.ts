@@ -32,16 +32,18 @@ test.describe('Main Menu flows', () => {
     async ({ page }) => {
       const mainMenu = new MainMenuPage(page);
       await mainMenu.headerMissionTab.click();
+      await expect(page.getByTestId('missions-list')).toBeVisible();
 
+      // Develop Strapi also serves legacy /quests/ cards whose slugs may not resolve.
       const firstMissionCard = page
-        .locator('[data-testid^="mission-card-"]')
+        .locator('a[href^="/missions/"]')
+        .filter({ has: page.locator('[data-testid^="mission-card-"]') })
         .first();
       await firstMissionCard.click();
 
-      const missionDetailsCard = page
-        .locator('[data-testid^="mission-card-"]')
-        .first();
-      await expect(missionDetailsCard).toBeVisible();
+      await expect(page.getByTestId('mission-details')).toBeVisible({
+        timeout: NAV_TIMEOUT_MS,
+      });
     },
   );
 
@@ -58,9 +60,7 @@ test.describe('Main Menu flows', () => {
         { timeout: 60_000 },
       );
       await page.waitForLoadState('load');
-      // TODO(app): JUM-924 — add `learn-page` data-testid so we can drop
-      // the `.learn-page` CSS-class anchor.
-      await expect(page.locator('.learn-page')).toBeVisible();
+      await expect(page.getByTestId('learn-page')).toBeVisible();
       await mainMenu.expectHeaderTabs();
 
       const articlesGrid = page.getByTestId('blog-articles-cards-grid');

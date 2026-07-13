@@ -10,7 +10,7 @@ import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCa
 
 export const MissionDetailsSkeleton = () => {
   return (
-    <MissionDetailsColumnContainer>
+    <MissionDetailsColumnContainer data-testid="mission-details">
       <SectionCardContainer>
         <MissionDetailsCardContainer>
           <Box sx={{ width: '100%' }}>

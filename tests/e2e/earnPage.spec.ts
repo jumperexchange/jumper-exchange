@@ -45,9 +45,7 @@ test.describe('Chains filters on Earn page', () => {
     },
   );
 
-  // JUM-924 item #8: `earn-card-chain-name` testid removed from loaded EarnCards.
-  // Re-enable when the FE adds a chain-name testid to loaded (non-skeleton) cards.
-  test.fixme(
+  test(
     qase(41, 'Should be able to filter by base chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -59,8 +57,7 @@ test.describe('Chains filters on Earn page', () => {
     },
   );
 
-  // JUM-924 item #8: same as qase 41 — chain-name testid gap.
-  test.fixme(
+  test(
     qase(42, 'Should be able to filter by arbitrum chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -72,8 +69,7 @@ test.describe('Chains filters on Earn page', () => {
     },
   );
 
-  // JUM-924 item #8: same as qase 41 — chain-name testid gap.
-  test.fixme(
+  test(
     qase(43, 'Should be able to filter by ethereum chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -133,16 +129,14 @@ test.describe('Assets filters on Earn page', () => {
 test.describe('Tags filters on Earn page', () => {
   test.beforeEach(async ({ jumperPage }) => setupAllMarketsView(jumperPage));
 
-  // JUM-924 item #13: card-level `earn-card` testid needed for per-card scoping.
-  test.fixme(
+  test(
     qase(208, 'Filter by tag returns only cards that have that tag'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
-      const baseline = await earnPage.getCardCount();
 
+      // The grid caps at a page size, so count deltas can't detect filtering.
       for (const tag of ['Yield Aggregator', 'Liquid Staking', 'Synthetic']) {
         await earnPage.selectOptionFromDropdown('earn-filter-tag-select', tag);
-        await earnPage.expectCardCountLessThan(baseline);
         await earnPage.expectAtLeastOneCard();
         await earnPage.expectAllCardsHaveTag(tag);
         await earnPage.clearFilters();

@@ -70,6 +70,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         enableAddressable: true,
       }}
       overlayClassName="welcome-screen-container"
+      overlayDataTestId="welcome-screen"
       containerSx={{
         height: {
           xs: `calc(100dvh - ${HeaderHeight.XS}px)`,

@@ -90,7 +90,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
 
   return (
     <ConditionalLink href={href} sx={{ width: '100%' }}>
-      <HeroEarnCardContainer hasLink={!!href}>
+      <HeroEarnCardContainer data-testid="earn-card" hasLink={!!href}>
         <HeroEarnCardHeaderContainer direction="row">
           {forYou && (
             <Badge
@@ -152,6 +152,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
               addressOverride={lpToken?.address}
               entities={[protocol]}
               badgeEntities={chains}
+              hintDataTestId="earn-card-chain-name"
               size={AvatarSize.XXL}
               badgeSize={AvatarSize.SM}
               content={{

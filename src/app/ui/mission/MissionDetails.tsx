@@ -73,7 +73,7 @@ export const MissionDetails: FC<MissionDetailsProps> = ({ mission }) => {
   }, [status]);
 
   return (
-    <MissionDetailsColumnContainer>
+    <MissionDetailsColumnContainer data-testid="mission-details">
       <SectionCardContainer>
         <MissionDetailsCardContainer>
           <Box sx={{ width: '100%' }}>

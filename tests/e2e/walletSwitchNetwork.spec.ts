@@ -6,15 +6,15 @@ import { networks } from './wallet/constants/networkConstants';
 
 // End-to-end useSwitchChain → MetaMask provider event → widget re-render path.
 test.describe('Switch network from Jumper widget', () => {
-  // JUM-924 item #1: `widget-source-chain` testid doesn't render on prod today.
-  // Re-enable once the FE adds a stable testid for the from-chain selector.
+  // JUM-924 item #1: widget ≥4.2 moved chain selection into the token page —
+  // rewrite this flow via `widget-from-chain-<id>` tiles at the widget bump.
   test.fixme(
     qase(202, 'Switch chain via Jumper triggers MetaMask popup'),
     async ({ jumperPage, wallet }) => {
       await jumperPage.goto('/');
       await jumperPage.waitForLoadState('domcontentloaded');
 
-      // TODO(app): JUM-924 — `widget-source-chain` is a guess; doesn't render on prod today.
+      // TODO(app): JUM-924 item #1 — dead selector; see fixme note above.
       const fromChainSelector = jumperPage.getByTestId('widget-source-chain');
       await expect(fromChainSelector).toBeVisible();
       await fromChainSelector.click();

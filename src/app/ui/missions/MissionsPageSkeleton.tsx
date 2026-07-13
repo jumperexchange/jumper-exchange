@@ -23,7 +23,7 @@ export const MissionsPageSkeleton = () => {
               height: 32,
             }}
           />
-          <GridContainer>
+          <GridContainer dataTestId="missions-list">
             <MissionsListSkeleton count={5} />
           </GridContainer>
         </MissionSectionContainer>

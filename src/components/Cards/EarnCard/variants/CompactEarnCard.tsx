@@ -66,7 +66,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   return (
     <ConditionalLink href={href}>
-      <CompactEarnCardContainer hasLink={!!href}>
+      <CompactEarnCardContainer data-testid="earn-card" hasLink={!!href}>
         <CompactEarnCardBody hasHintHoverActive>
           <CompactEarnCardHeaderContainer direction="row">
             <CompactEarnCardTagContainer direction="row">
@@ -95,6 +95,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               entities={[protocol!]}
               size={AvatarSize.XL}
               badgeEntities={chains}
+              hintDataTestId="earn-card-chain-name"
               content={{
                 title,
               }}

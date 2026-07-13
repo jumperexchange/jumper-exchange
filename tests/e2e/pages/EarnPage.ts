@@ -31,6 +31,7 @@ export class EarnPage {
   readonly allMarketsTab: Locator;
   readonly cardsGrid: Locator;
   readonly clearButton: Locator;
+  readonly clearFiltersButton: Locator;
   readonly forYouTab: Locator;
   readonly yourPositionsTab: Locator;
 
@@ -39,11 +40,16 @@ export class EarnPage {
     this.forYouTab = page.getByTestId('earn-filter-tab-foryou');
     this.yourPositionsTab = page.getByTestId('earn-filter-tab-your-positions');
     this.cardsGrid = page.getByTestId('earn-opportunities-cards-grid');
+    // Dropdown-internal clear; only exists while a filter popover is open.
     this.clearButton = page.getByTestId('clear-button');
+    // Filter-bar clear; renders at page level while any filter is applied.
+    this.clearFiltersButton = page.getByTestId(
+      'earn-filter-clear-filters-button',
+    );
   }
 
   async clearFilters(): Promise<void> {
-    await this.clearButton.click();
+    await this.clearFiltersButton.click();
   }
 
   async discoverOpportunitySlugs(
@@ -77,12 +83,11 @@ export class EarnPage {
       label.toLowerCase().replace(/\s+/g, '-');
     const cards = this.cardsGrid.getByTestId('earn-card');
     await expect(cards).not.toHaveCount(0);
-    const count = await cards.count();
-    for (let i = 0; i < count; i++) {
-      await expect(
-        cards.nth(i).getByTestId(`earn-card-tag-${slug(selectedTag)}`),
-      ).toHaveCount(1);
-    }
+    await expect(
+      cards.filter({
+        hasNot: this.page.getByTestId(`earn-card-tag-${slug(selectedTag)}`),
+      }),
+    ).toHaveCount(0);
   }
 
   async expectAllCardsShowChain(expectedChain: string): Promise<void> {
@@ -94,10 +99,9 @@ export class EarnPage {
     await expect(chainNameElements).not.toHaveCount(0);
 
     const expectedPattern = new RegExp(`^${expectedChain}$`, 'i');
-    const count = await chainNameElements.count();
-    for (let i = 0; i < count; i++) {
-      await expect(chainNameElements.nth(i)).toHaveText(expectedPattern);
-    }
+    await expect(
+      chainNameElements.filter({ hasNotText: expectedPattern }),
+    ).toHaveCount(0);
   }
 
   async expectAllMarketsListReady(): Promise<void> {
@@ -121,14 +125,6 @@ export class EarnPage {
 
   async expectAtLeastOneCard(): Promise<void> {
     await expect(this.cardsGrid.getByTestId('earn-card')).not.toHaveCount(0);
-  }
-
-  async expectCardCountLessThan(beforeCount: number): Promise<void> {
-    await expect
-      .poll(async () => this.cardsGrid.getByTestId('earn-card').count(), {
-        timeout: 5_000,
-      })
-      .toBeLessThan(beforeCount);
   }
 
   async expectFiltersVisible(): Promise<void> {
@@ -158,10 +154,6 @@ export class EarnPage {
         `[data-testid^="assets-"]:not([data-testid="assets-${selectedAsset}"])`,
       ),
     ).toHaveCount(0);
-  }
-
-  async getCardCount(): Promise<number> {
-    return this.cardsGrid.getByTestId('earn-card').count();
   }
 
   async getDropdownOptions(dropdownTestId: string): Promise<string[]> {
