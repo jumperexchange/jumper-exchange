@@ -95,6 +95,9 @@ export enum TrackingAction {
   OnRouteExecutionStartedLimit = 'action_on_route_exec_started_limit',
   OnRouteExecutionCompletedLimit = 'action_on_route_exec_completed_limit',
   OnRouteExecutionFailedLimit = 'action_on_route_exec_failed_limit',
+  OnRepeatLimitOrderOpen = 'repeat_limit_order_open',
+  OnModifyLimitOrderOpen = 'modify_limit_order_open',
+  OnCancelLimitOrderOpen = 'cancel_limit_order_open',
 
   // Dust conversion
   OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
@@ -423,4 +426,7 @@ export enum TrackingEventParameter {
   NotificationSourceRuleId = 'param_notification_source_rule_id',
   NotificationCategory = 'param_notification_category',
   NotificationCtaTarget = 'param_notification_cta_target',
+
+  // Limit orders
+  OrderId = 'param_order_id',
 }
