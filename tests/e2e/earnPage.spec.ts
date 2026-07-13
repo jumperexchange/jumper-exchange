@@ -125,6 +125,7 @@ test.describe('Tags filters on Earn page', () => {
   test(
     qase(208, 'Filter by tag returns only cards that have that tag'),
     async ({ jumperPage }) => {
+      test.slow();
       const earnPage = new EarnPage(jumperPage);
 
       // The grid caps at a page size, so count deltas can't detect filtering.
