@@ -237,6 +237,7 @@ export function useLanguageConfig(
         exchange: translationTemplate,
         deposit: translationTemplate,
         swap: translationTemplate,
+        bridge: translationTemplate,
       },
     };
 

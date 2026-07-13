@@ -53,7 +53,12 @@ export function useMainWidgetConfig(
       _tokens.allow = newAllowList;
     }
 
-    const { key, uiVariant, mode, navigationTabs } = context.resolvedVariant;
+    const {
+      key = '',
+      uiVariant = 'compact',
+      mode = 'default',
+      navigationTabs,
+    } = context.resolvedVariant ?? {};
 
     const config: Partial<WidgetConfig> = {
       keyPrefix: `jumper-${navigationTabs?.[0] ?? key}`,
