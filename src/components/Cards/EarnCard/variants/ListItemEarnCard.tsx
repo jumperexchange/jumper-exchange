@@ -17,6 +17,7 @@ import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDis
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { slugifyTestId } from '@/utils/slugifyTestId';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -93,7 +94,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                   size={BadgeSize.MD}
                   label={tag}
                   key={tag}
-                  data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-testid={`earn-card-tag-${slugifyTestId(tag)}`}
                 />
               ))}
               {items}

@@ -19,6 +19,7 @@ import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { CompactEarnCardMissingPosition } from './CompactEarnCardMissingPosition';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { slugifyTestId } from '@/utils/slugifyTestId';
 
 export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   primaryAction,
@@ -83,7 +84,7 @@ export const CompactEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                   size={BadgeSize.SM}
                   label={tag}
                   key={tag}
-                  data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+                  data-testid={`earn-card-tag-${slugifyTestId(tag)}`}
                 />
               ))}
             </CompactEarnCardTagContainer>

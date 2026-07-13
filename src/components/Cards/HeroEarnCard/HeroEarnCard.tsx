@@ -19,6 +19,7 @@ import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { slugifyTestId } from '@/utils/slugifyTestId';
 
 const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
   asset: {},
@@ -105,7 +106,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
               size={BadgeSize.SM}
               label={tag}
               key={tag}
-              data-testid={`earn-card-tag-${tag.toLowerCase().replace(/\s+/g, '-')}`}
+              data-testid={`earn-card-tag-${slugifyTestId(tag)}`}
             />
           ))}
         </HeroEarnCardHeaderContainer>
