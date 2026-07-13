@@ -1,6 +1,7 @@
 import type { Route, RouteExecutionUpdate } from '@lifi/widget';
 import { isEqual, omit } from 'lodash';
 import { TrackingEventParameter } from '@/const/trackingKeys';
+
 import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
 import {
   trackWidgetEvent,
@@ -31,6 +32,7 @@ export const createRouteExecutionStartedHandler = (
     const routeData = handleRouteData(route, {
       [TrackingEventParameter.Action]: config.dataAction,
       [TrackingEventParameter.TransactionStatus]: 'STARTED',
+      [TrackingEventParameter.TradeType]: ctx.session.activeTab ?? undefined,
       ...config.extraData,
     });
 
@@ -47,6 +49,7 @@ export const createRouteExecutionUpdatedHandler = (
     const updatedRouteData = handleRouteData(update.route, {
       [TrackingEventParameter.Action]: config.dataAction,
       [TrackingEventParameter.TransactionStatus]: 'UPDATED',
+      [TrackingEventParameter.TradeType]: ctx.session.activeTab ?? undefined,
       ...config.extraData,
     });
     const routeData = ctx.session.getTrackedRoute(update.route.id);
@@ -86,6 +89,7 @@ export const createRouteExecutionCompletedHandler = (
       handleRouteData(route, {
         [TrackingEventParameter.Action]: config.dataAction,
         [TrackingEventParameter.TransactionStatus]: 'COMPLETED',
+        [TrackingEventParameter.TradeType]: ctx.session.activeTab ?? undefined,
         ...config.extraData,
       }),
       { isConversion: true },
@@ -109,6 +113,7 @@ export const createRouteExecutionFailedHandler = (
       handleRouteData(update.route, {
         [TrackingEventParameter.Action]: config.dataAction,
         [TrackingEventParameter.TransactionStatus]: 'FAILED',
+        [TrackingEventParameter.TradeType]: ctx.session.activeTab ?? undefined,
         [TrackingEventParameter.Message]:
           update.action.error?.message || update.action.message || '',
         [TrackingEventParameter.IsFinal]: true,

@@ -2,7 +2,7 @@
 
 import type { ChainTokenSelected } from '@lifi/widget';
 import type { FC, PropsWithChildren } from 'react';
-import { createContext, useContext, useMemo } from 'react';
+import { createContext, useContext, useEffect, useMemo } from 'react';
 import {
   createWidgetTrackerConfig,
   type CreateWidgetTrackerConfigOptions,
@@ -37,6 +37,9 @@ interface WidgetTrackingProviderProps extends PropsWithChildren {
   variant?: WidgetTrackingVariant;
   trackerConfig?: WidgetEventTrackerConfig;
   options?: CreateWidgetTrackerConfigOptions;
+  enabled?: boolean;
+  initialSourceToken?: ChainTokenSelected;
+  initialDestinationToken?: ChainTokenSelected;
 }
 
 export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
@@ -44,12 +47,26 @@ export const WidgetTrackingProvider: FC<WidgetTrackingProviderProps> = ({
   variant,
   trackerConfig,
   options,
+  enabled = true,
+  initialSourceToken,
+  initialDestinationToken,
 }) => {
-  const resolvedConfig =
-    trackerConfig ??
-    (variant ? createWidgetTrackerConfig(variant, options) : {});
+  const resolvedConfig = enabled
+    ? (trackerConfig ??
+      (variant ? createWidgetTrackerConfig(variant, options) : {}))
+    : {};
 
   const session = useWidgetTracking(resolvedConfig);
+
+  useEffect(() => {
+    if (initialSourceToken) {
+      session.onSourceTokenSelected(initialSourceToken);
+    }
+    if (initialDestinationToken) {
+      session.setDestinationTokenForTracking(initialDestinationToken);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = useMemo(
     () => ({

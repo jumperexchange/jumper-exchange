@@ -8,6 +8,7 @@ import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlow
 import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTheme } from '@mui/material';
+import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 
 export const RepeatOrderFlowModal = () => {
   const { t } = useTranslation();
@@ -72,7 +73,19 @@ export const RepeatOrderFlowModal = () => {
 
   return (
     <ModalContainer isOpen={isModalOpen} onClose={closeModal}>
-      <BaseWidget type="limit" ctx={context} />
+      <WidgetTrackingProvider
+        variant="limit"
+        initialSourceToken={{
+          chainId: selectedOrder.fromToken.chainId,
+          tokenAddress: selectedOrder.fromToken.address,
+        }}
+        initialDestinationToken={{
+          chainId: selectedOrder.toToken.chainId,
+          tokenAddress: selectedOrder.toToken.address,
+        }}
+      >
+        <BaseWidget type="limit" ctx={context} />
+      </WidgetTrackingProvider>
     </ModalContainer>
   );
 };

@@ -14,6 +14,12 @@ import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlow
 import { type Order } from '@/types/jumper-limit-order';
 import { isOrderExpired } from './utils';
 import { ORDERS_COMPLETED_STATUS, ORDERS_ONGOING_STATUS } from './constants';
+import { useUserTracking } from '@/hooks/userTracking';
+import {
+  TrackingAction,
+  TrackingCategory,
+  TrackingEventParameter,
+} from '@/const/trackingKeys';
 
 interface OrderRowMenuProps {
   order: Order;
@@ -21,6 +27,7 @@ interface OrderRowMenuProps {
 
 export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
   const { t } = useTranslation();
+  const { trackEvent } = useUserTracking();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const open = Boolean(anchorEl);
   const openCancelModal = useCancelOrderFlowStore((state) => state.openModal);
@@ -42,16 +49,34 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
   const handleModifyClick = () => {
     handleClose();
     openModifyModal(order);
+    trackEvent({
+      action: TrackingAction.OnModifyLimitOrderOpen,
+      category: TrackingCategory.Widget,
+      label: 'modify_limit_order_open',
+      data: { [TrackingEventParameter.OrderId]: order.orderId },
+    });
   };
 
   const handleCancelClick = () => {
     handleClose();
     openCancelModal(order);
+    trackEvent({
+      action: TrackingAction.OnCancelLimitOrderOpen,
+      category: TrackingCategory.Widget,
+      label: 'cancel_limit_order_open',
+      data: { [TrackingEventParameter.OrderId]: order.orderId },
+    });
   };
 
   const handleRepeatClick = () => {
     handleClose();
     openRepeatModal(order);
+    trackEvent({
+      action: TrackingAction.OnRepeatLimitOrderOpen,
+      category: TrackingCategory.Widget,
+      label: 'repeat_limit_order_open',
+      data: { [TrackingEventParameter.OrderId]: order.orderId },
+    });
   };
 
   return (
