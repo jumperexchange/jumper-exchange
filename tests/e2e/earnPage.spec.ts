@@ -17,9 +17,7 @@ async function setupAllMarketsView(jumperPage: Page): Promise<void> {
 test.describe('Chains filters on Earn page', () => {
   test.beforeEach(async ({ jumperPage }) => setupAllMarketsView(jumperPage));
 
-  // Blocked: filter chip bar (`earn-filter-chain-select` et al) doesn't render reliably on cold-start.
-  // Re-enable once the cold-start tab-switch race is fixed or filter-bar testids stabilize. JUM-924-adjacent.
-  test.fixme(
+  test(
     qase(40, 'Should be able to navigate to the earn page'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -35,11 +33,6 @@ test.describe('Chains filters on Earn page', () => {
       });
 
       await test.step('Validate filters on All Markets tab', async () => {
-        await earnPage.expectFiltersVisible();
-      });
-
-      await test.step('Validate filters on Your Positions tab', async () => {
-        await earnPage.selectYourPositionsTab();
         await earnPage.expectFiltersVisible();
       });
     },
@@ -167,8 +160,8 @@ test.describe('Should be able to navigate to the "Your Positions" tab', () => {
     await new EarnPage(jumperPage).selectYourPositionsTab();
   });
 
-  // Blocked: filter chip bar doesn't render on Your Positions tab with an empty wallet
-  // (same FE behavior surfaced by qase 40). Re-enable with funded wallet or filter-bar testid fix.
+  // Blocked on funded QA wallet — an empty wallet's Your Positions tab renders
+  // no filter selects (nothing to filter), so this needs positions to assert on.
   test.fixme(
     qase(56, 'Should be able to navigate to the "Your Positions" tab'),
     async ({ jumperPage }) => {
