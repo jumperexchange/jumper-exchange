@@ -30,7 +30,7 @@ export const BlogWidget = ({
         <WalletButtons />
       </BlogWidgetHeader>
       <Widget
-        starterVariant="default"
+        starterVariant="blog"
         fromChain={fromChain}
         fromToken={fromToken}
         toChain={toChain}
@@ -38,6 +38,7 @@ export const BlogWidget = ({
         toToken={toToken}
         allowChains={allowChainsArray}
         widgetIntegrator={config.NEXT_PUBLIC_WIDGET_INTEGRATOR_BLOG}
+        disableTabNavigation
       />
     </>
   );

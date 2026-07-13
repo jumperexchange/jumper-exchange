@@ -34,9 +34,10 @@ const SwapPage = ({ sourceChain, chainName }: SwapPageProps) => {
         </Typography>
 
         <Widget
-          starterVariant="default"
+          starterVariant="swap"
           fromChain={sourceChain?.id}
           toChain={sourceChain?.id}
+          disableTabNavigation
         />
 
         <StepsExplainerSection

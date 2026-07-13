@@ -17,10 +17,13 @@ import { useABTest } from '@/hooks/useABTest';
 import { useThemeStore } from '@/stores/theme';
 import { useFormParameters } from './hooks';
 import { Widget as BaseWidget } from './variants/base/Widget';
-import type { MainWidgetContext } from './variants/widgetConfig/types';
+import type {
+  MainWidgetContext,
+  WidgetVariantDescriptor,
+} from './variants/widgetConfig/types';
+import { resolveWidgetVariant } from './variants/widgetConfig/utils';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
-import type { NavigationTabKey } from '@lifi/widget';
 
 const PrivateSwapModal = dynamic(() =>
   import('./PrivateSwapModal/PrivateSwapModal').then(
@@ -78,27 +81,26 @@ export function Widget({
     address: account?.address ?? '',
   });
 
-  const navigationTabs = useMemo((): NavigationTabKey[] | undefined => {
-    if (disableTabNavigation) {
-      return undefined;
-    }
-    if (starterVariant === 'advanced') {
-      return limitOrdersFeatureFlag.isEnabled
-        ? ['swap-advanced', 'bridge-advanced', 'limit']
-        : ['swap-advanced', 'bridge-advanced'];
-    }
-    if (starterVariant === 'default') {
-      return privateSwapsFeatureFlag.isEnabled
-        ? ['default', 'private', 'refuel']
-        : ['default', 'refuel'];
-    }
-    return undefined;
-  }, [
-    disableTabNavigation,
-    starterVariant,
-    privateSwapsFeatureFlag.isEnabled,
-    limitOrdersFeatureFlag.isEnabled,
-  ]);
+  const resolvedVariant = useMemo(
+    () =>
+      resolveWidgetVariant(starterVariant, {
+        limitOrders: limitOrdersFeatureFlag.isEnabled,
+        privateSwaps: privateSwapsFeatureFlag.isEnabled,
+      }),
+    [
+      starterVariant,
+      limitOrdersFeatureFlag.isEnabled,
+      privateSwapsFeatureFlag.isEnabled,
+    ],
+  );
+
+  const effectiveVariant: WidgetVariantDescriptor = useMemo(
+    () =>
+      disableTabNavigation
+        ? { ...resolvedVariant, navigationTabs: undefined }
+        : resolvedVariant,
+    [disableTabNavigation, resolvedVariant],
+  );
 
   useEffect(() => {
     const routes = [AppPaths.Main, AppPaths.Advanced].filter(
@@ -136,9 +138,12 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
+    if (starterVariant === 'advanced') {
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ADVANCED;
+    }
 
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [configTheme.integrator, widgetIntegrator]) as string;
+  }, [configTheme.integrator, widgetIntegrator, starterVariant]) as string;
 
   const formParametersCtx = useFormParameters({
     fromChain,
@@ -152,8 +157,8 @@ export function Widget({
     () => ({
       integrator: integratorStringByType,
       starterVariant,
+      resolvedVariant: effectiveVariant,
       partnerName,
-      navigationTabs,
       formData: formParametersCtx,
       allowFromChains: allowFromChains,
       allowToChains,
@@ -163,8 +168,8 @@ export function Widget({
     }),
     [
       starterVariant,
+      effectiveVariant,
       partnerName,
-      navigationTabs,
       formParametersCtx,
       allowFromChains,
       allowToChains,

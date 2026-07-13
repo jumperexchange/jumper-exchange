@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { AnnouncementBannerWrapper } from '@/app/ui/app/AnnouncementBannerWrapper';
 import { Widget } from '@/components/Widgets/Widget';
 import { Widgets } from '@/components/Widgets/Widgets';

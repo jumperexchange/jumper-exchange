@@ -1,6 +1,63 @@
 import type { Theme } from '@mui/material/styles';
-import type { Route, RouteLabelRule } from '@lifi/widget';
+import type { NavigationTabKey, Route, RouteLabelRule } from '@lifi/widget';
 import { ChainType } from '@lifi/widget';
+import type { StarterVariantType } from '@/types/internal';
+import type { WidgetFeatureFlags, WidgetVariantDescriptor } from './types';
+
+const WIDGET_VARIANT_REGISTRY: Record<string, WidgetVariantDescriptor> = {
+  default: {
+    key: 'default',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['default', 'refuel'],
+  },
+  advanced: {
+    key: 'advanced',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['swap-advanced', 'bridge-advanced'],
+  },
+  swap: { key: 'swap', uiVariant: 'compact', mode: 'default' },
+  bridge: { key: 'bridge', uiVariant: 'compact', mode: 'default' },
+  blog: { key: 'blog', uiVariant: 'compact', mode: 'default' },
+  refuel: { key: 'refuel', uiVariant: 'wide', mode: 'refuel' },
+  limit: { key: 'limit', uiVariant: 'compact', mode: 'limit' },
+  private: {
+    key: 'private',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['private'],
+  },
+};
+
+export function resolveWidgetVariant(
+  starterVariant: StarterVariantType,
+  flags: WidgetFeatureFlags,
+): WidgetVariantDescriptor {
+  const base =
+    WIDGET_VARIANT_REGISTRY[starterVariant] ??
+    WIDGET_VARIANT_REGISTRY['default']!;
+
+  if (starterVariant === 'advanced' && flags.limitOrders) {
+    return {
+      ...base,
+      navigationTabs: [
+        ...((base.navigationTabs ?? []) as NavigationTabKey[]),
+        'limit',
+      ],
+    };
+  }
+
+  if (starterVariant === 'default' && flags.privateSwaps) {
+    const tabs = (base.navigationTabs ?? []) as NavigationTabKey[];
+    return {
+      ...base,
+      navigationTabs: [tabs[0]!, 'private', ...tabs.slice(1)],
+    };
+  }
+
+  return base;
+}
 
 export const generateRouteLabel = (
   text: string,
