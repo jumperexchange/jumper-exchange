@@ -817,7 +817,7 @@
     "holdings": {
       "tokens": "Tokens",
       "defiPositions": "DeFi",
-      "perps": "Perps"
+      "perps": "Perps and prediction markets"
     },
     "filter": {
       "wallet": "Wallet",
