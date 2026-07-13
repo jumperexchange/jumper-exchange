@@ -75,6 +75,7 @@ export function useWidgetConfig<T extends WidgetType>(
   const mainWidgetConfig = useMainWidgetConfig(
     context as MainWidgetContext,
     deps,
+    activeNavigationTab,
   );
   const missionWidgetConfig = useMissionWidgetConfig(
     context as MissionWidgetContext,
