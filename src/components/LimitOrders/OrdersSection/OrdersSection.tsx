@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useAccount } from '@lifi/wallet-management';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ import { RepeatOrderFlowModal } from '@/components/composite/RepeatOrderFlow/Rep
 import { OrdersTable } from './OrdersTable';
 import type { ReactNode } from 'react';
 import { useLimitOrders } from '@/hooks/useLimitOrders';
+import { ORDERS_PAGE_SIZE } from './constants';
 
 interface OrdersSectionProps {
   isSidePanelExpanded: boolean;
@@ -22,9 +24,10 @@ export const OrdersSection = ({
 }: OrdersSectionProps) => {
   const { t } = useTranslation();
   const { account } = useAccount();
-  const { data, isLoading } = useLimitOrders();
+  const [page, setPage] = useState(0);
+  const { data, isLoading } = useLimitOrders(page);
 
-  const shouldShow = !!account?.address && !isLoading && !!data?.length;
+  const shouldShow = !!account?.address && !isLoading && !!data?.total;
 
   return (
     <>
@@ -43,7 +46,12 @@ export const OrdersSection = ({
               sx={{ flexShrink: 0 }}
             >
               <OrdersTable
-                orders={data ?? []}
+                orders={data?.orders ?? []}
+                total={data?.total ?? 0}
+                pageSize={data?.pageSize ?? ORDERS_PAGE_SIZE}
+                pageCount={data?.pageCount ?? 0}
+                page={page}
+                setPage={setPage}
                 isExpanded={isSidePanelExpanded}
                 stickyHeader
               />

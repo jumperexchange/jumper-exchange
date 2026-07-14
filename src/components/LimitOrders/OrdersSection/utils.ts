@@ -1,5 +1,5 @@
 import { isPast } from 'date-fns';
-import type { Order, TokenDto } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order, TokenDto } from '@/types/jumper-backend';
 import { formatTokenAmount } from '@lifi/widget';
 
 const STABLE_SYMBOL_REGEX =

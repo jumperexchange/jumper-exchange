@@ -6,7 +6,9 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAccount } from 'wagmi';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { Button } from '@/components/core/buttons/Button/Button';
@@ -29,11 +31,22 @@ export const CancelOrderFlowModal = () => {
   );
   const { cancelOrderAsync, result, isPending, isSuccess, isError, reset } =
     useCancelOrder();
+  const { address } = useAccount();
 
   const handleClose = () => {
     reset();
     closeModal();
   };
+
+  const previousAddressRef = useRef(address);
+  useEffect(() => {
+    if (previousAddressRef.current === address) {
+      return;
+    }
+    previousAddressRef.current = address;
+    reset();
+    closeModal();
+  }, [address, reset, closeModal]);
 
   const handleDone = () => {
     queryClient.invalidateQueries({ queryKey: [getQueryKey('limit-orders')] });

@@ -29,7 +29,7 @@ import {
   getOrderMarketPrice,
   isOrderExpired,
 } from './utils';
-import type { Order, TokenDto } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order, TokenDto } from '@/types/jumper-backend';
 import type { CoinKey } from '@lifi/sdk';
 import { BaseSurface1Skeleton } from '@/components/core/skeletons/BaseSurfaceSkeleton/BaseSurfaceSkeleton.style';
 

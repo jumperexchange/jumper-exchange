@@ -11,7 +11,7 @@ import { Variant, Size } from '@/components/core/buttons/types';
 import { useCancelOrderFlowStore } from '@/stores/limitOrderFlow/CancelOrderFlowStore';
 import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
 import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
-import { type Order } from '@/types/jumper-limit-order';
+import { type LimitOrder as Order } from '@/types/jumper-backend';
 import { isOrderExpired } from './utils';
 import { ORDERS_COMPLETED_STATUS, ORDERS_ONGOING_STATUS } from './constants';
 import { useUserTracking } from '@/hooks/userTracking';
@@ -20,6 +20,7 @@ import {
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
+import { useBlockchainExplorerURL } from '@/hooks/useBlockchainExplorerURL';
 
 interface OrderRowMenuProps {
   order: Order;
@@ -42,9 +43,16 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
   const handleClose = () => setAnchorEl(null);
 
   const expired = isOrderExpired(order);
+  const hasTxHash = order.chainId && order.txHash;
   const isEditable = ORDERS_ONGOING_STATUS.includes(order.status) && !expired;
   const isRepeatable =
     ORDERS_COMPLETED_STATUS.includes(order.status) || expired;
+
+  const explorerLink = useBlockchainExplorerURL(
+    order.chainId,
+    order.txHash || '',
+    'tx',
+  );
 
   const handleModifyClick = () => {
     handleClose();
@@ -118,18 +126,21 @@ export const OrderRowMenu = ({ order }: OrderRowMenuProps) => {
           },
         }}
       >
-        <OrderMenuItemContainer onClick={handleClose}>
-          <Typography
-            variant="bodySmallStrong"
-            component="a"
-            href={`https://explorer.cow.fi/orders/${order.orderId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            sx={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            {t('limitOrders.table.actions.viewOnExplorer')}
-          </Typography>
-        </OrderMenuItemContainer>
+        {hasTxHash && (
+          <OrderMenuItemContainer onClick={handleClose}>
+            <Typography
+              variant="bodySmallStrong"
+              component="a"
+              href={explorerLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              sx={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              {t('limitOrders.table.actions.viewOnExplorer')}
+            </Typography>
+          </OrderMenuItemContainer>
+        )}
+
         {isEditable && (
           <OrderMenuItemContainer onClick={handleModifyClick}>
             <Typography variant="bodySmallStrong">
