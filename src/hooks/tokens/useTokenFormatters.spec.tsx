@@ -71,6 +71,28 @@ describe('useTokenFormatters', () => {
       expect(result.current.toDisplayAmount(balance)).toBe(`<0.0001${NBSP}---`);
     });
 
+    it('omits the symbol on dust path when hideSymbol is set', () => {
+      const { result } = renderHook(() => useTokenFormatters());
+      const balance = buildBalance(1n);
+
+      expect(
+        result.current.toDisplayAmount(balance, balance.token.symbol, {
+          hideSymbol: true,
+        }),
+      ).toBe('<0.0001');
+    });
+
+    it('omits the symbol on normal path when hideSymbol is set', () => {
+      const { result } = renderHook(() => useTokenFormatters());
+      const balance = buildBalance(1000000000000000000n);
+
+      expect(
+        result.current.toDisplayAmount(balance, balance.token.symbol, {
+          hideSymbol: true,
+        }),
+      ).toBe('format.decimal');
+    });
+
     it('returns localized key without symbol when no symbol is provided on normal path', () => {
       const { result } = renderHook(() => useTokenFormatters());
       const balance = buildBalance(1000000000000000000n);
