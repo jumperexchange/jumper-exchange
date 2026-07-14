@@ -16,6 +16,7 @@ const WIDGET_COL_WIDTH = WIDGET_WIDTH;
 const SIDE_COL_WIDTH_DESKTOP = 704;
 const GRID_GAP_PX = 24;
 const STAGE_SHADOW_INSET_PX = 12;
+const LAYOUT_TRANSITION = { duration: 0.28, ease: 'easeOut' } as const;
 
 const getGridTemplateColumns = (
   hasSidePanel: boolean,
@@ -64,59 +65,58 @@ const getStageSx = (
   isSidePanelExpanded: boolean,
   hasAnnouncement: boolean,
   isWelcomeScreenOpen: boolean,
-): SxProps<Theme> => ({
-  display: 'grid',
-  columnGap: `${GRID_GAP_PX}px`,
-  rowGap: `${GRID_GAP_PX}px`,
-  boxSizing: 'border-box',
-  height: 'auto',
-  minHeight: 'auto',
-  overflow: 'visible',
-  width: {
-    xs: '100%',
-    md:
-      hasSidePanel && isSidePanelExpanded && !isWelcomeScreenOpen
-        ? '100%'
-        : 'fit-content',
-    lg: !hasSidePanel || isWelcomeScreenOpen ? 'fit-content' : undefined,
-  },
-  maxWidth: '100%',
-  marginX: {
-    md:
-      hasSidePanel && isSidePanelExpanded && !isWelcomeScreenOpen
-        ? undefined
-        : 'auto',
-    lg: !hasSidePanel || isWelcomeScreenOpen ? 'auto' : undefined,
-  },
-  px: { md: `${STAGE_SHADOW_INSET_PX}px` },
-  alignItems: 'start',
-  alignContent: 'start',
-  transition: 'grid-template-columns 280ms ease-out, width 280ms ease-out',
-  gridTemplateColumns: getGridTemplateColumns(
-    hasSidePanel,
-    isSidePanelExpanded,
-    isWelcomeScreenOpen,
-  ),
-  gridTemplateRows: {
-    xs: hasSidePanel
-      ? hasAnnouncement
-        ? 'auto auto auto'
-        : 'auto auto'
-      : hasAnnouncement
-        ? 'auto auto'
-        : 'auto',
-    md: hasAnnouncement ? 'auto auto' : 'auto',
-  },
-  gridTemplateAreas: {
-    xs: hasSidePanel
-      ? hasAnnouncement
-        ? '"banner" "form" "sidePanel"'
-        : '"form" "sidePanel"'
-      : hasAnnouncement
-        ? '"banner" "form"'
-        : '"form"',
-  },
-});
+): SxProps<Theme> => {
+  const isSidePanelLayoutActive = hasSidePanel && !isWelcomeScreenOpen;
+
+  return {
+    display: 'grid',
+    columnGap: `${GRID_GAP_PX}px`,
+    rowGap: `${GRID_GAP_PX}px`,
+    boxSizing: 'border-box',
+    height: 'auto',
+    minHeight: 'auto',
+    overflow: 'visible',
+    width: {
+      xs: '100%',
+      md: isSidePanelLayoutActive ? '100%' : 'fit-content',
+      lg: isSidePanelLayoutActive ? undefined : 'fit-content',
+    },
+    maxWidth: '100%',
+    marginX: isSidePanelLayoutActive ? undefined : { md: 'auto', lg: 'auto' },
+    justifyContent: {
+      md:
+        isSidePanelLayoutActive && !isSidePanelExpanded ? 'center' : undefined,
+    },
+    px: { md: `${STAGE_SHADOW_INSET_PX}px` },
+    alignItems: 'start',
+    alignContent: 'start',
+    transition: `grid-template-columns ${LAYOUT_TRANSITION.duration * 1000}ms ${LAYOUT_TRANSITION.ease}`,
+    gridTemplateColumns: getGridTemplateColumns(
+      hasSidePanel,
+      isSidePanelExpanded,
+      isWelcomeScreenOpen,
+    ),
+    gridTemplateRows: {
+      xs: hasSidePanel
+        ? hasAnnouncement
+          ? 'auto auto auto'
+          : 'auto auto'
+        : hasAnnouncement
+          ? 'auto auto'
+          : 'auto',
+      md: hasAnnouncement ? 'auto auto' : 'auto',
+    },
+    gridTemplateAreas: {
+      xs: hasSidePanel
+        ? hasAnnouncement
+          ? '"banner" "form" "sidePanel"'
+          : '"form" "sidePanel"'
+        : hasAnnouncement
+          ? '"banner" "form"'
+          : '"form"',
+    },
+  };
+};
 
 const getStickyColumnSx = (stickyTop: string): SxProps<Theme> => ({
   position: { md: 'sticky' },
