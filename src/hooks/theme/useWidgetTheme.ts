@@ -35,10 +35,10 @@ export const useWidgetTheme = (): WidgetThemeConfig => {
         currentMode === 'dark'
           ? widgetTheme.partnerDark
           : widgetTheme.partnerLight;
+    } else {
+      widgetThemeConfig =
+        currentMode === 'dark' ? widgetTheme.dark : widgetTheme.light;
     }
-
-    widgetThemeConfig =
-      currentMode === 'dark' ? widgetTheme.dark : widgetTheme.light;
 
     return {
       ...widgetThemeConfig,
