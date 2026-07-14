@@ -21,6 +21,7 @@ export interface FormatAmountOptions {
   compact?: boolean;
   maximumFractionDigits?: number;
   minimumFractionDigits?: number;
+  hideSymbol?: boolean;
 }
 
 export const useTokenFormatters = () => {
@@ -72,7 +73,9 @@ export const useTokenFormatters = () => {
       const amount = toAmount(balance);
       const numeric = parseFloat(amount);
       if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-        return formatTokenAmountWithDust(amount, symbol ?? '', t);
+        return formatTokenAmountWithDust(amount, symbol ?? '', t, {
+          hideSymbol: options?.hideSymbol,
+        });
       }
       const formatted = t(
         `format.${options?.compact ? 'decimalCompact' : 'decimal'}`,
@@ -82,7 +85,7 @@ export const useTokenFormatters = () => {
           maximumFractionDigits: options?.maximumFractionDigits ?? 3,
         },
       );
-      if (!symbol) {
+      if (options?.hideSymbol || !symbol) {
         return formatted;
       }
       return `${formatted}${NBSP}${symbol}`;
