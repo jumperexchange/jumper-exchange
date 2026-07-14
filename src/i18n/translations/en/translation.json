@@ -460,6 +460,7 @@
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}",
     "dustAmount": "<{{value, decimalExt(maximumFractionDigits: 4)}}\u00a0{{symbol}}",
+    "dustAmountValue": "<{{value, decimalExt(maximumFractionDigits: 4)}}",
     "dustUsd": "<{{value, currencyExt(currency: USD)}}"
   },
   "contribution": {

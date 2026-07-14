@@ -89,7 +89,10 @@ export function useOrderColumns(isExpanded: boolean): ColumnDef<Order>[] {
       ),
       amount,
     );
-    const tokenAmount = toDisplayAmount(balance, '', { compact: !isExpanded });
+    const tokenAmount = toDisplayAmount(balance, '', {
+      compact: !isExpanded,
+      hideSymbol: true,
+    });
     const tokenAmountSymbol = toDisplayAmount(balance, balance.token.symbol);
     const tokenAmountUsd = token.priceUSD
       ? toDisplayAmountUSD(balance)
