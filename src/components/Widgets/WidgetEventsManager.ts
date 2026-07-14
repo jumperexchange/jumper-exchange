@@ -1,4 +1,8 @@
-import type { WidgetEvent, widgetEvents, WidgetEvents } from '@lifi/widget';
+import type {
+  WidgetEvent,
+  widgetEvents,
+  WidgetEvents,
+} from '@jumperexchange/widget';
 
 export type WidgetEventsConfig = {
   [K in WidgetEvent]?: WidgetEvents[K];

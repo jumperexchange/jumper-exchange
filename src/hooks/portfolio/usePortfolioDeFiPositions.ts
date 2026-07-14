@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import { useQueries } from '@tanstack/react-query';
 import { min } from 'date-fns';
 import { useCallback, useMemo } from 'react';

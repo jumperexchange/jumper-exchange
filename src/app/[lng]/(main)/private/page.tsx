@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import { MainWidgetPageContent } from '@/app/ui/widget/MainWidgetPageContent';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 const Page = () => {
   const { account } = useAccount();

@@ -10,8 +10,8 @@ import type {
 } from '@/app/lib/getPositionsForAddress';
 import { getPositionsForAddresses } from '@/app/lib/getPositionsForAddress';
 import type { DefiPosition } from '@/utils/positions/type-guards';
-import type { Account } from '@lifi/widget-provider';
-import { useAccount } from '@lifi/wallet-management';
+import type { Account } from '@jumperexchange/widget-provider';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { usePortfolioCacheStore } from '@/stores/portfolio/PortfolioCacheStore';
 import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
 import { isCurrentPageUsingPositionData } from '../utils';

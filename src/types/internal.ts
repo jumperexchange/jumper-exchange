@@ -1,7 +1,7 @@
 /// <reference types="gtag.js" />
 
 import type { ChainId } from '@lifi/sdk';
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';

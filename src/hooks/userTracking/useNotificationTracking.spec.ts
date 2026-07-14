@@ -16,7 +16,7 @@ vi.mock('@/hooks/userTracking/useUserTracking', () => ({
   useUserTracking: () => ({ trackEvent, trackTransaction: vi.fn() }),
 }));
 
-vi.mock('@lifi/wallet-management', () => ({
+vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => ({ account: { address: accountState.address } }),
 }));
 

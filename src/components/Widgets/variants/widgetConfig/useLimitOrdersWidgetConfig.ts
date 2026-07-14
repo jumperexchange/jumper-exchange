@@ -1,4 +1,4 @@
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import envConfig from '@/config/env-config';
 import type { HookDependencies, LimitOrdersWidgetContext } from './types';

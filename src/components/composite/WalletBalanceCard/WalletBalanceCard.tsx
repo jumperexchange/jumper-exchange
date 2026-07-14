@@ -4,7 +4,7 @@ import { useMenuStore } from 'src/stores/menu';
 import { useWidgetCacheStore } from 'src/stores/widgetCache';
 import type { WalletBalanceCardProps } from './WalletBalanceCard.types';
 import { useEffect, useMemo, useState, type FC } from 'react';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import Divider from '@mui/material/Divider';
 import {
   LightIconButton,

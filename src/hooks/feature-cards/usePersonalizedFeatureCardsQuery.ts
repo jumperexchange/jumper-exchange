@@ -1,5 +1,5 @@
 import type { StrapiFeatureCardData } from '@/types/strapi';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import config from '@/config/env-config';

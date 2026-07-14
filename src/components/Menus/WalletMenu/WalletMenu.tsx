@@ -1,5 +1,5 @@
 import { useMenuStore } from '@/stores/menu';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { useAccount, useWalletMenu } from '@jumperexchange/wallet-management';
 import CloseIcon from '@mui/icons-material/Close';
 import { alpha, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import type { MouseEventHandler } from 'react';

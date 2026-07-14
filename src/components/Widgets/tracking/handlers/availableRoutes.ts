@@ -1,5 +1,5 @@
-import type { Route } from '@lifi/widget';
-import { formatTokenPrice } from '@lifi/widget';
+import type { Route } from '@jumperexchange/widget';
+import { formatTokenPrice } from '@jumperexchange/widget';
 import type { ChainId } from '@lifi/sdk';
 import type { Address } from 'viem';
 import { TrackingEventParameter } from '@/const/trackingKeys';

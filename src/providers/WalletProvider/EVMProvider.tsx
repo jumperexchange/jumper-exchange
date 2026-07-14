@@ -6,7 +6,7 @@ import type { ExtendedChain } from '@lifi/sdk';
 import {
   useSyncWagmiConfig,
   createDefaultWagmiConfig,
-} from '@lifi/widget-provider-ethereum';
+} from '@jumperexchange/widget-provider-ethereum';
 import {
   type FC,
   type PropsWithChildren,

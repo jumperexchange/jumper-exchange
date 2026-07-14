@@ -1,6 +1,6 @@
 import { isPast } from 'date-fns';
 import type { LimitOrder as Order, TokenDto } from '@/types/jumper-backend';
-import { formatTokenAmount } from '@lifi/widget';
+import { formatTokenAmount } from '@jumperexchange/widget';
 
 const STABLE_SYMBOL_REGEX =
   /^(DAI|GHO|MNEE|AMPL|FEI|DJED|VAI|FLX|STDN|ESD|BAC|BUCK|DOLA|BRZ|QGOLD|MIM|FXD|ZARP|EDLC|ONC|MTR|MIMATIC|BLC|JPYC|SBC|KBC|TRYB|PAR|ISR|GYD|UXD|USDC|USDT|BUSD|FRAX|USDCe|USDe|FDUSD|USDT0|USDF|USDm|GUSDT|axlUSDC|HONEY|BYUSD|APEUSD|FEUSD|USD)$/i;

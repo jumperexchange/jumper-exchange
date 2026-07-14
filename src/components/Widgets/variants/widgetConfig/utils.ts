@@ -1,6 +1,10 @@
 import type { Theme } from '@mui/material/styles';
-import type { NavigationTabKey, Route, RouteLabelRule } from '@lifi/widget';
-import { ChainType } from '@lifi/widget';
+import type {
+  NavigationTabKey,
+  Route,
+  RouteLabelRule,
+} from '@jumperexchange/widget';
+import { ChainType } from '@jumperexchange/widget';
 import type { StarterVariantType } from '@/types/internal';
 import type { WidgetFeatureFlags, WidgetVariantDescriptor } from './types';
 

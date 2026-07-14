@@ -10,7 +10,7 @@ import { useWalletDisplayData } from '../../hooks';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { LabelButton } from './LabelButton';
 import { useTranslation } from 'react-i18next';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useMemo } from 'react';
 import { useDominantColorFromImage } from '@/hooks/images/useGetColorsFromImage';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';

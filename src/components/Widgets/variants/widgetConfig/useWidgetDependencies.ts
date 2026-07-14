@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import { useThemeStore } from 'src/stores/theme/ThemeStore';
 import { useWidgetTheme } from 'src/hooks/theme/useWidgetTheme';
 import type { HookDependencies } from './types';

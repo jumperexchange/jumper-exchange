@@ -1,10 +1,10 @@
-import { formatInputAmount } from '@lifi/widget';
+import { formatInputAmount } from '@jumperexchange/widget';
 import Grid from '@mui/material/Grid';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useState } from 'react';
 import { NUM_DECIMAL_PLACES, USD_CURRENCY_SYMBOL } from './constants';
 import { ContributionCustomInput } from './FeeContribution.style';
-import { FeeContributionBaseProps } from './FeeContribution.types';
+import type { FeeContributionBaseProps } from './FeeContribution.types';
 
 interface CustomInputProps extends FeeContributionBaseProps {
   maxValue: number;
@@ -22,7 +22,9 @@ export const CustomInput: React.FC<CustomInputProps> = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (isDisabled) return;
+    if (isDisabled) {
+      return;
+    }
     if (!isManualValueSelected) {
       setIsManualValueSelected(true);
     }
@@ -43,7 +45,9 @@ export const CustomInput: React.FC<CustomInputProps> = ({
   };
 
   const handleClick = () => {
-    if (isDisabled) return;
+    if (isDisabled) {
+      return;
+    }
 
     if (!isFocused) {
       setIsFocused(true);

@@ -2,7 +2,7 @@
 
 import { SolanaProvider } from '@solana/react-hooks';
 import { useWallet } from '@solana/react-hooks';
-import { useSolanaWalletStandard } from '@lifi/widget-provider-solana';
+import { useSolanaWalletStandard } from '@jumperexchange/widget-provider-solana';
 import {
   type FC,
   type PropsWithChildren,

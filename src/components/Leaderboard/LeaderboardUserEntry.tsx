@@ -1,5 +1,5 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useLoyaltyPass } from 'src/hooks/useLoyaltyPass';
 import { useLeaderboardUser } from '../../hooks/useLeaderboard';
 import { LeaderboardEntry } from './LeaderboardEntry';

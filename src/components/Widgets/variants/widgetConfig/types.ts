@@ -3,7 +3,7 @@ import type {
   WidgetConfig,
   WidgetMode,
   WidgetProvider,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import type { StarterVariantType } from 'src/types/internal';
 import type {
   TaskWidgetInformationChainData,

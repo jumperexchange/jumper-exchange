@@ -1,5 +1,5 @@
 import { ChainType } from '@lifi/sdk';
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import { getCustomRPCs, publicRPCList } from 'src/const/rpcList';
 import type { LanguageKey } from 'src/types/i18n';

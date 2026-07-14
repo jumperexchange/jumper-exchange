@@ -7,13 +7,13 @@ import { useActiveTabStore } from '@/stores/activeTab';
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
 import { useMultisigStore } from '@/stores/multisig';
 import type { RouteExtended } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type {
   ChainTokenSelected,
   FormFieldChanged,
   RouteExecutionUpdate,
-} from '@lifi/widget';
-import { useWidgetEvents } from '@lifi/widget';
+} from '@jumperexchange/widget';
+import { useWidgetEvents } from '@jumperexchange/widget';
 import { useEffect, useState } from 'react';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';

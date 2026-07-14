@@ -15,7 +15,7 @@ const accountState: { account?: { address: string } } = {
   },
 };
 
-vi.mock('@lifi/wallet-management', () => ({
+vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => accountState,
 }));
 

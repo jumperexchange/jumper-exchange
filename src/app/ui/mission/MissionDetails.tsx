@@ -8,7 +8,7 @@ import { useMemo } from 'react';
 import { EntityCard } from 'src/components/Cards/EntityCard/EntityCard';
 import Box from '@mui/material/Box';
 import { MissionTask } from './MissionTask';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { Badge } from 'src/components/Badge/Badge';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { AppPaths } from 'src/const/urls';
