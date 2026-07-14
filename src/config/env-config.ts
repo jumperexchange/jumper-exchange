@@ -74,8 +74,6 @@ const clientBuildTimeEnv: RuntimeConfig = {
   NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN ?? '',
   NEXT_PUBLIC_LIFI_COMPOSER_BACKEND_URL:
     process.env.NEXT_PUBLIC_LIFI_COMPOSER_BACKEND_URL ?? '',
-  NEXT_PUBLIC_LIMIT_ORDER_BACKEND_URL:
-    process.env.NEXT_PUBLIC_LIMIT_ORDER_BACKEND_URL ?? '',
 };
 
 // Initialize config based on environment

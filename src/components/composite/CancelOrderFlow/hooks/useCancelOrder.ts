@@ -2,11 +2,12 @@
 
 import { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useSignTypedData } from 'wagmi';
+import { useSignTypedData, useSwitchChain } from 'wagmi';
+import { useAccount } from '@lifi/wallet-management';
 import type { Hex } from 'viem';
-import { makeLimitOrderClient } from '@/app/lib/limitOrderClient';
+import { makeClient } from '@/app/lib/client';
 import { useTransactionFlow } from '@/hooks/transactions/useTransactionFlow';
-import type { Order } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order } from '@/types/jumper-backend';
 
 export enum CancelOrderErrorType {
   CalldataFailed = 'calldataFailed',
@@ -51,7 +52,9 @@ export interface CancelOrderResult {
  * don't fit that tx-action-list model, so they run as a plain async mutation.
  */
 export const useCancelOrder = () => {
-  const { signTypedDataAsync } = useSignTypedData();
+  const { mutateAsync: signTypedDataAsync } = useSignTypedData();
+  const { mutateAsync: switchChainAsync } = useSwitchChain();
+  const { account } = useAccount();
   const txFlow = useTransactionFlow();
 
   const [isAwaitingOnchainTx, setIsAwaitingOnchainTx] = useState(false);
@@ -59,11 +62,11 @@ export const useCancelOrder = () => {
 
   const prepareAndSubmitFn = useCallback(
     async (order: Order): Promise<CancelOrderResult | undefined> => {
-      const client = makeLimitOrderClient();
+      const client = makeClient();
       const tool = order.tool as '1inch' | 'cowswap';
 
       const calldataResponse = await client.limitOrder
-        .ordersControllerCancelCalldata({
+        .ordersControllerCancelOrderStepTransaction({
           chainId: order.chainId,
           tool,
           orderId: order.orderId,
@@ -107,6 +110,16 @@ export const useCancelOrder = () => {
 
       if (typedData?.length) {
         const payload = typedData[0] as LimitOrderTypedData;
+
+        if (account?.chainId !== order.chainId) {
+          await switchChainAsync({ chainId: order.chainId }).catch(() => {
+            throw new CancelOrderError(
+              'Failed to switch chain',
+              CancelOrderErrorType.SignatureFailed,
+            );
+          });
+        }
+
         const signature = await signTypedDataAsync(
           payload as Parameters<typeof signTypedDataAsync>[0],
         ).catch(() => {
@@ -140,7 +153,7 @@ export const useCancelOrder = () => {
         CancelOrderErrorType.Unsupported,
       );
     },
-    [signTypedDataAsync, txFlow],
+    [account?.chainId, signTypedDataAsync, switchChainAsync, txFlow],
   );
 
   const mutation = useMutation({ mutationFn: prepareAndSubmitFn });

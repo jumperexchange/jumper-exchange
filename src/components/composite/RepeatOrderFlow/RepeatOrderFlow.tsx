@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAccount } from 'wagmi';
 import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
@@ -17,6 +18,7 @@ export const RepeatOrderFlowModal = () => {
   const { isModalOpen, selectedOrder, closeModal } = useRepeatOrderFlowStore(
     (state) => state,
   );
+  const { address } = useAccount();
 
   const context = useMemo((): LimitOrdersWidgetContext | null => {
     if (!selectedOrder) {
@@ -66,6 +68,15 @@ export const RepeatOrderFlowModal = () => {
       closeModal();
     };
   }, [closeModal]);
+
+  const previousAddressRef = useRef(address);
+  useEffect(() => {
+    if (previousAddressRef.current === address) {
+      return;
+    }
+    previousAddressRef.current = address;
+    closeModal();
+  }, [address, closeModal]);
 
   if (!context || !selectedOrder) {
     return null;

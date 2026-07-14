@@ -1,6 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
-import type { Order } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order } from '@/types/jumper-backend';
 
 interface ModifyOrderFlowState {
   isModalOpen: boolean;

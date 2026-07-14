@@ -11,3 +11,5 @@ export const AMOUNT_COL_MAX_WIDTH = 120;
 
 export const ORDERS_ONGOING_STATUS = ['active', 'pending'];
 export const ORDERS_COMPLETED_STATUS = ['filled', 'cancelled', 'expired'];
+
+export const ORDERS_PAGE_SIZE = 10;
