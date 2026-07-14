@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Order } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order } from '@/types/jumper-backend';
 import {
   getOrderFilledPercent,
   getOrderLimitPrice,

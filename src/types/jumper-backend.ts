@@ -1568,6 +1568,248 @@ export interface PnlResponse {
   data: PnlResponseDto;
 }
 
+export interface CancelStepTransactionRequestDto {
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
+  /** Unique identifier for the order */
+  orderId: string;
+}
+
+export interface FeeCostDto {
+  /**
+   * Fee name
+   * @example "Protocol Fee"
+   */
+  name: string;
+  /** Fee description */
+  description?: string;
+  /**
+   * Fee amount
+   * @example "1000000"
+   */
+  amount: string;
+  /**
+   * Fee amount in USD
+   * @example "1.00"
+   */
+  amountUSD?: string;
+  /**
+   * Fee percentage
+   * @example "0.1"
+   */
+  percentage: string;
+  /** Token used for fee */
+  token: TokenDto;
+  /** Whether the fee is included in the amount */
+  included?: boolean;
+}
+
+export interface GasCostDto {
+  /**
+   * Type of gas cost
+   * @example "SEND"
+   */
+  type: string;
+  /**
+   * Estimated gas amount
+   * @example "21000"
+   */
+  estimate: string;
+  /**
+   * Gas limit
+   * @example "30000"
+   */
+  limit: string;
+  /**
+   * Gas amount in native token
+   * @example "0.001"
+   */
+  amount: string;
+  /**
+   * Gas amount in USD
+   * @example "2.50"
+   */
+  amountUSD?: string;
+  /**
+   * Gas price in wei
+   * @example "50000000000"
+   */
+  price: string;
+  /** Token used for gas */
+  token: TokenDto;
+}
+
+export interface CancelEstimateDto {
+  /** Fee costs breakdown */
+  feeCosts?: FeeCostDto[];
+  /** Gas costs breakdown */
+  gasCosts?: GasCostDto[];
+}
+
+export interface TransactionRequestDto {
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /** Transaction data (hex encoded) */
+  data: string;
+  /** Sender address */
+  from: string;
+  /** Target contract address */
+  to: string;
+  /** Value in wei (hex encoded) */
+  value?: string;
+  /** Gas limit */
+  gasLimit?: string;
+  /** Gas price */
+  gasPrice?: string;
+}
+
+export interface CancelStepTransactionResponseDto {
+  /** Cost estimate for the cancellation */
+  estimate?: CancelEstimateDto;
+  /** Transaction request to execute (for on-chain cancellation) */
+  transactionRequest?: TransactionRequestDto;
+  /** EIP-712 typed data to sign (for off-chain cancellation) */
+  typedData?: object[];
+}
+
+export interface CancelRelayRequestDto {
+  /** Cost estimate for the cancellation */
+  estimate?: CancelEstimateDto;
+  /** Transaction request to execute (for on-chain cancellation) */
+  transactionRequest?: TransactionRequestDto;
+  /** Signed EIP-712 typed data (required for relay) */
+  typedData?: object[];
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /** Tool/protocol identifier */
+  tool: '1inch' | 'cowswap';
+}
+
+export interface RelayResponseDataDto {
+  /** Unique identifier for tracking the relayed task */
+  taskId: string;
+  /** Explorer link to the transaction */
+  txLink?: string;
+}
+
+export interface RelayResponseDto {
+  /** Response status */
+  status: 'ok' | 'error';
+  /** Response data */
+  data: RelayResponseDataDto;
+}
+
+export interface LimitOrderPaginationMeta {
+  /** Total number of orders matching the filters */
+  total: number;
+  /** Max results per page */
+  limit: number;
+  /** Offset for pagination */
+  offset: number;
+}
+
+export interface LimitOrder {
+  /**
+   * Protocol-specific order ID
+   * @example "0x1234..."
+   */
+  orderId: string;
+  /**
+   * Protocol name
+   * @example "cowswap"
+   */
+  tool: string;
+  /**
+   * Chain ID
+   * @example 1
+   */
+  chainId: number;
+  /**
+   * Maker wallet address
+   * @example "0xabc..."
+   */
+  fromAddress: string;
+  fromToken: TokenDto;
+  /**
+   * Sell amount
+   * @example "1000000"
+   */
+  fromAmount: string;
+  /**
+   * Amount filled so far (sell token)
+   * @example "0"
+   */
+  filledFromAmount: string;
+  /**
+   * Recipient address
+   * @example "0xabc..."
+   */
+  toAddress?: string | null;
+  toToken: TokenDto;
+  /**
+   * Desired buy amount
+   * @example "1000000"
+   */
+  toAmount: string;
+  /**
+   * Amount filled so far (buy token)
+   * @example "0"
+   */
+  filledToAmount: string;
+  /**
+   * Order creation Unix timestamp
+   * @example 1700000000
+   */
+  createdAt: number;
+  /**
+   * Order expiry Unix timestamp
+   * @example 1700086400
+   */
+  validUntil: number;
+  /**
+   * Fill Unix timestamp
+   * @example 1700043200
+   */
+  filledAt?: number | null;
+  /**
+   * Latest fill transaction hash
+   * @example "0xabc..."
+   */
+  txHash?: string | null;
+  /** Current order status */
+  status:
+    | 'pending'
+    | 'active'
+    | 'temporarily_invalid'
+    | 'partially_filled'
+    | 'filled'
+    | 'cancelled'
+    | 'expired'
+    | 'failed';
+  /** Fill type */
+  orderType: 'fill_or_kill' | 'partial_fill';
+}
+
+export interface LimitOrdersListResponse {
+  /** @example 200 */
+  status: number;
+  /** @example "Success" */
+  message: string;
+  meta: LimitOrderPaginationMeta;
+  data: LimitOrder[];
+}
+
 export interface TaskVerificationDto {
   /** Users wallet address */
   address: string;
@@ -3461,6 +3703,121 @@ export class JumperBackend<
         path: `/v1/mission/${slug}/task/${identifier}/apy`,
         method: 'GET',
         format: 'json',
+        ...params,
+      }),
+  };
+  limitOrder = {
+    /**
+     * No description
+     *
+     * @tags Orders, Public
+     * @name OrdersControllerCancelOrderStepTransaction
+     * @summary Get calldata/typed data to cancel a limit order
+     * @request POST:/limit-order/cancel/calldata
+     */
+    ordersControllerCancelOrderStepTransaction: (
+      data: CancelStepTransactionRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<CancelStepTransactionResponseDto, any>({
+        path: `/limit-order/cancel/calldata`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Orders, Public
+     * @name OrdersControllerCancelOrderRelay
+     * @summary Relay a signed limit order cancellation
+     * @request POST:/limit-order/cancel/relay
+     */
+    ordersControllerCancelOrderRelay: (
+      data: CancelRelayRequestDto,
+      params: RequestParams = {},
+    ) =>
+      this.request<RelayResponseDto, any>({
+        path: `/limit-order/cancel/relay`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Orders, Public
+     * @name OrdersControllerGetOrdersByUser
+     * @summary List limit orders for a user address
+     * @request GET:/limit-order/{address}
+     */
+    ordersControllerGetOrdersByUser: (
+      address: string,
+      query?: {
+        /** Filter by tool/protocol */
+        tools?: ('1inch' | 'cowswap')[];
+        /**
+         * Filter by chain IDs
+         * @example [1,10,137]
+         */
+        chainIds?: number[];
+        /** Filter by status */
+        status?: (
+          | 'pending'
+          | 'active'
+          | 'partially_filled'
+          | 'filled'
+          | 'cancelled'
+          | 'expired'
+        )[];
+        /** Filter by from token address */
+        fromTokenAddress?: string;
+        /** Filter by to token address */
+        toTokenAddress?: string;
+        /**
+         * Max results
+         * @default 10
+         */
+        limit?: number;
+        /**
+         * Offset for pagination
+         * @default 0
+         */
+        offset?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<LimitOrdersListResponse, any>({
+        path: `/limit-order/${address}`,
+        method: 'GET',
+        query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Orders, Public
+     * @name OrdersControllerGetOrder
+     * @summary Get a single limit order by protocol/chain/id
+     * @request GET:/limit-order/{tool}/{chainId}/{orderId}
+     */
+    ordersControllerGetOrder: (
+      tool: string,
+      chainId: number,
+      orderId: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, any>({
+        path: `/limit-order/${tool}/${chainId}/${orderId}`,
+        method: 'GET',
         ...params,
       }),
   };

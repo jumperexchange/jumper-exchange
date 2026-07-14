@@ -4,8 +4,9 @@ import { HeightAnimatedContainer } from '@jumperexchange/shared-ui/components';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { motion } from 'motion/react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAccount } from 'wagmi';
 import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
@@ -33,6 +34,7 @@ export const ModifyOrderFlowModal = () => {
   const { isModalOpen, selectedOrder, closeModal } = useModifyOrderFlowStore(
     (state) => state,
   );
+  const { address } = useAccount();
 
   const [step, setStep] = useState<Step>('cancel');
 
@@ -50,6 +52,17 @@ export const ModifyOrderFlowModal = () => {
     setStep('cancel');
     closeModal();
   };
+
+  const previousAddressRef = useRef(address);
+  useEffect(() => {
+    if (previousAddressRef.current === address) {
+      return;
+    }
+    previousAddressRef.current = address;
+    reset();
+    setStep('cancel');
+    closeModal();
+  }, [address, reset, closeModal]);
 
   const handleConfirm = () => {
     if (!selectedOrder) {

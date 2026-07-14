@@ -1,4 +1,4 @@
-import type { Order, TokenDto } from '@/types/jumper-limit-order';
+import type { LimitOrder as Order, TokenDto } from '@/types/jumper-backend';
 
 import { addDays, subDays, getUnixTime } from 'date-fns';
 const MAKER_ADDRESS = '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb';
