@@ -1,4 +1,4 @@
-import { WidgetSkeleton as LiFiWidgetSkeleton } from '@lifi/widget/skeleton';
+import { WidgetSkeleton as LiFiWidgetSkeleton } from '@jumperexchange/widget/skeleton';
 import { useWidgetTheme } from 'src/hooks/theme/useWidgetTheme';
 
 export const WidgetSkeleton = () => {

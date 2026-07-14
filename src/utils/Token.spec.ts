@@ -1,5 +1,5 @@
 import type { StaticToken, Token, TokenExtended } from '@lifi/sdk';
-import { CoinKey, type TokenTag } from '@lifi/widget';
+import { CoinKey, type TokenTag } from '@jumperexchange/widget';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Token as JumperToken } from '@/types/jumper-backend';
 import { NBSP } from './formatNumbers';

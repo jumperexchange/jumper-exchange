@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 
 const EMBEDDED_WALLETS = [
   'magic',

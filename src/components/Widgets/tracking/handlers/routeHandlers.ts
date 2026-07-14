@@ -1,4 +1,4 @@
-import type { Route, RouteExecutionUpdate } from '@lifi/widget';
+import type { Route, RouteExecutionUpdate } from '@jumperexchange/widget';
 import { isEqual, omit } from 'lodash';
 import { TrackingEventParameter } from '@/const/trackingKeys';
 

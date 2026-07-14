@@ -1,6 +1,6 @@
 import WarningRounded from '@mui/icons-material/WarningRounded';
 import { Typography } from '@mui/material';
-import { formatInputAmount, formatSlippage } from '@lifi/widget';
+import { formatInputAmount, formatSlippage } from '@jumperexchange/widget';
 import type { ChangeEventHandler, FocusEventHandler, FC } from 'react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

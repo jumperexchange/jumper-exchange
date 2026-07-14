@@ -40,7 +40,7 @@ import { Badge } from '@/components/Badge/Badge';
 import { BadgeVariant } from '@/components/Badge/Badge.styles';
 import * as supportedLanguages from '@/i18n/translations';
 import MuiBadge from '@mui/material/Badge';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useABTest } from '@/hooks/useABTest';
 import { AB_TEST_NAME } from '@/const/abtests';
 

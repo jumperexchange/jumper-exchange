@@ -1,4 +1,4 @@
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import { useTranslation } from 'react-i18next';
 
 import { PortfolioEmptyList } from '@/components/core/empty-content/PortfolioEmptyList/PortfolioEmptyList';

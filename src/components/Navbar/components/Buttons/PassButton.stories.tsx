@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { mocked } from 'storybook/test';
 import { ChainType } from '@lifi/sdk';
-import type { Account } from '@lifi/widget-provider';
-import { useAccount } from '@lifi/wallet-management';
+import type { Account } from '@jumperexchange/widget-provider';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useLoyaltyPass } from '@/hooks/useLoyaltyPass';
 import { usePerks } from '@/hooks/perks/usePerks';
 import { PassButton } from './PassButton';

@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
-import type { Account } from '@lifi/widget-provider';
-import { useAccount } from '@lifi/wallet-management';
+import type { Account } from '@jumperexchange/widget-provider';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { ChainType, Token as LifiToken } from '@lifi/sdk';
 import { compact, differenceWith, max } from 'lodash';
 import {

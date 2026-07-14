@@ -1,4 +1,4 @@
-import { type ContractCall, useFieldActions } from '@lifi/widget';
+import { type ContractCall, useFieldActions } from '@jumperexchange/widget';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 

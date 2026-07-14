@@ -95,7 +95,7 @@ vi.mock('src/hooks/useTokens', () => ({
   }),
 }));
 
-vi.mock('@lifi/wallet-management', () => ({
+vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => ({
     accounts: [],
   }),

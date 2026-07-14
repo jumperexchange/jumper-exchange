@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { ProfileProvider } from 'src/providers/ProfileProvider';
 import type { PerksDataAttributes, StrapiResponseData } from 'src/types/strapi';
 import { PageContainer } from '../Containers/PageContainer';
@@ -27,7 +27,7 @@ export const ProfilePage = ({
     <ProfileProvider
       walletAddress={walletAddress || account?.address || ''}
       isPublic={isPublic}
-      // @Note these flags are not correctly set in @lifi/wallet-management
+      // @Note these flags are not correctly set in @jumperexchange/wallet-management
       isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <PageContainer>

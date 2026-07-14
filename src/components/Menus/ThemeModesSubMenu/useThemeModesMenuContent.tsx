@@ -5,7 +5,7 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import FlareRoundedIcon from '@mui/icons-material/FlareRounded';
 import { useMemo, useCallback } from 'react';
-import type { Appearance } from '@lifi/widget';
+import type { Appearance } from '@jumperexchange/widget';
 import type { PartnerThemesData } from '@/types/strapi';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useMainPaths } from '@/hooks/useMainPaths';

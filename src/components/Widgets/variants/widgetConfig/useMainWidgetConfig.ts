@@ -1,5 +1,5 @@
-import type { NavigationTabKey, WidgetConfig } from '@lifi/widget';
-import { ChainId } from '@lifi/widget';
+import type { NavigationTabKey, WidgetConfig } from '@jumperexchange/widget';
+import { ChainId } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';

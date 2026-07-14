@@ -1,7 +1,7 @@
 import { ChainId, ChainType, type Route } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
-import type { FormFieldChanged, FormState } from '@lifi/widget';
-import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { FormFieldChanged, FormState } from '@jumperexchange/widget';
+import { useWidgetEvents, WidgetEvent } from '@jumperexchange/widget';
 import { type RefObject, useEffect, useMemo, useState } from 'react';
 import { ExtendedChainId } from 'src/components/Widgets/Widget.types';
 import { ARB_NATIVE_USDC } from 'src/config/tokens';

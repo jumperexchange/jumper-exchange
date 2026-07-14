@@ -1,4 +1,4 @@
-import type { Appearance, WidgetConfig } from '@lifi/widget';
+import type { Appearance, WidgetConfig } from '@jumperexchange/widget';
 import type {
   ColorSystem,
   CssVarsTheme,

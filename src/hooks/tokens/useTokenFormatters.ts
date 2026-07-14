@@ -6,7 +6,7 @@ import {
   formatTokenAmountWithDust,
   formatUSDWithDust,
 } from '@/utils/formatNumbers';
-import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
+import { formatTokenAmount, formatTokenPrice } from '@jumperexchange/widget';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 

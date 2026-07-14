@@ -1,6 +1,6 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
-import type { FormState } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { FormState } from '@jumperexchange/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';

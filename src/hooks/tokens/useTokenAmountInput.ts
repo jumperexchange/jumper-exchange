@@ -3,7 +3,7 @@ import {
   formatTokenAmount,
   formatTokenPrice,
   priceToTokenAmount,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import { useCallback } from 'react';
 import { parseUnits } from 'viem';
 

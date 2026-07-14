@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { subDays, subWeeks } from 'date-fns';
 import { useEffect, useMemo, useState } from 'react';
 import { useNotificationTracking } from '@/hooks/userTracking/useNotificationTracking';

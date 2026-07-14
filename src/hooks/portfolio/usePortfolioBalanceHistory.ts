@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';

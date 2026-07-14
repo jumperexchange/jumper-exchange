@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import type { Notification, NotificationCategory } from '@/types/notifications';

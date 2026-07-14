@@ -5,7 +5,7 @@ import {
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useThemeStore } from '@/stores/theme';
-import type { Appearance } from '@lifi/widget';
+import type { Appearance } from '@jumperexchange/widget';
 import BrightnessAutoIcon from '@mui/icons-material/BrightnessAuto';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';

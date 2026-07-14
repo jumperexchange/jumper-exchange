@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import type { PortfolioToken } from '@/types/tokens';
 
 export interface PortfolioProps {

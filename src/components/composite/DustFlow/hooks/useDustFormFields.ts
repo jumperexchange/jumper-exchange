@@ -13,7 +13,7 @@ import type { ExtendedChain } from '@lifi/sdk';
 import { useTranslation } from 'react-i18next';
 import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { INITIAL_MAX_THRESHOLD_USD, MAX_SELECTABLE_TOKENS } from '../constants';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { isNil } from '@/utils/isNil';
 import {

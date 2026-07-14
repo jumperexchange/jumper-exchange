@@ -1,5 +1,5 @@
-import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
-import type { NavigationTabKey } from '@lifi/widget';
+import { useWidgetEvents, WidgetEvent } from '@jumperexchange/widget';
+import type { NavigationTabKey } from '@jumperexchange/widget';
 import { useEffect, useState } from 'react';
 
 export function useActiveNavigationTab(): NavigationTabKey | null {

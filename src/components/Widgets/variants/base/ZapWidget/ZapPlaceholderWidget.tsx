@@ -1,6 +1,6 @@
 import type { MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
