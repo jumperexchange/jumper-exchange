@@ -1,5 +1,5 @@
 import type { DefiToken, WalletPositions } from '@/types/jumper-backend';
-import { formatTokenPrice } from '@lifi/widget';
+import { formatTokenPrice } from '@jumperexchange/widget';
 import { sumBy } from 'lodash';
 import { isAppDefiPosition, type DefiPosition } from './type-guards';
 

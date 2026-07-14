@@ -2,7 +2,7 @@
 import { DustFlow } from '@/components/composite/DustFlow/DustFlow';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 export const PortfolioDustSection = () => {
   const { account } = useAccount();

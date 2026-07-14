@@ -1,4 +1,7 @@
-import type { ChainTokenSelected, NavigationTabKey } from '@lifi/widget';
+import type {
+  ChainTokenSelected,
+  NavigationTabKey,
+} from '@jumperexchange/widget';
 import type { MutableRefObject } from 'react';
 import type { TrackTransactionDataProps } from '@/types/userTracking';
 

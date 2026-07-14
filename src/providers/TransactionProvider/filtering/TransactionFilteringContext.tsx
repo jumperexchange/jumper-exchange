@@ -16,7 +16,7 @@ import {
 } from 'nuqs';
 import type { ExtendedChain } from '@lifi/sdk';
 import type { BaseToken } from '@/types/tokens';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { TransactionProvider } from '../TransactionProvider';
 import { useTransactions } from '../TransactionContext';
 import type { TransactionsDto } from '@/types/jumper-backend';

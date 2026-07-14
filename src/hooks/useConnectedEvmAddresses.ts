@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { ChainType } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Hex } from 'viem';
 
 export const useConnectedEvmAddresses = (): Hex[] => {

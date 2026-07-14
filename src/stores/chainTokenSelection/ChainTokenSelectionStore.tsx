@@ -1,7 +1,7 @@
 'use client';
 
 import type { ChainId } from '@lifi/sdk';
-import type { ChainTokenSelected } from '@lifi/widget';
+import type { ChainTokenSelected } from '@jumperexchange/widget';
 import { createWithEqualityFn } from 'zustand/traditional';
 
 interface OptionalChainTokenSelected {

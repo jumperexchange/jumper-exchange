@@ -11,7 +11,7 @@ import {
   TransactionFilteringProvider,
   useTransactionFiltering,
 } from '@/providers/TransactionProvider/filtering/TransactionFilteringContext';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { PortfolioHoldings } from './PortfolioHoldings/PortfolioHoldings';
 import { PortfolioTransactions } from './PortfolioTransactions/PortfolioTransactions';
 import { PortfolioTransactionPagination } from './PortfolioTransactions/PortfolioTransactionPagination';

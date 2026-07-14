@@ -1,5 +1,8 @@
 import type { FC } from 'react';
-import { LiFiWidget, WidgetSkeleton as LifiWidgetSkeleton } from '@lifi/widget';
+import {
+  LiFiWidget,
+  WidgetSkeleton as LifiWidgetSkeleton,
+} from '@jumperexchange/widget';
 import type { WidgetProps } from './Widget.types';
 import { useWidgetConfig } from '../widgetConfig/useWidgetConfig';
 import { ClientOnly } from '@/components/ClientOnly';

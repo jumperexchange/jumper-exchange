@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useSignTypedData, useSwitchChain } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Hex } from 'viem';
 import { makeClient } from '@/app/lib/client';
 import { useTransactionFlow } from '@/hooks/transactions/useTransactionFlow';

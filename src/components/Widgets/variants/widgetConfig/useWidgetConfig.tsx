@@ -1,5 +1,5 @@
-import { useAccount } from '@lifi/wallet-management';
-import { ChainType, type WidgetConfig } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import { ChainType, type WidgetConfig } from '@jumperexchange/widget';
 import merge from 'lodash/merge';
 import { useMemo } from 'react';
 import { useActiveNavigationTab } from '@/hooks/useActiveNavigationTab';

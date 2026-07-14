@@ -1,6 +1,6 @@
-import { ProjectData } from 'src/types/questDetails';
-import { type TokenAmount } from '@lifi/widget';
-import { RefObject } from 'react';
+import type { ProjectData } from 'src/types/questDetails';
+import { type TokenAmount } from '@jumperexchange/widget';
+import type { RefObject } from 'react';
 
 export interface BaseContractCall {
   label: string;

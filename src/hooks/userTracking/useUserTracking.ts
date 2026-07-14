@@ -12,7 +12,7 @@ import type {
   TrackTransactionProps,
 } from '@/types/userTracking';
 import { EventTrackingTool } from '@/types/userTracking';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Theme } from '@mui/material';
 import { useMediaQuery } from '@mui/material';
 import { useCallback, useMemo } from 'react';

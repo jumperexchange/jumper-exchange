@@ -1,4 +1,4 @@
-import { useWidgetEvents, WidgetEvent } from '@lifi/widget';
+import { useWidgetEvents, WidgetEvent } from '@jumperexchange/widget';
 import { useEffect, useState } from 'react';
 
 export const useWidgetExpanded = () => {

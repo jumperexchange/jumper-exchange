@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { isEqual } from 'lodash';
 import { useQueryStates } from 'nuqs';
 import {

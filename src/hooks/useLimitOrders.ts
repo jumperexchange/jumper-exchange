@@ -1,5 +1,5 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { makeClient } from '@/app/lib/client';
 import { getQueryKey } from '@/utils/queries/getQueryKey';

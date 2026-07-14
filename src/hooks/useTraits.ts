@@ -1,5 +1,5 @@
 import type { Trait } from '@/types/loyaltyPass';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 

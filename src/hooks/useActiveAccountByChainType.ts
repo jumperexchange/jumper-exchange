@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useMemo } from 'react';
 import { useChainTokenSelectionStore } from 'src/stores/chainTokenSelection';
 import { useChains } from './useChains';

@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
