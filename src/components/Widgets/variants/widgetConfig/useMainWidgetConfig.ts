@@ -93,6 +93,8 @@ export function useMainWidgetConfig(
         ...deps.theme.widgetTheme.config.theme,
       },
 
+      appearance: deps.theme.widgetTheme.config.appearance,
+
       // Chain configuration
       chains: {
         ...(deps.theme.configTheme?.chains ?? {}),

@@ -61,6 +61,8 @@ export function useMissionWidgetConfig(
         },
       },
 
+      appearance: deps.theme.widgetTheme.config.appearance,
+
       // Chain configuration
       chains: {
         allow: context.allowChains,
