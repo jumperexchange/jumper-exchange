@@ -1,3 +1,4 @@
+import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
 
 declare global {
@@ -87,7 +88,7 @@ export const useUrlParams = (): UrlParams => {
       const denyBridges = queryParameters.get('denyBridges');
       const denyExchanges = queryParameters.get('denyExchanges');
 
-      setUrlParams({
+      const next: UrlParams = {
         sourceChainToken: {
           chainId: !!fromChain ? parseInt(fromChain) : undefined,
           token: fromToken ?? undefined,
@@ -100,7 +101,9 @@ export const useUrlParams = (): UrlParams => {
         fromAmount: fromAmount ?? undefined,
         denyBridges: parseList(denyBridges),
         denyExchanges: parseList(denyExchanges),
-      });
+      };
+
+      setUrlParams((prev) => (isEqual(prev, next) ? prev : next));
     };
 
     patchHistoryForUrlChangeEvent();

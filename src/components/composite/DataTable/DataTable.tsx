@@ -235,7 +235,19 @@ export function DataTable<T>({
                         },
                         Boolean(onRowClick) && { cursor: 'pointer' },
                       ]}
+                      tabIndex={onRowClick ? 0 : undefined}
+                      role={onRowClick ? 'button' : undefined}
                       onClick={onRowClick ? () => onRowClick(row) : undefined}
+                      onKeyDown={
+                        onRowClick
+                          ? (e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                onRowClick(row);
+                              }
+                            }
+                          : undefined
+                      }
                       data-testid={testId ? `${testId}-row-${key}` : undefined}
                     >
                       {visibleColumns.map((col) => (

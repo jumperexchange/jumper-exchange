@@ -18,10 +18,16 @@ export class UdfDatafeed implements ICandlestickDatafeed {
     string,
     ReturnType<typeof setInterval>
   >();
+  private cachedConfig?: DatafeedConfiguration;
 
   constructor(private readonly client: UdfClient) {}
 
   onReady(callback: OnReadyCallback): void {
+    if (this.cachedConfig) {
+      setTimeout(() => callback(this.cachedConfig!), 0);
+      return;
+    }
+
     this.client
       .getConfig()
       .then((config) => {
@@ -35,6 +41,7 @@ export class UdfDatafeed implements ICandlestickDatafeed {
           exchanges: config.exchanges,
           symbols_types: config.symbols_types,
         };
+        this.cachedConfig = datafeedConfig;
         setTimeout(() => callback(datafeedConfig), 0);
       })
       .catch(() => {

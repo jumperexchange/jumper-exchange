@@ -18,6 +18,7 @@ import { Variant } from '@/components/core/buttons/types';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
 import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
+import { getOrderFlowWidgetContainerStyle } from '@/components/Widgets/variants/widgetConfig/utils';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTheme } from '@mui/material';
 
@@ -88,16 +89,7 @@ export const ModifyOrderFlowModal = () => {
       overrideHeader: t('limitOrders.modifyModal.title'),
       disabledUI: { fromToken: true, toToken: true },
       theme: {
-        container: {
-          maxHeight: 'calc(100vh - 6rem)',
-          minWidth: 'min(100vw, 360px)',
-          maxWidth: 400,
-          borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
-          [theme.breakpoints.up('sm')]: {
-            maxHeight: 'calc(100vh - 6rem)',
-            minWidth: 400,
-          },
-        },
+        container: getOrderFlowWidgetContainerStyle(theme),
       },
       formData: {
         sourceChain: {
