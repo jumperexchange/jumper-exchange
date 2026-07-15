@@ -52,6 +52,18 @@ export function useOrderColumns(isExpanded: boolean): ColumnDef<Order>[] {
         variant: BadgeVariant.Success,
       };
     }
+    if (order.status === 'failed') {
+      return {
+        label: t('limitOrders.table.status.failed'),
+        variant: BadgeVariant.Error,
+      };
+    }
+    if (order.status === 'temporarily_invalid') {
+      return {
+        label: t('limitOrders.table.status.temporarilyInvalid'),
+        variant: BadgeVariant.Warning,
+      };
+    }
     if (isOrderExpired(order)) {
       return {
         label: t('limitOrders.table.status.expired'),

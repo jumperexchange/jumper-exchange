@@ -147,3 +147,15 @@ export const isSupportedChainType = (
 ): type is ChainType.EVM | ChainType.SVM => {
   return !!type && [ChainType.EVM, ChainType.SVM].includes(type);
 };
+
+/** Container style for the limit-order modify/repeat flow modals' embedded widget. */
+export const getOrderFlowWidgetContainerStyle = (theme: Theme) => ({
+  maxHeight: 'calc(100vh - 6rem)',
+  minWidth: 'min(100vw, 360px)',
+  maxWidth: 400,
+  borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
+  [theme.breakpoints.up('sm')]: {
+    maxHeight: 'calc(100vh - 6rem)',
+    minWidth: 400,
+  },
+});

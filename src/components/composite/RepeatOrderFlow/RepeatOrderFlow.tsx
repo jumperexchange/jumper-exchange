@@ -7,6 +7,7 @@ import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget'
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
 import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
+import { getOrderFlowWidgetContainerStyle } from '@/components/Widgets/variants/widgetConfig/utils';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTheme } from '@mui/material';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
@@ -27,16 +28,7 @@ export const RepeatOrderFlowModal = () => {
     return {
       overrideHeader: t('limitOrders.repeatModal.title'),
       theme: {
-        container: {
-          maxHeight: 'calc(100vh - 6rem)',
-          minWidth: 'min(100vw, 360px)',
-          maxWidth: 400,
-          borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
-          [theme.breakpoints.up('sm')]: {
-            maxHeight: 'calc(100vh - 6rem)',
-            minWidth: 400,
-          },
-        },
+        container: getOrderFlowWidgetContainerStyle(theme),
       },
       formData: {
         sourceChain: {

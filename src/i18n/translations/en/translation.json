@@ -1317,6 +1317,8 @@
         "cancelled": "Cancelled",
         "expired": "Expired",
         "filled": "Filled",
+        "failed": "Failed",
+        "temporarilyInvalid": "Paused",
         "days_one": "{{count}} day",
         "days_other": "{{count}} days"
       },

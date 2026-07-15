@@ -127,4 +127,17 @@ describe('useUrlParams', () => {
       token: '0xto',
     });
   });
+
+  it('keeps the same object reference when replaceState does not change parsed params', () => {
+    setSearch('?fromChain=1&fromToken=0xfrom');
+
+    const { result } = renderHook(() => useUrlParams());
+    const first = result.current;
+
+    act(() => {
+      window.history.replaceState({}, '', '/?fromChain=1&fromToken=0xfrom');
+    });
+
+    expect(result.current).toBe(first);
+  });
 });

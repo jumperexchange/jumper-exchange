@@ -19,12 +19,10 @@ test.describe('Landing page and navigation', () => {
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       await page.waitForLoadState('domcontentloaded');
-      await landingPage.navigateAndExpectWidgetTab(
-        1,
-        WIDGET_TABS.ADVANCED_BRIDGE,
-      );
-      await landingPage.navigateAndExpectWidgetTab(
-        0,
+      await landingPage.clickWidgetTab(1);
+      await landingPage.expectWidgetTabVisible(WIDGET_TABS.ADVANCED_BRIDGE);
+      await landingPage.clickWidgetTab(0);
+      await landingPage.expectWidgetTabVisible(
         WIDGET_TABS.SIMPLE_SWAP_AND_BRIDGE,
       );
     },

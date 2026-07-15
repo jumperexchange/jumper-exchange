@@ -37,20 +37,25 @@ export const getOrderLimitPrice = (order: Order): number | null => {
   return toAmount / fromAmount;
 };
 
-/** Current USD price of the token the limit price is expressed against. */
+/**
+ * Market price in the same units as getOrderLimitPrice: USD price of the
+ * non-stable token when exactly one side is stable, otherwise the
+ * toToken-per-fromToken ratio implied by both tokens' USD prices.
+ */
 export const getOrderMarketPrice = (order: Order): number | null => {
-  const priceUSD = isStableToken(order.fromToken)
-    ? order.toToken.priceUSD
-    : isStableToken(order.toToken)
-      ? order.fromToken.priceUSD
-      : order.toToken.priceUSD;
+  const fromStable = isStableToken(order.fromToken);
+  const toStable = isStableToken(order.toToken);
 
-  if (!priceUSD) {
-    return null;
+  let value: number | null = null;
+  if (fromStable) {
+    value = order.toToken.priceUSD ? Number(order.toToken.priceUSD) : null;
+  } else if (toStable) {
+    value = order.fromToken.priceUSD ? Number(order.fromToken.priceUSD) : null;
+  } else if (order.fromToken.priceUSD && order.toToken.priceUSD) {
+    value = Number(order.fromToken.priceUSD) / Number(order.toToken.priceUSD);
   }
 
-  const value = Number(priceUSD);
-  return Number.isFinite(value) && value > 0 ? value : null;
+  return value != null && Number.isFinite(value) && value > 0 ? value : null;
 };
 
 /**

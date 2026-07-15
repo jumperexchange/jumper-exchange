@@ -44,6 +44,12 @@ export class LandingPage {
     await this.page.getByRole('link', { name: option }).click();
   }
 
+  // Vertical menu tabs: 0 = Simple, 1 = Advanced.
+  async clickWidgetTab(tabKey: number): Promise<void> {
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.getByTestId(`tab-key-${tabKey}`).click();
+  }
+
   async closeWelcomeScreen(): Promise<void> {
     await expect(this.getStartedButton).toBeVisible({
       timeout: WELCOME_VISIBLE_TIMEOUT_MS,
@@ -131,22 +137,16 @@ export class LandingPage {
     ).toBeVisible();
   }
 
+  // The destination is asserted via a widget tab unique to it, so the check
+  // cannot match the outgoing page mid-navigation (role=tab name matching is
+  // exact — "Bridge" does not match "Swap & Bridge").
+  async expectWidgetTabVisible(widgetTab: string): Promise<void> {
+    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
+  }
+
   async goto(): Promise<void> {
     await this.page.goto('/');
     await this.page.waitForLoadState('domcontentloaded');
-  }
-
-  // Vertical menu tabs: 0 = Simple, 1 = Advanced. The destination is asserted
-  // via a widget tab unique to it, so the check cannot match the outgoing page
-  // mid-navigation (role=tab name matching is exact — "Bridge" does not match
-  // "Swap & Bridge").
-  async navigateAndExpectWidgetTab(
-    tabKey: number,
-    widgetTab: string,
-  ): Promise<void> {
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.getByTestId(`tab-key-${tabKey}`).click();
-    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
   }
 
   private chainNameOf(chainId: string): string {

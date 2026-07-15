@@ -3815,7 +3815,7 @@ export class JumperBackend<
       orderId: string,
       params: RequestParams = {},
     ) =>
-      this.request<void, any>({
+      this.request<LimitOrder, any>({
         path: `/limit-order/${tool}/${chainId}/${orderId}`,
         method: 'GET',
         ...params,
