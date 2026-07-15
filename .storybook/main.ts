@@ -59,27 +59,6 @@ const config: StorybookConfig = {
       dedupe: [...(config.resolve?.dedupe ?? []), 'debug'],
     };
 
-    config.build = {
-      ...config.build,
-      rolldownOptions: {
-        ...config.build?.rolldownOptions,
-        output: {
-          ...config.build?.rolldownOptions?.output,
-          strictExecutionOrder: true,
-          manualChunks(id) {
-            if (
-              id.includes('@mui/system') ||
-              id.includes('@mui/material/styles') ||
-              id.includes('@mui/utils') ||
-              id.includes('@emotion/')
-            ) {
-              return 'mui-styles';
-            }
-          },
-        },
-      },
-    };
-
     return config;
   },
 };
