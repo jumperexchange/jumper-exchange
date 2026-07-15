@@ -5,9 +5,8 @@ import {
   type DefaultExpectedDppKit,
 } from '@mysten/dapp-kit-react';
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { getJsonRpcFullnodeUrl } from '@mysten/sui/jsonRpc';
-import { useHydrated } from '@/hooks/useHydrated';
 import type { FC, PropsWithChildren } from 'react';
+import { useHydrated } from '@/hooks/useHydrated';
 
 const STORAGE_KEY = 'jumper-sui-wallet-connection';
 
@@ -39,7 +38,7 @@ const createSuiDappKit = (options: {
     createClient: (network) =>
       new SuiGrpcClient({
         network,
-        baseUrl: getJsonRpcFullnodeUrl('mainnet'),
+        baseUrl: 'https://fullnode.mainnet.sui.io:443',
       }),
     autoConnect: options.autoConnect,
     storageKey: STORAGE_KEY,
