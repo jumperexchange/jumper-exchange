@@ -1,4 +1,3 @@
-import { useAccount } from '@jumperexchange/wallet-management';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/navigation';
@@ -12,22 +11,14 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
-import { useABTest } from '@/hooks/useABTest';
-import { AB_TEST_NAME } from '@/const/abtests';
-import {
-  GatekeeperStatus,
-  useGatekeeperStatus,
-} from '@/app/ui/gatekeeper/useGatekeeperStatus';
+import { useAdvancedAccess } from '@/hooks/useAdvancedAccess';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const { t } = useTranslation();
-  const widgetAdvancedFlag = useABTest({
-    feature: AB_TEST_NAME.WIDGET_ADVANCED,
-  });
-  const { status: advancedGatekeeperStatus } =
-    useGatekeeperStatus('hasAdvanced');
+  const { isEnabled: widgetAdvancedEnabled, isAllowed: advancedAllowed } =
+    useAdvancedAccess();
 
   const handleClickTab = (path: string, label: string) => () => {
     router.push(`/${path}`);
@@ -41,9 +32,7 @@ export const useVerticalTabs = () => {
     });
   };
 
-  const advancedDisabled =
-    !widgetAdvancedFlag.isEnabled ||
-    advancedGatekeeperStatus !== GatekeeperStatus.SUCCESS;
+  const advancedDisabled = !advancedAllowed;
 
   const tabs = [
     {
@@ -59,7 +48,7 @@ export const useVerticalTabs = () => {
       label: 'advanced',
       displayLabel: t('navbar.links.advanced'),
       icon: CandlestickChartIcon,
-      showNewBadge: widgetAdvancedFlag.isEnabled,
+      showNewBadge: widgetAdvancedEnabled,
       disabled: advancedDisabled,
     },
   ];

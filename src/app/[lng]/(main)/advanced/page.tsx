@@ -1,30 +1,25 @@
 'use client';
 
-import { notFound } from 'next/navigation';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import { AdvancedPageContent } from '@/app/ui/widget/AdvancedPageContent';
-import { AB_TEST_NAME } from '@/const/abtests';
-import { useABTest } from '@/hooks/useABTest';
-import {
-  GatekeeperStatus,
-  useGatekeeperStatus,
-} from '@/app/ui/gatekeeper/useGatekeeperStatus';
+import { AppPaths } from '@/const/urls';
+import { useAdvancedAccess } from '@/hooks/useAdvancedAccess';
 
 export default function Page() {
-  const widgetAdvancedFlag = useABTest({
-    feature: AB_TEST_NAME.WIDGET_ADVANCED,
-  });
-  const { status } = useGatekeeperStatus('hasAdvanced');
+  const router = useRouter();
+  const { isLoading, isAllowed } = useAdvancedAccess();
+  const isDenied = !isLoading && !isAllowed;
 
-  if (!widgetAdvancedFlag.isLoading && !widgetAdvancedFlag.isEnabled) {
-    return notFound();
-  }
+  useEffect(() => {
+    if (isDenied) {
+      router.replace(AppPaths.Main);
+    }
+  }, [isDenied, router]);
 
-  const isLoading =
-    widgetAdvancedFlag.isLoading || status === GatekeeperStatus.LOADING_ACCESS;
-
-  if (!isLoading && status !== GatekeeperStatus.SUCCESS) {
-    return notFound();
+  if (isDenied) {
+    return null;
   }
 
   return (
