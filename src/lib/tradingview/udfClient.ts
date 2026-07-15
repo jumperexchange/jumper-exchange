@@ -3,17 +3,7 @@ import type {
   UdfSearchResultDto,
   UdfSymbolInfoDto,
 } from '@/types/jumper-backend';
-import { JumperBackend } from '@/types/jumper-backend';
-
-const OPTIONAL_V1_SUFFIX = /\/v1\/?$/;
-
-function makeUdfClient() {
-  const baseUrl = (process.env.NEXT_PUBLIC_BACKEND_URL ?? '').replace(
-    OPTIONAL_V1_SUFFIX,
-    '',
-  );
-  return new JumperBackend({ baseUrl });
-}
+import { makeClient } from '@/app/lib/client';
 
 export interface UdfBar {
   time: number;
@@ -24,7 +14,7 @@ export interface UdfBar {
 }
 
 export class UdfClient {
-  private readonly api = makeUdfClient();
+  private readonly api = makeClient();
 
   async getConfig(): Promise<UdfConfigDto> {
     const res = await this.api.v1.udfControllerConfigV1();
@@ -68,12 +58,26 @@ export class UdfClient {
       return { bars: [], noData: true, nextTime: data.nextTime ?? undefined };
     }
 
-    const bars: UdfBar[] = (data.t ?? []).map((time, i) => ({
+    const t = data.t ?? [];
+    const o = data.o ?? [];
+    const h = data.h ?? [];
+    const l = data.l ?? [];
+    const c = data.c ?? [];
+    if (
+      o.length !== t.length ||
+      h.length !== t.length ||
+      l.length !== t.length ||
+      c.length !== t.length
+    ) {
+      throw new Error('UDF history error: mismatched OHLC array lengths');
+    }
+
+    const bars: UdfBar[] = t.map((time, i) => ({
       time,
-      open: (data.o ?? [])[i],
-      high: (data.h ?? [])[i],
-      low: (data.l ?? [])[i],
-      close: (data.c ?? [])[i],
+      open: o[i],
+      high: h[i],
+      low: l[i],
+      close: c[i],
     }));
 
     return { bars, noData: false };

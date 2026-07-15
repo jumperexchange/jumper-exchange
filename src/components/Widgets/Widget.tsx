@@ -143,7 +143,7 @@ export function Widget({
     }
 
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [configTheme.integrator, widgetIntegrator, starterVariant]) as string;
+  }, [configTheme?.integrator, widgetIntegrator, starterVariant]) as string;
 
   const formParametersCtx = useFormParameters({
     fromChain,

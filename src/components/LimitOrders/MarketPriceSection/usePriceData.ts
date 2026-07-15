@@ -23,6 +23,13 @@ export function usePriceData(datafeed: ICandlestickDatafeed, symbol: string) {
   const [changes, setChanges] = useState<PriceChange[]>([]);
 
   useEffect(() => {
+    setCurrentPrice(null);
+    setChanges([]);
+
+    if (!symbol) {
+      return;
+    }
+
     let closureStale = false;
     const now = () => Math.floor(Date.now() / 1000);
 
@@ -31,10 +38,10 @@ export function usePriceData(datafeed: ICandlestickDatafeed, symbol: string) {
         return;
       }
 
-      for (const { label, res, countback } of CHANGE_WINDOWS) {
-        datafeed.resolveSymbol(
-          symbol,
-          (symbolInfo) => {
+      datafeed.resolveSymbol(
+        symbol,
+        (symbolInfo) => {
+          for (const { label, res, countback } of CHANGE_WINDOWS) {
             if (
               !config.supported_resolutions?.includes(res as ResolutionString)
             ) {
@@ -44,7 +51,7 @@ export function usePriceData(datafeed: ICandlestickDatafeed, symbol: string) {
                 'for symbol: ',
                 symbol,
               );
-              return;
+              continue;
             }
             datafeed.getBars(
               symbolInfo,
@@ -73,15 +80,15 @@ export function usePriceData(datafeed: ICandlestickDatafeed, symbol: string) {
                 );
               },
             );
-          },
-          () => {
-            console.error(
-              'Error fetching symbol information for symbol: ',
-              symbol,
-            );
-          },
-        );
-      }
+          }
+        },
+        () => {
+          console.error(
+            'Error fetching symbol information for symbol: ',
+            symbol,
+          );
+        },
+      );
     });
 
     return () => {

@@ -516,7 +516,9 @@ export default interface Resources {
           days_one: '{{count}} day';
           days_other: '{{count}} days';
           expired: 'Expired';
+          failed: 'Failed';
           filled: 'Filled';
+          temporarilyInvalid: 'Paused';
         };
       };
     };
