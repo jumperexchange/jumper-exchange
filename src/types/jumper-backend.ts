@@ -2343,6 +2343,24 @@ export interface MissionApyResponse {
   data: MissionApyDto;
 }
 
+export interface VerifiedTokenDto {
+  /**
+   * Chain id the token is verified on
+   * @example 4663
+   */
+  chainId: number;
+  /**
+   * Token address as listed in the allowlist
+   * @example "0xD7321801CAae694090694Ff55A9323139F043B88"
+   */
+  address: string;
+}
+
+export interface VerifiedTokensResponseDto {
+  /** Tokens curated as verified in the jumper-allowlist */
+  tokens: VerifiedTokenDto[];
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, 'body' | 'bodyUsed'>;
 
@@ -3666,6 +3684,22 @@ export class JumperBackend<
         path: `/v1/tokens/extended/price-change/all`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * @description Tokens marked as verified in the jumper-allowlist. The widget uses them to suppress the unverified-token warning.
+     *
+     * @tags Verified Tokens, Public
+     * @name VerifiedTokensControllerGetVerifiedTokensV1
+     * @summary Get the verified-token allowlist
+     * @request GET:/v1/tokens/verified
+     */
+    verifiedTokensControllerGetVerifiedTokensV1: (params: RequestParams = {}) =>
+      this.request<VerifiedTokensResponseDto, any>({
+        path: `/v1/tokens/verified`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),

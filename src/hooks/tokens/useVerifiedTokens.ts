@@ -1,13 +1,9 @@
+import { makeClient } from '@/app/lib/client';
+import { getQueryKey } from '@/utils/queries/getQueryKey';
 import type { BaseToken } from '@lifi/sdk';
 import { useQuery } from '@tanstack/react-query';
-import config from '@/config/env-config';
-import { getQueryKey } from '@/utils/queries/getQueryKey';
 
 const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-
-interface VerifiedTokensResponse {
-  tokens?: BaseToken[];
-}
 
 /**
  * Tokens curated as verified in the jumper-allowlist, served by
@@ -18,14 +14,9 @@ export const useVerifiedTokens = (): BaseToken[] | undefined => {
   const { data } = useQuery({
     queryKey: [getQueryKey('verified-tokens')],
     queryFn: async (): Promise<BaseToken[]> => {
-      const res = await fetch(
-        `${config.NEXT_PUBLIC_BACKEND_URL}/tokens/verified`,
-      );
-      if (!res.ok) {
-        throw new Error(`Failed to fetch verified tokens: ${res.status}`);
-      }
-      const { tokens }: VerifiedTokensResponse = await res.json();
-      return tokens ?? [];
+      const client = makeClient();
+      const res = await client.v1.verifiedTokensControllerGetVerifiedTokensV1();
+      return (res.data.tokens ?? []) as BaseToken[];
     },
     staleTime: SIX_HOURS_MS,
     gcTime: SIX_HOURS_MS,
