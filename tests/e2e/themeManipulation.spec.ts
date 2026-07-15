@@ -5,20 +5,20 @@ import { THEME_DARK_BG_RGB, THEME_LIGHT_BG_RGB } from './data/themes';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { LandingPage } from './pages/LandingPage';
 import { MainMenuPage, Theme } from './pages/MainMenuPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 
 test.describe('Switch theme — dark mode', () => {
   test.use({ colorScheme: 'dark' });
 
   test.beforeEach(async ({ page }) => {
+    await seedWelcomeScreenClosed(page);
     await page.goto('/');
   });
 
   test(
     qase(30, 'Should able to change the theme color to Dark'),
     async ({ page }) => {
-      const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.closeWelcomeScreen();
       await mainMenu.open();
       await mainMenu.switchTheme(Theme.Dark);
       await mainMenu.expectBackgroundColor(THEME_DARK_BG_RGB);
@@ -30,6 +30,7 @@ test.describe('Switch theme — light mode', () => {
   test.use({ colorScheme: 'light' });
 
   test.beforeEach(async ({ page }) => {
+    await seedWelcomeScreenClosed(page);
     await page.goto('/');
   });
 
@@ -38,7 +39,6 @@ test.describe('Switch theme — light mode', () => {
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.closeWelcomeScreen();
       await mainMenu.toggle();
       await landingPage.clickMenuItem('Theme');
       await landingPage.clickMenuItem(Theme.Light);
@@ -50,6 +50,7 @@ test.describe('Switch theme — light mode', () => {
 
 test.describe('Switch theme — partner themes', () => {
   test.beforeEach(async ({ page }) => {
+    await seedWelcomeScreenClosed(page);
     await page.goto('/');
   });
 
@@ -61,7 +62,6 @@ test.describe('Switch theme — partner themes', () => {
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       const mainMenu = new MainMenuPage(page);
-      await landingPage.closeWelcomeScreen();
 
       const backgroundElement = page.locator('#background-root');
       const initialBgColor = await backgroundElement.evaluate(

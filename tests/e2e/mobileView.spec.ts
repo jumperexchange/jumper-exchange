@@ -7,6 +7,7 @@ import { LandingPage } from './pages/LandingPage';
 import { MainMenuPage, Theme } from './pages/MainMenuPage';
 import { isFullyInViewport } from './utils/elementUtils';
 import { removeFormattingTags } from './utils/translationUtils';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 
 test.describe('Verify essential mobile flows', () => {
   test.use({ viewport: { height: 812, width: 375 } });
@@ -77,11 +78,12 @@ test.describe('Verify essential mobile flows', () => {
   );
 
   test(qase(6, 'Verify items in the menu'), async ({ page }) => {
-    const landingPage = new LandingPage(page);
     const mainMenu = new MainMenuPage(page);
 
-    await test.step('close the welcome screen', async () => {
-      await landingPage.closeWelcomeScreen();
+    await test.step('bypass the welcome screen', async () => {
+      // The seed only applies on the next navigation, so re-goto after it.
+      await seedWelcomeScreenClosed(page);
+      await page.goto('/');
     });
 
     await test.step('open the menu', async () => {
