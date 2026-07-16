@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { ActionableSection } from '@/components/composite/ActionableSection/ActionableSection';
 import { CancelOrderFlowModal } from '@/components/composite/CancelOrderFlow/CancelOrderFlow';
 import { ModifyOrderFlowModal } from '@/components/composite/ModifyOrderFlow/ModifyOrderFlow';
@@ -17,6 +19,8 @@ import {
   SelectSize,
   SelectVariant,
 } from '@/components/core/form/Select/Select.types';
+import { IconButton } from '@/components/core/buttons/IconButton/IconButton';
+import { Size, Variant } from '@/components/core/buttons/types';
 
 interface OrdersSectionProps {
   isSidePanelExpanded: boolean;
@@ -46,6 +50,7 @@ export const OrdersSection = ({
     goToNextPage,
     goToPreviousPage,
     isLoading,
+    refresh,
   } = useLimitOrders(selectedAddress, selectedProtocol);
 
   const shouldShow = !!selectedAddress && !!selectedProtocol;
@@ -85,7 +90,26 @@ export const OrdersSection = ({
                   />
                 </Stack>
               }
-              action={action}
+              action={
+                <Stack direction="row" sx={{ gap: 1.5, alignItems: 'center' }}>
+                  <Tooltip title={t('limitOrders.table.actions.refresh')}>
+                    <span>
+                      <IconButton
+                        size={Size.SM}
+                        variant={Variant.AlphaDark}
+                        onClick={() => refresh()}
+                        disabled={isLoading}
+                        aria-label={t('limitOrders.table.actions.refresh')}
+                        data-testid="orders-section-refresh"
+                        sx={{ height: 32, width: 32 }}
+                      >
+                        <RefreshIcon fontSize="small" />
+                      </IconButton>
+                    </span>
+                  </Tooltip>
+                  {action}
+                </Stack>
+              }
               sx={{ flexShrink: 0 }}
             >
               <AnimatePresence mode="wait">

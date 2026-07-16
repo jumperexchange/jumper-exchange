@@ -499,6 +499,7 @@ export default interface Resources {
           collapsePanels: 'Collapse panels';
           expandPanels: 'Expand panels';
           modifyLimit: 'Modify limit';
+          refresh: 'Refresh orders';
           repeatOrder: 'Repeat order';
           rowActions: 'Row actions';
           viewOnExplorer: 'View on explorer';
