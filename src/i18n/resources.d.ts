@@ -641,6 +641,7 @@ export default interface Resources {
       navbarMenu: {
         brandAssets: 'Brand Assets';
         developers: 'Developers';
+        docs: 'Docs';
         learn: 'Learn';
         newsletter: 'Newsletter';
         privacyPolicy: 'Privacy Policy';
