@@ -25,9 +25,7 @@ export async function GET(
 
     const flags = data.data[0];
 
-    return NextResponse.json(
-      pick(flags, ['hasEarn', 'hasAdvanced']),
-    );
+    return NextResponse.json(pick(flags, ['hasEarn', 'hasAdvanced']));
   } catch (error) {
     console.error('Error fetching wallet access control:', error);
     return NextResponse.json(
