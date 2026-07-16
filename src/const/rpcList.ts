@@ -96,3 +96,32 @@ export function getMergedRPCList(): RpcMap {
     ...publicRPCList,
   };
 }
+
+/** Parse a comma-separated list of RPC URLs, trimming and dropping empties. */
+function parseRpcUrlList(value: string | undefined): string[] {
+  if (!value) {
+    return [];
+  }
+  return value
+    .split(',')
+    .map((url) => url.trim())
+    .filter(Boolean);
+}
+
+/**
+ * Dedicated Solana RPC URLs used only to broadcast transactions
+ * (`sendTransaction`). Passed to `SolanaProvider({ sendRpcUrls })`; the
+ * provider falls back to the standard Solana RPC list when this is empty.
+ */
+export function getSolanaSendRpcUrls(): string[] {
+  return parseRpcUrlList(config.NEXT_PUBLIC_SOLANA_SEND_RPC_URLS);
+}
+
+/**
+ * Dedicated Jito-capable RPC URLs used only to submit bundles (`sendBundle`).
+ * Passed to `SolanaProvider({ sendJitoRpcUrls })`; the provider falls back to
+ * the standard Jito RPC list when this is empty or none are Jito-capable.
+ */
+export function getSolanaSendJitoRpcUrls(): string[] {
+  return parseRpcUrlList(config.NEXT_PUBLIC_SOLANA_SEND_JITO_RPC_URLS);
+}
