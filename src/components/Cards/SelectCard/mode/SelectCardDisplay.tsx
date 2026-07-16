@@ -30,7 +30,9 @@ export const SelectCardDisplay: FC<SelectCardDisplayProps> = ({
       )}
       <SelectCardContentContainer>
         {startAdornment}
-        <SelectCardValueContainer>
+        <SelectCardValueContainer
+          sx={!placeholder && !value ? { width: 0 } : {}}
+        >
           <SelectCardDisplayValue
             showPlaceholder={!!placeholder && !value}
             textVariant={valueVariant}
