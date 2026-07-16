@@ -4,7 +4,7 @@ import i18nConfig from '../i18n-config';
 import { NO_PARTNER_THEME_UID } from './partnerThemeConstants.ts';
 import { withProviders } from './withProviders';
 
-sb.mock(import('@lifi/wallet-management'), { spy: true });
+sb.mock(import('@jumperexchange/wallet-management'), { spy: true });
 sb.mock(import('../src/hooks/useLoyaltyPass.ts'), { spy: true });
 sb.mock(import('../src/hooks/perks/usePerks.ts'), { spy: true });
 

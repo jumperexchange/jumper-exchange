@@ -31,6 +31,7 @@ export interface WidgetVariantDescriptor {
 export interface WidgetFeatureFlags {
   limitOrders: boolean;
   privateSwaps: boolean;
+  widgetAdvanced: boolean;
 }
 
 // Widget types

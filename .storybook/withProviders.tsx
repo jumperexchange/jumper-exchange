@@ -1,4 +1,3 @@
-import type { Decorator } from '@storybook/react';
 import type { i18n as I18nInstance } from 'i18next';
 import { type ReactNode, useEffect, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
@@ -19,6 +18,7 @@ import {
   isNoPartnerThemeUid,
   NO_PARTNER_THEME_UID,
 } from './partnerThemeConstants.ts';
+import { Decorator } from '@storybook/nextjs-vite';
 
 const ThemeBridge = ({
   children,

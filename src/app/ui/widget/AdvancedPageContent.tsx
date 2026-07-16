@@ -13,7 +13,7 @@ import { MainWidgetPageContent } from './MainWidgetPageContent';
 import { WidgetSidePanel } from './WidgetSidePanel';
 import { useTranslation } from 'react-i18next';
 
-export const AdvancedPageContent = () => {
+export const AdvancedPageContent = ({ isLoading }: { isLoading?: boolean }) => {
   const { t } = useTranslation();
   const isLimitTabActive = useActiveNavigationTab() === 'limit';
   const isSidePanelExpanded = useWidgetSidePanelStore(
@@ -50,6 +50,7 @@ export const AdvancedPageContent = () => {
   return (
     <MainWidgetPageContent
       variant="advanced"
+      isLoading={isLoading}
       isSidePanelExpanded={isSidePanelExpanded}
       sidePanelContent={
         isLimitTabActive ? (
