@@ -1,38 +1,89 @@
 'use client';
-import { useAccount } from '@jumperexchange/wallet-management';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { makeClient } from '@/app/lib/client';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { ORDERS_PAGE_SIZE } from '@/components/LimitOrders/OrdersSection/constants';
+import type { LimitOrder } from '@/types/jumper-backend';
 
-export const useLimitOrders = (page: number, pageSize = ORDERS_PAGE_SIZE) => {
-  const { account } = useAccount();
-  const address = account?.address;
+interface LimitOrdersPage {
+  orders: LimitOrder[];
+  nextCursor: string | null;
+}
 
-  return useQuery({
-    queryKey: [getQueryKey('limit-orders'), address, page, pageSize],
-    queryFn: async () => {
-      if (!address) {
-        return { orders: [], total: 0, pageSize, pageCount: 0 };
+export const useLimitOrders = (
+  address: string | undefined,
+  tool: string | undefined,
+  pageSize = ORDERS_PAGE_SIZE,
+) => {
+  const [pageIndex, setPageIndex] = useState(0);
+
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    hasNextPage: infiniteHasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery<
+    LimitOrdersPage,
+    Error,
+    { pages: LimitOrdersPage[] },
+    readonly unknown[],
+    string | undefined
+  >({
+    queryKey: [getQueryKey('limit-orders'), tool, address, pageSize],
+    initialPageParam: undefined,
+    queryFn: async ({ pageParam }) => {
+      if (!address || !tool) {
+        return { orders: [], nextCursor: null };
       }
 
       const client = makeClient();
       const res = await client.limitOrder.ordersControllerGetOrdersByUser(
+        tool,
         address,
-        { limit: pageSize, offset: page * pageSize },
+        { limit: pageSize, cursor: pageParam },
       );
-      const total = res.data.meta?.total ?? 0;
-      // Echo back the limit the backend actually applied, so callers never
-      // have to guess it from the request-time default.
-      const appliedPageSize = res.data.meta?.limit ?? pageSize;
       return {
         orders: res.data.data ?? [],
-        total,
-        pageSize: appliedPageSize,
-        pageCount: Math.ceil(total / appliedPageSize),
+        nextCursor: res.data.meta?.nextCursor ?? null,
       };
     },
-    placeholderData: keepPreviousData,
-    enabled: !!address,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    enabled: !!address && !!tool,
   });
+
+  useEffect(() => {
+    setPageIndex(0);
+  }, [address, tool]);
+
+  const pageCount = data?.pages.length ?? 0;
+  const currentPage = data?.pages[pageIndex];
+
+  const hasNextPage = pageIndex < pageCount - 1 || !!infiniteHasNextPage;
+  const hasPreviousPage = pageIndex > 0;
+
+  const goToNextPage = async () => {
+    if (pageIndex < pageCount - 1) {
+      setPageIndex((index) => index + 1);
+    } else if (infiniteHasNextPage) {
+      const result = await fetchNextPage();
+      if (result.status === 'success') {
+        setPageIndex((index) => index + 1);
+      }
+    }
+  };
+
+  const goToPreviousPage = () => {
+    setPageIndex((index) => Math.max(0, index - 1));
+  };
+
+  return {
+    orders: currentPage?.orders ?? [],
+    hasNextPage,
+    hasPreviousPage,
+    goToNextPage,
+    goToPreviousPage,
+    isLoading: isLoading || isFetchingNextPage,
+  };
 };

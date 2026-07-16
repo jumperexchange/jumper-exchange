@@ -486,6 +486,8 @@ export default interface Resources {
         title: 'Modify limit order';
       };
       orders: 'Orders';
+      ordersEmptyState: 'No orders for this protocol yet';
+      protocolLabel: 'Protocol';
       repeatModal: {
         placeholderDescription: "Repeating an order isn't available yet. Placing a new order manually works the same way.";
         placeholderTitle: 'Coming soon';
@@ -521,6 +523,7 @@ export default interface Resources {
           temporarilyInvalid: 'Paused';
         };
       };
+      walletLabel: 'Wallet';
     };
     links: {
       discover: 'Discover {{name}}';
