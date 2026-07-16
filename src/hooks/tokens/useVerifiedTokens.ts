@@ -21,6 +21,7 @@ export const useVerifiedTokens = (): BaseToken[] | undefined => {
     staleTime: SIX_HOURS_MS,
     gcTime: SIX_HOURS_MS,
     refetchOnWindowFocus: false,
+    retry: false,
   });
 
   return data;
