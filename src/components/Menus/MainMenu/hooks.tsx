@@ -12,6 +12,7 @@ import {
 import {
   AppPaths,
   DISCORD_URL,
+  JUMPER_DOCS_URL,
   LINK3_URL,
   TELEGRAM_URL,
   TERMS_CONDITIONS_URL,
@@ -22,6 +23,7 @@ import { useMenuStore } from '@/stores/menu';
 import { useThemeStore } from '@/stores/theme';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import LanguageIcon from '@mui/icons-material/Language';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SchoolIcon from '@mui/icons-material/School';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
@@ -184,6 +186,15 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handleDocsClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-docs-link',
+      action: TrackingAction.ClickJumperDocsLink,
+      dataMenuParam: 'jumper_docs',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   const handleScanClick = useCallback(() => {
     trackMenuClick({
       label: 'open-jumper-scan',
@@ -249,6 +260,7 @@ export const useMenuActions = () => {
     handlePortfolioClick,
     handleProfileClick,
     handleLearnClick,
+    handleDocsClick,
     handleScanClick,
     handleSupportClick,
     handleThemeClick,
@@ -405,6 +417,7 @@ export const useMenuItems = () => {
 
   const {
     handleLearnClick,
+    handleDocsClick,
     handleScanClick,
     handleSupportClick,
     handleThemeClick,
@@ -537,6 +550,13 @@ export const useMenuItems = () => {
         showMoreIcon: false,
         onClick: handleSupportClick,
       },
+      {
+        label: t('navbar.navbarMenu.docs'),
+        prefixIcon: !isTablet ? <MenuBookRoundedIcon /> : undefined,
+        showMoreIcon: false,
+        link: { url: JUMPER_DOCS_URL, external: true },
+        onClick: handleDocsClick,
+      },
     );
 
     if (isTablet) {
@@ -587,6 +607,7 @@ export const useMenuItems = () => {
     languageSuffixIcon,
     supportModalUnreadCount,
     handleLearnClick,
+    handleDocsClick,
     handleScanClick,
     handleSupportClick,
     handleThemeClick,
