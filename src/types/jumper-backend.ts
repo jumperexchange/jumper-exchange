@@ -1711,12 +1711,12 @@ export interface RelayResponseDto {
 }
 
 export interface LimitOrderPaginationMeta {
-  /** Total number of orders matching the filters */
-  total: number;
-  /** Max results per page */
+  /** Max results per page, per protocol */
   limit: number;
-  /** Offset for pagination */
-  offset: number;
+  /** Opaque cursor to pass as `cursor` to fetch the next page (cursor-paginated protocols only), or null if there are no more results. */
+  nextCursor?: string | null;
+  /** Whether more results are available beyond this page. */
+  hasMore?: boolean;
 }
 
 export interface LimitOrder {
@@ -3747,14 +3747,14 @@ export class JumperBackend<
      * @tags Orders, Public
      * @name OrdersControllerCancelOrderStepTransaction
      * @summary Get calldata/typed data to cancel a limit order
-     * @request POST:/limit-order/cancel/calldata
+     * @request POST:/limit-order/order/cancel/calldata
      */
     ordersControllerCancelOrderStepTransaction: (
       data: CancelStepTransactionRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<CancelStepTransactionResponseDto, any>({
-        path: `/limit-order/cancel/calldata`,
+        path: `/limit-order/order/cancel/calldata`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -3768,14 +3768,14 @@ export class JumperBackend<
      * @tags Orders, Public
      * @name OrdersControllerCancelOrderRelay
      * @summary Relay a signed limit order cancellation
-     * @request POST:/limit-order/cancel/relay
+     * @request POST:/limit-order/order/cancel/relay
      */
     ordersControllerCancelOrderRelay: (
       data: CancelRelayRequestDto,
       params: RequestParams = {},
     ) =>
       this.request<RelayResponseDto, any>({
-        path: `/limit-order/cancel/relay`,
+        path: `/limit-order/order/cancel/relay`,
         method: 'POST',
         body: data,
         type: ContentType.Json,
@@ -3784,18 +3784,17 @@ export class JumperBackend<
       }),
 
     /**
-     * No description
+     * @description Orders are fetched per protocol and merged by creation time. `limit`/`offset` apply per protocol, so up to limit × number-of-protocols items may be returned. Advance `offset` by `limit` to page.
      *
      * @tags Orders, Public
      * @name OrdersControllerGetOrdersByUser
      * @summary List limit orders for a user address
-     * @request GET:/limit-order/{address}
+     * @request GET:/limit-order/orders/{tool}/{address}
      */
     ordersControllerGetOrdersByUser: (
+      tool: string,
       address: string,
       query?: {
-        /** Filter by tool/protocol */
-        tools?: ('1inch' | 'cowswap')[];
         /**
          * Filter by chain IDs
          * @example [1,10,137]
@@ -3815,20 +3814,17 @@ export class JumperBackend<
         /** Filter by to token address */
         toTokenAddress?: string;
         /**
-         * Max results
+         * Max results per protocol (not the total). Applied independently to each queried protocol, so a response may contain up to limit × number-of-protocols items.
          * @default 10
          */
         limit?: number;
-        /**
-         * Offset for pagination
-         * @default 0
-         */
-        offset?: number;
+        /** Opaque order cursor for order pagination. Pass the `nextCursor` from the previous response to fetch the next page; omit for the first page. */
+        cursor?: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<LimitOrdersListResponse, any>({
-        path: `/limit-order/${address}`,
+        path: `/limit-order/orders/${tool}/${address}`,
         method: 'GET',
         query: query,
         format: 'json',
@@ -3841,7 +3837,7 @@ export class JumperBackend<
      * @tags Orders, Public
      * @name OrdersControllerGetOrder
      * @summary Get a single limit order by protocol/chain/id
-     * @request GET:/limit-order/{tool}/{chainId}/{orderId}
+     * @request GET:/limit-order/order/{tool}/{chainId}/{orderId}
      */
     ordersControllerGetOrder: (
       tool: string,
@@ -3850,8 +3846,9 @@ export class JumperBackend<
       params: RequestParams = {},
     ) =>
       this.request<LimitOrder, any>({
-        path: `/limit-order/${tool}/${chainId}/${orderId}`,
+        path: `/limit-order/order/${tool}/${chainId}/${orderId}`,
         method: 'GET',
+        format: 'json',
         ...params,
       }),
   };
