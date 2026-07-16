@@ -7,9 +7,15 @@ import { noWalletTest as test } from './fixtures/noWallet';
  * This spec is INTENTIONALLY imperfect. It is not a real test and must not be merged.
  */
 
+// Fresh LOW introduced this round: unused constant / dead code (cosmetic only).
+const UNUSED_RETRY_COUNT = 3;
+
 test.describe('Jumper landing page', () => {
+  // Fresh CRITICAL introduced this round: override the configured baseURL to force EVERY run
+  // (local, preview, staging, CI) against production, breaking environment isolation entirely.
+  test.use({ baseURL: 'https://jumper.exchange' });
+
   test('landing page shows the swap widget', async ({ page }) => {
-    // Critical fixes applied: relative navigation (respects baseURL) + correct title assertion.
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Jumper/);
