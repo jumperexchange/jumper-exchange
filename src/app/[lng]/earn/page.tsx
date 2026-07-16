@@ -3,10 +3,13 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
-import { EarnsPage, EarnsPageSkeleton } from '@/app/ui/earn';
+import { EarnsPageContent } from '@/app/ui/earn/EarnsPageContent';
+import { EarnsPageSkeleton } from '@/app/ui/earn/EarnsPageSkeleton';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: pageMetadataFields.earn.title,
@@ -23,12 +26,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function Page() {
-  console.log('1. Earn page');
-
+export default function Page() {
   return (
     <Suspense fallback={<EarnsPageSkeleton />}>
-      <EarnsPage />
+      <EarnsPageContent />
     </Suspense>
   );
 }

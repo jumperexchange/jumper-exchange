@@ -1,5 +1,6 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import {
   EarnDetailsAnalyticsButton,
@@ -8,8 +9,23 @@ import {
   EarnDetailsAnalyticsHeaderContainer,
   EarnDetailsAnalyticsLineChartContainer,
 } from './EarnDetails.styles';
-import { EarnDetailsApyChart } from './EarnDetailsApyChart';
-import { EarnDetailsTvlChart } from './EarnDetailsTvlChart';
+import { LineChartSkeleton } from '../core/charts/LineChart/LineChartSkeleton';
+
+const EarnDetailsApyChart = dynamic(
+  () =>
+    import('./EarnDetailsApyChart').then((m) => ({
+      default: m.EarnDetailsApyChart,
+    })),
+  { ssr: false, loading: () => <LineChartSkeleton /> },
+);
+
+const EarnDetailsTvlChart = dynamic(
+  () =>
+    import('./EarnDetailsTvlChart').then((m) => ({
+      default: m.EarnDetailsTvlChart,
+    })),
+  { ssr: false, loading: () => <LineChartSkeleton /> },
+);
 import { AnalyticsRangeFieldEnum, AnalyticsValueFieldEnum } from './types';
 import { capitalizeString } from 'src/utils/capitalizeString';
 

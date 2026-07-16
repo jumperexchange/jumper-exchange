@@ -1,39 +1,20 @@
 import { useMutation } from '@tanstack/react-query';
-import config from '@/config/env-config';
-import { useGetClaimedPerks } from './useGetClaimedPerks';
 import {
-  usePerkClaimStatusStore,
   PerkClaimStatus,
+  usePerkClaimStatusStore,
 } from 'src/stores/perkClaimStatus';
-import {
-  HttpResponse,
-  PerkClaimDto,
-  PerkClaimEntity,
-} from 'src/types/jumper-backend';
-
-export type ClaimPerkResult = HttpResponse<PerkClaimEntity, unknown>;
+import type { PerkClaimDto } from 'src/types/jumper-backend';
+import { makeClient } from '@/app/lib/client';
+import { useGetClaimedPerks } from './useGetClaimedPerks';
 
 export async function claimPerkQuery(props: PerkClaimDto) {
-  const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${apiBaseUrl}/perks/claim`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(props),
-  });
-
-  if (!res.ok) {
-    throw new Error(res.statusText);
-  }
-
-  const data: ClaimPerkResult = await res.json();
-
-  if (!data) {
+  const client = makeClient();
+  const response = await client.v1.perksControllerPerkClaimV1(props);
+  if (!response.data) {
     throw new Error('Invalid response');
   }
 
-  return data;
+  return response.data.data;
 }
 
 export const useClaimPerk = (address?: string, perkId?: string) => {

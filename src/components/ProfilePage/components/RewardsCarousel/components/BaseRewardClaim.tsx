@@ -7,6 +7,7 @@ import {
 } from 'wagmi';
 import { RewardClaimCard } from './RewardClaimCard';
 import type { BaseReward } from '@/types/rewards';
+import type { PortfolioBalance, WalletToken } from '@/types/tokens';
 import type { Abi, Hex } from 'viem';
 import { captureException } from '@sentry/nextjs';
 import { useMenuStore } from '@/stores/menu/MenuStore';
@@ -23,6 +24,7 @@ export interface ClaimConfig {
 
 interface BaseRewardClaimProps<T extends BaseReward> {
   availableReward: T;
+  balance: PortfolioBalance<WalletToken>;
   prepareClaim: () => Promise<ClaimConfig | null>;
   postClaim?: (txHash: Hex) => Promise<void>;
   afterConfirm?: (hash: Hex) => void;
@@ -33,6 +35,7 @@ interface BaseRewardClaimProps<T extends BaseReward> {
 
 export const BaseRewardClaim = <T extends BaseReward>({
   availableReward,
+  balance,
   prepareClaim,
   postClaim,
   afterConfirm,
@@ -127,6 +130,7 @@ export const BaseRewardClaim = <T extends BaseReward>({
   return (
     <RewardClaimCard
       availableReward={availableReward}
+      balance={balance}
       onClaim={handleClaimClick}
       isLoading={isLoading}
       isDisabled={isButtonDisabled}

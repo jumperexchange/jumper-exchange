@@ -32,7 +32,8 @@ const qaseReporter = [
       project: 'WJ',
       uploadAttachments: true,
       run: {
-        complete: true,
+        // completed once by the complete-qase-run CI job, not per-shard (avoids status races)
+        complete: false,
       },
     },
   },
@@ -45,6 +46,9 @@ export default defineConfig({
   },
   testDir: './tests',
   testMatch: '**/*.spec.ts',
+  // Cold-load LCP benchmarks live under tests/performance/ — run via
+  // `pnpm test:perf:cold-lcp` (playwright.perf.config.ts), not the CI e2e gate.
+  testIgnore: ['**/performance/**'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -70,9 +74,23 @@ export default defineConfig({
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: 'pnpm run dev',
+        // Serve a prod build under CI/E2E_PROD_BUILD — the Turbopack dev server
+        // intermittently boot-hangs on CI runners (300s webServer timeout).
+        // E2E_SKIP_BUILD serves a prebuilt .next handed over by the CI build job:
+        // the build prerenders against live Strapi/backend, so every extra build
+        // is another chance for a transient upstream blip to kill the run.
+        command: process.env.E2E_SKIP_BUILD
+          ? 'pnpm run start'
+          : process.env.E2E_PROD_BUILD || process.env.CI
+            ? 'pnpm run build && pnpm run start'
+            : 'pnpm run dev',
         url: 'http://localhost:3000',
-        timeout: 300 * 1000,
+        timeout:
+          (process.env.E2E_SKIP_BUILD
+            ? 120
+            : process.env.E2E_PROD_BUILD || process.env.CI
+              ? 900
+              : 300) * 1000,
         reuseExistingServer: !process.env.CI,
       },
 

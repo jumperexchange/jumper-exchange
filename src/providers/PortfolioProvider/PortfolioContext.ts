@@ -5,6 +5,7 @@ import type {
   BalancesMetadata,
   PositionsMetadata,
   OrchestrationState,
+  PnlState,
   SourceState,
 } from './types';
 import type {
@@ -36,6 +37,7 @@ export interface PortfolioContextValue {
   positions: PositionsState;
   summary: SummaryData;
   state: OrchestrationState;
+  pnl: PnlState;
 }
 
 const defaultBalancesState: BalancesState = {
@@ -95,10 +97,19 @@ const defaultOrchestrationState: OrchestrationState = {
     balancesByAddress: {},
     positions: defaultSourceState,
     prices: defaultSourceState,
+    pnlChart: defaultSourceState,
   },
   refresh: () => {},
   refreshByAddress: () => {},
   refreshForTokens: () => Promise.resolve(),
+};
+
+const defaultPnlState: PnlState = {
+  period: 'month',
+  setPeriod: () => {},
+  pnlValue: null,
+  pnlPercentage: null,
+  pnlChart: [],
 };
 
 export const PortfolioContext = createContext<PortfolioContextValue>({
@@ -106,6 +117,7 @@ export const PortfolioContext = createContext<PortfolioContextValue>({
   positions: defaultPositionsState,
   summary: defaultSummaryState,
   state: defaultOrchestrationState,
+  pnl: defaultPnlState,
 });
 
 export const usePortfolio = () => useContext(PortfolioContext);
@@ -128,4 +140,9 @@ export const usePortfolioSummary = () => {
 export const usePortfolioState = () => {
   const { state } = usePortfolio();
   return state;
+};
+
+export const usePortfolioPnl = () => {
+  const { pnl } = usePortfolio();
+  return pnl;
 };

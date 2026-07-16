@@ -37,6 +37,7 @@ export function Widget({
   widgetIntegrator,
   activeTheme,
   autoHeight,
+  isLoading,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
@@ -155,7 +156,12 @@ export function Widget({
       autoHeight={autoHeight}
       contributionDisplayed={contributionDisplayed}
     >
-      <BaseWidget type="main" ctx={context} formRef={formRef} />
+      <BaseWidget
+        type="main"
+        ctx={context}
+        formRef={formRef}
+        isLoading={isLoading}
+      />
       {isPrivateSwapModalOpen && (
         <PrivateSwapModal
           open={isPrivateSwapModalOpen}

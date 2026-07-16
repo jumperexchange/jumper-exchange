@@ -1,4 +1,5 @@
-import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
+import type { InfiniteData } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { FIVE_MINUTES_MS, TEN_MINUTES_MS } from 'src/const/time';
 
 type PaginatedResult<T> = {
@@ -63,5 +64,6 @@ export function usePaginatedData<T>({
     enabled,
     staleTime,
     gcTime,
+    refetchOnMount: false,
   });
 }

@@ -50,21 +50,21 @@ const chainOptions: SelectOption<string>[] = [
   {
     value: 'chain1',
     label: 'Chain 1',
-    icon: (
+    startAdornment: (
       <AvatarRenderer src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png" />
     ),
   },
   {
     value: 'chain2',
     label: 'Chain 2',
-    icon: (
+    startAdornment: (
       <AvatarRenderer src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png" />
     ),
   },
   {
     value: 'chain3',
     label: 'Chain 3',
-    icon: (
+    startAdornment: (
       <AvatarRenderer src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png" />
     ),
   },

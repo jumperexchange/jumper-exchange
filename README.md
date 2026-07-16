@@ -14,12 +14,19 @@ For agents and contributors picking up work in this repo, start with [AGENTS.md]
 
 ## Getting Started
 
-Requires Node 22+ (see `.nvmrc` — run `nvm use`).
+Requires Node 24+ (see `.nvmrc` — run `nvm use`).
 
 ```sh
 pnpm install
 pnpm dev            # or: pnpm dev:local | pnpm dev:staging | pnpm dev:production
 ```
+
+## Error monitoring (Sentry)
+
+- **Build**: provide `SENTRY_AUTH_TOKEN` and `NEXT_PUBLIC_SENTRY_DSN` via the same mechanism you use for the rest of the app (e.g. `.env` in CI, or the `ENV_FILE` used in a Docker build). The Dockerfile does **not** set Sentry variables, so they are not duplicated or overridden at the image layer; they must be present in that env when `pnpm build` runs for source map upload and a baked-in browser DSN.
+- **Tuning (optional)**: `NEXT_PUBLIC_SENTRY_TRACES_SAMPLE`, `SENTRY_TRACES_SAMPLE` (server/edge), `NEXT_PUBLIC_SENTRY_REPLAY_SESSION`, `NEXT_PUBLIC_SENTRY_REPLAY_ON_ERROR`, `NEXT_PUBLIC_SENTRY_ENABLE_LOGS`, `NEXT_PUBLIC_SENTRY_CONSOLE` — see [`src/sentry/sharedOptions.ts`](./src/sentry/sharedOptions.ts).
+- **Spotlight (local dev)**: set `SENTRY_SPOTLIGHT=true` only when you run [Spotlight](https://spotlightjs.com) alongside the app; otherwise it is off to avoid failed requests and noisy warnings in the server log.
+- **Vercel**: this repo may disable Sentry source map upload on Vercel to avoid build timeouts; see `sourcemaps` in `next.config.mjs`.
 
 ## Tools
 

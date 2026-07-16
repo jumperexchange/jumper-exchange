@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo } from 'react';
 import { MISSION_WIDGET_ELEMENT_ID } from 'src/const/quests';
-import { TaskFormState, useMissionStore } from 'src/stores/mission';
+import type { TaskFormState } from 'src/stores/mission';
+import { useMissionStore } from 'src/stores/mission';
 import type { TaskVerificationWithApy } from 'src/types/loyaltyPass';
 import { TaskType } from 'src/types/strapi';
 import { useGetVerifiedTasks } from './useGetVerifiedTasks';
@@ -46,7 +47,7 @@ export const useEnhancedTasks = (
 
   const checkIsTaskVerified = useCallback(
     (task: TaskVerificationWithApy) => {
-      return task && task.hasTask && verifiedTaskIds.has(task.uuid);
+      return task && verifiedTaskIds.has(task.uuid);
     },
     [verifiedTasks],
   );

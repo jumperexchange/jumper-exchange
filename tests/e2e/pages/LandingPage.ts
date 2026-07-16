@@ -1,12 +1,14 @@
 import { expect } from '@playwright/test';
 
-import { ROUTE_LABELS } from '../data/urls';
+import { CHAIN_NAMES_BY_ID, ROUTE_LABELS } from '../data/urls';
 
+import type { WidgetUrlParams } from '../data/urlParams';
 import type { Locator, Page } from '@playwright/test';
 
 const WELCOME_OVERLAY_SELECTOR = '.welcome-screen-container';
 const WELCOME_VISIBLE_TIMEOUT_MS = 30_000;
 const WELCOME_CLOSE_TIMEOUT_MS = 17_000;
+const TOKEN_RESOLUTION_TIMEOUT_MS = 30_000;
 
 export class LandingPage {
   readonly bridgesCount: Locator;
@@ -102,6 +104,27 @@ export class LandingPage {
     await expect(relayLabel).toBeVisible();
   }
 
+  /**
+   * Deeplinked token addresses resolve into tokens only after the widget's
+   * token list loads — until then the route query is gated off entirely, so
+   * under CI load routes can lose the race against a fixed timeout. Waits for
+   * the chain-name subheader (renders only once chain AND token resolve);
+   * asserting the token symbol would break across environments (develop
+   * serves 'USDT' where prod serves 'USDT0' for the same Arbitrum token).
+   */
+  async expectSwapPairResolved(pair: WidgetUrlParams): Promise<void> {
+    await expect(
+      this.tokenCard('From').getByText(this.chainNameOf(pair.fromChain), {
+        exact: true,
+      }),
+    ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
+    await expect(
+      this.tokenCard('To').getByText(this.chainNameOf(pair.toChain), {
+        exact: true,
+      }),
+    ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
+  }
+
   async expectWelcomeHeadingVisible(): Promise<void> {
     await expect(
       this.page.getByRole('heading', { name: ROUTE_LABELS.WELCOME_HEADING }),
@@ -113,18 +136,30 @@ export class LandingPage {
     await this.page.waitForLoadState('domcontentloaded');
   }
 
-  // RegExp form is for AB-tested labels (see `EXCHANGE_TAB_LABEL_PATTERN`).
   async navigateAndExpectTab(
     tabKey: number | string,
     expected: RegExp | string,
   ): Promise<void> {
     await this.page.waitForLoadState('domcontentloaded');
     await this.page.getByTestId(`tab-key-${tabKey}`).click();
+    // The RegExp form targets the AB-tested Exchange label; scope it to the
+    // navbar button so it can't collide with the widget header, which renders
+    // the same "Swap & Bridge" text page-wide.
     const label =
       typeof expected === 'string'
         ? this.page.getByText(expected, { exact: true })
-        : this.page.getByText(expected);
+        : this.page.getByTestId('navbar-exchange-button').getByText(expected);
     await expect(label).toBeVisible();
+  }
+
+  private chainNameOf(chainId: string): string {
+    const name = CHAIN_NAMES_BY_ID[chainId];
+    if (!name) {
+      throw new Error(
+        `No display name mapped for chain ${chainId} — add it to CHAIN_NAMES_BY_ID in data/urls.ts`,
+      );
+    }
+    return name;
   }
 
   // Counter animates via useCountUpAnimation; poll the semantic assertion so transient "0" snapshots don't fail us.
@@ -134,5 +169,12 @@ export class LandingPage {
         timeout: 10_000,
       })
       .toBeGreaterThan(0);
+  }
+
+  // TODO(app): JUM-924 — widget token select buttons lack testids; anchored on the card title text.
+  private tokenCard(title: 'From' | 'To'): Locator {
+    return this.page
+      .locator('button')
+      .filter({ has: this.page.getByText(title, { exact: true }) });
   }
 }

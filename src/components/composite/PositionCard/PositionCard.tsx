@@ -7,14 +7,11 @@ import type { FC } from 'react';
 import { Fragment, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
-import { Badge } from '@/components/Badge/Badge';
-import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { ColumnTable } from '@/components/core/ColumnTable/ColumnTable';
-import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import { EntityStackWithBadge } from '../EntityStackWithBadge/EntityStackWithBadge';
 import { PositionOverview } from './components/PositionOverview';
 import { PositionOverviewButton } from './components/PositionOverviewButton';
-import { COLUMN_SPACING, ICON_STYLES, TYPOGRAPHY_VARIANTS } from './constants';
+import { PositionSummaryRow } from './components/PositionSummaryRow';
+import { ICON_STYLES, TYPOGRAPHY_VARIANTS } from './constants';
 import {
   StyledAccordion,
   StyledAccordionDetails,
@@ -26,18 +23,14 @@ import {
   StyledSectionDivider,
   StyledSummaryContent,
   StyledTablesColumn,
-  StyledTagsRow,
 } from './PositionCard.styles';
 import type { PositionCardProps, PositionGroup } from './types';
 import { isChainPortfolioPosition } from './types';
 import { useColumnDefinitions, usePositionGroups } from './hooks';
 import { formatTimeDifference } from './utils';
-import { RewardIcon } from '@/components/illustrations/RewardIcon';
-import { TitleWithHint } from '@/components/composite/TitleWithHint/TitleWithHint';
 import { useGetAddressExplorerUrl } from '@/hooks/useBlockchainExplorerURL';
 import { openInNewTab } from '@/utils/openInNewTab';
 import { AppPaths } from '@/const/urls';
-import type { DisplayableEntity } from '../EntityAvatar/types';
 import { PositionCardSkeleton } from './components/PositionCardSkeleton';
 
 export const PositionCard: FC<PositionCardProps> = ({
@@ -83,24 +76,10 @@ export const PositionCard: FC<PositionCardProps> = ({
   );
 
   const firstPosition = positions?.[0];
-  const totalNetUsd = positions?.reduce((sum, pos) => sum + pos.netUsd, 0) ?? 0;
-  const hasRewards = positionGroups.some((group) =>
-    group.sections.some((section) => section.type === 'rewards'),
-  );
 
   if (isLoading || !firstPosition) {
     return <PositionCardSkeleton />;
   }
-
-  // Create protocol entity for EntityStackWithBadge
-  const protocolEntity: DisplayableEntity = firstPosition.protocol;
-
-  // Create badge entities based on position type
-  const badgeEntities: DisplayableEntity[] = isChainPortfolioPosition(
-    firstPosition,
-  )
-    ? [firstPosition.chain]
-    : [];
 
   return (
     <StyledAccordion
@@ -111,48 +90,7 @@ export const PositionCard: FC<PositionCardProps> = ({
     >
       <StyledAccordionSummary>
         <StyledSummaryContent onClick={() => handleMainPositionClick()}>
-          <EntityStackWithBadge
-            entities={[protocolEntity]}
-            badgeEntities={badgeEntities}
-            size={AvatarSize.XXL}
-            content={{
-              title: firstPosition.protocol.name,
-              titleVariant: TYPOGRAPHY_VARIANTS.title,
-              hintVariant: TYPOGRAPHY_VARIANTS.description,
-            }}
-            spacing={{
-              badge: COLUMN_SPACING.badge,
-            }}
-          />
-          <StyledTagsRow>
-            <Badge
-              variant={BadgeVariant.Secondary}
-              size={BadgeSize.MD}
-              label={firstPosition.type}
-              data-testid={`earn-card-tag-${firstPosition.type.toLowerCase().replace(/\s+/g, '-')}`}
-            />
-            {hasRewards && (
-              <Badge
-                variant={BadgeVariant.Alpha}
-                size={BadgeSize.MD}
-                startIcon={<RewardIcon sx={ICON_STYLES} />}
-              />
-            )}
-            <TitleWithHint
-              title={t('format.currency', {
-                value: totalNetUsd,
-              })}
-              titleVariant={TYPOGRAPHY_VARIANTS.title}
-              sx={(theme) => ({
-                textAlign: 'left',
-                flex: '1 0 100%',
-                [theme.breakpoints.up('md')]: {
-                  textAlign: 'right',
-                  flex: '0 0 auto',
-                },
-              })}
-            />
-          </StyledTagsRow>
+          <PositionSummaryRow positions={positions} />
         </StyledSummaryContent>
       </StyledAccordionSummary>
       <StyledAccordionDetails>
@@ -203,7 +141,7 @@ export const PositionCard: FC<PositionCardProps> = ({
                         header={t(
                           'portfolio.defiPositionCard.overview.details',
                         )}
-                        description={description}
+                        description={description.toString()}
                       />
                     )}
                     <StyledOverviewActions>

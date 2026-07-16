@@ -33,12 +33,12 @@ test.describe('Wallet swap — execute on Arbitrum', () => {
         await widgetPage.clickStartSwapping();
       });
 
-      await test.step('Sign USDC approval in MetaMask', async () => {
+      await test.step('Sign first wallet popup (approval or swap)', async () => {
         await wallet.signPopup(walletContext);
       });
 
-      await test.step('Sign swap transaction in MetaMask', async () => {
-        await wallet.signPopup(walletContext);
+      await test.step('Sign swap signature if approval preceded it', async () => {
+        await wallet.signPopupIfPresent(walletContext);
       });
 
       await test.step('Wait for swap completion', async () => {

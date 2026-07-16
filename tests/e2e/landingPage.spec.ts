@@ -4,13 +4,14 @@ import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';
+import { seedWelcomeScreenClosed } from './utils/welcomeScreen';
 
 test.describe('Landing page and navigation', () => {
   test.beforeEach(async ({ page }) => {
     const landingPage = new LandingPage(page);
+    await seedWelcomeScreenClosed(page);
     await landingPage.goto();
     await page.waitForLoadState('load');
-    await landingPage.closeWelcomeScreen();
   });
 
   test(
@@ -34,7 +35,10 @@ test.describe('Landing page and navigation', () => {
     },
   );
 
-  test(
+  // JUM-1116: the WalletConnect QR needs a live wss relay handshake (relay.walletconnect.org)
+  // the CI runner can't reach → modal stays "Connecting", QR never renders (0/15 in CI; confirmed
+  // via trace + local relay-block A/B). Re-enable when CI egress to the WC relay is restored.
+  test.fixme(
     qase(35, 'QR code should be visible when select wallet connect option'),
     async ({ page }) => {
       const connectWalletPage = new ConnectWalletPage(page);

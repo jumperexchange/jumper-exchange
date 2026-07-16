@@ -5,9 +5,12 @@ export const useGetPartnerThemeImage = () => {
   const configTheme = useThemeStore((state) => state.configTheme);
   const { shouldShowForTheme } = useThemeConditionsMet();
 
-  const imageUrl = shouldShowForTheme
-    ? configTheme?.backgroundImageUrl?.href
-    : null;
+  if (!shouldShowForTheme) {
+    return { url: null, mime: null };
+  }
 
-  return imageUrl;
+  return {
+    url: configTheme?.backgroundImageUrl?.href ?? null,
+    mime: configTheme?.backgroundImageMime ?? null,
+  };
 };

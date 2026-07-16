@@ -5,3 +5,4 @@
  */
 export const THEME_MODE_STORAGE_KEY = 'jumper-mode';
 export const THEME_COLOR_SCHEME_STORAGE_KEY = 'jumper-color-scheme';
+export const PARTNER_COLOR_MODE_STORAGE_KEY = 'jumper-partner-color-mode';

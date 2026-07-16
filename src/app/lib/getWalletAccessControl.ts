@@ -9,11 +9,10 @@ export async function getWalletAccessControl(
   const urlParams = new WalletAccessControlStrapiApi().filterByAddress(address);
 
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${getStrapiApiAccessToken()}`,
     },
   });
 

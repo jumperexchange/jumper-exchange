@@ -1,7 +1,5 @@
 import { CampaignStrapiApi } from '@/utils/strapi/StrapiApi';
-import { CampaignData, StrapiResponse } from 'src/types/strapi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
+import type { CampaignData, StrapiResponse } from 'src/types/strapi';
 export async function getCampaignBySlug(
   slug: string,
 ): Promise<StrapiResponse<CampaignData>> {
@@ -15,12 +13,8 @@ export async function getCampaignBySlug(
     });
 
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     next: {
       revalidate: 60 * 5, // revalidate every 5 minutes
     },

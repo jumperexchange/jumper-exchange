@@ -1,36 +1,20 @@
-import { usePathname } from 'next/navigation';
-import {
-  AppPaths,
-  JUMPER_BRIDGE_PATH,
-  JUMPER_LEARN_PATH,
-  JUMPER_PROFILE_PATH,
-  JUMPER_SCAN_PATH,
-  JUMPER_SWAP_PATH,
-  JUMPER_ZAP_PATH,
-} from '@/const/urls';
+import { AppPaths } from '@/const/urls';
+import { usePathnameWithoutLocale } from './routing/usePathnameWithoutLocale';
 
 interface useMainPathsProps {
   isMainPaths: boolean;
 }
 
 export const useMainPaths = (): useMainPathsProps => {
-  const pathname = usePathname();
+  const pathname = usePathnameWithoutLocale();
 
-  const isGas = pathname?.includes(AppPaths.Gas);
-  const isBuy = pathname?.includes('/buy');
-  const isPrivate = pathname?.includes(AppPaths.Private);
-  //Todo: find better way to check
-  const isExchange =
-    !pathname?.includes(JUMPER_SWAP_PATH) &&
-    !pathname?.includes(JUMPER_PROFILE_PATH) &&
-    !pathname?.includes(JUMPER_LEARN_PATH) &&
-    !pathname?.includes(JUMPER_SCAN_PATH) &&
-    !pathname?.includes(JUMPER_ZAP_PATH) &&
-    !pathname?.includes(JUMPER_SWAP_PATH) &&
-    !pathname?.includes(JUMPER_BRIDGE_PATH) &&
-    (pathname === '/' ||
-      pathname?.split('/').length === 3 ||
-      pathname?.split('/').length === 2);
+  const matchesPath = (route: AppPaths) =>
+    pathname === route || pathname?.startsWith(`${route}/`);
+
+  const isGas = matchesPath(AppPaths.Gas);
+  const isBuy = matchesPath(AppPaths.Buy);
+  const isPrivate = matchesPath(AppPaths.Private);
+  const isExchange = pathname === AppPaths.Main;
 
   return {
     isMainPaths: isGas || isBuy || isPrivate || isExchange,

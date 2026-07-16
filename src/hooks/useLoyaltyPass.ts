@@ -60,7 +60,7 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
       return;
     }
 
-    if (walletAddress === storedAddress) {
+    if (walletAddress.toLowerCase() === storedAddress.toLowerCase()) {
       return;
     }
 
@@ -105,7 +105,9 @@ export const useLoyaltyPass = (walletAddress?: string): UseLoyaltyPassProps => {
     refetchInterval: 1000 * 60 * 60,
   });
 
-  const returnLocalData = walletAddress === storedAddress && !queryIsEnabled;
+  const returnLocalData =
+    walletAddress?.toLowerCase() === storedAddress?.toLowerCase() &&
+    !queryIsEnabled;
 
   const errorWhileFetchingData = !data || !walletAddress;
 

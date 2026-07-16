@@ -3,10 +3,11 @@ import generateKey from '@/app/lib/generateKey';
 import { getBridgeUrl } from '@/utils/getBridgeUrl';
 import { getChainById } from '@/utils/tokenAndChain';
 import { isAlphanumeric } from '@/utils/validation-schemas';
-import type { ExtendedChain, Token, TokensResponse } from '@lifi/sdk';
+import type { ExtendedChain, Token } from '@lifi/sdk';
 import { Link as MuiLink, Stack, Typography } from '@mui/material';
 import Link from 'next/link';
 import { DynamicPagesContainer } from 'src/components/DynamicPagesContainer';
+import { useTokens } from '@/hooks/useTokens';
 
 interface PopularBridgeProps {
   sourceChain: ExtendedChain;
@@ -14,7 +15,6 @@ interface PopularBridgeProps {
   destinationChain: ExtendedChain;
   destinationToken: Token;
   chains: ExtendedChain[];
-  tokens: TokensResponse['tokens'];
 }
 
 const NUMBER_OF_TOKENS = 11;
@@ -25,8 +25,13 @@ const PopularBridgeSection = ({
   destinationChain,
   destinationToken,
   chains,
-  tokens,
 }: PopularBridgeProps) => {
+  const { tokens, isLoading } = useTokens();
+
+  if (isLoading || !tokens) {
+    return null;
+  }
+
   const sameSymbolTokens = Object.values(tokens)
     .flat()
     .filter(

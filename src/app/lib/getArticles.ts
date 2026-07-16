@@ -1,7 +1,5 @@
 import type { BlogArticleData, StrapiResponse } from '@/types/strapi';
 import { ArticleStrapiApi } from '@/utils/strapi/StrapiApi';
-import { getStrapiApiAccessToken } from 'src/utils/strapi/strapiHelper';
-
 const DEFAULT_PAGE_SIZE = 20;
 
 export async function getArticles(
@@ -20,11 +18,7 @@ export async function getArticles(
       withCount,
     });
   const apiUrl = urlParams.getApiUrl();
-  const accessToken = getStrapiApiAccessToken();
   const res = await fetch(decodeURIComponent(apiUrl), {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
     next: {
       revalidate: 60 * 5, // revalidate every 5 minutes
     },

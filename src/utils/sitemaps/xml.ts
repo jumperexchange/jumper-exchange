@@ -61,3 +61,48 @@ export const createSitemapXmlResponse = (entries: SitemapXmlEntry[]) =>
       'Cache-Control': SITEMAP_CACHE_CONTROL,
     },
   });
+
+export const buildSitemapIndexXml = (
+  locs: string[],
+  lastModified: string,
+): string => {
+  const sitemaps = locs
+    .map((loc) =>
+      [
+        '  <sitemap>',
+        `    <loc>${escapeXml(loc)}</loc>`,
+        `    <lastmod>${escapeXml(lastModified)}</lastmod>`,
+        '  </sitemap>',
+      ].join('\n'),
+    )
+    .join('\n');
+
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    sitemaps,
+    '</sitemapindex>',
+    '',
+  ].join('\n');
+};
+
+export const createSitemapIndexXmlResponse = (
+  locs: string[],
+  lastModified: string,
+) =>
+  new Response(buildSitemapIndexXml(locs, lastModified), {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': SITEMAP_CACHE_CONTROL,
+    },
+  });
+
+export const createSitemapServiceUnavailableResponse = () =>
+  new Response('Service Unavailable', {
+    status: 503,
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+      'Retry-After': '3600',
+      'Cache-Control': 'no-store',
+    },
+  });

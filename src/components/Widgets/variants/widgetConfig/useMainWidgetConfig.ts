@@ -1,5 +1,5 @@
 import type { WidgetConfig } from '@lifi/widget';
-import { ChainId, HiddenUI, RequiredUI } from '@lifi/widget';
+import { ChainId } from '@lifi/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
@@ -8,6 +8,7 @@ import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
 import { generateRouteLabel } from './utils';
+import envConfig from '@/config/env-config';
 
 function toolsConfig(allow?: string[], deny?: string[]) {
   if (!allow && !deny) {
@@ -58,22 +59,22 @@ export function useMainWidgetConfig(
       variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
       buildUrl: true,
       useRelayerRoutes: true,
-      subvariant:
+      mode:
         context.starterVariant === 'buy' ||
         context.starterVariant === 'private' ||
         isMemecoins
           ? 'default'
           : context.starterVariant,
-      subvariantOptions: {},
+      modeOptions: {},
 
       // UI configuration
-      hiddenUI: [
-        ...(deps.theme.configTheme?.hiddenUI ?? []),
-        HiddenUI.Appearance,
-        HiddenUI.Language,
-        HiddenUI.PoweredBy,
-        HiddenUI.WalletMenu,
-      ],
+      hiddenUI: {
+        ...(deps.theme.configTheme?.hiddenUI ?? {}),
+        appearance: true,
+        language: true,
+        poweredBy: true,
+        walletMenu: true,
+      },
 
       // Theme configuration
       theme: {
@@ -107,15 +108,23 @@ export function useMainWidgetConfig(
       routeLabels: [
         generateRouteLabel(
           '1.5x points',
-          'hyperbloom',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperbloom.svg',
+          'hyperbloom',
         ),
         generateRouteLabel(
           '1.5x points',
-          'hyperflow',
           deps.theme.muiTheme,
           'https://raw.githubusercontent.com/lifinance/types/main/src/assets/icons/exchanges/hyperflow.svg',
+          'hyperflow',
+        ),
+        generateRouteLabel(
+          'Verified',
+          deps.theme.muiTheme,
+          `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
+          '',
+          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          'neutral',
         ),
       ],
     };
@@ -125,14 +134,14 @@ export function useMainWidgetConfig(
       context.bridgeConditions?.isPrivateSwapSelected ||
       context.starterVariant === 'private'
     ) {
-      config.requiredUI = [...(config.requiredUI || []), RequiredUI.ToAddress];
+      config.requiredUI = { ...config.requiredUI, toAddress: true };
     }
 
     if (
       context.bridgeConditions?.isBridgeFromHypeToArbNativeUSDC ||
       context.bridgeConditions?.isBridgeFromEvmToHype
     ) {
-      config.hiddenUI = [...(config.hiddenUI || []), HiddenUI.ToAddress];
+      config.hiddenUI = { ...config.hiddenUI, toAddress: true };
     }
 
     if (context.isSafeContext) {

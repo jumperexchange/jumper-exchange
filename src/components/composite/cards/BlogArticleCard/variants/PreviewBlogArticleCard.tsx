@@ -8,6 +8,7 @@ import {
 } from '../BlogArticleCard.styles';
 
 import { getTextEllipsisStyles } from '@/utils/styles/getTextEllipsisStyles';
+import { resolveStrapiMediaUrl } from '@/utils/strapi/strapiHelper';
 import { PreviewBlogArticleCardSkeleton } from './PreviewBlogArticleCardSkeleton';
 
 const highlightText = (text: string, highlight: string) => {
@@ -35,7 +36,6 @@ const highlightText = (text: string, highlight: string) => {
 export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
   isLoading,
   data,
-  baseUrl,
   highlight = '',
 }) => {
   if (!data || isLoading) {
@@ -48,7 +48,11 @@ export const PreviewBlogArticleCard: FC<PreviewBlogArticleCardProps> = ({
     <BlogArticleCardContainer>
       {data?.Image && (
         <BlogArticleCardImage
-          src={`${baseUrl}${data?.Image?.formats.small.url || data?.Image?.url}`}
+          src={
+            resolveStrapiMediaUrl(
+              data?.Image?.formats.small.url || data?.Image?.url,
+            ) ?? ''
+          }
           alt={data?.Image?.alternativeText ?? data?.Title}
           width={0}
           height={0}

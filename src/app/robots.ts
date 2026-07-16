@@ -1,5 +1,5 @@
 import { getSiteUrl } from '@/const/urls';
-import { getBridgeSitemapChunkIds } from '@/utils/sitemaps/bridge';
+import { buildUrl } from '@/utils/sitemap';
 import { isProduction } from '@/utils/isProduction';
 import { getLearnSitemapChunkIds } from '@/utils/sitemaps/learn';
 import type { MetadataRoute } from 'next';
@@ -8,12 +8,9 @@ export const dynamic = 'force-static';
 export const revalidate = 86400;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  // Cannot have a sitemap index yet with app router, so we list chunked sitemap URLs here.
-  const bridgeSitemaps = (await getBridgeSitemapChunkIds()).map(
-    (id) => `${getSiteUrl()}/bridge/sitemap/${id}.xml`,
-  );
-  const learnSitemaps = (await getLearnSitemapChunkIds()).map(
-    (id) => `${getSiteUrl()}/learn/sitemap/${id}.xml`,
+  // Bridge uses a sitemap index; learn/swap remain listed directly until indexed similarly.
+  const learnSitemaps = (await getLearnSitemapChunkIds()).map((id) =>
+    buildUrl('learn', 'sitemap', `${id}.xml`),
   );
 
   return {
@@ -23,10 +20,11 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       ...(isProduction && { allow: '/' }),
       ...(!isProduction && { disallow: '/' }),
     },
-    sitemap: [`${getSiteUrl()}/sitemap.xml`].concat(
-      learnSitemaps,
-      bridgeSitemaps,
-      `${getSiteUrl()}/swap/sitemap.xml`,
-    ),
+    sitemap: [
+      buildUrl('sitemap.xml'),
+      ...learnSitemaps,
+      buildUrl('bridge', 'sitemap.xml'),
+      buildUrl('swap', 'sitemap.xml'),
+    ],
   };
 }

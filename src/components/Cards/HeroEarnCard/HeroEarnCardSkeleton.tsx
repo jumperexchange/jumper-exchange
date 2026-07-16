@@ -15,8 +15,6 @@ import {
 } from './HeroEarnCard.styles';
 
 export const HeroEarnCardSkeleton: FC<{}> = ({}) => {
-  console.log('3. HeroEarnCardSkeleton');
-
   return (
     <HeroEarnCardContainer sx={{ width: '100%' }}>
       <HeroEarnCardHeaderContainer direction="row">

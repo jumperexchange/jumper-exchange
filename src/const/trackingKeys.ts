@@ -74,6 +74,17 @@ export enum TrackingAction {
   OnRouteExecutionFailedEarnWithdraw = 'action_on_route_exec_failed_earn_withdraw',
   OnChangeSettingsEarnWithdraw = 'action_change_settings_earn_withdraw',
 
+  // Private (Incognito) Widget
+  OnAvailableRoutesPrivate = 'action_available_routes_private',
+  OnRouteExecutionStartedPrivate = 'action_on_route_exec_started_private',
+  OnRouteExecutionCompletedPrivate = 'action_on_route_exec_completed_private',
+  OnRouteExecutionFailedPrivate = 'action_on_route_exec_failed_private',
+
+  // Dust conversion
+  OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
+  OnRouteExecutionCompletedDust = 'action_on_route_exec_completed_dust',
+  OnRouteExecutionFailedDust = 'action_on_route_exec_failed_dust',
+
   // Welcome_Screen
   ShowWelcomeMessageScreen = 'action_show_welcome_screen',
   CloseWelcomeScreen = 'action_close_welcome_screen',
@@ -150,6 +161,12 @@ export enum TrackingAction {
   ClickEarnRequestRedeemButton = 'action_click_earn_request_redeem_button',
   ClickEarnWithdrawButton = 'action_click_earn_withdraw_button',
   EarnPageOverview = 'action_earn_page_overview',
+
+  // Notifications engagement funnel: received, seen, clicked, dismissed
+  NotificationReceived = 'action_notification_received',
+  NotificationSeen = 'action_notification_seen',
+  NotificationClicked = 'action_notification_clicked',
+  NotificationDismissed = 'action_notification_dismissed',
 }
 
 export enum TrackingEventDataAction {
@@ -169,6 +186,12 @@ export enum TrackingEventDataAction {
   ExecutionStartEarnWithdraw = 'execution_start_earn_withdraw',
   ExecutionCompletedEarnWithdraw = 'execution_completed_earn_withdraw',
   ExecutionFailedEarnWithdraw = 'execution_failed_earn_withdraw',
+  ExecutionStartPrivate = 'execution_start_private',
+  ExecutionCompletedPrivate = 'execution_completed_private',
+  ExecutionFailedPrivate = 'execution_failed_private',
+  ExecutionStartDust = 'execution_start_dust',
+  ExecutionCompletedDust = 'execution_completed_dust',
+  ExecutionFailedDust = 'execution_failed_dust',
 }
 
 export enum TrackingCategory {
@@ -204,6 +227,7 @@ export enum TrackingCategory {
   Banner = 'cat_banner',
   CampaignBanner = 'cat_campaign_banner',
   Earn = 'cat_earn',
+  Notifications = 'cat_notifications',
 }
 
 // can be used as custom dimensions / metrics
@@ -353,6 +377,7 @@ export enum TrackingEventParameter {
   ActiveCampaignBanner = 'param_campaign_banner_campaign',
 
   // Portfolio
+  TokenCount = 'param_token_count',
   PortfolioTotalBalanceUSD = 'param_portfolio_total_balance_usd',
   PortfolioNumberOfTokens = 'param_portfolio_nb_of_tokens',
   PortfolioNumberOfChains = 'param_portfolio_nb_of_chains',
@@ -370,4 +395,10 @@ export enum TrackingEventParameter {
 
   // Earn
   EarnOpportunitySlug = 'param_earn_opportunity_slug',
+
+  // Notifications
+  NotificationId = 'param_notification_id',
+  NotificationSourceRuleId = 'param_notification_source_rule_id',
+  NotificationCategory = 'param_notification_category',
+  NotificationCtaTarget = 'param_notification_cta_target',
 }

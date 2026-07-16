@@ -5,6 +5,9 @@ import { StyledLabelContainer } from '../Select.styles';
 interface SelectorLabelProps {
   label: string;
   labelVariant?: TypographyProps['variant'];
+  startAdornment?: React.ReactNode;
+  endAdornment?: React.ReactNode;
+  /** @deprecated Use `startAdornment` instead. */
   icon?: React.ReactNode;
   size?: 'small' | 'medium';
 }
@@ -12,15 +15,20 @@ interface SelectorLabelProps {
 export const SelectorLabel = ({
   label,
   labelVariant,
+  startAdornment,
+  endAdornment,
   icon,
   size = 'small',
 }: SelectorLabelProps) => {
+  const resolvedStartAdornment = startAdornment ?? icon;
+
   return (
     <StyledLabelContainer size={size}>
-      {icon}
-      <Typography variant={labelVariant || 'bodySmallStrong'}>
+      {resolvedStartAdornment}
+      <Typography variant={labelVariant || 'bodySmallStrong'} noWrap>
         {label}
       </Typography>
+      {endAdornment}
     </StyledLabelContainer>
   );
 };

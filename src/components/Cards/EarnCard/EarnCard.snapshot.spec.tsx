@@ -155,7 +155,7 @@ describe('EarnCard snapshot', () => {
         {...commonArgs}
         data={{
           ...commonArgs.data,
-          lockupMonths: undefined,
+          lockupDays: undefined,
           capInDollar: undefined,
           latest: {
             date: '2021-01-01',
@@ -185,22 +185,22 @@ describe('EarnCard snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
-  it('compact card with lockup months matches snapshot', async () => {
+  it('compact card with lockup days matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="compact"
-        data={{ ...commonArgs.data, lockupMonths: 2 }}
+        data={{ ...commonArgs.data, lockupDays: 60 }}
       />,
     );
     expect(container).toMatchSnapshot();
   });
-  it('compact card with lockup months and cap in dollar matches snapshot', async () => {
+  it('compact card with lockup days and cap in dollar matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="compact"
-        data={{ ...commonArgs.data, lockupMonths: 2, capInDollar: '1000000' }}
+        data={{ ...commonArgs.data, lockupDays: 60, capInDollar: '1000000' }}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -263,22 +263,22 @@ describe('EarnCard snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
-  it('list item card with lockup months matches snapshot', async () => {
+  it('list item card with lockup days matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="list-item"
-        data={{ ...commonArgs.data, lockupMonths: 2 }}
+        data={{ ...commonArgs.data, lockupDays: 60 }}
       />,
     );
     expect(container).toMatchSnapshot();
   });
-  it('list item card with lockup months and cap in dollar matches snapshot', async () => {
+  it('list item card with lockup days and cap in dollar matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="list-item"
-        data={{ ...commonArgs.data, lockupMonths: 2, capInDollar: '1000000' }}
+        data={{ ...commonArgs.data, lockupDays: 60, capInDollar: '1000000' }}
       />,
     );
     expect(container).toMatchSnapshot();
@@ -318,7 +318,7 @@ describe('EarnCard snapshot', () => {
         variant="overview"
         data={{
           ...commonArgs.data,
-          lockupMonths: undefined,
+          lockupDays: undefined,
           capInDollar: '1000000',
         }}
       />,
@@ -326,23 +326,23 @@ describe('EarnCard snapshot', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('overview card with lockup months matches snapshot', async () => {
+  it('overview card with lockup days matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="overview"
-        data={{ ...commonArgs.data, lockupMonths: 2 }}
+        data={{ ...commonArgs.data, lockupDays: 60 }}
       />,
     );
     expect(container).toMatchSnapshot();
   });
 
-  it('overview card with lockup months and cap in dollar matches snapshot', async () => {
+  it('overview card with lockup days and cap in dollar matches snapshot', async () => {
     const { container } = render(
       <EarnCard
         {...commonArgs}
         variant="overview"
-        data={{ ...commonArgs.data, lockupMonths: 2, capInDollar: '1000000' }}
+        data={{ ...commonArgs.data, lockupDays: 60, capInDollar: '1000000' }}
       />,
     );
     expect(container).toMatchSnapshot();

@@ -13,6 +13,7 @@ export interface BaseReward {
 }
 
 export interface MerklReward extends BaseReward {
+  type: 'merkl';
   proof: string[];
   claimingAddress: string;
   accumulatedAmountForContractBN: string;
@@ -20,6 +21,7 @@ export interface MerklReward extends BaseReward {
 }
 
 export interface DeFiReacherReward extends BaseReward {
+  type: 'defi-reacher';
   campaignId: string;
   contractAddress: string;
 }

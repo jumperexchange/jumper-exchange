@@ -9,7 +9,7 @@ export const GITHUB_URL = 'https://github.com/jumperexchange';
 export const X_SHARE_URL = 'https://x.com/share';
 export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
-export const LINK3_URL = 'https://link3.to/jumperexchange';
+export const LINK3_URL = 'https://link3.to/jumperapp_';
 export const TELEGRAM_URL = 'https://t.me/jumperapp';
 export const JUMPER_DOCS_URL = 'https://docs.jumper.xyz';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
@@ -17,8 +17,10 @@ export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
 export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';
 export const JUMPER_MAIN_PATH = '/';
 export const JUMPER_GAS_PATH = '/gas';
+export const JUMPER_BUY_PATH = '/buy';
 export const JUMPER_LEARN_PATH = '/learn';
 export const JUMPER_PROFILE_PATH = '/profile';
+export const JUMPER_PERKS_PATH = '/perks';
 export const JUMPER_MISSIONS_PATH = '/missions';
 export const JUMPER_SCAN_PATH = '/scan';
 export const JUMPER_ZAP_PATH = '/zap';
@@ -44,16 +46,20 @@ export const DEFAULT_WALLET_ADDRESS =
   '0x0000000000000000000000000000000000000000';
 
 export function getSiteUrl() {
-  return config.NEXT_PUBLIC_VERCEL_BRANCH_URL
+  const url = config.NEXT_PUBLIC_VERCEL_BRANCH_URL
     ? `https://${config.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
     : config.NEXT_PUBLIC_SITE_URL;
+
+  return url.replace(/\/+$/, '');
 }
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
   Gas = JUMPER_GAS_PATH,
+  Buy = JUMPER_BUY_PATH,
   Learn = JUMPER_LEARN_PATH,
   Profile = JUMPER_PROFILE_PATH,
+  Perks = JUMPER_PERKS_PATH,
   Missions = JUMPER_MISSIONS_PATH,
   Campaign = JUMPER_CAMPAIGN_PATH,
   Scan = JUMPER_SCAN_PATH,

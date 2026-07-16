@@ -1,7 +1,7 @@
 /// <reference types="gtag.js" />
 
 import type { ChainId } from '@lifi/sdk';
-import type { WidgetConfig, WidgetSubvariant } from '@lifi/widget';
+import type { WidgetConfig, WidgetMode } from '@lifi/widget';
 import type { SxProps, Theme } from '@mui/material';
 import type { MenuKeysEnum } from 'src/const/menuKeys';
 import type { TrackingEventParameter } from 'src/const/trackingKeys';
@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-export type StarterVariantType = 'buy' | 'private' | WidgetSubvariant;
+export type StarterVariantType = 'buy' | 'private' | WidgetMode;
 
 export interface MenuListItem {
   label: string;

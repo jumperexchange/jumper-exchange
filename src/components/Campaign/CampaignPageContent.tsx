@@ -1,14 +1,14 @@
-import type { QuestDataExtended } from 'src/types/merkl';
-import type { CampaignData } from 'src/types/strapi';
+import type { CampaignData, QuestData } from 'src/types/strapi';
 import { CampaignHero } from './CampaignHero/CampaignHero';
 import { MissionsSection } from './MissionsSection/MissionsSection';
 import { MissionsList } from './MissionsSection/MissionsList';
 import { GridContainer } from '../Containers/GridContainer';
 import { PageContainer } from '../Containers/PageContainer';
+import { RewardsSection } from '../ProfilePage/sections/RewardsSection';
 
 interface CampaignPageContentProps {
   campaign: CampaignData;
-  quests: QuestDataExtended[];
+  quests: QuestData[];
 }
 
 export const CampaignPageContent = ({
@@ -18,6 +18,8 @@ export const CampaignPageContent = ({
   return (
     <PageContainer>
       <CampaignHero campaign={campaign} />
+
+      <RewardsSection jumperCampaignId={campaign.documentId} />
 
       {!!quests.length && (
         <MissionsSection>

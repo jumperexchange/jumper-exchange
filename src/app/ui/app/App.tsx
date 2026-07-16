@@ -9,6 +9,7 @@ import { WelcomeScreen } from '@/components/WelcomeScreen/WelcomeScreen';
 import { TrackingAction, TrackingCategory } from '@/const/trackingKeys';
 import { useWelcomeScreen } from '@/hooks/useWelcomeScreen';
 import dynamic from 'next/dynamic';
+import { AlertBannerWrapper } from './AlertBannerWrapper';
 
 const AnnouncementBannerWrapper = dynamic(() =>
   import('./AnnouncementBannerWrapper').then(
@@ -86,6 +87,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         <AnnouncementBannerWrapper ref={announcementBannersRef} />
       )}
       {children}
+      <AlertBannerWrapper />
     </WelcomeOverlayLayout>
   );
 };

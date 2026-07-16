@@ -52,15 +52,85 @@ pnpm test:qase                                     # full suite + Qase reporter
 When `BASE_URL` is set the local dev server is skipped — Playwright runs
 straight against the deployment.
 
+### Performance (cold-load LCP)
+
+Repeatable LCP benchmark for missions/earn **index** and **random detail** pages
+(fresh browser context per sample). Slug pools are scraped once from the target
+deployment’s list pages. **Excluded from `pnpm test`** via `testIgnore` in
+`playwright.config.ts`; run with `pnpm test:perf:cold-lcp` (`playwright.perf.config.ts`).
+
+**Prerequisite:** Playwright browsers must be installed once per machine (or after
+a Playwright version bump):
+
+```sh
+pnpm test:install
+```
+
+```sh
+# Local: perf config boots `pnpm build && pnpm start` (ISR / server cache)
+pnpm test:perf:cold-lcp
+
+# Deployed target (skips local webServer)
+BASE_URL=https://develop.jumper.xyz PERF_SAMPLES=20 pnpm test:perf:cold-lcp
+
+# More detail samples + reproducible random slugs
+PERF_DETAIL_SAMPLES=15 PERF_RANDOM_SEED=42 pnpm test:perf:cold-lcp
+
+# Optional fixed detail slugs (in addition to random detail tests)
+PERF_MISSION_SLUG=my-mission PERF_EARN_SLUG=some-vault PERF_P95_BUDGET_MS=5000 pnpm test:perf:cold-lcp
+```
+
+| Env                        | Default                | Purpose                                       |
+| -------------------------- | ---------------------- | --------------------------------------------- |
+| `PERF_SAMPLES`             | `10`                   | Cold iterations per **index** route           |
+| `PERF_DETAIL_SAMPLES`      | same as `PERF_SAMPLES` | Cold iterations per **random detail** route   |
+| `PERF_DISCOVER_SLUG_LIMIT` | `50`                   | Max slugs scraped into each pool              |
+| `PERF_RANDOM_SEED`         | —                      | Fixed seed for reproducible random slug picks |
+| `PERF_LOCALE`              | `en`                   | Locale prefix in URLs (e.g. `/en/missions`)   |
+| `PERF_MISSION_SLUG`        | —                      | Extra fixed `/en/missions/{slug}` benchmark   |
+| `PERF_EARN_SLUG`           | —                      | Extra fixed `/en/earn/{slug}` benchmark       |
+| `PERF_P95_BUDGET_MS`       | —                      | Optional assert on p95 (ms)                   |
+
+Spec: `tests/performance/coldLoadLcp.spec.ts`. Filter with `--grep @performance`.
+
 ### Run modes
 
 | Mode                 | Command                                         | Frontend                                                               | Backend                                                                   | SSO gate                        |
 | -------------------- | ----------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------- |
-| **CI parity**        | `pnpm test` (no `BASE_URL`)                     | local Next.js on `:3000` (Playwright `webServer` boots `pnpm run dev`) | develop API (`api-develop.jumper.exchange`) — read from `tests/.env.test` | none                            |
+| **CI parity**        | `pnpm test` (no `BASE_URL`)                     | local Next.js on `:3000` (Playwright `webServer` boots `pnpm run dev`) | develop API (`api-develop.jumper.exchange`) — read from `tests/.env.test` | none (perf specs excluded)      |
+| **Perf cold LCP**    | `pnpm test:perf:cold-lcp`                       | `pnpm build && pnpm start` unless `BASE_URL` set                       | same as target URL                                                        | none                            |
 | **Prod smoke**       | `BASE_URL=https://jumper.xyz pnpm test`         | prod                                                                   | prod                                                                      | none                            |
 | **Deployed develop** | `BASE_URL=https://develop.jumper.xyz pnpm test` | develop deployed                                                       | develop API                                                               | **YES — Cloudflare Access SSO** |
 
 CI never accesses `develop.jumper.xyz` — it boots local `pnpm dev` on the runner and points at `api-develop.jumper.exchange`. The Cloudflare Access SSO gate is on the deployed develop frontend only.
+
+### CI reports
+
+Each CI run publishes its HTML report to GitHub Pages under a per-PR, per-run
+path (`pr-<n>/<date>-<run>-<attempt>/`), so re-runs and parallel PRs never
+overwrite each other. The PR gets a sticky comment linking that report. Traces
+are stripped from the published page (public site — see JUM-1235), so for
+failure debugging use the full report artifact (`html-report`, kept 4 days)
+from the run's **Actions** page. It is encrypted at rest (AES-256 zip) —
+artifact download on a public repo is open to any logged-in GitHub account,
+and the full traces carry network bodies and DOM snapshots. To open it:
+
+1. Download and unzip the artifact — inside is `playwright-report.zip`.
+2. Double-click it (macOS Archive Utility handles AES zips) and paste the
+   passphrase: `PLAYWRIGHT_REPORT_ENCRYPTION_KEY`, from 1Password
+   (Developers vault).
+3. `npx playwright show-report playwright-report`
+
+Or from the terminal:
+
+```sh
+unzip html-report--attempt-1.zip
+7zz x -p'<passphrase>' playwright-report.zip   # 7zz: brew install sevenzip (plain unzip can't do AES)
+npx playwright show-report playwright-report
+```
+
+A daily cron prunes report dirs older than `RETENTION_DAYS` and squashes the
+`gh-pages` history.
 
 ## Layout
 
@@ -71,8 +141,12 @@ tests/
 │   ├── pages/       # class-based POMs (one per page area)
 │   ├── fixtures/    # noWallet / realWallet / connectedWallet
 │   ├── wallet/      # real-MetaMask driver framework (load-bearing)
-│   ├── utils/       # tiny helpers (translation strip, viewport math)
+│   ├── utils/       # navigationUtils and other e2e helpers
 │   └── *.spec.ts
+├── performance/     # cold-load LCP benchmarks (not in `pnpm test`)
+│   ├── data/        # perfConfig, routePaths (missionsEarnPaths)
+│   ├── utils/       # measureLcp, perfRandom
+│   └── coldLoadLcp.spec.ts, ColdLcpBenchmark, …
 └── tsconfig.json
 ```
 

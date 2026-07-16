@@ -1,15 +1,44 @@
 import { withSentryConfig } from '@sentry/nextjs';
 import withBundleAnalyzer from '@next/bundle-analyzer';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
+  // Standalone is for the Docker image; for the e2e prod-build server we want a
+  // plain build that `next start` serves cleanly (E2E_PROD_BUILD).
+  output: process.env.E2E_PROD_BUILD ? undefined : 'standalone',
   trailingSlash: false,
   reactCompiler: true,
   productionBrowserSourceMaps: false,
-  serverExternalPackages: ['pino', 'pino-pretty', 'thread-stream'],
+  serverExternalPackages: [
+    'pino',
+    'pino-pretty',
+    'thread-stream',
+    '@opentelemetry/exporter-metrics-otlp-grpc',
+    '@opentelemetry/host-metrics',
+    'ioredis',
+  ],
+  // Only wire the Redis-backed handlers when Redis is actually configured;
+  // otherwise leave these undefined so Next falls back to its own built-in
+  // in-memory cache (dev / test / prod builds without REDIS_HOST).
+  cacheHandlers:
+    process.env.NODE_ENV === 'production' && process.env.REDIS_HOST
+      ? { default: require.resolve('./cache-handler.cjs') }
+      : undefined,
+  // Classic incremental cache (ISR/prerender route output) shared via Redis.
+  // Distinct from `cacheHandlers` above, which only backs the `"use cache"`
+  // directive and does NOT store ISR route output.
+  cacheHandler:
+    process.env.NODE_ENV === 'production' && process.env.REDIS_HOST
+      ? require.resolve('./cache-handler-incremental.cjs')
+      : undefined,
+  // expireTime: 86400, // one day in seconds
+  expireTime: 900, // 15 minutes in seconds
   experimental: {
     serverSourceMaps: false,
+    useCache: true,
     optimizePackageImports: [],
   },
   webpack: (config) => {
@@ -33,6 +62,12 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '1337',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.zerion.io',
+        port: '',
         pathname: '/**',
       },
       {
@@ -67,19 +102,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'strapi-staging.jumper.xyz',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'strapi-staging.jumper.exchange',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'strapi.jumper.exchange',
+        hostname: 'strapi-develop.jumper.xyz',
         port: '',
         pathname: '/uploads/**',
       },
@@ -94,6 +117,24 @@ const nextConfig = {
         hostname: 'storage.googleapis.com',
         port: '',
         pathname: '/jumper-static-assets/upload/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-dev/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-staging/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'storage.googleapis.com',
+        port: '',
+        pathname: '/jumper-strapi-media-prod/uploads/**',
       },
       // {
       //   protocol: 'https',
@@ -205,7 +246,7 @@ export default withSentryConfig(withBundleAnalyzerConfig, {
   // This can increase your server load as well as your hosting bill.
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
-  // tunnelRoute: "/monitoring",
+  tunnelRoute: '/monitoring',
 
   sourcemaps: {
     disable: process.env.VERCEL === '1', // Disable on Vercel to avoid timeouts

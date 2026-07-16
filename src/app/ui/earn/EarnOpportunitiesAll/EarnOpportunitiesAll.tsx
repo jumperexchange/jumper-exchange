@@ -24,6 +24,7 @@ import {
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
+import { useMediaQuery } from '@mui/material';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -38,6 +39,8 @@ const EarnOpportunitiesAllInner = () => {
     page,
     setPage,
   } = useEarnFiltering();
+
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   const [variant, setVariant] = useSettingsStore((state) => [
     state.earnCardVariant,
@@ -109,7 +112,8 @@ const EarnOpportunitiesAllInner = () => {
       </SectionCardContainer>
       {pagination.pageCount > 1 && (
         <Pagination
-          variant={PaginationVariant.AllPages}
+          variant={PaginationVariant.WindowedPages}
+          maxVisiblePages={isMobile ? 2 : 5}
           page={page}
           setPage={setPage}
           pagination={pagination}

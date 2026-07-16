@@ -1,6 +1,6 @@
 import type {
   ChainId,
-  HiddenUIType,
+  HiddenUIConfig,
   WidgetChains,
   WidgetVariant,
 } from '@lifi/widget';
@@ -11,6 +11,7 @@ export interface PartnerThemeConfig {
   availableThemeModes: string[];
   backgroundColor: string | null;
   backgroundImageUrl: URL | null;
+  backgroundImageMime: string | null;
   backgroundImagePosition: string;
   footerImageUrl: URL | null;
   logo:
@@ -33,10 +34,12 @@ export interface PartnerThemeConfig {
   toChain?: ChainId;
   chains?: WidgetChains;
   variant?: WidgetVariant;
-  hiddenUI?: HiddenUIType[];
+  hiddenUI?: HiddenUIConfig;
   hasThemeModeSwitch: boolean;
   hasBackgroundGradient: boolean;
   hasBlurredNavigation: boolean;
+  canvasBackground: { id: string; options: Record<string, unknown> } | null;
   allowedBridges: string[];
   allowedExchanges: string[];
+  allowFeatureCardBackground: boolean;
 }

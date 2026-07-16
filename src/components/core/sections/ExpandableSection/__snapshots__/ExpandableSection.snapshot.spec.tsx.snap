@@ -11,7 +11,7 @@ exports[`ExpandableSection snapshot > matches snapshot when detail rows are not 
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -94,7 +94,7 @@ exports[`ExpandableSection snapshot > matches snapshot when expansion is disable
     >
       <button
         aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-1ijiavb-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-iftp5h-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -124,7 +124,7 @@ exports[`ExpandableSection snapshot > matches snapshot when initially collapsed 
     >
       <button
         aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -169,7 +169,7 @@ exports[`ExpandableSection snapshot > matches snapshot when initially expanded 1
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -252,7 +252,7 @@ exports[`ExpandableSection snapshot > matches snapshot with custom sx, detailsLi
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -335,7 +335,7 @@ exports[`ExpandableSection snapshot > matches snapshot with default props 1`] = 
     >
       <button
         aria-expanded="false"
-        class="MuiButtonBase-root MuiAccordionSummary-root css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -380,7 +380,7 @@ exports[`ExpandableSection snapshot > matches snapshot with expanded end divider
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -466,7 +466,7 @@ exports[`ExpandableSection snapshot > matches snapshot with multiple items 1`] =
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >
@@ -567,7 +567,7 @@ exports[`ExpandableSection snapshot > matches snapshot without expand icon 1`] =
     >
       <button
         aria-expanded="true"
-        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-zvuk22-MuiButtonBase-root-MuiAccordionSummary-root"
+        class="MuiButtonBase-root MuiAccordionSummary-root Mui-expanded css-118h1a3-MuiButtonBase-root-MuiAccordionSummary-root"
         tabindex="0"
         type="button"
       >

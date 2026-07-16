@@ -11,6 +11,9 @@ export default interface Resources {
       subtitle: "The Abstract Wallet only exist on Abstract. Don't use this address on any other blockchain, you will lose your funds.";
       title: 'This wallet only works on Abstract!';
     };
+    alerts: {
+      extension: 'Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping.';
+    };
     badge: {
       updated: 'Updated {{time}} ago';
     };
@@ -33,6 +36,7 @@ export default interface Resources {
       filter: {
         author: 'Author';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         level: 'Level';
@@ -300,7 +304,7 @@ export default interface Resources {
         earnUpTo: 'Your idle <asset/> on <chain/> could earn up to <apy/> a year if placed on <protocol/>';
         makeTheJump: 'Your idle <asset/> on <chain/> could earn up to <apy/> on <protocol/>, make the jump!';
         maximizeYourRevenue: 'Maximise your <tag/> revenues by depositing on <protocol/> <token/> Pool';
-        useYourSpare: 'Deposit your spare <asset/> with <protocol/> and earn up to <apy/> APY';
+        useYourSpare: 'Earn up to <apy/> APY on <protocol/> with your idle tokens';
       };
       views: {
         all: 'All';
@@ -339,6 +343,8 @@ export default interface Resources {
       decimal: '{{value, decimalExt(maximumFractionDigits: 3)}}';
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
+      dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
+      dustUsd: '<{{value, currencyExt(currency: USD)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
     };
@@ -426,6 +432,7 @@ export default interface Resources {
       };
     };
     labels: {
+      apr: 'APR';
       apy: 'APY';
       assets_one: 'Asset';
       assets_other: 'Assets';
@@ -435,7 +442,10 @@ export default interface Resources {
       chains_one: 'Chain';
       chains_other: 'Chains';
       lockupPeriod: 'Lockup Period';
+      lockupPeriodValue_one: '{{count, number}} day';
+      lockupPeriodValue_other: '{{count, number}} days';
       overview: 'Overview';
+      promoCode: 'Promo code';
       protocol: 'Protocol';
       rewardsApy: 'Rewards APY';
       tvl: 'TVL';
@@ -534,6 +544,7 @@ export default interface Resources {
           howToUsePerk: 'How to use your perk ?';
           howToUsePerkDescription: 'Simply add the code we provide you in the checkout of the Nansen website.';
           nextSteps: 'Next steps';
+          nextStepsPromoCodesExhaustedDescription: "Join the <0>Jumper Discord</0> and open a support ticket. We'll provide your discount code directly via Discord within one week.";
           title: 'Perk claimed!';
         };
         signatureFailed: {
@@ -592,6 +603,8 @@ export default interface Resources {
         confirm: 'Confirm';
         disclaimer1: "The address is correct and not an exchange wallet. Tokens sent to the wrong address can't be retrieved.";
         disclaimer2: "This transaction is fulfilled by a centralized provider who might ask for KYC if it's flagged.";
+        noRouteMinAmountSubtitle: 'Private swap routes typically appear for $40+ transactions.';
+        noRouteMinAmountTitle: 'No private route available';
         paste: 'Paste';
         subtitle: 'Set recipient address to keep it private.';
         title: "You're going Incognito";
@@ -639,6 +652,10 @@ export default interface Resources {
         theme: 'Theme';
       };
       pass: 'Pass';
+      passWithLevel: 'Pass - lvl {{level, number}}';
+      passXp: '{{xp}} XP';
+      perksUnlocked_one: '{{count}} Perk unlocked';
+      perksUnlocked_other: '{{count}} Perks unlocked';
       seeAllWallets: 'See all wallets';
       statsCards: {
         bridges: 'Bridges';
@@ -657,6 +674,7 @@ export default interface Resources {
         system: 'System';
         systemModeDisabled: 'System mode is disabled for this theme';
       };
+      wallet: 'Wallet';
       walletMenu: {
         chains: 'Chains';
         connectAnotherWallet: 'Connect another wallet';
@@ -706,9 +724,19 @@ export default interface Resources {
       };
     };
     notifications: {
+      apyDrop: {
+        body: 'The APY for {{opportunityName}} dropped from {{previousApy, percentExt}} to {{currentApy, percentExt}}. Consider reviewing your position on Jumper Earn.';
+        cta: 'View Position';
+        title: '{{opportunityName}}: APY dropped';
+      };
       aria: {
         deleteNotification: 'Delete notification';
         openPanel: 'Notifications';
+      };
+      bridgeToEarn: {
+        body: 'You just bridged {{amountUsd, currencyExt(currency: USD)}} {{symbol}} to {{chainId, chainNameExt}}. Earn {{apy, percentExt}} APY by depositing into {{opportunityName}} on Jumper Earn!';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your {{symbol}}';
       };
       categories: {
         all: 'All Categories';
@@ -724,10 +752,69 @@ export default interface Resources {
         week: 'Past Week';
       };
       emptyState: 'No notifications';
+      idleAssets: {
+        body: 'You have {{amountUsd, currencyExt(currency: USD)}} {{symbol}} on {{chainId, chainNameExt}} sitting idle. Deposit into {{opportunityName}} to earn {{apy, percentExt}} APY.';
+        cta: 'Start Earning';
+        title: 'Earn {{apy, percentExt}} APY on your idle {{symbol}}';
+      };
+      newOpportunity: {
+        body: 'Earn {{apy, percentExt}} APY on {{protocol}} ({{chainId, chainNameExt}}). You hold stablecoins on this chain — check it out!';
+        cta: 'Start Earning';
+        title: 'New Earn Opportunity: {{opportunityName}}';
+      };
+      newToolLaunch: {
+        body: '{{toolName}} is now live on Jumper. You recently $t(notifications.toolVerb.{{toolType}}) on {{chainIds, chainNamesExt}} — try it now.';
+        cta: 'Try it';
+        title: 'New on Jumper: {{toolName}}';
+      };
+      perkLevelUp: {
+        body_one: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check it out in your Jumper Pass.';
+        body_other: 'Reaching Level {{newLevel}} unlocked {{perks, listExt(prop: name)}}. Check them out in your Jumper Pass.';
+        cta: 'View Jumper Pass';
+        title_one: 'Perk unlocked: {{perks, listExt(prop: name)}}';
+        title_other: 'You unlocked {{count}} new perks!';
+      };
       title: 'Notifications';
+      toolVerb: {
+        BRIDGE: 'bridged';
+        SWAP: 'swapped';
+      };
       unread_one: '{{count}} unread notification';
       unread_other: '{{count}} unread notifications';
       unread_zero: 'No unread notifications';
+      userLevelUp: {
+        body: 'Your Jumper Pass leveled up from Level {{oldLevel}} to Level {{newLevel}}. Keep earning XP to unlock more.';
+        cta: 'View Jumper Pass';
+        title: 'You reached Level {{newLevel}}!';
+      };
+    };
+    pagination: {
+      next: 'Next';
+      previous: 'Previous';
+    };
+    perks_page: {
+      empty: {
+        all: {
+          caption: 'Check back soon for new perks from Jumper partners.';
+          cta: 'Explore missions';
+          description: 'No perks available right now.';
+        };
+        claimed: {
+          caption: 'Once you unlock a perk, claim it here to start enjoying your rewards.';
+          cta: 'Earn XP';
+          description: "You haven't claimed any perks yet.";
+        };
+        unlocked: {
+          caption: 'Earn XP by completing missions and using Jumper to level up your Pass and unlock perks.';
+          cta: 'Earn XP';
+          description: "You haven't unlocked any perks yet.";
+        };
+      };
+      tabs: {
+        all: 'All Perks';
+        claimed: 'Claimed';
+        unlocked: 'Unlocked';
+      };
     };
     portfolio: {
       assetOverviewCard: {
@@ -805,7 +892,7 @@ export default interface Resources {
         banner: 'You have <strong>{{value}}</strong> worth of Dust tokens that can be converted!';
         chainValidationError: {
           cancel: 'Cancel';
-          description: "Currently chain {{chain}} can't support this operation, but we're actively working on it.";
+          description: "Currently {{chain}} chain can't support this operation, but we're actively working on it.";
           title: 'Chain not supported';
         };
         error: {
@@ -885,34 +972,102 @@ export default interface Resources {
       emptyList: {
         clearFilters: 'Clear filters';
         description: 'Unfortunately there are no results for your search, try clearing your filters.';
+        error: {
+          description: "We couldn't load your transactions. Please try again.";
+          retry: 'Try again';
+          title: 'Something went wrong';
+        };
+        rateLimited: {
+          description: "You've hit the rate limit. Please wait a moment and try again.";
+          retry: 'Try again';
+          title: 'Too many requests';
+        };
         title: 'No results';
+      };
+      emptyPage: {
+        clearFilters: 'Clear filters';
+        description: 'There are no results on this page. Go back to the previous page or clear your filters.';
+        goToPreviousPage: 'Previous page';
+        title: 'No results on this page';
       };
       filter: {
         asset: 'Asset';
+        assets: 'Assets';
+        byAsset: 'By asset';
+        byChain: 'By chain';
+        byChainOrAssetDisclaimer: 'Filter by whole chains, or by specific assets - not both. Switching replaces your selection';
         chain: 'Chain';
+        chainAndAsset: 'Chain & asset';
+        chains: 'Chains';
         clearAll: 'Clear all';
+        dateRange: '1 range';
         filterAndSort: 'Filter and sort';
         filterSort: 'Filters & Sort';
         protocol: 'Protocol';
+        refresh: 'Refresh';
+        refreshTooltipAvailable: 'Refresh transactions ({{remaining}} left)';
+        refreshTooltipExhausted: 'Rate limit reached. Try again {{resetAt}}';
+        refreshTooltipUnknown: 'Refresh transactions';
         search: 'Search {{filterBy}}...';
         type: 'Type';
         value: 'Value';
         wallet: 'Wallet';
       };
+      holdings: {
+        defiPositions: 'DeFi';
+        perps: 'Perps';
+        tokens: 'Tokens';
+      };
       overviewCard: {
+        pnlChartDisclaimer: 'Only EVM/SVM addresses are supported. Some DeFi and perp positions may not yet appear in the chart. New integrations are continuously being added.';
         refreshTooltip: 'Click here to restart the indexing of your assets.';
         title: 'Portfolio';
       };
       sorting: {
+        action: 'Action';
         asset: 'Asset';
         chain: 'Chain';
+        date: 'Date';
         sort: 'Sort';
         sortBy: 'Sort by';
         totalValue: 'Total Value';
       };
+      transactionSummary: {
+        columns: {
+          action: 'Action';
+          amount: 'Amount';
+          assetIn: 'Asset in';
+          assetOut: 'Asset out';
+          date: 'Date';
+          fee: 'Fee';
+          txHash: 'Tx hash';
+        };
+        nftAmount: 'Amount: {{amount}}';
+        nftCount_one: '{{count}} NFT';
+        nftCount_other: '{{count}} NFTs';
+      };
+      transactionTypes: {
+        approve: 'Approve';
+        bid: 'Bid';
+        burn: 'Burn';
+        claim: 'Claim';
+        delegate: 'Delegate';
+        deploy: 'Deploy';
+        deposit: 'Deposit';
+        execute: 'Execute';
+        mint: 'Mint';
+        receive: 'Receive';
+        revoke: 'Revoke';
+        revoke_delegation: 'Revoke Delegation';
+        send: 'Send';
+        trade: 'Trade';
+        withdraw: 'Withdraw';
+      };
       views: {
-        defiProtocols: 'DeFi Protocols';
-        tokens: 'Tokens';
+        holdings: 'Holdings';
+        performance: 'Performance';
+        soon: 'Soon';
+        transactions: 'Transactions';
         viewBy: 'View by';
       };
       welcome: {
@@ -922,27 +1077,71 @@ export default interface Resources {
       };
     };
     profile_page: {
-      achievements: 'Achievements';
       availableRewards: 'Available Rewards';
+      beginJourney: 'Begin your Jumper journey';
       campaigns: 'Campaigns';
+      claimed: 'Claimed';
       copyAddress: 'Copy wallet address';
+      earnXp: {
+        activity: {
+          nextTier: {
+            bridge_oor: 'Bridge {{count}} USD more for {{xp}} XP';
+            chain_oor_one: 'Explore {{count}} more chain for {{xp}} XP';
+            chain_oor_other: 'Explore {{count}} more chains for {{xp}} XP';
+            earn_oor: 'Deposit {{count}} USD more for {{xp}} XP';
+            swap_oor: 'Swap {{count}} USD more for {{xp}} XP';
+          };
+          outstanding_one: 'You have <bold>{{count}} outstanding</bold> activity goal to complete this month';
+          outstanding_other: 'You have <bold>{{count}} outstanding</bold> activity goals to complete this month';
+          progress: {
+            bridge_oor: 'You have bridged {{count}} USD';
+            chain_oor_one: 'You have explored {{count}} chain';
+            chain_oor_other: 'You have explored {{count}} chains';
+            earn_oor: 'You have deposited {{count}} USD';
+            swap_oor: 'You have swapped {{count}} USD';
+          };
+          topTier: 'You have reached the top tier for this month!';
+          types: {
+            bridge_oor: 'Bridge_oor';
+            chain_oor: 'Chain_oor';
+            earn_oor: 'Earn_oor';
+            swap_oor: 'Swap_oor';
+          };
+          xpAvailable: '{{xp}} XP available';
+        };
+        description: 'Complete missions and increase your activity to earn XP and unlock more perks!';
+        noMissions: {
+          caption: 'Check back soon for new missions to earn XP and unlock more perks.';
+          cta: 'Open Mission Hub';
+          description: 'No missions available right now.';
+        };
+        openHub: 'Open Mission Hub';
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Earn XP';
+        xpAvailable: '{{xp}} XP available';
+        xpEarnedMessage: '<strong>{{xp}} XP</strong> earned so far this month';
+      };
+      joined: 'Joined {{date}}';
+      jumperPass: 'Jumper Pass';
       level: 'Level';
       levelInfo: 'A higher level increases your odds to win rewards from raffles, perks, partners, rewards and more.';
       levelWithValue: 'Level {{level, number}}';
       mobileDescription: 'The Jumper Loyalty Pass page is not available on small screens yet. We are working on it.';
       mobileTitle: 'Only available on Desktop';
-      noData: {
-        caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
-        cta: 'Start swapping';
-        description: "No {{entity}} yet? Let's change that!";
-      };
-      ongoing: 'Ongoing';
       open: 'Open {{tool}}';
-      perks: 'Perks';
+      passStats: {
+        lastMonth: 'last month';
+        perks_one: '{{count}} perk';
+        perks_other: '{{count}} perks';
+        unlocked: 'unlocked';
+      };
       pointsInfo: 'XP is your score for interacting with Jumper. As you gain XP points, your level goes up. XP coming from Jumper transactions is updated on a daily basis.';
+      progressTo: 'Your progress to';
       rank: 'Rank';
       rankInfo: 'Rank is your position in the leaderboard. Gain XP and move upward in the leaderboard.';
-      rewards: 'Rewards Earned';
       rewardsClaim: {
         action: {
           claim: 'Claim';
@@ -951,12 +1150,47 @@ export default interface Resources {
         };
         error: 'An unknown error occurred. Please try again.';
       };
+      sectionCarousel: {
+        goToPage: 'Go to page {{page}}';
+        next: 'Next';
+        previous: 'Previous';
+      };
       shareProfile: 'Share profile';
       tooltips: {
         ongoingAchievement: 'This credential is currently earning XP for the ongoing month. The final XP amount will be settled at the end of the month.';
-        unlockAtLevel: 'Unlocked at Level {{level, number}}';
       };
       unlocked: 'Unlocked';
+      unlockedPerks: {
+        count_one: 'You have {{count}} unlocked perk';
+        count_other: 'You have {{count}} unlocked perks';
+        description: 'Find all the Jumper Perks you have unlocked so far in your pass. To see what other perks are available checkout our dedicated Perks hub.';
+        empty: {
+          description: 'Looks like there are no perks available right now. Check back later!';
+          title: 'Out of Perks!';
+        };
+        openHub: 'Open Perks Hub';
+        title: 'Unlocked Perks';
+      };
+      viewLeaderboard: 'View leaderboard';
+      yourAchievements: {
+        description: 'Explore all your <bold>completed</bold> missions and XP earned through using Jumper.';
+        noActivity: {
+          caption: 'Start your journey by completing missions, swapping tokens, and bridging across chains to unlock unique achievements and earn XP.';
+          cta: 'Start swapping';
+          description: "You have no recorded activity yet. Let's change that!";
+        };
+        noMissions: {
+          caption: 'Start collecting XP by completing missions. The more XP you earn, the more Perks you unlock!';
+          cta: 'View all missions';
+          description: "You have not completed any missions yet. Let's change that!";
+        };
+        tabs: {
+          activity: 'Activity';
+          missions: 'Missions';
+        };
+        title: 'Your achievements';
+        xpEarned: '{{xp}} XP earned';
+      };
     };
     promo: {
       new: 'New';
@@ -991,7 +1225,8 @@ export default interface Resources {
       title: 'Limited Solana token support';
     };
     tooltips: {
-      apy: 'Expected yearly return rate of the tokens invested.';
+      apr: 'Expected yearly return rate of the tokens invested (incl. rewards if available).';
+      apy: 'Expected yearly return rate of the tokens invested on a 7 day trailing basis, incl. temporary rewards.';
       assets_one: 'The asset you will earn from';
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
@@ -1000,6 +1235,7 @@ export default interface Resources {
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       close: 'Close';
+      copied: 'Copied';
       deposit: 'The token on which the market is defined and yield accrues on.';
       depositDisabled: 'Deposit currently disabled for this opportunity. <0>Go to {{protocolName}}</0>';
       deposited: 'The token you have deposited into this market.';
@@ -1037,7 +1273,7 @@ export default interface Resources {
         title: 'Exchange';
       };
       private: {
-        title: 'Anonymous Swap';
+        title: 'Private Swap';
       };
       swapBridge: {
         title: 'Swap & Bridge';

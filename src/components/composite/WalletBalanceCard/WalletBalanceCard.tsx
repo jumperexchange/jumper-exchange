@@ -31,6 +31,7 @@ import {
 } from '@/providers/PortfolioProvider/filtering/utils';
 import { BaseAlert } from '@/components/Alerts/BaseAlert/BaseAlert';
 import { BaseAlertVariant } from '@/components/Alerts/BaseAlert/BaseAlert.styles';
+import { AppPaths } from '@/const/urls';
 
 export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
   walletAddress,
@@ -94,7 +95,7 @@ export const WalletBalanceCard: FC<WalletBalanceCardProps> = ({
     setWelcomeScreenClosed(true);
 
     if (!isMainPaths) {
-      router.push('/');
+      router.push(AppPaths.Main);
     }
   };
   return (

@@ -1,4 +1,4 @@
-import { PortfolioAssetsSection } from './PortfolioAssetsSection';
+import { PortfolioContentSection } from './PortfolioContentSection';
 import { PortfolioDustSection } from './PortfolioDustSection';
 import { PortfolioHeaderSection } from './PortfolioHeaderSection';
 
@@ -7,7 +7,7 @@ export const PortfolioPage = () => {
     <>
       <PortfolioHeaderSection />
       <PortfolioDustSection />
-      <PortfolioAssetsSection />
+      <PortfolioContentSection />
     </>
   );
 };

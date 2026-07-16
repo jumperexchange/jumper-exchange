@@ -1,11 +1,23 @@
-import { QueryClient, useQuery } from '@tanstack/react-query';
+import type { QueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import config from '@/config/env-config';
 import { ONE_HOUR_MS } from 'src/const/time';
-import { HttpResponse, PerkClaimEntity } from 'src/types/jumper-backend';
+import type {
+  HttpResponse,
+  PerkClaimResponseDto,
+} from 'src/types/jumper-backend';
+import type { PerksDataAttributes } from 'src/types/strapi';
 
-type ClaimedPerksResult = HttpResponse<PerkClaimEntity[], unknown>;
+type ClaimedPerksResult = HttpResponse<PerkClaimResponseDto[], unknown>;
 
 const QUERY_KEY = ['perks', 'claimed'];
+
+// Matches a perk against the backend's claimed list. Claims reference perks by
+// their Strapi `documentId`, with a fallback to the numeric id for safety.
+export const isClaimedPerk = (
+  perk: PerksDataAttributes,
+  claimedIds: Set<string>,
+) => claimedIds.has(perk.documentId) || claimedIds.has(String(perk.id));
 
 export async function getClaimedPerksQuery(
   address: string,

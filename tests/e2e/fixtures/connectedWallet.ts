@@ -1,6 +1,7 @@
 import { CHAINS, WALLET_OPTIONS } from '../data/urls';
 import { ConnectWalletPage } from '../pages/ConnectWalletPage';
 import { LandingPage } from '../pages/LandingPage';
+import { seedWelcomeScreenClosed } from '../utils/welcomeScreen';
 import { realWalletTest } from './realWallet';
 
 import type { Page } from '@playwright/test';
@@ -19,6 +20,7 @@ export const connectedTest = realWalletTest.extend<ConnectedWalletFixtures>({
 
   jumperPage: async ({ walletContext }, use) => {
     const page = await walletContext.newPage();
+    await seedWelcomeScreenClosed(page);
     await page.goto('/');
     await page.waitForLoadState('domcontentloaded');
     await use(page);
@@ -31,8 +33,7 @@ export const connectedTest = realWalletTest.extend<ConnectedWalletFixtures>({
 
   // Auto-runs the connect flow before each test. For specs that test connect itself, use realWalletTest.
   walletConnected: [
-    async ({ connectWalletPage, landingPage, wallet, walletContext }, use) => {
-      await landingPage.closeWelcomeScreen();
+    async ({ connectWalletPage, wallet, walletContext }, use) => {
       await connectWalletPage.clickConnect();
       await connectWalletPage.expectSelectWalletDialogVisible();
       await connectWalletPage.selectWalletOption(WALLET_OPTIONS.METAMASK);

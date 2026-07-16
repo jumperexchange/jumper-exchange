@@ -4,12 +4,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {
-  type SxProps,
-  type Theme,
-  darken,
-  lighten,
-} from '@mui/material/styles';
+import { type SxProps, type Theme } from '@mui/material/styles';
 import Link from 'next/link';
 import type { PropsWithChildren } from 'react';
 
@@ -19,6 +14,7 @@ import {
   PaginationButton,
   PaginationContainer,
   PaginationIndexButton,
+  paginationArrowIconSx,
 } from './Pagination.style';
 import { getVisiblePages } from './utils';
 
@@ -106,13 +102,6 @@ export const Pagination = (props: PaginationProps) => {
     }
   };
 
-  const arrowIconSx = (theme: Theme) => ({
-    color: darken(theme.palette.white.main, 0.2),
-    ...theme.applyStyles('light', {
-      color: lighten(theme.palette.black.main, 0.6),
-    }),
-  });
-
   return (
     <PaginationContainer sx={sx}>
       {showFirstLast && (
@@ -122,7 +111,7 @@ export const Pagination = (props: PaginationProps) => {
             disableRipple={false}
             disabled={isFirstPage}
           >
-            <FirstPageIcon sx={arrowIconSx} />
+            <FirstPageIcon sx={paginationArrowIconSx} />
           </PaginationButton>
         </SmoothScrollWrapper>
       )}
@@ -133,7 +122,7 @@ export const Pagination = (props: PaginationProps) => {
           disabled={isFirstPage}
           sx={{ marginRight: 'auto' }}
         >
-          <ArrowBackIcon sx={arrowIconSx} />
+          <ArrowBackIcon sx={paginationArrowIconSx} />
         </PaginationButton>
       </SmoothScrollWrapper>
 
@@ -193,7 +182,7 @@ export const Pagination = (props: PaginationProps) => {
           disabled={isLastPage}
           sx={{ marginLeft: 'auto' }}
         >
-          <ArrowForwardIcon sx={arrowIconSx} />
+          <ArrowForwardIcon sx={paginationArrowIconSx} />
         </PaginationButton>
       </SmoothScrollWrapper>
       {showFirstLast && (
@@ -203,7 +192,7 @@ export const Pagination = (props: PaginationProps) => {
             disableRipple={false}
             disabled={isLastPage}
           >
-            <LastPageIcon sx={arrowIconSx} />
+            <LastPageIcon sx={paginationArrowIconSx} />
           </PaginationButton>
         </SmoothScrollWrapper>
       )}
