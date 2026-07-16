@@ -3,6 +3,7 @@ import { ChainId } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
+import { useVerifiedTokens } from 'src/hooks/tokens/useVerifiedTokens';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
@@ -39,6 +40,8 @@ export function useMainWidgetConfig(
 
   const { denyBridges, denyExchanges } = useUrlParams();
 
+  const verifiedTokens = useVerifiedTokens();
+
   const allowedChainsByVariant = useMemo(
     () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
     [context.partnerName],
@@ -52,6 +55,9 @@ export function useMainWidgetConfig(
       const currentAllowList = _tokens?.allow ?? [];
       const newAllowList = currentAllowList.concat(memeListTokens);
       _tokens.allow = newAllowList;
+    }
+    if (verifiedTokens?.length) {
+      _tokens.verified = verifiedTokens;
     }
 
     const {
@@ -194,6 +200,7 @@ export function useMainWidgetConfig(
     context.bridgeConditions,
     deps.theme,
     memeListTokens,
+    verifiedTokens,
     allowedChainsByVariant,
     denyBridges,
     denyExchanges,
