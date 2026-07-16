@@ -25,7 +25,7 @@ function patchHistoryForUrlChangeEvent() {
     const original = window.history[method];
     window.history[method] = function (...args) {
       const result = original.apply(this, args);
-      window.dispatchEvent(new Event(URL_CHANGE_EVENT));
+      queueMicrotask(() => window.dispatchEvent(new Event(URL_CHANGE_EVENT)));
       return result;
     };
   }

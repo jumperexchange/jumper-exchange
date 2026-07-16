@@ -15,6 +15,7 @@ export enum BadgeVariant {
   Primary = 'primary',
   Secondary = 'secondary',
   Tertiary = 'tertiary',
+  New = 'new',
 }
 
 export enum BadgeSize {
@@ -185,6 +186,14 @@ export const StyledBadge = styled(Box, {
         style: {
           backgroundColor: (theme.vars || theme).palette.surfaceAccent2Bg,
           color: (theme.vars || theme).palette.surfaceAccent2Fg,
+        },
+      },
+      {
+        props: ({ variant }) => variant === BadgeVariant.New,
+        style: {
+          pointerEvents: 'none',
+          backgroundColor: '#E5484D',
+          color: (theme.vars || theme).palette.white.main,
         },
       },
     ],

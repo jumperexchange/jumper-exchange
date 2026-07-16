@@ -11,6 +11,7 @@ export enum AB_TEST_NAME {
   PORTFOLIO_PNL_CHART = 'portfolio-pnl-chart',
   PORTFOLIO_TRANSACTIONS = 'portfolio-transactions',
   NOTIFICATIONS = 'notifications',
+  WIDGET_ADVANCED = 'widget-advanced',
 }
 
 // Single source of truth for all A/B tests
@@ -61,6 +62,10 @@ export const AbTests = {
   },
   [AB_TEST_NAME.NOTIFICATIONS]: {
     name: 'notifications',
+    enabled: true,
+  },
+  [AB_TEST_NAME.WIDGET_ADVANCED]: {
+    name: 'widget-advanced',
     enabled: true,
   },
 } as const;

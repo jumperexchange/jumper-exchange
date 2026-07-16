@@ -1,7 +1,9 @@
-import { useAccount } from '@jumperexchange/wallet-management';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import Box from '@mui/material/Box';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
+import { Badge } from '@/components/Badge/Badge';
+import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { CandlestickChartIcon } from '@/components/illustrations/CandlestickChartIcon';
 import {
   TrackingAction,
@@ -9,12 +11,14 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+import { useAdvancedAccess } from '@/hooks/useAdvancedAccess';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
   const { t } = useTranslation();
-  const { account } = useAccount();
+  const { isEnabled: widgetAdvancedEnabled, isAllowed: advancedAllowed } =
+    useAdvancedAccess();
 
   const handleClickTab = (path: string, label: string) => () => {
     router.push(`/${path}`);
@@ -28,33 +32,62 @@ export const useVerticalTabs = () => {
     });
   };
 
+  const advancedDisabled = !advancedAllowed;
+
   const tabs = [
     {
       path: '',
       label: 'simple',
       displayLabel: t('navbar.links.simple'),
       icon: SwapHorizIcon,
+      showNewBadge: false,
+      disabled: false,
     },
     {
       path: 'advanced/',
       label: 'advanced',
       displayLabel: t('navbar.links.advanced'),
       icon: CandlestickChartIcon,
+      showNewBadge: widgetAdvancedEnabled,
+      disabled: advancedDisabled,
     },
   ];
 
-  return tabs.map(({ path, label, displayLabel, icon: Icon }, index) => ({
-    onClick: handleClickTab(path, label),
-    value: index,
-    tooltip: displayLabel,
-    icon: (
-      <Icon
-        sx={(theme) => ({
-          marginRight: 0.75,
-          marginBottom: `${theme.spacing(0)} !important`,
-          color: (theme.vars || theme).palette.text.primary,
-        })}
-      />
-    ),
-  }));
+  return tabs.map(
+    (
+      { path, label, displayLabel, icon: Icon, showNewBadge, disabled },
+      index,
+    ) => ({
+      onClick: handleClickTab(path, label),
+      value: index,
+      tooltip: displayLabel,
+      disabled,
+      icon: (
+        <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+          <Icon
+            sx={(theme) => ({
+              color: disabled
+                ? (theme.vars || theme).palette.iconDisabled
+                : (theme.vars || theme).palette.text.primary,
+            })}
+          />
+          {showNewBadge || disabled ? (
+            <Badge
+              label={disabled ? t('portfolio.views.soon') : t('promo.new')}
+              size={BadgeSize.XS}
+              variant={disabled ? BadgeVariant.Secondary : BadgeVariant.New}
+              sx={{
+                position: 'absolute',
+                top: -12,
+                right: -12,
+                transform: 'scale(0.75)',
+                transformOrigin: 'top right',
+                pointerEvents: 'none',
+              }}
+            />
+          ) : null}
+        </Box>
+      ),
+    }),
+  );
 };

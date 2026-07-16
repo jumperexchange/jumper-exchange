@@ -42,6 +42,10 @@ export function resolveWidgetVariant(
     WIDGET_VARIANT_REGISTRY[starterVariant] ??
     WIDGET_VARIANT_REGISTRY['default']!;
 
+  if (starterVariant === 'advanced' && !flags.widgetAdvanced) {
+    return WIDGET_VARIANT_REGISTRY['default']!;
+  }
+
   if (starterVariant === 'advanced' && flags.limitOrders) {
     return {
       ...base,
