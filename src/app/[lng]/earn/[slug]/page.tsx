@@ -11,9 +11,6 @@ import { Suspense } from 'react';
 
 type Params = Promise<{ slug: string }>;
 
-export const dynamicParams = true;
-export const revalidate = 300;
-
 export async function generateMetadata({
   params,
 }: {
@@ -40,12 +37,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: { params: Params }) {
+async function EarnPageLoader({ params }: { params: Params }) {
   const { slug } = await params;
+  return <EarnPageContent slug={slug} />;
+}
 
+export default function Page({ params }: { params: Params }) {
   return (
     <Suspense fallback={<EarnPageSkeleton />}>
-      <EarnPageContent slug={slug} />
+      <EarnPageLoader params={params} />
     </Suspense>
   );
 }

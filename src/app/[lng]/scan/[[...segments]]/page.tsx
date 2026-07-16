@@ -1,8 +1,10 @@
 import { siteName } from '@/app/lib/metadata';
-import ScanPage from '@/app/ui/scan/ScanPage';
+import ScanPageContent from '@/app/ui/scan/ScanPageContent';
+import { ScanPageSkeleton } from '@/app/ui/scan/ScanPageSkeleton';
 import { getSiteUrl } from '@/const/urls';
 import { scanParamsSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 type MetadataParams = Promise<{ segments: string[] }>;
@@ -15,7 +17,6 @@ export async function generateMetadata({
   try {
     const { segments = [] } = await params;
 
-    // Validate segments
     const result = scanParamsSchema.safeParse({ segments });
     if (!result.success) {
       throw new Error('Invalid scan segments');
@@ -35,51 +36,43 @@ export async function generateMetadata({
     const canonical = `${getSiteUrl()}/scan${segments.length === 0 ? '' : `/${segments.join('/')}`}`;
 
     return {
-      robots: {
-        index: false,
-      },
+      robots: { index: false },
       title,
       description,
-      alternates: {
-        canonical,
-      },
-      openGraph: {
-        title,
-        description,
-        siteName,
-        url: canonical,
-      },
-      twitter: {
-        title,
-        description,
-      },
+      alternates: { canonical },
+      openGraph: { title, description, siteName, url: canonical },
+      twitter: { title, description },
     };
   } catch (err) {
     return {
       title: 'Jumper Scan | Blockchain Explorer',
       description:
         'Jumper Scan is a blockchain explorer that allows you to search and explore transactions, blocks, and wallets on multiple blockchains.',
-      alternates: {
-        canonical: `${getSiteUrl()}/scan`,
-      },
+      alternates: { canonical: `${getSiteUrl()}/scan` },
     };
   }
 }
 
-export const dynamic = 'force-static';
-
 type Params = Promise<{ lng: string; segments: string[] }>;
-export default async function Page({
+
+async function ScanPageLoader({ params }: { params: Params }) {
+  const { lng, segments } = await params;
+  const result = scanParamsSchema.safeParse({ segments });
+  if (!result.success) {
+    notFound();
+  }
+  return <ScanPageContent lng={lng} />;
+}
+
+export default function Page({
   params,
 }: {
   children: React.ReactNode;
   params: Params;
 }) {
-  const { lng, segments } = await params;
-
   return (
-    <Suspense>
-      <ScanPage lng={lng} segments={segments} />
+    <Suspense fallback={<ScanPageSkeleton />}>
+      <ScanPageLoader params={params} />
     </Suspense>
   );
 }

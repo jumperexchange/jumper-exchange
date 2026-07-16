@@ -1,5 +1,14 @@
-import { Appearance } from '@lifi/widget';
-import { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
+import type { Appearance } from '@lifi/widget';
+import type { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
+
+export function isNextInternalError(error: unknown): boolean {
+  return (
+    error instanceof Error &&
+    'digest' in error &&
+    typeof (error as { digest?: string }).digest === 'string' &&
+    (error as { digest: string }).digest.startsWith('NEXT_')
+  );
+}
 
 export const getOffset = (type?: string, extendedHeight?: boolean) => {
   if (type === 'amount') {

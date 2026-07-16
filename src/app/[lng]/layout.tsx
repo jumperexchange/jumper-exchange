@@ -11,8 +11,8 @@ import NavbarWrapper from 'src/components/Navbar/NavbarWrapper';
 import { defaultNS, fallbackLng, namespaces } from 'src/i18n';
 import { IntercomProvider } from 'src/providers/IntercomProvider';
 import { SettingsStoreProvider } from 'src/stores/settings';
-import initTranslations from '@/app/i18n';
 import { getPartnerThemes } from '@/app/lib/getPartnerThemes';
+import { getTranslationResources } from '@/app/lib/getTranslationResources';
 import config, { getPublicEnvVars } from '@/config/env-config';
 import envConfig from '@/config/env-config';
 import { getSiteUrl } from '@/const/urls';
@@ -104,16 +104,12 @@ export default async function RootLayout({
 }) {
   const { lng } = await params;
 
-  const [partnerThemes, { appId }, { resources }] = await Promise.all([
+  const locale = lng || fallbackLng;
+
+  const [partnerThemes, { appId }, resources] = await Promise.all([
     getPartnerThemes().catch(() => ({ data: [] })),
-    getMiniAppSettings().catch((e) => {
-      console.error(
-        'Failed to fetch mini app settings, using default values.',
-        e,
-      );
-      return { appId: '' };
-    }),
-    initTranslations(lng || fallbackLng, namespaces),
+    getMiniAppSettings().catch(() => ({ appId: '' })),
+    getTranslationResources(locale, namespaces),
   ]);
 
   return (
@@ -225,17 +221,21 @@ export default async function RootLayout({
                   <MUIThemeProvider>
                     <SettingsStoreProvider>
                       <NuqsAdapter>
-                        <PortfolioProvider>
-                          <ExtensionDetectionProvider>
-                            <Suspense>
-                              <ReferrerCapture />
-                              <FeatureFlagsBootstrap />
-                            </Suspense>
-                            <NavbarWrapper />
-                            <IntercomProvider />
-                            <main>{children}</main>
-                          </ExtensionDetectionProvider>
-                        </PortfolioProvider>
+                        <Suspense fallback={null}>
+                          <PortfolioProvider>
+                            <ExtensionDetectionProvider>
+                              <Suspense>
+                                <ReferrerCapture />
+                                <FeatureFlagsBootstrap />
+                              </Suspense>
+                              <NavbarWrapper />
+                              <IntercomProvider />
+                              <main>
+                                <Suspense fallback={null}>{children}</Suspense>
+                              </main>
+                            </ExtensionDetectionProvider>
+                          </PortfolioProvider>
+                        </Suspense>
                       </NuqsAdapter>
                     </SettingsStoreProvider>
                   </MUIThemeProvider>

@@ -24,9 +24,7 @@ export async function getPerks(
   const apiUrl = urlParams.getApiUrl();
 
   const res = await fetch(decodeURIComponent(apiUrl), {
-    next: {
-      revalidate: 60 * 5, // revalidate every 5 minutes
-    },
+    next: { revalidate: 300 },
   });
 
   if (!res.ok) {

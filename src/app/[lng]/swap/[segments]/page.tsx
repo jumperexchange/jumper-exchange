@@ -5,10 +5,19 @@ import { getChainByName } from '@/utils/tokenAndChain';
 import { slugify } from '@/utils/urls/slugify';
 import { chainNameSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
+import { cacheLife } from 'next/cache';
 import { notFound } from 'next/navigation';
 import SwapPage from 'src/app/ui/swap/SwapPage';
+import { WidgetPageSkeleton } from '@/app/ui/shared/WidgetPageSkeleton';
+import { Suspense } from 'react';
 
 type Params = Promise<{ segments: string }>;
+
+async function getChainsForPage() {
+  'use cache';
+  cacheLife({ revalidate: 86400 });
+  return getChainsQuery();
+}
 
 export async function generateMetadata({
   params,
@@ -23,7 +32,7 @@ export async function generateMetadata({
     notFound();
   }
 
-  const { chains } = await getChainsQuery();
+  const { chains } = await getChainsForPage();
   const sourceChain = getChainByName(chains, result.data);
   const title = `Jumper | How To Swap on ${sourceChain?.name} | A Complete Guide`;
 
@@ -46,19 +55,15 @@ export async function generateMetadata({
   };
 }
 
-export const revalidate = 86400;
-export const dynamicParams = true; // or false, to 404 on unknown paths
-export const dynamic = 'force-static';
-
 export async function generateStaticParams() {
-  const { chains } = await getChainsQuery();
+  const { chains } = await getChainsForPage();
 
   return chains.map((chain) => ({
     segments: slugify(chain.name),
   }));
 }
 
-export default async function Page({ params }: { params: Params }) {
+async function SwapPageLoader({ params }: { params: Params }) {
   const { segments } = await params;
 
   try {
@@ -70,8 +75,7 @@ export default async function Page({ params }: { params: Params }) {
       return notFound();
     }
 
-    const { chains } = await getChainsQuery();
-
+    const { chains } = await getChainsForPage();
     const sourceChain = getChainByName(chains, result.data);
 
     if (!sourceChain) {
@@ -86,6 +90,14 @@ export default async function Page({ params }: { params: Params }) {
       />
     );
   } catch (e) {
-    notFound();
+    return notFound();
   }
+}
+
+export default function Page({ params }: { params: Params }) {
+  return (
+    <Suspense fallback={<WidgetPageSkeleton />}>
+      <SwapPageLoader params={params} />
+    </Suspense>
+  );
 }

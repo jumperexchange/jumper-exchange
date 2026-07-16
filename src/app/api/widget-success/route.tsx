@@ -27,6 +27,7 @@ import WidgetSuccessImage from 'src/components/ImageGeneration/WidgetSuccessImag
 import { getSiteUrl } from 'src/const/urls';
 import { fetchChainData } from 'src/utils/image-generation/fetchChainData';
 import { fetchTokenData } from 'src/utils/image-generation/fetchTokenData';
+import { isNextInternalError } from 'src/utils/image-generation/helpers';
 import { parseSearchParams } from 'src/utils/image-generation/parseSearchParams';
 import {
   widgetSuccessSchema,
@@ -63,28 +64,29 @@ export async function GET(request: Request) {
     }) as CSSProperties;
 
     return new ImageResponse(
-      (
-        <div style={imageStyle}>
-          <img
-            alt="Widget Success Example"
-            width={'100%'}
-            height={'100%'}
-            style={imageStyle}
-            src={`${getSiteUrl()}/widget/widget-success-${params.theme}.png`}
-          />
-          <WidgetSuccessImage
-            height={WIDGET_IMAGE_WIDTH}
-            width={WIDGET_IMAGE_HEIGHT}
-            toToken={toTokenData}
-            toChain={toChain}
-            amount={params.amount}
-            theme={params.theme}
-          />
-        </div>
-      ),
+      <div style={imageStyle}>
+        <img
+          alt="Widget Success Example"
+          width={'100%'}
+          height={'100%'}
+          style={imageStyle}
+          src={`${getSiteUrl()}/widget/widget-success-${params.theme}.png`}
+        />
+        <WidgetSuccessImage
+          height={WIDGET_IMAGE_WIDTH}
+          width={WIDGET_IMAGE_HEIGHT}
+          toToken={toTokenData}
+          toChain={toChain}
+          amount={params.amount}
+          theme={params.theme}
+        />
+      </div>,
       options,
     );
   } catch (error) {
+    if (isNextInternalError(error)) {
+      throw error;
+    }
     console.error('Error generating widget success image:', error);
     return new Response('Internal server error', { status: 500 });
   }

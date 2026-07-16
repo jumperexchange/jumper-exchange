@@ -9,11 +9,8 @@ import {
   createSitemapServiceUnavailableResponse,
   createSitemapXmlResponse,
 } from '@/utils/sitemaps/xml';
-
-export const dynamic = 'force-static';
-export const revalidate = 86400;
-
-const lastModified = toSitemapDate(Date.now());
+import type { SitemapXmlEntry } from '@/utils/sitemaps/xml';
+import { cacheLife } from 'next/cache';
 
 const parseChunkIndex = (id: string): number | null => {
   if (!id.endsWith('.xml')) {
@@ -27,6 +24,21 @@ const parseChunkIndex = (id: string): number | null => {
 
   return Number(chunkId);
 };
+
+async function getBridgeSitemapChunkEntries(
+  chunkIndex: number,
+): Promise<SitemapXmlEntry[] | null> {
+  'use cache';
+  cacheLife({ revalidate: 86400 });
+  const inRange = await isBridgeSitemapChunkInRange(chunkIndex);
+
+  if (!inRange) {
+    return null;
+  }
+
+  const lastModified = toSitemapDate(Date.now());
+  return getBridgeSitemapEntriesForChunk(chunkIndex, lastModified);
+}
 
 export async function generateStaticParams() {
   try {
@@ -50,16 +62,12 @@ export async function GET(
   }
 
   try {
-    const inRange = await isBridgeSitemapChunkInRange(chunkIndex);
+    const entries = await getBridgeSitemapChunkEntries(chunkIndex);
 
-    if (!inRange) {
+    if (!entries) {
       return new Response('Not Found', { status: 404 });
     }
 
-    const entries = await getBridgeSitemapEntriesForChunk(
-      chunkIndex,
-      lastModified,
-    );
     return createSitemapXmlResponse(entries);
   } catch (error) {
     captureException(error);

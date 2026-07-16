@@ -1,6 +1,7 @@
 import { getStrapiBaseUrl } from 'src/utils/strapi/strapiHelper';
 import envConfig from '@/config/env-config';
 import type { StrapiResponse } from '@/types/strapi';
+import { cacheLife } from 'next/cache';
 
 const BASE_MINI_APP_SETTING_API_ENDPOINT = 'base-mini-app-settings';
 
@@ -17,6 +18,8 @@ export interface MiniAppSettingAttributes {
 }
 
 export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
+  'use cache';
+  cacheLife({ revalidate: 300 });
   const publicUrl = new URL(envConfig.NEXT_PUBLIC_SITE_URL);
 
   const baseUrl = getStrapiBaseUrl();
@@ -38,7 +41,15 @@ export async function getMiniAppSettings(): Promise<MiniAppSettingAttributes> {
 
   const data: StrapiResponse<MiniAppSettingAttributes> = await res.json();
   if (!data.data[0]) {
-    throw new Error(`No mini app settings found for ${publicUrl.origin}`);
+    return {
+      id: 0,
+      documentId: '',
+      appId: '',
+      url: publicUrl.origin,
+      accountAssociation: {},
+      createdAt: '',
+      updatedAt: '',
+    };
   }
   return data.data[0];
 }

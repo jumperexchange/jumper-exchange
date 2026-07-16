@@ -25,7 +25,7 @@ const formatSlugToTitle = (slug: string) => slug.replaceAll('-', ' ');
 
 export async function generateStaticParams() {
   if (envConfig.NEXT_PUBLIC_ENVIRONMENT !== 'production') {
-    return [];
+    return [{ slug: '_placeholder' }];
   }
 
   const pageSize = 25;
@@ -120,19 +120,20 @@ export async function generateMetadata({
   }
 }
 
-export const dynamicParams = true;
-export const revalidate = 300;
-
-export default async function Page({ params }: { params: Params }) {
+async function MissionPageLoader({ params }: { params: Params }) {
   const { slug } = await params;
 
   if (!slug) {
     return notFound();
   }
 
+  return <MissionPageContent slug={slug} />;
+}
+
+export default function Page({ params }: { params: Params }) {
   return (
     <Suspense fallback={<MissionPageSkeleton />}>
-      <MissionPageContent slug={slug} />
+      <MissionPageLoader params={params} />
     </Suspense>
   );
 }

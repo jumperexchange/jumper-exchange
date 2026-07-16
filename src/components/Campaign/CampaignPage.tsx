@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getCampaignBySlug } from 'src/app/lib/getCampaignsBySlug';
+import { getCampaignBySlugForPage } from '@/app/lib/campaign/cachedCampaignFetch';
 import { CampaignPageContent } from './CampaignPageContent';
 
 interface CampaignPageProps {
@@ -7,7 +7,7 @@ interface CampaignPageProps {
 }
 
 export async function CampaignPage({ slug }: CampaignPageProps) {
-  const campaign = await getCampaignBySlug(slug);
+  const campaign = await getCampaignBySlugForPage(slug);
 
   if (!campaign || !campaign.data || campaign.data.length === 0) {
     notFound();

@@ -8,9 +8,9 @@ export const useSession = (): string => {
       typeof window !== 'undefined' &&
       typeof sessionStorage !== 'undefined'
     ) {
-      return sessionStorage.getItem('session_id') || uuidv7();
+      return sessionStorage.getItem('session_id') ?? '';
     }
-    return uuidv7();
+    return '';
   });
 
   useEffect(() => {
@@ -18,8 +18,12 @@ export const useSession = (): string => {
       typeof window !== 'undefined' &&
       typeof sessionStorage !== 'undefined'
     ) {
-      sessionStorage.setItem('session_id', session);
-      setSession(session);
+      const sessionId =
+        session || sessionStorage.getItem('session_id') || uuidv7();
+      sessionStorage.setItem('session_id', sessionId);
+      if (sessionId !== session) {
+        setSession(sessionId);
+      }
     }
   }, [session]);
 

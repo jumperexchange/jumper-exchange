@@ -3,12 +3,12 @@ import {
   pageOpenGraph,
   pageTwitter,
 } from '@/app/lib/metadata';
+import { cacheLife } from 'next/cache';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
-import { getAllPerks } from '@/app/lib/getPerks';
+import { getPerksForPage } from 'src/app/lib/getPerksForPage';
 import { ProfilePage } from '@/components/ProfilePage/ProfilePage';
-import { ProfilePageSkeleton } from '@/components/ProfilePage/ProfilePageSkeleton';
 
 export const metadata: Metadata = {
   title: pageMetadataFields.profile.title,
@@ -26,11 +26,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const perks = await getAllPerks();
+  'use cache';
+  cacheLife({ revalidate: 300 });
+  const perks = await getPerksForPage();
 
-  return (
-    <Suspense fallback={<ProfilePageSkeleton />}>
-      <ProfilePage isPublic={true} perks={perks} />
-    </Suspense>
-  );
+  return <ProfilePage isPublic={true} perks={perks} />;
 }

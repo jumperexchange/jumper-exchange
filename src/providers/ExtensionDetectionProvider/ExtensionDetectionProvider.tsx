@@ -16,8 +16,10 @@ extensionDetectionStore
   .getState()
   .initRegistry(extensionDetectionInitialDefinitions);
 
-for (const def of extensionDetectionInitialDefinitions) {
-  void extensionDetectionStore.getState().runCheck(def.name);
+if (typeof window !== 'undefined') {
+  for (const def of extensionDetectionInitialDefinitions) {
+    void extensionDetectionStore.getState().runCheck(def.name);
+  }
 }
 
 export interface ExtensionDetectionProviderProps {

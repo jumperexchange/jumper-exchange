@@ -1,4 +1,4 @@
-import initTranslations from '@/app/i18n';
+import { getTranslationResources } from '@/app/lib/getTranslationResources';
 import Background from '@/components/Background';
 import { NotFoundComponent } from '@/components/NotFound/NotFound';
 import config, { getPublicEnvVars } from '@/config/env-config';
@@ -17,7 +17,7 @@ import { getPartnerThemes } from './lib/getPartnerThemes';
 import { getThemeBootstrapInlineScript } from '@/providers/ThemeProvider/getThemeBootstrapInlineScript';
 
 export default async function NotFound() {
-  const { resources } = await initTranslations(fallbackLng, namespaces);
+  const resources = await getTranslationResources(fallbackLng, namespaces);
   const partnerThemes = await getPartnerThemes().catch(() => ({ data: [] }));
 
   return (

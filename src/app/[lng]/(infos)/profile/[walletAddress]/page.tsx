@@ -3,13 +3,17 @@ import { walletAddressSchema } from '@/utils/validation-schemas';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-import { getAllPerks } from '@/app/lib/getPerks';
+import { getPerksForPage } from '@/app/lib/getPerksForPage';
 import { ProfilePage } from '@/components/ProfilePage/ProfilePage';
 import { ProfilePageSkeleton } from '@/components/ProfilePage/ProfilePageSkeleton';
 
 type Params = Promise<{ walletAddress: string }>;
 
 const baseUrl = getSiteUrl();
+
+export function generateStaticParams() {
+  return [{ walletAddress: '0x0000000000000000000000000000000000000000' }];
+}
 
 export async function generateMetadata({
   params,
@@ -50,23 +54,24 @@ export async function generateMetadata({
   }
 }
 
-export const dynamic = 'force-static';
-
-export default async function Page({ params }: { params: Params }) {
+async function ProfileLoader({ params }: { params: Params }) {
   const { walletAddress } = await params;
 
-  // Validate wallet address
   const result = walletAddressSchema.safeParse(walletAddress);
   if (!result.success) {
     return notFound();
   }
 
   const sanitizedAddress = result.data;
-  const perks = await getAllPerks();
+  const perks = await getPerksForPage();
 
+  return <ProfilePage walletAddress={sanitizedAddress} perks={perks} />;
+}
+
+export default function Page({ params }: { params: Params }) {
   return (
     <Suspense fallback={<ProfilePageSkeleton />}>
-      <ProfilePage walletAddress={sanitizedAddress} perks={perks} />
+      <ProfileLoader params={params} />
     </Suspense>
   );
 }
