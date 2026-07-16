@@ -82,7 +82,7 @@ export class UdfDatafeed implements ICandlestickDatafeed {
       .getBars(symbolInfo.ticker, resolution, from, to, countback)
       .then(({ bars, noData, nextTime }) => {
         const tvBars: Bar[] = bars.map((b) => ({
-          time: b.time * 1000,
+          time: b.time,
           open: b.open,
           high: b.high,
           low: b.low,
