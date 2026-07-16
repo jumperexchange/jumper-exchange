@@ -30,6 +30,12 @@ const config: StorybookConfig = {
     options: {},
   },
   staticDirs: ['../public'],
+  refs: {
+    'shared-ui': {
+      title: 'Shared UI',
+      url: 'https://jumper-shared-ui.vercel.app',
+    },
+  },
   viteFinal(config) {
     const storybookPublicEnv = getStorybookPublicEnv();
 

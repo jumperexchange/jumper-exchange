@@ -7,6 +7,7 @@ import { ReactQueryProvider } from '../src/providers/ReactQueryProvider';
 import { DefaultThemeProvider } from '../src/providers/ThemeProvider/DefaultThemeProvider';
 import { MUIThemeProvider } from '../src/providers/ThemeProvider/MUIThemeProvider';
 import { WalletProvider } from '../src/providers/WalletProvider/WalletProvider';
+import { JumperUIProvider } from '../src/providers/JumperUIProvider/JumperUIProvider';
 import { SettingsStoreProvider } from '../src/stores/settings';
 import initTranslations from '../src/app/i18n';
 import { fallbackLng, namespaces } from '../src/i18n';
@@ -74,30 +75,32 @@ const StorybookProviders = ({
   return (
     <NuqsAdapter>
       <I18nextProvider key={activeLocale} i18n={i18n}>
-        <DefaultThemeProvider
-          key={`${partnerThemeUid}-${activeLocale}`}
-          themes={partnerThemes}
-          overrideMetaTheme={overrideMetaTheme}
-        >
-          <WalletProvider>
-            <MUIThemeProvider>
-              <SettingsStoreProvider>
-                <PartnerThemeBridge
-                  partnerThemeUid={partnerThemeUid}
-                  standardColorMode={standardColorMode}
-                  partnerThemes={partnerThemes}
-                />
-                {isNoPartnerThemeUid(partnerThemeUid) ? (
-                  <ThemeBridge theme={standardColorMode}>
+        <JumperUIProvider>
+          <DefaultThemeProvider
+            key={`${partnerThemeUid}-${activeLocale}`}
+            themes={partnerThemes}
+            overrideMetaTheme={overrideMetaTheme}
+          >
+            <WalletProvider>
+              <MUIThemeProvider>
+                <SettingsStoreProvider>
+                  <PartnerThemeBridge
+                    partnerThemeUid={partnerThemeUid}
+                    standardColorMode={standardColorMode}
+                    partnerThemes={partnerThemes}
+                  />
+                  {isNoPartnerThemeUid(partnerThemeUid) ? (
+                    <ThemeBridge theme={standardColorMode}>
+                      <Story {...context} />
+                    </ThemeBridge>
+                  ) : (
                     <Story {...context} />
-                  </ThemeBridge>
-                ) : (
-                  <Story {...context} />
-                )}
-              </SettingsStoreProvider>
-            </MUIThemeProvider>
-          </WalletProvider>
-        </DefaultThemeProvider>
+                  )}
+                </SettingsStoreProvider>
+              </MUIThemeProvider>
+            </WalletProvider>
+          </DefaultThemeProvider>
+        </JumperUIProvider>
       </I18nextProvider>
     </NuqsAdapter>
   );
