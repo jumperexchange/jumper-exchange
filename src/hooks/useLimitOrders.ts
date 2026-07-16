@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { makeClient } from '@/app/lib/client';
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { ORDERS_PAGE_SIZE } from '@/components/LimitOrders/OrdersSection/constants';
@@ -17,6 +17,8 @@ export const useLimitOrders = (
   pageSize = ORDERS_PAGE_SIZE,
 ) => {
   const [pageIndex, setPageIndex] = useState(0);
+  const queryClient = useQueryClient();
+  const queryKey = [getQueryKey('limit-orders'), tool, address, pageSize];
 
   const {
     data,
@@ -31,7 +33,7 @@ export const useLimitOrders = (
     readonly unknown[],
     string | undefined
   >({
-    queryKey: [getQueryKey('limit-orders'), tool, address, pageSize],
+    queryKey,
     initialPageParam: undefined,
     queryFn: async ({ pageParam }) => {
       if (!address || !tool) {
@@ -78,6 +80,11 @@ export const useLimitOrders = (
     setPageIndex((index) => Math.max(0, index - 1));
   };
 
+  const refresh = async () => {
+    setPageIndex(0);
+    await queryClient.resetQueries({ queryKey });
+  };
+
   return {
     orders: currentPage?.orders ?? [],
     hasNextPage,
@@ -85,5 +92,6 @@ export const useLimitOrders = (
     goToNextPage,
     goToPreviousPage,
     isLoading: isLoading || isFetchingNextPage,
+    refresh,
   };
 };

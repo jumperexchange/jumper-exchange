@@ -1327,6 +1327,7 @@
       },
       "actions": {
         "rowActions": "Row actions",
+        "refresh": "Refresh orders",
         "expandPanels": "Expand panels",
         "collapsePanels": "Collapse panels",
         "viewOnExplorer": "View on explorer",
