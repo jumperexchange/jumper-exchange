@@ -1302,6 +1302,9 @@
     "orders": "Orders",
     "marketPrice": "Market Price",
     "marketPriceEmptyState": "Select a token to see its market price",
+    "ordersEmptyState": "No orders for this protocol yet",
+    "protocolLabel": "Protocol",
+    "walletLabel": "Wallet",
     "table": {
       "columns": {
         "chain": "Chain",

@@ -8,11 +8,13 @@ import {
 
 interface ActionableSectionProps extends SectionCardProp {
   title: string;
+  filters?: ReactNode;
   action?: ReactNode;
 }
 
 export const ActionableSection: FC<ActionableSectionProps> = ({
   title,
+  filters,
   action,
   children,
   sx,
@@ -29,7 +31,10 @@ export const ActionableSection: FC<ActionableSectionProps> = ({
           flexShrink: 0,
         }}
       >
-        <Typography variant="titleSmall">{title}</Typography>
+        <Stack direction="row" sx={{ gap: 3, alignItems: 'center' }}>
+          <Typography variant="titleSmall">{title}</Typography>
+          {filters}
+        </Stack>
         {action}
       </Stack>
       {children}
