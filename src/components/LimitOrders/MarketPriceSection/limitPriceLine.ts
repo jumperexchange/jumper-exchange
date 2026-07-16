@@ -10,7 +10,11 @@ interface DeriveLimitPriceLineParams {
   activeSymbol: string;
   /** Symbol of the fromToken (`composeTokenKey`). */
   fromSymbol: string;
-  /** Current USD price of the toToken, used to convert the canonical ratio to USD. */
+  /** Symbol of the toToken (`composeTokenKey`). */
+  toSymbol: string;
+  /** Current USD price of the fromToken. */
+  fromTokenUsdPrice: number | null;
+  /** Current USD price of the toToken. */
   toTokenUsdPrice: number | null;
 }
 
@@ -30,10 +34,14 @@ const sameToken = (
  * Convert the widget's canonical limit price (toToken per fromToken) into a
  * USD value for the chart's horizontal price line.
  *
- * The chart is USD-denominated per single token, so the line only makes sense
- * on the fromToken chart: `usdLine = canonicalPrice × toTokenUsdPrice`. Returns
- * undefined when the line can't be placed meaningfully (wrong chart token, a
- * stale price from a different pair, or a missing conversion rate).
+ * The chart is USD-denominated per single token, so the value depends on which
+ * token is shown:
+ * - fromToken chart: `usdLine = canonicalPrice × toTokenUsdPrice`
+ * - toToken chart:   `usdLine = (1 / canonicalPrice) × fromTokenUsdPrice`
+ *
+ * Returns undefined when the line can't be placed meaningfully (chart token is
+ * neither side of the pair, a stale price from a different pair, or a missing
+ * conversion rate).
  */
 export function deriveLimitPriceLine({
   limitPrice,
@@ -41,17 +49,22 @@ export function deriveLimitPriceLine({
   toToken,
   activeSymbol,
   fromSymbol,
+  toSymbol,
+  fromTokenUsdPrice,
   toTokenUsdPrice,
 }: DeriveLimitPriceLineParams): { price: number } | undefined {
-  if (!limitPrice?.price || activeSymbol !== fromSymbol) {
-    return undefined;
-  }
-  if (!sameToken(limitPrice, fromToken, toToken)) {
+  if (!limitPrice?.price || !sameToken(limitPrice, fromToken, toToken)) {
     return undefined;
   }
   const canonical = Number(limitPrice.price);
-  if (!Number.isFinite(canonical) || canonical <= 0 || !toTokenUsdPrice) {
+  if (!Number.isFinite(canonical) || canonical <= 0) {
     return undefined;
   }
-  return { price: canonical * toTokenUsdPrice };
+  if (activeSymbol === fromSymbol && toTokenUsdPrice) {
+    return { price: canonical * toTokenUsdPrice };
+  }
+  if (activeSymbol === toSymbol && fromTokenUsdPrice) {
+    return { price: (1 / canonical) * fromTokenUsdPrice };
+  }
+  return undefined;
 }

@@ -26,6 +26,8 @@ const base = {
   toToken,
   activeSymbol: 'from',
   fromSymbol: 'from',
+  toSymbol: 'to',
+  fromTokenUsdPrice: 2000,
   toTokenUsdPrice: 1, // stablecoin quote
 };
 
@@ -39,9 +41,16 @@ describe('deriveLimitPriceLine', () => {
     });
   });
 
-  it('only shows on the fromToken chart', () => {
+  it('shows the inverted price on the toToken chart', () => {
+    // 1/2000 × fromTokenUsdPrice(2000) = 1
+    expect(deriveLimitPriceLine({ ...base, activeSymbol: 'to' })).toEqual({
+      price: 1,
+    });
+  });
+
+  it('returns undefined when the chart shows neither side of the pair', () => {
     expect(
-      deriveLimitPriceLine({ ...base, activeSymbol: 'to' }),
+      deriveLimitPriceLine({ ...base, activeSymbol: 'unrelated' }),
     ).toBeUndefined();
   });
 
