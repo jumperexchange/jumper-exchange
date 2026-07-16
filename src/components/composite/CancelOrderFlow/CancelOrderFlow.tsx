@@ -49,7 +49,11 @@ export const CancelOrderFlowModal = () => {
   }, [address, reset, closeModal]);
 
   const handleDone = () => {
-    queryClient.invalidateQueries({ queryKey: [getQueryKey('limit-orders')] });
+    setTimeout(() => {
+      queryClient.invalidateQueries({
+        queryKey: [getQueryKey('limit-orders')],
+      });
+    }, 1500);
     handleClose();
   };
 
