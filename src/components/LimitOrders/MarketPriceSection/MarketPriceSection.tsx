@@ -27,6 +27,8 @@ import type { Theme } from '@mui/material/styles';
 import { CHANGE_WINDOWS, usePriceData } from './usePriceData';
 import { useUrlParams } from '@/hooks/useUrlParams';
 import { MarketPriceEmptyState } from './MarketPriceEmptyState';
+import { useLimitOrderPriceStore } from '@/stores/limitOrderPrice/LimitOrderPriceStore';
+import { deriveLimitPriceLine } from './limitPriceLine';
 
 function formatPrice(price: number): string {
   return price.toLocaleString(undefined, {
@@ -95,6 +97,24 @@ export const MarketPriceSection = ({
     : '';
 
   const { currentPrice, changes } = usePriceData(datafeed, activeSymbol);
+
+  const fromSymbol = fromToken
+    ? composeTokenKey(fromToken.chainId, fromToken.address)
+    : '';
+  const toSymbol = toToken
+    ? composeTokenKey(toToken.chainId, toToken.address)
+    : '';
+  // toToken USD price converts the widget's canonical ratio into the chart's USD scale.
+  const { currentPrice: toTokenUsdPrice } = usePriceData(datafeed, toSymbol);
+  const { limitPrice } = useLimitOrderPriceStore();
+  const limitPriceLine = deriveLimitPriceLine({
+    limitPrice,
+    fromToken,
+    toToken,
+    activeSymbol,
+    fromSymbol,
+    toTokenUsdPrice,
+  });
 
   const handleTokenClick = (token: BaseToken) => {
     const key = composeTokenKey(token.chainId, token.address);
@@ -248,6 +268,7 @@ export const MarketPriceSection = ({
                 dimOnLoading
                 symbol={activeSymbol}
                 datafeed={datafeed}
+                limitPrice={limitPriceLine}
                 timeframeButton={{
                   size: Size.XS,
                   sx: {
