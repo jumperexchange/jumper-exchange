@@ -1,9 +1,14 @@
 import config from '@/config/env-config';
-import { getCustomRPCs, publicRPCList } from '@/const/rpcList';
+import {
+  getCustomRPCs,
+  getSolanaSendJitoRpcUrls,
+  getSolanaSendRpcUrls,
+  publicRPCList,
+} from '@/const/rpcList';
 import { createClient, type SDKProvider } from '@lifi/sdk';
 import { EthereumProvider } from '@lifi/sdk-provider-ethereum';
 import { BitcoinProvider } from '@lifi/sdk-provider-bitcoin';
-import { SolanaProvider } from '@lifi/sdk-provider-solana';
+import { SolanaProvider } from '@jumperexchange/sdk-provider-solana';
 import { SuiProvider } from '@lifi/sdk-provider-sui';
 import { TronProvider } from '@lifi/sdk-provider-tron';
 import getApiUrl from '../getApiUrl';
@@ -42,7 +47,10 @@ function initClient() {
     });
     _client.setProviders([
       EthereumProvider(),
-      SolanaProvider(),
+      SolanaProvider({
+        sendRpcUrls: getSolanaSendRpcUrls(),
+        sendJitoRpcUrls: getSolanaSendJitoRpcUrls(),
+      }),
       BitcoinProvider(),
       SuiProvider(),
       TronProvider(),
