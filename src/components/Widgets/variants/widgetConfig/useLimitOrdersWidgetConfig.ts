@@ -39,7 +39,10 @@ export function useLimitOrdersWidgetConfig(
         history: true,
         appearance: true,
       },
+      exchanges: context.allowExchange
+        ? { allow: [context.allowExchange] }
+        : mainConfig.exchanges,
     }),
-    [mainConfig],
+    [mainConfig, context.allowExchange],
   );
 }

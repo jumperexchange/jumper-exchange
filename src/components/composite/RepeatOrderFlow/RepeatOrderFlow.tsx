@@ -31,6 +31,7 @@ export const RepeatOrderFlowModal = () => {
     }
     return {
       overrideHeader: t('limitOrders.repeatModal.title'),
+      allowExchange: selectedOrder.tool,
       theme: {
         container: getOrderFlowWidgetContainerStyle(theme),
       },
