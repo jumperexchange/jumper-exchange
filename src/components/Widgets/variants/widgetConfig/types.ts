@@ -111,6 +111,7 @@ export interface ZapWidgetContext extends MissionWidgetContext {
 
 export interface LimitOrdersWidgetContext extends CommonWidgetContext {
   overrideHeader?: string;
+  allowExchange?: string | null;
 }
 
 // Union type for all contexts

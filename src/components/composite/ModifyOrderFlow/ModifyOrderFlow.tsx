@@ -92,6 +92,7 @@ export const ModifyOrderFlowModal = () => {
     return {
       overrideHeader: t('limitOrders.modifyModal.title'),
       disabledUI: { fromToken: true, toToken: true },
+      allowExchange: selectedOrder.tool,
       theme: {
         container: getOrderFlowWidgetContainerStyle(theme),
       },
