@@ -12,7 +12,7 @@ minimumReleaseAgeExclude:
   - '@jumperexchange/widget-provider-sui@4.1.2'
   - '@jumperexchange/widget-provider-tron@4.1.2'
   - '@jumperexchange/widget-provider@4.2.1'
-  - '@jumperexchange/widget@4.4.0'
+  - '@jumperexchange/widget@4.4.1'
 allowBuilds:
   '@swc/core': true
   esbuild: true
