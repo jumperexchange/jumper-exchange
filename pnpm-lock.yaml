@@ -66,8 +66,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
       '@jumperexchange/widget':
-        specifier: ^4.4.0
-        version: 4.4.0(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
+        specifier: ^4.4.1
+        version: 4.4.1(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
       '@jumperexchange/widget-provider':
         specifier: ^4.2.1
         version: 4.2.1(react@19.2.7)
@@ -1505,8 +1505,8 @@ packages:
     peerDependencies:
       react: '>=19'
 
-  '@jumperexchange/widget@4.4.0':
-    resolution: {integrity: sha512-5Ou6vuRSffA+/BMkb0R2pUh7lW+YYuz6FwaL/rcsxMJGD6l6crKlLwSsy//+InJTD93NlOTWwu7fHpBUWFvp6Q==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget/4.4.0/efe81e72892c0db4a0f7634e35839c2358238e85}
+  '@jumperexchange/widget@4.4.1':
+    resolution: {integrity: sha512-dC8GJcoNd97+SLgBbjUYRgKUmpGK+SenxQH4kI8Fv4yOEpy5x0nxrTLSpvWWv+sLMZrg8R6Y2pfbclVxSc1gGg==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget/4.4.1/746cc76697403beb076c8a03f93a1e213a13d9d9}
     peerDependencies:
       '@tanstack/react-query': '>=5.90.0'
       react: '>=19'
@@ -2125,10 +2125,10 @@ packages:
     peerDependencies:
       '@mysten/sui': ^2.20.0
 
-  '@mysten/slush-wallet@1.1.5':
-    resolution: {integrity: sha512-4/BU1FUCalKLCRRxUMU+d2HdCs/59vnl4OteWThNs+guKrp78SIL0dy1T3TGJswKtKSFvK7kcOgBWhJCrxorXA==}
+  '@mysten/slush-wallet@1.1.7':
+    resolution: {integrity: sha512-zNrhpmchmkPcw21ghxxZlmAyEixhsG3ZuivE4blZD3Pn1SW1jF9EWdnPHLobj2RyLFbRPGprDfCcg7b4wrzzIg==}
     peerDependencies:
-      '@mysten/sui': ^2.20.3
+      '@mysten/sui': ^2.21.0
 
   '@mysten/sui@1.45.2':
     resolution: {integrity: sha512-gftf7fNpFSiXyfXpbtP2afVEnhc7p2m/MEYc/SO5pov92dacGKOpQIF7etZsGDI1Wvhv+dpph+ulRNpnYSs7Bg==}
@@ -2164,10 +2164,10 @@ packages:
     peerDependencies:
       '@mysten/sui': ^2.20.0
 
-  '@mysten/wallet-standard@0.21.5':
-    resolution: {integrity: sha512-i4ucyyTblylNmWpCSyZO/WXfa7cp5LLvTy8oXb3USY7zCu9xKycMiNm3d96if9qk4kqciV0EodRZjBGSbqHm1Q==}
+  '@mysten/wallet-standard@0.21.7':
+    resolution: {integrity: sha512-FoV3whLCERjYwo+FkZZQ9y86ORpLuFdHipvT6EoGmuvLIrH4uBvArIRXd1wyr7uo0GbvfHROVeit5w14ydm41g==}
     peerDependencies:
-      '@mysten/sui': ^2.20.3
+      '@mysten/sui': ^2.21.0
 
   '@mysten/window-wallet-core@0.2.0':
     resolution: {integrity: sha512-W5Pm3jWPK7tQ8kiqrD3lRRJIFUDNHW3CCGtu6kv0h+n+UPAcKTeqMEkBH9oXrqfa72+QxjMckZUvc0pYWbj3Rw==}
@@ -3776,8 +3776,8 @@ packages:
   '@simplewebauthn/browser@13.3.0':
     resolution: {integrity: sha512-BE/UWv6FOToAdVk0EokzkqQQDOWtNydYlY6+OrmiZ5SCNmb41VehttboTetUM3T/fr6EAFYVXjz4My2wg230rQ==}
 
-  '@sinclair/typebox@0.27.10':
-    resolution: {integrity: sha512-MTBk/3jGLNB2tVxv6uLlFh1iu64iYOQ2PbdOSK3NW8JZsmlaOh2q6sdtKowBhfw8QFLmYNzTW4/oK4uATIi6ZA==}
+  '@sinclair/typebox@0.27.11':
+    resolution: {integrity: sha512-GgN3Wv9cLxewwHewWzTjbXR6hEP4cLG/RfEfpNrOtzSAxjqhbaHFkb1PEFu7nb79j2ddHH+jNWH2vtbFHHi2xQ==}
 
   '@sinclair/typebox@0.34.49':
     resolution: {integrity: sha512-brySQQs7Jtn0joV8Xh9ZV/hZb9Ozb0pmazDIASBkYKCjXrXU3mpcFahmK/z4YDhGkQvP9mWJbVyahdtU5wQA+A==}
@@ -6713,8 +6713,8 @@ packages:
   caniuse-lite@1.0.30001793:
     resolution: {integrity: sha512-iwSsYWaCOoh26cV8NwNRViHlrfUvYsHDfRVcbtmw0Kg6PJIZZXwMkj1442FYLBGkeUf1juAsU3DTfxW579mrPA==}
 
-  caniuse-lite@1.0.30001805:
-    resolution: {integrity: sha512-52noaS3DubycKSXaU30TwPGIp+POyQSUVa5jBEq3vkRkY0kjyb3LQgvhU6WGyCcyXqVLWO0Cw0Q6BSdD0kUfVA==}
+  caniuse-lite@1.0.30001806:
+    resolution: {integrity: sha512-72Cuvd95zbSYPKq6Fhg8eDJRlzgWDf7/mtoZv6Qe/DYNCEBdNxoA3+rZAU2ZhGCpZlns3EssFavaZomckT5Uuw==}
 
   canonicalize@2.1.0:
     resolution: {integrity: sha512-F705O3xrsUtgt98j7leetNhTWPe+5S72rlL5O4jA1pKqBVQ/dT1O1D6PFxmSXvc0SUOinWS57DKx0I3CHrXJHQ==}
@@ -9683,14 +9683,14 @@ packages:
       typescript:
         optional: true
 
-  react-i18next@17.0.8:
-    resolution: {integrity: sha512-0ooKbGLU8JXhe1zwpQUWIeXSgLPOfwJmgheWRIUpcoA0CpyabpGhayjdG+/eA5esC1AQ8h2jWpXjJfzQzeDOCw==}
+  react-i18next@17.0.10:
+    resolution: {integrity: sha512-XneHftyYA774MJkkccSkZ5oKrUpCnXIPmxio3wemqrVzCRLWiGXOMbIzObrer03fNDEnm8g8R5yYls4HcE+esg==}
     peerDependencies:
       i18next: '>= 26.2.0'
       react: '>= 16.8.0'
       react-dom: '*'
       react-native: '*'
-      typescript: ^5 || ^6
+      typescript: ^5 || ^6 || ^7
     peerDependenciesMeta:
       react-dom:
         optional: true
@@ -9699,14 +9699,14 @@ packages:
       typescript:
         optional: true
 
-  react-i18next@17.0.9:
-    resolution: {integrity: sha512-buLzOSqHtXxjf+qgSrLWNTXVZ1jSwO6kUv3uJqSP1roGBPgNnbhFm7OmdVwWcgf2gIbUyP0J333uPyx+Btsi3w==}
+  react-i18next@17.0.8:
+    resolution: {integrity: sha512-0ooKbGLU8JXhe1zwpQUWIeXSgLPOfwJmgheWRIUpcoA0CpyabpGhayjdG+/eA5esC1AQ8h2jWpXjJfzQzeDOCw==}
     peerDependencies:
       i18next: '>= 26.2.0'
       react: '>= 16.8.0'
       react-dom: '*'
       react-native: '*'
-      typescript: ^5 || ^6 || ^7
+      typescript: ^5 || ^6
     peerDependenciesMeta:
       react-dom:
         optional: true
@@ -12615,7 +12615,7 @@ snapshots:
 
   '@jest/schemas@29.6.3':
     dependencies:
-      '@sinclair/typebox': 0.27.10
+      '@sinclair/typebox': 0.27.11
 
   '@jest/schemas@30.4.1':
     dependencies:
@@ -12831,7 +12831,7 @@ snapshots:
       '@lifi/sdk': 4.1.0
       react: 19.2.7
 
-  '@jumperexchange/widget@4.4.0(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
+  '@jumperexchange/widget@4.4.1(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.7)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
@@ -13153,7 +13153,7 @@ snapshots:
       i18next: 26.3.6(typescript@6.0.3)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
-      react-i18next: 17.0.9(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
+      react-i18next: 17.0.10(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
       zustand: 5.0.14(@types/react@19.2.17)(immer@11.1.8)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
     transitivePeerDependencies:
       - '@mui/material-pigment-css'
@@ -13188,7 +13188,7 @@ snapshots:
       motion: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
-      react-i18next: 17.0.9(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
+      react-i18next: 17.0.10(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
       react-intersection-observer: 10.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-transition-group: 4.4.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       zustand: 5.0.14(@types/react@19.2.17)(immer@11.1.8)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
@@ -13863,7 +13863,7 @@ snapshots:
 
   '@mysten/dapp-kit@1.0.6(@mysten/sui@2.20.0(typescript@6.0.3))(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(babel-plugin-macros@3.1.0)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
     dependencies:
-      '@mysten/slush-wallet': 1.1.5(@mysten/sui@2.20.0(typescript@6.0.3))(typescript@6.0.3)
+      '@mysten/slush-wallet': 1.1.7(@mysten/sui@2.20.0(typescript@6.0.3))(typescript@6.0.3)
       '@mysten/sui': 2.20.0(typescript@6.0.3)
       '@mysten/utils': 0.3.3
       '@mysten/wallet-standard': 0.20.3(@mysten/sui@2.20.0(typescript@6.0.3))
@@ -13896,11 +13896,11 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@mysten/slush-wallet@1.1.5(@mysten/sui@2.20.0(typescript@6.0.3))(typescript@6.0.3)':
+  '@mysten/slush-wallet@1.1.7(@mysten/sui@2.20.0(typescript@6.0.3))(typescript@6.0.3)':
     dependencies:
       '@mysten/sui': 2.20.0(typescript@6.0.3)
       '@mysten/utils': 0.4.0
-      '@mysten/wallet-standard': 0.21.5(@mysten/sui@2.20.0(typescript@6.0.3))
+      '@mysten/wallet-standard': 0.21.7(@mysten/sui@2.20.0(typescript@6.0.3))
       '@mysten/window-wallet-core': 0.2.0(typescript@6.0.3)
       valibot: 1.4.2(typescript@6.0.3)
     transitivePeerDependencies:
@@ -14003,7 +14003,7 @@ snapshots:
       '@mysten/sui': 2.20.0(typescript@6.0.3)
       '@wallet-standard/core': 1.1.2
 
-  '@mysten/wallet-standard@0.21.5(@mysten/sui@2.20.0(typescript@6.0.3))':
+  '@mysten/wallet-standard@0.21.7(@mysten/sui@2.20.0(typescript@6.0.3))':
     dependencies:
       '@mysten/sui': 2.20.0(typescript@6.0.3)
       '@wallet-standard/core': 1.1.2
@@ -16745,7 +16745,7 @@ snapshots:
 
   '@simplewebauthn/browser@13.3.0': {}
 
-  '@sinclair/typebox@0.27.10': {}
+  '@sinclair/typebox@0.27.11': {}
 
   '@sinclair/typebox@0.34.49': {}
 
@@ -22338,7 +22338,7 @@ snapshots:
   browserslist@4.28.6:
     dependencies:
       baseline-browser-mapping: 2.10.43
-      caniuse-lite: 1.0.30001805
+      caniuse-lite: 1.0.30001806
       electron-to-chromium: 1.5.392
       node-releases: 2.0.51
       update-browserslist-db: 1.2.3(browserslist@4.28.6)
@@ -22411,7 +22411,7 @@ snapshots:
 
   caniuse-lite@1.0.30001793: {}
 
-  caniuse-lite@1.0.30001805: {}
+  caniuse-lite@1.0.30001806: {}
 
   canonicalize@2.1.0: {}
 
@@ -25880,6 +25880,18 @@ snapshots:
       react-native: 0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6)
       typescript: 6.0.3
 
+  react-i18next@17.0.10(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3):
+    dependencies:
+      '@babel/runtime': 7.29.7
+      html-parse-stringify: 3.0.1
+      i18next: 26.3.6(typescript@6.0.3)
+      react: 19.2.7
+      use-sync-external-store: 1.6.0(react@19.2.7)
+    optionalDependencies:
+      react-dom: 19.2.7(react@19.2.7)
+      react-native: 0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6)
+      typescript: 6.0.3
+
   react-i18next@17.0.8(i18next@26.3.2(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3):
     dependencies:
       '@babel/runtime': 7.29.7
@@ -25905,18 +25917,6 @@ snapshots:
       typescript: 6.0.3
 
   react-i18next@17.0.8(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3):
-    dependencies:
-      '@babel/runtime': 7.29.7
-      html-parse-stringify: 3.0.1
-      i18next: 26.3.6(typescript@6.0.3)
-      react: 19.2.7
-      use-sync-external-store: 1.6.0(react@19.2.7)
-    optionalDependencies:
-      react-dom: 19.2.7(react@19.2.7)
-      react-native: 0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6)
-      typescript: 6.0.3
-
-  react-i18next@17.0.9(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3):
     dependencies:
       '@babel/runtime': 7.29.7
       html-parse-stringify: 3.0.1
