@@ -75,7 +75,7 @@ export function useWidgetConfig<T extends WidgetType>(
   const language = useLanguageConfig(
     {
       useMainWidget: type === 'main',
-      useLimitOrdersWidget: type === 'limit',
+      useLimitOrdersWidget: type === 'limit' || isLimitTabActive,
       useSwapBridgeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
       usePrivateWidget: isPrivateTabActive,
       ...context,
