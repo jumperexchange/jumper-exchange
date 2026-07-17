@@ -2,15 +2,16 @@
 
 import { CandlestickChart } from '@jumperexchange/shared-ui/components';
 import type { ChainId } from '@lifi/sdk';
-import { uniqBy } from 'lodash';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
+import type { Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { uniqBy } from 'lodash';
+import { AnimatePresence, motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { useCallback, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
 import { useTranslation } from 'react-i18next';
 import type { Address } from 'viem';
 import { ActionableSection } from '@/components/composite/ActionableSection/ActionableSection';
@@ -19,14 +20,15 @@ import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import { Size } from '@/components/core/buttons/types';
 import { useChains } from '@/hooks/useChains';
 import { useTokens } from '@/hooks/useTokens';
+import { useUrlParams } from '@/hooks/useUrlParams';
 import { datafeed } from '@/lib/tradingview/datafeed';
+import { useLimitOrderPriceStore } from '@/stores/limitOrderPrice/LimitOrderPriceStore';
 import type { BaseToken } from '@/types/tokens';
 import { createBaseToken } from '@/types/tokens';
 import { composeTokenKey } from '@/utils/tokenKey';
-import type { Theme } from '@mui/material/styles';
-import { CHANGE_WINDOWS, usePriceData } from './usePriceData';
-import { useUrlParams } from '@/hooks/useUrlParams';
+import { deriveLimitPriceLine } from './limitPriceLine';
 import { MarketPriceEmptyState } from './MarketPriceEmptyState';
+import { CHANGE_WINDOWS, usePriceData } from './usePriceData';
 
 function formatPrice(price: number): string {
   return price.toLocaleString(undefined, {
@@ -95,6 +97,30 @@ export const MarketPriceSection = ({
     : '';
 
   const { currentPrice, changes } = usePriceData(datafeed, activeSymbol);
+
+  const fromSymbol = fromToken
+    ? composeTokenKey(fromToken.chainId, fromToken.address)
+    : '';
+  const toSymbol = toToken
+    ? composeTokenKey(toToken.chainId, toToken.address)
+    : '';
+
+  const { currentPrice: fromTokenUsdPrice } = usePriceData(
+    datafeed,
+    fromSymbol,
+  );
+  const { currentPrice: toTokenUsdPrice } = usePriceData(datafeed, toSymbol);
+  const { limitPrice } = useLimitOrderPriceStore();
+  const limitPriceLine = deriveLimitPriceLine({
+    limitPrice,
+    fromToken,
+    toToken,
+    activeSymbol,
+    fromSymbol,
+    toSymbol,
+    fromTokenUsdPrice,
+    toTokenUsdPrice,
+  });
 
   const handleTokenClick = (token: BaseToken) => {
     const key = composeTokenKey(token.chainId, token.address);
@@ -248,6 +274,7 @@ export const MarketPriceSection = ({
                 dimOnLoading
                 symbol={activeSymbol}
                 datafeed={datafeed}
+                limitPrice={limitPriceLine}
                 timeframeButton={{
                   size: Size.XS,
                   sx: {
