@@ -4,15 +4,7 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@lifi/*'
   - '@bigmi/*'
-  - '@jumperexchange/shared-ui@0.16.0'
-  - '@jumperexchange/wallet-management@4.1.2'
-  - '@jumperexchange/widget-provider-bitcoin@4.2.1'
-  - '@jumperexchange/widget-provider-ethereum@4.1.2'
-  - '@jumperexchange/widget-provider-solana@4.1.2'
-  - '@jumperexchange/widget-provider-sui@4.1.2'
-  - '@jumperexchange/widget-provider-tron@4.1.2'
-  - '@jumperexchange/widget-provider@4.2.1'
-  - '@jumperexchange/widget@4.4.0'
+  - '@jumperexchange/*'
 allowBuilds:
   '@swc/core': true
   esbuild: true

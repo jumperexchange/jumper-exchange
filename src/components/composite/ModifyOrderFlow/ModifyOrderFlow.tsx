@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAccount } from 'wagmi';
 import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
@@ -18,9 +17,13 @@ import { Variant } from '@/components/core/buttons/types';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
 import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
-import { getOrderFlowWidgetContainerStyle } from '@/components/Widgets/variants/widgetConfig/utils';
+import {
+  buildOrderFlowFormData,
+  getOrderFlowWidgetContainerStyle,
+} from '@/components/Widgets/variants/widgetConfig/utils';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTheme } from '@mui/material';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 const CONTAINER_ID = 'modify-order-modal';
 const BOTTOM_SHEET_TOP_OFFSET = 24;
@@ -35,7 +38,8 @@ export const ModifyOrderFlowModal = () => {
   const { isModalOpen, selectedOrder, closeModal } = useModifyOrderFlowStore(
     (state) => state,
   );
-  const { address } = useAccount();
+  const { account } = useAccount();
+  const address = account.address;
 
   const [step, setStep] = useState<Step>('cancel');
 
@@ -91,28 +95,7 @@ export const ModifyOrderFlowModal = () => {
       theme: {
         container: getOrderFlowWidgetContainerStyle(theme),
       },
-      formData: {
-        sourceChain: {
-          chainId: selectedOrder.fromToken.chainId.toString(),
-          chainKey: '',
-        },
-        sourceToken: {
-          tokenAddress: selectedOrder.fromToken.address,
-          tokenSymbol: selectedOrder.fromToken.symbol,
-        },
-        destinationChain: {
-          chainId: selectedOrder.toToken.chainId.toString(),
-          chainKey: '',
-        },
-        destinationToken: {
-          tokenAddress: selectedOrder.toToken.address,
-          tokenSymbol: selectedOrder.toToken.symbol,
-        },
-        fromAmount: toAmount(
-          BigInt(selectedOrder.fromAmount),
-          selectedOrder.fromToken.decimals,
-        ),
-      },
+      formData: buildOrderFlowFormData(selectedOrder, toAmount),
     };
   }, [selectedOrder, toAmount, t, theme]);
 

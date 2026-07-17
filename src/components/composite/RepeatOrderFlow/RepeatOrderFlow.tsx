@@ -2,15 +2,18 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAccount } from 'wagmi';
 import { Widget as BaseWidget } from '@/components/Widgets/variants/base/Widget';
 import { ModalContainer } from '@/components/core/modals/ModalContainer/ModalContainer';
 import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
 import type { LimitOrdersWidgetContext } from '@/components/Widgets/variants/widgetConfig/types';
-import { getOrderFlowWidgetContainerStyle } from '@/components/Widgets/variants/widgetConfig/utils';
+import {
+  buildOrderFlowFormData,
+  getOrderFlowWidgetContainerStyle,
+} from '@/components/Widgets/variants/widgetConfig/utils';
 import { useTokenAmountInput } from '@/hooks/tokens/useTokenAmountInput';
 import { useTheme } from '@mui/material';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 export const RepeatOrderFlowModal = () => {
   const { t } = useTranslation();
@@ -19,7 +22,8 @@ export const RepeatOrderFlowModal = () => {
   const { isModalOpen, selectedOrder, closeModal } = useRepeatOrderFlowStore(
     (state) => state,
   );
-  const { address } = useAccount();
+  const { account } = useAccount();
+  const address = account.address;
 
   const context = useMemo((): LimitOrdersWidgetContext | null => {
     if (!selectedOrder) {
@@ -30,28 +34,7 @@ export const RepeatOrderFlowModal = () => {
       theme: {
         container: getOrderFlowWidgetContainerStyle(theme),
       },
-      formData: {
-        sourceChain: {
-          chainId: selectedOrder.fromToken.chainId.toString(),
-          chainKey: '',
-        },
-        sourceToken: {
-          tokenAddress: selectedOrder.fromToken.address,
-          tokenSymbol: selectedOrder.fromToken.symbol,
-        },
-        destinationChain: {
-          chainId: selectedOrder.toToken.chainId.toString(),
-          chainKey: '',
-        },
-        destinationToken: {
-          tokenAddress: selectedOrder.toToken.address,
-          tokenSymbol: selectedOrder.toToken.symbol,
-        },
-        fromAmount: toAmount(
-          BigInt(selectedOrder.fromAmount),
-          selectedOrder.fromToken.decimals,
-        ),
-      },
+      formData: buildOrderFlowFormData(selectedOrder, toAmount),
     };
   }, [selectedOrder, toAmount, t, theme]);
 

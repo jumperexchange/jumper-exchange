@@ -6,7 +6,12 @@ import type {
 } from '@jumperexchange/widget';
 import { ChainType } from '@jumperexchange/widget';
 import type { StarterVariantType } from '@/types/internal';
-import type { WidgetFeatureFlags, WidgetVariantDescriptor } from './types';
+import type { LimitOrder } from '@/types/jumper-backend';
+import type {
+  FormData,
+  WidgetFeatureFlags,
+  WidgetVariantDescriptor,
+} from './types';
 
 const WIDGET_VARIANT_REGISTRY: Record<string, WidgetVariantDescriptor> = {
   default: {
@@ -163,3 +168,38 @@ export const getOrderFlowWidgetContainerStyle = (theme: Theme) => ({
     minWidth: 400,
   },
 });
+
+/** Shared formData builder for the limit-order modify/repeat flow modals. */
+export const buildOrderFlowFormData = (
+  order: LimitOrder,
+  toAmount: (raw: bigint, decimals: number) => string,
+): FormData => {
+  const fromAmount = toAmount(
+    BigInt(order.fromAmount),
+    order.fromToken.decimals,
+  );
+  const toAmountValue = toAmount(
+    BigInt(order.toAmount),
+    order.toToken.decimals,
+  );
+  return {
+    sourceChain: {
+      chainId: order.fromToken.chainId.toString(),
+      chainKey: '',
+    },
+    sourceToken: {
+      tokenAddress: order.fromToken.address,
+      tokenSymbol: order.fromToken.symbol,
+    },
+    destinationChain: {
+      chainId: order.toToken.chainId.toString(),
+      chainKey: '',
+    },
+    destinationToken: {
+      tokenAddress: order.toToken.address,
+      tokenSymbol: order.toToken.symbol,
+    },
+    fromAmount,
+    limitPrice: (Number(toAmountValue) / Number(fromAmount)).toString(),
+  };
+};
