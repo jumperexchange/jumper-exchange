@@ -1,4 +1,5 @@
 'use client';
+import { isObject, mapValues } from 'lodash';
 import { getSiteUrl } from '@/const/urls';
 import type { JumperEventData } from '@/utils/tracking/jumperTracking';
 import {
@@ -39,11 +40,16 @@ const googleEvent = ({
           | Record<number, TransformedRoute>;
       };
 }) => {
-  typeof window !== 'undefined' &&
-    window?.gtag('event', action, {
-      category: category,
-      ...data,
-    });
+  if (typeof window === 'undefined') {
+    return;
+  }
+  const serialized = data
+    ? mapValues(data, (v) => (isObject(v) ? JSON.stringify(v) : v))
+    : undefined;
+  window?.gtag('event', action, {
+    category: category,
+    ...serialized,
+  });
 };
 
 const addressableEvent = ({
