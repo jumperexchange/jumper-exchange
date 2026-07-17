@@ -1,29 +1,31 @@
 'use client';
-import { checkWinningSwap } from '@/components/GoldenRouteModal/utils';
-import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
-import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
-import { useMultisig } from '@/hooks/useMultisig';
-import { useActiveTabStore } from '@/stores/activeTab';
-import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
-import { useMultisigStore } from '@/stores/multisig';
-import type { RouteExtended } from '@lifi/sdk';
 import { useAccount } from '@jumperexchange/wallet-management';
 import type {
   ChainTokenSelected,
   FormFieldChanged,
+  LimitPriceChanged,
   RouteExecutionUpdate,
 } from '@jumperexchange/widget';
 import { useWidgetEvents } from '@jumperexchange/widget';
+import type { RouteExtended } from '@lifi/sdk';
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
+import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { getRouteStatus } from 'src/utils/routes';
+import { checkWinningSwap } from '@/components/GoldenRouteModal/utils';
+import { MultisigConfirmationModal } from '@/components/MultisigConfirmationModal';
+import { MultisigConnectedAlert } from '@/components/MultisigConnectedAlert';
+import { useMultisig } from '@/hooks/useMultisig';
+import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
+import { useActiveTabStore } from '@/stores/activeTab';
+import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection';
+import { useLimitOrderPriceStore } from '@/stores/limitOrderPrice/LimitOrderPriceStore';
+import { useMultisigStore } from '@/stores/multisig';
+import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
 import type { WidgetEventsConfig } from './WidgetEventsManager';
 import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
-import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
-import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
-import dynamic from 'next/dynamic';
-import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
 
 const GoldenRouteModal = dynamic(() =>
   import('src/components/GoldenRouteModal/GoldenRouteModal').then(
@@ -44,6 +46,7 @@ export function WidgetEvents() {
     state.setDestinationChain,
   ]);
   const setCompletedRoute = useRouteStore((state) => state.setCompletedRoute);
+  const setLimitPrice = useLimitOrderPriceStore((state) => state.setLimitPrice);
 
   const { account } = useAccount();
 
@@ -182,6 +185,10 @@ export function WidgetEvents() {
       }
     };
 
+    const limitPriceChanged = (data: LimitPriceChanged) => {
+      setLimitPrice(data);
+    };
+
     const config: WidgetEventsConfig = {
       routeExecutionUpdated,
       routeExecutionCompleted,
@@ -189,6 +196,7 @@ export function WidgetEvents() {
       destinationChainTokenSelected,
       pageEntered,
       formFieldChanged,
+      limitPriceChanged,
     };
 
     setupWidgetEvents(config, widgetEvents);
@@ -211,6 +219,7 @@ export function WidgetEvents() {
     setFromToken,
     setToToken,
     refreshByAddress,
+    setLimitPrice,
   ]);
 
   const onMultiSigConfirmationModalClose = () => {
