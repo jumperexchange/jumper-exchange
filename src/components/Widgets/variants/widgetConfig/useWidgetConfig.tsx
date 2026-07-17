@@ -23,6 +23,7 @@ import {
 import { useWidgetDependencies } from './useWidgetDependencies';
 import { useLimitOrdersWidgetConfig } from './useLimitOrdersWidgetConfig';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
+import { resolveActiveNavigationTab } from './utils';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic
@@ -37,9 +38,19 @@ export function useWidgetConfig<T extends WidgetType>(
         ? ZapWidgetContext
         : LimitOrdersWidgetContext,
 ): { config: WidgetConfig; isReady: boolean } {
-  const activeNavigationTab = useActiveNavigationTab();
-  const isPrivateTabActive = activeNavigationTab === 'private';
-  const isLimitTabActive = activeNavigationTab === 'limit';
+  const globalActiveNavigationTab = useActiveNavigationTab();
+  const resolvedVariant = (context as MainWidgetContext).resolvedVariant;
+  const activeTabKey = resolveActiveNavigationTab({
+    type,
+    resolvedVariant,
+    globalActiveNavigationTab,
+  });
+  const isPrivateTabActive =
+    activeTabKey === 'private' || resolvedVariant?.key === 'private';
+  const isLimitTabActive =
+    activeTabKey === 'limit' ||
+    resolvedVariant?.key === 'limit' ||
+    type === 'limit';
 
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
@@ -75,7 +86,7 @@ export function useWidgetConfig<T extends WidgetType>(
   const mainWidgetConfig = useMainWidgetConfig(
     context as MainWidgetContext,
     deps,
-    activeNavigationTab,
+    activeTabKey,
   );
   const missionWidgetConfig = useMissionWidgetConfig(
     context as MissionWidgetContext,

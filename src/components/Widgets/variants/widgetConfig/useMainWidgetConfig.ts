@@ -32,7 +32,7 @@ function toolsConfig(allow?: string[], deny?: string[]) {
 export function useMainWidgetConfig(
   context: MainWidgetContext,
   deps: HookDependencies,
-  activeNavigationTab?: NavigationTabKey | null,
+  activeTabKey?: NavigationTabKey,
 ): Partial<WidgetConfig> {
   const { tokens: memeListTokens } = useMemelist({
     enabled: context.partnerName === ThemesMap.Memecoins,
@@ -66,12 +66,6 @@ export function useMainWidgetConfig(
       mode = 'default',
       navigationTabs,
     } = context.resolvedVariant ?? {};
-
-    const activeTabKey = navigationTabs?.includes(
-      activeNavigationTab as NavigationTabKey,
-    )
-      ? activeNavigationTab
-      : navigationTabs?.[0];
 
     const config: Partial<WidgetConfig> = {
       keyPrefix: `jumper-${activeTabKey ?? key}`,
@@ -204,6 +198,6 @@ export function useMainWidgetConfig(
     allowedChainsByVariant,
     denyBridges,
     denyExchanges,
-    activeNavigationTab,
+    activeTabKey,
   ]);
 }

@@ -10,6 +10,7 @@ import type { LimitOrder } from '@/types/jumper-backend';
 import type {
   FormData,
   WidgetFeatureFlags,
+  WidgetType,
   WidgetVariantDescriptor,
 } from './types';
 
@@ -70,6 +71,38 @@ export function resolveWidgetVariant(
   }
 
   return base;
+}
+
+export interface ResolveActiveNavigationTabParams {
+  type: WidgetType;
+  resolvedVariant?: WidgetVariantDescriptor;
+  /** Raw value from the shared, module-level useActiveNavigationTab() subscription. */
+  globalActiveNavigationTab?: NavigationTabKey | null;
+}
+
+/**
+ * useActiveNavigationTab() subscribes to a module-level singleton shared by
+ * every <LiFiWidget> instance on the page, but only the main tabbed widget
+ * ever emits NavigationTabChanged. Every other instance (limit-order modals,
+ * zap widgets) must not treat that global value as its own — otherwise it
+ * inherits the main widget's tab and resolves keyPrefix/apiUrl from a signal
+ * that isn't meaningful for it.
+ */
+export function resolveActiveNavigationTab({
+  type,
+  resolvedVariant,
+  globalActiveNavigationTab,
+}: ResolveActiveNavigationTabParams): NavigationTabKey | undefined {
+  const navigationTabs = resolvedVariant?.navigationTabs;
+  const ownsNavigationTabs = type === 'main' && !!navigationTabs?.length;
+
+  if (!ownsNavigationTabs) {
+    return undefined;
+  }
+
+  return navigationTabs!.includes(globalActiveNavigationTab as NavigationTabKey)
+    ? (globalActiveNavigationTab as NavigationTabKey)
+    : navigationTabs![0];
 }
 
 export const generateRouteLabel = (
