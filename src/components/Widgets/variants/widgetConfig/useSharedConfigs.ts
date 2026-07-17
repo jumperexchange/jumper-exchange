@@ -4,11 +4,11 @@ import { useMemo } from 'react';
 import { getCustomRPCs, publicRPCList } from 'src/const/rpcList';
 import type { LanguageKey } from 'src/types/i18n';
 import { TaskType } from 'src/types/strapi';
-import { baseBuilderCodeHook } from 'src/utils/baseBuilderCode';
 import getApiUrl from 'src/utils/getApiUrl';
 import envConfig from '@/config/env-config';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { useReferrerStore } from '@/stores/referrer/ReferrerStore';
+import { baseBuilderCodeHook } from '@/utils/baseBuilderCode';
 import type {
   EnglishLanguageResource,
   FormData,
