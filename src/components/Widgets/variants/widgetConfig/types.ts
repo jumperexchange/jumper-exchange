@@ -62,6 +62,7 @@ export interface FormData {
   fromAmount?: string;
   toAddress?: TaskWidgetInformationWalletData;
   minFromAmountUSD?: number;
+  limitPrice?: number | string;
 }
 
 export interface CommonWidgetContext {

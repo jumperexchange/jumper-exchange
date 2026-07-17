@@ -123,6 +123,10 @@ export function useSharedFormConfig(
       partialConfig.minFromAmountUSD = formData.minFromAmountUSD;
     }
 
+    if (formData?.limitPrice) {
+      partialConfig.limitPrice = formData.limitPrice;
+    }
+
     return partialConfig;
   }, [
     formData?.sourceChain?.chainId,
@@ -133,6 +137,7 @@ export function useSharedFormConfig(
     formData?.toAddress?.walletAddress,
     formData?.toAddress?.chainType,
     formData?.minFromAmountUSD,
+    formData?.limitPrice,
   ]);
 }
 

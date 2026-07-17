@@ -8,7 +8,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { motion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAccount } from 'wagmi';
 import { SectionCard } from '@/components/Cards/SectionCard/SectionCard';
 import { StatusBottomSheet } from '@/components/composite/StatusBottomSheet/StatusBottomSheet';
 import { Button } from '@/components/core/buttons/Button/Button';
@@ -18,6 +17,7 @@ import { useCancelOrderFlowStore } from '@/stores/limitOrderFlow/CancelOrderFlow
 import { getQueryKey } from '@/utils/queries/getQueryKey';
 import { useCancelOrder } from './hooks/useCancelOrder';
 import { useCancelOrderStatusSheet } from './hooks/useCancelOrderStatusSheet';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 const CONTAINER_ID = 'cancel-order-modal';
 const BOTTOM_SHEET_TOP_OFFSET = 24;
@@ -31,7 +31,8 @@ export const CancelOrderFlowModal = () => {
   );
   const { cancelOrderAsync, result, isPending, isSuccess, isError, reset } =
     useCancelOrder();
-  const { address } = useAccount();
+  const { account } = useAccount();
+  const address = account.address;
 
   const handleClose = () => {
     reset();
