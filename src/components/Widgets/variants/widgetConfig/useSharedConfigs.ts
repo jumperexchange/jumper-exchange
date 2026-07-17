@@ -8,6 +8,7 @@ import getApiUrl from 'src/utils/getApiUrl';
 import envConfig from '@/config/env-config';
 import { AppPaths, getSiteUrl } from '@/const/urls';
 import { useReferrerStore } from '@/stores/referrer/ReferrerStore';
+import { baseBuilderCodeHook } from '@/utils/baseBuilderCode';
 import type {
   EnglishLanguageResource,
   FormData,
@@ -75,6 +76,11 @@ export function useSharedRPCConfig(
           maxPriceImpact: 0.4,
           jitoBundle: true,
         },
+        ...(baseBuilderCodeHook && {
+          executionOptions: {
+            updateTransactionRequestHook: baseBuilderCodeHook,
+          },
+        }),
       },
     }),
     [params.isPrivateVariant],
