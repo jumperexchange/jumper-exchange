@@ -1343,6 +1343,11 @@ export default interface Resources {
       exchange: {
         title: 'Exchange';
       };
+      limitOrder: {
+        inProgressTitle: 'Limit';
+        placeOrderButton: 'Place order';
+        reviewTitle: 'Review order';
+      };
       private: {
         title: 'Private Swap';
       };

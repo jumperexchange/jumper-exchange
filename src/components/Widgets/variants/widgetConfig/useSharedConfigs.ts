@@ -175,6 +175,19 @@ export function useLanguageConfig(
           : {}),
       };
 
+      if (context.useLimitOrdersWidget) {
+        additionalLanguageResources.button = {
+          swapReview: deps.translation.t('widget.limitOrder.reviewTitle'),
+          startSwapping: deps.translation.t(
+            'widget.limitOrder.placeOrderButton',
+          ),
+        };
+        additionalLanguageResources.header = {
+          ...additionalLanguageResources.header,
+          swap: deps.translation.t('widget.limitOrder.inProgressTitle'),
+        };
+      }
+
       if (context.usePrivateWidget) {
         additionalLanguageResources.info = {
           title: {
