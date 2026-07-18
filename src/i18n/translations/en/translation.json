@@ -1039,8 +1039,7 @@
     },
     "limitOrder": {
       "reviewTitle": "Review order",
-      "placeOrderButton": "Place order",
-      "inProgressTitle": "Limit"
+      "placeOrderButton": "Place order"
     }
   },
   "links": {
