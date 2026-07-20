@@ -1344,6 +1344,9 @@ export default interface Resources {
         title: 'Exchange';
       };
       limitOrder: {
+        orderPlacedLabel: 'Order placed';
+        orderPlacedTitle: 'Order placed successfully';
+        orderPlacementCompleted: 'Order placement completed';
         placeOrderButton: 'Place order';
         reviewTitle: 'Review order';
       };

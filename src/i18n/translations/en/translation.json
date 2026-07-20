@@ -1039,7 +1039,10 @@
     },
     "limitOrder": {
       "reviewTitle": "Review order",
-      "placeOrderButton": "Place order"
+      "placeOrderButton": "Place order",
+      "orderPlacedTitle": "Order placed successfully",
+      "orderPlacementCompleted": "Order placement completed",
+      "orderPlacedLabel": "Order placed"
     }
   },
   "links": {
