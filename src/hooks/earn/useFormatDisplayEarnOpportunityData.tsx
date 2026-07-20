@@ -421,7 +421,10 @@ export const useFormatDisplayEarnOpportunityData = (
       windowOptions?.apyWindow,
     );
     const tvlUsd = earnOpportunity?.latest?.tvlUsd;
-    const rewardsApy = apy?.jumperReward;
+
+    // jumperReward is a window-independent protocol incentive — always read it
+    // from the 7d field so it doesn't disappear when apy30d is absent.
+    const rewardsApy = earnOpportunity?.latest?.apy?.jumperReward;
 
     const apyItem =
       !!apy?.customReward && apy.customReward > 0
