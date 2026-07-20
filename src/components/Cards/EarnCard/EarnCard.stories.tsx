@@ -149,7 +149,8 @@ export const CompactWithApyWindowToggle: Story = {
       <Stack spacing={2} sx={{ maxWidth: 400 }}>
         <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
         <EarnCard
-          {...args}
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
           variant="compact"
           apyWindow={apyWindow}
           primaryAction={compactPrimaryAction}
@@ -169,7 +170,8 @@ export const ListItemWithApyWindowToggle: Story = {
       <Stack spacing={2}>
         <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
         <EarnCard
-          {...args}
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
           variant="list-item"
           apyWindow={apyWindow}
           primaryAction={listItemPrimaryAction}
@@ -201,7 +203,8 @@ export const CompactWithApyWindowUnknown: Story = {
       <Stack spacing={2} sx={{ maxWidth: 400 }}>
         <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
         <EarnCard
-          {...args}
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
           variant="compact"
           apyWindow={apyWindow}
           primaryAction={compactPrimaryAction}
@@ -266,13 +269,14 @@ export const OverviewWithBadge: Story = {
 
 export const OverviewWithApyWindowToggle: Story = {
   render: (args) => {
-    const { apyWindow, setApyWindow } = useApyWindowMock();
+    const { apyWindow, toggleApyWindow } = useApyWindowMock();
     return (
       <EarnCard
-        {...args}
+        // hardcast to work around union discrimination
+        {...(args as typeof commonArgs)}
         variant="overview"
         apyWindow={apyWindow}
-        setApyWindow={setApyWindow}
+        onToggleApyWindow={toggleApyWindow}
       />
     );
   },

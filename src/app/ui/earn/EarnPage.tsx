@@ -10,6 +10,7 @@ import { EarnDetailsRisks } from 'src/components/EarnDetails/EarnDetailsRisks/Ea
 import { EarnDetailsSection } from 'src/components/EarnDetails/EarnDetailsSection';
 import { EarnRelatedMarkets } from 'src/components/EarnRelatedMarkets/EarnRelatedMarkets';
 import { AppPaths } from 'src/const/urls';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { useEarnOpportunityBySlug } from 'src/hooks/earn/useEarnOpportunityBySlug';
 import { useEarnRelatedMarkets } from 'src/hooks/earn/useEarnRelatedMarkets';
 import { RequestRedeemFlowModal } from '@/components/composite/RequestRedeemFlow/RequestRedeemFlow';
@@ -26,6 +27,7 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
   const { data: opportunity, isPending: isOpportunityPending } =
     useEarnOpportunityBySlug(slug);
   const { data: relatedMarkets } = useEarnRelatedMarkets(slug);
+  const { apyWindow } = useApyWindow();
 
   if (isOpportunityPending || !opportunity) {
     return <EarnPageSkeleton />;
@@ -45,6 +47,7 @@ export const EarnPage: FC<EarnPageProps> = ({ slug }) => {
       <EarnDetailsSection>
         <EarnRelatedMarkets
           relatedMarkets={relatedMarkets?.filter(Boolean).slice(0, 3) ?? []}
+          apyWindow={apyWindow}
         />
       </EarnDetailsSection>
       <DepositFlowModal />

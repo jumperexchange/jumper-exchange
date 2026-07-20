@@ -9,26 +9,30 @@ interface CommonEarnCardProps {
   primaryAction?: React.ReactNode;
   headerBadge?: React.ReactNode;
   href?: string;
-  apyWindow?: ApyWindow;
-  setApyWindow?: (apyWindow: ApyWindow) => void;
 }
 
 export interface EarnCardNotEmptyProps extends CommonEarnCardProps {
   data: EarnOpportunityWithLatestAnalytics;
   isLoading?: boolean;
   isMissingPosition?: false;
+  apyWindow: ApyWindow;
+  onToggleApyWindow?: () => void;
 }
 
 export interface EarnCardEmptyAndLoadingProps extends CommonEarnCardProps {
   data: null;
   isLoading: true;
   isMissingPosition?: false;
+  apyWindow?: never;
+  onToggleApyWindow?: never;
 }
 
 export interface EarnCardMissingPositionProps extends CommonEarnCardProps {
   data: null;
   isLoading: false;
   isMissingPosition: true;
+  apyWindow?: never;
+  onToggleApyWindow?: never;
 }
 
 export type EarnCardProps =

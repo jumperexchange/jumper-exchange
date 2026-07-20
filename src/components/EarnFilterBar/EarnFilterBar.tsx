@@ -26,8 +26,8 @@ import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
   setVariant: (variant: EarnCardVariant) => void;
-  apyWindow?: ApyWindow;
-  setApyWindow?: (apyWindow: ApyWindow) => void;
+  apyWindow: ApyWindow;
+  setApyWindow: (apyWindow: ApyWindow) => void;
   isLoading?: boolean;
 }
 
@@ -52,8 +52,6 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
     ? EarnFilterBarContentForYou
     : EarnFilterBarContentAllDesktop;
 
-  const hasApyWindow = apyWindow && setApyWindow;
-
   return (
     <EarnFilterBarContainer>
       <EarnFilterBarHeaderContainer>
@@ -75,9 +73,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
               })}
             />
           )}
-          {hasApyWindow && (
-            <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
-          )}
+          <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
           {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
         </Stack>
       </EarnFilterBarHeaderContainer>

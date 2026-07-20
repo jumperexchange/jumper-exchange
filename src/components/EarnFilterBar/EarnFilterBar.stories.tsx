@@ -8,13 +8,20 @@ import {
 } from '../../app/ui/earn/types';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { useApyWindowMock } from '@/hooks/earn/useApyWindow.mock';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 import { JUMPER_STRAPI_URL } from '@/const/urls';
 
+const noopSetApyWindow = (_apyWindow: ApyWindow) => {};
+
 const meta = {
   component: EarnFilterBar,
   title: 'Earn/FilterBar',
+  args: {
+    apyWindow: ApyWindowOptions.SEVEN_DAY,
+    setApyWindow: noopSetApyWindow,
+  },
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');

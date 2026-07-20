@@ -45,17 +45,18 @@ interface CommonHeroEarnCardProps {
   copy?: EarnHeroCardCopyKey;
   isMain?: boolean;
   href?: string;
-  apyWindow?: ApyWindow;
 }
 
 export interface HeroEarnCardNotEmptyProps extends CommonHeroEarnCardProps {
   data: EarnOpportunityWithLatestAnalytics;
   isLoading?: boolean;
+  apyWindow: ApyWindow;
 }
 
 export interface HeroEarnCardEmptyAndLoadingProps extends CommonHeroEarnCardProps {
   data: null;
   isLoading: true;
+  apyWindow?: never;
 }
 
 type HeroEarnCardProps =

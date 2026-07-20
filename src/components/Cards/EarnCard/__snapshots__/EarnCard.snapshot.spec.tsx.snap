@@ -182,11 +182,11 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -505,11 +505,11 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -832,11 +832,11 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
                 >
-                  labels.apy
+                  earn.apyWindow.apyLabel
                 </p>
                 <svg
                   aria-hidden="true"
-                  aria-label="tooltips.apy"
+                  aria-label="earn.apyWindow.tooltip"
                   class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                   data-mui-internal-clone-element="true"
                   data-testid="InfoIcon"
@@ -1213,11 +1213,11 @@ exports[`EarnCard snapshot > compact card with lockup days and cap in dollar mat
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -1536,11 +1536,11 @@ exports[`EarnCard snapshot > compact card with lockup days matches snapshot 1`] 
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -1854,11 +1854,11 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -2203,11 +2203,11 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -2552,11 +2552,11 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
               >
-                labels.apy
+                earn.apyWindow.apyLabel
               </p>
               <svg
                 aria-hidden="true"
-                aria-label="tooltips.apy"
+                aria-label="earn.apyWindow.tooltip"
                 class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
                 data-mui-internal-clone-element="true"
                 data-testid="InfoIcon"
@@ -2786,7 +2786,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -2794,7 +2794,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div
@@ -3023,7 +3023,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -3031,7 +3031,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div
@@ -3238,7 +3238,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
               </p>
             </div>
             <div
-              aria-label="tooltips.apy"
+              aria-label="earn.apyWindow.tooltip"
               class="MuiBox-root css-pq1w8v"
               data-mui-internal-clone-element="true"
             >
@@ -3246,7 +3246,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
                 class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
                 data-testid="apy-0.07150000000000001"
               >
-                7.15% labels.apy
+                7.15% earn.apyWindow.apyLabel
               </p>
             </div>
             <div
@@ -3512,7 +3512,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -3520,7 +3520,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div
@@ -3723,7 +3723,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -3731,7 +3731,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div
@@ -3903,7 +3903,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -3911,7 +3911,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div
@@ -4140,7 +4140,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             </p>
           </div>
           <div
-            aria-label="tooltips.apy"
+            aria-label="earn.apyWindow.tooltip"
             class="MuiBox-root css-pq1w8v"
             data-mui-internal-clone-element="true"
           >
@@ -4148,7 +4148,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
               data-testid="apy-0.07150000000000001"
             >
-              7.15% labels.apy
+              7.15% earn.apyWindow.apyLabel
             </p>
           </div>
           <div

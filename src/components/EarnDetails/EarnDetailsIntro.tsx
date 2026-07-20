@@ -29,7 +29,7 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
 }) => {
   useZapEarnOpportunitySlugStorage(data.slug);
   const { t } = useTranslation();
-  const { apyWindow, setApyWindow } = useApyWindow();
+  const { apyWindow, toggleApyWindow } = useApyWindow();
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const updateBadgeLabel = useMemo(() => {
     if (!data.latest.date) {
@@ -66,7 +66,7 @@ export const EarnDetailsIntro: FC<EarnDetailsIntroProps> = ({
               }
               fullWidth={isMobile}
               apyWindow={apyWindow}
-              setApyWindow={setApyWindow}
+              onToggleApyWindow={toggleApyWindow}
             />
             <EarnDetailsActions
               earnOpportunity={{

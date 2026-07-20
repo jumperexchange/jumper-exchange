@@ -21,7 +21,7 @@ export const EarnOpportunitiesCards = ({
   isLoading: boolean;
   variant: EarnCardVariant;
   showPlaceholderCard: boolean;
-  apyWindow?: ApyWindow;
+  apyWindow: ApyWindow;
 }) => {
   const isCompact = variant === 'compact';
   const gridItems = useMemo(

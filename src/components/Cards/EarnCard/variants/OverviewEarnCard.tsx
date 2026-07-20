@@ -12,7 +12,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { OverviewEarnSkeleton } from './OverviewEarnSkeleton';
 import { useFormatDisplayEarnOpportunityData } from '@/hooks/earn/useFormatDisplayEarnOpportunityData';
-import { ApyWindowOptions } from '@/utils/earn/apyWindow';
 
 export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -20,23 +19,12 @@ export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   fullWidth,
   headerBadge,
   apyWindow,
-  setApyWindow,
+  onToggleApyWindow,
 }) => {
   const isEmpty = !data || isLoading;
   const { t } = useTranslation();
 
-  const hasApyWindow = apyWindow && setApyWindow;
-
-  const onToggleApyWindow = () => {
-    if (!setApyWindow || !apyWindow) {
-      return;
-    }
-    setApyWindow(
-      apyWindow === ApyWindowOptions.SEVEN_DAY
-        ? ApyWindowOptions.THIRTY_DAY
-        : ApyWindowOptions.SEVEN_DAY,
-    );
-  };
+  const hasApyWindow = apyWindow && onToggleApyWindow;
 
   const { overviewItems } = useFormatDisplayEarnOpportunityData(
     data,
