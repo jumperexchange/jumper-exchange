@@ -178,8 +178,8 @@ export const EarnDetailsActions = ({
               i18nKey="earn.position.disabled"
               values={{ protocolName: earnOpportunity.protocol.name }}
               components={[
-                earnOpportunity.protocol.url ? (
-                  <ExternalLink href={earnOpportunity.protocol.url} />
+                earnOpportunity.url ? (
+                  <ExternalLink href={earnOpportunity.url} />
                 ) : (
                   <EmptyComponent />
                 ),

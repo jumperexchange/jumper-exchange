@@ -6,21 +6,21 @@ import { EmptyComponent } from '@/components/core/EmptyComponent/EmptyComponent'
 interface DisabledEarnFeatureTooltipProps {
   i18nKey: ParseKeys<'translation'>;
   protocolName?: string;
-  protocolUrl?: string | null;
+  fallbackUrl?: string | null;
 }
 
 export const DisabledEarnFeatureTooltip = ({
   i18nKey,
   protocolName,
-  protocolUrl,
+  fallbackUrl,
 }: DisabledEarnFeatureTooltipProps) => (
   <Trans<ParseKeys<'translation'>>
     i18nKey={i18nKey}
     values={{ protocolName }}
     components={[
-      protocolUrl ? (
+      fallbackUrl ? (
         <ExternalLink
-          href={protocolUrl}
+          href={fallbackUrl}
           sx={(theme) => ({
             fontSize: 'inherit',
             color: (theme.vars || theme).palette.textPrimaryInverted,

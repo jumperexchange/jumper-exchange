@@ -63,7 +63,7 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.depositDisabled"
       protocolName={earnOpportunity.protocol.name}
-      protocolUrl={earnOpportunity.protocol.url}
+      fallbackUrl={earnOpportunity.url}
     />
   ) : undefined;
 
@@ -125,7 +125,7 @@ export const DepositFlowOnDemandButton: FC<
   const tooltipContent = isFeatureDisabled ? (
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.depositDisabled"
-      protocolUrl={protocolUrl}
+      fallbackUrl={protocolUrl}
       protocolName={protocolName}
     />
   ) : undefined;

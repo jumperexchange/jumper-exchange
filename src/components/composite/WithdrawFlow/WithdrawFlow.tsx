@@ -62,7 +62,7 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.withdrawDisabled"
       protocolName={earnOpportunity.protocol.name}
-      protocolUrl={earnOpportunity.protocol.url}
+      fallbackUrl={earnOpportunity.url}
     />
   ) : undefined;
   return (
@@ -130,7 +130,7 @@ export const WithdrawFlowOnDemandButton: FC<
   const tooltipContent = isFeatureDisabled ? (
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.withdrawDisabled"
-      protocolUrl={protocolUrl}
+      fallbackUrl={protocolUrl}
       protocolName={protocolName}
     />
   ) : undefined;
