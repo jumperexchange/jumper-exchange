@@ -1,4 +1,12 @@
 // @vitest-environment jsdom
+import { ChainType } from '@lifi/sdk';
+import type { Account } from '@jumperexchange/widget-provider';
+import {
+  useBitcoinContext,
+  useSolanaContext,
+  useSuiContext,
+  useTronContext,
+} from '@jumperexchange/widget-provider';
 import { useChains } from '@/hooks/useChains';
 import { useHydrated } from '@/hooks/useHydrated';
 import { act, renderHook } from '@testing-library/react';
@@ -13,6 +21,21 @@ import {
 vi.mock('@/hooks/useHydrated', () => ({ useHydrated: vi.fn() }));
 vi.mock('@/hooks/useChains', () => ({ useChains: vi.fn() }));
 vi.mock('wagmi', () => ({ useConnection: vi.fn() }));
+vi.mock('@jumperexchange/widget-provider', () => ({
+  useSolanaContext: vi.fn(),
+  useBitcoinContext: vi.fn(),
+  useSuiContext: vi.fn(),
+  useTronContext: vi.fn(),
+}));
+
+const disconnectedAccount = (chainType: ChainType): Account => ({
+  chainType,
+  isConnected: false,
+  isConnecting: false,
+  isReconnecting: false,
+  isDisconnected: true,
+  status: 'disconnected',
+});
 
 const mockHydrated = (hydrated: boolean) => {
   vi.mocked(useHydrated).mockReturnValue(hydrated);
@@ -40,11 +63,37 @@ const mockConnection = ({
   } as ReturnType<typeof useConnection>);
 };
 
+const mockNonEvmAccounts = ({
+  solana = disconnectedAccount(ChainType.SVM),
+  bitcoin = disconnectedAccount(ChainType.UTXO),
+  sui = disconnectedAccount(ChainType.MVM),
+  tron = disconnectedAccount(ChainType.TVM),
+}: {
+  solana?: Account;
+  bitcoin?: Account;
+  sui?: Account;
+  tron?: Account;
+} = {}) => {
+  vi.mocked(useSolanaContext).mockReturnValue({
+    account: solana,
+  } as ReturnType<typeof useSolanaContext>);
+  vi.mocked(useBitcoinContext).mockReturnValue({
+    account: bitcoin,
+  } as ReturnType<typeof useBitcoinContext>);
+  vi.mocked(useSuiContext).mockReturnValue({
+    account: sui,
+  } as ReturnType<typeof useSuiContext>);
+  vi.mocked(useTronContext).mockReturnValue({
+    account: tron,
+  } as ReturnType<typeof useTronContext>);
+};
+
 beforeEach(() => {
   window.localStorage.clear();
   mockHydrated(true);
   mockChains(true);
   mockConnection({ status: 'disconnected' });
+  mockNonEvmAccounts();
 });
 
 describe('hasRecentWagmiConnector', () => {
@@ -139,6 +188,40 @@ describe('useIsWalletResolving', () => {
     mockConnection({
       address: '0x1111111111111111111111111111111111111111',
       status: 'connected',
+    });
+
+    const { result } = renderHook(() => useIsWalletResolving());
+
+    expect(result.current).toBe(false);
+  });
+
+  it('is resolving while a non-EVM wallet is connecting', () => {
+    mockNonEvmAccounts({
+      solana: {
+        ...disconnectedAccount(ChainType.SVM),
+        status: 'connecting',
+        isConnecting: true,
+        isDisconnected: false,
+      },
+    });
+
+    const { result } = renderHook(() => useIsWalletResolving());
+
+    expect(result.current).toBe(true);
+  });
+
+  it('is not resolving when a non-EVM address is already available', () => {
+    mockChains(false);
+    mockNonEvmAccounts({
+      solana: {
+        address: 'So11111111111111111111111111111111111111112',
+        chainType: ChainType.SVM,
+        isConnected: true,
+        isConnecting: false,
+        isReconnecting: false,
+        isDisconnected: false,
+        status: 'connected',
+      },
     });
 
     const { result } = renderHook(() => useIsWalletResolving());
