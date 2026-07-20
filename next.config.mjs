@@ -217,12 +217,12 @@ const nextConfig = {
       },
       {
         source: '/:lng?/gas',
-        destination: '/',
+        destination: '/:lng?',
         permanent: true,
       },
       {
         source: '/:lng?/private',
-        destination: '/',
+        destination: '/:lng?',
         permanent: true,
       },
     ];
