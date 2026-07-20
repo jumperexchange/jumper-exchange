@@ -10,6 +10,9 @@ import { useWidgetEvents } from '@jumperexchange/widget';
 import type { RouteExtended } from '@lifi/sdk';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { getQueryKey } from '@/utils/queries/getQueryKey';
+import { useLimitOrdersFilterStore } from '@/stores/limitOrderPrice/LimitOrdersFilterStore';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import { useRouteStore } from 'src/stores/route/RouteStore';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
@@ -47,6 +50,10 @@ export function WidgetEvents() {
   ]);
   const setCompletedRoute = useRouteStore((state) => state.setCompletedRoute);
   const setLimitPrice = useLimitOrderPriceStore((state) => state.setLimitPrice);
+  const setProtocolFilter = useLimitOrdersFilterStore(
+    (state) => state.setProtocolFilter,
+  );
+  const queryClient = useQueryClient();
 
   const { account } = useAccount();
 
@@ -85,6 +92,17 @@ export function WidgetEvents() {
 
       // Store the completed route
       setCompletedRoute(route);
+
+      const placedTool = route.steps?.[0]?.tool;
+      const limitOrderTools = ['cowswap', '1inch'];
+      if (placedTool && limitOrderTools.includes(placedTool)) {
+        setProtocolFilter(placedTool);
+        setTimeout(() => {
+          queryClient.invalidateQueries({
+            queryKey: [getQueryKey('limit-orders')],
+          });
+        }, 1500);
+      }
 
       const fromAddress = route.fromAddress;
       const toAddress = route.toAddress;
