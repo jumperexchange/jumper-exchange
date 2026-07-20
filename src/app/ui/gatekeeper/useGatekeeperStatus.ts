@@ -1,4 +1,5 @@
 import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { useIsWalletResolving } from '@/hooks/earn/useIsWalletResolving';
 import { isProduction } from '@/utils/isProduction';
 import { useQuery } from '@tanstack/react-query';
 
@@ -26,6 +27,7 @@ const isEarnEnabledByDefault = (): boolean => {
 
 export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   const accountAddress = useAccountAddress();
+  const isWalletResolving = useIsWalletResolving();
   const earnEnabledByDefault = flag === 'hasEarn' && isEarnEnabledByDefault();
 
   const { data, isLoading, error } = useQuery({
@@ -48,7 +50,11 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   }
 
   if (!accountAddress) {
-    return { status: GatekeeperStatus.REQUIRES_CONNECT };
+    return {
+      status: isWalletResolving
+        ? GatekeeperStatus.LOADING_ACCESS
+        : GatekeeperStatus.REQUIRES_CONNECT,
+    };
   }
 
   if (isLoading) {
