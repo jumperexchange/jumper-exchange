@@ -7,6 +7,7 @@ import {
   commonArgs,
   compactPrimaryAction,
   listItemPrimaryAction,
+  wethCapacityArgs,
 } from './fixtures';
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
@@ -99,6 +100,30 @@ vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => ({
     accounts: [],
   }),
+}));
+
+// Mocked USD prices for the assets used across fixtures, keyed by address.
+// Backs the useVaultCapacity USD conversion (JUM-972 QA finding #1) without
+// hitting the real @lifi/sdk price endpoint in tests.
+const mockedTokenPricesUSD: Record<string, string> = {
+  [commonArgs.data.asset.address]: '1', // USDC
+  [wethCapacityArgs.data.asset.address]: '4700', // WETH
+};
+
+vi.mock('src/hooks/useToken', () => ({
+  useToken: (_chainId: number, address: string) => {
+    const priceUSD = mockedTokenPricesUSD[address];
+    return {
+      token: priceUSD
+        ? { priceUSD, hasPriceUSD: () => parseFloat(priceUSD) > 0 }
+        : undefined,
+      error: null,
+      isError: false,
+      isLoading: false,
+      isSuccess: true,
+      updatedAt: 0,
+    };
+  },
 }));
 
 describe('EarnCard snapshot', () => {
@@ -311,7 +336,10 @@ describe('EarnCard snapshot', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('overview card with cap in dollar matches snapshot', async () => {
+  it('overview card with cap in dollar fallback matches snapshot', async () => {
+    // JUM-972 QA finding #2: with no vaults.fyi capacity, the deprecated
+    // capInDollar field folds into a single Max Capacity row instead of a
+    // separate "Capacity" row that could double up with the new rows.
     const { container } = render(
       <EarnCard
         {...commonArgs}
@@ -319,9 +347,19 @@ describe('EarnCard snapshot', () => {
         data={{
           ...commonArgs.data,
           lockupDays: undefined,
+          capacity: undefined,
           capInDollar: '1000000',
         }}
       />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+
+  it('overview card with non-stable asset capacity matches snapshot', async () => {
+    // JUM-972 QA finding #1: capacity must render in real USD (via the
+    // asset's price), not treat native WETH units as dollars.
+    const { container } = render(
+      <EarnCard {...wethCapacityArgs} variant="overview" />,
     );
     expect(container).toMatchSnapshot();
   });

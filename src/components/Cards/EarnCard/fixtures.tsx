@@ -75,6 +75,32 @@ export const commonArgs = {
   },
 };
 
+// JUM-972 QA finding #1: capacity for a non-stablecoin asset must be converted
+// via the token's USD price, not rendered as if native units were dollars.
+// Mainnet WETH mirrors the reported `aave-v3-weth-on-mainnet` bug.
+export const wethCapacityArgs = {
+  data: {
+    ...commonArgs.data,
+    asset: {
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+      decimals: 18,
+      address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+      logo: 'https://cryptologos.cc/logos/weth-weth-logo.png',
+      chain: {
+        chainId: 1,
+        chainKey: 'ETH',
+      },
+    },
+    lockupDays: undefined,
+    capInDollar: undefined,
+    capacity: {
+      remaining: '659806000000000000000000',
+      max: '2700000000000000000000000',
+    },
+  },
+};
+
 export const compactPrimaryAction = (
   <DepositButton
     size="large"
