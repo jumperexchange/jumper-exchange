@@ -556,6 +556,8 @@
       "clear": "Clear",
       "selected": "{{count}} selected",
       "search": "Search {{filterBy}}...",
+      "searchPlaceholder": "Search by pool, chain, or protocol...",
+      "searchClear": "Clear search",
       "filterAndSort": "Filter and sort",
       "clearAll": "Clear all",
       "chain": "Chain",

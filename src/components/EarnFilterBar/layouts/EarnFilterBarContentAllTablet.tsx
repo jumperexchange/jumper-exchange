@@ -273,7 +273,7 @@ export const EarnFilterBarContentAllTablet = () => {
   }
 
   return (
-    <EarnAnimatedLayoutContainer useStackWrapper={false}>
+    <EarnAnimatedLayoutContainer useStackWrapper={false} fitContent>
       <MultiLayerDrawer
         categories={categories}
         title={t('earn.filter.filterAndSort')}

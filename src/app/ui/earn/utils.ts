@@ -40,6 +40,7 @@ export const searchParamsParsers = {
   order: parseAsStringEnum(Object.values(OrderOptions)).withDefault(
     OrderOptions.DESC,
   ),
+  q: parseAsString,
   chains: parseAsArrayOf(parseAsInteger),
   protocols: parseAsArrayOf(parseAsString),
   assets: parseAsArrayOf(parseAsString),

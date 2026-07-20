@@ -179,6 +179,8 @@ export default interface Resources {
           withRewards: 'Include only pools with rewards';
         };
         search: 'Search {{filterBy}}...';
+        searchClear: 'Clear search';
+        searchPlaceholder: 'Search by pool, chain, or protocol...';
         selected: '{{count}} selected';
         tag: 'Type';
         tvl: 'TVL';

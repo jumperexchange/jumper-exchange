@@ -3,21 +3,27 @@ import Stack from '@mui/system/Stack';
 import { AnimatePresence, motion } from 'motion/react';
 import type { FC, PropsWithChildren } from 'react';
 
-const LayoutContainer = styled(motion.div)({
-  width: '100%',
+const LayoutContainer = styled(motion.div, {
+  shouldForwardProp: (prop) => prop !== 'fitContent',
+})<{ fitContent?: boolean }>(({ fitContent }) => ({
+  width: fitContent ? 'auto' : '100%',
   height: '100%',
-});
+  flexShrink: fitContent ? 0 : undefined,
+}));
 
 interface EarnAnimatedLayoutContainerProps extends PropsWithChildren {
   useStackWrapper?: boolean;
+  /** Size to the content instead of filling the parent's width. */
+  fitContent?: boolean;
 }
 
 export const EarnAnimatedLayoutContainer: FC<
   EarnAnimatedLayoutContainerProps
-> = ({ children, useStackWrapper = true }) => {
+> = ({ children, useStackWrapper = true, fitContent = false }) => {
   return (
     <AnimatePresence>
       <LayoutContainer
+        fitContent={fitContent}
         initial={{ opacity: 0 }}
         animate={{
           opacity: 1,

@@ -5,12 +5,14 @@ import { useTranslation } from 'react-i18next';
 
 import { useEarnFiltering } from '../../app/ui/earn/EarnFilteringContext';
 import { EarnFilterTab } from '../../app/ui/earn/types';
+import { useEarnSearch } from '../../hooks/earn/useEarnSearch';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
+import { EarnSearchField } from './components/EarnSearchField';
 import {
   EarnFilterBarContainer,
   EarnFilterBarHeaderContainer,
@@ -34,6 +36,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
 }) => {
   const { t } = useTranslation();
   const { tab, updatedAt } = useEarnFiltering();
+  const { query, setQuery, clearSearch } = useEarnSearch();
   const isTablet = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
   if (isLoading) {
@@ -55,6 +58,14 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             variant={BadgeVariant.Secondary}
             size={BadgeSize.SM}
             label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
+          />
+        )}
+        {isTablet && !isForYouTab && (
+          <EarnSearchField
+            value={query}
+            onChange={setQuery}
+            onClear={clearSearch}
+            sx={{ width: 'auto', flex: 1 }}
           />
         )}
         {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}

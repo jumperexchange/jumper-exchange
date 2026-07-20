@@ -45,6 +45,9 @@ const mockContextValue = () => {
     filter: {},
     updateFilter: () => {},
     clearFilters: () => {},
+    search: '',
+    setSearch: () => {},
+    clearSearch: () => {},
     tab,
     changeTab,
     usedYourAddress: false,
@@ -282,6 +285,31 @@ export const WithActiveFilters: Story = {
               minAPY: 0.05,
               maxAPY: 0.15,
             },
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
+  ],
+};
+
+export const WithSearchQuery: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
+  decorators: [
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const [search, setSearch] = useState('usdc');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue(),
+            search,
+            setSearch,
+            clearSearch: () => setSearch(''),
           }}
         >
           <Story args={{ variant, setVariant }} />
