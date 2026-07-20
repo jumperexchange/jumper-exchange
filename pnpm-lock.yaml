@@ -66,8 +66,8 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
       '@jumperexchange/widget':
-        specifier: ^4.4.1
-        version: 4.4.1(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
+        specifier: ^4.5.0
+        version: 4.5.0(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
       '@jumperexchange/widget-provider':
         specifier: ^4.2.1
         version: 4.2.1(react@19.2.7)
@@ -1469,6 +1469,13 @@ packages:
       react: '>=19'
       react-dom: '>=19'
 
+  '@jumperexchange/wallet-management@4.1.3':
+    resolution: {integrity: sha512-elO0HHdaqX9Oj+7daMNLX6EjVOn8d/KwxnuFSFhS2fF/xzL3N71f+8RWHfaxxw9wNPhcjotSE8XBPwyZPK8ewg==, tarball: https://npm.pkg.github.com/download/@jumperexchange/wallet-management/4.1.3/51785108da7b8b426d5ec59109830e49a2d23fef}
+    peerDependencies:
+      '@tanstack/react-query': '>=5.90.0'
+      react: '>=19'
+      react-dom: '>=19'
+
   '@jumperexchange/widget-provider-bitcoin@4.2.1':
     resolution: {integrity: sha512-n6Fb2djt/8AC8rxSfzKNFIcvIzVTxfQoR2HSfPPGusYB5xUG0smD8ywlk80tU214bDiRqFoGkicbsZo1ulHjuw==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget-provider-bitcoin/4.2.1/d0c44b363ae41aa2da49958cc9ad2c489630a28b}
     peerDependencies:
@@ -1505,8 +1512,13 @@ packages:
     peerDependencies:
       react: '>=19'
 
-  '@jumperexchange/widget@4.4.1':
-    resolution: {integrity: sha512-dC8GJcoNd97+SLgBbjUYRgKUmpGK+SenxQH4kI8Fv4yOEpy5x0nxrTLSpvWWv+sLMZrg8R6Y2pfbclVxSc1gGg==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget/4.4.1/746cc76697403beb076c8a03f93a1e213a13d9d9}
+  '@jumperexchange/widget-provider@4.2.2':
+    resolution: {integrity: sha512-PP1CEwoUpiJOhIYo2M5Z7d+4sT2IGsMOtQ4p78Gxj2Wm0R1BEPgmP80XLSxEVg4wIkekZmmlJN10VBOk1LiJEw==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget-provider/4.2.2/d678177ddcab3955223081c3d36cccbff6d0931b}
+    peerDependencies:
+      react: '>=19'
+
+  '@jumperexchange/widget@4.5.0':
+    resolution: {integrity: sha512-n+qO4MsCAsPJZ7l9VkZuk7UN8ptuI7RfkPqMrPYU8UeL5zUzZw4nUn+o0+jw96Hl0ZpY78r0kTSeul27YfIz0g==, tarball: https://npm.pkg.github.com/download/@jumperexchange/widget/4.5.0/ce52efa401889e7c6bc336ccfb624cc9a064e1e9}
     peerDependencies:
       '@tanstack/react-query': '>=5.90.0'
       react: '>=19'
@@ -1574,6 +1586,9 @@ packages:
 
   '@lifi/sdk@4.1.0':
     resolution: {integrity: sha512-rLjP/JXBC7syLimGNZfZmjPUxMpXozhX250IP0UwqnUB7K1lunvQA0NTGC4n6KcsMAHU210XkiTqpbjtFG4q3g==}
+
+  '@lifi/sdk@4.2.0':
+    resolution: {integrity: sha512-d0QBmAdSgnLRo+/zLlUO4oF623fVTYA8NsN9bdWHRPRQEt+zoYBG3dBBB3RhvmctDCSdBMzW+E6E7WJXqYQg/A==}
 
   '@lifi/types@17.65.0':
     resolution: {integrity: sha512-2COF1WimbFiPv51x4T1lvXSs8sRB6CP0SzOTCt7xCwaaeMBLczuuJmF0r10pY9JPxdzbJtVMM83Za3uCslqlWA==}
@@ -9715,22 +9730,6 @@ packages:
       typescript:
         optional: true
 
-  react-i18next@17.0.9:
-    resolution: {integrity: sha512-buLzOSqHtXxjf+qgSrLWNTXVZ1jSwO6kUv3uJqSP1roGBPgNnbhFm7OmdVwWcgf2gIbUyP0J333uPyx+Btsi3w==}
-    peerDependencies:
-      i18next: '>= 26.2.0'
-      react: '>= 16.8.0'
-      react-dom: '*'
-      react-native: '*'
-      typescript: ^5 || ^6 || ^7
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
-      typescript:
-        optional: true
-
   react-intersection-observer@10.1.0:
     resolution: {integrity: sha512-V8HDu3+Llg6OEhOxx8LnUSS0t4VS+1Xk9ZatkI8Jct/H0CwKnqFTCu8NT3q7ghJTghTdIrEMPSWr2dkKPG+gdQ==}
     peerDependencies:
@@ -12739,6 +12738,31 @@ snapshots:
       - typescript
       - use-sync-external-store
 
+  '@jumperexchange/wallet-management@4.1.3(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
+    dependencies:
+      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.7)
+      '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@jumperexchange/widget-provider': 4.2.2(react@19.2.7)
+      '@lifi/sdk': 4.2.0
+      '@mui/icons-material': 9.2.0(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@mui/material': 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@mui/system': 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
+      '@tanstack/react-query': 5.101.1(react@19.2.7)
+      eventemitter3: 5.0.4
+      i18next: 26.3.6(typescript@6.0.3)
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+      react-i18next: 17.0.10(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
+      zustand: 5.0.14(@types/react@19.2.17)(immer@11.1.8)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
+    transitivePeerDependencies:
+      - '@mui/material-pigment-css'
+      - '@types/react'
+      - immer
+      - react-native
+      - supports-color
+      - typescript
+      - use-sync-external-store
+
   '@jumperexchange/widget-provider-bitcoin@4.2.1(@bigmi/react@0.8.1(@tanstack/query-core@5.101.1)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(bs58@6.0.0)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7)))(@tanstack/query-core@5.101.1)(@types/react@19.2.17)(bs58@6.0.0)(immer@11.1.8)(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
     dependencies:
       '@bigmi/client': 0.9.0(@tanstack/query-core@5.101.1)(@types/react@19.2.17)(bs58@6.0.0)(immer@11.1.8)(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
@@ -12847,13 +12871,18 @@ snapshots:
       '@lifi/sdk': 4.1.0
       react: 19.2.7
 
-  '@jumperexchange/widget@4.4.1(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
+  '@jumperexchange/widget-provider@4.2.2(react@19.2.7)':
+    dependencies:
+      '@lifi/sdk': 4.2.0
+      react: 19.2.7
+
+  '@jumperexchange/widget@4.5.0(@emotion/is-prop-valid@1.4.0)(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))':
     dependencies:
       '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.7)
       '@emotion/styled': 11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
-      '@jumperexchange/wallet-management': 4.1.2(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
-      '@jumperexchange/widget-provider': 4.2.1(react@19.2.7)
-      '@lifi/sdk': 4.1.0
+      '@jumperexchange/wallet-management': 4.1.3(@tanstack/react-query@5.101.1(react@19.2.7))(@types/react@19.2.17)(immer@11.1.8)(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)(use-sync-external-store@1.6.0(react@19.2.7))
+      '@jumperexchange/widget-provider': 4.2.2(react@19.2.7)
+      '@lifi/sdk': 4.2.0
       '@mui/icons-material': 9.2.0(@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
       '@mui/material': 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@mui/system': 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7))(@types/react@19.2.17)(react@19.2.7)
@@ -12866,7 +12895,7 @@ snapshots:
       motion: 12.42.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
-      react-i18next: 17.0.9(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
+      react-i18next: 17.0.10(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3)
       react-intersection-observer: 10.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react-transition-group: 4.4.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       zustand: 5.0.14(@types/react@19.2.17)(immer@11.1.8)(react@19.2.7)(use-sync-external-store@1.6.0(react@19.2.7))
@@ -13099,6 +13128,10 @@ snapshots:
       - zod
 
   '@lifi/sdk@4.1.0':
+    dependencies:
+      '@lifi/types': 17.85.0
+
+  '@lifi/sdk@4.2.0':
     dependencies:
       '@lifi/types': 17.85.0
 
@@ -25925,18 +25958,6 @@ snapshots:
       '@babel/runtime': 7.29.7
       html-parse-stringify: 3.0.1
       i18next: 26.3.4(typescript@6.0.3)
-      react: 19.2.7
-      use-sync-external-store: 1.6.0(react@19.2.7)
-    optionalDependencies:
-      react-dom: 19.2.7(react@19.2.7)
-      react-native: 0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6)
-      typescript: 6.0.3
-
-  react-i18next@17.0.9(i18next@26.3.6(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.2.17)(bufferutil@4.1.0)(react@19.2.7)(utf-8-validate@6.0.6))(react@19.2.7)(typescript@6.0.3):
-    dependencies:
-      '@babel/runtime': 7.29.7
-      html-parse-stringify: 3.0.1
-      i18next: 26.3.6(typescript@6.0.3)
       react: 19.2.7
       use-sync-external-store: 1.6.0(react@19.2.7)
     optionalDependencies:
