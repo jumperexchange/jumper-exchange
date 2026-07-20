@@ -8,7 +8,7 @@ import { useMemelist } from 'src/hooks/useMemelist';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
-import { generateRouteLabel } from './utils';
+import { generateRouteLabel, resolveWidgetKeyPrefix } from './utils';
 import envConfig from '@/config/env-config';
 
 function toolsConfig(allow?: string[], deny?: string[]) {
@@ -68,7 +68,7 @@ export function useMainWidgetConfig(
     } = context.resolvedVariant ?? {};
 
     const config: Partial<WidgetConfig> = {
-      keyPrefix: `jumper-${activeTabKey ?? key}`,
+      keyPrefix: `jumper-${resolveWidgetKeyPrefix(key, activeTabKey)}`,
       variant: navigationTabs ? 'wide' : uiVariant,
       buildUrl: true,
       useRelayerRoutes: true,

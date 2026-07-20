@@ -105,6 +105,21 @@ export function resolveActiveNavigationTab({
     : navigationTabs![0];
 }
 
+/**
+ * Only the limit and private tabs need their own widget form-state namespace
+ * (they're functionally distinct flows). Every other in-widget tab
+ * (swap-advanced, bridge-advanced, refuel, ...) shares the variant's own key,
+ * so switching between them doesn't reset the widget's in-progress form.
+ */
+export function resolveWidgetKeyPrefix(
+  key: string,
+  activeTabKey?: NavigationTabKey,
+): string {
+  return activeTabKey === 'limit' || activeTabKey === 'private'
+    ? activeTabKey
+    : key;
+}
+
 export const generateRouteLabel = (
   text: string,
   theme: Theme,

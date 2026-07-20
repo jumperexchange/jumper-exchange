@@ -35,7 +35,7 @@ export const useLimitOrders = (
   >({
     queryKey,
     initialPageParam: undefined,
-    queryFn: async ({ pageParam }) => {
+    queryFn: async ({ pageParam, signal }) => {
       if (!address || !tool) {
         return { orders: [], nextCursor: null };
       }
@@ -45,6 +45,7 @@ export const useLimitOrders = (
         tool,
         address,
         { limit: pageSize, cursor: pageParam },
+        { signal },
       );
       return {
         orders: res.data.data ?? [],
@@ -69,9 +70,13 @@ export const useLimitOrders = (
     if (pageIndex < pageCount - 1) {
       setPageIndex((index) => index + 1);
     } else if (infiniteHasNextPage) {
-      const result = await fetchNextPage();
-      if (result.status === 'success') {
-        setPageIndex((index) => index + 1);
+      try {
+        const result = await fetchNextPage();
+        if (result.status === 'success') {
+          setPageIndex((index) => index + 1);
+        }
+      } catch {
+        // request was cancelled because address/tool changed mid-fetch
       }
     }
   };
