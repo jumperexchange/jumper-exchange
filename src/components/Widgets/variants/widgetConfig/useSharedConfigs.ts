@@ -182,10 +182,6 @@ export function useLanguageConfig(
             'widget.limitOrder.placeOrderButton',
           ),
         };
-        additionalLanguageResources.header = {
-          ...additionalLanguageResources.header,
-          swap: deps.translation.t('widget.limitOrder.inProgressTitle'),
-        };
       }
 
       if (context.usePrivateWidget) {

@@ -1344,7 +1344,6 @@ export default interface Resources {
         title: 'Exchange';
       };
       limitOrder: {
-        inProgressTitle: 'Limit';
         placeOrderButton: 'Place order';
         reviewTitle: 'Review order';
       };
