@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLimitOrdersFilterStore } from '@/stores/limitOrderPrice/LimitOrdersFilterStore';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -42,7 +43,7 @@ import { BaseSurface1Skeleton } from '@/components/core/skeletons/BaseSurfaceSke
 export function useOrdersFilters() {
   const { accounts } = useAccount();
   const evmAccount = useAccountForChainType(ChainType.EVM);
-  const [protocolFilter, setProtocolFilter] = useState<string>();
+  const { protocolFilter, setProtocolFilter } = useLimitOrdersFilterStore();
   const [addressFilter, setAddressFilter] = useState<string>();
 
   const connectedAccounts = accounts.filter(
