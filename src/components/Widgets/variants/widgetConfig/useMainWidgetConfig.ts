@@ -123,8 +123,14 @@ export function useMainWidgetConfig(
           deps.theme.muiTheme,
           `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
           '',
-          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          (route) =>
+            (route.tags ?? [])?.some(
+              (tag) =>
+                tag.includes('SIMULATED_BY_EVM') ||
+                tag.includes('SIMULATED_BY_COMPOSER'),
+            ),
           'neutral',
+          'Verified via onchain simulation',
         ),
       ],
     };

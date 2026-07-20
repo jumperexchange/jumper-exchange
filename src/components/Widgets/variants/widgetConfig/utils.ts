@@ -9,6 +9,7 @@ export const generateRouteLabel = (
   allowExchange?: string,
   match?: (route: Route) => boolean,
   variant: 'gradient' | 'neutral' = 'gradient',
+  tooltipText?: string,
 ): RouteLabelRule => {
   const isNeutral = variant === 'neutral';
   return {
@@ -19,7 +20,8 @@ export const generateRouteLabel = (
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
-        overflow: 'hidden',
+        // Allow the CSS tooltip pseudo-element to escape the label bounds.
+        overflow: tooltipText ? 'visible' : 'hidden',
         marginLeft: 'auto',
         gap: theme.spacing(0.5),
         paddingLeft: theme.spacing(0.5),
@@ -37,6 +39,47 @@ export const generateRouteLabel = (
               // @Note we might adjust to use the theme config
               background: 'linear-gradient(90deg, #9B006F 0%, #37006B 100%)',
             })),
+        // The widget renders custom route labels without tooltip support
+        // (RouteLabel only exposes `text` + `sx`), so the explanation is
+        // surfaced through a CSS tooltip on hover/focus, mirroring the core
+        // Tooltip styling (dark surface, inverted text).
+        ...(tooltipText
+          ? {
+              cursor: 'help',
+              '&::after': {
+                content: JSON.stringify(tooltipText),
+                position: 'absolute',
+                // Open downward: sibling route cards create their own stacking
+                // contexts, so a bubble opening upward is painted behind the
+                // card above. Below the badge it stays within this card.
+                top: 'calc(100% + 8px)',
+                // Anchor to the label's right edge (the badge is right-aligned)
+                // so the bubble extends leftward and stays inside the card.
+                right: 0,
+                width: 'max-content',
+                maxWidth: 240,
+                whiteSpace: 'normal',
+                textAlign: 'center',
+                padding: theme.spacing(0.5, 1),
+                borderRadius: theme.shape.borderRadius,
+                backgroundColor: '#6d44ad',
+                color: (theme.vars || theme).palette.white.main,
+                fontSize: 12,
+                lineHeight: 1.4,
+                fontWeight: 500,
+                boxShadow: theme.shadows[3],
+                opacity: 0,
+                visibility: 'hidden',
+                pointerEvents: 'none',
+                transition: 'opacity 150ms ease',
+                zIndex: theme.zIndex.tooltip,
+              },
+              '&:hover::after, &:focus-visible::after, &:focus-within::after': {
+                opacity: 1,
+                visibility: 'visible',
+              },
+            }
+          : {}),
         '&::before': {
           content: '""',
           width: '16px',
