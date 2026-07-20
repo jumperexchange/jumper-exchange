@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { resolveActiveNavigationTab } from './utils';
+import { resolveActiveNavigationTab, resolveWidgetKeyPrefix } from './utils';
 
 describe('resolveActiveNavigationTab', () => {
   it('ignores the global tab for an instance that does not own navigation tabs', () => {
@@ -50,5 +50,29 @@ describe('resolveActiveNavigationTab', () => {
         globalActiveNavigationTab: 'private',
       }),
     ).toBe('swap-advanced');
+  });
+});
+
+describe('resolveWidgetKeyPrefix', () => {
+  it('uses the variant key when there is no active tab', () => {
+    expect(resolveWidgetKeyPrefix('advanced', undefined)).toBe('advanced');
+  });
+
+  it('keeps the variant key for non-namespaced tab switches', () => {
+    expect(resolveWidgetKeyPrefix('advanced', 'swap-advanced')).toBe(
+      'advanced',
+    );
+    expect(resolveWidgetKeyPrefix('advanced', 'bridge-advanced')).toBe(
+      'advanced',
+    );
+    expect(resolveWidgetKeyPrefix('default', 'refuel')).toBe('default');
+  });
+
+  it('uses its own namespace for the limit tab', () => {
+    expect(resolveWidgetKeyPrefix('advanced', 'limit')).toBe('limit');
+  });
+
+  it('uses its own namespace for the private tab', () => {
+    expect(resolveWidgetKeyPrefix('default', 'private')).toBe('private');
   });
 });
