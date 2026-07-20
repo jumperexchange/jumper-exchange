@@ -12,11 +12,12 @@ import Pagination, {
   PaginationVariant,
 } from '@/components/core/Pagination/Pagination';
 import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
-import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
+import { useMediaQuery } from '@mui/material';
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import {
   EarnFilteringProvider,
@@ -25,7 +26,6 @@ import {
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
-import { useMediaQuery } from '@mui/material';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();

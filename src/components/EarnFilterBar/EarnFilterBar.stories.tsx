@@ -7,7 +7,7 @@ import {
   SortByOptions,
 } from '../../app/ui/earn/types';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
-import { useApyWindowMock } from '@/components/EarnFilterBar/components/useApyWindow.mock';
+import { useApyWindowMock } from '@/hooks/earn/useApyWindow.mock';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 import { JUMPER_STRAPI_URL } from '@/const/urls';

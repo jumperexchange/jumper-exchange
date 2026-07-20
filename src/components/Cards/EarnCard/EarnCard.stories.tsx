@@ -12,7 +12,7 @@ import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { ApyWindowOptions } from '@/utils/earn/apyWindow';
 import { EarnApyWindowToggle } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
-import { useApyWindowMock } from '@/components/EarnFilterBar/components/useApyWindow.mock';
+import { useApyWindowMock } from '@/hooks/earn/useApyWindow.mock';
 
 const meta = {
   component: EarnCard,

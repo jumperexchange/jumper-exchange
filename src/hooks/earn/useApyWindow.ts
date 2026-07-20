@@ -1,5 +1,5 @@
-import { parseAsStringEnum, useQueryState } from 'nuqs';
 import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
+import { parseAsStringEnum, useQueryState } from 'nuqs';
 
 export const apyWindowParser = parseAsStringEnum<ApyWindow>(
   Object.values(ApyWindowOptions) as ApyWindow[],

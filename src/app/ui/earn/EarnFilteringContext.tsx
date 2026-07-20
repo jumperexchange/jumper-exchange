@@ -9,7 +9,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
 import type { NullableFields } from 'src/types/internal';

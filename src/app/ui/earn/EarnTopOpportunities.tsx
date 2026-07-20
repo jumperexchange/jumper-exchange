@@ -1,16 +1,14 @@
 'use client';
+import { buildEarnHref } from '@/app/ui/earn/utils';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { Grid } from '@mui/material';
-import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { HeroEarnCard } from 'src/components/Cards/HeroEarnCard/HeroEarnCard';
-import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
+import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
-import { useApyWindow } from '@/components/EarnFilterBar/components/useApyWindow';
-import { buildEarnHref } from '@/app/ui/earn/utils';
-
-interface EarnTopOpportunities {}
+import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
+import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
 
 export const EarnTopOpportunities = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
