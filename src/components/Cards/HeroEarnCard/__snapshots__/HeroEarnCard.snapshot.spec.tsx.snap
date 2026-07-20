@@ -218,7 +218,7 @@ exports[`HeroEarnCard snapshot > hero card with 30d apy window and missing apy30
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1hq6w3b"
+          class="MuiBox-root css-zdkuk9"
         >
           <div
             class="MuiBox-root css-wioyy2"
@@ -365,7 +365,7 @@ exports[`HeroEarnCard snapshot > hero card with 30d apy window matches snapshot 
         class="MuiStack-root css-4n2h5n-MuiStack-root"
       >
         <div
-          class="MuiBox-root css-1hq6w3b"
+          class="MuiBox-root css-zdkuk9"
         >
           <div
             class="MuiBox-root css-wioyy2"
