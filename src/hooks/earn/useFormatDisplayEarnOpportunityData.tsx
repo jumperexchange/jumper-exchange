@@ -12,7 +12,6 @@ import { useTranslation } from 'react-i18next';
 import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
 import type { ApyWindow } from '@/utils/earn/apyWindow';
-import { ApyWindowOptions as ApyWindowValue } from '@/utils/earn/apyWindow';
 import type {
   APYItem,
   Chain,
@@ -44,33 +43,48 @@ interface ApyWindowOptions {
   onToggleApyWindow?: () => void;
 }
 
+// Builds the explicit "Unknown" tile for when the selected window's APY data
+// is absent. Only used when windowOptions is present, since the tile is the
+// toggle's only affordance on the detail overview card — it must stay
+// clickable so the user can switch back to a window with data.
+const buildUnknownApyItem = (
+  t: TFunction,
+  windowOptions: ApyWindowOptions,
+  labelKey: 'apyLabel' | 'aprLabel',
+): EarnCardOverviewItem => {
+  const key = labelKey === 'apyLabel' ? 'apy' : 'apr';
+  return {
+    key,
+    dataTestId: `${key}-unknown`,
+    label: t(`earn.apyWindow.${labelKey}`, {
+      window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+    }),
+    value: t('earn.apyWindow.unknown'),
+    tooltip: t('earn.apyWindow.tooltip'),
+    onClick: windowOptions.onToggleApyWindow,
+  };
+};
+
 const buildApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
   windowOptions?: ApyWindowOptions,
 ): EarnCardOverviewItem | null => {
-  const is30d = windowOptions?.apyWindow === ApyWindowValue.THIRTY_DAY;
-
-  // 30d selected but no apy30d data -> show explicit "Unknown"
-  if (is30d && apy === undefined) {
-    return {
-      key: 'apy',
-      dataTestId: 'apy-unknown',
-      label: t('earn.apyWindow.apyLabel', {
-        window: t('earn.apyWindow.label30d'),
-      }),
-      value: t('earn.apyWindow.unknown'),
-      tooltip: t('earn.apyWindow.tooltip'),
-      onClick: windowOptions?.onToggleApyWindow,
-    };
+  // No data for the selected window: show "Unknown" when a toggle is present
+  // to recover from it; otherwise hide the tile (legacy, no-toggle behavior).
+  if (apy === undefined) {
+    return windowOptions
+      ? buildUnknownApyItem(t, windowOptions, 'apyLabel')
+      : null;
   }
 
-  if (!apy?.total || isZeroApprox(apy.total)) {
+  const total = apy.total ?? 0;
+  if (isZeroApprox(total) && !windowOptions) {
     return null;
   }
 
-  const formatted = formatApy(apy.total);
+  const formatted = formatApy(total);
   const label = windowOptions
     ? t('earn.apyWindow.apyLabel', {
         window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
@@ -81,7 +95,7 @@ const buildApyItem = (
     : t('tooltips.apy');
   return {
     key: 'apy',
-    dataTestId: `apy-${apy.total}`,
+    dataTestId: `apy-${total}`,
     label,
     value: formatted,
     tooltip,
@@ -95,8 +109,14 @@ const buildTotalApyItem = (
   t: TFunction,
   windowOptions?: ApyWindowOptions,
 ): EarnCardOverviewItem | null => {
-  const displayedApy = (apy?.base ?? 0) + (apy?.customReward ?? 0);
-  if (!displayedApy || isZeroApprox(displayedApy)) {
+  if (apy === undefined) {
+    return windowOptions
+      ? buildUnknownApyItem(t, windowOptions, 'aprLabel')
+      : null;
+  }
+
+  const displayedApy = (apy.base ?? 0) + (apy.customReward ?? 0);
+  if (isZeroApprox(displayedApy) && !windowOptions) {
     return null;
   }
 
