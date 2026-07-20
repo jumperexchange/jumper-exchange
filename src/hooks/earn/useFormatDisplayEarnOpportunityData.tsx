@@ -240,18 +240,8 @@ const buildCapacityItems = (
 
   switch (capacityDisplay.state) {
     case 'unknown':
-      return [];
-
     case 'unlimited':
-      return [
-        {
-          key: 'capacityUnlimited',
-          dataTestId: 'capacity-unlimited',
-          label: t('labels.maxCapacity'),
-          value: t('labels.capacityUnlimited'),
-          tooltip: t('tooltips.capacityUnlimited'),
-        },
-      ];
+      return [];
 
     case 'capped': {
       const { maxUsd, remainingUsd } = capacityDisplay;

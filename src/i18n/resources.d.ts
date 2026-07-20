@@ -438,7 +438,6 @@ export default interface Resources {
       assets_one: 'Asset';
       assets_other: 'Assets';
       assets_other_one: 'Asset';
-      capacityUnlimited: 'Unlimited';
       category: 'Category';
       chains_one: 'Chain';
       chains_other: 'Chains';
@@ -1309,7 +1308,6 @@ export default interface Resources {
       assets_other: 'The assets you will earn from';
       assets_other_one: 'The asset you will earn from';
       boostedApy: '{{baseApy, number}}% is the expected yearly return rate of the underlying tokens invested. The extra {{boostedApy, number}}% in rewards - distributed in another token - are paid exclusively to the participant of this zap campaign.';
-      capacityUnlimited: 'This vault has no capacity limit';
       chains_one: 'The chain you will earn from';
       chains_other: 'The chains you will earn from';
       close: 'Close';
