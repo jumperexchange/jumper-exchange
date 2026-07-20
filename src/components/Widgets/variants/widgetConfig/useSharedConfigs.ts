@@ -182,6 +182,26 @@ export function useLanguageConfig(
             'widget.limitOrder.placeOrderButton',
           ),
         };
+        additionalLanguageResources.success = {
+          title: {
+            swapSuccessful: deps.translation.t(
+              'widget.limitOrder.orderPlacedTitle',
+            ),
+          },
+        };
+        additionalLanguageResources.main = {
+          process: {
+            swap: {
+              done: deps.translation.t(
+                'widget.limitOrder.orderPlacementCompleted',
+              ),
+            },
+          },
+        };
+        additionalLanguageResources.header = {
+          ...additionalLanguageResources.header,
+          received: deps.translation.t('widget.limitOrder.orderPlacedLabel'),
+        };
       }
 
       if (context.usePrivateWidget) {
