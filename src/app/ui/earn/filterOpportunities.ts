@@ -1,4 +1,14 @@
-import { fromPairs, map, orderBy, some, uniq, uniqBy } from 'lodash';
+import {
+  countBy,
+  fromPairs,
+  groupBy,
+  map,
+  maxBy,
+  orderBy,
+  some,
+  uniq,
+  uniqBy,
+} from 'lodash';
 import type { Nullable } from 'nuqs';
 
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
@@ -64,7 +74,7 @@ export function filterOpportunities(
     }
 
     // Asset filter
-    if (assets?.length && !assets.includes(item.asset.name)) {
+    if (assets?.length && !assets.includes(item.asset.symbol)) {
       return false;
     }
 
@@ -134,8 +144,15 @@ export const extractFilteringParams = (
   let allProtocols = map(data, 'protocol');
   allProtocols = uniqBy(allProtocols, 'name').filter(Boolean);
 
-  let allAssets = map(data, 'asset');
-  allAssets = uniqBy(allAssets, 'name').filter(Boolean);
+  const assets = map(data, 'asset').filter(Boolean);
+  // Group per-chain token variants by symbol, and pick the most common name
+  // for each symbol so the filter shows the name users expect (e.g. "USD
+  // Coin" rather than a rarer per-chain variant like "USDC").
+  const allAssets = Object.values(groupBy(assets, 'symbol')).map((group) => {
+    const nameCounts = countBy(group, 'name');
+    const topName = maxBy(Object.keys(nameCounts), (name) => nameCounts[name]);
+    return group.find((asset) => asset.name === topName) ?? group[0];
+  });
 
   let allTags = map(data, 'tags').flat();
   allTags = uniq(allTags).filter(Boolean);
@@ -195,7 +212,7 @@ export const sanitizeFilter = (
 
   const validChainIds = new Set(stats.allChains.map((c) => c.chainId));
   const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
-  const validAssets = new Set(stats.allAssets.map((a) => a.name));
+  const validAssets = new Set(stats.allAssets.map((a) => a.symbol));
   const validTags = new Set(stats.allTags);
   const validAPY = new Set(
     Object.values(stats.allAPY ?? []).map((apy) => apy / 100),

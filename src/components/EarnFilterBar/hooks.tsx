@@ -73,7 +73,7 @@ export const useEarnFilterBar = () => {
     () =>
       sortSelectOptions(
         allAssets.map((asset) => ({
-          value: asset.name,
+          value: asset.symbol,
           label: asset.name,
           icon: <TokenStack tokens={toTokenStackTokens([asset])} />,
         })),
