@@ -2,7 +2,6 @@ import type { FC, PropsWithChildren } from 'react';
 import { Select } from '../../core/form/Select/Select';
 import { SelectVariant } from '../../core/form/Select/Select.types';
 import { EarnAnimatedLayoutContainer } from '../components/EarnAnimatedLayoutContainer';
-import { EarnSearchField } from '../components/EarnSearchField';
 import {
   EarnFilterBarClearFiltersButton,
   EarnFilterBarContentContainer,
@@ -11,7 +10,6 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useEarnFilterBar } from '../hooks';
 import { useTranslation } from 'react-i18next';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
-import { useEarnSearch } from 'src/hooks/earn/useEarnSearch';
 
 export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
   children,
@@ -43,7 +41,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
     handleRewardsAPYChange,
     handleClearAllFilters,
   } = useEarnFilterBar();
-  const { query, setQuery, clearSearch } = useEarnSearch();
 
   return (
     <EarnFilterBarContentContainer
@@ -143,12 +140,6 @@ export const EarnFilterBarContentAllDesktop: FC<PropsWithChildren> = ({
             <DeleteOutlinedIcon sx={{ height: 22, width: 22 }} />
           </EarnFilterBarClearFiltersButton>
         )}
-        <EarnSearchField
-          value={query}
-          onChange={setQuery}
-          onClear={clearSearch}
-          sx={{ width: 'auto', minWidth: 220, flex: 1 }}
-        />
       </EarnAnimatedLayoutContainer>
 
       {children}

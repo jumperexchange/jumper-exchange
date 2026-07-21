@@ -44,6 +44,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   }
 
   const isForYouTab = EarnFilterTab.FOR_YOU === tab;
+  const isAllMarketsTab = EarnFilterTab.ALL === tab;
 
   const EarnFilterBarContent = isForYouTab
     ? EarnFilterBarContentForYou
@@ -60,7 +61,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
           />
         )}
-        {isTablet && !isForYouTab && (
+        {isTablet && isAllMarketsTab && (
           <EarnSearchField
             value={query}
             onChange={setQuery}
@@ -84,6 +85,14 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             {!isForYouTab && <EarnFilterSort />}
           </Stack>
         </EarnFilterBarContent>
+      )}
+      {!isTablet && isAllMarketsTab && (
+        <EarnSearchField
+          value={query}
+          onChange={setQuery}
+          onClear={clearSearch}
+          sx={{ width: '100%' }}
+        />
       )}
     </EarnFilterBarContainer>
   );
