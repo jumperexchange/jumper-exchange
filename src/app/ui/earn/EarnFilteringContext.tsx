@@ -11,7 +11,6 @@ import {
 } from 'react';
 import { useAccountAddress } from 'src/hooks/earn/useAccountAddress';
 import { useEarnFilterOpportunities } from 'src/hooks/earn/useEarnFilterOpportunities';
-import { useEarnSearchIndex } from 'src/hooks/earn/useEarnSearchIndex';
 import type { NullableFields } from 'src/types/internal';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
 import type { StrapiMetaPagination } from 'src/types/strapi';
@@ -37,7 +36,6 @@ import {
 } from './utils';
 
 const PAGE_SIZE = 18;
-const EMPTY_OPPORTUNITIES: EarnOpportunityWithLatestAnalytics[] = [];
 
 export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
@@ -47,9 +45,6 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
     filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
   ) => void;
   clearFilters: () => void;
-  search: string;
-  setSearch: (search: string) => void;
-  clearSearch: () => void;
   usedYourAddress: boolean;
   changeTab: (tab: EarnFilterTab) => void;
   totalMarkets: number;
@@ -71,9 +66,6 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   filter: {},
   updateFilter: () => {},
   clearFilters: () => {},
-  search: '',
-  setSearch: () => {},
-  clearSearch: () => {},
   usedYourAddress: false,
   changeTab: () => {},
   totalMarkets: 0,
@@ -81,6 +73,7 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allProtocols: [],
   allAssets: [],
   allTags: [],
+  allPools: [],
   allAPY: {},
   allTVL: {},
   allRewardsOptions: [],
@@ -123,7 +116,6 @@ export const EarnFilteringProvider = ({
     withPositions: withPositionsParam,
     sortBy: initialSortBy,
     tab,
-    q: initialSearch,
     ...rest
   } = searchParamsState;
 
@@ -159,7 +151,6 @@ export const EarnFilteringProvider = ({
   const [sortBy, setSortBy] = useState<SortByEnum>(initialSortBy);
   const [filter, setFilter] =
     useState<EarnOpportunityFilterWithoutSortByAndOrder>(initialFilter);
-  const [search, setSearchState] = useState<string>(initialSearch ?? '');
   const [page, setPage] = useState(0);
 
   const forYou = useEarnFilterOpportunities(
@@ -220,12 +211,6 @@ export const EarnFilteringProvider = ({
     }
   }, [tab, forYou, yourPositionsNoFilter, allNoFilterData, allNoFilter]);
 
-  // Search only applies to the client-filtered tabs; For You is already
-  // personalized by the backend, so skip building an index for it.
-  const searchIndex = useEarnSearchIndex(
-    tab === EarnFilterTab.FOR_YOU ? EMPTY_OPPORTUNITIES : sourceData,
-  );
-
   const filteredAndSortedData = useMemo(() => {
     // FOR_YOU tab is already filtered by backend
     if (tab === EarnFilterTab.FOR_YOU) {
@@ -233,19 +218,10 @@ export const EarnFilteringProvider = ({
     }
 
     const filtered = filterOpportunities(sourceData, filter);
-
-    const trimmedSearch = search.trim();
-    const matchingSlugs = trimmedSearch
-      ? searchIndex.search(trimmedSearch)
-      : null;
-    const searched = matchingSlugs
-      ? filtered.filter((item) => matchingSlugs.has(item.slug))
-      : filtered;
-
-    const sorted = sortOpportunities(searched, sortBy, OrderOptions.DESC);
+    const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
 
     return sorted;
-  }, [sourceData, filter, sortBy, tab, search, searchIndex]);
+  }, [sourceData, filter, sortBy, tab]);
 
   const enrichedData = useMemo(() => {
     const forYouSlugsSet = new Set(
@@ -330,25 +306,13 @@ export const EarnFilteringProvider = ({
     [setSortBy, setSearchParamsState],
   );
 
-  const setSearch = useCallback(
-    (newSearch: string) => {
-      setPage(0);
-      setSearchState(newSearch);
-      setSearchParamsState({ q: newSearch || null });
-    },
-    [setSearchParamsState],
-  );
-
-  const clearSearch = useCallback(() => {
-    setSearch('');
-  }, [setSearch]);
-
   const clearFilters = useCallback(() => {
     updateFilter({
       chains: null,
       protocols: null,
       tags: null,
       assets: null,
+      pools: null,
       minAPY: null,
       maxAPY: null,
       minTVL: null,
@@ -356,8 +320,7 @@ export const EarnFilteringProvider = ({
       minRewardsAPY: null,
       maxRewardsAPY: null,
     });
-    clearSearch();
-  }, [updateFilter, clearSearch]);
+  }, [updateFilter]);
 
   const context: EarnFilteringContextType = useMemo(() => {
     const hasData = !!data && data.length > 0;
@@ -380,9 +343,6 @@ export const EarnFilteringProvider = ({
       filter,
       updateFilter,
       clearFilters,
-      search,
-      setSearch,
-      clearSearch,
       tab,
       usedYourAddress,
       changeTab,
@@ -405,9 +365,6 @@ export const EarnFilteringProvider = ({
     updateFilter,
     updateSortBy,
     clearFilters,
-    search,
-    setSearch,
-    clearSearch,
     tab,
     usedYourAddress,
     totalMarkets,

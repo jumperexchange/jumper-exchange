@@ -556,8 +556,6 @@
       "clear": "Clear",
       "selected": "{{count}} selected",
       "search": "Search {{filterBy}}...",
-      "searchPlaceholder": "Search by pool, chain, or protocol...",
-      "searchClear": "Clear search",
       "filterAndSort": "Filter and sort",
       "clearAll": "Clear all",
       "chain": "Chain",
@@ -569,6 +567,15 @@
       "rewards": {
         "label": "Rewards",
         "withRewards": "Include only pools with rewards"
+      },
+      "searchAutocomplete": {
+        "placeholder": "Search by pool, chain, or protocol...",
+        "noOptions": "No matches found",
+        "category": {
+          "pool": "Pool",
+          "chain": "Chain",
+          "protocol": "Protocol"
+        }
       }
     },
     "views": {

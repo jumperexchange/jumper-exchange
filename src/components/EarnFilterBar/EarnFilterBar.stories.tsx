@@ -45,9 +45,6 @@ const mockContextValue = () => {
     filter: {},
     updateFilter: () => {},
     clearFilters: () => {},
-    search: '',
-    setSearch: () => {},
-    clearSearch: () => {},
     tab,
     changeTab,
     usedYourAddress: false,
@@ -134,6 +131,11 @@ const mockContextValue = () => {
       },
     ],
     allTags: ['Staking', 'Earn', 'Yield', 'Lending', 'LP', 'Vault', 'DeFi'],
+    allPools: [
+      { slug: 'steakhouse-usdc', name: 'Steakhouse USDC' },
+      { slug: 'spark-susds', name: 'Spark sUSDS' },
+      { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
+    ],
     allAPY: {
       0.01: 5,
       0.02: 12,
@@ -192,6 +194,7 @@ export const EmptyState: Story = {
             allProtocols: [],
             allAssets: [],
             allTags: [],
+            allPools: [],
             allAPY: {},
             allRewardsOptions: [],
             totalMarkets: 0,
@@ -294,7 +297,7 @@ export const WithActiveFilters: Story = {
   ],
 };
 
-export const WithSearchQuery: Story = {
+export const WithPoolsFilter: Story = {
   args: {
     variant: 'compact',
     setVariant: () => {},
@@ -302,14 +305,11 @@ export const WithSearchQuery: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
-      const [search, setSearch] = useState('usdc');
       return (
         <EarnFilteringContext.Provider
           value={{
             ...mockContextValue(),
-            search,
-            setSearch,
-            clearSearch: () => setSearch(''),
+            filter: { pools: ['steakhouse-usdc'] },
           }}
         >
           <Story args={{ variant, setVariant }} />
