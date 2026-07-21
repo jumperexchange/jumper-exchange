@@ -52,7 +52,7 @@ export const generateRouteLabel = (
                 // Open downward: sibling route cards create their own stacking
                 // contexts, so a bubble opening upward is painted behind the
                 // card above. Below the badge it stays within this card.
-                top: 'calc(100% + 8px)',
+                top: 'calc(100% + 4px)',
                 // Anchor to the label's right edge (the badge is right-aligned)
                 // so the bubble extends leftward and stays inside the card.
                 right: 0,
@@ -60,24 +60,54 @@ export const generateRouteLabel = (
                 maxWidth: 240,
                 whiteSpace: 'normal',
                 textAlign: 'center',
-                padding: theme.spacing(0.5, 1),
-                borderRadius: theme.shape.borderRadius,
-                backgroundColor: '#6d44ad',
-                color: (theme.vars || theme).palette.white.main,
-                fontSize: 12,
-                lineHeight: 1.4,
-                fontWeight: 500,
+                padding: theme.spacing(1),
+                borderRadius: `${theme.shape.radius12}px`,
+                backgroundColor: (theme.vars || theme).palette.grey[900],
+                color: (theme.vars || theme).palette.textPrimaryInverted,
                 boxShadow: theme.shadows[3],
+                ...theme.typography.bodyXSmall,
                 opacity: 0,
                 visibility: 'hidden',
                 pointerEvents: 'none',
-                transition: 'opacity 150ms ease',
+                transition: 'opacity 150ms ease, visibility 150ms ease',
+                zIndex: theme.zIndex.tooltip,
+                ...theme.applyStyles('light', {
+                  backgroundColor: (theme.vars || theme).palette.grey[700],
+                  color: (theme.vars || theme).palette.textPrimaryInverted,
+                }),
+              },
+              // Arrow pointing up from the bubble toward the badge. The label's
+              // own ::before/::after are already used (icon + bubble), so the
+              // arrow is drawn on the text node's ::after, which shares the
+              // label's positioning context.
+              '&>p::after': {
+                content: '""',
+                position: 'absolute',
+                // Sits in the gap between the badge and the bubble: tip just
+                // below the badge, base meeting the bubble's top edge.
+                top: 'calc(100% - 1px)',
+                right: 'calc(50%)',
+                transform: 'translateX(50%)',
+                width: 0,
+                height: 0,
+                borderLeft: '5px solid transparent',
+                borderRight: '5px solid transparent',
+                borderBottom: `5px solid`,
+                borderBottomColor: (theme.vars || theme).palette.grey[900],
+                ...theme.applyStyles('light', {
+                  borderBottomColor: (theme.vars || theme).palette.grey[700],
+                }),
+                opacity: 0,
+                visibility: 'hidden',
+                pointerEvents: 'none',
+                transition: 'opacity 150ms ease, visibility 150ms ease',
                 zIndex: theme.zIndex.tooltip,
               },
-              '&:hover::after, &:focus-visible::after, &:focus-within::after': {
-                opacity: 1,
-                visibility: 'visible',
-              },
+              '&:hover::after, &:focus-visible::after, &:focus-within::after, &:hover>p::after, &:focus-visible>p::after, &:focus-within>p::after':
+                {
+                  opacity: 1,
+                  visibility: 'visible',
+                },
             }
           : {}),
         '&::before': {
