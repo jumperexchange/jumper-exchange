@@ -1,24 +1,25 @@
 // @vitest-environment jsdom
-import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
-import { useIsWalletResolving } from '@/hooks/earn/useIsWalletResolving';
+import { useConnectedAccountAddress } from '@/hooks/accounts/useConnectedAccountAddress';
+import { useIsWalletResolving } from '@/hooks/accounts/useIsWalletResolving';
 import { useQuery } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { GatekeeperStatus, useGatekeeperStatus } from './useGatekeeperStatus';
 
-vi.mock('@/hooks/earn/useAccountAddress', () => ({
-  useAccountAddress: vi.fn(),
+vi.mock('@/hooks/accounts/useConnectedAccountAddress', () => ({
+  useConnectedAccountAddress: vi.fn(),
 }));
-vi.mock('@/hooks/earn/useIsWalletResolving', () => ({
+vi.mock('@/hooks/accounts/useIsWalletResolving', () => ({
   useIsWalletResolving: vi.fn(),
 }));
 vi.mock('@tanstack/react-query', () => ({ useQuery: vi.fn() }));
 vi.mock('@/utils/isProduction', () => ({ isProduction: true }));
 
-const ADDRESS = '0x1111111111111111111111111111111111111111' as const;
+const EVM_ADDRESS = '0x1111111111111111111111111111111111111111';
+const SOLANA_ADDRESS = 'So11111111111111111111111111111111111111112';
 
-const mockAddress = (address: typeof ADDRESS | undefined) => {
-  vi.mocked(useAccountAddress).mockReturnValue(address);
+const mockAddress = (address: string | undefined) => {
+  vi.mocked(useConnectedAccountAddress).mockReturnValue(address);
 };
 
 const mockResolving = (resolving: boolean) => {
@@ -65,7 +66,7 @@ describe('useGatekeeperStatus', () => {
   });
 
   it('returns LOADING_ACCESS while wallet flags are fetching', () => {
-    mockAddress(ADDRESS);
+    mockAddress(EVM_ADDRESS);
     mockFlagsQuery({ isLoading: true });
 
     const { result } = renderHook(() => useGatekeeperStatus('hasAdvanced'));
@@ -73,8 +74,17 @@ describe('useGatekeeperStatus', () => {
     expect(result.current.status).toBe(GatekeeperStatus.LOADING_ACCESS);
   });
 
-  it('returns SUCCESS when the wallet has the requested flag', () => {
-    mockAddress(ADDRESS);
+  it('returns SUCCESS when an EVM wallet has the requested flag', () => {
+    mockAddress(EVM_ADDRESS);
+    mockFlagsQuery({ data: { hasAdvanced: true } });
+
+    const { result } = renderHook(() => useGatekeeperStatus('hasAdvanced'));
+
+    expect(result.current.status).toBe(GatekeeperStatus.SUCCESS);
+  });
+
+  it('returns SUCCESS when a non-EVM wallet has the requested flag', () => {
+    mockAddress(SOLANA_ADDRESS);
     mockFlagsQuery({ data: { hasAdvanced: true } });
 
     const { result } = renderHook(() => useGatekeeperStatus('hasAdvanced'));
@@ -83,7 +93,7 @@ describe('useGatekeeperStatus', () => {
   });
 
   it('returns NOT_ALLOWED when the wallet lacks the requested flag', () => {
-    mockAddress(ADDRESS);
+    mockAddress(EVM_ADDRESS);
     mockFlagsQuery({ data: { hasAdvanced: false } });
 
     const { result } = renderHook(() => useGatekeeperStatus('hasAdvanced'));
@@ -92,7 +102,7 @@ describe('useGatekeeperStatus', () => {
   });
 
   it('returns ERROR when the flags request fails', () => {
-    mockAddress(ADDRESS);
+    mockAddress(EVM_ADDRESS);
     mockFlagsQuery({ error: new Error('network') });
 
     const { result } = renderHook(() => useGatekeeperStatus('hasAdvanced'));
