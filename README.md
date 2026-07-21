@@ -57,3 +57,5 @@ Register on Crowdin and you can start translating the project into your preferre
 Your contributions will help make our project accessible to a wider audience around the world.
 
 Thank you for your support!
+
+<!-- QA-166 title-normalization test: harmless README touch, do not merge -->
