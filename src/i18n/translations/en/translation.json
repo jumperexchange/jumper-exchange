@@ -571,6 +571,7 @@
       "searchAutocomplete": {
         "placeholder": "Search by pool, chain, or protocol...",
         "noOptions": "No matches found",
+        "moreCount": "+{{count}} more",
         "category": {
           "pool": "Pool",
           "chain": "Chain",

@@ -5,16 +5,21 @@ import Chip from '@mui/material/Chip';
 import type { SxProps, Theme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import type { FC } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import type { EarnSearchSuggestionOption } from '@/hooks/earn/useEarnSearchSuggestions';
 import { useEarnSearchSuggestions } from '@/hooks/earn/useEarnSearchSuggestions';
-import { filterSearchOptions } from '@/hooks/earn/useEarnSearchSuggestions.helpers';
+import {
+  filterSearchOptions,
+  getHiddenCountByCategory,
+} from '@/hooks/earn/useEarnSearchSuggestions.helpers';
 import {
   StyledAutocomplete,
   StyledGroupHeader,
   StyledGroupList,
+  StyledGroupMoreCount,
   StyledOptionLabel,
   StyledOptionRow,
   StyledTagContent,
@@ -37,21 +42,44 @@ export const EarnSearchAutocomplete: FC<EarnSearchAutocompleteProps> = ({
   const { t } = useTranslation();
   const { options, value, categoryLabels, onChange } =
     useEarnSearchSuggestions();
+  const [inputValue, setInputValue] = useState('');
 
-  const renderGroup = (params: AutocompleteRenderGroupParams) => (
-    <li key={params.key}>
-      <StyledGroupHeader variant="bodyXXSmallStrong">
-        {categoryLabels[params.group as keyof typeof categoryLabels] ??
-          params.group}
-      </StyledGroupHeader>
-      <StyledGroupList>{params.children}</StyledGroupList>
-    </li>
+  const hiddenCountByCategory = useMemo(
+    () => getHiddenCountByCategory(options, inputValue),
+    [options, inputValue],
   );
+
+  const renderGroup = (params: AutocompleteRenderGroupParams) => {
+    const hiddenCount =
+      hiddenCountByCategory[
+        params.group as keyof typeof hiddenCountByCategory
+      ] ?? 0;
+
+    return (
+      <li key={params.key}>
+        <StyledGroupHeader>
+          {categoryLabels[params.group as keyof typeof categoryLabels] ??
+            params.group}
+          {hiddenCount > 0 && (
+            <StyledGroupMoreCount>
+              {t('earn.filter.searchAutocomplete.moreCount', {
+                count: hiddenCount,
+              })}
+            </StyledGroupMoreCount>
+          )}
+        </StyledGroupHeader>
+        <StyledGroupList>{params.children}</StyledGroupList>
+      </li>
+    );
+  };
 
   return (
     <StyledAutocomplete
       multiple
       disableCloseOnSelect
+      open={inputValue.trim().length > 0}
+      inputValue={inputValue}
+      onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
       options={options}
       value={value}
       onChange={(_event, selected) => onChange(selected)}

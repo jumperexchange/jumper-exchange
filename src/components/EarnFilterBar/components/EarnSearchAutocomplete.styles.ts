@@ -55,10 +55,20 @@ export const StyledOptionLabel = styled(Typography)({
   whiteSpace: 'nowrap',
 });
 
-export const StyledGroupHeader = styled(Typography)(({ theme }) => ({
+export const StyledGroupHeader = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'baseline',
   padding: theme.spacing(1, 1.5, 0.5),
   color: (theme.vars || theme).palette.textHint,
   textTransform: 'uppercase',
+  ...theme.typography.bodyXXSmallStrong,
+}));
+
+export const StyledGroupMoreCount = styled(Typography)(({ theme }) => ({
+  ...theme.typography.bodyXXSmall,
+  color: (theme.vars || theme).palette.textHint,
+  textTransform: 'none',
 }));
 
 export const StyledGroupList = styled('ul')({

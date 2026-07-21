@@ -3,6 +3,7 @@ import {
   buildSelectedOptions,
   EarnSearchCategory,
   filterSearchOptions,
+  getHiddenCountByCategory,
   partitionSelectedOptions,
   type EarnSearchOption,
 } from './useEarnSearchSuggestions.helpers';
@@ -85,9 +86,9 @@ describe('partitionSelectedOptions', () => {
 });
 
 describe('filterSearchOptions', () => {
-  it('returns every option, grouped, when the input is empty', () => {
-    expect(filterSearchOptions(options, '')).toEqual(options);
-    expect(filterSearchOptions(options, '   ')).toEqual(options);
+  it('returns no options when the input is empty, so the popup stays closed', () => {
+    expect(filterSearchOptions(options, '')).toEqual([]);
+    expect(filterSearchOptions(options, '   ')).toEqual([]);
   });
 
   it('matches case-insensitively on substrings', () => {
@@ -152,10 +153,43 @@ describe('filterSearchOptions', () => {
       }),
     );
 
-    expect(filterSearchOptions(manyPools, 'pool')).toHaveLength(8);
+    expect(filterSearchOptions(manyPools, 'pool')).toHaveLength(5);
   });
 
   it('returns no matches for an unrelated query', () => {
     expect(filterSearchOptions(options, 'nonexistent')).toEqual([]);
+  });
+});
+
+describe('getHiddenCountByCategory', () => {
+  it('reports zero hidden matches for every category when the input is empty', () => {
+    expect(getHiddenCountByCategory(options, '')).toEqual({
+      pool: 0,
+      chain: 0,
+      protocol: 0,
+    });
+  });
+
+  it('counts matches beyond the per-category cap', () => {
+    const manyPools: EarnSearchOption[] = Array.from(
+      { length: 10 },
+      (_, i) => ({
+        category: EarnSearchCategory.Pool,
+        value: `pool-${i}`,
+        label: `Pool ${i}`,
+      }),
+    );
+
+    expect(getHiddenCountByCategory(manyPools, 'pool')).toEqual({
+      pool: 5,
+      chain: 0,
+      protocol: 0,
+    });
+  });
+
+  it('reports zero hidden matches when a category is under the cap', () => {
+    expect(getHiddenCountByCategory(options, 'e')).toEqual(
+      expect.objectContaining({ chain: 0 }),
+    );
   });
 });

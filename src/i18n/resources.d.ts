@@ -185,6 +185,7 @@ export default interface Resources {
             pool: 'Pool';
             protocol: 'Protocol';
           };
+          moreCount: '+{{count}} more';
           noOptions: 'No matches found';
           placeholder: 'Search by pool, chain, or protocol...';
         };

@@ -18,7 +18,7 @@ const CATEGORY_ORDER: Record<EarnSearchCategoryEnum, number> = {
   [EarnSearchCategory.Protocol]: 2,
 };
 
-const MAX_OPTIONS_PER_CATEGORY = 8;
+const MAX_OPTIONS_PER_CATEGORY = 5;
 
 export interface EarnSearchOption {
   category: EarnSearchCategoryEnum;
@@ -86,22 +86,23 @@ export function partitionSelectedOptions(
 }
 
 /** Case-insensitive substring match, grouped by category (kept contiguous
- * for MUI's `groupBy`) and ranked prefix-first within each group, capped so
- * a single category can't crowd out the others. */
-export function filterSearchOptions<T extends EarnSearchOption>(
+ * for MUI's `groupBy`) and ranked prefix-first within each group. Returns []
+ * for an empty/blank query so the autocomplete stays closed until the user
+ * types, rather than dumping every option. */
+function rankMatches<T extends EarnSearchOption>(
   options: T[],
   inputValue: string,
 ): T[] {
   const input = inputValue.trim().toLowerCase();
   if (!input) {
-    return options;
+    return [];
   }
 
   const matches = options.filter((option) =>
     option.label.toLowerCase().includes(input),
   );
 
-  const ranked = orderBy(
+  return orderBy(
     matches,
     [
       (option) => CATEGORY_ORDER[option.category],
@@ -110,6 +111,15 @@ export function filterSearchOptions<T extends EarnSearchOption>(
     ],
     ['asc', 'asc', 'asc'],
   );
+}
+
+/** Matches per category, capped so a single category can't crowd out the
+ * others. */
+export function filterSearchOptions<T extends EarnSearchOption>(
+  options: T[],
+  inputValue: string,
+): T[] {
+  const ranked = rankMatches(options, inputValue);
 
   const countPerCategory = new Map<EarnSearchCategoryEnum, number>();
   return ranked.filter((option) => {
@@ -120,4 +130,28 @@ export function filterSearchOptions<T extends EarnSearchOption>(
     countPerCategory.set(option.category, count + 1);
     return true;
   });
+}
+
+/** Count of matches hidden by the per-category cap, so the UI can surface a
+ * "+N more" hint per group. */
+export function getHiddenCountByCategory<T extends EarnSearchOption>(
+  options: T[],
+  inputValue: string,
+): Record<EarnSearchCategoryEnum, number> {
+  const ranked = rankMatches(options, inputValue);
+
+  const countPerCategory = new Map<EarnSearchCategoryEnum, number>();
+  for (const option of ranked) {
+    countPerCategory.set(
+      option.category,
+      (countPerCategory.get(option.category) ?? 0) + 1,
+    );
+  }
+
+  return Object.fromEntries(
+    Object.values(EarnSearchCategory).map((category) => {
+      const matchCount = countPerCategory.get(category) ?? 0;
+      return [category, Math.max(0, matchCount - MAX_OPTIONS_PER_CATEGORY)];
+    }),
+  ) as Record<EarnSearchCategoryEnum, number>;
 }
