@@ -15,13 +15,18 @@ test.describe('Landing page and navigation', () => {
   });
 
   test(
-    qase(2, 'Should navigate to the homepage and change tabs'),
+    qase(
+      2,
+      'Should land on Simple and gate the Advanced tab for anonymous users',
+    ),
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       await page.waitForLoadState('domcontentloaded');
-      await landingPage.clickWidgetTab(1);
-      await landingPage.expectWidgetTabVisible(WIDGET_TABS.ADVANCED_BRIDGE);
-      await landingPage.clickWidgetTab(0);
+      // Advanced is gated behind the widget-advanced flag + hasAdvanced allowlist;
+      // anonymous users land on Simple with the Advanced tab rendered but
+      // disabled. Re-scope to a click-through once the feature goes GA.
+      await landingPage.expectVerticalTabSelected(0);
+      await landingPage.expectVerticalTabDisabled(1);
       await landingPage.expectWidgetTabVisible(
         WIDGET_TABS.SIMPLE_SWAP_AND_BRIDGE,
       );

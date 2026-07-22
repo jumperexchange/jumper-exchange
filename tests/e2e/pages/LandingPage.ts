@@ -44,12 +44,6 @@ export class LandingPage {
     await this.page.getByRole('link', { name: option }).click();
   }
 
-  // Vertical menu tabs: 0 = Simple, 1 = Advanced.
-  async clickWidgetTab(tabKey: number): Promise<void> {
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.getByTestId(`tab-key-${tabKey}`).click();
-  }
-
   async closeWelcomeScreen(): Promise<void> {
     await expect(this.getStartedButton).toBeVisible({
       timeout: WELCOME_VISIBLE_TIMEOUT_MS,
@@ -129,6 +123,20 @@ export class LandingPage {
         .getByTestId('widget-to-token-button')
         .getByAltText(this.chainNameOf(pair.toChain)),
     ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
+  }
+
+  // Vertical menu tabs: 0 = Simple, 1 = Advanced.
+  async expectVerticalTabDisabled(tabKey: number): Promise<void> {
+    const tab = this.page.getByTestId(`tab-key-${tabKey}`);
+    await expect(tab).toBeVisible();
+    await expect(tab).toBeDisabled();
+  }
+
+  async expectVerticalTabSelected(tabKey: number): Promise<void> {
+    await expect(this.page.getByTestId(`tab-key-${tabKey}`)).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   }
 
   async expectWelcomeHeadingVisible(): Promise<void> {
