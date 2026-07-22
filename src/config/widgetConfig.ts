@@ -1,4 +1,8 @@
-import type { Appearance, WidgetConfig } from '@jumperexchange/widget';
+import type {
+  Appearance,
+  WidgetConfig,
+  WidgetTheme,
+} from '@jumperexchange/widget';
 import type {
   ColorSystem,
   CssVarsTheme,
@@ -60,19 +64,27 @@ export const getDefaultWidgetTheme = (
           // @ts-ignore borderRadiusSecondary is a Jumper theme extension the widget accepts at runtime
           borderRadiusSecondary: 24,
         },
-        palette: {
-          background: {
-            paper: theme.palette.surface2.main,
-            default: theme.palette.surface1.main,
+        // The widget theme no longer accepts a flat `palette`; colors are
+        // scoped per mode under `colorSchemes`. This function only knows
+        // the current mode's colors (it receives a resolved `Theme`, not a
+        // `CssVarsTheme` with both schemes), so only that mode is set.
+        colorSchemes: {
+          [theme.palette.mode]: {
+            palette: {
+              background: {
+                paper: theme.palette.surface2.main,
+                default: theme.palette.surface1.main,
+              },
+              primary: {
+                main: theme.palette.accent1.main,
+              },
+              secondary: {
+                main: theme.palette.accent2.main,
+              },
+              grey: theme.palette.grey,
+            },
           },
-          primary: {
-            main: theme.palette.accent1.main,
-          },
-          secondary: {
-            main: theme.palette.accent2.main,
-          },
-          grey: theme.palette.grey,
-        },
+        } as WidgetTheme['colorSchemes'],
       },
     },
   };
