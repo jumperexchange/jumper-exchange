@@ -85,10 +85,7 @@ export class LandingPage {
 
     const viewportWidth = this.page.viewportSize()?.width;
     if (viewportWidth !== undefined && viewportWidth < 599) {
-      // TODO(app): JUM-924 — swap to `widget-route-expand-toggle` at the widget bump.
-      await this.page
-        .locator('button.MuiIconButton-root.MuiIconButton-sizeSmall:has(svg)')
-        .click();
+      await this.page.getByTestId('widget-route-expand-toggle').click();
     }
     const relayLabel = this.page
       .getByText(ROUTE_LABELS.RELAY_VIA_LIFI)
