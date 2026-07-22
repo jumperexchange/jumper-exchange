@@ -2,7 +2,7 @@ import type { Balance, ExtendedToken } from '@/types/tokens';
 import type { FormInputProps } from '../FormInput/FormInput';
 import { FormInputField } from '../FormInput/FormInput.styles';
 import type { ChangeEvent, FC } from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { EntityChainStack } from '@/components/composite/EntityChainStack/EntityChainStack';
 import { EntityChainStackVariant } from '@/components/composite/EntityChainStack/EntityChainStack.types';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
@@ -14,11 +14,13 @@ interface TokenPriceFormInputProps extends Pick<
 > {
   tokenBalance: Balance<ExtendedToken>;
   onAmountChange: (amount: string, amountUSD: string) => void;
+  endAdornment?: React.ReactNode;
 }
 
 export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
   tokenBalance,
   onAmountChange,
+  endAdornment,
   ...rest
 }) => {
   const {
@@ -31,19 +33,21 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
     usdDecimals,
   } = useTokenAmountInput();
 
-  const [_amount, setAmount] = useState(
-    toAmount(tokenBalance.amount, tokenBalance.token.decimals),
+  const initialAmount = toAmount(
+    tokenBalance.amount,
+    tokenBalance.token.decimals,
   );
-  const [displayValue, setDisplayValue] = useState(
-    toPriceDisplay(
-      toPrice(toAmount(tokenBalance.amount, tokenBalance.token.decimals)),
-    ),
+  const initialDisplayValue = toPriceDisplay(
+    toPrice(initialAmount, tokenBalance.token.priceUSD),
   );
+
+  const [_amount, setAmount] = useState(initialAmount);
+  const [displayValue, setDisplayValue] = useState(initialDisplayValue);
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const inputValue = event.target.value.replace('$', '');
+    const inputValue = event.target.value.replace('$', '').replace('-', '');
 
     const usdAmountFormatted = toInputAmount(inputValue, usdDecimals, true);
 
@@ -102,6 +106,7 @@ export const TokenPriceFormInput: FC<TokenPriceFormInputProps> = ({
           isContentVisible={false}
         />
       }
+      endAdornment={endAdornment}
     />
   );
 };
