@@ -10,11 +10,11 @@ import Intercom, {
 import { captureException } from '@sentry/nextjs';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect } from 'react';
+import { useIntercomUserHash } from 'src/app/lib/useIntercomUserHash';
 import envConfig from 'src/config/env-config';
 import { useActiveAccountByChainType } from 'src/hooks/useActiveAccountByChainType';
-import { useMenuStore } from 'src/stores/menu';
-import { useIntercomUserHash } from 'src/app/lib/useIntercomUserHash';
 import { usePrevious } from 'src/hooks/usePrevious';
+import { useMenuStore } from 'src/stores/menu';
 
 const commonIntercomConfig = {
   app_id: envConfig.NEXT_PUBLIC_INTERCOM_APP_ID,
@@ -25,14 +25,22 @@ const commonIntercomConfig = {
 
 export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
   const activeAccount = useActiveAccountByChainType();
-  const previousActiveAccount = usePrevious(activeAccount);
-  const [openSupportModal, setOpenSupportModal, setSupportModalUnreadCount] =
-    useMenuStore((state) => [
-      state.openSupportModal,
-      state.setSupportModalState,
-      state.setSupportModalUnreadCount,
-    ]);
-  const { mutateAsync: getUserHash } = useIntercomUserHash();
+  const walletAddress = activeAccount?.address;
+  const previousAddress = usePrevious(walletAddress);
+  const {
+    mutate,
+    isPending,
+    isSuccess,
+    isError,
+    variables: syncedAddress,
+  } = useIntercomUserHash();
+  const openSupportModal = useMenuStore((state) => state.openSupportModal);
+  const setOpenSupportModal = useMenuStore(
+    (state) => state.setSupportModalState,
+  );
+  const setSupportModalUnreadCount = useMenuStore(
+    (state) => state.setSupportModalUnreadCount,
+  );
 
   useEffect(() => {
     if (!envConfig.NEXT_PUBLIC_INTERCOM_APP_ID) {
@@ -49,35 +57,37 @@ export const IntercomProviderInner: FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    const updateIntercomSession = async () => {
-      try {
-        if (
-          previousActiveAccount?.address &&
-          previousActiveAccount.address !== activeAccount?.address
-        ) {
-          hide();
-          setSupportModalUnreadCount(0);
-          shutdown();
-          boot(commonIntercomConfig);
-        }
-        if (activeAccount?.address) {
-          const userHash = await getUserHash(activeAccount.address);
-          update({
-            user_id: activeAccount.address,
-            user_hash: userHash,
-          });
-        }
-      } catch (error) {
+    if (
+      (isPending || isSuccess || isError) &&
+      syncedAddress === walletAddress
+    ) {
+      return;
+    }
+
+    if (previousAddress !== undefined && previousAddress !== walletAddress) {
+      hide();
+      setSupportModalUnreadCount(0);
+      shutdown();
+      boot(commonIntercomConfig);
+    }
+
+    mutate(walletAddress, {
+      onSuccess: ({ user_id, user_hash }) => {
+        update({ user_id, user_hash });
+      },
+      onError: (error) => {
         captureException(error);
         console.error('Error updating Intercom session', error);
-      }
-    };
-
-    updateIntercomSession();
+      },
+    });
   }, [
-    activeAccount?.address,
-    previousActiveAccount?.address,
-    getUserHash,
+    walletAddress,
+    previousAddress,
+    mutate,
+    isPending,
+    isSuccess,
+    isError,
+    syncedAddress,
     setSupportModalUnreadCount,
   ]);
 

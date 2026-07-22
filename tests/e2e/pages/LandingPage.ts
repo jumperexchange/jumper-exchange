@@ -108,21 +108,35 @@ export class LandingPage {
    * Deeplinked token addresses resolve into tokens only after the widget's
    * token list loads — until then the route query is gated off entirely, so
    * under CI load routes can lose the race against a fixed timeout. Waits for
-   * the chain-name subheader (renders only once chain AND token resolve);
-   * asserting the token symbol would break across environments (develop
-   * serves 'USDT' where prod serves 'USDT0' for the same Arbitrum token).
+   * the chain badge on the token buttons (renders only once chain AND token
+   * resolve); asserting the token symbol would break across environments
+   * (develop serves 'USDT' where prod serves 'USDT0' for the same token).
    */
   async expectSwapPairResolved(pair: WidgetUrlParams): Promise<void> {
     await expect(
-      this.tokenCard('From').getByText(this.chainNameOf(pair.fromChain), {
-        exact: true,
-      }),
+      this.page
+        .getByTestId('widget-from-token-button')
+        .getByAltText(this.chainNameOf(pair.fromChain)),
     ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
     await expect(
-      this.tokenCard('To').getByText(this.chainNameOf(pair.toChain), {
-        exact: true,
-      }),
+      this.page
+        .getByTestId('widget-to-token-button')
+        .getByAltText(this.chainNameOf(pair.toChain)),
     ).toBeVisible({ timeout: TOKEN_RESOLUTION_TIMEOUT_MS });
+  }
+
+  // Vertical menu tabs: 0 = Simple, 1 = Advanced.
+  async expectVerticalTabDisabled(tabKey: number): Promise<void> {
+    const tab = this.page.getByTestId(`tab-key-${tabKey}`);
+    await expect(tab).toBeVisible();
+    await expect(tab).toBeDisabled();
+  }
+
+  async expectVerticalTabSelected(tabKey: number): Promise<void> {
+    await expect(this.page.getByTestId(`tab-key-${tabKey}`)).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   }
 
   async expectWelcomeHeadingVisible(): Promise<void> {
@@ -131,25 +145,16 @@ export class LandingPage {
     ).toBeVisible();
   }
 
+  // The destination is asserted via a widget tab unique to it, so the check
+  // cannot match the outgoing page mid-navigation (role=tab name matching is
+  // exact — "Bridge" does not match "Swap & Bridge").
+  async expectWidgetTabVisible(widgetTab: string): Promise<void> {
+    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
+  }
+
   async goto(): Promise<void> {
     await this.page.goto('/');
     await this.page.waitForLoadState('domcontentloaded');
-  }
-
-  async navigateAndExpectTab(
-    tabKey: number | string,
-    expected: RegExp | string,
-  ): Promise<void> {
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.getByTestId(`tab-key-${tabKey}`).click();
-    // The RegExp form targets the AB-tested Exchange label; scope it to the
-    // navbar button so it can't collide with the widget header, which renders
-    // the same "Swap & Bridge" text page-wide.
-    const label =
-      typeof expected === 'string'
-        ? this.page.getByText(expected, { exact: true })
-        : this.page.getByTestId('navbar-exchange-button').getByText(expected);
-    await expect(label).toBeVisible();
   }
 
   private chainNameOf(chainId: string): string {
@@ -169,12 +174,5 @@ export class LandingPage {
         timeout: 10_000,
       })
       .toBeGreaterThan(0);
-  }
-
-  // TODO(app): JUM-924 — widget token select buttons lack testids; anchored on the card title text.
-  private tokenCard(title: 'From' | 'To'): Locator {
-    return this.page
-      .locator('button')
-      .filter({ has: this.page.getByText(title, { exact: true }) });
   }
 }

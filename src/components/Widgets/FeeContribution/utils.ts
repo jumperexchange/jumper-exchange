@@ -1,6 +1,6 @@
 import type { Route, StatusResponse } from '@lifi/sdk';
 import { ChainType } from '@lifi/sdk';
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import type { Hex } from 'viem';
 import {
   CONTRIBUTION_AMOUNTS,

@@ -2,7 +2,7 @@
 
 import DeleteOutlineRounded from '@mui/icons-material/DeleteOutlineRounded';
 import OpenInNewRounded from '@mui/icons-material/OpenInNewRounded';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { Stack } from '@mui/material';
 import { useInView } from 'motion/react';
 import NextLink from 'next/link';

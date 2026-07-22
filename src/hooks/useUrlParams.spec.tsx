@@ -96,4 +96,51 @@ describe('useUrlParams', () => {
 
     expect(result.current.denyBridges).toEqual(['relay', 'across']);
   });
+
+  it('updates when the widget syncs the URL via history.replaceState', async () => {
+    const { result } = renderHook(() => useUrlParams());
+
+    expect(result.current.sourceChainToken).toEqual({
+      chainId: undefined,
+      token: undefined,
+    });
+
+    await act(async () => {
+      window.history.replaceState({}, '', '/?fromChain=1&fromToken=0xfrom');
+      await Promise.resolve();
+    });
+
+    expect(result.current.sourceChainToken).toEqual({
+      chainId: 1,
+      token: '0xfrom',
+    });
+  });
+
+  it('updates when the widget syncs the URL via history.pushState', async () => {
+    const { result } = renderHook(() => useUrlParams());
+
+    await act(async () => {
+      window.history.pushState({}, '', '/?toChain=100&toToken=0xto');
+      await Promise.resolve();
+    });
+
+    expect(result.current.destinationChainToken).toEqual({
+      chainId: 100,
+      token: '0xto',
+    });
+  });
+
+  it('keeps the same object reference when replaceState does not change parsed params', async () => {
+    setSearch('?fromChain=1&fromToken=0xfrom');
+
+    const { result } = renderHook(() => useUrlParams());
+    const first = result.current;
+
+    await act(async () => {
+      window.history.replaceState({}, '', '/?fromChain=1&fromToken=0xfrom');
+      await Promise.resolve();
+    });
+
+    expect(result.current).toBe(first);
+  });
 });

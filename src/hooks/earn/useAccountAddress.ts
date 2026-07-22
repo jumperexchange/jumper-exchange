@@ -1,6 +1,7 @@
 import { ChainType } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
-import { Hex, isHex } from 'viem';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { Hex } from 'viem';
+import { isHex } from 'viem';
 
 export const useAccountAddress = (): Hex | undefined => {
   const { accounts } = useAccount();

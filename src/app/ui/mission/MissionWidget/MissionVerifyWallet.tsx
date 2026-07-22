@@ -1,4 +1,4 @@
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { useAccount, useWalletMenu } from '@jumperexchange/wallet-management';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';

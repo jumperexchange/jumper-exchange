@@ -23,7 +23,7 @@ import {
   useFeatureCardDisable,
   useFeatureCardStyles,
 } from './hooks';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useAdCooldownStore } from '@/stores/adCooldown/AdCooldownStore';
 
 interface FeatureCardProps {

@@ -1,6 +1,6 @@
 import type { PartnerThemeConfig } from '@/types/PartnerThemeConfig';
 import type { PartnerThemesData } from '@/types/strapi';
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import type { StoreApi } from 'zustand';
 import type { UseBoundStoreWithEqualityFn } from 'zustand/traditional';
 import type { CreateJumperThemeOptions } from 'src/theme/theme';

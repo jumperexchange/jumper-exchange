@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useMemo } from 'react';
 import { useFeatureCardsFilter } from 'src/hooks/feature-cards/useFeatureCardsFilter';
 import { usePersonalizedFeatureCardsQuery } from 'src/hooks/feature-cards/usePersonalizedFeatureCardsQuery';

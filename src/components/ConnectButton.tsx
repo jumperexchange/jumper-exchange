@@ -1,5 +1,5 @@
 'use client';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import type { SxProps, Theme } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {

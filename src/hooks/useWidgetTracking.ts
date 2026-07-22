@@ -1,4 +1,5 @@
-import { useWidgetEvents } from '@lifi/widget';
+import { useWidgetEvents, WidgetEvent } from '@jumperexchange/widget';
+import type { NavigationTabKey } from '@jumperexchange/widget';
 import { useEffect, useMemo, useRef } from 'react';
 import { useUrlParams } from '@/hooks/useUrlParams';
 import { composeWidgetTrackingHandlers } from '@/components/Widgets/tracking/composeWidgetTrackingHandlers';
@@ -46,6 +47,16 @@ export const useWidgetTracking = (trackerConfig: WidgetEventTrackerConfig) => {
       teardownWidgetEvents(eventHandlers, widgetEvents);
     };
   }, [eventHandlers, widgetEvents]);
+
+  useEffect(() => {
+    const handler = ({ tab }: { tab: NavigationTabKey }) => {
+      session.onTabChanged(tab);
+    };
+    widgetEvents.on(WidgetEvent.NavigationTabChanged, handler);
+    return () => {
+      widgetEvents.off(WidgetEvent.NavigationTabChanged, handler);
+    };
+  }, [widgetEvents, session]);
 
   return session;
 };

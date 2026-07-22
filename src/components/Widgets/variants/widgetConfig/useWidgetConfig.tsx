@@ -1,10 +1,12 @@
-import { useAccount } from '@lifi/wallet-management';
-import { ChainType, type WidgetConfig } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import { ChainType, type WidgetConfig } from '@jumperexchange/widget';
 import merge from 'lodash/merge';
 import { useMemo } from 'react';
+import { useActiveNavigationTab } from '@/hooks/useActiveNavigationTab';
 import { AB_TEST_NAME } from '@/const/abtests';
 import { useABTest } from '@/hooks/useABTest';
 import type {
+  LimitOrdersWidgetContext,
   MainWidgetContext,
   MissionWidgetContext,
   WidgetType,
@@ -19,7 +21,9 @@ import {
   useSharedRPCConfig,
 } from './useSharedConfigs';
 import { useWidgetDependencies } from './useWidgetDependencies';
+import { useLimitOrdersWidgetConfig } from './useLimitOrdersWidgetConfig';
 import { useZapWidgetConfig } from './useZapWidgetConfig';
+import { resolveActiveNavigationTab } from './utils';
 
 /**
  * Main widget configuration hook that orchestrates all configuration logic
@@ -30,15 +34,31 @@ export function useWidgetConfig<T extends WidgetType>(
     ? MainWidgetContext
     : T extends 'mission'
       ? MissionWidgetContext
-      : ZapWidgetContext,
+      : T extends 'zap'
+        ? ZapWidgetContext
+        : LimitOrdersWidgetContext,
 ): { config: WidgetConfig; isReady: boolean } {
+  const globalActiveNavigationTab = useActiveNavigationTab();
+  const resolvedVariant = (context as MainWidgetContext).resolvedVariant;
+  const activeTabKey = resolveActiveNavigationTab({
+    type,
+    resolvedVariant,
+    globalActiveNavigationTab,
+  });
+  const isPrivateTabActive =
+    activeTabKey === 'private' || resolvedVariant?.key === 'private';
+  const isLimitTabActive =
+    activeTabKey === 'limit' ||
+    resolvedVariant?.key === 'limit' ||
+    type === 'limit';
+
   const deps = useWidgetDependencies();
   const sharedBase = useSharedBaseConfig(context, deps);
-  const sharedRPC = useSharedRPCConfig(
-    'starterVariant' in context
-      ? { isPrivateVariant: context.starterVariant === 'private' }
-      : {},
-  );
+  const sharedRPC = useSharedRPCConfig({
+    isPrivateVariant: isPrivateTabActive,
+    isLimitVariant: isLimitTabActive,
+  });
+
   const sharedForm = useSharedFormConfig(context.formData);
   const { account } = useAccount();
   const priceImpactABTest = useABTest({
@@ -55,7 +75,9 @@ export function useWidgetConfig<T extends WidgetType>(
   const language = useLanguageConfig(
     {
       useMainWidget: type === 'main',
+      useLimitOrdersWidget: type === 'limit' || isLimitTabActive,
       useSwapBridgeTitle: tradeABTest.isEnabled && tradeABTest.value === 'test',
+      usePrivateWidget: isPrivateTabActive,
       ...context,
     },
     deps,
@@ -64,14 +86,18 @@ export function useWidgetConfig<T extends WidgetType>(
   const mainWidgetConfig = useMainWidgetConfig(
     context as MainWidgetContext,
     deps,
+    activeTabKey,
   );
   const missionWidgetConfig = useMissionWidgetConfig(
     context as MissionWidgetContext,
     deps,
   );
   const zapWidgetConfig = useZapWidgetConfig(context as ZapWidgetContext, deps);
+  const limitOrdersWidgetConfig = useLimitOrdersWidgetConfig(
+    context as LimitOrdersWidgetContext,
+    deps,
+  );
 
-  // Widget-specific configuration
   const widgetSpecific = useMemo(() => {
     switch (type) {
       case 'main':
@@ -79,12 +105,19 @@ export function useWidgetConfig<T extends WidgetType>(
       case 'mission':
         return missionWidgetConfig;
       case 'zap':
-        // For zap widgets, we use both mission and zap configurations
         return merge({}, missionWidgetConfig, zapWidgetConfig);
+      case 'limit':
+        return limitOrdersWidgetConfig;
       default:
         throw new Error(`Unknown widget type: ${type}`);
     }
-  }, [mainWidgetConfig, missionWidgetConfig, zapWidgetConfig, type]);
+  }, [
+    mainWidgetConfig,
+    missionWidgetConfig,
+    zapWidgetConfig,
+    limitOrdersWidgetConfig,
+    type,
+  ]);
 
   // Merge all configurations
   const config = useMemo(() => {

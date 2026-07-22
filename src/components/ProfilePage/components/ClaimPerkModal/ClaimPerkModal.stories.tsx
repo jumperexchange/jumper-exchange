@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { AvailableSteps } from './ClaimPerkModal.types';
 import { ConnectButton } from 'src/components/ConnectButton';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { PerksDataAttributes } from 'src/types/strapi';
 
 const meta = {

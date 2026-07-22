@@ -1,6 +1,6 @@
 import { useChainTokenSelectionStore } from '@/stores/chainTokenSelection/ChainTokenSelectionStore';
 import { ChainId } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCheckWalletLinking } from 'src/hooks/useCheckWalletLinking';

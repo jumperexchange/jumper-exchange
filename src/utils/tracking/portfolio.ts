@@ -1,5 +1,5 @@
 import type { PortfolioBalance, WalletToken } from '@/types/tokens';
-import type { ChainId } from '@lifi/widget';
+import type { ChainId } from '@jumperexchange/widget';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 import type { SummaryData } from '@/providers/PortfolioProvider/types';
 import type { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';

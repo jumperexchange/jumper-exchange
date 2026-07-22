@@ -6,22 +6,22 @@ Shape of this Next.js app. See [AGENTS.md](./AGENTS.md) for how to work in this 
 
 The B2C frontend for [jumper.xyz](https://jumper.xyz). Users land here to bridge and swap between any tokens across any chains (EVM, SVM, Sui, Bitcoin, Tron). Retention features (earn, portfolio, quests, campaigns, missions) are layered on top of the core swap flow.
 
-The app embeds the `@lifi/widget` for the swap UX and wraps it with Jumper-specific surfaces (auth, profile, XP, content, partner themes, …).
+The app embeds the `@jumperexchange/widget` for the swap UX and wraps it with Jumper-specific surfaces (auth, profile, XP, content, partner themes, …).
 
 ## Stack
 
-| Layer           | Choice                                                                                              |
-| --------------- | --------------------------------------------------------------------------------------------------- |
-| Framework       | Next.js 16 (App Router) on React 19 with the React Compiler                                         |
-| Styling         | MUI v9 + Emotion                                                                                    |
-| Server state    | `@tanstack/react-query`                                                                             |
-| Client state    | `zustand` (one store per feature, under `src/stores/<feature>/`)                                    |
-| Forms           | `@tanstack/react-form`                                                                              |
-| i18n            | `next-i18n-router` + `i18next`, locale segment in the URL (`/[lng]/…`)                              |
-| Wallet          | `@lifi/sdk` + `@lifi/widget` + per-chain providers (EVM via Wagmi/Viem, Solana, Sui, Bitcoin, Tron) |
-| Observability   | Sentry (browser + server + edge)                                                                    |
-| Tests           | Playwright (E2E), Vitest (unit, snapshot, Storybook)                                                |
-| Package manager | pnpm (`packageManager` field pins the version)                                                      |
+| Layer           | Choice                                                                                                        |
+| --------------- | ------------------------------------------------------------------------------------------------------------- |
+| Framework       | Next.js 16 (App Router) on React 19 with the React Compiler                                                   |
+| Styling         | MUI v9 + Emotion                                                                                              |
+| Server state    | `@tanstack/react-query`                                                                                       |
+| Client state    | `zustand` (one store per feature, under `src/stores/<feature>/`)                                              |
+| Forms           | `@tanstack/react-form`                                                                                        |
+| i18n            | `next-i18n-router` + `i18next`, locale segment in the URL (`/[lng]/…`)                                        |
+| Wallet          | `@lifi/sdk` + `@jumperexchange/widget` + per-chain providers (EVM via Wagmi/Viem, Solana, Sui, Bitcoin, Tron) |
+| Observability   | Sentry (browser + server + edge)                                                                              |
+| Tests           | Playwright (E2E), Vitest (unit, snapshot, Storybook)                                                          |
+| Package manager | pnpm (`packageManager` field pins the version)                                                                |
 
 ## Directory layout
 
@@ -90,7 +90,7 @@ jumper-exchange/
 
 - **Server state** (chains, tokens, quotes, profile, campaigns, …) is fetched through react-query hooks under `src/hooks/`. Most go through `jumper-backend` either directly or via a Next.js route handler under `src/app/api/`. A few legacy hooks still call `strapi-cms` directly.
 - **Client state** (selected chain/token, route choice, settings, theme, modals, …) lives in zustand stores under `src/stores/<feature>/`. Stores never call APIs — they hold UI state and derived selectors.
-- **The swap engine** is `@lifi/widget`. We embed it inside our pages and configure it via `src/config/widgetConfig.ts`. Wallet connectors are wired in `src/providers/WalletProvider/` so the widget sees them.
+- **The swap engine** is `@jumperexchange/widget`. We embed it inside our pages and configure it via `src/config/widgetConfig.ts`. Wallet connectors are wired in `src/providers/WalletProvider/` so the widget sees them.
 - **Sentry** is initialised once in `instrumentation*.ts` / `sentry.*.config.ts`. Feature code uses helpers — never `Sentry.init` directly.
 
 ## Internal dependency rules

@@ -5,7 +5,7 @@ import {
   type FormFieldChanged,
   useWidgetEvents,
   WidgetEvent,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import { useChains } from './useChains';
 
 export const useWidgetSelectedChains = () => {
@@ -92,7 +92,9 @@ export const useWidgetSelectedChains = () => {
 
   useEffect(() => {
     const handleFormFieldChanged = (fieldChange: FormFieldChanged) => {
-      if (!fieldChange) return;
+      if (!fieldChange) {
+        return;
+      }
 
       if (
         fieldChange.fieldName === 'fromChain' ||

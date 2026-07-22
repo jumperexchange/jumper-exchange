@@ -18,7 +18,7 @@ import {
   PortfolioWelcomeScreenButton,
   PortfolioWelcomeScreenButtonsContainer,
 } from './PortfolioPage.styles';
-import { useAccount, useWalletMenu } from '@lifi/wallet-management';
+import { useAccount, useWalletMenu } from '@jumperexchange/wallet-management';
 
 interface PortfolioWelcomeScreenProps {
   onClose: () => void;

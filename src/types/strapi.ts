@@ -1,4 +1,4 @@
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';

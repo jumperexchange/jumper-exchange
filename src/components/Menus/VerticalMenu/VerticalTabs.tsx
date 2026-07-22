@@ -13,6 +13,10 @@ export const VerticalTabs = () => {
   };
   const verticalTabs = useVerticalTabs();
 
+  if (verticalTabs.length <= 1) {
+    return null;
+  }
+
   return (
     <VerticalTabsContainer
       value={!isDesktop ? false : activeTab}
@@ -29,6 +33,7 @@ export const VerticalTabs = () => {
               el.onClick(event, el.value);
             }}
             icon={el.icon}
+            disabled={el.disabled}
             data-testid={`tab-key-${el.value}`}
             aria-controls={`simple-tabpanel-${index}`}
           />

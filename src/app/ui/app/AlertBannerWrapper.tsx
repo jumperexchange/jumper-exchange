@@ -7,7 +7,7 @@ import { type FC } from 'react';
 import { useExtensionDetectionStatus } from '@/providers/ExtensionDetectionProvider/ExtensionDetectionProvider';
 import { POCKET_UNIVERSE_EXTENSION } from '@/providers/ExtensionDetectionProvider/extensionDetectionInitialDefinitions';
 import { useTranslation } from 'react-i18next';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 export const AlertBannerWrapper: FC = ({}) => {
   const { t } = useTranslation();

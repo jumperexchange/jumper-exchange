@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Theme } from '@mui/material/styles';
 import type { FC } from 'react';
 import { useCallback, useMemo, useState } from 'react';

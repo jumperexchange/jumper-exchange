@@ -1,78 +1,45 @@
 'use client';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useLayoutEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { useActiveNavigationTab } from '@/hooks/useActiveNavigationTab';
 import { WidgetTrackingProvider } from '@/providers/WidgetTrackingProvider';
+import type { WidgetTrackingVariant } from '@/components/Widgets/tracking/widgetTrackingPresets';
 import { ChainAlert } from '@/components/Alerts';
-import { LinkMap } from '@/const/linkMap';
 import { TabsMap } from '@/const/tabsMap';
 import { useActiveTabStore } from '@/stores/activeTab';
-import type { StarterVariantType } from '@/types/internal';
+import { useRepeatOrderFlowStore } from '@/stores/limitOrderFlow/RepeatOrderFlowStore';
+import { useModifyOrderFlowStore } from '@/stores/limitOrderFlow/ModifyOrderFlowStore';
 import { PartnerThemeFooterImage } from '../PartnerThemeFooterImage';
 import { WidgetEvents } from './WidgetEvents';
 
-interface WidgetsProps {
-  widgetVariant: StarterVariantType;
-}
-
-export function Widgets({ widgetVariant }: WidgetsProps) {
-  const { activeTab, setActiveTab } = useActiveTabStore();
-  const [starterVariantUsed, setStarterVariantUsed] = useState(false);
-
-  const starterVariant: StarterVariantType = useMemo(() => {
-    if (widgetVariant) {
-      return widgetVariant;
-    } else {
-      const url = window?.location.pathname.slice(1);
-      if (Object.values(LinkMap).includes(url as LinkMap)) {
-        if (TabsMap.Private.destination.filter((el) => el === url).length) {
-          return TabsMap.Private.variant;
-        } else if (TabsMap.Buy.destination.filter((el) => el === url).length) {
-          return TabsMap.Buy.variant;
-        } else if (
-          TabsMap.Refuel.destination.filter((el) => el === url).length
-        ) {
-          return TabsMap.Refuel.variant;
-        } else {
-          return TabsMap.Exchange.variant;
-        }
-      } else {
-        // default and fallback: Exchange-Tab
-        return TabsMap.Exchange.variant;
-      }
-    }
-  }, [widgetVariant]);
-
-  const getActiveWidget = useCallback(() => {
-    if (!starterVariantUsed) {
-      switch (starterVariant) {
-        case TabsMap.Exchange.variant:
-          setActiveTab(TabsMap.Exchange.index);
-          break;
-        case TabsMap.Refuel.variant:
-          setActiveTab(TabsMap.Refuel.index);
-          break;
-        case TabsMap.Private.variant:
-          setActiveTab(TabsMap.Private.index);
-          break;
-        case TabsMap.Buy.variant:
-          setActiveTab(TabsMap.Buy.index);
-          break;
-        default:
-          setActiveTab(TabsMap.Exchange.index);
-      }
-      setStarterVariantUsed(true);
-    }
-  }, [setActiveTab, starterVariant, starterVariantUsed]);
+export function Widgets() {
+  const { setActiveTab } = useActiveTabStore();
+  const pathname = usePathname();
+  const activeNavigationTab = useActiveNavigationTab();
+  const isRepeatModalOpen = useRepeatOrderFlowStore((s) => s.isModalOpen);
+  const isModifyModalOpen = useModifyOrderFlowStore((s) => s.isModalOpen);
 
   useLayoutEffect(() => {
-    getActiveWidget();
-  }, [getActiveWidget, starterVariant, activeTab]);
+    const isAdvanced = TabsMap.Advanced.destination.some((dest) =>
+      pathname.includes(dest),
+    );
+    setActiveTab(isAdvanced ? TabsMap.Advanced.index : TabsMap.Simple.index);
+  }, [pathname, setActiveTab]);
+
+  const trackingVariant: WidgetTrackingVariant =
+    activeNavigationTab === 'private'
+      ? 'private'
+      : pathname.includes('advanced')
+        ? 'advanced'
+        : 'main';
 
   return (
     <>
       <ChainAlert />
       <PartnerThemeFooterImage />
       <WidgetTrackingProvider
-        variant={starterVariant === 'private' ? 'private' : 'main'}
+        variant={trackingVariant}
+        enabled={!isRepeatModalOpen && !isModifyModalOpen}
       >
         <WidgetEvents />
       </WidgetTrackingProvider>

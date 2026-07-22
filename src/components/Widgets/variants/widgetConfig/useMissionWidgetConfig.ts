@@ -1,5 +1,5 @@
-import { useAccount } from '@lifi/wallet-management';
-import type { WidgetConfig } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 
 import { TaskType } from '@/types/strapi';
@@ -60,6 +60,8 @@ export function useMissionWidgetConfig(
           whiteSpace: 'break-spaces !important',
         },
       },
+
+      appearance: deps.theme.widgetTheme.config.appearance,
 
       // Chain configuration
       chains: {

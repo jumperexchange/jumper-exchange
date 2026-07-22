@@ -5,7 +5,7 @@ import { walletBalanceCardFixture } from './fixtures';
 
 const MOCK_WALLET_ADDRESS = '0x1234567890123456789012345678901234567890';
 
-vi.mock('@lifi/wallet-management', () => ({
+vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => ({
     accounts: [
       {

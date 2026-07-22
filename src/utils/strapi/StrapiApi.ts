@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import { getStrapiBaseUrl } from './strapiHelper';
 import { sanitizeStrapiContainsSearchInput } from './sanitizeStrapiContainsSearchInput';
 import config from '@/config/env-config';
@@ -486,15 +486,18 @@ class ArticleStrapiApi extends StrapiApi {
   constructor({
     includeFields,
     excludeFields,
+    populate,
   }: {
     includeFields?: ArticleField[];
     excludeFields?: ArticleField[];
+    populate?: string[];
   } = {}) {
     super({ contentType: 'blog-articles' }); // Set content type to "blog-articles" automatically
     const articleParams = new ArticleParams(this.apiUrl);
     this.apiUrl = articleParams.addParams({
       includeFields,
       excludeFields,
+      populate,
     });
   }
 

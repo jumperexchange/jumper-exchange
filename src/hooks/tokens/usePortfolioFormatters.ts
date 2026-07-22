@@ -6,7 +6,7 @@ import {
   formatTokenAmountWithDust,
   formatUSDWithDust,
 } from '@/utils/formatNumbers';
-import { formatTokenAmount } from '@lifi/widget';
+import { formatTokenAmount } from '@jumperexchange/widget';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import sumBy from 'lodash/sumBy';

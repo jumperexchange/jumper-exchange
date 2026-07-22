@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import { SignMessageErrorType } from 'src/hooks/useSignMessage';
 
 interface StatusSheetContent {

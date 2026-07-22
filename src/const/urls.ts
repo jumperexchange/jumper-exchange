@@ -11,6 +11,7 @@ export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const LINK3_URL = 'https://link3.to/jumperapp_';
 export const TELEGRAM_URL = 'https://t.me/jumperapp';
+export const JUMPER_DOCS_URL = 'https://docs.jumper.xyz';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
 export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
 export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';
@@ -36,6 +37,7 @@ export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 export const JUMPER_PRIVATE_PATH = '/private';
+export const JUMPER_ADVANCED_PATH = '/advanced';
 
 export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
 export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
@@ -54,6 +56,7 @@ export function getSiteUrl() {
 
 export enum AppPaths {
   Main = JUMPER_MAIN_PATH,
+  Advanced = JUMPER_ADVANCED_PATH,
   Gas = JUMPER_GAS_PATH,
   Buy = JUMPER_BUY_PATH,
   Learn = JUMPER_LEARN_PATH,

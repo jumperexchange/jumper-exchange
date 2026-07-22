@@ -25,7 +25,7 @@ const STORAGE_KEY = 'jumper-sui-wallet-connection';
 //      null` to disable it entirely; post-hydration we pass `appName`
 //      explicitly so the client kit never hits the `document.title` fallback.
 //   3. Establishing `DAppKitContext` eagerly (via the pre-hydration stub)
-//      stops @lifi/widget-provider-sui's `SuiWidgetProvider` from falling
+//      stops @jumperexchange/widget-provider-sui's `SuiWidgetProvider` from falling
 //      through to its own `SuiBaseProvider`, which has the same per-render
 //      `createDAppKit` anti-pattern internally.
 

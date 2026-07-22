@@ -2,7 +2,7 @@ import type {
   FormFieldChanged,
   RouteHighValueLossUpdate,
   SettingUpdated,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import { TrackingEventParameter } from '@/const/trackingKeys';
 import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
 import { trackWidgetEvent } from '@/components/Widgets/tracking/trackWidgetEvent';

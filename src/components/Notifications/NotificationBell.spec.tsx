@@ -19,7 +19,7 @@ const summaryState: {
   isLoading: false,
 };
 
-vi.mock('@lifi/wallet-management', () => ({
+vi.mock('@jumperexchange/wallet-management', () => ({
   useAccount: () => accountState,
 }));
 
