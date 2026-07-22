@@ -10,12 +10,19 @@ test.describe('Mission wallet verification', () => {
   test.fixme(
     qase(203, 'Verify wallet on a mission via real signature'),
     async ({ jumperPage, wallet }) => {
-      // TODO(app): JUM-924 — add `missions-list` + `mission-verify-button` testids.
       await jumperPage.goto('/missions');
       await jumperPage.waitForLoadState('domcontentloaded');
+      await expect(jumperPage.getByTestId('missions-list')).toBeVisible();
+
+      // Verify buttons render on the mission detail page, not the list.
+      await jumperPage
+        .locator('[data-testid^="mission-card-"]')
+        .first()
+        .click();
+      await expect(jumperPage.getByTestId('mission-details')).toBeVisible();
 
       const verifyWalletButton = jumperPage
-        .getByRole('button', { name: 'Verify wallet' })
+        .getByTestId('mission-verify-button')
         .first();
       await expect(verifyWalletButton).toBeVisible();
       await verifyWalletButton.click();

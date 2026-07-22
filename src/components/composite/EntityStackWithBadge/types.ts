@@ -59,6 +59,8 @@ export interface EntityStackWithBadgeProps {
   isContentVisible?: boolean;
   /** Data test ID for the container */
   dataTestId?: string;
+  /** Data test ID for the hint text element(s) */
+  hintDataTestId?: string;
   // Main stack props
   size?: AvatarSize;
   limit?: number;

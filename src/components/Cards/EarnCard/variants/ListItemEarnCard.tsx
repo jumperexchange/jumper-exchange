@@ -17,6 +17,7 @@ import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDis
 import { ConditionalLink } from 'src/components/Link/ConditionalLink';
 import { ListItemEarnCardMissingPosition } from './ListItemEarnCardMissingPosition';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
+import { slugifyTestId } from '@/utils/slugifyTestId';
 
 export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
@@ -61,7 +62,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
 
   return (
     <ConditionalLink href={href}>
-      <ListItemEarnCardContainer hasLink={!!href}>
+      <ListItemEarnCardContainer data-testid="earn-card" hasLink={!!href}>
         <ListItemEarnCardBody hasHintHoverActive>
           <ListItemEarnContentWrapper direction="row" sx={{ flexWrap: 'wrap' }}>
             <EntityStackWithBadge
@@ -70,6 +71,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
               size={AvatarSize.XXL}
               badgeEntities={chains}
               badgeSize={AvatarSize.SM}
+              hintDataTestId="earn-card-chain-name"
               content={{
                 title,
               }}
@@ -92,6 +94,7 @@ export const ListItemEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
                   size={BadgeSize.MD}
                   label={tag}
                   key={tag}
+                  data-testid={`earn-card-tag-${slugifyTestId(tag)}`}
                 />
               ))}
               {items}

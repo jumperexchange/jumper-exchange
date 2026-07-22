@@ -70,6 +70,9 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
             ))}
           </Box>
           <Badge
+            data-testid={
+              status === 'claimed' ? 'perks-card-claimed-badge' : undefined
+            }
             startIcon={badge.icon}
             label={badge.label}
             variant={badge.variant}
