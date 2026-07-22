@@ -76,13 +76,21 @@ export default defineConfig({
     : {
         // Serve a prod build under CI/E2E_PROD_BUILD — the Turbopack dev server
         // intermittently boot-hangs on CI runners (300s webServer timeout).
-        command:
-          process.env.E2E_PROD_BUILD || process.env.CI
+        // E2E_SKIP_BUILD serves a prebuilt .next handed over by the CI build job:
+        // the build prerenders against live Strapi/backend, so every extra build
+        // is another chance for a transient upstream blip to kill the run.
+        command: process.env.E2E_SKIP_BUILD
+          ? 'pnpm run start'
+          : process.env.E2E_PROD_BUILD || process.env.CI
             ? 'pnpm run build && pnpm run start'
             : 'pnpm run dev',
         url: 'http://localhost:3000',
         timeout:
-          (process.env.E2E_PROD_BUILD || process.env.CI ? 900 : 300) * 1000,
+          (process.env.E2E_SKIP_BUILD
+            ? 120
+            : process.env.E2E_PROD_BUILD || process.env.CI
+              ? 900
+              : 300) * 1000,
         reuseExistingServer: !process.env.CI,
       },
 

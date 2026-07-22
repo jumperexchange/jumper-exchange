@@ -290,11 +290,11 @@ export const COLUMN_DEFINITIONS: Record<
     label: 'portfolio.transactionSummary.columns.assetIn',
     render: (content, config) => (
       <TransactionAssetStack
-        tokens={content.fromTokens}
-        nfts={content.fromNfts}
+        tokens={content.toTokens}
+        nfts={content.toNfts}
         config={config}
-        amountTitle={content.fromAmountTitle}
-        amountHints={content.fromAmountHints}
+        amountTitle={content.toAmountTitle}
+        amountHints={content.toAmountHints}
       />
     ),
     renderSkeleton: (config) => (
@@ -305,11 +305,11 @@ export const COLUMN_DEFINITIONS: Record<
     label: 'portfolio.transactionSummary.columns.assetOut',
     render: (content, config) => (
       <TransactionAssetStack
-        tokens={content.toTokens}
-        nfts={content.toNfts}
+        tokens={content.fromTokens}
+        nfts={content.fromNfts}
         config={config}
-        amountTitle={content.toAmountTitle}
-        amountHints={content.toAmountHints}
+        amountTitle={content.fromAmountTitle}
+        amountHints={content.fromAmountHints}
       />
     ),
     renderSkeleton: (config) => (

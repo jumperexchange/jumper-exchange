@@ -1,0 +1,91 @@
+name: Cleanup Playwright report directories
+# Deletes report dirs older than RETENTION_DAYS from the gh-pages branch AND squashes the
+# branch to a single orphan commit, so pruned reports leave no git-history residue and the
+# repo does not grow unbounded. Age is read from the YYYYMMDD prefix baked into each report
+# path (no reliance on git commit time, which the squash would destroy).
+on:
+  schedule:
+    - cron: "0 0 * * *" # Daily at midnight UTC
+  workflow_dispatch:
+# Shared with playwright.yml's publish-report job so a publish push and this force-push
+# can never race on the gh-pages branch.
+concurrency:
+  group: gh-pages-publish
+  cancel-in-progress: false
+env:
+  RETENTION_DAYS: 7
+jobs:
+  cleanup:
+    name: Delete old reports and compact history
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # gh-pages may not exist yet (fresh repo, deleted branch); don't hard-fail the
+      # scheduled run when there's nothing to clean up.
+      - name: Checkout gh-pages
+        id: checkout
+        continue-on-error: true
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          ref: gh-pages
+          fetch-depth: 0
+      - name: Delete directories older than retention window
+        id: prune
+        if: steps.checkout.outcome == 'success'
+        shell: bash
+        run: |
+          set -uo pipefail
+          now=$(date -u +%s)
+          deleted=0
+          # Age in whole days, only for a name shaped EXACTLY as <YYYYMMDD>-<run>-<attempt>.
+          # Full-name regex + plausible-year bound so an 8-digit run_id from an old scheme
+          # can never be misread as a date and wrongly pruned/retained.
+          age_days_from_name() {
+            local name="$1"
+            [[ "$name" =~ ^([0-9]{4})([0-9]{2})([0-9]{2})-[0-9]+-[0-9]+$ ]] || return 1
+            local y="${BASH_REMATCH[1]}" mo="${BASH_REMATCH[2]}" da="${BASH_REMATCH[3]}"
+            [ "$y" -ge 2024 ] && [ "$y" -le 2100 ] || return 1
+            local epoch
+            epoch=$(date -u -d "$y-$mo-$da" +%s 2>/dev/null) || return 1
+            echo $(( (now - epoch) / 86400 ))
+          }
+          # workflow_dispatch reports: run-<YYYYMMDD>-<run>-<attempt>
+          for dir in run-*; do
+            [ -d "$dir" ] || continue
+            age=$(age_days_from_name "${dir#run-}") || { echo "skip (undated): $dir"; continue; }
+            if [ "$age" -ge "$RETENTION_DAYS" ]; then echo "delete $dir ($age d)"; rm -rf "$dir" && deleted=$((deleted+1)); fi
+          done
+          # PR reports: pr-<n>/<YYYYMMDD>-<run>-<attempt>
+          for prdir in pr-*; do
+            [ -d "$prdir" ] || continue
+            for sub in "$prdir"/*; do
+              [ -d "$sub" ] || continue
+              age=$(age_days_from_name "$(basename "$sub")") || { echo "skip (undated): $sub"; continue; }
+              if [ "$age" -ge "$RETENTION_DAYS" ]; then echo "delete $sub ($age d)"; rm -rf "$sub" && deleted=$((deleted+1)); fi
+            done
+            # drop the PR container once all its runs are pruned
+            rmdir "$prdir" 2>/dev/null || true
+          done
+          echo "deleted=$deleted" >> "$GITHUB_OUTPUT"
+          echo "Deleted $deleted report directories."
+      - name: Compact gh-pages history (single orphan commit)
+        if: steps.checkout.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          deleted="${{ steps.prune.outputs.deleted }}"; deleted="${deleted:-0}"
+          commits=$(git rev-list --count HEAD)
+          if [ "$deleted" -eq 0 ] && [ "$commits" -le 1 ]; then
+            echo "Nothing to delete and history already compact; skipping."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan compacted
+          git add -A
+          # --allow-empty guards the (unreachable while .nojekyll exists) empty-tree case
+          git commit --allow-empty -m "chore: playwright reports (compacted $(date -u +%F))"
+          git branch -D gh-pages 2>/dev/null || true # tolerate detached-HEAD checkout under set -e
+          git branch -m gh-pages
+          git push -f origin gh-pages
