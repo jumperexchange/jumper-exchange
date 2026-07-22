@@ -8,6 +8,9 @@ interface ItemAssertion {
   visible?: boolean;
 }
 
+const escapeForRegex = (text: string): string =>
+  text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
 export class SettingsPage {
   readonly backArrowButton: Locator;
   readonly badgeInfo: Locator;
@@ -22,7 +25,7 @@ export class SettingsPage {
 
   constructor(private readonly page: Page) {
     this.settingsButton = page.getByRole('button', { name: 'Settings' });
-    this.slippageInput = page.getByPlaceholder('Custom');
+    this.slippageInput = page.getByPlaceholder('0.5');
     this.bridgesList = page.getByTestId('bridges-list');
     this.bridgesListFirstItem = this.bridgesList.getByRole('button').first();
     // MUI v9 dropped auto-testids on icon SVGs; anchor on the row's checkbox role.
@@ -44,6 +47,10 @@ export class SettingsPage {
 
   async clickItem(label: string): Promise<void> {
     await this.page.getByText(label, { exact: true }).click();
+  }
+
+  async clickListOption(title: string): Promise<void> {
+    await this.listOption(title).click();
   }
 
   async clickReset(label: string): Promise<void> {
@@ -80,6 +87,16 @@ export class SettingsPage {
 
   async expectItem(label: string, options: ItemAssertion = {}): Promise<void> {
     await this.expectByElementType(label, 'button', options);
+  }
+
+  async expectListOptionSelected(title: string): Promise<void> {
+    // The selected drill-down row renders the check icon as its only svg
+    // (MUI v9 icons carry no testid).
+    await expect(this.listOption(title).locator('svg')).toBeVisible();
+  }
+
+  async expectListOptionVisible(title: string): Promise<void> {
+    await expect(this.listOption(title)).toBeVisible();
   }
 
   async expectNoneSelected(category: string): Promise<void> {
@@ -157,6 +174,15 @@ export class SettingsPage {
       .locator('..')
       .locator('..')
       .locator('xpath=.//*[contains(text(), "/")]');
+  }
+
+  // Drill-down option rows are ListItemButton divs with role="button"; the
+  // accessible name starts with the row title (secondary description text is
+  // appended for some rows).
+  private listOption(title: string): Locator {
+    return this.page.getByRole('button', {
+      name: new RegExp(`^${escapeForRegex(title)}`),
+    });
   }
 
   private async readFraction(
