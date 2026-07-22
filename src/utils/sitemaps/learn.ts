@@ -1,5 +1,5 @@
+import { getSitemapArticles } from '@/app/lib/getArticles';
 import { AppPaths } from '@/const/urls';
-import { getArticles } from '@/app/lib/getArticles';
 import type { BlogArticleData } from '@/types/strapi';
 import { buildUrl, toSitemapDate } from '@/utils/sitemap';
 import { resolveStrapiMediaUrl } from '@/utils/strapi/strapiHelper';
@@ -11,32 +11,72 @@ export const dynamic = 'force-static';
 const SITEMAP_LIMIT = 50_000;
 const ARTICLES_PAGE_SIZE = 100;
 const DEV_CHUNK_SIZE = 20;
+const FETCH_CONCURRENCY = 5;
 const chunkSize = isProduction ? SITEMAP_LIMIT : DEV_CHUNK_SIZE;
 
+export const getLearnSitemapPageRange = (
+  chunkId: number,
+  total: number,
+  articlesChunkSize: number,
+  pageSize: number,
+): number[] => {
+  const start = chunkId * articlesChunkSize;
+  if (start >= total) {
+    return [];
+  }
+
+  const articlesInChunk = Math.min(articlesChunkSize, total - start);
+  const firstPage = Math.floor(start / pageSize) + 1;
+  const lastPage = Math.ceil((start + articlesInChunk) / pageSize);
+
+  return Array.from(
+    { length: lastPage - firstPage + 1 },
+    (_, index) => firstPage + index,
+  );
+};
+
 const getArticlesTotal = async (): Promise<number> => {
-  const { meta } = await getArticles(undefined, 1, 1, true);
+  const { meta } = await getSitemapArticles(1, 1, true);
   return meta.pagination.total;
+};
+
+const fetchArticlesPage = async (page: number): Promise<BlogArticleData[]> => {
+  const { data } = await getSitemapArticles(page, ARTICLES_PAGE_SIZE, false);
+  return data;
+};
+
+const fetchInBatches = async (
+  pages: number[],
+  concurrency: number,
+): Promise<BlogArticleData[]> => {
+  const articles: BlogArticleData[] = [];
+
+  for (let index = 0; index < pages.length; index += concurrency) {
+    const batch = pages.slice(index, index + concurrency);
+    const batchArticles = await Promise.all(batch.map(fetchArticlesPage));
+    articles.push(...batchArticles.flat());
+  }
+
+  return articles;
 };
 
 const fetchArticlesChunk = async (
   chunkId: number,
 ): Promise<BlogArticleData[]> => {
-  const start = chunkId * chunkSize;
-  const firstPage = Math.floor(start / ARTICLES_PAGE_SIZE) + 1;
-  const lastPage = Math.ceil((start + chunkSize) / ARTICLES_PAGE_SIZE);
-  const pageRange = [...Array(lastPage - firstPage + 1).keys()].map(
-    (index) => firstPage + index,
+  const total = await getArticlesTotal();
+  const pageRange = getLearnSitemapPageRange(
+    chunkId,
+    total,
+    chunkSize,
+    ARTICLES_PAGE_SIZE,
   );
 
-  const pages = await Promise.all(
-    pageRange.map((page) =>
-      getArticles(undefined, ARTICLES_PAGE_SIZE, page, false).then(
-        ({ data }) => data,
-      ),
-    ),
-  );
+  if (pageRange.length === 0) {
+    return [];
+  }
 
-  return pages.flat().slice(0, chunkSize);
+  const articles = await fetchInBatches(pageRange, FETCH_CONCURRENCY);
+  return articles.slice(0, chunkSize);
 };
 
 export const getLearnSitemapChunkIds = async (): Promise<string[]> => {
