@@ -10,6 +10,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      packages: read
     uses: ./.github/workflows/build-and-push-multitag.yaml
     with:
       registry: europe-docker.pkg.dev/jumper-g-artifacts
