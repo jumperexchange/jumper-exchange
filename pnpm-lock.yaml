@@ -6,6 +6,9 @@ settings:
 
 overrides:
   '@safe-global/safe-apps-provider': '>=0.18.6'
+  fast-uri: '>=3.1.2'
+  js-cookie: '>=3.0.7'
+  protobufjs: '>=7.5.8 <8'
   hono: ^4.12.7
   systeminformation: ^5.31.6
 
@@ -220,6 +223,9 @@ importers:
       i18next-resources-to-backend:
         specifier: ^1.2.1
         version: 1.2.1
+      intercom-client:
+        specifier: 7.0.3
+        version: 7.0.3
       ioredis:
         specifier: ^5.11.1
         version: 5.11.1
@@ -4952,6 +4958,7 @@ packages:
   '@tronweb3/tronwallet-adapter-tomowallet@1.1.0':
     resolution: {integrity: sha512-hNduiYtpjkii1h1KzXRnQzyk/ypGl9tnE9GRePSWzzAmIju+bCIVpExCBPxG/a9dFe0EEugdVD+VBOTB0LDI1A==}
     engines: {node: '>=16', pnpm: '>=7'}
+    deprecated: 'Deprecated: This adapter is no longer maintained because Tomo Wallet is currently unavailable. Please migrate to another supported wallet adapter.'
 
   '@tronweb3/tronwallet-adapter-tronlink-evm@1.2.0':
     resolution: {integrity: sha512-GrkxbuL7LmrlNn+GK18g1UMKn2Puuvx+qVSxiz1Gs0V7Gcm/KL8mSnNcNCcUW1TpWt2ImZAcpIUDACHsQ13kDQ==}
@@ -7425,6 +7432,10 @@ packages:
 
   inline-style-parser@0.2.7:
     resolution: {integrity: sha512-Nb2ctOyNR8DqQoR0OwRG95uNWIC0C1lCgf5Naz5H6Ji72KZ8OcFZLz2P5sNgwlyoJ8Yif11oMuYs5pBQa86csA==}
+
+  intercom-client@7.0.3:
+    resolution: {integrity: sha512-2rsNxBNqDqA0rZ0E/VsWa+/Ao+/nOxKNj9P7gUiQoOGY88eULTJUNtT9oNnT4Dq2+6dr0vvvo+I8ZNzN30Xj7A==}
+    engines: {node: '>=18.0.0'}
 
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
@@ -22238,6 +22249,8 @@ snapshots:
   inherits@2.0.4: {}
 
   inline-style-parser@0.2.7: {}
+
+  intercom-client@7.0.3: {}
 
   internal-slot@1.1.0:
     dependencies:
