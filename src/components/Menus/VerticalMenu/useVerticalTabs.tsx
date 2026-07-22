@@ -90,7 +90,7 @@ export const useVerticalTabs = () => {
             <Badge
               label={disabled ? t('portfolio.views.soon') : t('promo.new')}
               size={BadgeSize.XS}
-              variant={disabled ? BadgeVariant.Secondary : BadgeVariant.New}
+              variant={disabled ? BadgeVariant.Secondary : BadgeVariant.Success}
               sx={{
                 position: 'absolute',
                 top: -12,
