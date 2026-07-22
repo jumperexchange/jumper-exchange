@@ -7,7 +7,7 @@ import {
   TradeView,
 } from '@lifinance/perps-widget/react';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { parseAsString, useQueryState } from 'nuqs';
 import { AppPaths } from '@/const/urls';
 import { PerpsProviders } from './PerpsProviders';
 
@@ -15,27 +15,18 @@ import { PerpsProviders } from './PerpsProviders';
 // extra build steps (WASM asset copy, bridge deposit flows) not wired up yet.
 const PROVIDER = 'hyperliquid';
 
-function readQueryParam(name: string): string | undefined {
-  if (typeof window === 'undefined') {
-    return undefined;
-  }
-  return new URLSearchParams(window.location.search).get(name) ?? undefined;
-}
-
-/** Persists the market in the query string, so a refresh restores the same
- * market instead of the default. */
-function writeQueryParam(name: string, value: string) {
-  const url = new URL(window.location.href);
-  if (url.searchParams.get(name) === value) {
-    return;
-  }
-  url.searchParams.set(name, value);
-  window.history.replaceState(null, '', url);
-}
-
 export function PerpsShell({ page }: { page: 'trade' | 'portfolio' }) {
   const router = useRouter();
-  const marketFromUrl = useMemo(() => readQueryParam('market'), []);
+  // Persists the market in the query string, so a refresh restores the same
+  // market instead of the default.
+  const [market, setMarket] = useQueryState(
+    'market',
+    parseAsString.withOptions({
+      history: 'replace',
+      shallow: true,
+      scroll: false,
+    }),
+  );
 
   return (
     <PerpsProviders>
@@ -58,8 +49,8 @@ export function PerpsShell({ page }: { page: 'trade' | 'portfolio' }) {
         <TradeView
           provider={PROVIDER}
           onProviderChange={() => {}}
-          defaultMarketId={marketFromUrl}
-          onMarketChange={(marketId) => writeQueryParam('market', marketId)}
+          defaultMarketId={market ?? undefined}
+          onMarketChange={(marketId) => setMarket(marketId)}
         />
       )}
     </PerpsProviders>
