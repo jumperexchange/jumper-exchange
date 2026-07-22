@@ -4,6 +4,7 @@ import { useThemeStore } from 'src/stores/theme';
 import { useThemeConditionsMet } from './useThemeConditionsMet';
 import type { WidgetThemeConfig } from 'src/types/theme';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import deepmerge from '@mui/utils/deepmerge';
 
 /**
  * Returns the appropriate pre-computed widget theme based on:
@@ -27,12 +28,21 @@ export const useWidgetTheme = (): WidgetThemeConfig => {
         : (mode ?? 'light');
     const usePartner = shouldShowForTheme;
 
+    let widgetThemeConfig: WidgetThemeConfig | undefined;
+
     if (usePartner) {
-      return currentMode === 'dark'
-        ? widgetTheme.partnerDark
-        : widgetTheme.partnerLight;
+      widgetThemeConfig =
+        currentMode === 'dark'
+          ? widgetTheme.partnerDark
+          : widgetTheme.partnerLight;
+    } else {
+      widgetThemeConfig =
+        currentMode === 'dark' ? widgetTheme.dark : widgetTheme.light;
     }
 
-    return currentMode === 'dark' ? widgetTheme.dark : widgetTheme.light;
+    return {
+      ...widgetThemeConfig,
+      config: deepmerge(widgetThemeConfig.config, { appearance: currentMode }),
+    };
   }, [mode, prefersDarkMode, shouldShowForTheme, widgetTheme]);
 };

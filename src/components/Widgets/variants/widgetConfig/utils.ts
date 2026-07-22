@@ -1,6 +1,124 @@
 import type { Theme } from '@mui/material/styles';
-import type { Route, RouteLabelRule } from '@lifi/widget';
-import { ChainType } from '@lifi/widget';
+import type {
+  NavigationTabKey,
+  Route,
+  RouteLabelRule,
+} from '@jumperexchange/widget';
+import { ChainType } from '@jumperexchange/widget';
+import type { StarterVariantType } from '@/types/internal';
+import type { LimitOrder } from '@/types/jumper-backend';
+import type {
+  FormData,
+  WidgetFeatureFlags,
+  WidgetType,
+  WidgetVariantDescriptor,
+} from './types';
+
+const WIDGET_VARIANT_REGISTRY: Record<string, WidgetVariantDescriptor> = {
+  default: {
+    key: 'default',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['default', 'refuel'],
+  },
+  advanced: {
+    key: 'advanced',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['swap-advanced', 'bridge-advanced'],
+  },
+  swap: { key: 'swap', uiVariant: 'compact', mode: 'default' },
+  bridge: { key: 'bridge', uiVariant: 'compact', mode: 'default' },
+  blog: { key: 'blog', uiVariant: 'compact', mode: 'default' },
+  refuel: { key: 'refuel', uiVariant: 'wide', mode: 'refuel' },
+  limit: { key: 'limit', uiVariant: 'compact', mode: 'limit' },
+  private: {
+    key: 'private',
+    uiVariant: 'wide',
+    mode: 'default',
+    navigationTabs: ['private'],
+  },
+};
+
+export function resolveWidgetVariant(
+  starterVariant: StarterVariantType,
+  flags: WidgetFeatureFlags,
+): WidgetVariantDescriptor {
+  const base =
+    WIDGET_VARIANT_REGISTRY[starterVariant] ??
+    WIDGET_VARIANT_REGISTRY['default']!;
+
+  if (starterVariant === 'advanced' && !flags.widgetAdvanced) {
+    return WIDGET_VARIANT_REGISTRY['default']!;
+  }
+
+  if (starterVariant === 'advanced' && flags.limitOrders) {
+    return {
+      ...base,
+      navigationTabs: [
+        ...((base.navigationTabs ?? []) as NavigationTabKey[]),
+        'limit',
+      ],
+    };
+  }
+
+  if (starterVariant === 'default' && flags.privateSwaps) {
+    const tabs = (base.navigationTabs ?? []) as NavigationTabKey[];
+    return {
+      ...base,
+      navigationTabs: [tabs[0]!, 'private', ...tabs.slice(1)],
+    };
+  }
+
+  return base;
+}
+
+export interface ResolveActiveNavigationTabParams {
+  type: WidgetType;
+  resolvedVariant?: WidgetVariantDescriptor;
+  /** Raw value from the shared, module-level useActiveNavigationTab() subscription. */
+  globalActiveNavigationTab?: NavigationTabKey | null;
+}
+
+/**
+ * useActiveNavigationTab() subscribes to a module-level singleton shared by
+ * every <LiFiWidget> instance on the page, but only the main tabbed widget
+ * ever emits NavigationTabChanged. Every other instance (limit-order modals,
+ * zap widgets) must not treat that global value as its own — otherwise it
+ * inherits the main widget's tab and resolves keyPrefix/apiUrl from a signal
+ * that isn't meaningful for it.
+ */
+export function resolveActiveNavigationTab({
+  type,
+  resolvedVariant,
+  globalActiveNavigationTab,
+}: ResolveActiveNavigationTabParams): NavigationTabKey | undefined {
+  const navigationTabs = resolvedVariant?.navigationTabs;
+  const ownsNavigationTabs = type === 'main' && !!navigationTabs?.length;
+
+  if (!ownsNavigationTabs) {
+    return undefined;
+  }
+
+  return navigationTabs!.includes(globalActiveNavigationTab as NavigationTabKey)
+    ? (globalActiveNavigationTab as NavigationTabKey)
+    : navigationTabs![0];
+}
+
+/**
+ * Only the limit and private tabs need their own widget form-state namespace
+ * (they're functionally distinct flows). Every other in-widget tab
+ * (swap-advanced, bridge-advanced, refuel, ...) shares the variant's own key,
+ * so switching between them doesn't reset the widget's in-progress form.
+ */
+export function resolveWidgetKeyPrefix(
+  key: string,
+  activeTabKey?: NavigationTabKey,
+): string {
+  return activeTabKey === 'limit' || activeTabKey === 'private'
+    ? activeTabKey
+    : key;
+}
 
 export const generateRouteLabel = (
   text: string,
@@ -85,4 +203,51 @@ export const isSupportedChainType = (
   type?: ChainType | null | undefined,
 ): type is ChainType.EVM | ChainType.SVM => {
   return !!type && [ChainType.EVM, ChainType.SVM].includes(type);
+};
+
+/** Container style for the limit-order modify/repeat flow modals' embedded widget. */
+export const getOrderFlowWidgetContainerStyle = (theme: Theme) => ({
+  maxHeight: 'calc(100vh - 6rem)',
+  minWidth: 'min(100vw, 360px)',
+  maxWidth: 400,
+  borderRadius: `${theme.shape.cardBorderRadiusLarge}px`,
+  [theme.breakpoints.up('sm')]: {
+    maxHeight: 'calc(100vh - 6rem)',
+    minWidth: 400,
+  },
+});
+
+/** Shared formData builder for the limit-order modify/repeat flow modals. */
+export const buildOrderFlowFormData = (
+  order: LimitOrder,
+  toAmount: (raw: bigint, decimals: number) => string,
+): FormData => {
+  const fromAmount = toAmount(
+    BigInt(order.fromAmount),
+    order.fromToken.decimals,
+  );
+  const toAmountValue = toAmount(
+    BigInt(order.toAmount),
+    order.toToken.decimals,
+  );
+  return {
+    sourceChain: {
+      chainId: order.fromToken.chainId.toString(),
+      chainKey: '',
+    },
+    sourceToken: {
+      tokenAddress: order.fromToken.address,
+      tokenSymbol: order.fromToken.symbol,
+    },
+    destinationChain: {
+      chainId: order.toToken.chainId.toString(),
+      chainKey: '',
+    },
+    destinationToken: {
+      tokenAddress: order.toToken.address,
+      tokenSymbol: order.toToken.symbol,
+    },
+    fromAmount,
+    limitPrice: (Number(toAmountValue) / Number(fromAmount)).toString(),
+  };
 };

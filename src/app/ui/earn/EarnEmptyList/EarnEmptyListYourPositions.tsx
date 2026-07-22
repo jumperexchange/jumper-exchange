@@ -1,4 +1,4 @@
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 

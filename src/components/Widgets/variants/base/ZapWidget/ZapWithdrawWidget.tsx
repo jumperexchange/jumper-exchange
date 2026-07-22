@@ -1,11 +1,11 @@
-import { useAccount } from '@lifi/wallet-management';
-import type { FormState } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { FormState } from '@jumperexchange/widget';
 import {
   ChainType,
   LiFiWidget,
   useWidgetEvents,
   WidgetEvent,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import type { FC } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
 

@@ -1,5 +1,5 @@
 import { ConnectNavbarButtonLabel, ConnectNavbarButton } from './Buttons.style';
-import { useWalletMenu } from '@lifi/wallet-management';
+import { useWalletMenu } from '@jumperexchange/wallet-management';
 import { useTranslation } from 'react-i18next';
 
 function ConnectButton() {

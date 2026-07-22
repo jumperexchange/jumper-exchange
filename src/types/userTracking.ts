@@ -67,6 +67,7 @@ export interface TrackTransactionDataProps {
   [TrackingEventParameter.TransactionHash]?: string;
   [TrackingEventParameter.TransactionLink]?: string;
   [TrackingEventParameter.TokenCount]?: number;
+  [TrackingEventParameter.TradeType]?: string;
   abTestVariants?: AbTestVariants;
 }
 

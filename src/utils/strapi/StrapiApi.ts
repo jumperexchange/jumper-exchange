@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import { getStrapiBaseUrl } from './strapiHelper';
 import { sanitizeStrapiContainsSearchInput } from './sanitizeStrapiContainsSearchInput';
 import config from '@/config/env-config';

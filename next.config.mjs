@@ -215,6 +215,16 @@ const nextConfig = {
         destination: '/gas',
         permanent: true,
       },
+      {
+        source: '/:lng?/gas',
+        destination: '/:lng?',
+        permanent: true,
+      },
+      {
+        source: '/:lng?/private',
+        destination: '/:lng?',
+        permanent: true,
+      },
     ];
   },
 };

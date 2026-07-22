@@ -10,7 +10,7 @@ import {
   TrackingEventDataAction,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import type { Route, RouteExecutionUpdate } from '@lifi/widget';
+import type { Route, RouteExecutionUpdate } from '@jumperexchange/widget';
 
 vi.mock('src/utils/routes', () => ({
   handleRouteData: vi.fn((route: Route, extra?: Record<string, unknown>) => ({
@@ -26,8 +26,9 @@ vi.mock('src/utils/tracking/widget', () => ({
   })),
 }));
 
-vi.mock('@lifi/widget', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@lifi/widget')>();
+vi.mock('@jumperexchange/widget', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@jumperexchange/widget')>();
   return {
     ...actual,
     formatTokenPrice: vi.fn(() => '100'),

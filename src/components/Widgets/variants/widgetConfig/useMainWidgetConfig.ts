@@ -1,13 +1,14 @@
-import type { WidgetConfig } from '@lifi/widget';
-import { ChainId } from '@lifi/widget';
+import type { NavigationTabKey, WidgetConfig } from '@jumperexchange/widget';
+import { ChainId } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import { tokens } from 'src/config/tokens';
 import { ThemesMap } from 'src/const/themesMap';
+import { useVerifiedTokens } from 'src/hooks/tokens/useVerifiedTokens';
 import { useMemelist } from 'src/hooks/useMemelist';
 import { useUrlParams } from 'src/hooks/useUrlParams';
 import { themeAllowChains } from '../../Widget.types';
 import type { HookDependencies, MainWidgetContext } from './types';
-import { generateRouteLabel } from './utils';
+import { generateRouteLabel, resolveWidgetKeyPrefix } from './utils';
 import envConfig from '@/config/env-config';
 
 function toolsConfig(allow?: string[], deny?: string[]) {
@@ -31,6 +32,7 @@ function toolsConfig(allow?: string[], deny?: string[]) {
 export function useMainWidgetConfig(
   context: MainWidgetContext,
   deps: HookDependencies,
+  activeTabKey?: NavigationTabKey,
 ): Partial<WidgetConfig> {
   const { tokens: memeListTokens } = useMemelist({
     enabled: context.partnerName === ThemesMap.Memecoins,
@@ -38,9 +40,11 @@ export function useMainWidgetConfig(
 
   const { denyBridges, denyExchanges } = useUrlParams();
 
+  const verifiedTokens = useVerifiedTokens();
+
   const allowedChainsByVariant = useMemo(
     () => (context.partnerName === ThemesMap.Memecoins ? themeAllowChains : []),
-    [context.starterVariant, context.partnerName],
+    [context.partnerName],
   );
 
   return useMemo(() => {
@@ -52,20 +56,28 @@ export function useMainWidgetConfig(
       const newAllowList = currentAllowList.concat(memeListTokens);
       _tokens.allow = newAllowList;
     }
+    if (verifiedTokens?.length) {
+      _tokens.verified = verifiedTokens;
+    }
+
+    const {
+      key = '',
+      uiVariant = 'compact',
+      mode = 'default',
+      navigationTabs,
+    } = context.resolvedVariant ?? {};
 
     const config: Partial<WidgetConfig> = {
-      keyPrefix: `jumper-${context.starterVariant}`,
-      // Variant configuration
-      variant: context.starterVariant === 'refuel' ? 'compact' : 'wide',
+      keyPrefix: `jumper-${resolveWidgetKeyPrefix(key, activeTabKey)}`,
+      variant: navigationTabs ? 'wide' : uiVariant,
       buildUrl: true,
       useRelayerRoutes: true,
-      mode:
-        context.starterVariant === 'buy' ||
-        context.starterVariant === 'private' ||
-        isMemecoins
-          ? 'default'
-          : context.starterVariant,
-      modeOptions: {},
+      ...(navigationTabs
+        ? { _navigationTabs: navigationTabs }
+        : {
+            mode: isMemecoins ? 'default' : mode,
+            modeOptions: {},
+          }),
 
       // UI configuration
       hiddenUI: {
@@ -80,6 +92,8 @@ export function useMainWidgetConfig(
       theme: {
         ...deps.theme.widgetTheme.config.theme,
       },
+
+      appearance: deps.theme.widgetTheme.config.appearance,
 
       // Chain configuration
       chains: {
@@ -123,7 +137,12 @@ export function useMainWidgetConfig(
           deps.theme.muiTheme,
           `${envConfig.NEXT_PUBLIC_SITE_URL}/widget/widget-label-verified.png`,
           '',
-          (route) => (route.tags ?? [])?.some((tag) => tag.includes('SIMULATED_BY_EVM') || tag.includes('SIMULATED_BY_COMPOSER')),
+          (route) =>
+            (route.tags ?? [])?.some(
+              (tag) =>
+                tag.includes('SIMULATED_BY_EVM') ||
+                tag.includes('SIMULATED_BY_COMPOSER'),
+            ),
           'neutral',
         ),
       ],
@@ -131,8 +150,7 @@ export function useMainWidgetConfig(
 
     if (
       context.bridgeConditions?.isAGWToNonABSChain ||
-      context.bridgeConditions?.isPrivateSwapSelected ||
-      context.starterVariant === 'private'
+      context.bridgeConditions?.isPrivateSwapSelected
     ) {
       config.requiredUI = { ...config.requiredUI, toAddress: true };
     }
@@ -166,6 +184,7 @@ export function useMainWidgetConfig(
   }, [
     context.integrator,
     context.starterVariant,
+    context.resolvedVariant,
     context.partnerName,
     context.allowChains,
     context.allowFromChains,
@@ -175,8 +194,10 @@ export function useMainWidgetConfig(
     context.bridgeConditions,
     deps.theme,
     memeListTokens,
+    verifiedTokens,
     allowedChainsByVariant,
     denyBridges,
     denyExchanges,
+    activeTabKey,
   ]);
 }

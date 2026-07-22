@@ -1,7 +1,8 @@
-import { formatInputAmount } from '@lifi/widget';
+import { formatInputAmount } from '@jumperexchange/widget';
 import InputLabel from '@mui/material/InputLabel';
 import Typography from '@mui/material/Typography';
-import { FC, useMemo, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useMemo } from 'react';
 import { SelectCard } from 'src/components/Cards/SelectCard/SelectCard';
 import {
   SelectCardDescription,

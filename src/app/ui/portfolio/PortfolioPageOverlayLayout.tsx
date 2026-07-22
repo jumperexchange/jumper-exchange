@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { FC, PropsWithChildren } from 'react';
 import { WelcomeOverlayLayout } from '@/components/WelcomeOverlayLayout/WelcomeOverlayLayout';
 import { HeaderHeight } from '@/const/headerHeight';

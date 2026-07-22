@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { ProjectData } from 'src/types/questDetails';
 import { useZapData } from './useZapData';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Hex } from 'viem';
 import { useGetZapInPoolBalance } from './useGetZapInPoolBalance';
 

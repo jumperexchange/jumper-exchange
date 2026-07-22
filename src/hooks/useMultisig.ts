@@ -1,6 +1,6 @@
 import { type ExecutionAction, type Route } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
-import type { WalletConnector } from '@lifi/widget-provider';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { WalletConnector } from '@jumperexchange/widget-provider';
 import SafeAppsSDK from '@safe-global/safe-apps-sdk';
 import { useEffect, useState } from 'react';
 

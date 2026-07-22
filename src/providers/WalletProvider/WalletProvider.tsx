@@ -7,12 +7,12 @@ import {
 import { useUserTracking } from '@/hooks/userTracking';
 import { useChains } from '@/hooks/useChains';
 import { WalletManagementThemeProvider } from '@/providers/ThemeProvider/WalletManagementThemeProvider';
-import type { WalletConnected } from '@lifi/wallet-management';
+import type { WalletConnected } from '@jumperexchange/wallet-management';
 import {
   useWalletManagementEvents,
   WalletManagementEvent,
   WalletManagementProviders,
-} from '@lifi/wallet-management';
+} from '@jumperexchange/wallet-management';
 import { setTag, setUser } from '@sentry/nextjs';
 import { walletDigest } from '@/utils/walletDigest';
 import type { ExtendedChain } from '@lifi/sdk';
@@ -25,11 +25,11 @@ import { TronProvider } from './TronProvider';
 import { UTXOProvider } from './UTXOProvider';
 import { ClientOnly } from 'src/components/ClientOnly';
 import { walletEcosystemsOrder } from './constants';
-import { EthereumProvider as EthereumWidgetProvider } from '@lifi/widget-provider-ethereum';
-import { SolanaProvider as SolanaWidgetProvider } from '@lifi/widget-provider-solana';
-import { BitcoinProvider as BitcoinWidgetProvider } from '@lifi/widget-provider-bitcoin';
-import { SuiProvider as SuiWidgetProvider } from '@lifi/widget-provider-sui';
-import { TronProvider as TronWidgetProvider } from '@lifi/widget-provider-tron';
+import { EthereumProvider as EthereumWidgetProvider } from '@jumperexchange/widget-provider-ethereum';
+import { SolanaProvider as SolanaWidgetProvider } from '@jumperexchange/widget-provider-solana';
+import { BitcoinProvider as BitcoinWidgetProvider } from '@jumperexchange/widget-provider-bitcoin';
+import { SuiProvider as SuiWidgetProvider } from '@jumperexchange/widget-provider-sui';
+import { TronProvider as TronWidgetProvider } from '@jumperexchange/widget-provider-tron';
 import { defaultWalletConnectConfig } from '@/config/walletConnect';
 import { defaultCoinbaseConfig } from '@/config/coinbase';
 import { defaultMetaMaskConfig } from '@/config/metaMask';

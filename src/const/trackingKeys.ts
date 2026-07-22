@@ -80,6 +80,25 @@ export enum TrackingAction {
   OnRouteExecutionCompletedPrivate = 'action_on_route_exec_completed_private',
   OnRouteExecutionFailedPrivate = 'action_on_route_exec_failed_private',
 
+  // Advanced Widget
+  OnSourceChainAndTokenSelectionAdvanced = 'action_on_source_selection_advanced',
+  OnAvailableRoutesAdvanced = 'action_available_routes_advanced',
+  OnRouteExecutionStartedAdvanced = 'action_on_route_exec_started_advanced',
+  OnRouteExecutionCompletedAdvanced = 'action_on_route_exec_completed_advanced',
+  OnRouteExecutionFailedAdvanced = 'action_on_route_exec_failed_advanced',
+  OnChangeSettingsAdvanced = 'action_change_settings_advanced',
+
+  // Limit orders
+  OnSourceChainAndTokenSelectionLimit = 'action_on_source_selection_limit',
+  OnAvailableRoutesLimit = 'action_available_routes_limit',
+  OnChangeSettingsLimit = 'action_change_settings_limit',
+  OnRouteExecutionStartedLimit = 'action_on_route_exec_started_limit',
+  OnRouteExecutionCompletedLimit = 'action_on_route_exec_completed_limit',
+  OnRouteExecutionFailedLimit = 'action_on_route_exec_failed_limit',
+  OnRepeatLimitOrderOpen = 'repeat_limit_order_open',
+  OnModifyLimitOrderOpen = 'modify_limit_order_open',
+  OnCancelLimitOrderOpen = 'cancel_limit_order_open',
+
   // Dust conversion
   OnRouteExecutionStartedDust = 'action_on_route_exec_started_dust',
   OnRouteExecutionCompletedDust = 'action_on_route_exec_completed_dust',
@@ -189,6 +208,12 @@ export enum TrackingEventDataAction {
   ExecutionStartPrivate = 'execution_start_private',
   ExecutionCompletedPrivate = 'execution_completed_private',
   ExecutionFailedPrivate = 'execution_failed_private',
+  ExecutionStartAdvanced = 'execution_start_advanced',
+  ExecutionCompletedAdvanced = 'execution_completed_advanced',
+  ExecutionFailedAdvanced = 'execution_failed_advanced',
+  ExecutionStartLimit = 'execution_start_limit',
+  ExecutionCompletedLimit = 'execution_completed_limit',
+  ExecutionFailedLimit = 'execution_failed_limit',
   ExecutionStartDust = 'execution_start_dust',
   ExecutionCompletedDust = 'execution_completed_dust',
   ExecutionFailedDust = 'execution_failed_dust',
@@ -250,6 +275,7 @@ export enum TrackingEventParameter {
   Integrator = 'param_integrator',
 
   // Widget:
+  TradeType = 'param_trade_type',
   SourceChainSelection = 'param_source_chain',
   SourceTokenSelection = 'param_source_token',
   DestinationChainSelection = 'param_destination_chain',
@@ -401,4 +427,7 @@ export enum TrackingEventParameter {
   NotificationSourceRuleId = 'param_notification_source_rule_id',
   NotificationCategory = 'param_notification_category',
   NotificationCtaTarget = 'param_notification_cta_target',
+
+  // Limit orders
+  OrderId = 'param_order_id',
 }

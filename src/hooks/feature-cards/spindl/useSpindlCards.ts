@@ -1,9 +1,9 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import {
   useWidgetEvents,
   WidgetEvent,
   type RouteExecutionUpdate,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import { useCallback, useEffect } from 'react';
 import { useCallRequest } from '@/hooks/useCallRequest';
 import { isSpindlFetchResponse, type SpindlFetchParams } from '@/types/spindl';

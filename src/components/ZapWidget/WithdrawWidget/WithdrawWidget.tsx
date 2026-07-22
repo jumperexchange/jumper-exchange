@@ -1,10 +1,10 @@
-import { type ContractCall, type TokenAmount } from '@lifi/widget';
+import { type ContractCall, type TokenAmount } from '@jumperexchange/widget';
 import { WithdrawWidgetBox } from './WithdrawWidget.style';
 import type { AbiFunction } from 'viem';
 import type { ProjectData } from 'src/types/questDetails';
 import { WithdrawForm } from './WithdrawForm';
 import { useWithdrawTransaction } from './hooks';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useChains } from 'src/hooks/useChains';
 import { useMemo } from 'react';
 import { SectionCardContainer } from 'src/components/Cards/SectionCard/SectionCard.style';

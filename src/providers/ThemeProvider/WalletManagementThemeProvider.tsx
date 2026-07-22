@@ -1,7 +1,7 @@
 'use client';
 import { ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
-import { createTheme } from '@lifi/widget';
+import { createTheme } from '@jumperexchange/widget';
 import { useWidgetTheme } from '@/hooks/theme/useWidgetTheme';
 import {
   THEME_COLOR_SCHEME_STORAGE_KEY,

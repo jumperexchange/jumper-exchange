@@ -1,4 +1,4 @@
-import type { ChainTokenSelected } from '@lifi/widget';
+import type { ChainTokenSelected } from '@jumperexchange/widget';
 import { TrackingEventParameter } from '@/const/trackingKeys';
 import type { WidgetEventsConfig } from '@/components/Widgets/WidgetEventsManager';
 import { trackWidgetEvent } from '@/components/Widgets/tracking/trackWidgetEvent';

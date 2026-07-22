@@ -47,11 +47,12 @@ const BridgePage = ({
         </Typography>
 
         <Widget
-          starterVariant="default"
+          starterVariant="bridge"
           fromChain={sourceChain?.id}
           toChain={destinationChain?.id}
           fromToken={sourceToken?.address}
           toToken={destinationToken?.address}
+          disableTabNavigation
         />
 
         <StepsExplainerSection

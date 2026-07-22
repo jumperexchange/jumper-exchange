@@ -11,7 +11,10 @@ import { useChains } from '@/hooks/useChains';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { getAddressLabel } from 'src/utils/getAddressLabel';
-import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
+import {
+  getConnectorIcon,
+  useAccount,
+} from '@jumperexchange/wallet-management';
 import type { Chain } from '@lifi/sdk';
 import type { Address } from 'viem';
 import { walletDigest } from 'src/utils/walletDigest';

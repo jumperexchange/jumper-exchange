@@ -1,6 +1,6 @@
 'use client';
 import { useMenuStore } from '@/stores/menu';
-import { useWidgetEvents } from '@lifi/widget';
+import { useWidgetEvents } from '@jumperexchange/widget';
 import { useEffect } from 'react';
 import type { WidgetEventsConfig } from '../../WidgetEventsManager';
 import {

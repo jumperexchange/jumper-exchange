@@ -1,4 +1,5 @@
-import { useAccountAddress } from '@/hooks/earn/useAccountAddress';
+import { useConnectedAccountAddress } from '@/hooks/accounts/useConnectedAccountAddress';
+import { useIsWalletResolving } from '@/hooks/accounts/useIsWalletResolving';
 import { isProduction } from '@/utils/isProduction';
 import { useQuery } from '@tanstack/react-query';
 
@@ -25,13 +26,16 @@ const isEarnEnabledByDefault = (): boolean => {
 };
 
 export const useGatekeeperStatus = (flag: string): GatekeeperData => {
-  const accountAddress = useAccountAddress();
+  const accountAddress = useConnectedAccountAddress();
+  const isWalletResolving = useIsWalletResolving();
   const earnEnabledByDefault = flag === 'hasEarn' && isEarnEnabledByDefault();
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['flags', accountAddress, flag],
     queryFn: async () => {
-      const response = await fetch(`/api/profile/${accountAddress}/flags`);
+      const response = await fetch(
+        `/api/profile/${encodeURIComponent(accountAddress!)}/flags`,
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch wallet flags');
@@ -48,7 +52,11 @@ export const useGatekeeperStatus = (flag: string): GatekeeperData => {
   }
 
   if (!accountAddress) {
-    return { status: GatekeeperStatus.REQUIRES_CONNECT };
+    return {
+      status: isWalletResolving
+        ? GatekeeperStatus.LOADING_ACCESS
+        : GatekeeperStatus.REQUIRES_CONNECT,
+    };
   }
 
   if (isLoading) {

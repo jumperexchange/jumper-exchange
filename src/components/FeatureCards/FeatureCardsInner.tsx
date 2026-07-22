@@ -11,7 +11,7 @@ import {
   useAdCooldownStore,
   getCooldownKey,
 } from '@/stores/adCooldown/AdCooldownStore';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 
 export const FeatureCardsInner = () => {
   useSpindlCards();

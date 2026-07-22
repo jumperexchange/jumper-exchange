@@ -19,8 +19,8 @@ export default function Page() {
           },
         })}
       >
-        <Widget starterVariant="default" />
-        <Widgets widgetVariant={'default'} />
+        <Widget starterVariant="default" disableTabNavigation />
+        <Widgets />
       </WidgetContainer>
     </Container>
   );

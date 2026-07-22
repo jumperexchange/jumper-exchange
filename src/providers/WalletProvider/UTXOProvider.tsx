@@ -1,5 +1,5 @@
 'use client';
-import { createDefaultBigmiConfig } from '@lifi/widget-provider-bitcoin';
+import { createDefaultBigmiConfig } from '@jumperexchange/widget-provider-bitcoin';
 import { type FC, type PropsWithChildren } from 'react';
 import { useReconnect, BigmiProvider } from '@bigmi/react';
 const { config } = createDefaultBigmiConfig({

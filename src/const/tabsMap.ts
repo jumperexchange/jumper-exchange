@@ -1,35 +1,24 @@
 'use client';
 
-import type { WidgetMode } from '@lifi/widget';
 import { LinkMap } from './linkMap';
 
 interface TabsMapType {
   [key: string]: {
     index: number;
-    variant: WidgetMode | 'buy' | 'private';
+    variant: string;
     destination: string[];
   };
 }
 
 export const TabsMap: TabsMapType = {
-  Exchange: {
+  Simple: {
     index: 0,
     variant: 'default',
     destination: [LinkMap.Exchange],
   },
-  Refuel: {
+  Advanced: {
     index: 1,
-    variant: 'refuel',
-    destination: [LinkMap.Gas, LinkMap.Refuel],
-  },
-  Private: {
-    index: 2,
-    variant: 'private',
-    destination: [LinkMap.Private],
-  },
-  Buy: {
-    index: 3,
-    variant: 'buy',
-    destination: [LinkMap.Buy],
+    variant: 'advanced',
+    destination: ['advanced'],
   },
 };

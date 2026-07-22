@@ -1,5 +1,5 @@
 import { ChainType } from '@lifi/sdk';
-import type { WidgetConfig } from '@lifi/widget';
+import type { WidgetConfig } from '@jumperexchange/widget';
 import { useMemo } from 'react';
 import { getCustomRPCs, publicRPCList } from 'src/const/rpcList';
 import type { LanguageKey } from 'src/types/i18n';
@@ -54,6 +54,7 @@ export function useSharedBaseConfig(
 
 interface ShareRpcConfigParams {
   isPrivateVariant?: boolean;
+  isLimitVariant?: boolean;
 }
 /**
  * Shared RPC configuration that's common across all widget types
@@ -66,6 +67,7 @@ export function useSharedRPCConfig(
       sdkConfig: {
         apiUrl: getApiUrl({
           isPrivateVariant: params.isPrivateVariant,
+          isLimitVariant: params.isLimitVariant,
         }),
         rpcUrls: {
           ...getCustomRPCs(),
@@ -77,7 +79,7 @@ export function useSharedRPCConfig(
         },
       },
     }),
-    [params.isPrivateVariant],
+    [params.isPrivateVariant, params.isLimitVariant],
   );
 }
 
@@ -121,6 +123,10 @@ export function useSharedFormConfig(
       partialConfig.minFromAmountUSD = formData.minFromAmountUSD;
     }
 
+    if (formData?.limitPrice) {
+      partialConfig.limitPrice = formData.limitPrice;
+    }
+
     return partialConfig;
   }, [
     formData?.sourceChain?.chainId,
@@ -131,6 +137,7 @@ export function useSharedFormConfig(
     formData?.toAddress?.walletAddress,
     formData?.toAddress?.chainType,
     formData?.minFromAmountUSD,
+    formData?.limitPrice,
   ]);
 }
 
@@ -140,7 +147,9 @@ export function useSharedFormConfig(
 export function useLanguageConfig(
   context: WidgetContext & {
     useMainWidget: boolean;
+    useLimitOrdersWidget: boolean;
     useSwapBridgeTitle: boolean;
+    usePrivateWidget: boolean;
   },
   deps: HookDependencies,
 ): Partial<WidgetConfig> {
@@ -156,15 +165,46 @@ export function useLanguageConfig(
       };
 
       additionalLanguageResources.header = {
-        exchange:
-          context.starterVariant === 'private'
-            ? deps.translation.t('widget.private.title')
-            : context.useSwapBridgeTitle
-              ? deps.translation.t('widget.swapBridge.title')
-              : deps.translation.t('widget.exchange.title'),
+        exchange: context.useSwapBridgeTitle
+          ? deps.translation.t('widget.swapBridge.title')
+          : deps.translation.t('widget.exchange.title'),
+        ...(context.useLimitOrdersWidget &&
+        'overrideHeader' in context &&
+        context.overrideHeader
+          ? { limit: context.overrideHeader }
+          : {}),
       };
 
-      if (context.starterVariant === 'private') {
+      if (context.useLimitOrdersWidget) {
+        additionalLanguageResources.button = {
+          swapReview: deps.translation.t('widget.limitOrder.reviewTitle'),
+          startSwapping: deps.translation.t(
+            'widget.limitOrder.placeOrderButton',
+          ),
+        };
+        additionalLanguageResources.success = {
+          title: {
+            swapSuccessful: deps.translation.t(
+              'widget.limitOrder.orderPlacedTitle',
+            ),
+          },
+        };
+        additionalLanguageResources.main = {
+          process: {
+            swap: {
+              done: deps.translation.t(
+                'widget.limitOrder.orderPlacementCompleted',
+              ),
+            },
+          },
+        };
+        additionalLanguageResources.header = {
+          ...additionalLanguageResources.header,
+          received: deps.translation.t('widget.limitOrder.orderPlacedLabel'),
+        };
+      }
+
+      if (context.usePrivateWidget) {
         additionalLanguageResources.info = {
           title: {
             routeNotFound: deps.translation.t(
@@ -231,6 +271,7 @@ export function useLanguageConfig(
         exchange: translationTemplate,
         deposit: translationTemplate,
         swap: translationTemplate,
+        bridge: translationTemplate,
       },
     };
 
