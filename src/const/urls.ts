@@ -11,6 +11,7 @@ export const FB_SHARE_URL = 'https://www.facebook.com/sharer/sharer.php';
 export const LINKEDIN_SHARE_URL = 'https://www.linkedin.com/shareArticle';
 export const LINK3_URL = 'https://link3.to/jumperapp_';
 export const TELEGRAM_URL = 'https://t.me/jumperapp';
+export const JUMPER_DOCS_URL = 'https://docs.jumper.xyz';
 export const GATEKEEPER_REQUEST_ACCESS_URL = 'https://tally.so/r/VLGZOJ';
 export const TERMS_CONDITIONS_URL = 'https://li.fi/legal/terms-and-conditions';
 export const DEFI_REACHER_API_URL = 'https://defireacher.com/api';

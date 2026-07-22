@@ -91,7 +91,7 @@ test.describe('Verify essential mobile flows', () => {
     });
 
     await test.step('check the number of menu items', async () => {
-      await mainMenu.expectItemCount(10);
+      await mainMenu.expectItemCount(11);
     });
 
     // Quarantined: mobile theme-switch flakes against the Strapi-driven menu
