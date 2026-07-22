@@ -12,7 +12,7 @@ export class ScanPage {
     this.latestTransfersHeading = page.getByText('Latest transfers', {
       exact: true,
     });
-    // TODO(app): JUM-924 — add `scan-tx-link` testid on the row anchor.
+    // Rows render inside @lifi/explorer — no app element to tag.
     this.transactionLinks = page.locator('a[href^="/scan/tx/"]');
     this.transferHeading = page.getByText('Transfer', { exact: true }).first();
   }

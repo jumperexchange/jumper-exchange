@@ -74,6 +74,7 @@ export const ToolCards = () => {
       {tools.map((tool) => (
         <ToolCard
           key={tool.id}
+          id={tool.id}
           title={tool.title}
           number={tool.data.length.toString()}
           handleClick={handleCardClick(tool)}

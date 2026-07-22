@@ -4,6 +4,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -160,7 +161,7 @@ exports[`EarnCard snapshot > compact card matches snapshot 1`] = `
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -352,6 +353,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -482,7 +484,7 @@ exports[`EarnCard snapshot > compact card with cap in dollar matches snapshot 1`
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -678,6 +680,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
   >
     <div
       class="MuiBox-root css-43o07u"
+      data-testid="earn-card"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -808,7 +811,7 @@ exports[`EarnCard snapshot > compact card with href matches snapshot 1`] = `
               >
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                  data-testid="entity-stack-hint"
+                  data-testid="earn-card-chain-name"
                   style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
@@ -1058,6 +1061,7 @@ exports[`EarnCard snapshot > compact card with lockup days and cap in dollar mat
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1188,7 +1192,7 @@ exports[`EarnCard snapshot > compact card with lockup days and cap in dollar mat
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -1380,6 +1384,7 @@ exports[`EarnCard snapshot > compact card with lockup days matches snapshot 1`] 
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1510,7 +1515,7 @@ exports[`EarnCard snapshot > compact card with lockup days matches snapshot 1`] 
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -1702,6 +1707,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -1827,7 +1833,7 @@ exports[`EarnCard snapshot > compact card with no recommendation matches snapsho
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -2019,6 +2025,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2175,7 +2182,7 @@ exports[`EarnCard snapshot > compact card with single asset matches snapshot 1`]
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -2367,6 +2374,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
 <div>
   <div
     class="MuiBox-root css-1tyjne1"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2523,7 +2531,7 @@ exports[`EarnCard snapshot > compact card with two items matches snapshot 1`] = 
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -2643,6 +2651,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2714,7 +2723,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -2761,6 +2770,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -2770,6 +2780,7 @@ exports[`EarnCard snapshot > list item card matches snapshot 1`] = `
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -2877,6 +2888,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -2948,7 +2960,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -2995,6 +3007,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -3004,6 +3017,7 @@ exports[`EarnCard snapshot > list item card with cap in dollar matches snapshot 
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -3089,6 +3103,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
   >
     <div
       class="MuiBox-root css-1c0785"
+      data-testid="earn-card"
     >
       <div
         class="MuiBox-root css-ohw5b5"
@@ -3160,7 +3175,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
               >
                 <p
                   class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                  data-testid="entity-stack-hint"
+                  data-testid="earn-card-chain-name"
                   style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
                 >
                   Base
@@ -3207,6 +3222,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             >
               <p
                 class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+                data-testid="earn-card-tag-staking"
               >
                 Staking
               </p>
@@ -3216,6 +3232,7 @@ exports[`EarnCard snapshot > list item card with href matches snapshot 1`] = `
             >
               <p
                 class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+                data-testid="earn-card-tag-earn"
               >
                 Earn
               </p>
@@ -3360,6 +3377,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3431,7 +3449,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -3478,6 +3496,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -3487,6 +3506,7 @@ exports[`EarnCard snapshot > list item card with lockup days and cap in dollar m
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -3568,6 +3588,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3639,7 +3660,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -3686,6 +3707,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -3695,6 +3717,7 @@ exports[`EarnCard snapshot > list item card with lockup days matches snapshot 1`
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -3776,6 +3799,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -3847,7 +3871,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -3863,6 +3887,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -3872,6 +3897,7 @@ exports[`EarnCard snapshot > list item card with no recommendation matches snaps
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>
@@ -3979,6 +4005,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
 <div>
   <div
     class="MuiBox-root css-nhh3oc"
+    data-testid="earn-card"
   >
     <div
       class="MuiBox-root css-ohw5b5"
@@ -4050,7 +4077,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
             >
               <p
                 class="MuiTypography-root MuiTypography-bodyXSmall css-1h87t1b-MuiTypography-root"
-                data-testid="entity-stack-hint"
+                data-testid="earn-card-chain-name"
                 style="position: absolute; transform: none; transition: transform 225ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;"
               >
                 Base
@@ -4097,6 +4124,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-staking"
             >
               Staking
             </p>
@@ -4106,6 +4134,7 @@ exports[`EarnCard snapshot > list item card with single asset matches snapshot 1
           >
             <p
               class="MuiTypography-root MuiTypography-body1 css-jc816d-MuiTypography-root"
+              data-testid="earn-card-tag-earn"
             >
               Earn
             </p>

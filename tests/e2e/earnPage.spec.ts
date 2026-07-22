@@ -17,9 +17,7 @@ async function setupAllMarketsView(jumperPage: Page): Promise<void> {
 test.describe('Chains filters on Earn page', () => {
   test.beforeEach(async ({ jumperPage }) => setupAllMarketsView(jumperPage));
 
-  // Blocked: filter chip bar (`earn-filter-chain-select` et al) doesn't render reliably on cold-start.
-  // Re-enable once the cold-start tab-switch race is fixed or filter-bar testids stabilize. JUM-924-adjacent.
-  test.fixme(
+  test(
     qase(40, 'Should be able to navigate to the earn page'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -37,17 +35,10 @@ test.describe('Chains filters on Earn page', () => {
       await test.step('Validate filters on All Markets tab', async () => {
         await earnPage.expectFiltersVisible();
       });
-
-      await test.step('Validate filters on Your Positions tab', async () => {
-        await earnPage.selectYourPositionsTab();
-        await earnPage.expectFiltersVisible();
-      });
     },
   );
 
-  // JUM-924 item #8: `earn-card-chain-name` testid removed from loaded EarnCards.
-  // Re-enable when the FE adds a chain-name testid to loaded (non-skeleton) cards.
-  test.fixme(
+  test(
     qase(41, 'Should be able to filter by base chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -59,8 +50,7 @@ test.describe('Chains filters on Earn page', () => {
     },
   );
 
-  // JUM-924 item #8: same as qase 41 — chain-name testid gap.
-  test.fixme(
+  test(
     qase(42, 'Should be able to filter by arbitrum chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -72,8 +62,7 @@ test.describe('Chains filters on Earn page', () => {
     },
   );
 
-  // JUM-924 item #8: same as qase 41 — chain-name testid gap.
-  test.fixme(
+  test(
     qase(43, 'Should be able to filter by ethereum chain'),
     async ({ jumperPage }) => {
       const earnPage = new EarnPage(jumperPage);
@@ -133,16 +122,15 @@ test.describe('Assets filters on Earn page', () => {
 test.describe('Tags filters on Earn page', () => {
   test.beforeEach(async ({ jumperPage }) => setupAllMarketsView(jumperPage));
 
-  // JUM-924 item #13: card-level `earn-card` testid needed for per-card scoping.
-  test.fixme(
+  test(
     qase(208, 'Filter by tag returns only cards that have that tag'),
     async ({ jumperPage }) => {
+      test.slow();
       const earnPage = new EarnPage(jumperPage);
-      const baseline = await earnPage.getCardCount();
 
+      // The grid caps at a page size, so count deltas can't detect filtering.
       for (const tag of ['Yield Aggregator', 'Liquid Staking', 'Synthetic']) {
         await earnPage.selectOptionFromDropdown('earn-filter-tag-select', tag);
-        await earnPage.expectCardCountLessThan(baseline);
         await earnPage.expectAtLeastOneCard();
         await earnPage.expectAllCardsHaveTag(tag);
         await earnPage.clearFilters();
@@ -173,8 +161,8 @@ test.describe('Should be able to navigate to the "Your Positions" tab', () => {
     await new EarnPage(jumperPage).selectYourPositionsTab();
   });
 
-  // Blocked: filter chip bar doesn't render on Your Positions tab with an empty wallet
-  // (same FE behavior surfaced by qase 40). Re-enable with funded wallet or filter-bar testid fix.
+  // Blocked on funded QA wallet — an empty wallet's Your Positions tab renders
+  // no filter selects (nothing to filter), so this needs positions to assert on.
   test.fixme(
     qase(56, 'Should be able to navigate to the "Your Positions" tab'),
     async ({ jumperPage }) => {

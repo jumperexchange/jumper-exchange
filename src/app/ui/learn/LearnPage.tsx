@@ -36,6 +36,7 @@ const LearnPage: FC<LearnPageProps> = async () => {
   return (
     <Box
       className="learn-page"
+      data-testid="learn-page"
       sx={{
         paddingBottom: {
           xs: 12,

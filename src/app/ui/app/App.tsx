@@ -72,6 +72,7 @@ const App = ({ children }: { children: React.ReactNode }) => {
         enableAddressable: true,
       }}
       overlayClassName="welcome-screen-container"
+      overlayDataTestId="welcome-screen"
       containerSx={
         isMainPaths && welcomeScreenClosed
           ? {

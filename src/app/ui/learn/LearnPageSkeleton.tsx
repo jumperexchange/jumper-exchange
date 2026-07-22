@@ -8,6 +8,7 @@ export const LearnPageSkeleton = () => {
   return (
     <Box
       className="learn-page"
+      data-testid="learn-page"
       sx={{
         paddingBottom: {
           xs: 12,

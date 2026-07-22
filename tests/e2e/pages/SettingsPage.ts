@@ -32,13 +32,13 @@ export class SettingsPage {
     this.bridgesListFirstCheckbox = this.bridgesListFirstItem
       .getByRole('checkbox')
       .first();
-    // TODO(app): JUM-924 — add `settings-drawer-back-button` testid.
+    // TODO(app): JUM-924 — swap to `widget-back-button` at the widget bump.
     this.backArrowButton = page
       .locator('button.MuiIconButton-edgeStart')
       .first();
     this.deselectAllButton = page.getByLabel('Deselect all');
     this.selectAllButton = page.locator('#select-all');
-    // TODO(app): JUM-924 — replace MUI badge classes with `settings-badge-{info,warning}` testids.
+    // TODO(app): JUM-924 — swap to `widget-*-badge-{info,warning}` at the widget bump.
     this.badgeInfo = page.locator('span.MuiBadge-badge.MuiBadge-colorInfo');
     this.badgeWarning = page.locator(
       'span.MuiBadge-badge.MuiBadge-colorWarning',
@@ -150,9 +150,7 @@ export class SettingsPage {
     elementType: 'button' | 'p',
     options: ItemAssertion,
   ): Promise<void> {
-    // TODO(app): JUM-924 — distinguish button vs paragraph labels with
-    // role-specific testids. Today both render the same text, so we filter
-    // by tag via xpath to assert one without the other.
+    // TODO(app): JUM-924 — swap to `widget-*-value` / `widget-*-option-*` ids at the widget bump.
     const item = this.page.locator(
       `xpath=//${elementType}[normalize-space(text())="${label}"]`,
     );
@@ -168,7 +166,7 @@ export class SettingsPage {
   }
 
   private fractionLocator(category: string): Locator {
-    // TODO(app): JUM-924 — expose per-category fraction testids (e.g. `settings-bridges-fraction`); the "/" char is the only stable text marker today.
+    // TODO(app): JUM-924 — swap to `widget-{bridges,exchanges}-value` at the widget bump.
     return this.page
       .getByText(category)
       .locator('..')

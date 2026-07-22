@@ -5,7 +5,6 @@ import { CHAIN_NAMES_BY_ID, ROUTE_LABELS } from '../data/urls';
 import type { WidgetUrlParams } from '../data/urlParams';
 import type { Locator, Page } from '@playwright/test';
 
-const WELCOME_OVERLAY_SELECTOR = '.welcome-screen-container';
 const WELCOME_VISIBLE_TIMEOUT_MS = 30_000;
 const WELCOME_CLOSE_TIMEOUT_MS = 17_000;
 const TOKEN_RESOLUTION_TIMEOUT_MS = 30_000;
@@ -20,16 +19,11 @@ export class LandingPage {
 
   constructor(private readonly page: Page) {
     this.getStartedButton = page.getByTestId('get-started-button');
-    this.welcomeOverlay = page.locator(WELCOME_OVERLAY_SELECTOR);
+    this.welcomeOverlay = page.getByTestId('welcome-screen');
     this.jumperLogo = page.locator('#jumper-logo');
-    // TODO(app): JUM-924 — add `homepage-stat-{chains,bridges,dexs}-count` testids.
-    this.chainsCount = page.locator(
-      '//*[text()="Chains"]/preceding-sibling::*[1]',
-    );
-    this.bridgesCount = page.locator(
-      '//*[text()="Bridges"]/preceding-sibling::*[1]',
-    );
-    this.dexsCount = page.locator('//*[text()="DEXs"]/preceding-sibling::*[1]');
+    this.chainsCount = page.getByTestId('homepage-stat-chains-count');
+    this.bridgesCount = page.getByTestId('homepage-stat-bridges-count');
+    this.dexsCount = page.getByTestId('homepage-stat-dexs-count');
   }
 
   async clickJumperLogo(): Promise<void> {
@@ -91,7 +85,7 @@ export class LandingPage {
 
     const viewportWidth = this.page.viewportSize()?.width;
     if (viewportWidth !== undefined && viewportWidth < 599) {
-      // TODO(app): JUM-924 — add `widget-route-expand-toggle` testid.
+      // TODO(app): JUM-924 — swap to `widget-route-expand-toggle` at the widget bump.
       await this.page
         .locator('button.MuiIconButton-root.MuiIconButton-sizeSmall:has(svg)')
         .click();
@@ -145,11 +139,12 @@ export class LandingPage {
     ).toBeVisible();
   }
 
-  // The destination is asserted via a widget tab unique to it, so the check
-  // cannot match the outgoing page mid-navigation (role=tab name matching is
-  // exact — "Bridge" does not match "Swap & Bridge").
+  // exact is load-bearing: getByRole name-matching is substring by default,
+  // so "Bridge" would also match "Swap & Bridge" without it.
   async expectWidgetTabVisible(widgetTab: string): Promise<void> {
-    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
+    await expect(
+      this.page.getByRole('tab', { exact: true, name: widgetTab }),
+    ).toBeVisible();
   }
 
   async goto(): Promise<void> {
