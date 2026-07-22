@@ -139,11 +139,12 @@ export class LandingPage {
     ).toBeVisible();
   }
 
-  // The destination is asserted via a widget tab unique to it, so the check
-  // cannot match the outgoing page mid-navigation (role=tab name matching is
-  // exact — "Bridge" does not match "Swap & Bridge").
+  // exact is load-bearing: getByRole name-matching is substring by default,
+  // so "Bridge" would also match "Swap & Bridge" without it.
   async expectWidgetTabVisible(widgetTab: string): Promise<void> {
-    await expect(this.page.getByRole('tab', { name: widgetTab })).toBeVisible();
+    await expect(
+      this.page.getByRole('tab', { exact: true, name: widgetTab }),
+    ).toBeVisible();
   }
 
   async goto(): Promise<void> {
