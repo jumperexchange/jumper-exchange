@@ -1,5 +1,6 @@
 'use client';
 
+import Box from '@mui/material/Box';
 import {
   AccountControl,
   PortfolioView,
@@ -8,7 +9,6 @@ import {
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { AppPaths } from '@/const/urls';
-import { useHeaderHeight } from '@/hooks/useHeaderHeight';
 import { PerpsProviders } from './PerpsProviders';
 
 // Jumper only ships the Hyperliquid venue today; Lighter and Ondo require
@@ -34,59 +34,34 @@ function writeQueryParam(name: string, value: string) {
 }
 
 export function PerpsShell({ page }: { page: 'trade' | 'portfolio' }) {
-  const headerHeight = useHeaderHeight();
   const router = useRouter();
   const marketFromUrl = useMemo(() => readQueryParam('market'), []);
 
   return (
     <PerpsProviders>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          minHeight: `calc(100dvh - ${headerHeight}px)`,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            padding: '16px 16px 0',
-          }}
-        >
-          <AccountControl
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <AccountControl
+          provider={PROVIDER}
+          onProviderChange={() => {}}
+          portfolioHref={AppPaths.PerpsPortfolio}
+        />
+      </Box>
+      {page === 'portfolio' ? (
+        <Box sx={{ maxWidth: 480, margin: '0 auto' }}>
+          <PortfolioView
             provider={PROVIDER}
             onProviderChange={() => {}}
-            portfolioHref={AppPaths.PerpsPortfolio}
+            onTrade={() => router.push(AppPaths.PerpsTrade)}
           />
-        </div>
-        <div
-          style={{
-            width: '100%',
-            padding: '0 16px 16px',
-            flex: 1,
-            minHeight: 0,
-            overflow: 'auto',
-          }}
-        >
-          {page === 'portfolio' ? (
-            <div style={{ maxWidth: 480, margin: '16px auto 0' }}>
-              <PortfolioView
-                provider={PROVIDER}
-                onProviderChange={() => {}}
-                onTrade={() => router.push(AppPaths.PerpsTrade)}
-              />
-            </div>
-          ) : (
-            <TradeView
-              provider={PROVIDER}
-              onProviderChange={() => {}}
-              defaultMarketId={marketFromUrl}
-              onMarketChange={(marketId) => writeQueryParam('market', marketId)}
-            />
-          )}
-        </div>
-      </div>
+        </Box>
+      ) : (
+        <TradeView
+          provider={PROVIDER}
+          onProviderChange={() => {}}
+          defaultMarketId={marketFromUrl}
+          onMarketChange={(marketId) => writeQueryParam('market', marketId)}
+        />
+      )}
     </PerpsProviders>
   );
 }
