@@ -1087,7 +1087,7 @@ export default interface Resources {
       };
       holdings: {
         defiPositions: 'DeFi';
-        perps: 'Perps';
+        perps: 'Perps and prediction markets';
         tokens: 'Tokens';
       };
       overviewCard: {
