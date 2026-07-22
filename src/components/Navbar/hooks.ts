@@ -85,11 +85,18 @@ export const useIsDisconnected = () => {
   return !activeAccount?.address;
 };
 
+export interface NavDropdownItem {
+  value: AppPaths;
+  label: string;
+  testId?: string;
+}
+
 interface MainLink {
   value: AppPaths;
   label: string;
   subLinks?: AppPaths[];
   testId?: string;
+  dropdownItems?: NavDropdownItem[];
 }
 
 export const useMainLinks = () => {
@@ -119,6 +126,27 @@ export const useMainLinks = () => {
       },
     ];
 
+    if (isPerpsEnabled) {
+      _links.push({
+        value: AppPaths.PerpsTrade,
+        label: t('navbar.links.perps'),
+        subLinks: [AppPaths.PerpsTrade, AppPaths.PerpsPortfolio],
+        testId: 'navbar-perps-button',
+        dropdownItems: [
+          {
+            value: AppPaths.PerpsTrade,
+            label: t('navbar.links.trade'),
+            testId: 'navbar-perps-trade-button',
+          },
+          {
+            value: AppPaths.PerpsPortfolio,
+            label: t('navbar.links.portfolio'),
+            testId: 'navbar-perps-portfolio-button',
+          },
+        ],
+      });
+    }
+
     if (isEarnEnabled) {
       _links.push({
         value: AppPaths.Earn,
@@ -144,21 +172,6 @@ export const useMainLinks = () => {
       testId: 'navbar-missions-button',
     });
 
-    if (isPerpsEnabled) {
-      _links.push({
-        value: AppPaths.PerpsTrade,
-        label: t('navbar.links.tradePerps'),
-        subLinks: [AppPaths.PerpsTrade],
-        testId: 'navbar-perps-trade-button',
-      });
-      _links.push({
-        value: AppPaths.PerpsPortfolio,
-        label: t('navbar.links.portfolioPerps'),
-        subLinks: [AppPaths.PerpsPortfolio],
-        testId: 'navbar-perps-portfolio-button',
-      });
-    }
-
     return _links;
   }, [t, isEarnEnabled, isPortfolioEnabled, isPerpsEnabled, tradeABTest]);
 
@@ -175,5 +188,6 @@ export const useMainLinks = () => {
   return {
     links,
     activeLink,
+    pathname,
   };
 };

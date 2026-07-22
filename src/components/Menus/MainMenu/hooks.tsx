@@ -497,15 +497,6 @@ export const useMenuItems = () => {
         onClick: handleMissionsClick,
       });
 
-      if (isEarnEnabled) {
-        baseItems.push({
-          label: t('navbar.links.earn'),
-          showMoreIcon: false,
-          link: { url: AppPaths.Earn, external: false },
-          onClick: handleEarnClick,
-        });
-      }
-
       if (isPerpsEnabled) {
         baseItems.push({
           label: t('navbar.links.tradePerps'),
@@ -518,6 +509,15 @@ export const useMenuItems = () => {
           showMoreIcon: false,
           link: { url: AppPaths.PerpsPortfolio, external: false },
           onClick: handlePerpsClick,
+        });
+      }
+
+      if (isEarnEnabled) {
+        baseItems.push({
+          label: t('navbar.links.earn'),
+          showMoreIcon: false,
+          link: { url: AppPaths.Earn, external: false },
+          onClick: handleEarnClick,
         });
       }
 
