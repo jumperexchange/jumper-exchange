@@ -55,6 +55,11 @@ const mockContextValue = (filter: Record<string, unknown> = {}) => ({
     { slug: 'spark-susds', name: 'Spark sUSDS' },
     { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
   ],
+  availablePools: [
+    { slug: 'steakhouse-usdc', name: 'Steakhouse USDC' },
+    { slug: 'spark-susds', name: 'Spark sUSDS' },
+    { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
+  ],
   allAPY: {},
   allTVL: {},
   allRewardsOptions: [],

@@ -136,6 +136,11 @@ const mockContextValue = () => {
       { slug: 'spark-susds', name: 'Spark sUSDS' },
       { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
     ],
+    availablePools: [
+      { slug: 'steakhouse-usdc', name: 'Steakhouse USDC' },
+      { slug: 'spark-susds', name: 'Spark sUSDS' },
+      { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
+    ],
     allAPY: {
       0.01: 5,
       0.02: 12,
@@ -195,6 +200,7 @@ export const EmptyState: Story = {
             allAssets: [],
             allTags: [],
             allPools: [],
+            availablePools: [],
             allAPY: {},
             allRewardsOptions: [],
             totalMarkets: 0,

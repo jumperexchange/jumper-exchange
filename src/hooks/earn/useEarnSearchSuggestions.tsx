@@ -34,20 +34,20 @@ export interface UseEarnSearchSuggestionsResult {
 // renders and translates selections back into the structured filter.
 export const useEarnSearchSuggestions = (): UseEarnSearchSuggestionsResult => {
   const { t } = useTranslation();
-  const { allChains, allProtocols, allPools, filter, updateFilter } =
+  const { allChains, allProtocols, availablePools, filter, updateFilter } =
     useEarnFiltering();
   const { getChainById } = useChains();
 
   const poolOptions = useMemo<EarnSearchSuggestionOption[]>(
     () =>
       sortSelectOptions(
-        allPools.map((pool) => ({
+        availablePools.map((pool) => ({
           category: EarnSearchCategory.Pool,
           value: pool.slug,
           label: pool.name,
         })),
       ),
-    [allPools],
+    [availablePools],
   );
 
   const chainOptions = useMemo<EarnSearchSuggestionOption[]>(
