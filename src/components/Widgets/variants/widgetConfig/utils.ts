@@ -1,12 +1,15 @@
 import type { Theme } from '@mui/material/styles';
 import type {
+  FormState,
   NavigationTabKey,
   Route,
   RouteLabelRule,
 } from '@jumperexchange/widget';
-import { ChainType } from '@jumperexchange/widget';
+import { ChainId, ChainType } from '@jumperexchange/widget';
+import { ETH_NATIVE, ETH_USDC, SOL_USDC } from '@/config/tokens';
 import type { StarterVariantType } from '@/types/internal';
 import type { LimitOrder } from '@/types/jumper-backend';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type {
   FormData,
   WidgetFeatureFlags,
@@ -119,6 +122,223 @@ export function resolveWidgetKeyPrefix(
     ? activeTabKey
     : key;
 }
+
+export interface WidgetPlaceholderTokens {
+  fromChain: number;
+  fromToken: string;
+  toChain: number;
+  toToken: string;
+}
+
+const ethUsdcToSolUsdc = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_USDC,
+  toChain: ChainId.SOL,
+  toToken: SOL_USDC,
+});
+
+const ethNativeToEthUsdc = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_NATIVE,
+  toChain: ChainId.ETH,
+  toToken: ETH_USDC,
+});
+
+/** Limit protocols (CoW / 1inch) do not support native ETH as the sell token. */
+const ethUsdcToEthNative = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_USDC,
+  toChain: ChainId.ETH,
+  toToken: ETH_NATIVE,
+});
+
+/**
+ * Default from/to pair when the widget has no higher-priority source
+ * (partner theme, props, or URL). Private and Gas stay empty.
+ */
+export const resolveWidgetPlaceholderTokens = (
+  starterVariant: StarterVariantType,
+  activeTabKey?: NavigationTabKey | null,
+): WidgetPlaceholderTokens | undefined => {
+  if (
+    activeTabKey === 'refuel' ||
+    activeTabKey === 'private' ||
+    starterVariant === 'refuel' ||
+    starterVariant === 'private'
+  ) {
+    return undefined;
+  }
+
+  if (activeTabKey === 'swap-advanced') {
+    return ethNativeToEthUsdc();
+  }
+
+  if (activeTabKey === 'limit') {
+    return ethUsdcToEthNative();
+  }
+
+  if (activeTabKey === 'bridge-advanced') {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (activeTabKey === 'default') {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (starterVariant === 'default' && !activeTabKey) {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (starterVariant === 'advanced' && !activeTabKey) {
+    return ethNativeToEthUsdc();
+  }
+
+  return undefined;
+};
+
+/** Parses a chain id query value; rejects NaN / non-finite junk. */
+const parseUrlChainId = (raw: string | null): number | undefined => {
+  if (raw == null || raw === '') {
+    return undefined;
+  }
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
+/** Synchronous URL read for cold-load deep links. */
+export const getUrlChainTokenParams = () => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
+  const query = new URLSearchParams(window.location.search);
+  const fromChainRaw = query.get('fromChain');
+  const toChainRaw = query.get('toChain');
+  const fromChain = parseUrlChainId(fromChainRaw);
+  const toChain = parseUrlChainId(toChainRaw);
+
+  // Junk chain params (e.g. fromChain=abc → NaN) must not block placeholders.
+  // Drop the matching token when the chain query was present but invalid.
+  const fromTokenRaw = query.get('fromToken') ?? undefined;
+  const toTokenRaw = query.get('toToken') ?? undefined;
+
+  return {
+    fromChain,
+    fromToken:
+      fromChainRaw != null && fromChain === undefined
+        ? undefined
+        : fromTokenRaw,
+    toChain,
+    toToken:
+      toChainRaw != null && toChain === undefined ? undefined : toTokenRaw,
+  };
+};
+
+export const clearWidgetChainTokenCache = () => {
+  useWidgetCacheStore.setState({
+    fromToken: undefined,
+    fromChainId: undefined,
+    toToken: undefined,
+    toChainId: undefined,
+  });
+};
+
+/** Clears from/to query params (e.g. after an intentional form reset). */
+export const clearUrlChainTokenParams = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  let changed = false;
+  for (const key of [
+    'fromChain',
+    'fromToken',
+    'toChain',
+    'toToken',
+    'fromAmount',
+  ] as const) {
+    if (url.searchParams.has(key)) {
+      url.searchParams.delete(key);
+      changed = true;
+    }
+  }
+  if (changed) {
+    window.history.replaceState(window.history.state, '', url);
+  }
+};
+
+/** Writes from/to query params so URL-driven UI (e.g. Market Price) matches the form. */
+export const writeUrlChainTokenParams = (
+  tokens: WidgetPlaceholderTokens | null,
+) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (!tokens) {
+    clearUrlChainTokenParams();
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('fromChain', String(tokens.fromChain));
+  url.searchParams.set('fromToken', tokens.fromToken);
+  url.searchParams.set('toChain', String(tokens.toChain));
+  url.searchParams.set('toToken', tokens.toToken);
+  window.history.replaceState(window.history.state, '', url);
+};
+
+/**
+ * Simple ↔ Advanced: destination Widget clears URL + cache once on mount so
+ * the departing page's buildUrl leftovers do not seed the new surface.
+ * No form-seed suppress on the departing page.
+ */
+let surfaceHandoffGeneration = 0;
+let consumedSurfaceHandoffGeneration = 0;
+
+export const prepareWidgetSurfaceNavigation = () => {
+  surfaceHandoffGeneration += 1;
+  clearWidgetChainTokenCache();
+};
+
+export const consumeWidgetSurfaceNavigation = () => {
+  if (
+    surfaceHandoffGeneration === 0 ||
+    consumedSurfaceHandoffGeneration === surfaceHandoffGeneration
+  ) {
+    return;
+  }
+  consumedSurfaceHandoffGeneration = surfaceHandoffGeneration;
+  clearUrlChainTokenParams();
+  clearWidgetChainTokenCache();
+};
+
+/** Writes from/to into the live FormStore without remounting the widget. */
+export const applyWidgetChainTokenFields = (
+  form: FormState | null | undefined,
+  tokens: WidgetPlaceholderTokens | null,
+) => {
+  if (!form) {
+    return;
+  }
+
+  if (tokens) {
+    form.setFieldValue('fromChain', tokens.fromChain);
+    form.setFieldValue('fromToken', tokens.fromToken);
+    form.setFieldValue('toChain', tokens.toChain);
+    form.setFieldValue('toToken', tokens.toToken);
+  } else {
+    form.setFieldValue('fromChain', undefined);
+    form.setFieldValue('fromToken', undefined);
+    form.setFieldValue('toChain', undefined);
+    form.setFieldValue('toToken', undefined);
+  }
+
+  // Config/form seed does not always flow into the query string; URL-driven
+  // panels (Market Price) need an explicit sync.
+  writeUrlChainTokenParams(tokens);
+};
 
 export const generateRouteLabel = (
   text: string,

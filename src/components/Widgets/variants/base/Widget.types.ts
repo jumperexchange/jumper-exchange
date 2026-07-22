@@ -12,4 +12,6 @@ export interface WidgetProps extends EntityWidgetProps {
   type: WidgetType;
   formRef?: FormRef;
   isLoading?: boolean;
+  /** Fires whenever LiFiWidget is mounted/shown (including after readiness remounts). */
+  onFormReady?: () => void;
 }
