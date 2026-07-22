@@ -40,6 +40,7 @@ export function filterOpportunities(
       assets,
       tags,
       pools,
+      search,
       minAPY,
       maxAPY,
       minTVL,
@@ -76,6 +77,14 @@ export function filterOpportunities(
 
     // Pool filter
     if (pools?.length && !pools.includes(item.slug)) {
+      return false;
+    }
+
+    // Plain-text search: stacks (AND) with the structured filters above,
+    // whether it's still live (typed but not yet committed) or pinned as a
+    // Search chip.
+    const searchTerm = search?.trim().toLowerCase();
+    if (searchTerm && !item.name.toLowerCase().includes(searchTerm)) {
       return false;
     }
 

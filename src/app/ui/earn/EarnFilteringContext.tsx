@@ -313,6 +313,7 @@ export const EarnFilteringProvider = ({
       tags: null,
       assets: null,
       pools: null,
+      search: null,
       minAPY: null,
       maxAPY: null,
       minTVL: null,

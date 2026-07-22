@@ -58,15 +58,25 @@ export interface EarnSearchFilterPatch {
   chains: number[] | null;
   protocols: string[] | null;
   pools: string[] | null;
+  search: string | null;
 }
 
 /** Splits the autocomplete's flat multi-select value back into the
- * structured filter fields the rest of the filtering context understands. */
+ * structured filter fields the rest of the filtering context understands.
+ * Free-solo string entries are the committed raw-search chip; only one is
+ * supported, so the last string wins if more than one is somehow present. */
 export function partitionSelectedOptions(
-  selected: EarnSearchOption[],
+  selected: (EarnSearchOption | string)[],
 ): EarnSearchFilterPatch {
+  const objectOptions = selected.filter(
+    (option): option is EarnSearchOption => typeof option !== 'string',
+  );
+  const searchTerms = selected.filter(
+    (option): option is string => typeof option === 'string',
+  );
+
   const byCategory = (category: EarnSearchCategoryEnum) =>
-    selected.filter((option) => option.category === category);
+    objectOptions.filter((option) => option.category === category);
 
   const chains = byCategory(EarnSearchCategory.Chain).map((option) =>
     Number(option.value),
@@ -77,11 +87,13 @@ export function partitionSelectedOptions(
   const pools = byCategory(EarnSearchCategory.Pool).map(
     (option) => option.value,
   );
+  const search = searchTerms.at(-1)?.trim();
 
   return {
     chains: chains.length ? chains : null,
     protocols: protocols.length ? protocols : null,
     pools: pools.length ? pools : null,
+    search: search ? search : null,
   };
 }
 

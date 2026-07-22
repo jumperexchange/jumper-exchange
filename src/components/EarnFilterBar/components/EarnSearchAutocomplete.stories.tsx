@@ -102,3 +102,18 @@ export const WithSelectedPool: Story = {
     ),
   ],
 };
+
+// The autocomplete never seeds its input box from `searchText`, so a
+// pre-existing `search` filter (e.g. loaded from the URL) renders directly
+// as a committed, removable "Search" chip.
+export const WithSearchChip: Story = {
+  decorators: [
+    (Story) => (
+      <EarnFilteringContext.Provider
+        value={mockContextValue({ search: 'steak' }) as never}
+      >
+        <Story />
+      </EarnFilteringContext.Provider>
+    ),
+  ],
+};

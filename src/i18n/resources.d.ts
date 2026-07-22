@@ -184,6 +184,7 @@ export default interface Resources {
             chain: 'Chain';
             pool: 'Pool';
             protocol: 'Protocol';
+            search: 'Search';
           };
           moreCount: '+{{count}} more';
           noOptions: 'No matches found';

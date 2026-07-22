@@ -24,7 +24,9 @@ export interface UseEarnSearchSuggestionsResult {
   options: EarnSearchSuggestionOption[];
   value: EarnSearchSuggestionOption[];
   categoryLabels: Record<EarnSearchCategoryEnum, string>;
-  onChange: (selected: EarnSearchSuggestionOption[]) => void;
+  searchText: string;
+  setSearchText: (text: string) => void;
+  onChange: (selected: (EarnSearchSuggestionOption | string)[]) => void;
 }
 
 // Thin, single-purpose view over EarnFilteringContext, mirroring
@@ -101,9 +103,25 @@ export const useEarnSearchSuggestions = (): UseEarnSearchSuggestionsResult => {
     [t],
   );
 
-  const onChange = (selected: EarnSearchSuggestionOption[]) => {
+  const searchText = filter.search ?? '';
+
+  const setSearchText = (text: string) => {
+    updateFilter({ search: text.trim() ? text : null });
+  };
+
+  // `selected` mixes structured suggestions with, at most, one free-solo
+  // string (the committed search chip); partitionSelectedOptions splits
+  // both back into the filter fields the rest of the context understands.
+  const onChange = (selected: (EarnSearchSuggestionOption | string)[]) => {
     updateFilter(partitionSelectedOptions(selected));
   };
 
-  return { options, value, categoryLabels, onChange };
+  return {
+    options,
+    value,
+    categoryLabels,
+    searchText,
+    setSearchText,
+    onChange,
+  };
 };

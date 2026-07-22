@@ -43,6 +43,7 @@ export interface EarnOpportunityFilterWithoutSortByAndOrder {
   assets?: string[];
   tags?: string[];
   pools?: string[];
+  search?: string;
   minAPY?: number;
   maxAPY?: number;
   minTVL?: number;

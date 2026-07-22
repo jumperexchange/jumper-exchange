@@ -575,7 +575,8 @@
         "category": {
           "pool": "Pool",
           "chain": "Chain",
-          "protocol": "Protocol"
+          "protocol": "Protocol",
+          "search": "Search"
         }
       }
     },

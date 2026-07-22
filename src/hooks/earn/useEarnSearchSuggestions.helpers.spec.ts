@@ -73,6 +73,7 @@ describe('partitionSelectedOptions', () => {
       chains: [8453],
       protocols: ['Morpho'],
       pools: ['spark-susds'],
+      search: null,
     });
   });
 
@@ -81,6 +82,39 @@ describe('partitionSelectedOptions', () => {
       chains: null,
       protocols: null,
       pools: null,
+      search: null,
+    });
+  });
+
+  it('maps a free-solo string entry to the search term', () => {
+    const selected: (EarnSearchOption | string)[] = [
+      { category: EarnSearchCategory.Chain, value: '8453', label: 'Base' },
+      'steak',
+    ];
+
+    expect(partitionSelectedOptions(selected)).toEqual({
+      chains: [8453],
+      protocols: null,
+      pools: null,
+      search: 'steak',
+    });
+  });
+
+  it('keeps only the last string when more than one is present', () => {
+    expect(partitionSelectedOptions(['steak', 'spark'])).toEqual({
+      chains: null,
+      protocols: null,
+      pools: null,
+      search: 'spark',
+    });
+  });
+
+  it('trims the search term and treats a blank string as no search', () => {
+    expect(partitionSelectedOptions(['  '])).toEqual({
+      chains: null,
+      protocols: null,
+      pools: null,
+      search: null,
     });
   });
 });
