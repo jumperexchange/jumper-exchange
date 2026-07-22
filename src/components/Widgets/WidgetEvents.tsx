@@ -194,11 +194,12 @@ export function WidgetEvents() {
         return;
       }
       if (formFieldData?.fieldName === 'fromToken') {
-        setFromToken(formFieldData.newValue);
+        // Empty string blocks placeholder fallback via `??` — store as unset.
+        setFromToken(formFieldData.newValue || undefined);
         return;
       }
       if (formFieldData?.fieldName === 'toToken') {
-        setToToken(formFieldData.newValue);
+        setToToken(formFieldData.newValue || undefined);
         return;
       }
     };

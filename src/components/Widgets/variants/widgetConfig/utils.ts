@@ -1,12 +1,15 @@
 import type { Theme } from '@mui/material/styles';
 import type {
+  FormState,
   NavigationTabKey,
   Route,
   RouteLabelRule,
 } from '@jumperexchange/widget';
-import { ChainType } from '@jumperexchange/widget';
+import { ChainId, ChainType } from '@jumperexchange/widget';
+import { ETH_NATIVE, ETH_USDC, SOL_USDC } from '@/config/tokens';
 import type { StarterVariantType } from '@/types/internal';
 import type { LimitOrder } from '@/types/jumper-backend';
+import { useWidgetCacheStore } from '@/stores/widgetCache';
 import type {
   FormData,
   WidgetFeatureFlags,
@@ -119,6 +122,179 @@ export function resolveWidgetKeyPrefix(
     ? activeTabKey
     : key;
 }
+
+export interface WidgetPlaceholderTokens {
+  fromChain: number;
+  fromToken: string;
+  toChain: number;
+  toToken: string;
+}
+
+const ethUsdcToSolUsdc = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_USDC,
+  toChain: ChainId.SOL,
+  toToken: SOL_USDC,
+});
+
+const ethNativeToEthUsdc = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_NATIVE,
+  toChain: ChainId.ETH,
+  toToken: ETH_USDC,
+});
+
+/** Limit protocols (CoW / 1inch) do not support native ETH as the sell token. */
+const ethUsdcToEthNative = (): WidgetPlaceholderTokens => ({
+  fromChain: ChainId.ETH,
+  fromToken: ETH_USDC,
+  toChain: ChainId.ETH,
+  toToken: ETH_NATIVE,
+});
+
+/**
+ * Default from/to pair when the widget has no higher-priority source
+ * (partner theme, props, or URL). Private and Gas stay empty.
+ */
+export const resolveWidgetPlaceholderTokens = (
+  starterVariant: StarterVariantType,
+  activeTabKey?: NavigationTabKey | null,
+): WidgetPlaceholderTokens | undefined => {
+  if (
+    activeTabKey === 'refuel' ||
+    activeTabKey === 'private' ||
+    starterVariant === 'refuel' ||
+    starterVariant === 'private'
+  ) {
+    return undefined;
+  }
+
+  if (activeTabKey === 'swap-advanced') {
+    return ethNativeToEthUsdc();
+  }
+
+  if (activeTabKey === 'limit') {
+    return ethUsdcToEthNative();
+  }
+
+  if (activeTabKey === 'bridge-advanced') {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (activeTabKey === 'default') {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (starterVariant === 'default' && !activeTabKey) {
+    return ethUsdcToSolUsdc();
+  }
+
+  if (starterVariant === 'advanced' && !activeTabKey) {
+    return ethNativeToEthUsdc();
+  }
+
+  return undefined;
+};
+
+/** Synchronous URL read for cold-load deep links. */
+export const getUrlChainTokenParams = () => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
+  const query = new URLSearchParams(window.location.search);
+  const fromChain = query.get('fromChain');
+  const toChain = query.get('toChain');
+
+  return {
+    fromChain: fromChain ? Number.parseInt(fromChain, 10) : undefined,
+    fromToken: query.get('fromToken') ?? undefined,
+    toChain: toChain ? Number.parseInt(toChain, 10) : undefined,
+    toToken: query.get('toToken') ?? undefined,
+  };
+};
+
+export const clearWidgetChainTokenCache = () => {
+  useWidgetCacheStore.setState({
+    fromToken: undefined,
+    fromChainId: undefined,
+    toToken: undefined,
+    toChainId: undefined,
+  });
+};
+
+/** Clears from/to query params (e.g. after an intentional form reset). */
+export const clearUrlChainTokenParams = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  let changed = false;
+  for (const key of [
+    'fromChain',
+    'fromToken',
+    'toChain',
+    'toToken',
+    'fromAmount',
+  ] as const) {
+    if (url.searchParams.has(key)) {
+      url.searchParams.delete(key);
+      changed = true;
+    }
+  }
+  if (changed) {
+    window.history.replaceState(window.history.state, '', url);
+  }
+};
+
+/**
+ * Simple ↔ Advanced: destination Widget clears URL + cache once on mount so
+ * the departing page's buildUrl leftovers do not seed the new surface.
+ * No form-seed suppress on the departing page.
+ */
+let surfaceHandoffGeneration = 0;
+let consumedSurfaceHandoffGeneration = 0;
+
+export const prepareWidgetSurfaceNavigation = () => {
+  surfaceHandoffGeneration += 1;
+  clearWidgetChainTokenCache();
+};
+
+export const consumeWidgetSurfaceNavigation = () => {
+  if (
+    surfaceHandoffGeneration === 0 ||
+    consumedSurfaceHandoffGeneration === surfaceHandoffGeneration
+  ) {
+    return;
+  }
+  consumedSurfaceHandoffGeneration = surfaceHandoffGeneration;
+  clearUrlChainTokenParams();
+  clearWidgetChainTokenCache();
+};
+
+/** Writes from/to into the live FormStore without remounting the widget. */
+export const applyWidgetChainTokenFields = (
+  form: FormState | null | undefined,
+  tokens: WidgetPlaceholderTokens | null,
+) => {
+  if (!form) {
+    return;
+  }
+
+  if (tokens) {
+    form.setFieldValue('fromChain', tokens.fromChain);
+    form.setFieldValue('fromToken', tokens.fromToken);
+    form.setFieldValue('toChain', tokens.toChain);
+    form.setFieldValue('toToken', tokens.toToken);
+    return;
+  }
+
+  form.setFieldValue('fromChain', undefined);
+  form.setFieldValue('fromToken', undefined);
+  form.setFieldValue('toChain', undefined);
+  form.setFieldValue('toToken', undefined);
+};
 
 export const generateRouteLabel = (
   text: string,

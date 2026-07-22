@@ -1,4 +1,3 @@
-import type { StateCreator } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import type { WidgetCacheState } from '@/types/widgetCache';
@@ -13,7 +12,7 @@ const defaultSettings = {
 /*--  Use Zustand  --*/
 
 export const useWidgetCacheStore = createWithEqualityFn<WidgetCacheState>(
-  (set, get) => ({
+  (set) => ({
     ...defaultSettings,
 
     setFromToken(token?: string) {

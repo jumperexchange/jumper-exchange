@@ -4,14 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import { prepareWidgetSurfaceNavigation } from '@/components/Widgets/variants/widgetConfig/utils';
 import { CandlestickChartIcon } from '@/components/illustrations/CandlestickChartIcon';
 import {
   TrackingAction,
   TrackingCategory,
   TrackingEventParameter,
 } from '@/const/trackingKeys';
-import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 import { useAdvancedAccess } from '@/hooks/useAdvancedAccess';
+import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
@@ -21,6 +22,7 @@ export const useVerticalTabs = () => {
     useAdvancedAccess();
 
   const handleClickTab = (path: string, label: string) => () => {
+    prepareWidgetSurfaceNavigation();
     router.push(`/${path}`);
     trackEvent({
       category: TrackingCategory.Navigation,
