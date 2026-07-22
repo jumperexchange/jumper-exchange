@@ -1,5 +1,5 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useQuery } from '@tanstack/react-query';
 import { useFpStore } from 'src/stores/fp';
 import type { FeatureFlagResponseDto } from 'src/types/jumper-backend';

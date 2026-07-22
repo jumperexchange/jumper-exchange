@@ -19,6 +19,7 @@ async function buildFrT() {
         translation: {
           format: {
             dustAmount: `<{{value, decimalExt(maximumFractionDigits: 4)}}${NBSP}{{symbol}}`,
+            dustAmountValue: `<{{value, decimalExt(maximumFractionDigits: 4)}}`,
             dustUsd: '<{{value, currencyExt(currency: USD)}}',
           },
         },
@@ -64,6 +65,22 @@ describe('formatTokenAmountWithDust', () => {
       `<0.0001${NBSP}---`,
     );
   });
+
+  it('should omit the symbol on dust amount when hideSymbol is set', () => {
+    expect(
+      formatTokenAmountWithDust('0.000000000000000001', 'eETH', undefined, {
+        hideSymbol: true,
+      }),
+    ).toBe('<0.0001');
+  });
+
+  it('should return the bare amount on normal amounts when hideSymbol is set', () => {
+    expect(
+      formatTokenAmountWithDust('12.345', 'eETH', undefined, {
+        hideSymbol: true,
+      }),
+    ).toBe('12.345');
+  });
 });
 
 describe('formatUSDWithDust', () => {
@@ -107,6 +124,17 @@ describe('formatTokenAmountWithDust with fr locale', () => {
     expect(formatTokenAmountWithDust('0.000000000000000001', 'WAVAX')).toBe(
       `<0.0001${NBSP}WAVAX`,
     );
+  });
+
+  it('renders dust value with fr decimal separator when hideSymbol is set', async () => {
+    const t = await buildFrT();
+    const result = formatTokenAmountWithDust(
+      '0.000000000000000001',
+      'WAVAX',
+      t,
+      { hideSymbol: true },
+    );
+    expect(result).toBe('<0,0001');
   });
 });
 

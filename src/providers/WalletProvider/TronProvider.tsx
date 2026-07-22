@@ -1,5 +1,5 @@
 'use client';
-import { createTronAdapters } from '@lifi/widget-provider-tron';
+import { createTronAdapters } from '@jumperexchange/widget-provider-tron';
 import { WalletProvider } from '@tronweb3/tronwallet-adapter-react-hooks';
 import { type FC, type PropsWithChildren, useState } from 'react';
 

@@ -1,4 +1,4 @@
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { isAddress } from 'viem';
 import config from '@/config/env-config';

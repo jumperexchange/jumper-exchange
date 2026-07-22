@@ -1,5 +1,5 @@
-import { Appearance } from '@lifi/widget';
-import { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
+import type { Appearance } from '@jumperexchange/widget';
+import type { ImageTheme } from 'src/components/ImageGeneration/ImageGeneration.types';
 
 export const getOffset = (type?: string, extendedHeight?: boolean) => {
   if (type === 'amount') {

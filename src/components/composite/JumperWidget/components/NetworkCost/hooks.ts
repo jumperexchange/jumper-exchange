@@ -2,7 +2,7 @@ import { usePortfolioFormatters } from '@/hooks/tokens/usePortfolioFormatters';
 import { useTokenFormatters } from '@/hooks/tokens/useTokenFormatters';
 import { createExtendedToken, createTokenBalance } from '@/types/tokens';
 import type { FeeCost, GasCost, LiFiStep, RouteExtended } from '@lifi/sdk';
-import { getPriceImpact } from '@lifi/widget';
+import { getPriceImpact } from '@jumperexchange/widget';
 import { groupBy, map, maxBy, sum, sumBy } from 'lodash';
 
 const isRouteExtended = (

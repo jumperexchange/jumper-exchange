@@ -128,6 +128,15 @@ export const NBSP = '\u00a0'; // non-breaking space
 export const DUST_AMOUNT_THRESHOLD = 0.0001;
 export const DUST_AMOUNT_LABEL = `<${DUST_AMOUNT_THRESHOLD}`;
 
+export interface FormatTokenAmountWithDustOptions {
+  /**
+   * Omit the symbol entirely instead of falling back to the `---`
+   * placeholder. Use when the symbol is known but intentionally shown
+   * elsewhere in the UI, as opposed to a genuinely unknown symbol.
+   */
+  hideSymbol?: boolean;
+}
+
 /**
  * Combines a formatted decimal `amount` string with a token `symbol`,
  * collapsing non-zero values below the dust threshold to `<0.0001 SYMBOL`
@@ -139,10 +148,25 @@ export const formatTokenAmountWithDust = (
   amount: string,
   symbol: string,
   t?: TFunction,
+  options?: FormatTokenAmountWithDustOptions,
 ): string => {
   const numeric = parseFloat(amount);
+  const isDust = numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD;
+
+  if (options?.hideSymbol) {
+    if (!isDust) {
+      return amount;
+    }
+    const translated = t?.('format.dustAmountValue', {
+      value: DUST_AMOUNT_THRESHOLD,
+    });
+    return !translated || translated.startsWith('format.dustAmountValue')
+      ? DUST_AMOUNT_LABEL
+      : translated;
+  }
+
   const label = symbol || '---';
-  if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
+  if (isDust) {
     const translated = t?.('format.dustAmount', {
       value: DUST_AMOUNT_THRESHOLD,
       symbol: label,

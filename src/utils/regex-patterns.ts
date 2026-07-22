@@ -19,6 +19,12 @@ export const SOLANA_TRANSACTION_REGEX = /^[1-9A-HJ-NP-Za-km-z]{86,89}$/;
 export const UTXO_ADDRESS_REGEX = /^(1|3|bc1)[a-zA-HJ-NP-Z0-9]{25,39}$/;
 export const UTXO_TRANSACTION_REGEX = /^[a-fA-F0-9]{64}$/;
 
+// Tron patterns. Tron base58 addresses always start with `T` and are 34 chars.
+// Note: this range overlaps the Solana base58 pattern, so the two cannot be
+// disambiguated by regex alone — prefer connector/chain context when the type
+// (not just validity) matters.
+export const TRON_ADDRESS_REGEX = /^T[1-9A-HJ-NP-Za-km-z]{33}$/;
+
 // Helper functions for validation
 export const isValidEthereumAddress = (address: string): boolean => {
   return ETHEREUM_ADDRESS_REGEX.test(address);
@@ -44,6 +50,10 @@ export const isValidUTXOTransaction = (txHash: string): boolean => {
   return UTXO_TRANSACTION_REGEX.test(txHash);
 };
 
+export const isValidTronAddress = (address: string): boolean => {
+  return TRON_ADDRESS_REGEX.test(address);
+};
+
 export const isValidSuiAddress = (address: string): boolean => {
   try {
     return suiAddressValidator(address);
@@ -66,7 +76,8 @@ export const isValidAddress = (address: string): boolean => {
     isValidEthereumAddress(address) ||
     isValidSolanaAddress(address) ||
     isValidUTXOAddress(address) ||
-    isValidSuiAddress(address)
+    isValidSuiAddress(address) ||
+    isValidTronAddress(address)
   );
 };
 

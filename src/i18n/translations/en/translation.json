@@ -15,7 +15,9 @@
       "refuel": "Gas",
       "private": "Private Swap",
       "buy": "Buy",
-      "back": "Back"
+      "back": "Back",
+      "simple": "Simple",
+      "advanced": "Advanced"
     },
     "statsCards": {
       "dexs": "DEXs",
@@ -41,6 +43,7 @@
     "seeAllWallets": "See all wallets",
     "navbarMenu": {
       "learn": "Learn",
+      "docs": "Docs",
       "scan": "Scan",
       "brandAssets": "Brand Assets",
       "theme": "Theme",
@@ -458,6 +461,7 @@
     "date": "{{value, dateExt(month: long)}}",
     "shortDate": "{{value, dateExt(month: short)}}",
     "dustAmount": "<{{value, decimalExt(maximumFractionDigits: 4)}}\u00a0{{symbol}}",
+    "dustAmountValue": "<{{value, decimalExt(maximumFractionDigits: 4)}}",
     "dustUsd": "<{{value, currencyExt(currency: USD)}}"
   },
   "contribution": {
@@ -1033,6 +1037,13 @@
     },
     "swapBridge": {
       "title": "Swap & Bridge"
+    },
+    "limitOrder": {
+      "reviewTitle": "Review order",
+      "placeOrderButton": "Place order",
+      "orderPlacedTitle": "Order placed successfully",
+      "orderPlacementCompleted": "Order placement completed",
+      "orderPlacedLabel": "Order placed"
     }
   },
   "links": {
@@ -1294,5 +1305,73 @@
   },
   "alerts": {
     "extension": "Some browser extensions like {{extensionName}} can overwrite transactions initiated through Jumper and add an extra fee. We recommend disabling these extensions before swapping."
+  },
+  "limitOrders": {
+    "orders": "Orders",
+    "marketPrice": "Market Price",
+    "marketPriceEmptyState": "Select a token to see its market price",
+    "ordersEmptyState": "No orders for this protocol yet",
+    "protocolLabel": "Protocol",
+    "walletLabel": "Wallet",
+    "table": {
+      "columns": {
+        "chain": "Chain",
+        "pair": "Pair",
+        "sell": "Sell",
+        "buy": "Buy",
+        "limit": "Limit",
+        "market": "Market",
+        "filled": "Filled",
+        "expires": "Expires"
+      },
+      "status": {
+        "cancelled": "Cancelled",
+        "expired": "Expired",
+        "filled": "Filled",
+        "failed": "Failed",
+        "temporarilyInvalid": "Paused",
+        "days_one": "{{count}} day",
+        "days_other": "{{count}} days"
+      },
+      "actions": {
+        "rowActions": "Row actions",
+        "refresh": "Refresh orders",
+        "expandPanels": "Expand panels",
+        "collapsePanels": "Collapse panels",
+        "viewOnExplorer": "View on explorer",
+        "modifyLimit": "Modify limit",
+        "cancelOrder": "Cancel order",
+        "repeatOrder": "Repeat order"
+      }
+    },
+    "cancelModal": {
+      "title": "Cancel limit order",
+      "description": "This stops the order from filling and marks it cancelled. Any portion already filled stays settled. This can't be undone.",
+      "keepOrder": "Keep order",
+      "cancelOrder": "Cancel order",
+      "error": "Something went wrong cancelling this order. Please try again.",
+      "successTitle": "Order cancelled",
+      "successDescription": "This order will no longer fill.",
+      "done": "Done",
+      "viewOnExplorer": "View on explorer",
+      "errorTitle": "Cancellation failed",
+      "tryAgain": "Try again",
+      "close": "Close"
+    },
+    "modifyModal": {
+      "title": "Modify limit order",
+      "placeholderTitle": "Coming soon",
+      "placeholderDescription": "Editing an active order isn't available yet. Cancel it and place a new one instead.",
+      "cancelStep": {
+        "title": "Cancel & modify order",
+        "description": "To modify this order, the current one will be cancelled first. You can then place a new order with updated parameters.",
+        "confirm": "Cancel & continue"
+      }
+    },
+    "repeatModal": {
+      "title": "Repeat order",
+      "placeholderTitle": "Coming soon",
+      "placeholderDescription": "Repeating an order isn't available yet. Placing a new order manually works the same way."
+    }
   }
 }

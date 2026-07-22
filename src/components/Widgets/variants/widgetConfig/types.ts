@@ -1,4 +1,9 @@
-import type { WidgetConfig, WidgetProvider } from '@lifi/widget';
+import type {
+  NavigationTabKey,
+  WidgetConfig,
+  WidgetMode,
+  WidgetProvider,
+} from '@jumperexchange/widget';
 import type { StarterVariantType } from 'src/types/internal';
 import type {
   TaskWidgetInformationChainData,
@@ -16,8 +21,21 @@ export type EnglishLanguageResource = NonNullable<
   WidgetConfig['languageResources']
 >['en'];
 
+export interface WidgetVariantDescriptor {
+  key: string;
+  uiVariant: 'compact' | 'wide';
+  mode: WidgetMode;
+  navigationTabs?: NavigationTabKey[];
+}
+
+export interface WidgetFeatureFlags {
+  limitOrders: boolean;
+  privateSwaps: boolean;
+  widgetAdvanced: boolean;
+}
+
 // Widget types
-export type WidgetType = 'main' | 'mission' | 'zap';
+export type WidgetType = 'main' | 'mission' | 'zap' | 'limit';
 
 // Hook dependencies interface
 export interface HookDependencies {
@@ -44,6 +62,7 @@ export interface FormData {
   fromAmount?: string;
   toAddress?: TaskWidgetInformationWalletData;
   minFromAmountUSD?: number;
+  limitPrice?: number | string;
 }
 
 export interface CommonWidgetContext {
@@ -62,6 +81,7 @@ export interface CommonWidgetContext {
 // Widget-specific context interfaces
 export interface MainWidgetContext extends CommonWidgetContext {
   starterVariant: StarterVariantType;
+  resolvedVariant: WidgetVariantDescriptor;
   partnerName: string;
   bridgeConditions?: {
     isAGWToNonABSChain?: boolean;
@@ -89,11 +109,17 @@ export interface ZapWidgetContext extends MissionWidgetContext {
   zapPoolName?: string;
 }
 
+export interface LimitOrdersWidgetContext extends CommonWidgetContext {
+  overrideHeader?: string;
+  allowExchange?: string | null;
+}
+
 // Union type for all contexts
 export type WidgetContext =
   | MainWidgetContext
   | MissionWidgetContext
-  | ZapWidgetContext;
+  | ZapWidgetContext
+  | LimitOrdersWidgetContext;
 
 export const isMissionContext = (
   context: WidgetContext,

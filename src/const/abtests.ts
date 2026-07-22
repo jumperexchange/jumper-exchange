@@ -6,9 +6,12 @@ export enum AB_TEST_NAME {
   DUST_CONVERSION = 'dust-conversion',
   REQUEST_REDEEM_FLOW = 'request-redeem-flow',
   PRIVATE_SWAPS = 'private-swaps',
+  LIMIT_ORDERS = 'limit-orders',
   THEME_PARTNER_DEFAULT = 'theme-partner-default',
   PORTFOLIO_PNL_CHART = 'portfolio-pnl-chart',
   PORTFOLIO_TRANSACTIONS = 'portfolio-transactions',
+  NOTIFICATIONS = 'notifications',
+  WIDGET_ADVANCED = 'widget-advanced',
 }
 
 // Single source of truth for all A/B tests
@@ -41,6 +44,10 @@ export const AbTests = {
     name: 'private-swaps',
     enabled: true,
   },
+  [AB_TEST_NAME.LIMIT_ORDERS]: {
+    name: 'limit-orders',
+    enabled: true,
+  },
   [AB_TEST_NAME.THEME_PARTNER_DEFAULT]: {
     name: 'theme-partner-default',
     enabled: true,
@@ -51,6 +58,14 @@ export const AbTests = {
   },
   [AB_TEST_NAME.PORTFOLIO_TRANSACTIONS]: {
     name: 'portfolio-transactions',
+    enabled: true,
+  },
+  [AB_TEST_NAME.NOTIFICATIONS]: {
+    name: 'notifications',
+    enabled: true,
+  },
+  [AB_TEST_NAME.WIDGET_ADVANCED]: {
+    name: 'widget-advanced',
     enabled: true,
   },
 } as const;

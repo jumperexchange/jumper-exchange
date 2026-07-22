@@ -10,7 +10,7 @@ import {
   formatTokenAmount,
   formatTokenPrice,
   priceToTokenAmount,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 import type { TFunction } from 'i18next';
 
 import type { Token as JumperToken } from '@/types/jumper-backend';

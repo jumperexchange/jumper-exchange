@@ -20,7 +20,7 @@ import { BaseAlert } from '../Alerts/BaseAlert/BaseAlert';
 import { useFormatDisplayQuestData } from 'src/hooks/quests/useFormatDisplayQuestData';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import { BaseAlertVariant } from '../Alerts/BaseAlert/BaseAlert.styles';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useEnhancedTasks } from 'src/hooks/tasksVerification/useEnhancedTasks';
 import { SectionCardContainer } from '../Cards/SectionCard/SectionCard.style';
 import { MissionTask } from 'src/app/ui/mission/MissionTask';

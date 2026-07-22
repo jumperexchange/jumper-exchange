@@ -11,7 +11,10 @@ import {
 import type { TransactionsDto } from '@/types/jumper-backend';
 import { truncateAddress } from '@/utils/addresses/truncateAddress';
 import { Avatar } from '@mui/material';
-import { getConnectorIcon, useAccount } from '@lifi/wallet-management';
+import {
+  getConnectorIcon,
+  useAccount,
+} from '@jumperexchange/wallet-management';
 import type { NullableFields } from '@/types/internal';
 import type {
   HoldingsFilterUI,

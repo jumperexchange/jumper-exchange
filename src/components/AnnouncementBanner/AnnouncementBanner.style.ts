@@ -4,18 +4,35 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { WIDGET_WIDTH } from 'src/config/widgetConfig';
 
-export const AnnouncementBannerContainerList = styled(Box)(({ theme }) => ({
+export type AnnouncementBannerAlign = 'center' | 'start' | 'widget';
+
+interface AnnouncementBannerContainerListProps extends BoxProps {
+  align?: AnnouncementBannerAlign;
+}
+
+export const AnnouncementBannerContainerList = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'align',
+})<AnnouncementBannerContainerListProps>(({ theme, align = 'center' }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
-  width: 'fit-content',
+  width:
+    align === 'widget' ? '100%' : align === 'start' ? '100%' : 'fit-content',
   maxWidth: WIDGET_WIDTH,
   position: 'relative',
-  left: `50%`,
-  transform: 'translateX(-50%)',
-  [theme.breakpoints.up('sm')]: {
-    left: `calc(${WIDGET_WIDTH}px/2)`,
-  },
+  alignItems: align === 'widget' ? 'center' : undefined,
+  ...(align === 'center'
+    ? {
+        left: '50%',
+        transform: 'translateX(-50%)',
+        [theme.breakpoints.up('sm')]: {
+          left: `calc(${WIDGET_WIDTH}px / 2)`,
+        },
+      }
+    : {
+        left: 'auto',
+        transform: 'none',
+      }),
 }));
 
 interface AnnouncementBannerContainerProps extends BoxProps {

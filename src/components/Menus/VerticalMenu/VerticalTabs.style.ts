@@ -48,6 +48,7 @@ export const VerticalTab = styled(MuiTab)(({ theme }) => ({
   transition: 'background 250ms',
   background: 'transparent',
   minHeight: 'unset',
+  overflow: 'visible',
   color: (theme.vars || theme).palette.text.primary,
   textDecoration: 'none',
   ':hover': {

@@ -51,11 +51,7 @@ export const dynamicParams = true; // or false, to 404 on unknown paths
 export const dynamic = 'force-static';
 
 export async function generateStaticParams() {
-  const { chains } = await getChainsQuery();
-
-  return chains.map((chain) => ({
-    segments: slugify(chain.name),
-  }));
+  return [];
 }
 
 export default async function Page({ params }: { params: Params }) {

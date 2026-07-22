@@ -23,6 +23,7 @@ export const WelcomeOverlayLayout = ({
   contentSx = {},
   leftSideContent,
   fullWidthGlowEffect = false,
+  lockViewport = false,
 }: WelcomeOverlayLayoutProps) => {
   const { trackEvent } = useUserTracking();
 
@@ -82,13 +83,18 @@ export const WelcomeOverlayLayout = ({
           },
           {
             height: !isOverlayOpen ? '100%' : 'auto',
-            overflow: {
-              xs: !isOverlayOpen ? 'scroll' : 'hidden',
-              sm: !isOverlayOpen ? 'inherit' : 'hidden',
-            },
+            minHeight: !isOverlayOpen && !lockViewport ? '100%' : undefined,
+            overflow: !isOverlayOpen
+              ? lockViewport
+                ? 'hidden'
+                : {
+                    xs: 'scroll',
+                    sm: 'inherit',
+                  }
+              : 'hidden',
             paddingTop: 3.5,
-            WebkitOverflowScrolling: 'touch',
-            overscrollBehavior: 'none',
+            WebkitOverflowScrolling: lockViewport ? undefined : 'touch',
+            overscrollBehavior: lockViewport ? undefined : 'none',
           },
           ...(Array.isArray(contentSx) ? contentSx : [contentSx]),
         ]}
@@ -97,6 +103,7 @@ export const WelcomeOverlayLayout = ({
         <GlowContainer
           overlayOpen={isOverlayOpen}
           fullWidthGlowEffect={fullWidthGlowEffect}
+          lockViewport={lockViewport}
           className={
             overlayClassName ? `${overlayClassName}-content` : undefined
           }

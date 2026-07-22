@@ -8,7 +8,7 @@ import { ChainId } from '@lifi/sdk';
 import type { Address, Hex } from 'viem';
 import { encodeFunctionData, zeroAddress } from 'viem';
 import { groupBy, isNil, mapValues, orderBy, sumBy } from 'lodash';
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import type { ChainSingleSelectValue } from '@/components/composite/JumperWidget/components/Chain';
 import type { NumericSelectValue } from '@/components/composite/JumperWidget/components/NumericSelect';
 import type { BalancesMultiSelectValue } from '@/components/composite/JumperWidget/components/Balances';

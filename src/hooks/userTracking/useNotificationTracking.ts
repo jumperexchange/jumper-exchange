@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import {
   TrackingAction,
   TrackingCategory,

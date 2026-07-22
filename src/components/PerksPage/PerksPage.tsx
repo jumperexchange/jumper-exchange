@@ -1,6 +1,6 @@
 'use client';
 
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { PageContainer } from '@/components/Containers/PageContainer';
 import { ProfileProvider } from '@/providers/ProfileProvider';
 import type { PerksDataAttributes } from '@/types/strapi';
@@ -16,7 +16,7 @@ export const PerksPage = ({ perks }: PerksPageProps) => {
   return (
     <ProfileProvider
       walletAddress={account?.address || ''}
-      // @Note these flags are not correctly set in @lifi/wallet-management
+      // @Note these flags are not correctly set in @jumperexchange/wallet-management
       isLoading={account?.isConnecting || account?.isReconnecting}
     >
       <PageContainer>

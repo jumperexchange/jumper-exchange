@@ -1,7 +1,7 @@
 import type { CustomInformation } from 'src/types/loyaltyPass';
 import type { WidgetContext, WidgetType } from '../widgetConfig/types';
-import type { FormRef } from '@lifi/widget';
-import { WidgetFeeConfig } from '@lifi/widget';
+import type { FormRef } from '@jumperexchange/widget';
+import { WidgetFeeConfig } from '@jumperexchange/widget';
 
 export interface EntityWidgetProps {
   customInformation?: Partial<CustomInformation>;

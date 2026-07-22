@@ -1,6 +1,6 @@
 import { qase } from 'playwright-qase-reporter';
 
-import { EXCHANGE_TAB_LABEL_PATTERN, WALLET_OPTIONS } from './data/urls';
+import { WALLET_OPTIONS, WIDGET_TABS } from './data/urls';
 import { noWalletTest as test } from './fixtures/noWallet';
 import { ConnectWalletPage } from './pages/ConnectWalletPage';
 import { LandingPage } from './pages/LandingPage';
@@ -15,13 +15,21 @@ test.describe('Landing page and navigation', () => {
   });
 
   test(
-    qase(2, 'Should navigate to the homepage and change tabs'),
+    qase(
+      2,
+      'Should land on Simple and gate the Advanced tab for anonymous users',
+    ),
     async ({ page }) => {
       const landingPage = new LandingPage(page);
       await page.waitForLoadState('domcontentloaded');
-      await landingPage.navigateAndExpectTab(1, 'Gas');
-      // Exchange tab label is AB-tested (`a-b-test-trade-display`); accept any variant.
-      await landingPage.navigateAndExpectTab(0, EXCHANGE_TAB_LABEL_PATTERN);
+      // Advanced is gated behind the widget-advanced flag + hasAdvanced allowlist;
+      // anonymous users land on Simple with the Advanced tab rendered but
+      // disabled. Re-scope to a click-through once the feature goes GA.
+      await landingPage.expectVerticalTabSelected(0);
+      await landingPage.expectVerticalTabDisabled(1);
+      await landingPage.expectWidgetTabVisible(
+        WIDGET_TABS.SIMPLE_SWAP_AND_BRIDGE,
+      );
     },
   );
 

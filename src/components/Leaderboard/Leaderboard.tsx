@@ -3,7 +3,7 @@ import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { Box } from '@mui/material';
 import { useRouter, usePathname } from 'next/navigation';
 import useClient from 'src/hooks/useClient';

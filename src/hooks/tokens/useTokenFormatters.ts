@@ -6,7 +6,7 @@ import {
   formatTokenAmountWithDust,
   formatUSDWithDust,
 } from '@/utils/formatNumbers';
-import { formatTokenAmount, formatTokenPrice } from '@lifi/widget';
+import { formatTokenAmount, formatTokenPrice } from '@jumperexchange/widget';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,8 +18,10 @@ export interface FormatAmountUSDOptions {
 
 export interface FormatAmountOptions {
   decimals?: number;
+  compact?: boolean;
   maximumFractionDigits?: number;
   minimumFractionDigits?: number;
+  hideSymbol?: boolean;
 }
 
 export const useTokenFormatters = () => {
@@ -71,14 +73,19 @@ export const useTokenFormatters = () => {
       const amount = toAmount(balance);
       const numeric = parseFloat(amount);
       if (numeric > 0 && numeric < DUST_AMOUNT_THRESHOLD) {
-        return formatTokenAmountWithDust(amount, symbol ?? '', t);
+        return formatTokenAmountWithDust(amount, symbol ?? '', t, {
+          hideSymbol: options?.hideSymbol,
+        });
       }
-      const formatted = t('format.decimal', {
-        value: Number(amount),
-        minimumFractionDigits: options?.minimumFractionDigits,
-        maximumFractionDigits: options?.maximumFractionDigits ?? 3,
-      });
-      if (!symbol) {
+      const formatted = t(
+        `format.${options?.compact ? 'decimalCompact' : 'decimal'}`,
+        {
+          value: Number(amount),
+          minimumFractionDigits: options?.minimumFractionDigits,
+          maximumFractionDigits: options?.maximumFractionDigits ?? 3,
+        },
+      );
+      if (options?.hideSymbol || !symbol) {
         return formatted;
       }
       return `${formatted}${NBSP}${symbol}`;

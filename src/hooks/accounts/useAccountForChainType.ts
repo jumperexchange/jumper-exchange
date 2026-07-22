@@ -1,5 +1,5 @@
 import type { ChainType } from '@lifi/sdk';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { useMemo } from 'react';
 
 export const useAccountForChainType = (chainType?: ChainType) => {

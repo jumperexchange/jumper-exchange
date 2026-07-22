@@ -1,6 +1,6 @@
 'use client';
-import { useAccount } from '@lifi/wallet-management';
-import type { FormState } from '@lifi/widget';
+import { useAccount } from '@jumperexchange/wallet-management';
+import type { FormState } from '@jumperexchange/widget';
 import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
@@ -11,12 +11,17 @@ import { useWelcomeScreen } from 'src/hooks/useWelcomeScreen';
 import { useActiveTabStore } from 'src/stores/activeTab';
 import { useContributionStore } from 'src/stores/contribution/ContributionStore';
 import envConfig from '@/config/env-config';
-import { TabsMap } from '@/const/tabsMap';
+import { AB_TEST_NAME } from '@/const/abtests';
 import { AppPaths } from '@/const/urls';
+import { useABTest } from '@/hooks/useABTest';
 import { useThemeStore } from '@/stores/theme';
 import { useFormParameters } from './hooks';
 import { Widget as BaseWidget } from './variants/base/Widget';
-import type { MainWidgetContext } from './variants/widgetConfig/types';
+import type {
+  MainWidgetContext,
+  WidgetVariantDescriptor,
+} from './variants/widgetConfig/types';
+import { resolveWidgetVariant } from './variants/widgetConfig/utils';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
 
@@ -38,6 +43,7 @@ export function Widget({
   activeTheme,
   autoHeight,
   isLoading,
+  disableTabNavigation = false,
 }: WidgetProps) {
   const [configTheme] = useThemeStore((state) => [state.configTheme]);
   const formRef = useRef<FormState>(null);
@@ -65,8 +71,45 @@ export function Widget({
     (state) => state.contributionDisplayed,
   );
 
+  const privateSwapsFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.PRIVATE_SWAPS,
+    address: account?.address ?? '',
+  });
+
+  const limitOrdersFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.LIMIT_ORDERS,
+    address: account?.address ?? '',
+  });
+
+  const widgetAdvancedFeatureFlag = useABTest({
+    feature: AB_TEST_NAME.WIDGET_ADVANCED,
+  });
+
+  const resolvedVariant = useMemo(
+    () =>
+      resolveWidgetVariant(starterVariant, {
+        limitOrders: limitOrdersFeatureFlag.isEnabled,
+        privateSwaps: privateSwapsFeatureFlag.isEnabled,
+        widgetAdvanced: widgetAdvancedFeatureFlag.isEnabled,
+      }),
+    [
+      starterVariant,
+      limitOrdersFeatureFlag.isEnabled,
+      privateSwapsFeatureFlag.isEnabled,
+      widgetAdvancedFeatureFlag.isEnabled,
+    ],
+  );
+
+  const effectiveVariant: WidgetVariantDescriptor = useMemo(
+    () =>
+      disableTabNavigation
+        ? { ...resolvedVariant, navigationTabs: undefined }
+        : resolvedVariant,
+    [disableTabNavigation, resolvedVariant],
+  );
+
   useEffect(() => {
-    const routes = [AppPaths.Main, AppPaths.Gas, AppPaths.Private].filter(
+    const routes = [AppPaths.Main, AppPaths.Advanced].filter(
       (route) => route !== pathname,
     );
 
@@ -94,8 +137,6 @@ export function Widget({
 
   const { welcomeScreenClosed, enabled } = useWelcomeScreen();
 
-  const isGasVariant = activeTab === TabsMap.Refuel.index;
-
   const integratorStringByType = useMemo(() => {
     if (configTheme?.integrator) {
       return configTheme.integrator;
@@ -103,17 +144,12 @@ export function Widget({
     if (widgetIntegrator) {
       return widgetIntegrator;
     }
-    // all the traffic from mobile (including "/gas")
-    // if (!isDesktop) {
-    //   return envConfig.NEXT_PUBLIC_INTEGRATOR_MOBILE;
-    // }
-    // all the trafic from web on "/gas"
-    if (isGasVariant) {
-      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_REFUEL;
+    if (starterVariant === 'advanced') {
+      return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR_ADVANCED;
     }
 
     return envConfig.NEXT_PUBLIC_WIDGET_INTEGRATOR;
-  }, [configTheme.integrator, widgetIntegrator, isGasVariant]) as string;
+  }, [configTheme?.integrator, widgetIntegrator, starterVariant]) as string;
 
   const formParametersCtx = useFormParameters({
     fromChain,
@@ -127,6 +163,7 @@ export function Widget({
     () => ({
       integrator: integratorStringByType,
       starterVariant,
+      resolvedVariant: effectiveVariant,
       partnerName,
       formData: formParametersCtx,
       allowFromChains: allowFromChains,
@@ -137,6 +174,7 @@ export function Widget({
     }),
     [
       starterVariant,
+      effectiveVariant,
       partnerName,
       formParametersCtx,
       allowFromChains,

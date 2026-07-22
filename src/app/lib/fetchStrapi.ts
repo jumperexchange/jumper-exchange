@@ -18,7 +18,7 @@ export async function fetchStrapi(
 
     recordFetchCacheMetric({ endpoint, cfCacheStatus, ageSeconds });
 
-    logger.info(
+    logger.debug(
       {
         endpoint,
         cfCacheStatus,

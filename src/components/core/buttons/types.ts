@@ -8,6 +8,7 @@ export enum Variant {
   Disabled = 'disabled',
   Borderless = 'borderless',
   Success = 'success',
+  Error = 'error',
 }
 
 export enum Size {

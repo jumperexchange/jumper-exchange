@@ -7,7 +7,7 @@ import {
   getDefaultWidgetThemeV2,
 } from 'src/config/widgetConfig';
 import { themeCustomized } from 'src/theme/theme';
-import type { Appearance } from '@lifi/widget';
+import type { Appearance } from '@jumperexchange/widget';
 
 export function getPartnerTheme(
   themes?: PartnerThemesData[],

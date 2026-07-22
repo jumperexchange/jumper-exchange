@@ -20,12 +20,12 @@ export async function GET(
     const data = await getWalletAccessControl(walletAddress);
 
     if (!data.data || data.data.length === 0) {
-      return NextResponse.json({ hasEarn: false, hasNotifications: false });
+      return NextResponse.json({ hasEarn: false, hasAdvanced: false });
     }
 
     const flags = data.data[0];
 
-    return NextResponse.json(pick(flags, ['hasEarn', 'hasNotifications']));
+    return NextResponse.json(pick(flags, ['hasEarn', 'hasAdvanced']));
   } catch (error) {
     console.error('Error fetching wallet access control:', error);
     return NextResponse.json(

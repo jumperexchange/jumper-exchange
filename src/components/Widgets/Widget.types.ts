@@ -24,4 +24,5 @@ export interface WidgetProps extends Omit<BlogWidgetProps, 'allowChains'> {
   activeTheme?: string;
   autoHeight?: boolean;
   isLoading?: boolean;
+  disableTabNavigation?: boolean;
 }

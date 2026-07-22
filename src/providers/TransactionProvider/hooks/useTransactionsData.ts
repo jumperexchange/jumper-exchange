@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useRef, useCallback } from 'react';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import { makeClient } from '@/app/lib/client';
 import { useAccountGroupsByChainType } from '@/hooks/accounts/useAccountGroupsByChainType';
 import type {

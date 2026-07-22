@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSwitchChain } from 'wagmi';
-import { useAccount } from '@lifi/wallet-management';
+import { useAccount } from '@jumperexchange/wallet-management';
 import type { Hex } from 'viem';
 import { type TransactionAction, type ExecutorType } from './executors/types';
 import { useTransactionExecutor } from './executors/useTransactionExecutor';

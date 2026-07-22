@@ -1,4 +1,4 @@
-import type { FormFieldChanged, SettingUpdated } from '@lifi/widget';
+import type { FormFieldChanged, SettingUpdated } from '@jumperexchange/widget';
 import { isObject } from 'lodash';
 import { TrackingEventParameter } from 'src/const/trackingKeys';
 

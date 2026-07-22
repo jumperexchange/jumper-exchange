@@ -3,7 +3,7 @@ import type {
   HiddenUIConfig,
   WidgetChains,
   WidgetVariant,
-} from '@lifi/widget';
+} from '@jumperexchange/widget';
 
 export interface PartnerThemeConfig {
   themeModeIcon?: string;

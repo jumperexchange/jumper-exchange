@@ -1,4 +1,4 @@
-import type { Account } from '@lifi/widget-provider';
+import type { Account } from '@jumperexchange/widget-provider';
 import type { FC, PropsWithChildren } from 'react';
 import { AnimatedCounter } from 'react-animated-counter';
 import {

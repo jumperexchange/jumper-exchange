@@ -21,7 +21,7 @@ test.describe('Main Menu flows', () => {
     qase(12, 'Should be able to open menu and close it'),
     async ({ page }) => {
       const mainMenu = new MainMenuPage(page);
-      await mainMenu.expectItemCount(6);
+      await mainMenu.expectItemCount(7);
       await page.locator('body').click();
       await expect(page.getByRole('menu')).toBeHidden();
     },

@@ -344,6 +344,7 @@ export default interface Resources {
       decimal2Digit: '{{value, decimalExt(maximumFractionDigits: 2)}}';
       decimalCompact: '{{value, decimalExt(maximumFractionDigits: 3; notation: compact; compactDisplay: short)}}';
       dustAmount: '<{{value, decimalExt(maximumFractionDigits: 4)}} {{symbol}}';
+      dustAmountValue: '<{{value, decimalExt(maximumFractionDigits: 4)}}';
       dustUsd: '<{{value, currencyExt(currency: USD)}}';
       percent: '{{value, percentExt()}}';
       shortDate: '{{value, dateExt(month: short)}}';
@@ -456,6 +457,74 @@ export default interface Resources {
       rankCtaConnect: 'Where do you rank?';
       title: 'Leaderboard';
       updatedLabel: 'Updated: {{date}}';
+    };
+    limitOrders: {
+      cancelModal: {
+        cancelOrder: 'Cancel order';
+        close: 'Close';
+        description: "This stops the order from filling and marks it cancelled. Any portion already filled stays settled. This can't be undone.";
+        done: 'Done';
+        error: 'Something went wrong cancelling this order. Please try again.';
+        errorTitle: 'Cancellation failed';
+        keepOrder: 'Keep order';
+        successDescription: 'This order will no longer fill.';
+        successTitle: 'Order cancelled';
+        title: 'Cancel limit order';
+        tryAgain: 'Try again';
+        viewOnExplorer: 'View on explorer';
+      };
+      marketPrice: 'Market Price';
+      marketPriceEmptyState: 'Select a token to see its market price';
+      modifyModal: {
+        cancelStep: {
+          confirm: 'Cancel & continue';
+          description: 'To modify this order, the current one will be cancelled first. You can then place a new order with updated parameters.';
+          title: 'Cancel & modify order';
+        };
+        placeholderDescription: "Editing an active order isn't available yet. Cancel it and place a new one instead.";
+        placeholderTitle: 'Coming soon';
+        title: 'Modify limit order';
+      };
+      orders: 'Orders';
+      ordersEmptyState: 'No orders for this protocol yet';
+      protocolLabel: 'Protocol';
+      repeatModal: {
+        placeholderDescription: "Repeating an order isn't available yet. Placing a new order manually works the same way.";
+        placeholderTitle: 'Coming soon';
+        title: 'Repeat order';
+      };
+      table: {
+        actions: {
+          cancelOrder: 'Cancel order';
+          collapsePanels: 'Collapse panels';
+          expandPanels: 'Expand panels';
+          modifyLimit: 'Modify limit';
+          refresh: 'Refresh orders';
+          repeatOrder: 'Repeat order';
+          rowActions: 'Row actions';
+          viewOnExplorer: 'View on explorer';
+        };
+        columns: {
+          buy: 'Buy';
+          chain: 'Chain';
+          expires: 'Expires';
+          filled: 'Filled';
+          limit: 'Limit';
+          market: 'Market';
+          pair: 'Pair';
+          sell: 'Sell';
+        };
+        status: {
+          cancelled: 'Cancelled';
+          days_one: '{{count}} day';
+          days_other: '{{count}} days';
+          expired: 'Expired';
+          failed: 'Failed';
+          filled: 'Filled';
+          temporarilyInvalid: 'Paused';
+        };
+      };
+      walletLabel: 'Wallet';
     };
     links: {
       discover: 'Discover {{name}}';
@@ -627,6 +696,7 @@ export default interface Resources {
         github: 'GitHub';
       };
       links: {
+        advanced: 'Advanced';
         back: 'Back';
         buy: 'Buy';
         dashboard: 'Dashboard';
@@ -636,11 +706,13 @@ export default interface Resources {
         portfolio: 'Portfolio';
         private: 'Private Swap';
         refuel: 'Gas';
+        simple: 'Simple';
         trade: 'Trade';
       };
       navbarMenu: {
         brandAssets: 'Brand Assets';
         developers: 'Developers';
+        docs: 'Docs';
         learn: 'Learn';
         newsletter: 'Newsletter';
         privacyPolicy: 'Privacy Policy';
@@ -1271,6 +1343,13 @@ export default interface Resources {
       };
       exchange: {
         title: 'Exchange';
+      };
+      limitOrder: {
+        orderPlacedLabel: 'Order placed';
+        orderPlacedTitle: 'Order placed successfully';
+        orderPlacementCompleted: 'Order placement completed';
+        placeOrderButton: 'Place order';
+        reviewTitle: 'Review order';
       };
       private: {
         title: 'Private Swap';

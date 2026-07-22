@@ -1,4 +1,35 @@
+import { isEqual } from 'lodash';
 import { useEffect, useState } from 'react';
+
+declare global {
+  interface Window {
+    __jumperHistoryPatched?: boolean;
+  }
+}
+
+const URL_CHANGE_EVENT = 'jumperurlchange';
+
+/**
+ * `pushState`/`replaceState` never fire `popstate` (that only fires on
+ * browser back/forward), yet the widget updates `fromChain`/`fromToken`/etc.
+ * in the query string via the History API as the user picks tokens. Patch
+ * both methods once so same-page URL changes are observable.
+ */
+function patchHistoryForUrlChangeEvent() {
+  if (typeof window === 'undefined' || window.__jumperHistoryPatched) {
+    return;
+  }
+  window.__jumperHistoryPatched = true;
+
+  for (const method of ['pushState', 'replaceState'] as const) {
+    const original = window.history[method];
+    window.history[method] = function (...args) {
+      const result = original.apply(this, args);
+      queueMicrotask(() => window.dispatchEvent(new Event(URL_CHANGE_EVENT)));
+      return result;
+    };
+  }
+}
 
 interface ChainToken {
   chainId: number | undefined;
@@ -57,7 +88,7 @@ export const useUrlParams = (): UrlParams => {
       const denyBridges = queryParameters.get('denyBridges');
       const denyExchanges = queryParameters.get('denyExchanges');
 
-      setUrlParams({
+      const next: UrlParams = {
         sourceChainToken: {
           chainId: !!fromChain ? parseInt(fromChain) : undefined,
           token: fromToken ?? undefined,
@@ -70,18 +101,24 @@ export const useUrlParams = (): UrlParams => {
         fromAmount: fromAmount ?? undefined,
         denyBridges: parseList(denyBridges),
         denyExchanges: parseList(denyExchanges),
-      });
+      };
+
+      setUrlParams((prev) => (isEqual(prev, next) ? prev : next));
     };
+
+    patchHistoryForUrlChangeEvent();
 
     // Initial update
     updateSelection();
 
-    // Listen for changes in the URL
+    // Listen for browser back/forward navigation and same-page URL changes
+    // (e.g. the widget syncing token selection via pushState/replaceState).
     window.addEventListener('popstate', updateSelection);
+    window.addEventListener(URL_CHANGE_EVENT, updateSelection);
 
-    // Clean up the event listener
     return () => {
       window.removeEventListener('popstate', updateSelection);
+      window.removeEventListener(URL_CHANGE_EVENT, updateSelection);
     };
   }, []);
 

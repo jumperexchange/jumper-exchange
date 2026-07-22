@@ -3,7 +3,9 @@ import type { WidgetEventTrackerConfig } from '@/components/Widgets/tracking/typ
 
 export type WidgetTrackingVariant =
   | 'main'
+  | 'advanced'
   | 'private'
+  | 'limit'
   | 'mission'
   | 'zap'
   | 'earnDeposit'
@@ -41,6 +43,24 @@ const SHARED_ROUTE_INTERACTION = {
 >;
 
 const VARIANT_ACTIONS: Record<WidgetTrackingVariant, VariantActions> = {
+  advanced: {
+    sourceChainAndTokenSelection:
+      TrackingAction.OnSourceChainAndTokenSelectionAdvanced,
+    availableRoutes: TrackingAction.OnAvailableRoutesAdvanced,
+    changeSettings: TrackingAction.OnChangeSettingsAdvanced,
+    routeHighValueLoss: TrackingAction.OnRouteHighValueLoss,
+    lowAddressActivityConfirmed: TrackingAction.OnLowAddressActivityConfirmed,
+    sendToWalletToggled: TrackingAction.OnSendToWalletToggled,
+    formFieldChanged: TrackingAction.OnFormFieldChanged,
+    execution: {
+      started: TrackingAction.OnRouteExecutionStartedAdvanced,
+      completed: TrackingAction.OnRouteExecutionCompletedAdvanced,
+      failed: TrackingAction.OnRouteExecutionFailedAdvanced,
+      dataStarted: TrackingEventDataAction.ExecutionStartAdvanced,
+      dataCompleted: TrackingEventDataAction.ExecutionCompletedAdvanced,
+      dataFailed: TrackingEventDataAction.ExecutionFailedAdvanced,
+    },
+  },
   main: {
     sourceChainAndTokenSelection: TrackingAction.OnSourceChainAndTokenSelection,
     destinationChainAndTokenSelection:
@@ -71,6 +91,20 @@ const VARIANT_ACTIONS: Record<WidgetTrackingVariant, VariantActions> = {
       dataStarted: TrackingEventDataAction.ExecutionStartPrivate,
       dataCompleted: TrackingEventDataAction.ExecutionCompletedPrivate,
       dataFailed: TrackingEventDataAction.ExecutionFailedPrivate,
+    },
+  },
+  limit: {
+    sourceChainAndTokenSelection:
+      TrackingAction.OnSourceChainAndTokenSelectionLimit,
+    availableRoutes: TrackingAction.OnAvailableRoutesLimit,
+    changeSettings: TrackingAction.OnChangeSettingsLimit,
+    execution: {
+      started: TrackingAction.OnRouteExecutionStartedLimit,
+      completed: TrackingAction.OnRouteExecutionCompletedLimit,
+      failed: TrackingAction.OnRouteExecutionFailedLimit,
+      dataStarted: TrackingEventDataAction.ExecutionStartLimit,
+      dataCompleted: TrackingEventDataAction.ExecutionCompletedLimit,
+      dataFailed: TrackingEventDataAction.ExecutionFailedLimit,
     },
   },
   mission: {
