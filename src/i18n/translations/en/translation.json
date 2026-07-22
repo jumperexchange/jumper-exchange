@@ -14,6 +14,9 @@
       "dashboard": "Dashboard",
       "refuel": "Gas",
       "private": "Private Swap",
+      "perps": "Perps",
+      "tradePerps": "Trade Perps",
+      "portfolioPerps": "Portfolio Perps",
       "buy": "Buy",
       "back": "Back"
     },

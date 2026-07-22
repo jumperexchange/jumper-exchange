@@ -633,10 +633,13 @@ export default interface Resources {
         earn: 'Earn';
         exchange: 'Exchange';
         missions: 'Missions';
+        perps: 'Perps';
         portfolio: 'Portfolio';
+        portfolioPerps: 'Portfolio Perps';
         private: 'Private Swap';
         refuel: 'Gas';
         trade: 'Trade';
+        tradePerps: 'Trade Perps';
       };
       navbarMenu: {
         brandAssets: 'Brand Assets';

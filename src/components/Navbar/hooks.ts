@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { usePathnameWithoutLocale } from 'src/hooks/routing/usePathnameWithoutLocale';
 import {
   isEarnFeatureEnabled,
+  isPerpsFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from 'src/app/lib/getFeatureFlag';
 import { useABTest } from '@/hooks/useABTest';
@@ -98,6 +99,7 @@ export const useMainLinks = () => {
 
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
+  const isPerpsEnabled = isPerpsFeatureEnabled();
 
   const tradeABTest = useABTest({
     feature: AB_TEST_NAME.A_B_TEST_TRADE_DISPLAY,
@@ -142,8 +144,23 @@ export const useMainLinks = () => {
       testId: 'navbar-missions-button',
     });
 
+    if (isPerpsEnabled) {
+      _links.push({
+        value: AppPaths.PerpsTrade,
+        label: t('navbar.links.tradePerps'),
+        subLinks: [AppPaths.PerpsTrade],
+        testId: 'navbar-perps-trade-button',
+      });
+      _links.push({
+        value: AppPaths.PerpsPortfolio,
+        label: t('navbar.links.portfolioPerps'),
+        subLinks: [AppPaths.PerpsPortfolio],
+        testId: 'navbar-perps-portfolio-button',
+      });
+    }
+
     return _links;
-  }, [t, isEarnEnabled, isPortfolioEnabled, tradeABTest]);
+  }, [t, isEarnEnabled, isPortfolioEnabled, isPerpsEnabled, tradeABTest]);
 
   const activeLink = useMemo(
     () =>

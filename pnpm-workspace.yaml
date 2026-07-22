@@ -2,6 +2,7 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@lifi/*'
   - '@bigmi/*'
+  - '@lifinance/perps-widget@0.0.0'
 allowBuilds:
   '@swc/core': true
   esbuild: true

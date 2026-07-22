@@ -34,6 +34,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   isEarnFeatureEnabled,
   isNewsletterFeatureEnabled,
+  isPerpsFeatureEnabled,
   isPortfolioFeatureEnabled,
 } from '@/app/lib/getFeatureFlag';
 import { Badge } from '@/components/Badge/Badge';
@@ -157,6 +158,15 @@ export const useMenuActions = () => {
     closeAllMenus();
   }, [trackMenuClick, closeAllMenus]);
 
+  const handlePerpsClick = useCallback(() => {
+    trackMenuClick({
+      label: 'click-jumper-perps-link',
+      action: TrackingAction.ClickJumperPerpsLink,
+      dataMenuParam: 'jumper_perps',
+    });
+    closeAllMenus();
+  }, [trackMenuClick, closeAllMenus]);
+
   const handlePortfolioClick = useCallback(() => {
     trackMenuClick({
       label: 'click-jumper-portfolio-link',
@@ -246,6 +256,7 @@ export const useMenuActions = () => {
     handleExchangeClick,
     handleMissionsClick,
     handleEarnClick,
+    handlePerpsClick,
     handlePortfolioClick,
     handleProfileClick,
     handleLearnClick,
@@ -394,6 +405,7 @@ export const useMenuItems = () => {
     useThemeModesMenuContent();
   const isEarnEnabled = isEarnFeatureEnabled();
   const isPortfolioEnabled = isPortfolioFeatureEnabled();
+  const isPerpsEnabled = isPerpsFeatureEnabled();
   const { supportModalUnreadCount } = useMenuStore((state) => state);
 
   const { account } = useAccount();
@@ -411,6 +423,7 @@ export const useMenuItems = () => {
     handleLanguageClick,
     handleResourcesClick,
     handleEarnClick,
+    handlePerpsClick,
     handlePortfolioClick,
     handleExchangeClick,
     handleMissionsClick,
@@ -490,6 +503,21 @@ export const useMenuItems = () => {
           showMoreIcon: false,
           link: { url: AppPaths.Earn, external: false },
           onClick: handleEarnClick,
+        });
+      }
+
+      if (isPerpsEnabled) {
+        baseItems.push({
+          label: t('navbar.links.tradePerps'),
+          showMoreIcon: false,
+          link: { url: AppPaths.PerpsTrade, external: false },
+          onClick: handlePerpsClick,
+        });
+        baseItems.push({
+          label: t('navbar.links.portfolioPerps'),
+          showMoreIcon: false,
+          link: { url: AppPaths.PerpsPortfolio, external: false },
+          onClick: handlePerpsClick,
         });
       }
 
@@ -580,6 +608,7 @@ export const useMenuItems = () => {
     t,
     isTablet,
     isEarnEnabled,
+    isPerpsEnabled,
     isPortfolioEnabled,
     configTheme?.hasThemeModeSwitch,
     selectedThemeIcon,
@@ -593,6 +622,7 @@ export const useMenuItems = () => {
     handleLanguageClick,
     handleResourcesClick,
     handleEarnClick,
+    handlePerpsClick,
     handlePortfolioClick,
     handleExchangeClick,
     handleMissionsClick,

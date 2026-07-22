@@ -41,7 +41,14 @@ const nextConfig = {
     useCache: true,
     optimizePackageImports: [],
   },
-  webpack: (config) => {
+  // @lifinance/perps-widget ships untranspiled TS/ESM that Next needs to
+  // process through its own build pipeline.
+  transpilePackages: [
+    '@lifinance/perps-widget',
+    '@lifi/perps-sdk',
+    '@lifi/perps-sdk-provider-hyperliquid',
+  ],
+  webpack: (config, { isServer, webpack }) => {
     config.resolve.extensionAlias = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
     };
@@ -54,6 +61,18 @@ const nextConfig = {
         type: 'memory',
       });
     }
+    if (!isServer) {
+      // perps-sdk's node: imports are only reachable on server code paths.
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^node:(fs\/promises|url)$/,
+        }),
+      );
+    }
+    config.ignoreWarnings = [
+      ...(config.ignoreWarnings ?? []),
+      { module: /ox\/_esm\/tempo/, message: /Critical dependency/ },
+    ];
     return config;
   },
   images: {

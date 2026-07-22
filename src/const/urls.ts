@@ -36,6 +36,9 @@ export const JUMPER_TERMS_OF_BUSINESS_PATH = '/terms-of-business';
 export const JUMPER_PORTFOLIO_PATH = '/portfolio';
 export const JUMPER_NEWSLETTER_PATH = '/newsletter';
 export const JUMPER_PRIVATE_PATH = '/private';
+export const JUMPER_PERPS_PATH = '/perps';
+export const JUMPER_PERPS_TRADE_PATH = '/perps/trade';
+export const JUMPER_PERPS_PORTFOLIO_PATH = '/perps/portfolio';
 
 export const JUMPER_BRIDGE_PATH_SOURCE_DESTINATION_DELIMITER = 'to';
 export const JUMPER_BRIDGE_PATH_DELIMITER = '-';
@@ -74,6 +77,9 @@ export enum AppPaths {
   Portfolio = JUMPER_PORTFOLIO_PATH,
   Newsletter = JUMPER_NEWSLETTER_PATH,
   Private = JUMPER_PRIVATE_PATH,
+  Perps = JUMPER_PERPS_PATH,
+  PerpsTrade = JUMPER_PERPS_TRADE_PATH,
+  PerpsPortfolio = JUMPER_PERPS_PORTFOLIO_PATH,
 }
 
 export enum JumperBackendApiPaths {

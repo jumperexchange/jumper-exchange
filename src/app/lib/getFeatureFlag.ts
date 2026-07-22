@@ -1,4 +1,5 @@
 import config from '@/config/env-config';
+import { isProduction } from 'src/utils/isProduction';
 
 const apiBaseUrl = config.NEXT_PUBLIC_BACKEND_URL;
 
@@ -31,4 +32,9 @@ export const isPortfolioFeatureEnabled = () => {
 
 export const isNewsletterFeatureEnabled = () => {
   return true;
+};
+
+// Perps is under active development; keep it out of production until launch.
+export const isPerpsFeatureEnabled = () => {
+  return !isProduction;
 };
