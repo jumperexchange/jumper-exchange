@@ -1,10 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { JUMPER_STRAPI_URL } from '@/const/urls';
-import { EarnFilteringContext } from '../../../app/ui/earn/EarnFilteringContext';
-import { EarnFilterTab, SortByOptions } from '../../../app/ui/earn/types';
+import type { EarnFilteringContextType } from '@/app/ui/earn/EarnFilteringContext';
+import { EarnFilteringContext } from '@/app/ui/earn/EarnFilteringContext';
+import type { EarnOpportunityFilterWithoutSortByAndOrder } from '@/app/ui/earn/types';
+import { EarnFilterTab, SortByOptions } from '@/app/ui/earn/types';
+import type { Protocol } from '@/types/jumper-backend';
 import { EarnSearchAutocomplete } from './EarnSearchAutocomplete';
 
-const mockContextValue = (filter: Record<string, unknown> = {}) => ({
+const mockContextValue = (
+  filter: EarnOpportunityFilterWithoutSortByAndOrder = {},
+): EarnFilteringContextType => ({
   sortBy: SortByOptions.APY,
   setSortBy: () => {},
   filter,
@@ -24,9 +29,9 @@ const mockContextValue = (filter: Record<string, unknown> = {}) => ({
   setPage: () => {},
   pagination: { page: 0, pageSize: 18, pageCount: 9, total: 150 },
   allChains: [
-    { chainId: 1, chainKey: 'ethereum', name: 'Ethereum' },
-    { chainId: 8453, chainKey: 'base', name: 'Base' },
-    { chainId: 42161, chainKey: 'arbitrum', name: 'Arbitrum' },
+    { chainId: 1, chainKey: 'ethereum' },
+    { chainId: 8453, chainKey: 'base' },
+    { chainId: 42161, chainKey: 'arbitrum' },
   ],
   allProtocols: [
     {
@@ -47,7 +52,7 @@ const mockContextValue = (filter: Record<string, unknown> = {}) => ({
       version: '',
       logo: `${JUMPER_STRAPI_URL}/uploads/spark.png`,
     },
-  ],
+  ] as Protocol[],
   allAssets: [],
   allTags: [],
   allPools: [
@@ -70,7 +75,7 @@ const meta = {
   title: 'Earn/SearchAutocomplete',
   decorators: [
     (Story) => (
-      <EarnFilteringContext.Provider value={mockContextValue() as never}>
+      <EarnFilteringContext.Provider value={mockContextValue()}>
         <Story />
       </EarnFilteringContext.Provider>
     ),
@@ -86,9 +91,7 @@ export const WithSelectedChainAndProtocol: Story = {
   decorators: [
     (Story) => (
       <EarnFilteringContext.Provider
-        value={
-          mockContextValue({ chains: [8453], protocols: ['Morpho'] }) as never
-        }
+        value={mockContextValue({ chains: [8453], protocols: ['Morpho'] })}
       >
         <Story />
       </EarnFilteringContext.Provider>
@@ -100,7 +103,7 @@ export const WithSelectedPool: Story = {
   decorators: [
     (Story) => (
       <EarnFilteringContext.Provider
-        value={mockContextValue({ pools: ['steakhouse-usdc'] }) as never}
+        value={mockContextValue({ pools: ['steakhouse-usdc'] })}
       >
         <Story />
       </EarnFilteringContext.Provider>
@@ -115,7 +118,7 @@ export const WithSearchChip: Story = {
   decorators: [
     (Story) => (
       <EarnFilteringContext.Provider
-        value={mockContextValue({ search: 'steak' }) as never}
+        value={mockContextValue({ search: 'steak' })}
       >
         <Story />
       </EarnFilteringContext.Provider>

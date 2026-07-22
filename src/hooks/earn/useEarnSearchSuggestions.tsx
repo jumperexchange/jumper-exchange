@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEarnFiltering } from 'src/app/ui/earn/EarnFilteringContext';
+import { useEarnFiltering } from '@/app/ui/earn/EarnFilteringContext';
 import { ChainStack } from '@/components/composite/ChainStack/ChainStack';
 import { ProtocolStack } from '@/components/composite/ProtocolStack/ProtocolStack';
 import { useChains } from '@/hooks/useChains';

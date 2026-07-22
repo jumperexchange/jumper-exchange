@@ -1,5 +1,5 @@
 import { orderBy } from 'lodash';
-import type { EarnOpportunityFilterWithoutSortByAndOrder } from 'src/app/ui/earn/types';
+import type { EarnOpportunityFilterWithoutSortByAndOrder } from '@/app/ui/earn/types';
 
 export const EarnSearchCategory = {
   Pool: 'pool',

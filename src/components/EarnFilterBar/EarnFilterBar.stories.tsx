@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
-import {
-  EarnFilterTab,
-  SortByEnum,
-  SortByOptions,
-} from '../../app/ui/earn/types';
+import { EarnFilteringContext } from '@/app/ui/earn/EarnFilteringContext';
+import { EarnFilterTab, SortByEnum, SortByOptions } from '@/app/ui/earn/types';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';

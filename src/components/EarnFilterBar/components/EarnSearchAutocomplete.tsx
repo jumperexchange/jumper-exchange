@@ -192,6 +192,12 @@ export const EarnSearchAutocomplete: FC<EarnSearchAutocompleteProps> = ({
           }
           slotProps={{
             ...params.slotProps,
+            // The visible placeholder is dropped once chips exist, so give
+            // the input a permanent accessible name.
+            htmlInput: {
+              ...params.slotProps.htmlInput,
+              'aria-label': t('earn.filter.searchAutocomplete.placeholder'),
+            },
             input: {
               ...params.slotProps.input,
               startAdornment: (

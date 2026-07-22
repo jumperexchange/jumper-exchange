@@ -86,6 +86,19 @@ describe('partitionSelectedOptions', () => {
     });
   });
 
+  it('clears categories omitted from a partial selection', () => {
+    const selected: EarnSearchOption[] = [
+      { category: EarnSearchCategory.Chain, value: '8453', label: 'Base' },
+    ];
+
+    expect(partitionSelectedOptions(selected)).toEqual({
+      chains: [8453],
+      protocols: null,
+      pools: null,
+      search: null,
+    });
+  });
+
   it('maps a free-solo string entry to the search term', () => {
     const selected: (EarnSearchOption | string)[] = [
       { category: EarnSearchCategory.Chain, value: '8453', label: 'Base' },
