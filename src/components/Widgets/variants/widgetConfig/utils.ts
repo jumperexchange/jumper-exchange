@@ -196,6 +196,15 @@ export const resolveWidgetPlaceholderTokens = (
   return undefined;
 };
 
+/** Parses a chain id query value; rejects NaN / non-finite junk. */
+const parseUrlChainId = (raw: string | null): number | undefined => {
+  if (raw == null || raw === '') {
+    return undefined;
+  }
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
 /** Synchronous URL read for cold-load deep links. */
 export const getUrlChainTokenParams = () => {
   if (typeof window === 'undefined') {
@@ -203,14 +212,25 @@ export const getUrlChainTokenParams = () => {
   }
 
   const query = new URLSearchParams(window.location.search);
-  const fromChain = query.get('fromChain');
-  const toChain = query.get('toChain');
+  const fromChainRaw = query.get('fromChain');
+  const toChainRaw = query.get('toChain');
+  const fromChain = parseUrlChainId(fromChainRaw);
+  const toChain = parseUrlChainId(toChainRaw);
+
+  // Junk chain params (e.g. fromChain=abc → NaN) must not block placeholders.
+  // Drop the matching token when the chain query was present but invalid.
+  const fromTokenRaw = query.get('fromToken') ?? undefined;
+  const toTokenRaw = query.get('toToken') ?? undefined;
 
   return {
-    fromChain: fromChain ? Number.parseInt(fromChain, 10) : undefined,
-    fromToken: query.get('fromToken') ?? undefined,
-    toChain: toChain ? Number.parseInt(toChain, 10) : undefined,
-    toToken: query.get('toToken') ?? undefined,
+    fromChain,
+    fromToken:
+      fromChainRaw != null && fromChain === undefined
+        ? undefined
+        : fromTokenRaw,
+    toChain,
+    toToken:
+      toChainRaw != null && toChain === undefined ? undefined : toTokenRaw,
   };
 };
 
@@ -246,6 +266,27 @@ export const clearUrlChainTokenParams = () => {
   if (changed) {
     window.history.replaceState(window.history.state, '', url);
   }
+};
+
+/** Writes from/to query params so URL-driven UI (e.g. Market Price) matches the form. */
+export const writeUrlChainTokenParams = (
+  tokens: WidgetPlaceholderTokens | null,
+) => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (!tokens) {
+    clearUrlChainTokenParams();
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('fromChain', String(tokens.fromChain));
+  url.searchParams.set('fromToken', tokens.fromToken);
+  url.searchParams.set('toChain', String(tokens.toChain));
+  url.searchParams.set('toToken', tokens.toToken);
+  window.history.replaceState(window.history.state, '', url);
 };
 
 /**
@@ -287,13 +328,16 @@ export const applyWidgetChainTokenFields = (
     form.setFieldValue('fromToken', tokens.fromToken);
     form.setFieldValue('toChain', tokens.toChain);
     form.setFieldValue('toToken', tokens.toToken);
-    return;
+  } else {
+    form.setFieldValue('fromChain', undefined);
+    form.setFieldValue('fromToken', undefined);
+    form.setFieldValue('toChain', undefined);
+    form.setFieldValue('toToken', undefined);
   }
 
-  form.setFieldValue('fromChain', undefined);
-  form.setFieldValue('fromToken', undefined);
-  form.setFieldValue('toChain', undefined);
-  form.setFieldValue('toToken', undefined);
+  // Config/form seed does not always flow into the query string; URL-driven
+  // panels (Market Price) need an explicit sync.
+  writeUrlChainTokenParams(tokens);
 };
 
 export const generateRouteLabel = (

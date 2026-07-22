@@ -189,6 +189,17 @@ describe('getUrlChainTokenParams', () => {
       toToken: 'EPjFWdd5',
     });
   });
+
+  it('ignores non-numeric chain params so placeholders are not blocked', () => {
+    setSearch('?fromChain=abc&fromToken=xyz&toChain=nope&toToken=zzz');
+
+    expect(getUrlChainTokenParams()).toEqual({
+      fromChain: undefined,
+      fromToken: undefined,
+      toChain: undefined,
+      toToken: undefined,
+    });
+  });
 });
 
 describe('clearWidgetChainTokenCache', () => {
@@ -224,7 +235,11 @@ describe('clearUrlChainTokenParams', () => {
 });
 
 describe('applyWidgetChainTokenFields', () => {
-  it('writes placeholder pairs onto the form', () => {
+  beforeEach(() => {
+    setSearch('');
+  });
+
+  it('writes placeholder pairs onto the form and URL', () => {
     const setFieldValue = vi.fn();
 
     applyWidgetChainTokenFields({ setFieldValue } as never, {
@@ -240,9 +255,16 @@ describe('applyWidgetChainTokenFields', () => {
       ['toChain', ChainId.SOL],
       ['toToken', SOL_USDC],
     ]);
+    expect(getUrlChainTokenParams()).toEqual({
+      fromChain: ChainId.ETH,
+      fromToken: ETH_USDC,
+      toChain: ChainId.SOL,
+      toToken: SOL_USDC,
+    });
   });
 
-  it('clears from/to when tokens are null', () => {
+  it('clears from/to on the form and URL when tokens are null', () => {
+    setSearch('?fromChain=1&fromToken=0x&toChain=1&toToken=0y&foo=1');
     const setFieldValue = vi.fn();
 
     applyWidgetChainTokenFields({ setFieldValue } as never, null);
@@ -253,5 +275,6 @@ describe('applyWidgetChainTokenFields', () => {
       ['toChain', undefined],
       ['toToken', undefined],
     ]);
+    expect(window.location.search).toBe('?foo=1');
   });
 });

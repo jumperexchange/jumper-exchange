@@ -25,9 +25,11 @@ import {
   applyWidgetChainTokenFields,
   clearWidgetChainTokenCache,
   consumeWidgetSurfaceNavigation,
+  getUrlChainTokenParams,
   resolveActiveNavigationTab,
   resolveWidgetPlaceholderTokens,
   resolveWidgetVariant,
+  writeUrlChainTokenParams,
 } from './variants/widgetConfig/utils';
 import { WidgetWrapper } from './Widget.style';
 import type { WidgetProps } from './Widget.types';
@@ -143,6 +145,9 @@ export function Widget({
   // Keep the widget mounted. On tab change, write placeholders (or clear) into
   // the existing FormStore so navigation state is preserved.
   const previousActiveTabKeyRef = useRef(activeTabKey);
+  const pendingTabApplyRef = useRef<typeof activeTabKey>(null);
+  const needsRemountReseedRef = useRef(false);
+
   useLayoutEffect(() => {
     const previous = previousActiveTabKeyRef.current;
     previousActiveTabKeyRef.current = activeTabKey;
@@ -151,14 +156,66 @@ export function Widget({
     }
 
     clearWidgetChainTokenCache();
-    setSeedChainTokensFromConfig(false);
 
-    const placeholders = resolveWidgetPlaceholderTokens(
-      starterVariant,
-      activeTabKey,
+    // Tab flipped while LiFiWidget is gated (null formRef): do not latch off —
+    // otherwise a later remount seeds an empty form. Apply when form is ready.
+    if (!formRef.current) {
+      pendingTabApplyRef.current = activeTabKey;
+      return;
+    }
+
+    setSeedChainTokensFromConfig(false);
+    needsRemountReseedRef.current = true;
+    applyWidgetChainTokenFields(
+      formRef.current,
+      resolveWidgetPlaceholderTokens(starterVariant, activeTabKey) ?? null,
     );
-    applyWidgetChainTokenFields(formRef.current, placeholders ?? null);
   }, [activeTabKey, starterVariant]);
+
+  const handleFormReady = () => {
+    const pendingTab = pendingTabApplyRef.current;
+    const shouldReseed = pendingTab != null || needsRemountReseedRef.current;
+
+    if (shouldReseed && formRef.current) {
+      pendingTabApplyRef.current = null;
+      needsRemountReseedRef.current = false;
+      setSeedChainTokensFromConfig(false);
+
+      const tabKey = pendingTab ?? activeTabKey;
+      const placeholders = resolveWidgetPlaceholderTokens(
+        starterVariant,
+        tabKey,
+      );
+      const liveUrl = getUrlChainTokenParams();
+      const tokens = placeholders
+        ? {
+            fromChain: liveUrl.fromChain ?? placeholders.fromChain,
+            fromToken: liveUrl.fromToken ?? placeholders.fromToken,
+            toChain: liveUrl.toChain ?? placeholders.toChain,
+            toToken: liveUrl.toToken ?? placeholders.toToken,
+          }
+        : null;
+
+      applyWidgetChainTokenFields(formRef.current, tokens);
+      return;
+    }
+
+    // Cold config seed does not write the query string; mirror placeholders so
+    // URL-driven panels (Market Price on Limit) match the form.
+    const liveUrl = getUrlChainTokenParams();
+    const hasUrlPair =
+      liveUrl.fromChain != null ||
+      liveUrl.fromToken != null ||
+      liveUrl.toChain != null ||
+      liveUrl.toToken != null;
+    if (hasUrlPair) {
+      return;
+    }
+
+    writeUrlChainTokenParams(
+      resolveWidgetPlaceholderTokens(starterVariant, activeTabKey) ?? null,
+    );
+  };
 
   useEffect(() => {
     const routes = [AppPaths.Main, AppPaths.Advanced].filter(
@@ -261,6 +318,7 @@ export function Widget({
         ctx={context}
         formRef={formRef}
         isLoading={isLoading}
+        onFormReady={handleFormReady}
       />
       {isPrivateSwapModalOpen && (
         <PrivateSwapModal

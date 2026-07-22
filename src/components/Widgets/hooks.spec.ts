@@ -189,6 +189,24 @@ describe('useFormParameters', () => {
     expect(result.current.sourceToken?.tokenAddress).toBe('0xfirst');
   });
 
+  it('ignores junk URL chain params and falls back to placeholders', () => {
+    setSearch('?fromChain=abc&fromToken=xyz&toChain=1&toToken=0xok');
+
+    const { result } = renderHook(() =>
+      useFormParameters({
+        starterVariant: 'default',
+        activeTabKey: 'default',
+      }),
+    );
+
+    expect(result.current).toEqual({
+      sourceChain: { chainId: String(ChainId.ETH), chainKey: '' },
+      sourceToken: { tokenAddress: ETH_USDC, tokenSymbol: '' },
+      destinationChain: { chainId: '1', chainKey: '' },
+      destinationToken: { tokenAddress: '0xok', tokenSymbol: '' },
+    });
+  });
+
   it('prefers explicit props over placeholders', () => {
     const { result } = renderHook(() =>
       useFormParameters({

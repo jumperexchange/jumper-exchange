@@ -12,16 +12,29 @@ import {
   TrackingEventParameter,
 } from '@/const/trackingKeys';
 import { useAdvancedAccess } from '@/hooks/useAdvancedAccess';
+import { usePathnameWithoutLocale } from '@/hooks/routing/usePathnameWithoutLocale';
 import { useUserTracking } from '@/hooks/userTracking/useUserTracking';
+
+const normalizeVerticalTabPath = (path: string) => {
+  const withLeadingSlash = path.startsWith('/') ? path : `/${path}`;
+  return withLeadingSlash.replace(/\/+$/, '') || '/';
+};
 
 export const useVerticalTabs = () => {
   const { trackEvent } = useUserTracking();
   const router = useRouter();
+  const pathname = usePathnameWithoutLocale();
   const { t } = useTranslation();
   const { isEnabled: widgetAdvancedEnabled, isAllowed: advancedAllowed } =
     useAdvancedAccess();
 
   const handleClickTab = (path: string, label: string) => () => {
+    const targetPath = normalizeVerticalTabPath(path === '' ? '/' : path);
+    const currentPath = normalizeVerticalTabPath(pathname || '/');
+    if (currentPath === targetPath) {
+      return;
+    }
+
     prepareWidgetSurfaceNavigation();
     router.push(`/${path}`);
     trackEvent({
