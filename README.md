@@ -8,4 +8,4 @@ As the Jumper website has grown, its codebase and footprint have become increasi
 
 The code here reflects Jumper's state at the time of this change and is provided **as-is**, for reference purposes only.
 
-Jumper remains live and fully supported at **[jumper.exchange](https://jumper.exchange)**.
+Jumper remains live and fully supported at **[jumper.xyz](https://jumper.xyz)**.
