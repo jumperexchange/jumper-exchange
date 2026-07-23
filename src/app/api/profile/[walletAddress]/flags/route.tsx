@@ -3,6 +3,14 @@ import { pick } from 'lodash';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
+const CACHE_HEADERS = {
+  'Cache-Control': 'public, max-age=0, s-maxage=300',
+} as const;
+
+const NO_STORE_HEADERS = {
+  'Cache-Control': 'no-store',
+} as const;
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ walletAddress: string }> },
@@ -13,24 +21,29 @@ export async function GET(
     if (!walletAddress) {
       return NextResponse.json(
         { error: 'walletAddress is required' },
-        { status: 400 },
+        { status: 400, headers: CACHE_HEADERS },
       );
     }
 
     const data = await getWalletAccessControl(walletAddress);
 
     if (!data.data || data.data.length === 0) {
-      return NextResponse.json({ hasEarn: false, hasAdvanced: false });
+      return NextResponse.json(
+        { hasEarn: false, hasAdvanced: false },
+        { headers: CACHE_HEADERS },
+      );
     }
 
     const flags = data.data[0];
 
-    return NextResponse.json(pick(flags, ['hasEarn', 'hasAdvanced']));
+    return NextResponse.json(pick(flags, ['hasEarn', 'hasAdvanced']), {
+      headers: CACHE_HEADERS,
+    });
   } catch (error) {
     console.error('Error fetching wallet access control:', error);
     return NextResponse.json(
       { error: 'Failed to fetch wallet access control data' },
-      { status: 500 },
+      { status: 500, headers: NO_STORE_HEADERS },
     );
   }
 }
