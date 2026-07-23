@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
 import { CarouselCard } from '@/components/Cards/CarouselCard/CarouselCard';
-import { PerkFeatureNewBadge } from '@/components/FeatureNewBadge/PerkFeatureNewBadge';
+import { PerkFeatureBadge } from '@/components/FeatureBadge/PerkFeatureBadge';
 import { usePerkClaimModal } from '@/components/ProfilePage/components/ClaimPerkModal/PerkClaimModalProvider';
 import { useFormatDisplayPerkData } from '@/hooks/perks/useFormatDisplayPerkData';
 import type { PerksDataAttributes } from '@/types/strapi';
@@ -60,7 +60,7 @@ export const PerkCard: FC<PerkCardProps> = ({ perk, status = 'unlocked' }) => {
       dimmed={status !== 'unlocked'}
       mediaBadge={
         perk.FeatureBadge ? (
-          <PerkFeatureNewBadge
+          <PerkFeatureBadge
             featureBadge={perk.FeatureBadge}
             firstPublishedAt={perk.FirstPublishedAt}
           />

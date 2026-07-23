@@ -1,15 +1,17 @@
 import { useMemo } from 'react';
-import { differenceInDays, isAfter, parseISO } from 'date-fns';
+import { differenceInDays, isAfter, isBefore, parseISO } from 'date-fns';
 import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import type { StrapiBadgeComponent } from '@/types/strapi';
+import { resolveStrapiMediaUrl } from '@/utils/strapi/strapiHelper';
 
 export interface FeatureBadgeConfig {
-  expiryMode?: 'fixed_date' | 'rolling_window' | null;
-  showBadge?: boolean | null;
-  badgeExpiresAt?: string | null;
-  durationDays?: number | null;
-  badgeLabel?: string | null;
-  badgeVariant?: string | null;
-  badgeSize?: string | null;
+  enabled?: boolean | null;
+  launchAt?: string | null;
+  expiryMode?: 'until_date' | 'days_after_launch' | null;
+  expiresAt?: string | null;
+  displayDaysAfterLaunch?: number | null;
+  liveBadge: StrapiBadgeComponent;
+  soonBadge?: StrapiBadgeComponent | null;
   referenceDate?: string | null;
   defaultLabel?: string;
 }
@@ -19,85 +21,93 @@ export interface FeatureBadgeDisplayResult {
   label: string;
   variant: BadgeVariant;
   size: BadgeSize;
+  iconUrl: string | null;
 }
 
 const BADGE_VARIANT_VALUES = Object.values(BadgeVariant) as string[];
 const BADGE_SIZE_VALUES = Object.values(BadgeSize) as string[];
 
-function resolveVariant(value: string | null | undefined): BadgeVariant {
+function resolveVariant(value: BadgeVariant | null | undefined): BadgeVariant {
   if (value && BADGE_VARIANT_VALUES.includes(value)) {
-    return value as BadgeVariant;
+    return value;
   }
-  return BadgeVariant.Error;
+  return BadgeVariant.New;
 }
 
-function resolveSize(value: string | null | undefined): BadgeSize {
+function resolveSize(value: BadgeSize | null | undefined): BadgeSize {
   if (value && BADGE_SIZE_VALUES.includes(value)) {
-    return value as BadgeSize;
+    return value;
   }
   return BadgeSize.SM;
+}
+
+function resolveBadge(badge: StrapiBadgeComponent, defaultLabel: string) {
+  return {
+    label: badge.Label || defaultLabel,
+    variant: resolveVariant(badge.Variant),
+    size: resolveSize(badge.Size),
+    iconUrl: resolveStrapiMediaUrl(badge.Icon?.url) ?? null,
+  };
 }
 
 export const useFeatureBadgeDisplay = (
   config: FeatureBadgeConfig,
 ): FeatureBadgeDisplayResult => {
   const {
+    enabled,
+    launchAt,
     expiryMode,
-    showBadge,
-    badgeExpiresAt,
-    durationDays,
-    badgeLabel,
-    badgeVariant,
-    badgeSize,
+    expiresAt,
+    displayDaysAfterLaunch,
+    liveBadge,
+    soonBadge,
     referenceDate,
     defaultLabel = 'NEW',
   } = config;
 
   return useMemo(() => {
-    const variant = resolveVariant(badgeVariant);
-    const size = resolveSize(badgeSize);
-    const label = badgeLabel ?? defaultLabel;
+    const live = resolveBadge(liveBadge, defaultLabel);
+    const hidden = { ...live, isVisible: false };
 
-    // Force hide — beats everything
-    if (showBadge === false) {
-      return { isVisible: false, label, variant, size };
+    // Master switch — beats everything.
+    if (enabled === false) {
+      return hidden;
     }
 
-    // Auto: fixed-date window
-    if (expiryMode === 'fixed_date' && badgeExpiresAt) {
-      const expiresAt = parseISO(badgeExpiresAt);
-      return {
-        isVisible: !isAfter(new Date(), expiresAt),
-        label,
-        variant,
-        size,
-      };
+    const now = new Date();
+
+    // Before launch: show the Soon badge if configured, otherwise nothing.
+    if (launchAt && isBefore(now, parseISO(launchAt))) {
+      if (!soonBadge) {
+        return hidden;
+      }
+      return { ...resolveBadge(soonBadge, defaultLabel), isVisible: true };
     }
 
-    // Auto: rolling window
-    if (
-      expiryMode === 'rolling_window' &&
-      referenceDate &&
-      durationDays != null
-    ) {
-      const daysSince = differenceInDays(new Date(), parseISO(referenceDate));
-      return { isVisible: daysSince < durationDays, label, variant, size };
+    // Live window — check expiry.
+    if (expiryMode === 'until_date') {
+      if (expiresAt && isAfter(now, parseISO(expiresAt))) {
+        return hidden;
+      }
+    } else if (expiryMode === 'days_after_launch') {
+      const reference = launchAt ?? referenceDate;
+      if (reference && displayDaysAfterLaunch != null) {
+        const daysSince = differenceInDays(now, parseISO(reference));
+        if (daysSince >= displayDaysAfterLaunch) {
+          return hidden;
+        }
+      }
     }
 
-    // Force show — beats date logic
-    if (showBadge === true) {
-      return { isVisible: true, label, variant, size };
-    }
-
-    return { isVisible: false, label, variant, size };
+    return { ...live, isVisible: true };
   }, [
+    enabled,
+    launchAt,
     expiryMode,
-    showBadge,
-    badgeExpiresAt,
-    durationDays,
-    badgeLabel,
-    badgeVariant,
-    badgeSize,
+    expiresAt,
+    displayDaysAfterLaunch,
+    liveBadge,
+    soonBadge,
     referenceDate,
     defaultLabel,
   ]);

@@ -1,9 +1,10 @@
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import Box from '@mui/material/Box';
+import type { Theme } from '@mui/material/styles';
 import { useRouter } from 'next/navigation';
+import type { ElementType } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/Badge/Badge';
-import { BadgeSize, BadgeVariant } from '@/components/Badge/Badge.styles';
+import { TabFeatureBadge } from '@/components/FeatureBadge/TabFeatureBadge';
 import { prepareWidgetSurfaceNavigation } from '@/components/Widgets/variants/widgetConfig/utils';
 import { CandlestickChartIcon } from '@/components/illustrations/CandlestickChartIcon';
 import {
@@ -25,8 +26,7 @@ export const useVerticalTabs = () => {
   const router = useRouter();
   const pathname = usePathnameWithoutLocale();
   const { t } = useTranslation();
-  const { isEnabled: widgetAdvancedEnabled, isAllowed: advancedAllowed } =
-    useAdvancedAccess();
+  const { isAllowed: advancedAllowed } = useAdvancedAccess();
 
   const handleClickTab = (path: string, label: string) => () => {
     const targetPath = normalizeVerticalTabPath(path === '' ? '/' : path);
@@ -49,13 +49,19 @@ export const useVerticalTabs = () => {
 
   const advancedDisabled = !advancedAllowed;
 
-  const tabs = [
+  const tabs: {
+    path: string;
+    label: string;
+    displayLabel: string;
+    icon: ElementType;
+    featureKey?: string;
+    disabled: boolean;
+  }[] = [
     {
       path: '',
       label: 'simple',
       displayLabel: t('navbar.links.simple'),
       icon: SwapHorizIcon,
-      showNewBadge: false,
       disabled: false,
     },
     {
@@ -63,14 +69,14 @@ export const useVerticalTabs = () => {
       label: 'advanced',
       displayLabel: t('navbar.links.advanced'),
       icon: CandlestickChartIcon,
-      showNewBadge: widgetAdvancedEnabled,
+      featureKey: 'widget-advanced',
       disabled: advancedDisabled,
     },
   ];
 
   return tabs.map(
     (
-      { path, label, displayLabel, icon: Icon, showNewBadge, disabled },
+      { path, label, displayLabel, icon: Icon, featureKey, disabled },
       index,
     ) => ({
       onClick: handleClickTab(path, label),
@@ -80,26 +86,14 @@ export const useVerticalTabs = () => {
       icon: (
         <Box sx={{ position: 'relative', display: 'inline-flex' }}>
           <Icon
-            sx={(theme) => ({
+            sx={(theme: Theme) => ({
               color: disabled
                 ? (theme.vars || theme).palette.iconDisabled
                 : (theme.vars || theme).palette.text.primary,
             })}
           />
-          {showNewBadge || disabled ? (
-            <Badge
-              label={disabled ? t('portfolio.views.soon') : t('promo.new')}
-              size={BadgeSize.XS}
-              variant={disabled ? BadgeVariant.Secondary : BadgeVariant.New}
-              sx={{
-                position: 'absolute',
-                top: -12,
-                right: -12,
-                transform: 'scale(0.75)',
-                transformOrigin: 'top right',
-                pointerEvents: 'none',
-              }}
-            />
+          {featureKey ? (
+            <TabFeatureBadge featureKey={featureKey} disabled={disabled} />
           ) : null}
         </Box>
       ),

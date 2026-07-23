@@ -1,8 +1,20 @@
 import type { Account } from '@jumperexchange/widget-provider';
-import { getStrapiBaseUrl } from './strapiHelper';
+import {
+  appendStrapiPopulate,
+  getStrapiBaseUrl,
+  type StrapiPopulate,
+} from './strapiHelper';
 import { sanitizeStrapiContainsSearchInput } from './sanitizeStrapiContainsSearchInput';
 import config from '@/config/env-config';
 import { addDays, format, startOfToday } from 'date-fns';
+
+// A FeatureBadge nests LiveBadge/SoonBadge components whose Icon media only
+// comes back with an explicit deep populate. Shared by the perk relation and
+// the standalone feature-badge endpoint.
+const FEATURE_BADGE_BADGES: Record<string, StrapiPopulate> = {
+  LiveBadge: { populate: { Icon: true } },
+  SoonBadge: { populate: { Icon: true } },
+};
 
 interface GetStrapiBaseUrlProps {
   contentType:
@@ -461,8 +473,14 @@ class PerkParams {
       this.apiUrl.searchParams.set(`fields[${index}]`, field);
     });
 
-    populate.forEach((relation, index) => {
-      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    populate.forEach((relation) => {
+      if (relation === 'FeatureBadge') {
+        appendStrapiPopulate(this.apiUrl.searchParams, {
+          FeatureBadge: { populate: FEATURE_BADGE_BADGES },
+        });
+        return;
+      }
+      this.apiUrl.searchParams.set(`populate[${relation}]`, 'true');
     });
 
     return this.apiUrl;
@@ -878,22 +896,10 @@ class WalletAccessControlStrapiApi extends StrapiApi {
 }
 
 class FeatureBadgeStrapiApi extends StrapiApi {
-  private static readonly fields = [
-    'FeatureKey',
-    'BadgeLabel',
-    'ShowBadge',
-    'ExpiryMode',
-    'BadgeExpiresAt',
-    'DurationDays',
-    'BadgeVariant',
-    'BadgeSize',
-  ];
-
   constructor() {
     super({ contentType: 'feature-badges' });
-    FeatureBadgeStrapiApi.fields.forEach((field, i) => {
-      this.apiUrl.searchParams.set(`fields[${i}]`, field);
-    });
+    // Scalar fields come back by default; deep-populate the badge components.
+    appendStrapiPopulate(this.apiUrl.searchParams, FEATURE_BADGE_BADGES);
   }
 
   filterByKey(featureKey: string): this {
