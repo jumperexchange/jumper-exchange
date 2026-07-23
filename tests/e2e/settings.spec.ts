@@ -37,59 +37,65 @@ for (const { name, size } of [
       await test.step('Verify route priority options', async () => {
         await settings.clickItem(SETTINGS_MENU.ROUTE_PRIORITY.LABEL);
         await settings.expectListOptionSelected(
-          SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN,
+          SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN.OPTION_ID,
         );
         await settings.expectListOptionVisible(
-          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST,
+          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST.OPTION_ID,
         );
 
-        await settings.clickListOption(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST);
-        await settings.expectListOptionSelected(
-          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST,
+        await settings.clickListOption(
+          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST.OPTION_ID,
         );
-        // Selecting does not navigate back; the main panel shows the chosen
-        // value as the card's summary <p>.
+        await settings.expectListOptionSelected(
+          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST.OPTION_ID,
+        );
+        // Selecting does not navigate back.
         await settings.goBack();
-        await settings.expectSetting(SETTINGS_MENU.ROUTE_PRIORITY.FASTEST, {
-          visible: true,
-        });
-        await settings.expectInfoBadgeVisible();
+        await settings.expectCardValue(
+          SETTINGS_MENU.ROUTE_PRIORITY.CARD,
+          SETTINGS_MENU.ROUTE_PRIORITY.FASTEST.LABEL,
+        );
+        await settings.expectCardBadge(
+          SETTINGS_MENU.ROUTE_PRIORITY.CARD,
+          'info',
+        );
       });
 
       await test.step('Verify gas price options', async () => {
         await settings.clickItem(SETTINGS_MENU.GAS_PRICE.LABEL);
-        await settings.expectItem(SETTINGS_MENU.GAS_PRICE.SLOW, {
-          enabled: true,
-        });
-        await settings.expectItem(SETTINGS_MENU.GAS_PRICE.FAST, {
-          enabled: true,
-        });
+        await settings.expectGasOptionEnabled(SETTINGS_MENU.GAS_PRICE.SLOW);
+        await settings.expectGasOptionEnabled(SETTINGS_MENU.GAS_PRICE.FAST);
 
-        await settings.clickItem(SETTINGS_MENU.GAS_PRICE.SLOW);
+        await settings.clickGasOption(SETTINGS_MENU.GAS_PRICE.SLOW);
         await settings.clickItem(SETTINGS_MENU.GAS_PRICE.LABEL);
-        // Same as route priority: the collapsed value is a summary <p>.
-        await settings.expectSetting(SETTINGS_MENU.GAS_PRICE.SLOW, {
-          visible: true,
-        });
+        await settings.expectCardValue(
+          SETTINGS_MENU.GAS_PRICE.CARD,
+          SETTINGS_MENU.GAS_PRICE.SLOW,
+        );
       });
 
       await test.step('Verify slippage settings', async () => {
         await settings.clickItem(SETTINGS_MENU.SLIPPAGE.LABEL);
-        await settings.expectListOptionSelected(SETTINGS_MENU.SLIPPAGE.AUTO);
-        for (const preset of SETTINGS_MENU.SLIPPAGE.PRESETS) {
-          await settings.expectListOptionVisible(preset);
+        await settings.expectListOptionSelected(
+          SETTINGS_MENU.SLIPPAGE.AUTO.OPTION_ID,
+        );
+        for (const presetId of SETTINGS_MENU.SLIPPAGE.PRESET_OPTION_IDS) {
+          await settings.expectListOptionVisible(presetId);
         }
 
         // The custom input only renders after selecting the Custom row.
-        await settings.clickListOption(SETTINGS_MENU.SLIPPAGE.CUSTOM);
+        await settings.clickListOption(SETTINGS_MENU.SLIPPAGE.CUSTOM.OPTION_ID);
         const slippageValue = '0.05';
         await settings.fillSlippage(slippageValue);
         await settings.expectSlippageWarning(
           SETTINGS_MENU.SLIPPAGE.WARNING_MESSAGE,
         );
         await settings.goBack();
-        await settings.expectSetting(`${slippageValue}%`, { visible: true });
-        await settings.expectWarningBadgeVisible();
+        await settings.expectCardValue(
+          SETTINGS_MENU.SLIPPAGE.CARD,
+          `${slippageValue}%`,
+        );
+        await settings.expectCardBadge(SETTINGS_MENU.SLIPPAGE.CARD, 'warning');
       });
 
       await test.step('Verify Bridge Settings - Deselect and select 1 bridge', async () => {
@@ -97,48 +103,47 @@ for (const { name, size } of [
         const bridgeName = await settings.getFirstBridgeName();
         await settings.deselectFirstBridge();
         await settings.goBack();
-        await settings.expectDeselectedAmount(SETTINGS_MENU.BRIDGES.LABEL, 1);
+        await settings.expectDeselectedAmount(SETTINGS_MENU.BRIDGES.CARD, 1);
 
         await settings.clickItem(SETTINGS_MENU.BRIDGES.LABEL);
         await settings.selectBridgeByName(bridgeName);
         await settings.goBack();
-        await settings.expectFractionsEqual(SETTINGS_MENU.BRIDGES.LABEL);
+        await settings.expectFractionsEqual(SETTINGS_MENU.BRIDGES.CARD);
       });
 
       await test.step('Verify Exchange Settings - Deselect and select all exchanges', async () => {
         await settings.clickItem(SETTINGS_MENU.EXCHANGES.LABEL);
         await settings.deselectAll();
         await settings.goBack();
-        await settings.expectNoneSelected(SETTINGS_MENU.EXCHANGES.LABEL);
+        await settings.expectNoneSelected(SETTINGS_MENU.EXCHANGES.CARD);
 
         await settings.clickItem(SETTINGS_MENU.EXCHANGES.LABEL);
         await settings.selectAll();
         await settings.goBack();
-        await settings.expectFractionsEqual(SETTINGS_MENU.EXCHANGES.LABEL);
+        await settings.expectFractionsEqual(SETTINGS_MENU.EXCHANGES.CARD);
       });
 
       await test.step('Reset settings', async () => {
-        await settings.expectItem(SETTINGS_MENU.RESET.BUTTON, {
-          visible: true,
-        });
+        await settings.expectResetButtonVisible(SETTINGS_MENU.RESET.BUTTON);
         await settings.clickReset(SETTINGS_MENU.RESET.BUTTON);
         await settings.confirmReset(SETTINGS_MENU.RESET.DIALOG_CONFIRM_BUTTON);
-        await settings.expectSetting(SETTINGS_MENU.RESET.BUTTON, {
-          invisible: true,
-        });
+        await settings.expectResetButtonHidden(SETTINGS_MENU.RESET.BUTTON);
 
-        await settings.expectSetting(SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN, {
-          visible: true,
-        });
-        await settings.expectSetting(SETTINGS_MENU.GAS_PRICE.NORMAL, {
-          visible: true,
-        });
-        await settings.expectSetting(SETTINGS_MENU.SLIPPAGE.AUTO, {
-          visible: true,
-        });
+        await settings.expectCardValue(
+          SETTINGS_MENU.ROUTE_PRIORITY.CARD,
+          SETTINGS_MENU.ROUTE_PRIORITY.BEST_RETURN.LABEL,
+        );
+        await settings.expectCardValue(
+          SETTINGS_MENU.GAS_PRICE.CARD,
+          SETTINGS_MENU.GAS_PRICE.NORMAL,
+        );
+        await settings.expectCardValue(
+          SETTINGS_MENU.SLIPPAGE.CARD,
+          SETTINGS_MENU.SLIPPAGE.AUTO.LABEL,
+        );
 
-        await settings.expectFractionsEqual(SETTINGS_MENU.BRIDGES.LABEL);
-        await settings.expectFractionsEqual(SETTINGS_MENU.EXCHANGES.LABEL);
+        await settings.expectFractionsEqual(SETTINGS_MENU.BRIDGES.CARD);
+        await settings.expectFractionsEqual(SETTINGS_MENU.EXCHANGES.CARD);
       });
     });
   });
