@@ -25,6 +25,18 @@ const PrivateSwapModal = dynamic(() =>
     (mod) => mod.PrivateSwapModal,
   ),
 );
+
+const SocialCardNudge = dynamic(() =>
+  import('src/components/SocialCard/SocialCardNudge').then(
+    (mod) => mod.SocialCardNudge,
+  ),
+);
+
+const SocialCardTestTrigger = dynamic(() =>
+  import('src/components/SocialCard/SocialCardTestTrigger').then(
+    (mod) => mod.SocialCardTestTrigger,
+  ),
+);
 export function Widget({
   starterVariant,
   fromChain,
@@ -175,6 +187,8 @@ export function Widget({
           }}
         />
       )}
+      <SocialCardNudge />
+      <SocialCardTestTrigger />
     </WidgetWrapper>
   );
 }

@@ -180,7 +180,12 @@
     "okay": "Okay",
     "manageYourPosition": "Manage your position",
     "goBack": "Go back",
-    "connectAnotherWallet": "Connect another wallet"
+    "connectAnotherWallet": "Connect another wallet",
+    "close": "Close"
+  },
+  "socialCard": {
+    "nudgeCta": "You won {{amount}} vs. the median amount quote. Share on X",
+    "shareText": "I just got {{amountWon}} extra output on my {{fromToken}} → {{toToken}} swap with Jumper 🚀"
   },
   "error": {
     "message": "Something went wrong. Please try reloading the page. If the problem persists, contact our support."

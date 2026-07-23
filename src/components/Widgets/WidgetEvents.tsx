@@ -22,6 +22,7 @@ import type { WidgetEventsConfig } from './WidgetEventsManager';
 import { setupWidgetEvents, teardownWidgetEvents } from './WidgetEventsManager';
 import { useWidgetCacheStore } from 'src/stores/widgetCache/WidgetCacheStore';
 import { useContactSupportEvent } from './events/hooks/useContactSupportEvent';
+import { useSocialCardEvent } from './events/hooks/useSocialCardEvent';
 import dynamic from 'next/dynamic';
 import { usePortfolioState } from '@/providers/PortfolioProvider/PortfolioContext';
 
@@ -33,6 +34,7 @@ const GoldenRouteModal = dynamic(() =>
 
 export function WidgetEvents() {
   useContactSupportEvent();
+  useSocialCardEvent();
   const { activeTab } = useActiveTabStore();
   const { setDestinationChainToken, setSourceChainToken } =
     useChainTokenSelectionStore();

@@ -85,6 +85,7 @@ export default interface Resources {
       };
     };
     button: {
+      close: 'Close';
       connectAnotherWallet: 'Connect another wallet';
       goBack: 'Go back';
       manageYourPosition: 'Manage your position';
@@ -1219,6 +1220,10 @@ export default interface Resources {
       buttonText: 'Link Wallet';
       subtitle: 'To use SEI EVM, you need to link your wallet address to the SEI ecosystem.';
       title: 'Linking of SEI EVM wallet required';
+    };
+    socialCard: {
+      nudgeCta: 'You won {{amount}} vs. the median amount quote. Share on X';
+      shareText: 'I just got {{amountWon}} extra output on my {{fromToken}} → {{toToken}} swap with Jumper 🚀';
     };
     solanaAlert: {
       subtitle: 'Currently only USDC and USDT can be bridged to and from Solana.';

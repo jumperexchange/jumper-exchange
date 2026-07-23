@@ -9,6 +9,7 @@ export enum AB_TEST_NAME {
   THEME_PARTNER_DEFAULT = 'theme-partner-default',
   PORTFOLIO_PNL_CHART = 'portfolio-pnl-chart',
   PORTFOLIO_TRANSACTIONS = 'portfolio-transactions',
+  SOCIAL_CARD = 'social-card',
 }
 
 // Single source of truth for all A/B tests
@@ -51,6 +52,10 @@ export const AbTests = {
   },
   [AB_TEST_NAME.PORTFOLIO_TRANSACTIONS]: {
     name: 'portfolio-transactions',
+    enabled: true,
+  },
+  [AB_TEST_NAME.SOCIAL_CARD]: {
+    name: 'social-card',
     enabled: true,
   },
 } as const;

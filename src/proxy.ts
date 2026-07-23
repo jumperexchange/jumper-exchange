@@ -40,5 +40,5 @@ export function proxy(request: NextRequest) {
 // Applies this middleware only to specific paths
 export const config = {
   matcher:
-    '/((?!api|static|_next|favicon\\.ico|.*\\.(?:png|jp?eg|gif|webp|svg|ico|xml|txt|zip|riv|json)).*)',
+    '/((?!api|share|static|_next|favicon\\.ico|.*\\.(?:png|jp?eg|gif|webp|svg|ico|xml|txt|zip|riv|json)).*)',
 };
