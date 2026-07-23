@@ -5,7 +5,6 @@ See @README.md for prose explanations of the suite layout, run modes, and gotcha
 ## Core rules (do not break)
 
 - **No mocks unless absolutely necessary.** Real wallet, real backend, real upstream. If you must mock, justify it in the PR description.
-- **Don't change qase IDs.** Reordering, renaming, or deleting them breaks Qase TestOps reporting. New tests pick a new ID; never reuse an old one.
 - **Treat `tests/e2e/wallet/` as load-bearing infrastructure** — the real-MetaMask driver framework. Bug fixes (popup detection, timing, sequencing) are in scope when a spec genuinely needs them; just don't casually refactor or restructure this code. Patterns may not be idiomatic for the rest of the repo — leave them unless changing them is the actual fix.
 - **No barrel `index.ts` files.** Import directly from the source file. Matches AGENTS.md's whole-repo rule; no test-side exceptions.
 - **Don't import `tests/` code into `src/`** or vice-versa.
@@ -74,7 +73,6 @@ Same for `evaluate(...)` reads of computed style / layout after a user action �
 
 - One Arrange / Act / Assert per `test.step`; keep steps small and named.
 - POM methods are either **commands** (do an action, return `Promise<void>`) or **queries** (`expect…` methods that assert state). Don't combine — CQS keeps flakes localized.
-- Use `qase(N, "title")` wrapper from `playwright-qase-reporter` on every top-level `test(...)` so TestOps gets the right run.
 
 ## Run modes
 

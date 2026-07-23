@@ -40,7 +40,7 @@ pnpm dev            # or: pnpm dev:local | pnpm dev:staging | pnpm dev:productio
 - `pnpm test:unit` — Vitest unit tests (`<file>.spec.ts(x)`).
 - `pnpm test:snapshots` — snapshot tests; regenerate with `pnpm test:snapshots:generate`.
 - `pnpm test:storybook` — run stories under Vitest + Playwright.
-- Playwright E2E: `pnpm test`, `pnpm test:e2e-real`, `pnpm test:qase`. First-time setup: `pnpm test:install`. See [tests/README.md](./tests/README.md).
+- Playwright E2E: `pnpm test`, `pnpm test:e2e-real`. First-time setup: `pnpm test:install`. See [tests/README.md](./tests/README.md).
 
 ## Lint and checks
 

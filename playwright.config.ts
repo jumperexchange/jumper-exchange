@@ -22,23 +22,6 @@ dotenv.config({ path: './tests/.env.test.local', override: true });
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 // const baseURL = `http://localhost:${PORT}`;
 
-const qaseReporter = [
-  'playwright-qase-reporter',
-  {
-    testops: {
-      api: {
-        token: process.env.QASE_TESTOPS_API_TOKEN,
-      },
-      project: 'WJ',
-      uploadAttachments: true,
-      run: {
-        // completed once by the complete-qase-run CI job, not per-shard (avoids status races)
-        complete: false,
-      },
-    },
-  },
-] as const;
-
 export default defineConfig({
   timeout: 120 * 1000,
   expect: {
@@ -59,7 +42,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI
-    ? [['list'], ['blob'], qaseReporter]
+    ? [['list'], ['blob']]
     : [
         ['list'],
         ['html'],

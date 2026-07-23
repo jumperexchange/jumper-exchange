@@ -452,9 +452,6 @@ importers:
       playwright:
         specifier: 1.61.1
         version: 1.61.1
-      playwright-qase-reporter:
-        specifier: ^2.5.5
-        version: 2.5.5(@playwright/test@1.61.1)
       prettier:
         specifier: ^3.8.4
         version: 3.8.4
@@ -6813,10 +6810,6 @@ packages:
     resolution: {integrity: sha512-qI4JLRKnSzqFqr7hAlS5xQDusBCjKSEG4t4+7aNrIQMHBcsC2TGEhuyABJdYkgSewL57PNLYEiibY2iPKhKpaA==}
     engines: {node: '>=20.19.0'}
 
-  dotenv-expand@10.0.0:
-    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
-    engines: {node: '>=12'}
-
   dotenv@16.6.1:
     resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
     engines: {node: '>=12'}
@@ -6899,9 +6892,6 @@ packages:
   entities@8.0.0:
     resolution: {integrity: sha512-zwfzJecQ/Uej6tusMqwAqU/6KL2XaB2VZ2Jg54Je6ahNBGNH6Ek6g3jjNCF0fG9EWQKGZNddNjU5F1ZQn/sBnA==}
     engines: {node: '>=20.19.0'}
-
-  env-schema@5.2.1:
-    resolution: {integrity: sha512-gWMNrQ3dVHAZcCx7epiFwgXcyfBh4heD/6+OK3bEbke3uL+KqwYA9nUOwzJyRZh1cJOFcwdPuY1n0GKSFlSWAg==}
 
   environment@1.1.0:
     resolution: {integrity: sha512-xUtoPkMggbz0MPyPiIWr1Kp4aeWJjDZ6SMvURhimjdZgsRuDplF5/s9hcgGhyXMhs+6vpnuoiZ2kFiu3FMnS8Q==}
@@ -8163,10 +8153,6 @@ packages:
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
 
-  lodash.get@4.4.2:
-    resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
-    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
-
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
 
@@ -8184,12 +8170,6 @@ packages:
 
   lodash.isstring@4.0.1:
     resolution: {integrity: sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==}
-
-  lodash.merge@4.6.2:
-    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
-
-  lodash.mergewith@4.6.2:
-    resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
 
   lodash.once@4.1.1:
     resolution: {integrity: sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==}
@@ -8931,12 +8911,6 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  playwright-qase-reporter@2.5.5:
-    resolution: {integrity: sha512-JrUYP60GgfvenGCZ997dzNCYxGqscFNZk6ROMczJSn0CuC9D/Dtnrp+Z8ofvVNZ10kFrlH39/lcLHJpUhjFTAQ==}
-    engines: {node: '>=18'}
-    peerDependencies:
-      '@playwright/test': '>=1.16.3'
-
   playwright@1.61.1:
     resolution: {integrity: sha512-DWnY5o3YbLWK4GovuAVwpqL+1VwGNdUGrRr++8j8PtQQzvAVZUIMjKQ90fY689sEJZJBbZVw1rXaOKSTitkzPQ==}
     engines: {node: '>=18'}
@@ -9098,18 +9072,6 @@ packages:
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
-
-  qase-api-client@1.1.10:
-    resolution: {integrity: sha512-ipOHKfr+22mW9zlXy8Fhmp7tPCMlbHAHAFLq4zClf+ZdKltYyt1XYxhvGRa0lH3VoCNEs9db4NL4ja2P5Vu7VQ==}
-    engines: {node: '>=18'}
-
-  qase-api-v2-client@1.0.9:
-    resolution: {integrity: sha512-Xw+jivNicP5t5Uq3HOCMRss0P3t27NGJl7VQHfWcS/YiiFKdRqHmedx8aDfCYed4lObMVYGXOn/c1XImLRKLNQ==}
-    engines: {node: '>=18'}
-
-  qase-javascript-commons@2.7.5:
-    resolution: {integrity: sha512-ERVfpMXPKAU+QyQn9DRZ0Yw6FEEPnFDmVurGrCXenkGee6wuU0Rw2IAUO0SJUbxS9AL1Gzc7uHvOOtsqlOxn8A==}
-    engines: {node: '>=18'}
 
   qr-code-styling@1.9.2:
     resolution: {integrity: sha512-RgJaZJ1/RrXJ6N0j7a+pdw3zMBmzZU4VN2dtAZf8ZggCfRB5stEQ3IoDNGaNhYY3nnZKYlYSLl5YkfWN5dPutg==}
@@ -21058,8 +21020,6 @@ snapshots:
       domelementtype: 3.0.0
       domhandler: 6.0.1
 
-  dotenv-expand@10.0.0: {}
-
   dotenv@16.6.1: {}
 
   dotenv@17.4.2: {}
@@ -21154,12 +21114,6 @@ snapshots:
       tapable: 2.3.3
 
   entities@8.0.0: {}
-
-  env-schema@5.2.1:
-    dependencies:
-      ajv: 8.20.0
-      dotenv: 16.6.1
-      dotenv-expand: 10.0.0
 
   environment@1.1.0: {}
 
@@ -22631,8 +22585,6 @@ snapshots:
 
   lodash.camelcase@4.3.0: {}
 
-  lodash.get@4.4.2: {}
-
   lodash.includes@4.3.0: {}
 
   lodash.isboolean@3.0.3: {}
@@ -22644,10 +22596,6 @@ snapshots:
   lodash.isplainobject@4.0.6: {}
 
   lodash.isstring@4.0.1: {}
-
-  lodash.merge@4.6.2: {}
-
-  lodash.mergewith@4.6.2: {}
 
   lodash.once@4.1.1: {}
 
@@ -23703,16 +23651,6 @@ snapshots:
 
   playwright-core@1.61.1: {}
 
-  playwright-qase-reporter@2.5.5(@playwright/test@1.61.1):
-    dependencies:
-      '@playwright/test': 1.61.1
-      chalk: 4.1.2
-      qase-javascript-commons: 2.7.5
-      uuid: 11.1.1
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   playwright@1.61.1:
     dependencies:
       playwright-core: 1.61.1
@@ -23883,41 +23821,6 @@ snapshots:
   punycode@1.4.1: {}
 
   punycode@2.3.1: {}
-
-  qase-api-client@1.1.10:
-    dependencies:
-      axios: 1.18.1
-      axios-retry: 4.5.0(axios@1.18.1)
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  qase-api-v2-client@1.0.9:
-    dependencies:
-      axios: 1.18.1
-      axios-retry: 4.5.0(axios@1.18.1)
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
-  qase-javascript-commons@2.7.5:
-    dependencies:
-      ajv: 8.20.0
-      async-mutex: 0.5.0
-      chalk: 4.1.2
-      env-schema: 5.2.1
-      form-data: 4.0.5
-      lodash.get: 4.4.2
-      lodash.merge: 4.6.2
-      lodash.mergewith: 4.6.2
-      mime-types: 2.1.35
-      qase-api-client: 1.1.10
-      qase-api-v2-client: 1.0.9
-      strip-ansi: 6.0.1
-      uuid: 11.1.1
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   qr-code-styling@1.9.2:
     dependencies:

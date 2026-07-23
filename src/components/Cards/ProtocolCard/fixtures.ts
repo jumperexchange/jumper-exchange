@@ -62,5 +62,13 @@ export const commonArgs = {
       canRepay: true,
       canBorrow: true,
     },
+    capacity: {
+      remaining: '50000000000',
+      max: '100000000000',
+    },
+    fees: {
+      performance: 0.1,
+      management: 0.02,
+    },
   },
 };

@@ -985,6 +985,26 @@ export interface EarnOpportunityHistoryItem {
   apy: APYItem;
 }
 
+export interface VaultCapacity {
+  /** Remaining capacity in the vault asset native units (scale by asset.decimals); not USD. */
+  remaining?: string;
+  /** Max capacity in the vault asset native units (scale by asset.decimals); not USD. */
+  max?: string;
+  /** True when the vault has unlimited capacity (vaults.fyi sentinel); remaining/max omitted in that case. */
+  unlimited?: boolean;
+}
+
+export interface VaultFees {
+  /** Performance fee as a fraction (0.02 = 2%). */
+  performance?: number;
+  /** Management fee as a fraction (0.02 = 2%). */
+  management?: number;
+  /** Withdrawal fee as a fraction (0.02 = 2%). */
+  withdrawal?: number;
+  /** Deposit fee as a fraction (0.02 = 2%). */
+  deposit?: number;
+}
+
 export interface EarnOpportunityWithLatestAnalytics {
   name: string;
   asset: Token;
@@ -1000,7 +1020,10 @@ export interface EarnOpportunityWithLatestAnalytics {
   slug: string;
   featured: boolean;
   lockupDays?: number;
-  /** The cap in dollar */
+  /**
+   * The cap in dollar. Deprecated: use capacity instead.
+   * @deprecated
+   */
   capInDollar?: string;
   /** @deprecated */
   rewardsApy?: number;
@@ -1008,6 +1031,8 @@ export interface EarnOpportunityWithLatestAnalytics {
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
+  capacity?: VaultCapacity;
+  fees?: VaultFees;
 }
 
 export interface EarnListResponse {
@@ -1934,7 +1959,10 @@ export interface EarnOpportunityWithScore {
   slug: string;
   featured: boolean;
   lockupDays?: number;
-  /** The cap in dollar */
+  /**
+   * The cap in dollar. Deprecated: use capacity instead.
+   * @deprecated
+   */
   capInDollar?: string;
   /** @deprecated */
   rewardsApy?: number;
@@ -1942,6 +1970,8 @@ export interface EarnOpportunityWithScore {
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
   latest: EarnOpportunityHistoryItem;
+  capacity?: VaultCapacity;
+  fees?: VaultFees;
 }
 
 export interface EarnOpportunities {
