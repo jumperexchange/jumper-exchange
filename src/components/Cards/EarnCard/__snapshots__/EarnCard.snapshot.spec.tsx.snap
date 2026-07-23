@@ -4588,6 +4588,158 @@ exports[`EarnCard snapshot > overview card matches snapshot 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="remainingCapacity-50000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.remainingCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.remainingCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $50K
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-100000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $100K
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -4972,12 +5124,164 @@ exports[`EarnCard snapshot > overview card with badge matches snapshot 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="remainingCapacity-50000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.remainingCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.remainingCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $50K
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-100000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $100K
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 `;
 
-exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1`] = `
+exports[`EarnCard snapshot > overview card with cap in dollar fallback matches snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-4gp3vo"
@@ -5035,46 +5339,6 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
         </div>
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
-          data-testid="capInDollar-1000000"
-        >
-          <div
-            class="MuiBox-root css-5ul7dk"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
-            >
-              labels.capInDollar
-            </p>
-            <svg
-              aria-hidden="true"
-              aria-label="tooltips.capInDollar"
-              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
-              data-mui-internal-clone-element="true"
-              data-testid="InfoIcon"
-              focusable="false"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
-              />
-            </svg>
-          </div>
-          <div
-            class="MuiBox-root css-nqls9x"
-          >
-            <p
-              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
-            >
-              $1M
-            </p>
-          </div>
-        </div>
-      </div>
-      <div
-        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
-      >
-        <div
-          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
           data-testid="tvl-62572415"
         >
           <div
@@ -5109,6 +5373,10 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
             </p>
           </div>
         </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
           data-testid="assets-USDC"
@@ -5200,10 +5468,6 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
             </p>
           </div>
         </div>
-      </div>
-      <div
-        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
-      >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
           data-testid="chains-8453"
@@ -5261,6 +5525,10 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
             </p>
           </div>
         </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
         <div
           class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
           data-testid="protocol-morpho"
@@ -5349,6 +5617,118 @@ exports[`EarnCard snapshot > overview card with cap in dollar matches snapshot 1
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
               Morpho
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-1000000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $1M
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
             </p>
           </div>
         </div>
@@ -5768,6 +6148,158 @@ exports[`EarnCard snapshot > overview card with lockup days and cap in dollar ma
           </div>
         </div>
       </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="remainingCapacity-50000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.remainingCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.remainingCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $50K
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-100000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $100K
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -6145,6 +6677,658 @@ exports[`EarnCard snapshot > overview card with lockup days matches snapshot 1`]
               class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
             >
               Morpho
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="remainingCapacity-50000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.remainingCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.remainingCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $50K
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-100000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $100K
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EarnCard snapshot > overview card with non-stable asset capacity matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-4gp3vo"
+  >
+    <div
+      class="MuiStack-root css-h345r2-MuiStack-root"
+    >
+      <div
+        class="MuiBox-root css-ynzgks"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-titleXSmall css-f793q6-MuiTypography-root"
+        >
+          labels.overview
+        </span>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="apy-0.07150000000000001"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.apy
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.apy"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              7.15%
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="tvl-62572415"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.tvl
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.tvl"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $62.57M
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="assets-WETH"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.assets
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.assets"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-ffzx00"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiBox-root css-117xn3e"
+                  >
+                    <div
+                      class="MuiStack-root css-8lrfwp-MuiStack-root"
+                    >
+                      <div
+                        class="MuiStack-root css-54t7xt-MuiStack-root"
+                      >
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
+                        >
+                          <img
+                            alt="Wrapped Ether"
+                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            loading="lazy"
+                            src="https://cryptologos.cc/logos/weth-weth-logo.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-f55v0x"
+                  >
+                    <div
+                      class="MuiStack-root css-8lrfwp-MuiStack-root"
+                    >
+                      <div
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      >
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular css-1vbteb6-MuiAvatar-root"
+                        >
+                          <img
+                            alt="Ethereum"
+                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            loading="lazy"
+                            src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              WETH
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="chains-1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.chains
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.chains"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiStack-root css-k9cukr-MuiStack-root"
+              >
+                <div
+                  class="MuiStack-root css-k0vgmj-MuiStack-root"
+                >
+                  <div
+                    class="MuiAvatar-root MuiAvatar-circular css-1dl7sgj-MuiAvatar-root"
+                  >
+                    <img
+                      alt="Ethereum"
+                      class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                      loading="lazy"
+                      src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              Ethereum
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="protocol-morpho"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.protocol
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.protocol"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <div
+              class="MuiBox-root css-1xdhyk6"
+            >
+              <div
+                class="MuiBox-root css-ffzx00"
+              >
+                <div
+                  class="MuiBox-root css-wioyy2"
+                >
+                  <div
+                    class="MuiBox-root css-117xn3e"
+                  >
+                    <div
+                      class="MuiStack-root css-8lrfwp-MuiStack-root"
+                    >
+                      <div
+                        class="MuiStack-root css-54t7xt-MuiStack-root"
+                      >
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular css-d5qi8t-MuiAvatar-root"
+                        >
+                          <img
+                            alt="morpho"
+                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            loading="lazy"
+                            src="https://strapi.jumper.xyz/uploads/morpho_eef0686ee3_2e4b8e06a6.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="MuiBox-root css-f55v0x"
+                  >
+                    <div
+                      class="MuiStack-root css-8lrfwp-MuiStack-root"
+                    >
+                      <div
+                        class="MuiStack-root css-1x5pyaa-MuiStack-root"
+                      >
+                        <div
+                          class="MuiAvatar-root MuiAvatar-circular css-1vbteb6-MuiAvatar-root"
+                        >
+                          <img
+                            alt="Ethereum"
+                            class="MuiAvatar-img css-i4dfdj-MuiAvatar-img"
+                            loading="lazy"
+                            src="https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              Morpho
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="remainingCapacity-3101088200"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.remainingCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.remainingCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $3.1B
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="maxCapacity-12690000000"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.maxCapacity
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.maxCapacity"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              $12.69B
+            </p>
+          </div>
+        </div>
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-13xb3fr-MuiGrid-root"
+          data-testid="fee-performance-0.1"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.performanceFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.performanceFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              10%
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-row css-tms0j3-MuiGrid-root"
+      >
+        <div
+          class="MuiGrid-root MuiGrid-direction-xs-row MuiGrid-grid-xs-12 MuiGrid-grid-sm-12 css-xvszvy-MuiGrid-root"
+          data-testid="fee-management-0.02"
+        >
+          <div
+            class="MuiBox-root css-5ul7dk"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXSmall css-1yopx97-MuiTypography-root"
+            >
+              labels.managementFee
+            </p>
+            <svg
+              aria-hidden="true"
+              aria-label="tooltips.managementFee"
+              class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-1bfwnwm-MuiSvgIcon-root"
+              data-mui-internal-clone-element="true"
+              data-testid="InfoIcon"
+              focusable="false"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2m1 15h-2v-6h2zm0-8h-2V7h2z"
+              />
+            </svg>
+          </div>
+          <div
+            class="MuiBox-root css-nqls9x"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-bodyXLargeStrong css-1i9hatg-MuiTypography-root"
+            >
+              2%
             </p>
           </div>
         </div>

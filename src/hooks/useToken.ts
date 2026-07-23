@@ -25,7 +25,7 @@ type UseTokenReturn<T> = {
 export function useToken(
   chainId: ChainId,
   address: Address,
-  options: { extended: true },
+  options: { extended: true; enabled?: boolean },
 ): UseTokenReturn<ExtendedToken>;
 
 export function useToken(
@@ -37,7 +37,7 @@ export function useToken(
 export function useToken(
   chainId: ChainId,
   address: Address,
-  options?: { extended?: boolean },
+  options?: { extended?: boolean; enabled?: boolean },
 ): UseTokenReturn<ExtendedToken | SimpleToken> {
   const {
     getToken,
@@ -57,7 +57,7 @@ export function useToken(
   } = useQuery({
     queryKey: ['token', chainId, address],
     queryFn: () => getTokenQuery(chainId, address),
-    enabled: options?.extended,
+    enabled: !!options?.extended && (options?.enabled ?? true),
     staleTime: 1000 * 60 * 5,
     refetchInterval: 1000 * 60 * 5,
   });

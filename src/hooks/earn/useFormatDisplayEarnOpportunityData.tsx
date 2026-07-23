@@ -2,7 +2,7 @@ import { EntityStack } from '@/components/composite/EntityStack/EntityStack';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
-import { formatCapInDollar } from '@/utils/numbers/capInDollar';
+import { toCompactValue } from '@/utils/formatNumbers';
 import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
@@ -15,12 +15,15 @@ import type {
   EarnOpportunityWithLatestAnalytics,
   Protocol,
   Token,
+  VaultFees,
 } from 'src/types/jumper-backend';
 import { capitalizeString } from 'src/utils/capitalizeString';
 import { formatLockupInDay } from '@/utils/formatLockupInDay';
 import { formatApy } from 'src/utils/numbers/apy';
 import { formatTvl } from 'src/utils/numbers/tvl';
 import { isZeroApprox } from 'src/utils/numbers/utils';
+import type { VaultCapacityDisplay } from './useVaultCapacity';
+import { useVaultCapacity } from './useVaultCapacity';
 
 interface EarnCardOverviewItem {
   key: string;
@@ -108,26 +111,6 @@ const buildLockupItem = (
     tooltip: t('tooltips.lockupPeriod', {
       formattedLockupPeriod: formatted,
     }),
-  };
-};
-
-const buildCapInDollarItem = (
-  capInDollar: number | string | undefined,
-  variant: EarnCardVariant,
-  t: TFunction,
-): EarnCardOverviewItem | null => {
-  const capInDollarNumber = Number(capInDollar);
-  if (isNaN(capInDollarNumber) || !capInDollarNumber) {
-    return null;
-  }
-
-  const formatted = formatCapInDollar(capInDollarNumber);
-  return {
-    key: 'capInDollar',
-    dataTestId: `capInDollar-${capInDollarNumber}`,
-    label: t('labels.capInDollar'),
-    value: formatted,
-    tooltip: t('tooltips.capInDollar'),
   };
 };
 
@@ -246,19 +229,141 @@ const buildProtocolItem = (
   };
 };
 
+const buildCapacityItems = (
+  capacityDisplay: VaultCapacityDisplay,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem[] => {
+  if (variant !== 'overview') {
+    return [];
+  }
+
+  switch (capacityDisplay.state) {
+    case 'unknown':
+    case 'unlimited':
+      return [];
+
+    case 'capped': {
+      const { maxUsd, remainingUsd } = capacityDisplay;
+      const items: EarnCardOverviewItem[] = [];
+      if (remainingUsd !== undefined) {
+        items.push({
+          key: 'remainingCapacity',
+          dataTestId: `remainingCapacity-${remainingUsd}`,
+          label: t('labels.remainingCapacity'),
+          value: formatTvl(remainingUsd),
+          tooltip: t('tooltips.remainingCapacity'),
+        });
+      }
+      items.push({
+        key: 'maxCapacity',
+        dataTestId: `maxCapacity-${maxUsd}`,
+        label: t('labels.maxCapacity'),
+        value: formatTvl(maxUsd),
+        tooltip: t('tooltips.maxCapacity'),
+      });
+      return items;
+    }
+
+    case 'capped-native': {
+      const { max, remaining, symbol } = capacityDisplay;
+      const items: EarnCardOverviewItem[] = [];
+      if (remaining !== undefined) {
+        items.push({
+          key: 'remainingCapacity',
+          dataTestId: `remainingCapacity-${remaining}`,
+          label: t('labels.remainingCapacity'),
+          value: `${toCompactValue(remaining)} ${symbol}`,
+          tooltip: t('tooltips.remainingCapacity'),
+        });
+      }
+      items.push({
+        key: 'maxCapacity',
+        dataTestId: `maxCapacity-${max}`,
+        label: t('labels.maxCapacity'),
+        value: `${toCompactValue(max)} ${symbol}`,
+        tooltip: t('tooltips.maxCapacity'),
+      });
+      return items;
+    }
+  }
+};
+
+const buildFeeItem = (
+  feeKey: keyof VaultFees,
+  feeValue: number | undefined,
+  label: string,
+  tooltip: string,
+): EarnCardOverviewItem | null => {
+  if (feeValue === undefined || feeValue === null || feeValue === 0) {
+    return null;
+  }
+
+  return {
+    key: feeKey,
+    dataTestId: `fee-${feeKey}-${feeValue}`,
+    label,
+    value: formatApy(feeValue),
+    tooltip,
+  };
+};
+
+const buildFeeItems = (
+  fees: VaultFees | undefined,
+  variant: EarnCardVariant,
+  t: TFunction,
+): EarnCardOverviewItem[] => {
+  if (variant !== 'overview') {
+    return [];
+  }
+  if (!fees) {
+    return [];
+  }
+
+  return [
+    buildFeeItem(
+      'performance',
+      fees.performance,
+      t('labels.performanceFee'),
+      t('tooltips.performanceFee'),
+    ),
+    buildFeeItem(
+      'management',
+      fees.management,
+      t('labels.managementFee'),
+      t('tooltips.managementFee'),
+    ),
+    buildFeeItem(
+      'withdrawal',
+      fees.withdrawal,
+      t('labels.withdrawalFee'),
+      t('tooltips.withdrawalFee'),
+    ),
+    buildFeeItem(
+      'deposit',
+      fees.deposit,
+      t('labels.depositFee'),
+      t('tooltips.depositFee'),
+    ),
+  ].filter((item): item is EarnCardOverviewItem => item !== null);
+};
+
 export const useFormatDisplayEarnOpportunityData = (
   earnOpportunity: EarnOpportunityWithLatestAnalytics | null,
   variant: EarnCardVariant,
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
+  const capacityDisplay = useVaultCapacity(earnOpportunity, {
+    enabled: variant === 'overview',
+  });
 
   return useMemo(() => {
     const lockupDays = earnOpportunity?.lockupDays;
-    const capInDollar = earnOpportunity?.capInDollar;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
     const rewardsApy = earnOpportunity?.latest.apy.jumperReward;
+    const { fees } = earnOpportunity ?? {};
 
     const chains = uniqBy(
       assets.map((asset) => asset.chain),
@@ -277,20 +382,20 @@ export const useFormatDisplayEarnOpportunityData = (
       apyItem,
       lockupDays
         ? buildLockupItem(lockupDays, variant, t)
-        : capInDollar
-          ? buildCapInDollarItem(capInDollar, variant, t)
-          : buildRewardsApyItem(rewardsApy, variant, t),
+        : buildRewardsApyItem(rewardsApy, variant, t),
       buildTvlItem(tvlUsd, variant, t),
       buildAssetsItem(assets, variant, t),
       buildChainsItem(chains, variant, t, (chain) =>
         getChainName(chain, getChainById),
       ),
       buildProtocolItem(protocol, chains, variant, t),
+      ...buildCapacityItems(capacityDisplay, variant, t),
+      ...buildFeeItems(fees, variant, t),
     ].filter((item): item is EarnCardOverviewItem => item !== null);
 
     return {
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t, getChainById]);
+  }, [earnOpportunity, variant, t, getChainById, capacityDisplay]);
 };

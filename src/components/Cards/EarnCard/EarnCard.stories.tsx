@@ -4,6 +4,7 @@ import {
   commonArgs,
   compactPrimaryAction,
   listItemPrimaryAction,
+  wethCapacityArgs,
 } from './fixtures';
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
@@ -149,6 +150,26 @@ export const OverviewLoading: Story = {
     ...commonArgs,
     variant: 'overview',
     isLoading: true,
+  },
+};
+
+export const OverviewWithNonStableCapacity: Story = {
+  args: {
+    ...wethCapacityArgs,
+    variant: 'overview',
+  },
+};
+
+export const OverviewWithCapInDollarFallback: Story = {
+  args: {
+    ...commonArgs,
+    data: {
+      ...commonArgs.data,
+      lockupDays: undefined,
+      capacity: undefined,
+      capInDollar: '1000000',
+    },
+    variant: 'overview',
   },
 };
 
