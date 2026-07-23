@@ -52,8 +52,6 @@ const eslintConfig = defineConfig([
     ...playwright.configs['flat/recommended'],
     rules: {
       ...playwright.configs['flat/recommended'].rules,
-      // Qase wraps titles in a function call; the rule demands string literals.
-      'playwright/valid-title': 'off',
       // POM assertion methods. Convention: any callee whose name contains
       // `expect` or `verify` performs an assertion. Covers bare `expect()`,
       // `pom.expectVisible()`, `pom.verifyTabsAreVisible()`, and

@@ -82,7 +82,7 @@ export class MainMenuPage {
     ]);
     try {
       // Don't block on the external tab finishing load — t.me / x.com / discord etc. are slow or
-      // unreachable from CI, which hung qase 18 (Telegram) for the whole test timeout. Wait briefly,
+      // unreachable from CI, which hung the Telegram case for the whole test timeout. Wait briefly,
       // then assert the URL Jumper opened (toHaveURL polls page.url(), set on navigation). JUM-1116.
       await newPage
         .waitForLoadState('domcontentloaded', { timeout: 5_000 })

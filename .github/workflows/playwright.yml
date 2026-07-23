@@ -11,70 +11,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  create-qase-run:
-    name: Create Qase Run
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    timeout-minutes: 3
-    outputs:
-      run_id: ${{ steps.create-run.outputs.run_id }}
-      public_link: ${{ steps.create-public-link.outputs.public_link }}
-    steps:
-      - name: Create Qase Test Run
-        id: create-run
-        env:
-          QASE_TOKEN: ${{ secrets.QASE_TOKEN }}
-          GH_RUN_ID: ${{ github.run_id }}
-          GH_EVENT_NAME: ${{ github.event_name }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          if [ -z "$QASE_TOKEN" ]; then
-            echo "No Qase API token available, skipping Qase run creation"
-            exit 0
-          fi
-
-          RUN_TITLE="[Jumper] CI Run $GH_RUN_ID"
-
-          if [ "$GH_EVENT_NAME" = "pull_request" ]; then
-            DESCRIPTION="Pull Request: [$PR_URL]($PR_URL)"
-          else
-            DESCRIPTION=""
-          fi
-
-          data=$(jq -n \
-            --arg title "$RUN_TITLE" \
-            --arg description "$DESCRIPTION" \
-            '{title: $title, description: $description}')
-
-          response=$(curl --silent --fail --show-error --request POST \
-            --url https://api.qase.io/v1/run/WJ \
-            --header "Token: $QASE_TOKEN" \
-            --header 'accept: application/json' \
-            --header 'content-type: application/json' \
-            --data "$data")
-
-          run_id=$(echo "$response" | jq -r '.result.id')
-          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-
-          echo "Qase API Response: $response"
-          echo "Extracted Run ID: $run_id"
-
-      - name: Create public link to run
-        id: create-public-link
-        env:
-          QASE_TOKEN: ${{ secrets.QASE_TOKEN }}
-          QASE_RUN_ID: ${{ steps.create-run.outputs.run_id }}
-        run: |
-          public_link=$(curl --silent --fail --show-error --request PATCH \
-            --url "https://api.qase.io/v1/run/WJ/$QASE_RUN_ID/public" \
-            --header "Token: $QASE_TOKEN" \
-            --header 'accept: application/json' \
-            --header 'content-type: application/json' \
-            --data '{"status":true}' \
-            | jq -r '.result.url')
-
-          echo "public_link=$public_link" >> "$GITHUB_OUTPUT"
-          echo "Public link: $public_link"
   # One build shared by all shards: the build prerenders against live Strapi/backend,
   # so every extra build is another chance for a transient upstream blip to abort a
   # shard ("Export encountered an error"). Building here also turns a build failure
@@ -132,7 +68,7 @@ jobs:
           compression-level: 0 # already zstd-compressed
 
   test:
-    needs: [create-qase-run, build]
+    needs: [build]
     name: Test (${{ matrix.shard }} / ${{ strategy.job-total}})
     continue-on-error: false # Instead we use fail-fast to forward the failure state to subsequent jobs
     # 30 min: headroom for `test.slow()` specs (swapActions/mainMenu) + a 90s
@@ -173,8 +109,6 @@ jobs:
           rm next-build.tar.zst
       - name: Run Playwright tests
         env:
-          QASE_TESTOPS_RUN_ID: ${{ needs.create-qase-run.outputs.run_id || '' }}
-          QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TOKEN }}
           SHARD: ${{ matrix.shard }}/${{ strategy.job-total }}
           E2E_SKIP_BUILD: "1" # serve the prebuilt .next from the build job
           # `next start` re-reads next.config.mjs, which keys output: standalone off
@@ -183,15 +117,8 @@ jobs:
           TEST_WALLET_SEED_PHRASE: ${{ secrets.TEST_WALLET_SEED_PHRASE }}
           TEST_WALLET_PASSWORD: ${{ secrets.TEST_WALLET_PASSWORD }}
         run: |
-          if [ -n "$QASE_TESTOPS_API_TOKEN" ] && [ -n "$QASE_TESTOPS_RUN_ID" ]; then
-            echo "Running tests with Qase reporting (Run ID: $QASE_TESTOPS_RUN_ID)"
-            xvfb-run -a pnpm run test:ci:e2e:qase \
-              --shard "$SHARD"
-          else
-            echo "Running tests without Qase reporting (API token or run ID not available)"
-            xvfb-run -a pnpm run test:ci:e2e \
-              --shard "$SHARD"
-          fi
+          xvfb-run -a pnpm run test:ci:e2e \
+            --shard "$SHARD"
       - name: Upload blob report to Github Actions Artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -372,32 +299,9 @@ jobs:
           destination_dir: ${{ steps.report-url.outputs.path }}
           keep_files: true
 
-  # Closes the shared run once after all shards report; always() also rescues runs orphaned by cancellation.
-  complete-qase-run:
-    needs: [create-qase-run, test]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    steps:
-      - name: Complete Qase Test Run
-        env:
-          QASE_TOKEN: ${{ secrets.QASE_TOKEN }}
-          QASE_RUN_ID: ${{ needs.create-qase-run.outputs.run_id }}
-        run: |
-          if [ -z "$QASE_TOKEN" ] || [ -z "$QASE_RUN_ID" ]; then
-            echo "No Qase token or run id available, nothing to complete"
-            exit 0
-          fi
-
-          curl --silent --fail --show-error --request POST \
-            --url "https://api.qase.io/v1/run/WJ/$QASE_RUN_ID/complete" \
-            --header "Token: $QASE_TOKEN" \
-            --header 'accept: application/json'
-
   post-comment:
     # !cancelled() lets this run even when publish-report is skipped (fork PR), so the
-    # summary still posts. Qase reporting still runs (create-qase-run/complete-qase-run);
-    # only its PR-comment link was dropped in favour of the Pages report link.
+    # summary still posts.
     # The merge-reports guard keeps a run with no results (failed or skipped build/shards)
     # from overwriting the previous summary with an empty sticky comment.
     needs: [merge-reports, publish-report]

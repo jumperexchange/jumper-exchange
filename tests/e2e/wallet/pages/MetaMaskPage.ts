@@ -363,10 +363,10 @@ export default class MetaMaskPage extends WalletPage {
   /**
    * Enters a wallet secret by pasting it from the OS clipboard rather than
    * typing it. A typed `fill()`/`type()` records the value verbatim in
-   * Playwright's trace, which is uploaded to Qase on a public URL; a pasted
-   * value travels OS clipboard -> browser and never passes through a traced
-   * call, so the trace only captures the Ctrl/Cmd+V keypress. The clipboard is
-   * cleared afterwards so the secret does not linger.
+   * Playwright's trace, which is published to a public GitHub Pages report;
+   * a pasted value travels OS clipboard -> browser and never passes through a
+   * traced call, so the trace only captures the Ctrl/Cmd+V keypress. The
+   * clipboard is cleared afterwards so the secret does not linger.
    */
   private async pasteSecret(selector: string, value: string): Promise<void> {
     writeOsClipboard(value);
