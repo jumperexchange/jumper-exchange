@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/github/license/jumperexchange/jumper-exchange)](/LICENSE)
 [![Crowdin](https://badges.crowdin.net/jumper-exchange/localized.svg)](https://crowdin.com/project/jumper-exchange)
-[![Follow on Twitter](https://img.shields.io/twitter/follow/JumperExchange.svg?label=follow+Jumper.Exchange)](https://twitter.com/JumperExchange)
+[![Follow on X](https://img.shields.io/twitter/follow/jumperapp.svg?label=follow+Jumper)](https://x.com/jumperapp)
 
 </div>
 
