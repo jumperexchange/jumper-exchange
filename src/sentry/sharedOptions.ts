@@ -138,7 +138,7 @@ export function getSentryBaseOptions(
     dsn,
     enabled: !!dsn && !off,
     environment: process.env.NEXT_PUBLIC_ENVIRONMENT || 'development',
-    debug: !prod,
+    debug: false,
     tracesSampleRate,
     enableLogs,
     ignoreErrors: DEFAULT_IGNORE_ERRORS,

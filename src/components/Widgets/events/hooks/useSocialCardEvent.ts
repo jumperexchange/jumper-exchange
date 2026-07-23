@@ -12,8 +12,10 @@ import { useSocialCardStore } from '@/stores/socialCard/SocialCardStore';
 import {
   debugExtraOutputCard,
   deriveExtraOutputCard,
+  deriveExtraOutputCardPreview,
   type QuoteSelection,
 } from '@/utils/image-generation/deriveExtraOutputCard';
+import { isBeta } from '@/utils/isBeta';
 import { isProduction } from '@/utils/isProduction';
 import { getRouteStatus } from '@/utils/routes';
 import type { WidgetEventsConfig } from '../../WidgetEventsManager';
@@ -96,11 +98,19 @@ export const useSocialCardEvent = () => {
         logExtraOutputDebug(selection);
       }
 
-      if (!isEnabledRef.current || !isExchangeTabRef.current) {
+      if (!isExchangeTabRef.current) {
         return;
       }
 
-      const card = deriveExtraOutputCard(selection);
+      // Beta sessions (use-beta localStorage flag) bypass the rollout flag and
+      // the $10 minimum so the nudge can be validated on any real transaction.
+      // Everyone else needs the Strapi flag and the >$10 threshold.
+      const beta = isBeta();
+      const card = beta
+        ? deriveExtraOutputCardPreview(selection)
+        : isEnabledRef.current
+          ? deriveExtraOutputCard(selection)
+          : null;
       if (!card) {
         return;
       }
