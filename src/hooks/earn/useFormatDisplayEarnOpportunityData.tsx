@@ -38,7 +38,7 @@ interface EarnCardOverviewItem {
   onClick?: () => void;
 }
 
-interface ApyWindowOptions {
+interface ApyWindowDisplayOptions {
   apyWindow: ApyWindow;
   onToggleApyWindow?: () => void;
 }
@@ -49,7 +49,7 @@ interface ApyWindowOptions {
 // clickable so the user can switch back to a window with data.
 const buildUnknownApyItem = (
   t: TFunction,
-  windowOptions: ApyWindowOptions,
+  windowOptions: ApyWindowDisplayOptions,
   labelKey: 'apyLabel' | 'aprLabel',
 ): EarnCardOverviewItem => {
   const key = labelKey === 'apyLabel' ? 'apy' : 'apr';
@@ -69,7 +69,7 @@ const buildApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
-  windowOptions?: ApyWindowOptions,
+  windowOptions?: ApyWindowDisplayOptions,
 ): EarnCardOverviewItem | null => {
   // No data for the selected window: show "Unknown" when a toggle is present
   // to recover from it; otherwise hide the tile (legacy, no-toggle behavior).
@@ -107,7 +107,7 @@ const buildTotalApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
-  windowOptions?: ApyWindowOptions,
+  windowOptions?: ApyWindowDisplayOptions,
 ): EarnCardOverviewItem | null => {
   if (apy === undefined) {
     return windowOptions
@@ -417,7 +417,7 @@ const buildFeeItems = (
 export const useFormatDisplayEarnOpportunityData = (
   earnOpportunity: EarnOpportunityWithLatestAnalytics | null,
   variant: EarnCardVariant,
-  windowOptions?: ApyWindowOptions,
+  windowOptions?: ApyWindowDisplayOptions,
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();

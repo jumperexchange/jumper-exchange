@@ -3,4 +3,5 @@ export const ApyWindowOptions = {
   THIRTY_DAY: '30d',
 } as const;
 
-export type ApyWindow = '7d' | '30d';
+export type ApyWindow =
+  (typeof ApyWindowOptions)[keyof typeof ApyWindowOptions];

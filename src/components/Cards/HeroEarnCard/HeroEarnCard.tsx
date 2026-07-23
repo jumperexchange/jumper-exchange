@@ -22,6 +22,7 @@ import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadg
 import { slugifyTestId } from '@/utils/slugifyTestId';
 import type { ApyWindow } from '@/utils/earn/apyWindow';
 import { getDisplayApy } from '@/utils/earn/getDisplayApy';
+import { formatApy } from '@/utils/numbers/apy';
 
 const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
   asset: {},
@@ -93,7 +94,7 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   );
   const displayApy = getDisplayApy(latest, apyWindow);
   const formattedApy = displayApy
-    ? `${(displayApy.total * 100).toLocaleString()}%`
+    ? formatApy(displayApy.total)
     : t('earn.apyWindow.unknown');
 
   const title = name || protocol.product || protocol.name;

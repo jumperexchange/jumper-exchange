@@ -2,8 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { TabSelect } from '@/components/core/TabSelect/TabSelect';
 import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 
-export { ApyWindowOptions, type ApyWindow };
-
 type Props = {
   value: ApyWindow;
   onChange: (value: ApyWindow) => void;
