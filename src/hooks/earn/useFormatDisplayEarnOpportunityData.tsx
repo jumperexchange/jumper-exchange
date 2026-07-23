@@ -11,7 +11,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
 import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
-import type { ApyWindow } from '@/utils/earn/apyWindow';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import type {
   APYItem,
   Chain,
@@ -43,6 +43,13 @@ interface ApyWindowDisplayOptions {
   onToggleApyWindow?: () => void;
 }
 
+// Explicit key selection (rather than `label${apyWindow}` string interpolation)
+// keeps both i18n keys statically greppable.
+const getWindowLabel = (t: TFunction, apyWindow: ApyWindow): string =>
+  apyWindow === ApyWindowOptions.THIRTY_DAY
+    ? t('earn.apyWindow.label30d')
+    : t('earn.apyWindow.label7d');
+
 // Builds the explicit "Unknown" tile for when the selected window's APY data
 // is absent. Only used when windowOptions is present, since the tile is the
 // toggle's only affordance on the detail overview card — it must stay
@@ -57,7 +64,7 @@ const buildUnknownApyItem = (
     key,
     dataTestId: `${key}-unknown`,
     label: t(`earn.apyWindow.${labelKey}`, {
-      window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+      window: getWindowLabel(t, windowOptions.apyWindow),
     }),
     value: t('earn.apyWindow.unknown'),
     tooltip: t('earn.apyWindow.tooltip'),
@@ -87,7 +94,7 @@ const buildApyItem = (
   const formatted = formatApy(total);
   const label = windowOptions
     ? t('earn.apyWindow.apyLabel', {
-        window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+        window: getWindowLabel(t, windowOptions.apyWindow),
       })
     : t('labels.apy');
   const tooltip = windowOptions
@@ -123,7 +130,7 @@ const buildTotalApyItem = (
   const formatted = formatApy(displayedApy);
   const label = windowOptions
     ? t('earn.apyWindow.aprLabel', {
-        window: t(`earn.apyWindow.label${windowOptions.apyWindow}`),
+        window: getWindowLabel(t, windowOptions.apyWindow),
       })
     : t('labels.apr');
   const tooltip = windowOptions
