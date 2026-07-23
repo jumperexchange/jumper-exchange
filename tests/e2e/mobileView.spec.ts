@@ -1,5 +1,4 @@
 import { expect } from '@playwright/test';
-import { qase } from 'playwright-qase-reporter';
 
 import enTranslation from '../../src/i18n/translations/en/translation.json' with { type: 'json' };
 import { noWalletTest as test } from './fixtures/noWallet';
@@ -17,67 +16,63 @@ test.describe('Verify essential mobile flows', () => {
     await page.waitForLoadState('domcontentloaded');
   });
 
-  test(
-    qase(4, 'Page fits the mobile viewport width correctly'),
-    async ({ page }) => {
-      const viewport = page.viewportSize();
-      // eslint-disable-next-line playwright/no-conditional-in-test -- null-guard for viewportSize()
-      if (!viewport) {
-        throw new Error('Viewport size not available');
+  test('Page fits the mobile viewport width correctly', async ({ page }) => {
+    const viewport = page.viewportSize();
+    // eslint-disable-next-line playwright/no-conditional-in-test -- null-guard for viewportSize()
+    if (!viewport) {
+      throw new Error('Viewport size not available');
+    }
+
+    const result = await page.evaluate(() => {
+      const body = document.body;
+      const doc = document.documentElement;
+
+      const scrollWidth = Math.max(body.scrollWidth, doc.scrollWidth);
+      const clientWidth = Math.max(body.clientWidth, doc.clientWidth);
+      const offsetWidth = Math.max(body.offsetWidth, doc.offsetWidth);
+      const hasHorizontalScroll = body.scrollWidth > window.innerWidth;
+
+      return { clientWidth, hasHorizontalScroll, offsetWidth, scrollWidth };
+    });
+
+    expect(result.scrollWidth).toBeLessThanOrEqual(viewport.width);
+    const layoutWidth = Math.max(result.offsetWidth, result.clientWidth);
+    expect(layoutWidth).toBeGreaterThanOrEqual(viewport.width - 1);
+    expect(result.hasHorizontalScroll).toBeFalsy();
+  });
+
+  test('Verify welcome page elements are visible in mobile view', async ({
+    page,
+  }) => {
+    const landingPage = new LandingPage(page);
+
+    await test.step('check if elements are within the mobile viewport', async () => {
+      const landingPageElements = [
+        page.getByRole('heading', {
+          name: enTranslation.navbar.welcome.title,
+        }),
+        page.getByText(
+          removeFormattingTags(enTranslation.navbar.welcome.subtitle),
+        ),
+        page.getByText(enTranslation.navbar.welcome.cta),
+      ];
+
+      for (const element of landingPageElements) {
+        expect(await isFullyInViewport(element, page)).toBe(true);
       }
+    });
 
-      const result = await page.evaluate(() => {
-        const body = document.body;
-        const doc = document.documentElement;
+    await test.step('check chains/bridges/DEXs counters are populated', async () => {
+      await landingPage.expectHomepageStatsLoaded();
+    });
 
-        const scrollWidth = Math.max(body.scrollWidth, doc.scrollWidth);
-        const clientWidth = Math.max(body.clientWidth, doc.clientWidth);
-        const offsetWidth = Math.max(body.offsetWidth, doc.offsetWidth);
-        const hasHorizontalScroll = body.scrollWidth > window.innerWidth;
+    await test.step('welcome can be closed', async () => {
+      await landingPage.closeWelcomeScreen();
+      await expect(landingPage.getStartedButton).toBeHidden();
+    });
+  });
 
-        return { clientWidth, hasHorizontalScroll, offsetWidth, scrollWidth };
-      });
-
-      expect(result.scrollWidth).toBeLessThanOrEqual(viewport.width);
-      const layoutWidth = Math.max(result.offsetWidth, result.clientWidth);
-      expect(layoutWidth).toBeGreaterThanOrEqual(viewport.width - 1);
-      expect(result.hasHorizontalScroll).toBeFalsy();
-    },
-  );
-
-  test(
-    qase(5, 'Verify welcome page elements are visible in mobile view'),
-    async ({ page }) => {
-      const landingPage = new LandingPage(page);
-
-      await test.step('check if elements are within the mobile viewport', async () => {
-        const landingPageElements = [
-          page.getByRole('heading', {
-            name: enTranslation.navbar.welcome.title,
-          }),
-          page.getByText(
-            removeFormattingTags(enTranslation.navbar.welcome.subtitle),
-          ),
-          page.getByText(enTranslation.navbar.welcome.cta),
-        ];
-
-        for (const element of landingPageElements) {
-          expect(await isFullyInViewport(element, page)).toBe(true);
-        }
-      });
-
-      await test.step('check chains/bridges/DEXs counters are populated', async () => {
-        await landingPage.expectHomepageStatsLoaded();
-      });
-
-      await test.step('welcome can be closed', async () => {
-        await landingPage.closeWelcomeScreen();
-        await expect(landingPage.getStartedButton).toBeHidden();
-      });
-    },
-  );
-
-  test(qase(6, 'Verify items in the menu'), async ({ page }) => {
+  test('Verify items in the menu', async ({ page }) => {
     const mainMenu = new MainMenuPage(page);
 
     await test.step('bypass the welcome screen', async () => {

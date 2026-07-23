@@ -21,10 +21,10 @@ TEST_WALLET_PASSWORD="..."
 **Wallet funding requirements:**
 
 - Most wallet specs work with a throwaway zero-funds wallet (connect, sign-message, switch-network, add-custom-network flows).
-- `walletSwapExecute.spec.ts` (qase 205) executes a real on-chain swap on Arbitrum and consumes ~5 USDC per run. The wallet needs USDC + ETH for gas on Arb. Refill via `lifinance/automate-wallet-dev-fees`.
+- `walletSwapExecute.spec.ts` executes a real on-chain swap on Arbitrum and consumes ~5 USDC per run. The wallet needs USDC + ETH for gas on Arb. Refill via `lifinance/automate-wallet-dev-fees`.
 - Funded-wallet-gated specs (`walletSignPerkClaim`, `walletSignPerkClaimReject`, `walletMissionVerify`, `earnPage` user filters, `portfolioPage`) are currently `test.fixme()` pending shared funded wallet provisioning.
 
-CI injects the same `TEST_WALLET_*` values from GitHub Actions secrets — the CI wallet must be the funded one for qase 205 to pass.
+CI injects the same `TEST_WALLET_*` values from GitHub Actions secrets — the CI wallet must be the funded one for `walletSwapExecute.spec.ts` to pass.
 
 **Why two files?** `tests/.env.test` is committed and holds shared defaults
 (URLs, `NEXT_PUBLIC_*` keys, integrator IDs) — so a fresh clone has a working
@@ -46,7 +46,6 @@ pnpm tsc:tests                                     # typecheck the tests package
 pnpm exec eslint tests                             # lint
 pnpm exec playwright test --list                   # discover specs
 pnpm exec playwright show-report                   # open last HTML report
-pnpm test:qase                                     # full suite + Qase reporter
 ```
 
 When `BASE_URL` is set the local dev server is skipped — Playwright runs
@@ -219,13 +218,12 @@ Pick a fixture, then follow the pattern that matches it.
    ```ts
    import { connectedTest as test, expect } from './fixtures';
    ```
-3. Wrap each `test()` body in `qase(N, "title")` where `N` is a unique TestOps ID. Don't reuse IDs from existing specs — `pnpm exec playwright test --list | grep "Qase ID"` shows the current set.
-4. For wallet-popup interactions use:
+3. For wallet-popup interactions use:
    - `wallet.connectInPopup(walletContext)` — approves the connect popup
    - `wallet.signPopup(walletContext)` — approves a sign-typed-data / message signature
    - `wallet.rejectPopup(walletContext)` — rejects whatever popup is open
    - `wallet.switchNetworkFromPopup(walletContext)` — approves a `wallet_switchEthereumChain` request
-5. Before pushing:
+4. Before pushing:
    ```sh
    pnpm tsc:tests
    pnpm exec eslint tests --max-warnings=0
@@ -265,12 +263,5 @@ Mechanical rules (TS strict, no `any` / `!` without why, perfectionist sort, pla
 - **Marketing pages cross-host to `jumper.xyz`.** Privacy / Terms / Newsletter / Scan navigate to `jumper.xyz`; URL assertions must be host-agnostic regex.
 
 ## Tools
-
-**Qase TestOps.** Every `test()` is wrapped in `qase(N, "title")`. The numeric ID is the link to TestOps; do not change it when moving or renaming a spec.
-
-```sh
-export QASE_TESTOPS_API_TOKEN="..."   # from 1Password (QA dept)
-pnpm test:qase
-```
 
 **VS Code.** Install the official "Playwright Test for VSCode" extension. Run/debug individual tests from the Test sidebar. The extension picks up `playwright.config.ts` automatically.
