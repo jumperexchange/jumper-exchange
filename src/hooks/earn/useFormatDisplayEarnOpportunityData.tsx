@@ -4,7 +4,6 @@ import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { toCompactValue } from '@/utils/formatNumbers';
 import { getDisplayApy } from '@/utils/earn/getDisplayApy';
-import { formatCapInDollar } from '@/utils/numbers/capInDollar';
 import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';

@@ -87,6 +87,7 @@ export const commonArgs = {
 // via the token's USD price, not rendered as if native units were dollars.
 // Mainnet WETH mirrors the reported `aave-v3-weth-on-mainnet` bug.
 export const wethCapacityArgs = {
+  apyWindow: commonArgs.apyWindow,
   data: {
     ...commonArgs.data,
     asset: {
