@@ -1,8 +1,10 @@
 import { JUMPER_STRAPI_URL } from '@/const/urls';
+import { ApyWindowOptions } from '@/utils/earn/apyWindow';
 import { DepositButton } from 'src/components/composite/DepositButton/DepositButton';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 
 export const commonArgs = {
+  apyWindow: ApyWindowOptions.SEVEN_DAY,
   data: {
     isRedeemable: true,
     name: 'Moonwell Flagship USDC on base',
@@ -55,6 +57,12 @@ export const commonArgs = {
         intrinsic: 0,
         total: 0.07150000000000001,
       },
+      apy30d: {
+        base: 0.0892,
+        reward: 0.0308,
+        intrinsic: 0,
+        total: 0.12,
+      },
     },
     interactionFlags: {
       canDeposit: true,
@@ -79,6 +87,7 @@ export const commonArgs = {
 // via the token's USD price, not rendered as if native units were dollars.
 // Mainnet WETH mirrors the reported `aave-v3-weth-on-mainnet` bug.
 export const wethCapacityArgs = {
+  apyWindow: commonArgs.apyWindow,
   data: {
     ...commonArgs.data,
     asset: {

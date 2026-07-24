@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { EarnCardProps } from '../EarnCard.types';
+import type { FC } from 'react';
+import type { EarnCardProps } from '../EarnCard.types';
 import {
   OverviewEarnCardContainer,
   OverviewEarnCardContentContainer,
@@ -11,20 +11,25 @@ import { chunk } from 'lodash';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { OverviewEarnSkeleton } from './OverviewEarnSkeleton';
-import { useFormatDisplayEarnOpportunityData } from 'src/hooks/earn/useFormatDisplayEarnOpportunityData';
+import { useFormatDisplayEarnOpportunityData } from '@/hooks/earn/useFormatDisplayEarnOpportunityData';
 
 export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
   data,
   isLoading,
   fullWidth,
   headerBadge,
+  apyWindow,
+  onToggleApyWindow,
 }) => {
   const isEmpty = !data || isLoading;
   const { t } = useTranslation();
 
+  const hasApyWindow = apyWindow && onToggleApyWindow;
+
   const { overviewItems } = useFormatDisplayEarnOpportunityData(
     data,
     'overview',
+    hasApyWindow ? { apyWindow, onToggleApyWindow } : undefined,
   );
 
   const items = overviewItems.map((item, index) => {
@@ -39,6 +44,7 @@ export const OverviewEarnCard: FC<Omit<EarnCardProps, 'variant'>> = ({
         valuePrepend={item.valuePrepend}
         tooltip={item.tooltip}
         shouldExpand={shouldExpand}
+        onClick={item.onClick}
       />
     );
   });

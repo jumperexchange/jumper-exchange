@@ -5,20 +5,23 @@ import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
 import { GridContainer } from 'src/components/Containers/GridContainer';
 import type { EarnOpportunityWithLatestAnalytics } from 'src/types/jumper-backend';
-import { AppPaths } from 'src/const/urls';
 import { AtLeastNWhenLoading } from '@/utils/earn/utils';
 import { useMemo } from 'react';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
+import { buildEarnHref } from '@/app/ui/earn/utils';
 
 export const EarnOpportunitiesCards = ({
   items,
   isLoading,
   variant,
   showPlaceholderCard,
+  apyWindow,
 }: {
   items: EarnOpportunityWithLatestAnalytics[];
   isLoading: boolean;
   variant: EarnCardVariant;
   showPlaceholderCard: boolean;
+  apyWindow: ApyWindow;
 }) => {
   const isCompact = variant === 'compact';
   const gridItems = useMemo(
@@ -51,10 +54,11 @@ export const EarnOpportunitiesCards = ({
               <EarnCard variant={variant} isLoading={true} data={null} />
             ) : (
               <EarnCard
-                href={`${AppPaths.Earn}/${item.slug}`}
+                href={buildEarnHref(item, apyWindow)}
                 variant={variant}
                 isLoading={false}
                 data={item}
+                apyWindow={apyWindow}
                 primaryAction={
                   <DepositFlowButton
                     // TODO: Enable deposit flow button and properly set earnOpportunity

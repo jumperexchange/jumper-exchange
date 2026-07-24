@@ -14,8 +14,10 @@ import Pagination, {
 import { EarnFilterBar } from '@/components/EarnFilterBar/EarnFilterBar';
 import { useContactSupportEvent } from '@/components/Widgets/events/hooks/useContactSupportEvent';
 import { HeaderHeight } from '@/const/headerHeight';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { useSettingsStore } from '@/stores/settings/SettingsStore';
 
+import { useMediaQuery } from '@mui/material';
 import { EarnEmptyList } from '../EarnEmptyList/EarnEmptyList';
 import {
   EarnFilteringProvider,
@@ -24,7 +26,6 @@ import {
 import { EarnOpportunitiesCards } from '../EarnOpportunitiesCards';
 import { EarnViewAllMarketsButton } from '../EarnViewAllMarketsButton';
 import { EarnFilterTab } from '../types';
-import { useMediaQuery } from '@mui/material';
 
 const EarnOpportunitiesAllInner = () => {
   useContactSupportEvent();
@@ -46,6 +47,8 @@ const EarnOpportunitiesAllInner = () => {
     state.earnCardVariant,
     state.setEarnCardVariant,
   ]);
+
+  const { apyWindow, setApyWindow } = useApyWindow();
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { amount: 0, initial: true });
@@ -97,12 +100,15 @@ const EarnOpportunitiesAllInner = () => {
             isLoading={isAllDataLoading}
             variant={variant}
             setVariant={setVariant}
+            apyWindow={apyWindow}
+            setApyWindow={setApyWindow}
           />
           <EarnOpportunitiesCards
             items={data}
             isLoading={isLoading}
             showPlaceholderCard={tab === EarnFilterTab.YOUR_POSITIONS}
             variant={variant}
+            apyWindow={apyWindow}
           />
           <EarnEmptyList />
           {tab === EarnFilterTab.FOR_YOU && isConnected && !!data.length && (

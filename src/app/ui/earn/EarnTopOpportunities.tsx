@@ -1,19 +1,19 @@
 'use client';
+import { buildEarnHref } from '@/app/ui/earn/utils';
+import { useApyWindow } from '@/hooks/earn/useApyWindow';
 import { Grid } from '@mui/material';
-import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { HeroEarnCard } from 'src/components/Cards/HeroEarnCard/HeroEarnCard';
-import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
+import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 import { DepositFlowButton } from 'src/components/composite/DepositFlow/DepositFlow';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { ithCopy } from 'src/components/Cards/HeroEarnCard/utils';
-import { AppPaths } from 'src/const/urls';
-
-interface EarnTopOpportunities {}
+import { useEarnTopOpportunities } from 'src/hooks/earn/useEarnTopOpportunities';
+import { AtLeastNWhenLoading } from 'src/utils/earn/utils';
 
 export const EarnTopOpportunities = () => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { data, isLoading, error, isError } = useEarnTopOpportunities({});
+  const { apyWindow } = useApyWindow();
   const items = AtLeastNWhenLoading(data, isLoading, 2);
   const isSingleItem = items?.length === 1;
 
@@ -37,9 +37,10 @@ export const EarnTopOpportunities = () => {
             ) : (
               <HeroEarnCard
                 key={item.slug}
-                href={`${AppPaths.Earn}/${item.slug}`}
+                href={buildEarnHref(item, apyWindow)}
                 isLoading={isLoading}
                 data={item}
+                apyWindow={apyWindow}
                 copy={ithCopy(index)}
                 isMain={isMain}
                 primaryAction={

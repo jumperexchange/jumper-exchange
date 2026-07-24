@@ -69,3 +69,26 @@ export const HeroWithActionAndNoRecommendationAndCustomCopy: Story = {
     isMain: true,
   },
 };
+
+export const Hero30dApyWindow: Story = {
+  args: {
+    ...commonArgs,
+    apyWindow: '30d',
+    primaryAction: heroEarnCardPrimaryAction,
+  },
+};
+
+export const Hero30dApyWindowUnknown: Story = {
+  args: {
+    ...commonArgs,
+    apyWindow: '30d',
+    data: {
+      ...commonArgs.data,
+      latest: {
+        ...commonArgs.data.latest,
+        apy30d: undefined,
+      },
+    },
+    primaryAction: heroEarnCardPrimaryAction,
+  },
+};

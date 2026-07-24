@@ -3,23 +3,32 @@ import { useState } from 'react';
 import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
 import {
   EarnFilterTab,
-  SortByEnum,
+  type SortByEnum,
   SortByOptions,
 } from '../../app/ui/earn/types';
-import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import { useApyWindowMock } from '@/hooks/earn/useApyWindow.mock';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
 import { JUMPER_STRAPI_URL } from '@/const/urls';
 
+const noopSetApyWindow = (_apyWindow: ApyWindow) => {};
+
 const meta = {
   component: EarnFilterBar,
   title: 'Earn/FilterBar',
+  args: {
+    apyWindow: ApyWindowOptions.SEVEN_DAY,
+    setApyWindow: noopSetApyWindow,
+  },
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       return (
         <EarnFilteringContext.Provider value={mockContextValue()}>
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },
@@ -181,6 +190,7 @@ export const EmptyState: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       return (
         <EarnFilteringContext.Provider
           value={{
@@ -194,7 +204,7 @@ export const EmptyState: Story = {
             totalMarkets: 0,
           }}
         >
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },
@@ -209,6 +219,7 @@ export const LoadingState: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       return (
         <EarnFilteringContext.Provider
           value={{
@@ -217,7 +228,7 @@ export const LoadingState: Story = {
             isAllDataLoading: true,
           }}
         >
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },
@@ -232,6 +243,7 @@ export const MinimalData: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('list-item');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       return (
         <EarnFilteringContext.Provider
           value={{
@@ -255,7 +267,7 @@ export const MinimalData: Story = {
             totalMarkets: 1,
           }}
         >
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },
@@ -270,6 +282,7 @@ export const WithActiveFilters: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       return (
         <EarnFilteringContext.Provider
           value={{
@@ -284,7 +297,7 @@ export const WithActiveFilters: Story = {
             },
           }}
         >
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },
@@ -299,6 +312,7 @@ export const LargeDataSet: Story = {
   decorators: [
     (Story) => {
       const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      const { apyWindow, setApyWindow } = useApyWindowMock();
       const largeChains = Array.from({ length: 20 }, (_, i) => ({
         chainId: i + 1,
         chainKey: `chain-${i + 1}`,
@@ -324,7 +338,7 @@ export const LargeDataSet: Story = {
             totalMarkets: 500,
           }}
         >
-          <Story args={{ variant, setVariant }} />
+          <Story args={{ variant, setVariant, apyWindow, setApyWindow }} />
         </EarnFilteringContext.Provider>
       );
     },

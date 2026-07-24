@@ -3,12 +3,14 @@ import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadg
 import { useChains } from '@/hooks/useChains';
 import { getChainName } from '@/utils/chains/getChainName';
 import { toCompactValue } from '@/utils/formatNumbers';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 import type { TFunction } from 'i18next';
 import uniqBy from 'lodash/uniqBy';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { EarnCardVariant } from 'src/components/Cards/EarnCard/EarnCard.types';
-import { AvatarSize } from 'src/components/core/AvatarStack/AvatarStack.types';
+import type { EarnCardVariant } from '@/components/Cards/EarnCard/EarnCard.types';
+import { AvatarSize } from '@/components/core/AvatarStack/AvatarStack.types';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
 import type {
   APYItem,
   Chain,
@@ -16,12 +18,12 @@ import type {
   Protocol,
   Token,
   VaultFees,
-} from 'src/types/jumper-backend';
-import { capitalizeString } from 'src/utils/capitalizeString';
+} from '@/types/jumper-backend';
+import { capitalizeString } from '@/utils/capitalizeString';
 import { formatLockupInDay } from '@/utils/formatLockupInDay';
-import { formatApy } from 'src/utils/numbers/apy';
-import { formatTvl } from 'src/utils/numbers/tvl';
-import { isZeroApprox } from 'src/utils/numbers/utils';
+import { formatApy } from '@/utils/numbers/apy';
+import { formatTvl } from '@/utils/numbers/tvl';
+import { isZeroApprox } from '@/utils/numbers/utils';
 import type { VaultCapacityDisplay } from './useVaultCapacity';
 import { useVaultCapacity } from './useVaultCapacity';
 
@@ -32,24 +34,78 @@ interface EarnCardOverviewItem {
   value: string;
   valuePrepend?: React.ReactElement;
   tooltip: string;
+  onClick?: () => void;
 }
+
+interface ApyWindowDisplayOptions {
+  apyWindow: ApyWindow;
+  onToggleApyWindow?: () => void;
+}
+
+// Explicit key selection (rather than `label${apyWindow}` string interpolation)
+// keeps both i18n keys statically greppable.
+const getWindowLabel = (t: TFunction, apyWindow: ApyWindow): string =>
+  apyWindow === ApyWindowOptions.THIRTY_DAY
+    ? t('earn.apyWindow.label30d')
+    : t('earn.apyWindow.label7d');
+
+// Builds the explicit "Unknown" tile for when the selected window's APY data
+// is absent. Only used when windowOptions is present, since the tile is the
+// toggle's only affordance on the detail overview card — it must stay
+// clickable so the user can switch back to a window with data.
+const buildUnknownApyItem = (
+  t: TFunction,
+  windowOptions: ApyWindowDisplayOptions,
+  labelKey: 'apyLabel' | 'aprLabel',
+): EarnCardOverviewItem => {
+  const key = labelKey === 'apyLabel' ? 'apy' : 'apr';
+  return {
+    key,
+    dataTestId: `${key}-unknown`,
+    label: t(`earn.apyWindow.${labelKey}`, {
+      window: getWindowLabel(t, windowOptions.apyWindow),
+    }),
+    value: t('earn.apyWindow.unknown'),
+    tooltip: t('earn.apyWindow.tooltip'),
+    onClick: windowOptions.onToggleApyWindow,
+  };
+};
 
 const buildApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
+  windowOptions?: ApyWindowDisplayOptions,
 ): EarnCardOverviewItem | null => {
-  if (!apy?.total || isZeroApprox(apy.total)) {
+  // No data for the selected window: show "Unknown" when a toggle is present
+  // to recover from it; otherwise hide the tile (legacy, no-toggle behavior).
+  if (apy === undefined) {
+    return windowOptions
+      ? buildUnknownApyItem(t, windowOptions, 'apyLabel')
+      : null;
+  }
+
+  const total = apy.total ?? 0;
+  if (isZeroApprox(total) && !windowOptions) {
     return null;
   }
 
-  const formatted = formatApy(apy.total);
+  const formatted = formatApy(total);
+  const label = windowOptions
+    ? t('earn.apyWindow.apyLabel', {
+        window: getWindowLabel(t, windowOptions.apyWindow),
+      })
+    : t('labels.apy');
+  const tooltip = windowOptions
+    ? t('earn.apyWindow.tooltip')
+    : t('tooltips.apy');
   return {
     key: 'apy',
-    dataTestId: `apy-${apy.total}`,
-    label: t('labels.apy'),
+    dataTestId: `apy-${total}`,
+    label,
     value: formatted,
-    tooltip: t('tooltips.apy'),
+    tooltip,
+    onClick: windowOptions?.onToggleApyWindow,
   };
 };
 
@@ -57,19 +113,35 @@ const buildTotalApyItem = (
   apy: APYItem | undefined,
   variant: EarnCardVariant,
   t: TFunction,
+  windowOptions?: ApyWindowDisplayOptions,
 ): EarnCardOverviewItem | null => {
-  const displayedApy = (apy?.base ?? 0) + (apy?.customReward ?? 0);
-  if (!displayedApy || isZeroApprox(displayedApy)) {
+  if (apy === undefined) {
+    return windowOptions
+      ? buildUnknownApyItem(t, windowOptions, 'aprLabel')
+      : null;
+  }
+
+  const displayedApy = (apy.base ?? 0) + (apy.customReward ?? 0);
+  if (isZeroApprox(displayedApy) && !windowOptions) {
     return null;
   }
 
   const formatted = formatApy(displayedApy);
+  const label = windowOptions
+    ? t('earn.apyWindow.aprLabel', {
+        window: getWindowLabel(t, windowOptions.apyWindow),
+      })
+    : t('labels.apr');
+  const tooltip = windowOptions
+    ? t('earn.apyWindow.tooltip')
+    : t('tooltips.apr');
   return {
     key: 'apr',
     dataTestId: `apr-${displayedApy}`,
-    label: t('labels.apr'),
+    label,
     value: formatted,
-    tooltip: t('tooltips.apr'),
+    tooltip,
+    onClick: windowOptions?.onToggleApyWindow,
   };
 };
 
@@ -351,6 +423,7 @@ const buildFeeItems = (
 export const useFormatDisplayEarnOpportunityData = (
   earnOpportunity: EarnOpportunityWithLatestAnalytics | null,
   variant: EarnCardVariant,
+  windowOptions?: ApyWindowDisplayOptions,
 ) => {
   const { t } = useTranslation();
   const { getChainById } = useChains();
@@ -362,7 +435,6 @@ export const useFormatDisplayEarnOpportunityData = (
     const lockupDays = earnOpportunity?.lockupDays;
     const protocol = earnOpportunity?.protocol;
     const assets = earnOpportunity?.asset ? [earnOpportunity.asset] : [];
-    const rewardsApy = earnOpportunity?.latest.apy.jumperReward;
     const { fees } = earnOpportunity ?? {};
 
     const chains = uniqBy(
@@ -370,12 +442,20 @@ export const useFormatDisplayEarnOpportunityData = (
       'chainId',
     );
 
-    const { apy, tvlUsd } = earnOpportunity?.latest ?? {};
+    const apy = getDisplayApy(
+      earnOpportunity?.latest,
+      windowOptions?.apyWindow,
+    );
+    const tvlUsd = earnOpportunity?.latest?.tvlUsd;
+
+    // jumperReward is a window-independent protocol incentive — always read it
+    // from the 7d field so it doesn't disappear when apy30d is absent.
+    const rewardsApy = earnOpportunity?.latest?.apy?.jumperReward;
 
     const apyItem =
       !!apy?.customReward && apy.customReward > 0
-        ? buildTotalApyItem(apy, variant, t)
-        : buildApyItem(apy, variant, t);
+        ? buildTotalApyItem(apy, variant, t, windowOptions)
+        : buildApyItem(apy, variant, t, windowOptions);
 
     // Build all items, passing variant to each builder
     const overviewItems = [
@@ -397,5 +477,13 @@ export const useFormatDisplayEarnOpportunityData = (
       overviewItems,
       chains,
     };
-  }, [earnOpportunity, variant, t, getChainById, capacityDisplay]);
+  }, [
+    earnOpportunity,
+    variant,
+    t,
+    getChainById,
+    capacityDisplay,
+    windowOptions?.apyWindow,
+    windowOptions?.onToggleApyWindow,
+  ]);
 };

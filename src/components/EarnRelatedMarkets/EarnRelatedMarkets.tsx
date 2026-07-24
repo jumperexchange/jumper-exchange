@@ -9,13 +9,16 @@ import { useTranslation } from 'react-i18next';
 import { AppPaths } from 'src/const/urls';
 import { GridContainer } from '../Containers/GridContainer';
 import { AnimatePresence, motion } from 'motion/react';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 
 interface EarnRelatedMarketsProps {
   relatedMarkets: EarnOpportunityWithLatestAnalytics[];
+  apyWindow: ApyWindow;
 }
 
 export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
   relatedMarkets,
+  apyWindow,
 }) => {
   const { t } = useTranslation();
   return (
@@ -42,6 +45,7 @@ export const EarnRelatedMarkets: FC<EarnRelatedMarketsProps> = ({
                 variant="compact"
                 href={`${AppPaths.Earn}/${relatedMarket.slug}`}
                 data={relatedMarket}
+                apyWindow={apyWindow}
                 primaryAction={
                   <DepositFlowButton
                     // TODO: Enable deposit flow button and properly set earnOpportunity

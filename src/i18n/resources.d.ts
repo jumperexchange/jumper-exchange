@@ -140,6 +140,16 @@ export default interface Resources {
         seeMore: 'see more';
         viewAllMarkets: 'View all markets';
       };
+      apyWindow: {
+        aprLabel: 'APR ({{window}})';
+        apyLabel: 'APY ({{window}})';
+        label30d: '30d';
+        label7d: '7d';
+        toggleTooltip30d: 'Show APY over the last 30 days';
+        toggleTooltip7d: 'Show APY over the last 7 days';
+        tooltip: 'Expected yearly return rate of the tokens invested, incl. temporary rewards.';
+        unknown: 'Unknown';
+      };
       copy: {
         forYouBasedOnActivity: 'Handpicked from over {{totalMarkets}}+ markets based on your account activity';
         forYouDefault: 'Explore curated and comprehensive ways to put your assets to work across {{totalMarkets}}+ markets';

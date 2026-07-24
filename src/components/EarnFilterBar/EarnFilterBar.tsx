@@ -8,6 +8,8 @@ import { EarnFilterTab } from '../../app/ui/earn/types';
 import { Badge } from '../Badge/Badge';
 import { BadgeSize, BadgeVariant } from '../Badge/Badge.styles';
 import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
+import { EarnApyWindowToggle } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
@@ -24,12 +26,16 @@ import { EarnFilterViewTablet } from './layouts/EarnFilterViewTablet';
 export interface EarnFilterBarProps {
   variant: EarnCardVariant;
   setVariant: (variant: EarnCardVariant) => void;
+  apyWindow: ApyWindow;
+  setApyWindow: (apyWindow: ApyWindow) => void;
   isLoading?: boolean;
 }
 
 export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   variant,
   setVariant,
+  apyWindow,
+  setApyWindow,
   isLoading,
 }) => {
   const { t } = useTranslation();
@@ -50,14 +56,26 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
     <EarnFilterBarContainer>
       <EarnFilterBarHeaderContainer>
         {isTablet ? <EarnFilterViewTablet /> : <EarnFilterViewDesktop />}
-        {!isTablet && updatedAt && (
-          <Badge
-            variant={BadgeVariant.Secondary}
-            size={BadgeSize.SM}
-            label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
-          />
-        )}
-        {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
+        <Stack
+          direction="row"
+          sx={{
+            gap: 1,
+            alignItems: 'center',
+            flexShrink: 0,
+          }}
+        >
+          {!isTablet && updatedAt && (
+            <Badge
+              variant={BadgeVariant.Secondary}
+              size={BadgeSize.SM}
+              label={t('badge.updated', {
+                time: formatDistanceToNow(updatedAt),
+              })}
+            />
+          )}
+          <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+          {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
+        </Stack>
       </EarnFilterBarHeaderContainer>
       {!isTablet && (
         <EarnFilterBarContent>

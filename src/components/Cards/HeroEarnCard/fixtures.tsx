@@ -1,8 +1,10 @@
 import { JUMPER_STRAPI_URL } from '@/const/urls';
+import { ApyWindowOptions } from '@/utils/earn/apyWindow';
 import { DepositButton } from 'src/components/composite/DepositButton/DepositButton';
 import { DepositButtonDisplayMode } from 'src/components/composite/DepositButton/DepositButton.types';
 
 export const commonArgs = {
+  apyWindow: ApyWindowOptions.SEVEN_DAY,
   data: {
     isRedeemable: true,
     name: 'Moonwell Flagship USDC on base',
@@ -54,6 +56,12 @@ export const commonArgs = {
         reward: 0.0157,
         intrinsic: 0,
         total: 0.07150000000000001,
+      },
+      apy30d: {
+        base: 0.062,
+        reward: 0.018,
+        intrinsic: 0,
+        total: 0.08,
       },
     },
     interactionFlags: {

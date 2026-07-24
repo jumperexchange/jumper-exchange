@@ -139,4 +139,20 @@ describe('HeroEarnCard snapshot', () => {
     );
     expect(container).toMatchSnapshot();
   });
+  it('hero card with 30d apy window matches snapshot', async () => {
+    const { container } = render(
+      <HeroEarnCard {...commonArgs} apyWindow="30d" />,
+    );
+    expect(container).toMatchSnapshot();
+  });
+  it('hero card with 30d apy window and missing apy30d shows unknown', async () => {
+    const dataWithoutApy30d = {
+      ...commonArgs.data,
+      latest: { ...commonArgs.data.latest, apy30d: undefined },
+    };
+    const { container } = render(
+      <HeroEarnCard {...commonArgs} data={dataWithoutApy30d} apyWindow="30d" />,
+    );
+    expect(container).toMatchSnapshot();
+  });
 });

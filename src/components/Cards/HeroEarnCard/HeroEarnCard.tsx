@@ -1,6 +1,6 @@
 import { uniqBy } from 'lodash';
 import type { FC } from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
 import { RecommendationIcon } from 'src/components/illustrations/RecommendationIcon';
@@ -20,6 +20,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { EntityStackWithBadge } from '@/components/composite/EntityStackWithBadge/EntityStackWithBadge';
 import { slugifyTestId } from '@/utils/slugifyTestId';
+import type { ApyWindow } from '@/utils/earn/apyWindow';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
+import { formatApy } from '@/utils/numbers/apy';
 
 const heroHighlightSx: Record<HeroHighlightType, SxProps<Theme>> = {
   asset: {},
@@ -48,11 +51,13 @@ interface CommonHeroEarnCardProps {
 export interface HeroEarnCardNotEmptyProps extends CommonHeroEarnCardProps {
   data: EarnOpportunityWithLatestAnalytics;
   isLoading?: boolean;
+  apyWindow: ApyWindow;
 }
 
 export interface HeroEarnCardEmptyAndLoadingProps extends CommonHeroEarnCardProps {
   data: null;
   isLoading: true;
+  apyWindow?: never;
 }
 
 type HeroEarnCardProps =
@@ -66,8 +71,10 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
   copy = EarnHeroCardCopyKey.USE_YOUR_SPARE,
   isMain = false,
   href,
+  apyWindow,
 }) => {
   const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+  const { t } = useTranslation();
   // Note: later we might want to keep rendering the card if it's loading but already has data (on ttl for examples).
   const isEmpty = data === null || isLoading;
 
@@ -85,7 +92,10 @@ export const HeroEarnCard: FC<HeroEarnCardProps> = ({
     assets.map((asset) => asset.chain),
     'chainId',
   );
-  const formattedApy = `${(latest.apy.total * 100).toLocaleString()}%`;
+  const displayApy = getDisplayApy(latest, apyWindow);
+  const formattedApy = displayApy
+    ? formatApy(displayApy.total)
+    : t('earn.apyWindow.unknown');
 
   const title = name || protocol.product || protocol.name;
 

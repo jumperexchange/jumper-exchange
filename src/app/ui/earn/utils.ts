@@ -7,7 +7,10 @@ import {
   parseAsString,
   parseAsStringEnum,
 } from 'nuqs';
+import { ApyWindowOptions, type ApyWindow } from '@/utils/earn/apyWindow';
+import { AppPaths } from '@/const/urls';
 import type { EarnOpportunityWithLatestAnalytics } from '@/types/jumper-backend';
+import { getDisplayApy } from '@/utils/earn/getDisplayApy';
 import type {
   EarnOpportunityFilterWithoutSortByAndOrder,
   SortByEnum,
@@ -21,10 +24,16 @@ export type SortAccessors = Partial<
   >
 >;
 
-export const sortAccessors: SortAccessors = {
-  [SortByOptions.APY]: (item) => item.latest?.apy?.total ?? 0,
+export const makeSortAccessors = (apyWindow?: ApyWindow): SortAccessors => ({
+  // Unknown APY (apy30d absent) sinks to -Infinity so it always lands after
+  // every real value under the current hardcoded DESC order. If an ASC mode is
+  // ever added, revisit this sentinel.
+  [SortByOptions.APY]: (item) =>
+    getDisplayApy(item.latest, apyWindow)?.total ?? Number.NEGATIVE_INFINITY,
   [SortByOptions.TVL]: (item) => parseFloat(item.latest?.tvlUsd ?? '0'),
-};
+});
+
+export const sortAccessors: SortAccessors = makeSortAccessors();
 
 export const searchParamsParsers = {
   sortBy: parseAsStringEnum(Object.values(SortByOptions)).withDefault(
@@ -51,6 +60,14 @@ export const searchParamsParsers = {
   minRewardsAPY: parseAsFloat,
   maxRewardsAPY: parseAsFloat,
 };
+
+export const buildEarnHref = (
+  item: Pick<EarnOpportunityWithLatestAnalytics, 'slug'>,
+  apyWindow?: ApyWindow,
+): string =>
+  apyWindow && apyWindow !== ApyWindowOptions.SEVEN_DAY
+    ? `${AppPaths.Earn}/${item.slug}?apyWindow=${apyWindow}`
+    : `${AppPaths.Earn}/${item.slug}`;
 
 export const enrichDataWithFlag = <
   T extends { slug: string },

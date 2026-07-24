@@ -562,6 +562,16 @@
       "apy": "APY",
       "tvl": "TVL"
     },
+    "apyWindow": {
+      "label7d": "7d",
+      "label30d": "30d",
+      "tooltip": "Expected yearly return rate of the tokens invested, incl. temporary rewards.",
+      "toggleTooltip7d": "Show APY over the last 7 days",
+      "toggleTooltip30d": "Show APY over the last 30 days",
+      "apyLabel": "APY ({{window}})",
+      "aprLabel": "APR ({{window}})",
+      "unknown": "Unknown"
+    },
     "filter": {
       "clear": "Clear",
       "selected": "{{count}} selected",

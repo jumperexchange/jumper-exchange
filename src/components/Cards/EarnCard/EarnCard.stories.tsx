@@ -1,3 +1,4 @@
+import Stack from '@mui/material/Stack';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { EarnCard } from './EarnCard';
 import {
@@ -9,6 +10,9 @@ import {
 import { AppPaths } from 'src/const/urls';
 import { Badge } from 'src/components/Badge/Badge';
 import { BadgeSize, BadgeVariant } from 'src/components/Badge/Badge.styles';
+import { ApyWindowOptions } from '@/utils/earn/apyWindow';
+import { EarnApyWindowToggle } from '@/components/EarnFilterBar/components/EarnApyWindowToggle';
+import { useApyWindowMock } from '@/hooks/earn/useApyWindow.mock';
 
 const meta = {
   component: EarnCard,
@@ -138,6 +142,82 @@ export const ListItemWithHref: Story = {
   },
 };
 
+export const CompactWithApyWindowToggle: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock();
+    return (
+      <Stack spacing={2} sx={{ maxWidth: 400 }}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
+          variant="compact"
+          apyWindow={apyWindow}
+          primaryAction={compactPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+  },
+};
+
+export const ListItemWithApyWindowToggle: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock();
+    return (
+      <Stack spacing={2}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
+          variant="list-item"
+          apyWindow={apyWindow}
+          primaryAction={listItemPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+  },
+};
+
+const dataWithout30dApy = {
+  ...commonArgs.data,
+  latest: {
+    date: commonArgs.data.latest.date,
+    tvlUsd: commonArgs.data.latest.tvlUsd,
+    tvlNative: commonArgs.data.latest.tvlNative,
+    apy: commonArgs.data.latest.apy,
+  },
+};
+
+export const CompactWithApyWindowUnknown: Story = {
+  render: (args) => {
+    const { apyWindow, setApyWindow } = useApyWindowMock(
+      ApyWindowOptions.THIRTY_DAY,
+    );
+    return (
+      <Stack spacing={2} sx={{ maxWidth: 400 }}>
+        <EarnApyWindowToggle value={apyWindow} onChange={setApyWindow} />
+        <EarnCard
+          // hardcast to work around union discrimination
+          {...(args as typeof commonArgs)}
+          variant="compact"
+          apyWindow={apyWindow}
+          primaryAction={compactPrimaryAction}
+        />
+      </Stack>
+    );
+  },
+  args: {
+    ...commonArgs,
+    data: dataWithout30dApy,
+  },
+};
+
 export const Overview: Story = {
   args: {
     ...commonArgs,
@@ -184,5 +264,23 @@ export const OverviewWithBadge: Story = {
         label="Updated 12 hours ago"
       />
     ),
+  },
+};
+
+export const OverviewWithApyWindowToggle: Story = {
+  render: (args) => {
+    const { apyWindow, toggleApyWindow } = useApyWindowMock();
+    return (
+      <EarnCard
+        // hardcast to work around union discrimination
+        {...(args as typeof commonArgs)}
+        variant="overview"
+        apyWindow={apyWindow}
+        onToggleApyWindow={toggleApyWindow}
+      />
+    );
+  },
+  args: {
+    ...commonArgs,
   },
 };
