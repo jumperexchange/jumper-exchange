@@ -16,7 +16,11 @@ export const TronProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 
   return (
-    <WalletProvider adapters={adapters} autoConnect={true}>
+    <WalletProvider
+      adapters={adapters}
+      autoConnect={true}
+      disableAutoConnectOnLoad
+    >
       {children}
     </WalletProvider>
   );
