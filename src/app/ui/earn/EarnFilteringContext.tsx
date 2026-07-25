@@ -1,5 +1,5 @@
 import { useAccount } from '@jumperexchange/wallet-management';
-import { isEqual } from 'lodash';
+import { isEqual, uniqBy } from 'lodash';
 import { useQueryStates } from 'nuqs';
 import {
   createContext,
@@ -26,6 +26,7 @@ import {
 import type {
   EarnFilteringParams,
   EarnOpportunityFilterWithoutSortByAndOrder,
+  EarnPoolOption,
   SortByEnum,
 } from './types';
 import { EarnFilterTab, OrderOptions, SortByOptions } from './types';
@@ -41,6 +42,10 @@ export interface EarnFilteringContextType extends EarnFilteringParams {
   sortBy: SortByEnum;
   setSortBy: (sortBy: SortByEnum) => void;
   filter: EarnOpportunityFilterWithoutSortByAndOrder;
+  // Pools scoped by the rest of the active filter (everything but `search`
+  // and `pools` itself), so the pool autocomplete mirrors the opportunity
+  // list. Unlike `allPools`, this is not the full unfiltered tab.
+  availablePools: EarnPoolOption[];
   updateFilter: (
     filter: NullableFields<EarnOpportunityFilterWithoutSortByAndOrder>,
   ) => void;
@@ -73,6 +78,8 @@ export const EarnFilteringContext = createContext<EarnFilteringContextType>({
   allProtocols: [],
   allAssets: [],
   allTags: [],
+  allPools: [],
+  availablePools: [],
   allAPY: {},
   allTVL: {},
   allRewardsOptions: [],
@@ -217,7 +224,6 @@ export const EarnFilteringProvider = ({
     }
 
     const filtered = filterOpportunities(sourceData, filter);
-
     const sorted = sortOpportunities(filtered, sortBy, OrderOptions.DESC);
 
     return sorted;
@@ -271,6 +277,27 @@ export const EarnFilteringProvider = ({
     return extractFilteringParams(unfilteredTabData);
   }, [unfilteredTabData]);
 
+  const availablePools = useMemo<EarnPoolOption[]>(() => {
+    const { search: _search, pools: _pools, ...poolScopeFilter } = filter;
+
+    const scoped = uniqBy(
+      filterOpportunities(sourceData, poolScopeFilter).map((item) => ({
+        slug: item.slug,
+        name: item.name,
+      })),
+      'slug',
+    );
+
+    // Keep an already-committed pool chip visible even if a conflicting
+    // filter would scope it out (otherwise buildSelectedOptions drops it).
+    const scopedSlugs = new Set(scoped.map((p) => p.slug));
+    const selectedButHidden = stats.allPools.filter(
+      (p) => filter.pools?.includes(p.slug) && !scopedSlugs.has(p.slug),
+    );
+
+    return [...scoped, ...selectedButHidden];
+  }, [sourceData, filter, stats.allPools]);
+
   useEffect(() => {
     const sanitized = sanitizeFilter(filter, stats);
     if (!isEqual(sanitized, filter)) {
@@ -312,6 +339,8 @@ export const EarnFilteringProvider = ({
       protocols: null,
       tags: null,
       assets: null,
+      pools: null,
+      search: null,
       minAPY: null,
       maxAPY: null,
       minTVL: null,
@@ -356,6 +385,7 @@ export const EarnFilteringProvider = ({
       setPage,
       pagination,
       ...stats,
+      availablePools,
     };
   }, [
     error,
@@ -378,6 +408,7 @@ export const EarnFilteringProvider = ({
     changeTab,
     data,
     account,
+    availablePools,
   ]);
 
   return (

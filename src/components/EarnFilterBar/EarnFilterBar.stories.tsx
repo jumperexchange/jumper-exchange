@@ -1,11 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
-import { EarnFilteringContext } from '../../app/ui/earn/EarnFilteringContext';
-import {
-  EarnFilterTab,
-  SortByEnum,
-  SortByOptions,
-} from '../../app/ui/earn/types';
+import { EarnFilteringContext } from '@/app/ui/earn/EarnFilteringContext';
+import { EarnFilterTab, SortByEnum, SortByOptions } from '@/app/ui/earn/types';
 import { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBar } from './EarnFilterBar';
 import { EarnFilterBarSkeleton } from './EarnFilterBarSkeleton';
@@ -131,6 +127,16 @@ const mockContextValue = () => {
       },
     ],
     allTags: ['Staking', 'Earn', 'Yield', 'Lending', 'LP', 'Vault', 'DeFi'],
+    allPools: [
+      { slug: 'steakhouse-usdc', name: 'Steakhouse USDC' },
+      { slug: 'spark-susds', name: 'Spark sUSDS' },
+      { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
+    ],
+    availablePools: [
+      { slug: 'steakhouse-usdc', name: 'Steakhouse USDC' },
+      { slug: 'spark-susds', name: 'Spark sUSDS' },
+      { slug: 'aave-v3-eth', name: 'Aave v3 ETH' },
+    ],
     allAPY: {
       0.01: 5,
       0.02: 12,
@@ -189,6 +195,8 @@ export const EmptyState: Story = {
             allProtocols: [],
             allAssets: [],
             allTags: [],
+            allPools: [],
+            availablePools: [],
             allAPY: {},
             allRewardsOptions: [],
             totalMarkets: 0,
@@ -282,6 +290,28 @@ export const WithActiveFilters: Story = {
               minAPY: 0.05,
               maxAPY: 0.15,
             },
+          }}
+        >
+          <Story args={{ variant, setVariant }} />
+        </EarnFilteringContext.Provider>
+      );
+    },
+  ],
+};
+
+export const WithPoolsFilter: Story = {
+  args: {
+    variant: 'compact',
+    setVariant: () => {},
+  },
+  decorators: [
+    (Story) => {
+      const [variant, setVariant] = useState<EarnCardVariant>('compact');
+      return (
+        <EarnFilteringContext.Provider
+          value={{
+            ...mockContextValue(),
+            filter: { pools: ['steakhouse-usdc'] },
           }}
         >
           <Story args={{ variant, setVariant }} />

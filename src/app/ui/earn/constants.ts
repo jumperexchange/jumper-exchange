@@ -5,6 +5,7 @@ export const EMPTY_FILTERING_PARAMS: EarnFilteringParams = {
   allProtocols: [],
   allAssets: [],
   allTags: [],
+  allPools: [],
   allAPY: {},
   allTVL: {},
   allRewardsOptions: [],

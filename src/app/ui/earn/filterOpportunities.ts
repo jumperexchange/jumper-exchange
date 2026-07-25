@@ -39,6 +39,8 @@ export function filterOpportunities(
       protocols,
       assets,
       tags,
+      pools,
+      search,
       minAPY,
       maxAPY,
       minTVL,
@@ -70,6 +72,19 @@ export function filterOpportunities(
 
     // Tag filter
     if (tags?.length && !tags.some((tag) => item.tags.includes(tag))) {
+      return false;
+    }
+
+    // Pool filter
+    if (pools?.length && !pools.includes(item.slug)) {
+      return false;
+    }
+
+    // Plain-text search: stacks (AND) with the structured filters above,
+    // whether it's still live (typed but not yet committed) or pinned as a
+    // Search chip.
+    const searchTerm = search?.trim().toLowerCase();
+    if (searchTerm && !item.name.toLowerCase().includes(searchTerm)) {
       return false;
     }
 
@@ -140,6 +155,11 @@ export const extractFilteringParams = (
   let allTags = map(data, 'tags').flat();
   allTags = uniq(allTags).filter(Boolean);
 
+  const allPools = uniqBy(
+    data.map((item) => ({ slug: item.slug, name: item.name })),
+    'slug',
+  );
+
   // Allow for 0, only check null/undefined
   const apyValues = map(data, 'latest.apy.total')
     .filter((v): v is number => v !== null && v !== undefined)
@@ -174,6 +194,7 @@ export const extractFilteringParams = (
     allProtocols,
     allAssets,
     allTags,
+    allPools,
     allAPY,
     allTVL,
     allRewardsOptions,
@@ -188,7 +209,8 @@ export const sanitizeFilter = (
     !stats.allChains.length ||
     !stats.allProtocols.length ||
     !stats.allAssets.length ||
-    !stats.allTags.length
+    !stats.allTags.length ||
+    !stats.allPools.length
   ) {
     return filter;
   }
@@ -197,6 +219,7 @@ export const sanitizeFilter = (
   const validProtocols = new Set(stats.allProtocols.map((p) => p.name));
   const validAssets = new Set(stats.allAssets.map((a) => a.name));
   const validTags = new Set(stats.allTags);
+  const validPools = new Set(stats.allPools.map((p) => p.slug));
   const validAPY = new Set(
     Object.values(stats.allAPY ?? []).map((apy) => apy / 100),
   );
@@ -215,6 +238,7 @@ export const sanitizeFilter = (
     protocols: filter.protocols?.filter((p) => validProtocols.has(p)) ?? null,
     assets: filter.assets?.filter((a) => validAssets.has(a)) ?? null,
     tags: filter.tags?.filter((t) => validTags.has(t)) ?? null,
+    pools: filter.pools?.filter((p) => validPools.has(p)) ?? null,
     minAPY:
       filter.minAPY !== undefined
         ? Math.max(Math.min(filter.minAPY, apyMax), apyMin)

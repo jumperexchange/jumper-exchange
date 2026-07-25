@@ -21,11 +21,17 @@ export const RewardsAPYOptions = {
 export type RewardsAPYEnum =
   (typeof RewardsAPYOptions)[keyof typeof RewardsAPYOptions];
 
+export interface EarnPoolOption {
+  slug: string;
+  name: string;
+}
+
 export interface EarnFilteringParams {
   allChains: Chain[];
   allProtocols: Protocol[];
   allAssets: Token[];
   allTags: string[];
+  allPools: EarnPoolOption[];
   allAPY: Record<number, number>; // histogram of apy
   allTVL: Record<number, number>; // histogram of tvl
   allRewardsOptions: string[];
@@ -36,6 +42,8 @@ export interface EarnOpportunityFilterWithoutSortByAndOrder {
   protocols?: string[];
   assets?: string[];
   tags?: string[];
+  pools?: string[];
+  search?: string;
   minAPY?: number;
   maxAPY?: number;
   minTVL?: number;

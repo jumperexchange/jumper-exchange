@@ -44,6 +44,8 @@ export const searchParamsParsers = {
   protocols: parseAsArrayOf(parseAsString),
   assets: parseAsArrayOf(parseAsString),
   tags: parseAsArrayOf(parseAsString),
+  pools: parseAsArrayOf(parseAsString),
+  search: parseAsString,
   minAPY: parseAsFloat,
   maxAPY: parseAsFloat,
   minTVL: parseAsFloat,

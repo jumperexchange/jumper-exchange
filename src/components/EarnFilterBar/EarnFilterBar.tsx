@@ -11,6 +11,7 @@ import type { EarnCardVariant } from '../Cards/EarnCard/EarnCard.types';
 import { EarnFilterBarContentForYou } from './components/EarnFilterBarContentForYou';
 import { EarnFilterSort } from './components/EarnFilterSort';
 import { EarnListMode } from './components/EarnListMode';
+import { EarnSearchAutocomplete } from './components/EarnSearchAutocomplete';
 import {
   EarnFilterBarContainer,
   EarnFilterBarHeaderContainer,
@@ -41,6 +42,7 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
   }
 
   const isForYouTab = EarnFilterTab.FOR_YOU === tab;
+  const isAllMarketsTab = EarnFilterTab.ALL === tab;
 
   const EarnFilterBarContent = isForYouTab
     ? EarnFilterBarContentForYou
@@ -56,6 +58,9 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             size={BadgeSize.SM}
             label={t('badge.updated', { time: formatDistanceToNow(updatedAt) })}
           />
+        )}
+        {isTablet && isAllMarketsTab && (
+          <EarnSearchAutocomplete sx={{ width: 'auto', flex: 1 }} />
         )}
         {isTablet && !isForYouTab && <EarnFilterBarContentAllTablet />}
       </EarnFilterBarHeaderContainer>
@@ -73,6 +78,9 @@ export const EarnFilterBar: React.FC<EarnFilterBarProps> = ({
             {!isForYouTab && <EarnFilterSort />}
           </Stack>
         </EarnFilterBarContent>
+      )}
+      {!isTablet && isAllMarketsTab && (
+        <EarnSearchAutocomplete sx={{ width: '100%' }} />
       )}
     </EarnFilterBarContainer>
   );

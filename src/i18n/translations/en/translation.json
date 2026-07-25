@@ -577,6 +577,17 @@
       "rewards": {
         "label": "Rewards",
         "withRewards": "Include only pools with rewards"
+      },
+      "searchAutocomplete": {
+        "placeholder": "Search by pool, chain, or protocol...",
+        "noOptions": "No matches found",
+        "moreCount": "+{{count}} more",
+        "category": {
+          "pool": "Pool",
+          "chain": "Chain",
+          "protocol": "Protocol",
+          "search": "Search"
+        }
       }
     },
     "views": {

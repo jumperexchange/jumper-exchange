@@ -179,6 +179,17 @@ export default interface Resources {
           withRewards: 'Include only pools with rewards';
         };
         search: 'Search {{filterBy}}...';
+        searchAutocomplete: {
+          category: {
+            chain: 'Chain';
+            pool: 'Pool';
+            protocol: 'Protocol';
+            search: 'Search';
+          };
+          moreCount: '+{{count}} more';
+          noOptions: 'No matches found';
+          placeholder: 'Search by pool, chain, or protocol...';
+        };
         selected: '{{count}} selected';
         tag: 'Type';
         tvl: 'TVL';
