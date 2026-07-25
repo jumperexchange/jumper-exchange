@@ -1025,8 +1025,6 @@ export interface EarnOpportunityWithLatestAnalytics {
    * @deprecated
    */
   capInDollar?: string;
-  /** @deprecated */
-  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
@@ -1964,8 +1962,6 @@ export interface EarnOpportunityWithScore {
    * @deprecated
    */
   capInDollar?: string;
-  /** @deprecated */
-  rewardsApy?: number;
   forYou: boolean;
   interactionFlags: EarnInteractionFlags;
   rewardApiLinks?: RewardApiLink[];
