@@ -63,7 +63,7 @@ export const DepositFlowButton: FC<DepositFlowButtonProps> = ({
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.depositDisabled"
       protocolName={earnOpportunity.protocol.name}
-      protocolUrl={earnOpportunity.protocol.url}
+      fallbackUrl={earnOpportunity.url}
     />
   ) : undefined;
 
@@ -81,21 +81,21 @@ export const DepositFlowOnDemandButton: FC<
   Omit<DepositFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
     earnOpportunityInteractionFlags?: EarnInteractionFlags;
-    protocolUrl?: string | null;
+    fallbackUrl?: string | null;
     protocolName?: string;
   }
 > = ({
   earnOpportunitySlug,
   earnOpportunityInteractionFlags,
   refetchCallback,
-  protocolUrl,
+  fallbackUrl,
   protocolName,
   ...props
 }) => {
   const { t } = useTranslation();
   const { trackEarnDepositClickEvent } = useEarnTracking();
   const openModal = useDepositFlowStore((state) => state.openModal);
-  const { refetch: fetchEarnOpportunity } =
+  const { data: earnOpportunityData, refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
 
   const { isDisabled: isFeatureDisabled, isLoading: isLoadingFeatureDisabled } =
@@ -125,7 +125,7 @@ export const DepositFlowOnDemandButton: FC<
   const tooltipContent = isFeatureDisabled ? (
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.depositDisabled"
-      protocolUrl={protocolUrl}
+      fallbackUrl={earnOpportunityData?.url ?? fallbackUrl}
       protocolName={protocolName}
     />
   ) : undefined;

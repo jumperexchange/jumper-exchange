@@ -62,7 +62,7 @@ export const WithdrawFlowButton: FC<WithdrawFlowButtonProps> = ({
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.withdrawDisabled"
       protocolName={earnOpportunity.protocol.name}
-      protocolUrl={earnOpportunity.protocol.url}
+      fallbackUrl={earnOpportunity.url}
     />
   ) : undefined;
   return (
@@ -79,14 +79,14 @@ export const WithdrawFlowOnDemandButton: FC<
   Omit<WithdrawFlowButtonProps, 'earnOpportunity'> & {
     earnOpportunitySlug: string;
     earnOpportunityInteractionFlags?: EarnInteractionFlags;
-    protocolUrl?: string | null;
+    fallbackUrl?: string | null;
     protocolName?: string;
   }
 > = ({
   earnOpportunitySlug,
   earnOpportunityInteractionFlags,
   refetchCallback,
-  protocolUrl,
+  fallbackUrl,
   protocolName,
   ...props
 }) => {
@@ -101,7 +101,7 @@ export const WithdrawFlowOnDemandButton: FC<
   const { t } = useTranslation();
   const { trackEarnWithdrawClickEvent } = useEarnTracking();
   const openModal = useWithdrawFlowStore((state) => state.openModal);
-  const { refetch: fetchEarnOpportunity } =
+  const { data: earnOpportunityData, refetch: fetchEarnOpportunity } =
     useEarnOpportunityBySlug(earnOpportunitySlug);
   const handleClick = async () => {
     try {
@@ -130,7 +130,7 @@ export const WithdrawFlowOnDemandButton: FC<
   const tooltipContent = isFeatureDisabled ? (
     <DisabledEarnFeatureTooltip
       i18nKey="tooltips.withdrawDisabled"
-      protocolUrl={protocolUrl}
+      fallbackUrl={earnOpportunityData?.url ?? fallbackUrl}
       protocolName={protocolName}
     />
   ) : undefined;
