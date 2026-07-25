@@ -93,7 +93,8 @@
     "ctaButton": "Join our Discord"
   },
   "badge": {
-    "updated": "Updated {{time}} ago"
+    "updated": "Updated {{time}} ago",
+    "recentlyAdded": "Recently added"
   },
   "blog": {
     "title": "Tips and tutorials",

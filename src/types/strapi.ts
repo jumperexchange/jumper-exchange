@@ -1,5 +1,9 @@
 import type { WidgetConfig } from '@jumperexchange/widget';
 import type { BlocksContent } from '@strapi/blocks-react-renderer';
+import type {
+  BadgeSize,
+  BadgeVariant,
+} from 'src/components/Badge/Badge.styles';
 import type { SpindlCardData, SpindlMediaAttributes } from './spindl';
 import type { AvailableSteps } from 'src/components/ProfilePage/components/ClaimPerkModal/ClaimPerkModal.types';
 import type { CreateJumperThemeOptions } from 'src/theme/theme';
@@ -499,6 +503,26 @@ export enum TaskType {
   Zap = 'Zap',
 }
 
+export interface StrapiBadgeComponent {
+  Label: string;
+  Variant?: BadgeVariant | null;
+  Size?: BadgeSize | null;
+  Icon?: StrapiMediaData | null;
+}
+
+export interface FeatureBadgeData {
+  id: number;
+  documentId: string;
+  FeatureKey: string;
+  Enabled?: boolean | null;
+  LiveBadge: StrapiBadgeComponent;
+  SoonBadge?: StrapiBadgeComponent | null;
+  LaunchAt?: string | null;
+  ExpiryMode: 'until_date' | 'days_after_launch';
+  ExpiresAt?: string | null;
+  DisplayDaysAfterLaunch?: number | null;
+}
+
 export interface PerksData {
   data: PerksDataAttributes[];
 }
@@ -526,6 +550,8 @@ export interface PerksDataAttributes {
   HowToUseDescription?: BlocksContent;
   NextStepsDescription?: BlocksContent;
   HasCustomPromoCodes?: boolean;
+  FirstPublishedAt?: string | null;
+  FeatureBadge?: FeatureBadgeData | null;
   createdAt: string;
   publishedAt?: string;
   updatedAt: string;

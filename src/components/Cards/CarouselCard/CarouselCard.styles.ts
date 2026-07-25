@@ -48,6 +48,13 @@ export const CarouselCardMediaOverlay = styled(Box)(({ theme }) => ({
   transform: 'translateY(50%)',
 }));
 
+export const CarouselCardMediaBadge = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: theme.spacing(1),
+  right: theme.spacing(1),
+  zIndex: 1,
+}));
+
 export const CarouselCardContent = styled(Box)(({ theme }) => ({
   display: 'flex',
   flex: 1,

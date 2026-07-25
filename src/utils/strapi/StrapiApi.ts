@@ -1,11 +1,24 @@
 import type { Account } from '@jumperexchange/widget-provider';
-import { getStrapiBaseUrl } from './strapiHelper';
+import {
+  appendStrapiPopulate,
+  getStrapiBaseUrl,
+  type StrapiPopulate,
+} from './strapiHelper';
 import { sanitizeStrapiContainsSearchInput } from './sanitizeStrapiContainsSearchInput';
 import config from '@/config/env-config';
 import { addDays, format, startOfToday } from 'date-fns';
 
+// A FeatureBadge nests LiveBadge/SoonBadge components whose Icon media only
+// comes back with an explicit deep populate. Shared by the perk relation and
+// the standalone feature-badge endpoint.
+const FEATURE_BADGE_BADGES: Record<string, StrapiPopulate> = {
+  LiveBadge: { populate: { Icon: true } },
+  SoonBadge: { populate: { Icon: true } },
+};
+
 interface GetStrapiBaseUrlProps {
   contentType:
+    | 'feature-badges'
     | 'feature-cards'
     | 'blog-articles'
     | 'faq-items'
@@ -397,6 +410,7 @@ type PerkField =
   | 'NextStepsDescription'
   | 'HasCustomPromoCodes'
   | 'Featured'
+  | 'FirstPublishedAt'
   | 'createdAt'
   | 'updatedAt'
   | 'publishedAt';
@@ -415,6 +429,7 @@ class PerkParams {
     'NextStepsDescription',
     'HasCustomPromoCodes',
     'Featured',
+    'FirstPublishedAt',
     'createdAt',
     'updatedAt',
   ];
@@ -423,6 +438,7 @@ class PerkParams {
     'Image',
     'PerkItems',
     'ClaimableStepsProps',
+    'FeatureBadge',
   ];
 
   constructor(private apiUrl: URL) {
@@ -457,8 +473,14 @@ class PerkParams {
       this.apiUrl.searchParams.set(`fields[${index}]`, field);
     });
 
-    populate.forEach((relation, index) => {
-      this.apiUrl.searchParams.set(`populate[${index}]`, relation);
+    populate.forEach((relation) => {
+      if (relation === 'FeatureBadge') {
+        appendStrapiPopulate(this.apiUrl.searchParams, {
+          FeatureBadge: { populate: FEATURE_BADGE_BADGES },
+        });
+        return;
+      }
+      this.apiUrl.searchParams.set(`populate[${relation}]`, 'true');
     });
 
     return this.apiUrl;
@@ -873,10 +895,24 @@ class WalletAccessControlStrapiApi extends StrapiApi {
   }
 }
 
+class FeatureBadgeStrapiApi extends StrapiApi {
+  constructor() {
+    super({ contentType: 'feature-badges' });
+    // Scalar fields come back by default; deep-populate the badge components.
+    appendStrapiPopulate(this.apiUrl.searchParams, FEATURE_BADGE_BADGES);
+  }
+
+  filterByKey(featureKey: string): this {
+    this.apiUrl.searchParams.set('filters[FeatureKey][$eq]', featureKey);
+    return this;
+  }
+}
+
 export {
   ArticleStrapiApi,
   BlogFaqStrapiApi,
   CampaignStrapiApi,
+  FeatureBadgeStrapiApi,
   FeatureCardStrapiApi,
   PartnerThemeStrapiApi,
   QuestStrapiApi,
