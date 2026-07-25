@@ -8,7 +8,7 @@ export const dynamic = 'force-static';
 export const revalidate = 86400;
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
-  // Bridge uses a sitemap index; learn/swap remain listed directly until indexed similarly.
+  // Learn chunks are listed directly; bridge and swap use flat sitemaps of approved pages only.
   const learnSitemaps = (await getLearnSitemapChunkIds()).map((id) =>
     buildUrl('learn', 'sitemap', `${id}.xml`),
   );

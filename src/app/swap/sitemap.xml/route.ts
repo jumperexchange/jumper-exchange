@@ -8,6 +8,5 @@ export const revalidate = 86400;
 const lastModified = toSitemapDate(Date.now());
 
 export async function GET() {
-  const entries = await getSwapSitemapEntries(lastModified);
-  return createSitemapXmlResponse(entries);
+  return createSitemapXmlResponse(getSwapSitemapEntries(lastModified));
 }
