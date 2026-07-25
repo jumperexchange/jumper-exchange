@@ -144,6 +144,7 @@ export function useMainWidgetConfig(
                 tag.includes('SIMULATED_BY_COMPOSER'),
             ),
           'neutral',
+          'Verified via onchain simulation',
         ),
       ],
     };
